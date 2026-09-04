@@ -2,11 +2,11 @@
 
 ## Current focus
 
-`0.2.0` (pending changeset): Button, web `Box as="a"` and Field, plus the quiet glass canvas (document styles, glass Card, pill buttons).
+`0.2.0` is versioned. Publish with tag `v0.2.0` and the manual GitLab `publish` job.
 
 ## Next action
 
-Publish after `changeset version` as `v0.2.0`. Do not tag `v0.1.0`. The next library code story is the next valid filled request.
+Run the manual `publish` job on the `v0.2.0` tag pipeline. Do not tag `v0.1.0`. After npm shows `0.2.0`, bump fantasy-football and FutMas. The next library code story is the next valid filled request.
 
 ## Later
 

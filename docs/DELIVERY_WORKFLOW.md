@@ -7,7 +7,7 @@ Repository documents are durable memory. Chat is not.
 - `docs/ARCHITECTURE.md`: package boundaries and CSS ownership.
 - `docs/adr/`: accepted decisions.
 - `docs/ROADMAP.md`: current focus and next action.
-- `docs/CONSUMER_REQUESTS.md`: how products consume `0.1.0` and request a missing primitive.
+- `docs/CONSUMER_REQUESTS.md`: how products consume a published version and request a missing primitive.
 - Accepted implementation plan: one story.
 - Code and tests: executable result.
 
