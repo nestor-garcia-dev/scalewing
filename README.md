@@ -45,4 +45,4 @@ pnpm check
 pnpm dev:web
 ```
 
-See `docs/CONTRIBUTING.md` for the GitLab release job. Do not publish from a laptop.
+See `docs/CONTRIBUTING.md` for the first laptop publish and later GitLab OIDC releases.

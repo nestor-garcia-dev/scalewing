@@ -19,4 +19,4 @@ A release additionally requires:
 
 - Packed tarballs contain only build output, declarations, CSS, license, README, and package metadata.
 - Renderer runtime libraries remain peer dependencies.
-- Publishing uses the explicit GitLab release job, not a merge hook.
+- Publishing uses the explicit GitLab release job, not a merge hook. The first version of a new package may be published once from a laptop so a trusted publisher can be attached.

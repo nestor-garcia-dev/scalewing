@@ -14,5 +14,5 @@ FutMas, coach-platform, and planned fantasy-football apps need a shared visual l
 ## Consequences
 
 - The npm organization `@scalewing` is reserved. If a publish fails because the scope is unavailable, stop and rename rather than publishing under `@futmas`.
-- Consumers take a normal npm dependency. GitLab CI publishes from a protected token.
+- Consumers take a normal npm dependency. After the first laptop publish, GitLab CI publishes with npm trusted publishing (OIDC) on GitLab.com shared runners. Do not store an npm write token in CI.
 - FutMas must record a supply-chain rationale when it adds these packages.

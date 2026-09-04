@@ -36,11 +36,16 @@ publish:
   resource_group: npm-publish
   needs:
     - check
+  id_tokens:
+    NPM_ID_TOKEN:
+      aud: 'npm:registry.npmjs.org'
+    SIGSTORE_ID_TOKEN:
+      aud: sigstore
   script:
-    - test -n "${NPM_TOKEN}"
+    - test -n "${NPM_ID_TOKEN}"
     - node scripts/assert-release-tag.mjs
+    - npm install -g npm@^11.5.1
     - pnpm build
-    - echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > "${HOME}/.npmrc"
     - pnpm publish -r --access public --no-git-checks
   rules:
     - if: $CI_COMMIT_TAG

@@ -6,7 +6,7 @@ Foundation `0.1.0`: tokens, generated layout CSS, and Box, Stack, Inline, Card, 
 
 ## Next action
 
-Push this repository to GitLab, set `NPM_TOKEN` on the project, tag `v0.1.0`, and run the manual `publish` job. Do not integrate FutMas, coach-platform, or fantasy-football until `@scalewing/react@0.1.0` exists on npm.
+`@scalewing/react@0.1.0` is on npm. Land the OIDC GitLab publish job on `main`. Later versions tag `v0.1.1` or higher and run the manual `publish` job. Do not tag `v0.1.0`.
 
 ## Later
 
