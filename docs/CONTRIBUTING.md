@@ -6,12 +6,15 @@ Then read:
 
 - `docs/ARCHITECTURE.md`
 - `docs/DELIVERY_WORKFLOW.md`
+- `docs/CONSUMER_REQUESTS.md`
 - `docs/DEFINITION_OF_DONE.md`
 - `docs/ROADMAP.md`
 
 Use pnpm. Run focused tests while iterating and `pnpm check` before a cross-package change.
 
 Public API changes need a changeset. Do not store an npm write token in GitLab. Later releases publish with OIDC trusted publishing on GitLab.com shared runners.
+
+Product agents request missing primitives with the prompt in `docs/CONSUMER_REQUESTS.md`. One consumer is enough. Do not add a new public component, class family, or renderer because a product UI looks like it might need one, and do not add a parallel control when an existing surface already covers the use case.
 
 ## First publish
 

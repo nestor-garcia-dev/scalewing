@@ -61,6 +61,21 @@ describe('contrast', () => {
       contrastRatio(darkTheme.colors.muted, darkTheme.colors.background),
     ).toBeGreaterThanOrEqual(4.5);
   });
+
+  it('keeps button label colors at 4.5:1 on accent and danger', () => {
+    expect(
+      contrastRatio(lightTheme.colors.onAccent, lightTheme.colors.accent),
+    ).toBeGreaterThanOrEqual(4.5);
+    expect(
+      contrastRatio(lightTheme.colors.onDanger, lightTheme.colors.danger),
+    ).toBeGreaterThanOrEqual(4.5);
+    expect(
+      contrastRatio(darkTheme.colors.onAccent, darkTheme.colors.accent),
+    ).toBeGreaterThanOrEqual(4.5);
+    expect(
+      contrastRatio(darkTheme.colors.onDanger, darkTheme.colors.danger),
+    ).toBeGreaterThanOrEqual(4.5);
+  });
 });
 
 describe('generated CSS', () => {
@@ -79,6 +94,31 @@ describe('generated CSS', () => {
     expect(catalog).toEqual(expect.arrayContaining(['sw-stack', 'sw-sr-only']));
     expect(css).toContain('.sw-stack');
     expect(css).not.toContain('!important');
+  });
+
+  it('emits the document canvas, glass cards, and pill buttons', () => {
+    expect(css).toContain('[data-theme] a');
+    expect(css).toContain('text-decoration: none');
+    expect(css).toContain('--sw-glass-fill:');
+    expect(css).toContain('.sw-card-glass');
+    expect(css).toContain('backdrop-filter:');
+    expect(css).toContain('border-radius: var(--sw-radius-pill)');
+    expect(catalog).toEqual(
+      expect.arrayContaining(['sw-card-glass', 'sw-card-outlined']),
+    );
+  });
+
+  it('emits button classes from tokens, including a 44px md control', () => {
+    expect(catalog).toEqual(
+      expect.arrayContaining([
+        'sw-button',
+        'sw-button-primary',
+        'sw-button-md',
+      ]),
+    );
+    expect(css).toContain('.sw-button-primary');
+    expect(css).toContain('--sw-control-md-min-height: 44px');
+    expect(css).toContain('.sw-button-md { min-height: 44px');
   });
 
   it('keeps light and dark semantic color variables in parity', () => {

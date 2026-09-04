@@ -1,5 +1,5 @@
 import { createContext, useContext, useMemo, type ReactNode } from 'react';
-import { useColorScheme } from 'react-native';
+import { useColorScheme, View } from 'react-native';
 import {
   createTheme,
   type ColorScheme,
@@ -28,7 +28,11 @@ export function ThemeProvider({
   );
 
   return (
-    <ThemeContext.Provider value={theme}>{children}</ThemeContext.Provider>
+    <ThemeContext.Provider value={theme}>
+      <View style={{ backgroundColor: theme.colors.background, flex: 1 }}>
+        {children}
+      </View>
+    </ThemeContext.Provider>
   );
 }
 

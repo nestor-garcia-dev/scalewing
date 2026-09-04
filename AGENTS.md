@@ -21,7 +21,7 @@
 15. Use pnpm only. Do not bypass frozen lockfiles in CI.
 16. If a task appears to require violating a hard rule, stop and ask rather than working around it.
 17. Do not mark work done because files exist. Apply `docs/DEFINITION_OF_DONE.md`.
-18. A new public component, utility family, or renderer is its own planned change. Do not dump a catalog in one implementation.
+18. A new public component, utility family, or renderer is its own planned change. Do not dump a catalog in one implementation. Do not add a new public surface without a filled request from `docs/CONSUMER_REQUESTS.md`. One consumer is enough. Prefer reusing an existing surface over adding a parallel one.
 
 ## Product
 
@@ -33,9 +33,19 @@ This repository is **Scalewing**, a design system for multiple products. It publ
 
 Consuming apps own product copy, routing, domain components, and brand overlays. Scalewing owns primitives and generated layout CSS.
 
-Read `docs/ARCHITECTURE.md`, `docs/DELIVERY_WORKFLOW.md`, and `docs/DEFINITION_OF_DONE.md` before changing public API, CSS ownership, or package boundaries.
+Read `docs/ARCHITECTURE.md`, `docs/DELIVERY_WORKFLOW.md`, `docs/CONSUMER_REQUESTS.md`, and `docs/DEFINITION_OF_DONE.md` before changing public API, CSS ownership, or package boundaries.
 
 The display name is Scalewing. Do not hardcode a different product name in package metadata, docs, or examples.
+
+## Visual language
+
+Quiet and glass-minimal, in the same family as Apple.com: system sans, generous space, large radius, hairline borders, frosted surfaces. No user-agent chrome (no blue underlined links, no Win32 controls).
+
+- Surfaces use `theme.glass` or `colors.surface`. Do not invent hex, extra shadows, gradients, or a blur-utility matrix.
+- The generated document canvas on `[data-theme]` sets page background, type, links, and native text controls.
+- Card defaults to `glass`. `outlined` and `elevated` are the exceptions.
+- Native approximates glass with translucent fills. Do not add BlurView to get a literal Apple material.
+- Respect `prefers-reduced-transparency` on web (already in the generated CSS).
 
 ## Coding Agent Guidelines
 
@@ -89,11 +99,11 @@ Responsible for spacing, color, type, radius, elevation, motion, theme objects, 
 
 #### packages/react
 
-Responsible for DOM `ThemeProvider`, Box, Stack, Inline, Card, Text, and re-exporting the generated stylesheet as `@scalewing/react/styles.css`.
+Responsible for DOM `ThemeProvider`, Box, Stack, Inline, Card, Text, Button, Field, and re-exporting the generated stylesheet as `@scalewing/react/styles.css`. `Box as="a"` is a layout link. Use Button for press actions.
 
 #### packages/react-native
 
-Responsible for native `ThemeProvider` and the same five components implemented with React Native primitives. Spacing uses token steps as props, not CSS class names.
+Responsible for native `ThemeProvider` and the matching layout primitives plus Button (`Pressable`). Spacing uses token steps as props, not CSS class names. Field is web-only.
 
 #### apps/web-example and apps/native-example
 
@@ -184,3 +194,4 @@ Run `pnpm check` before declaring a cross-package change complete.
 - Flag logging of tokens or credentials.
 - Flag arbitrary-value utility classes (`sw-padding-top-13px`).
 - Flag adding Tailwind or another utility framework.
+- Flag a glass-utility matrix or a second visual skin beside the generated canvas.

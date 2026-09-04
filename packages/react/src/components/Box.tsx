@@ -1,5 +1,9 @@
 import { type RadiusStep, type SemanticColorKey } from '@scalewing/tokens';
-import { forwardRef, type HTMLAttributes } from 'react';
+import {
+  forwardRef,
+  type AnchorHTMLAttributes,
+  type HTMLAttributes,
+} from 'react';
 
 import { cx } from '../class-names.js';
 import { spacingClassNames, type SpacingProps } from '../spacing-classes.js';
@@ -13,10 +17,16 @@ export type BoxElement =
   | 'main'
   | 'nav'
   | 'aside'
-  | 'span';
+  | 'span'
+  | 'a'
+  | 'label';
 
 export type BoxProps = SpacingProps &
-  HTMLAttributes<HTMLElement> & {
+  HTMLAttributes<HTMLElement> &
+  Pick<
+    AnchorHTMLAttributes<HTMLAnchorElement>,
+    'download' | 'href' | 'rel' | 'target'
+  > & {
     as?: BoxElement;
     background?: Extract<SemanticColorKey, 'background' | 'surface'>;
     radius?: RadiusStep;

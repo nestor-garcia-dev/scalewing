@@ -1,3 +1,4 @@
+import { controlScale, disabledOpacity, focusRing } from './control.js';
 import { semanticColorKeys } from './colors.js';
 import { radiusScale } from './radius.js';
 import { spacingScale, spacingSteps } from './spacing.js';
@@ -9,6 +10,13 @@ function colorDeclarations(theme: Theme): string {
     .join('\n');
 }
 
+function glassDeclarations(theme: Theme): string {
+  return `  --sw-glass-blur: ${theme.glass.blur}px;
+  --sw-glass-saturate: ${theme.glass.saturate};
+  --sw-glass-fill: ${theme.glass.fill};
+  --sw-glass-border: ${theme.glass.border};`;
+}
+
 function sharedDeclarations(theme: Theme): string {
   const space = spacingSteps
     .map((step) => `  --sw-space-${step}: ${spacingScale[step]}px;`)
@@ -17,12 +25,24 @@ function sharedDeclarations(theme: Theme): string {
     .map(([name, value]) => `  --sw-radius-${name}: ${value}px;`)
     .join('\n');
 
+  const control = Object.entries(controlScale)
+    .flatMap(([size, value]) => [
+      `  --sw-control-${size}-min-height: ${value.minHeight}px;`,
+      `  --sw-control-${size}-padding-inline: ${value.paddingInline}px;`,
+    ])
+    .join('\n');
+
   return `${space}
 ${radius}
+${control}
   --sw-font-sans: ${theme.fontFamily};
   --sw-elevation-sm: ${theme.elevation.sm};
   --sw-elevation-md: ${theme.elevation.md};
-  --sw-container-max: 72rem;`;
+  --sw-disabled-opacity: ${disabledOpacity};
+  --sw-focus-ring-width: ${focusRing.width}px;
+  --sw-focus-ring-offset: ${focusRing.offset}px;
+  --sw-container-max: 72rem;
+${glassDeclarations(theme)}`;
 }
 
 export function cssVariables(light: Theme, dark: Theme): string {

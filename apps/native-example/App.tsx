@@ -1,4 +1,5 @@
 import {
+  Button,
   Card,
   Inline,
   Stack,
@@ -6,26 +7,26 @@ import {
   ThemeProvider,
 } from '@scalewing/react-native';
 import { useState } from 'react';
-import { Pressable, SafeAreaView } from 'react-native';
+import { SafeAreaView } from 'react-native';
 
 export default function App() {
   const [scheme, setScheme] = useState<'light' | 'dark'>('light');
 
   return (
     <ThemeProvider colorScheme={scheme}>
-      <SafeAreaView>
+      <SafeAreaView style={{ flex: 1 }}>
         <Stack gap={4} padding={4}>
           <Inline justify="between" align="center">
             <Text variant="heading">Scalewing</Text>
-            <Pressable
+            <Button
               onPress={() =>
                 setScheme((current) => (current === 'light' ? 'dark' : 'light'))
               }
+              size="sm"
+              variant="secondary"
             >
-              <Text variant="label">
-                {scheme === 'light' ? 'Dark theme' : 'Light theme'}
-              </Text>
-            </Pressable>
+              {scheme === 'light' ? 'Dark theme' : 'Light theme'}
+            </Button>
           </Inline>
           <Text color="muted">
             Native uses spacing step props, not CSS class names.

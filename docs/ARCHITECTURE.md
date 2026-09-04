@@ -13,8 +13,8 @@ apps/native-example ──> react-native
 ```
 
 - **`@scalewing/tokens`**: theme objects, scales, contrast checks, CSS custom properties, and generated `sw-*` classes.
-- **`@scalewing/react`**: DOM components plus `@scalewing/react/styles.css`.
-- **`@scalewing/react-native`**: React Native components and a theme provider. No CSS class API.
+- **`@scalewing/react`**: DOM components plus `@scalewing/react/styles.css`. Button is a real `<button>`. `Box as="a"` is a layout link. Field wraps a native control with a label and token gap.
+- **`@scalewing/react-native`**: React Native components and a theme provider. No CSS class API. Button is a `Pressable`. Field is web-only.
 
 ## CSS ownership
 
@@ -32,7 +32,7 @@ React Native has no CSS classes. The same step is `paddingTop={4}`.
 
 ## Theming
 
-Light and dark palettes are first-class themes. Web applies them with `data-theme` and CSS variables. Native applies them through React context. Products may overlay brand colors through `createTheme`; they do not fork the class sheet.
+Light and dark palettes are first-class themes. Web applies them with `data-theme`, CSS variables, and a generated document canvas (background, type, links, native text controls). Native applies them through React context and a full-screen canvas `View`. Products may overlay brand colors through `createTheme`; they do not fork the class sheet. Card defaults to frosted `glass`.
 
 ## Renderers
 

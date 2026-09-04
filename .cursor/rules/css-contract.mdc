@@ -7,6 +7,6 @@ alwaysApply: true
 
 - Consumers import `@scalewing/react/styles.css` once. They must not copy Scalewing CSS into their `src`.
 - Class names are generated from tokens. `sw-padding-top-4` is spacing step `4`, not `4px`.
-- Do not add arbitrary-value classes, a color-utility matrix, or a responsive class DSL without an ADR.
+- Do not add arbitrary-value classes, a color-utility matrix, a glass-utility matrix, or a responsive class DSL without an ADR.
 - React Native uses spacing step props, not CSS class names.
 - Do not hand-maintain a parallel class sheet.

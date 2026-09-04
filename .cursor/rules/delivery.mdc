@@ -5,9 +5,10 @@ alwaysApply: true
 
 # Delivery
 
-- Read `docs/ROADMAP.md`, `docs/DELIVERY_WORKFLOW.md`, and `docs/ARCHITECTURE.md` before adding public API.
-- “What’s next?” starts discovery. It does not authorize a component catalog dump.
+- Read `docs/ROADMAP.md`, `docs/DELIVERY_WORKFLOW.md`, `docs/CONSUMER_REQUESTS.md`, and `docs/ARCHITECTURE.md` before adding public API.
+- “What’s next?” starts discovery. Prefer a filled consumer request over speculation. It does not authorize a component catalog dump.
 - Implement one lane per change: `tokens`, `react`, or `react-native`. Shared token work may land first when both renderers need it.
-- Do not add a new public component, utility family, or renderer without an accepted plan.
+- Do not add a new public component, utility family, or renderer without an accepted plan and a filled request from `docs/CONSUMER_REQUESTS.md`.
+- One consumer is enough to request and ship a primitive. Prefer reusing an existing surface over adding a parallel one.
 - Treat the accepted plan as scope. Stop and discuss material API expansion.
 - Apply `docs/DEFINITION_OF_DONE.md`. Record remaining work if unfinished.

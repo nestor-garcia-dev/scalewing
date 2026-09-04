@@ -11,4 +11,4 @@ alwaysApply: true
 - Flag examples that vendor Scalewing CSS in app source.
 - Flag production dependencies added without a rationale.
 - Flag secrets, npm tokens, or `.env` files.
-- Flag arbitrary utility classes and new full CSS frameworks.
+- Flag arbitrary utility classes, glass-utility matrices, and new full CSS frameworks.

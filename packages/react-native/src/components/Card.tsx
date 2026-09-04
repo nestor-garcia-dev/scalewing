@@ -1,9 +1,10 @@
-import { type SpacingStep } from '@scalewing/tokens';
+import { type CardVariant, type SpacingStep } from '@scalewing/tokens';
 
 import { Box, type BoxProps } from './Box.js';
+import { mapCardViewStyle } from '../map-card-style.js';
 import { useTheme } from '../theme/ThemeProvider.js';
 
-export type CardVariant = 'outlined' | 'elevated';
+export type { CardVariant };
 
 export type CardProps = BoxProps & {
   padding?: SpacingStep;
@@ -13,29 +14,15 @@ export type CardProps = BoxProps & {
 export function Card({
   padding = 4,
   style,
-  variant = 'outlined',
+  variant = 'glass',
   ...rest
 }: CardProps) {
   const theme = useTheme();
 
   return (
     <Box
-      background="surface"
-      border={variant === 'outlined'}
       padding={padding}
-      radius="md"
-      style={[
-        variant === 'elevated'
-          ? {
-              shadowColor: theme.colors.text,
-              shadowOffset: { height: 8, width: 0 },
-              shadowOpacity: 0.12,
-              shadowRadius: 16,
-              elevation: 3,
-            }
-          : undefined,
-        style,
-      ]}
+      style={[mapCardViewStyle(theme, variant), style]}
       {...rest}
     />
   );

@@ -6,7 +6,7 @@ Follow the root `AGENTS.md`. On conflict, the root wins.
 
 1. This package renders with React Native primitives. Do not import `react-dom`, CSS files, or `@scalewing/react`.
 2. Do not accept `className` or fake `sw-*` class strings.
-3. Spacing, color, and type come from the active theme's token steps, for example `paddingTop={4}`.
+3. Spacing, color, and type come from the active theme's token steps, for example `paddingTop={4}`. Button sizes come from `theme.control`. Card glass uses `theme.glass` fills. Field is web-only.
 4. React and React Native are peer dependencies. Do not pin a product's Expo SDK here.
 5. Components stay thin. Mapping from props to `StyleSheet` values belongs in named functions.
 6. Add tests for style mapping and theme changes. Rendering tests must not require a full native build.

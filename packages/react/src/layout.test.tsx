@@ -40,6 +40,7 @@ describe('layout components', () => {
 
     const card = screen.getByText('Sunday kickoff').closest('section');
     expect(card?.className).toContain('sw-card');
+    expect(card?.className).toContain('sw-card-glass');
     expect(card?.className).toContain('sw-padding-4');
     expect(screen.getByText('Home').className).toContain('sw-text-body');
     expect(screen.getByText('2–1').parentElement?.className).toContain(
@@ -57,5 +58,20 @@ describe('layout components', () => {
     expect(container.firstElementChild?.getAttribute('data-theme')).toBe(
       'dark',
     );
+  });
+
+  it('renders a real anchor when as is a', () => {
+    render(
+      <ThemeProvider colorScheme="light">
+        <Box as="a" href="/draft" padding={2}>
+          Draft board
+        </Box>
+      </ThemeProvider>,
+    );
+
+    const link = screen.getByRole('link', { name: 'Draft board' });
+    expect(link.tagName).toBe('A');
+    expect(link.getAttribute('href')).toBe('/draft');
+    expect(link.className).toContain('sw-padding-2');
   });
 });

@@ -14,7 +14,7 @@ Design tokens and layout primitives for web (DOM) and React Native.
 
 ```ts
 import '@scalewing/react/styles.css';
-import { Card, Stack, Text } from '@scalewing/react';
+import { Box, Button, Card, Field, Stack, Text } from '@scalewing/react';
 ```
 
 ```html
@@ -45,4 +45,4 @@ pnpm check
 pnpm dev:web
 ```
 
-See `docs/CONTRIBUTING.md` for the first laptop publish and later GitLab OIDC releases.
+See `docs/CONTRIBUTING.md` for the first laptop publish and later GitLab OIDC releases. Product apps follow `docs/CONSUMER_REQUESTS.md`.
