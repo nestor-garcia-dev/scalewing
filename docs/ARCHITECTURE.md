@@ -8,7 +8,7 @@ Scalewing is a design system published as three npm packages from one pnpm works
 @scalewing/react ──────────────┐
 @scalewing/react-native ───────┼──> @scalewing/tokens
                                │
-apps/web-example ──> react ────┘
+apps/gallery ──> react ────────┘
 apps/native-example ──> react-native
 ```
 
@@ -40,4 +40,4 @@ Do not share React Native component files with the DOM package. Do not introduce
 
 ## Examples
 
-`apps/web-example` and `apps/native-example` exist to prove public exports. They are not a token source.
+`apps/gallery` is the web catalog and pre-publish QA surface. `apps/native-example` proves native public exports. They are not a token source. A new or changed public web token, class, variant, or component is not done until the gallery demonstrates the meaningful states.

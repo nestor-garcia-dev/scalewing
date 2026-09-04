@@ -10,7 +10,7 @@ Then read:
 - `docs/DEFINITION_OF_DONE.md`
 - `docs/ROADMAP.md`
 
-Use pnpm. Run focused tests while iterating and `pnpm check` before a cross-package change.
+Use pnpm. Run focused tests while iterating and `pnpm check` before a cross-package change. The web catalog is `apps/gallery`. `pnpm dev:web` builds tokens and `@scalewing/react` first so `styles.css` is current, then starts the gallery.
 
 Public API changes need a changeset. Do not store an npm write token in GitLab. Later releases publish with OIDC trusted publishing on GitLab.com shared runners.
 
@@ -26,7 +26,7 @@ npm login
 pnpm publish -r --access public --no-git-checks
 ```
 
-That publishes `@scalewing/tokens`, `@scalewing/react`, and `@scalewing/react-native`. Example apps stay private. Confirm with `npm view @scalewing/react version`.
+That publishes `@scalewing/tokens`, `@scalewing/react`, and `@scalewing/react-native`. The gallery and native example stay private. Confirm with `npm view @scalewing/react version`.
 
 Then on each package at npmjs.com: **Settings → Trusted Publisher → GitLab CI/CD**:
 

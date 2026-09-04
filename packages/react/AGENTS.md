@@ -12,6 +12,7 @@ Follow the root `AGENTS.md`. On conflict, the root wins.
 6. Public class names stay in the generated `sw-*` catalog.
 7. Add tests for class mapping, theme switching, and accessibility of composed examples.
 8. `Box as="a"` is a layout link. Do not add `as="button"`; use `Button`. Field wraps a native control with token gap. Native text controls inherit the generated document canvas; do not restyle them with hex in JSX.
+9. A new or changed public web token, class, variant, or component is not done until `apps/gallery` demonstrates the meaningful states.
 
 ## Prefer
 

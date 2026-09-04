@@ -7,8 +7,9 @@ A public API change is complete when:
 - `pnpm check` passes for cross-package work.
 - Generated CSS still comes from `@scalewing/tokens` with no parallel hand-written sheet.
 - Web examples import `@scalewing/react/styles.css` and do not vendor that CSS.
+- New or changed public web tokens, classes, variants, or components are demonstrated in `apps/gallery` with their meaningful states.
 - Accessibility checks cover new interactive or text semantics.
-- Types are exported and example apps typecheck.
+- Types are exported and the gallery plus native example typecheck.
 - A changeset records the API impact.
 - `docs/ARCHITECTURE.md` and nested `AGENTS.md` files match any boundary change.
 - No credentials, npm tokens, or generated secrets are committed.

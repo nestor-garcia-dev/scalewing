@@ -1,22 +1,28 @@
 {
-  "name": "@scalewing/web-example",
+  "name": "@scalewing/gallery",
   "version": "0.1.0",
   "private": true,
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "tsc -p tsconfig.json --noEmit && vite build",
+    "preview": "vite preview",
+    "test": "vitest run",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
     "@scalewing/react": "workspace:*",
+    "@scalewing/tokens": "workspace:*",
     "react": "19.2.3",
     "react-dom": "19.2.3"
   },
   "devDependencies": {
+    "@testing-library/react": "^16.3.0",
     "@types/react": "^19.2.2",
     "@types/react-dom": "^19.2.2",
     "@vitejs/plugin-react": "^5.1.0",
-    "vite": "^7.2.2"
+    "jsdom": "^27.0.0",
+    "vite": "^7.2.2",
+    "vitest": "^4.1.11"
   }
 }

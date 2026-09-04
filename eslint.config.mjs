@@ -120,7 +120,7 @@ export default tseslint.config(
     },
   },
   {
-    files: ['apps/web-example/**/*.{ts,tsx}'],
+    files: ['apps/gallery/**/*.{ts,tsx}'],
     plugins: {
       'react-hooks': reactHooks,
       'jsx-a11y': jsxA11y,

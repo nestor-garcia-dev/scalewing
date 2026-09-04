@@ -75,7 +75,7 @@ Optimize for:
 ### Repository Boundaries
 
 ```text
-apps/web-example ───────┐
+apps/gallery ───────────┐
 apps/native-example ────┼──> packages/react or packages/react-native
                         │
 packages/react ─────────┤
@@ -91,7 +91,7 @@ packages/tokens
 
 `@scalewing/react-native` must not import `react-dom`, CSS files, or `@scalewing/react`.
 
-Example apps must consume public package exports the way a real consumer would, including `import '@scalewing/react/styles.css'` on web. They must not copy Scalewing CSS into their own `src`.
+Example apps must consume public package exports the way a real consumer would, including `import '@scalewing/react/styles.css'` on web. They must not copy Scalewing CSS into their own `src`. The gallery may import public `@scalewing/tokens` exports to document values. It must not define tokens.
 
 #### packages/tokens
 
@@ -105,9 +105,9 @@ Responsible for DOM `ThemeProvider`, Box, Stack, Inline, Card, Text, Button, Fie
 
 Responsible for native `ThemeProvider` and the matching layout primitives plus Button (`Pressable`). Spacing uses token steps as props, not CSS class names. Field is web-only.
 
-#### apps/web-example and apps/native-example
+#### apps/gallery and apps/native-example
 
-Responsible for demonstrating public APIs. Not a design-system source of truth.
+Responsible for demonstrating public exports. `apps/gallery` is the web catalog and pre-publish QA surface. They are not a design-system source of truth.
 
 ### Functional Core, Imperative Shell
 
@@ -158,7 +158,7 @@ Check:
 | `packages/tokens/AGENTS.md`       | Pure tokens and CSS generation |
 | `packages/react/AGENTS.md`        | DOM renderer                   |
 | `packages/react-native/AGENTS.md` | Native renderer                |
-| `apps/web-example/AGENTS.md`      | Web consumer demo              |
+| `apps/gallery/AGENTS.md`          | Web gallery and pre-publish QA |
 | `apps/native-example/AGENTS.md`   | Native consumer demo           |
 
 **Precedence:** nested files must not contradict the root. On conflict, the root wins.

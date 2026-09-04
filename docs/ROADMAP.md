@@ -2,14 +2,15 @@
 
 ## Current focus
 
-`0.2.0` is versioned. Publish with tag `v0.2.0` and the manual GitLab `publish` job.
+Local gallery in `apps/gallery` as the web catalog and pre-publish QA surface.
 
 ## Next action
 
-Run the manual `publish` job on the `v0.2.0` tag pipeline. Do not tag `v0.1.0`. After npm shows `0.2.0`, bump fantasy-football and FutMas. The next library code story is the next valid filled request.
+Run `pnpm dev:web` and `pnpm build:gallery` to review unpublished web primitives. The next library code story is the next valid filled request. After a later tag, bump fantasy-football and FutMas if they still consume an older npm version.
 
 ## Later
 
+- GitLab Pages or a public URL for the gallery.
 - Badge when a filled request shows existing primitives cannot cover the use case.
 - Native Field if a product needs a labeled control on React Native.
 - FutMas ADR and mobile integration.

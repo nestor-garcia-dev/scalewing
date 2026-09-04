@@ -7,5 +7,5 @@
   "access": "public",
   "baseBranch": "main",
   "updateInternalDependencies": "patch",
-  "ignore": ["@scalewing/web-example", "@scalewing/native-example"]
+  "ignore": ["@scalewing/gallery", "@scalewing/native-example"]
 }

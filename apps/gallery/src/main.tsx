@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client';
 import '@scalewing/react/styles.css';
 
 import { App } from './App.js';
+import './gallery.css';
 
 const root = document.getElementById('root');
 

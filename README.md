@@ -45,4 +45,6 @@ pnpm check
 pnpm dev:web
 ```
 
+`pnpm dev:web` rebuilds tokens and `@scalewing/react` (so `styles.css` is current) then starts the gallery. Use `pnpm build:gallery` and `pnpm preview:gallery` to inspect the production bundle before tagging a release.
+
 See `docs/CONTRIBUTING.md` for the first laptop publish and later GitLab OIDC releases. Product apps follow `docs/CONSUMER_REQUESTS.md`.
