@@ -1,0 +1,13 @@
+---
+description: Story-sized public API delivery for the design system
+alwaysApply: true
+---
+
+# Delivery
+
+- Read `docs/ROADMAP.md`, `docs/DELIVERY_WORKFLOW.md`, and `docs/ARCHITECTURE.md` before adding public API.
+- “What’s next?” starts discovery. It does not authorize a component catalog dump.
+- Implement one lane per change: `tokens`, `react`, or `react-native`. Shared token work may land first when both renderers need it.
+- Do not add a new public component, utility family, or renderer without an accepted plan.
+- Treat the accepted plan as scope. Stop and discuss material API expansion.
+- Apply `docs/DEFINITION_OF_DONE.md`. Record remaining work if unfinished.

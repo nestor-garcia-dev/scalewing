@@ -1,0 +1,17 @@
+{
+  "name": "@scalewing/native-example",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@scalewing/react-native": "workspace:*",
+    "react": "19.2.3",
+    "react-native": "0.86.3"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.2",
+    "typescript": "~6.0.3"
+  }
+}

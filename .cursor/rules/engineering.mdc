@@ -1,0 +1,13 @@
+---
+description: Maintainability, module size, and stop-and-ask rules
+alwaysApply: true
+---
+
+# Engineering
+
+- Do not optimize for the smallest patch. Refactor when a module would gain another responsibility.
+- Prefer named functions, explicit data flow, and small modules.
+- Do not add `utils.ts`, `helpers.ts`, or `common.ts` dumping grounds.
+- Review source files approaching 250–300 lines for responsibility creep. Do not split tests, generated CSS, or cohesive token tables solely for line count.
+- If a task appears to require violating a hard rule in `AGENTS.md`, stop and ask.
+- Do not mark work done because files exist. Apply `docs/DEFINITION_OF_DONE.md`.

@@ -1,0 +1,50 @@
+{
+  "name": "@scalewing/tokens",
+  "version": "0.1.0",
+  "description": "Scalewing design tokens, themes, and generated CSS.",
+  "type": "module",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://gitlab.com/dna-consulting/scalewing.git",
+    "directory": "packages/tokens"
+  },
+  "homepage": "https://gitlab.com/dna-consulting/scalewing#readme",
+  "bugs": {
+    "url": "https://gitlab.com/dna-consulting/scalewing/-/issues"
+  },
+  "sideEffects": [
+    "*.css"
+  ],
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "import": "./src/index.ts"
+    },
+    "./styles.css": "./dist/styles.css"
+  },
+  "files": [
+    "CHANGELOG.md",
+    "dist",
+    "LICENSE",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "rm -rf dist && tsc -p tsconfig.json && node scripts/write-css.js",
+    "prepack": "pnpm build",
+    "test": "vitest run",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "publishConfig": {
+    "access": "public",
+    "main": "./dist/index.js",
+    "types": "./dist/index.d.ts",
+    "exports": {
+      ".": {
+        "types": "./dist/index.d.ts",
+        "import": "./dist/index.js"
+      },
+      "./styles.css": "./dist/styles.css"
+    }
+  }
+}

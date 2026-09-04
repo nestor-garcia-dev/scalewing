@@ -1,0 +1,12 @@
+---
+description: Scalewing package and renderer boundaries
+alwaysApply: true
+---
+
+# Package boundaries
+
+- `@scalewing/tokens` is pure. No React, React Native, DOM, or CSS-in-JS runtime.
+- `@scalewing/react` is DOM-only. Do not import `react-native`, Expo, or `@scalewing/react-native`.
+- `@scalewing/react-native` is native-only. Do not import `react-dom`, CSS files, or `@scalewing/react`.
+- Do not use React Native Web to share one component tree.
+- Example apps consume public exports only. They are not a source of design tokens.

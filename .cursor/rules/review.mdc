@@ -1,0 +1,14 @@
+---
+description: Review flags for Scalewing pull requests
+alwaysApply: true
+---
+
+# Review
+
+- Flag React Native imports in `@scalewing/react`.
+- Flag React DOM or CSS class APIs in `@scalewing/react-native`.
+- Flag hand-written CSS that duplicates the generator.
+- Flag examples that vendor Scalewing CSS in app source.
+- Flag production dependencies added without a rationale.
+- Flag secrets, npm tokens, or `.env` files.
+- Flag arbitrary utility classes and new full CSS frameworks.
