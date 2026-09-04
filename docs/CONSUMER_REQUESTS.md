@@ -60,6 +60,12 @@ One product is enough to request a primitive. Before adding a new surface, check
 
 A Scalewing agent treats a filled request as discovery, then plans one lane (`tokens`, `react`, or `react-native`) per `docs/DELIVERY_WORKFLOW.md`. Do not scrape product UIs to guess a catalog.
 
+## Linked development
+
+A product may point its `@scalewing/react` (or `@scalewing/tokens`) dependency at this checkout with a local `link:` specifier while a requested primitive is being built, instead of waiting for a publish. fantasy-football does this with `pnpm scalewing:link` / `pnpm scalewing:unlink`; see its `docs/adr/0006-linked-scalewing-development.md` for the exact mechanics and the pnpm/webpack quirks it works around.
+
+This does not change how Scalewing plans or ships work. The filled request above is still the intake, one lane per story still applies, and the gallery is still the pre-publish QA surface. Linking only removes the publish round trip between "component exists in this repo" and "a consumer can see it live."
+
 ## Request prompt
 
 Product agents stop and paste this, filled in, to the human or a Scalewing chat:

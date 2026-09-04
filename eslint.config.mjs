@@ -140,4 +140,14 @@ export default tseslint.config(
       'no-restricted-imports': ['error', nativeForbidden],
     },
   },
+  {
+    files: ['scripts/**/*.mjs'],
+    languageOptions: {
+      globals: {
+        clearTimeout: 'readonly',
+        console: 'readonly',
+        setTimeout: 'readonly',
+      },
+    },
+  },
 );
