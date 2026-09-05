@@ -1,5 +1,31 @@
 # @scalewing/react-native
 
+## 0.3.0
+
+### Minor Changes
+
+- 247f158: Default accent is electric indigo, and glass fill is derived from the merged accent so ThemeProvider overlays retint frost.
+
+  Adds opt-in density (`xs` controls, `data` type, `sw-tabular`) and web `Badge`, `SegmentedControl`, and `Table`. Pin the previous teal with `colors={{ accent: '#0B615E', onAccent: '#FFFFFF' }}` (dark: `#7EDAD6` / `#101214`).
+
+- 247f158: Adds a named palette catalog so products pick a reviewed light/dark overlay instead of copying hex. Apply with ThemeProvider `palette`, `data-palette` on the generated canvas, or `import '@scalewing/react/palette/<id>.css'` after styles.css. Default remains indigo. `colors` still wins over a named palette and may be `{ light, dark }` so end users can switch scheme without the product swapping hex.
+
+### Patch Changes
+
+- Updated dependencies [247f158]
+- Updated dependencies [247f158]
+- Updated dependencies [247f158]
+- Updated dependencies [247f158]
+- Updated dependencies [247f158]
+- Updated dependencies [247f158]
+- Updated dependencies [247f158]
+- Updated dependencies [247f158]
+- Updated dependencies [247f158]
+- Updated dependencies [247f158]
+- Updated dependencies [247f158]
+- Updated dependencies [247f158]
+  - @scalewing/tokens@0.3.0
+
 ## 0.2.0
 
 ### Minor Changes

@@ -2,13 +2,13 @@
 
 ## Current focus
 
-Accordion (web `<details>` disclosure), Dialog, Split, Select, and Toast. Gallery
-sections for those surfaces are the QA surface. Named palettes already shipped.
+0.3.0 is versioned: Accordion, Dialog, Split, Select, Toast, dashboard
+surfaces, and named palettes.
 
 ## Next action
 
-Review Select, Split, Accordion, Dialog, and Toast in the gallery. Publish 0.3.0
-when that review is accepted. Then bump consumers off the local link.
+Tag `v0.3.0` and run the GitLab publish job. Then pin consumers to
+`@scalewing/react@0.3.0` and drop local `link:` specifiers.
 
 ## Later
 

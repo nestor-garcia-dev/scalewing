@@ -1,6 +1,6 @@
 # Consumer requests
 
-Scalewing is a shared design system. Product apps consume `@scalewing/react@0.2.0` or `@scalewing/react-native@0.2.0`. They do not fork the class sheet or invent a second visual system.
+Scalewing is a shared design system. Product apps consume `@scalewing/react@0.3.0` or `@scalewing/react-native@0.3.0`. They do not fork the class sheet or invent a second visual system.
 
 This document is the intake protocol. Copy the paste-ready blocks into a product `AGENTS.md` and `.cursor/rules/scalewing.mdc`. fantasy-football and FutMas already have them. Paste into coach-platform when that app’s agent files exist.
 
@@ -114,8 +114,8 @@ Proposed API (optional, reusable names only):
 This product uses Scalewing for layout primitives and generated CSS. Read
 `https://gitlab.com/dna-consulting/scalewing/-/blob/main/docs/CONSUMER_REQUESTS.md`.
 
-- Web: `pnpm add @scalewing/react@0.2.0` and `import '@scalewing/react/styles.css'` once.
-- Native: `pnpm add @scalewing/react-native@0.2.0`. No CSS class API.
+- Web: `pnpm add @scalewing/react@0.3.0` and `import '@scalewing/react/styles.css'` once.
+- Native: `pnpm add @scalewing/react-native@0.3.0`. No CSS class API.
 - Compose from ThemeProvider, Box, Stack, Inline, Split, Card, Accordion, Dialog, Toast, Text, Button, Field, Select, Badge, SegmentedControl, Table, BarChart, AppHeader, and Nav (web). Named palettes use `palette` on ThemeProvider.
 - `Box as="a"` is a layout link. Use `Button` for press actions.
 - Visual language is quiet and glass-minimal. Do not restyle links, inputs, or the page canvas in app CSS.
@@ -144,7 +144,7 @@ alwaysApply: true
 
 # Scalewing
 
-- Depend on `@scalewing/react@0.2.0` (web) or `@scalewing/react-native@0.2.0` (native).
+- Depend on `@scalewing/react@0.3.0` (web) or `@scalewing/react-native@0.3.0` (native).
 - Import `@scalewing/react/styles.css` once on web. Do not vendor that CSS.
 - `sw-padding-top-4` is spacing step 4, not 4px. Native uses `paddingTop={4}`.
 - Compose from ThemeProvider, Box, Stack, Inline, Split, Card, Accordion, Dialog, Toast, Text, Button, Field, Select, Badge, SegmentedControl, Table, BarChart, AppHeader, and Nav (web). Named palettes use `palette` on ThemeProvider.
