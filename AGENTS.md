@@ -21,7 +21,7 @@
 15. Use pnpm only. Do not bypass frozen lockfiles in CI.
 16. If a task appears to require violating a hard rule, stop and ask rather than working around it.
 17. Do not mark work done because files exist. Apply `docs/DEFINITION_OF_DONE.md`.
-18. A new public component, utility family, or renderer is its own planned change. Do not dump a catalog in one implementation. Do not add a new public surface without a filled request from `docs/CONSUMER_REQUESTS.md`. One consumer is enough. Prefer reusing an existing surface over adding a parallel one.
+18. A new public component, utility family, or renderer is its own planned change. Do not dump a catalog in one implementation. Do not add a new public surface without a filled file in `docs/requests/`. One consumer is enough. Prefer reusing an existing surface over adding a parallel one. Public names stay generic; product copy stays in the consumer.
 
 ## Product
 
@@ -41,7 +41,7 @@ The display name is Scalewing. Do not hardcode a different product name in packa
 
 Quiet and glass-minimal, in the same family as Apple.com: system sans, generous space, large radius, hairline borders, frosted surfaces. No user-agent chrome (no blue underlined links, no Win32 controls).
 
-- Surfaces use `theme.glass` or `colors.surface`. Do not invent hex, extra shadows, gradients, or a blur-utility matrix.
+- Surfaces use `theme.glass` or `colors.surface`. Light glass fill is white. Do not invent hex, extra shadows, gradients, or a blur-utility matrix.
 - The generated document canvas on `[data-theme]` sets page background, type, links, and native text controls.
 - Card defaults to `glass`. `outlined` and `elevated` are the exceptions.
 - Native approximates glass with translucent fills. Do not add BlurView to get a literal Apple material.
@@ -99,15 +99,15 @@ Responsible for spacing, color, type, radius, elevation, motion, theme objects, 
 
 #### packages/react
 
-Responsible for DOM `ThemeProvider`, Box, Stack, Inline, Card, Text, Button, Field, and re-exporting the generated stylesheet as `@scalewing/react/styles.css`. `Box as="a"` is a layout link. Use Button for press actions.
+Responsible for DOM `ThemeProvider` (including `palette`), Box, Stack, Inline, Split, Card, Accordion, Dialog, Toast, Text, Button, Field, Select, Badge, SegmentedControl, Table, BarChart, AppHeader, Nav, and re-exporting the generated stylesheet as `@scalewing/react/styles.css` plus optional `@scalewing/react/palette/<id>.css`. `Box as="a"` is a layout link. Use Button for press actions. Badge is not a press control. Split is a start pane with a drag separator. Accordion is a native details disclosure in page flow. Dialog is a modal on the native top layer. Toast is an auto-dismiss confirmation on the popover layer and does not trap focus. Select is a labeled listbox menu. BarChart is a labeled horizontal magnitude chart.
 
 #### packages/react-native
 
-Responsible for native `ThemeProvider` and the matching layout primitives plus Button (`Pressable`). Spacing uses token steps as props, not CSS class names. Field is web-only.
+Responsible for native `ThemeProvider` (including `palette`) and the matching layout primitives plus Button (`Pressable`). Spacing uses token steps as props, not CSS class names. Field, Select, Dialog, Accordion, Split, and Toast are web-only.
 
 #### apps/gallery and apps/native-example
 
-Responsible for demonstrating public exports. `apps/gallery` is the web catalog and pre-publish QA surface. They are not a design-system source of truth.
+Responsible for demonstrating public exports. `apps/gallery` is the web catalog and pre-publish QA surface. They are not a design-system source of truth. Gallery sample copy is animals and habitats, not a consumer product.
 
 ### Functional Core, Imperative Shell
 
@@ -153,13 +153,13 @@ Check:
 
 ## Nested agent rules
 
-| Path                              | Purpose                        |
-| --------------------------------- | ------------------------------ |
-| `packages/tokens/AGENTS.md`       | Pure tokens and CSS generation |
-| `packages/react/AGENTS.md`        | DOM renderer                   |
-| `packages/react-native/AGENTS.md` | Native renderer                |
-| `apps/gallery/AGENTS.md`          | Web gallery and pre-publish QA |
-| `apps/native-example/AGENTS.md`   | Native consumer demo           |
+| Path                              | Purpose                         |
+| --------------------------------- | ------------------------------- |
+| `packages/tokens/AGENTS.md`       | Pure tokens and CSS generation  |
+| `packages/react/AGENTS.md`        | DOM renderer                    |
+| `packages/react-native/AGENTS.md` | Native renderer                 |
+| `apps/gallery/AGENTS.md`          | Web gallery; animal sample copy |
+| `apps/native-example/AGENTS.md`   | Native consumer demo            |
 
 **Precedence:** nested files must not contradict the root. On conflict, the root wins.
 

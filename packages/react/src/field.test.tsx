@@ -23,4 +23,21 @@ describe('Field', () => {
     expect(field?.className).toContain('sw-stack');
     expect(field?.className).toContain('sw-gap-1');
   });
+
+  it('compacts native controls and can hide the visible label', () => {
+    render(
+      <ThemeProvider colorScheme="light">
+        <Field label="League" labelVisuallyHidden size="xs">
+          <select>
+            <option>My league</option>
+          </select>
+        </Field>
+      </ThemeProvider>,
+    );
+
+    const control = screen.getByLabelText('League');
+    const field = control.closest('label');
+    expect(field?.className).toContain('sw-field-xs');
+    expect(screen.getByText('League').className).toContain('sw-sr-only');
+  });
 });

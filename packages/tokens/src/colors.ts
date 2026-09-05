@@ -16,11 +16,11 @@ export type SemanticColorKey = (typeof semanticColorKeys)[number];
 export type ColorTokens = Record<SemanticColorKey, string>;
 
 export const lightColors: ColorTokens = {
-  background: '#F5F5F7',
+  background: '#FFFFFF',
   surface: '#FFFFFF',
   text: '#1D1D1F',
   muted: '#6E6E73',
-  accent: '#0B615E',
+  accent: '#5B3DF5',
   onAccent: '#FFFFFF',
   danger: '#B42318',
   onDanger: '#FFFFFF',
@@ -33,7 +33,7 @@ export const darkColors: ColorTokens = {
   surface: '#1C1C1E',
   text: '#F5F5F7',
   muted: '#A1A1A6',
-  accent: '#7EDAD6',
+  accent: '#A78BFA',
   onAccent: '#101214',
   danger: '#F97066',
   onDanger: '#101214',

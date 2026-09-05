@@ -73,8 +73,8 @@ function buttonFill(
       };
     case 'secondary':
       return {
-        backgroundColor: theme.glass.fill,
-        borderColor: theme.glass.border,
+        backgroundColor: theme.colors.surface,
+        borderColor: theme.colors.border,
       };
     case 'ghost':
       return {

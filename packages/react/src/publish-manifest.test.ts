@@ -15,6 +15,7 @@ const manifest = JSON.parse(
     exports: {
       '.': { types: string; import: string };
       './styles.css': { types: string; default: string };
+      './palette/*.css': { types: string; default: string };
     };
   };
 };
@@ -31,6 +32,10 @@ describe('publish manifest', () => {
     expect(manifest.publishConfig.exports['./styles.css']).toEqual({
       types: './styles.css.d.ts',
       default: './dist/styles.css',
+    });
+    expect(manifest.publishConfig.exports['./palette/*.css']).toEqual({
+      types: './styles.css.d.ts',
+      default: './dist/palette/*.css',
     });
   });
 });

@@ -35,6 +35,13 @@ export const typographyVariants = {
     fontWeight: 400,
     letterSpacing: -0.08,
   },
+  data: {
+    fontSize: 13,
+    lineHeight: 18,
+    fontWeight: 500,
+    letterSpacing: -0.08,
+    tabularNums: true,
+  },
 } as const;
 
 export type TypographyVariant = keyof typeof typographyVariants;

@@ -8,7 +8,21 @@ export {
   controlScale,
   disabledOpacity,
   focusRing,
+  quietOpacity,
+  trackInset,
 } from './control.js';
+export {
+  barChartFillRatio,
+  barChartScaleMax,
+  formatBarChartValue,
+} from './bar-chart.js';
+export {
+  type BadgeSize,
+  type BadgeTone,
+  badgeClassNames,
+  badgeSizes,
+  badgeTones,
+} from './css-data.js';
 export { type CardVariant, cardVariants } from './card.js';
 export {
   type ColorTokens,
@@ -16,9 +30,36 @@ export {
   semanticColorKeys,
 } from './colors.js';
 export { contrastRatio, isHexColor, parseHexColor } from './contrast.js';
-export { createTheme, type ThemeOverlay } from './create-theme.js';
-export { type GlassTokens, darkGlass, lightGlass } from './glass.js';
+export {
+  type ColorOverlay,
+  type SchemeColorOverlay,
+  type ThemeColors,
+  type ThemeOverlay,
+  createTheme,
+} from './create-theme.js';
+export {
+  type PaletteDefinition,
+  type PaletteFamily,
+  type PaletteId,
+  colorsForPalette,
+  defaultPaletteId,
+  familyLabel,
+  isPaletteId,
+  paletteById,
+  paletteFamilies,
+  paletteHasStylesheet,
+  paletteIds,
+  palettes,
+  palettesWithStylesheets,
+} from './palettes.js';
+export {
+  type GlassTokens,
+  darkGlass,
+  glassForAccent,
+  lightGlass,
+} from './glass.js';
 export { product } from './product.js';
+export { type SplitScale, splitScale } from './split.js';
 export { type RadiusStep, radiusScale } from './radius.js';
 export {
   type GapAxis,

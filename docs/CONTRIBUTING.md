@@ -14,7 +14,7 @@ Use pnpm. Run focused tests while iterating and `pnpm check` before a cross-pack
 
 Public API changes need a changeset. Do not store an npm write token in GitLab. Later releases publish with OIDC trusted publishing on GitLab.com shared runners.
 
-Product agents request missing primitives with the prompt in `docs/CONSUMER_REQUESTS.md`. One consumer is enough. Do not add a new public component, class family, or renderer because a product UI looks like it might need one, and do not add a parallel control when an existing surface already covers the use case.
+Product agents request missing primitives by writing `docs/requests/<consumer>-<surface>.md` (template in `docs/CONSUMER_REQUESTS.md`). Do not paste the filled template into a Scalewing chat. One consumer is enough. Do not add a new public component, class family, or renderer because a product UI looks like it might need one, and do not add a parallel control when an existing surface already covers the use case. Ship a reusable name so later apps can import the same primitive.
 
 ## First publish
 

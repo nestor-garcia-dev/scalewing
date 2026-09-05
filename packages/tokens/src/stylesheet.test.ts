@@ -22,6 +22,7 @@ describe('createTheme', () => {
 
     expect(theme.colors.accent).toBe('#164F37');
     expect(theme.colors.background).toBe(lightTheme.colors.background);
+    expect(theme.glass.fill).toBe(lightTheme.glass.fill);
   });
 
   it('rejects unknown color keys', () => {
@@ -40,6 +41,32 @@ describe('createTheme', () => {
         colors: { text: 'blue' },
       }),
     ).toThrow(/Invalid color/);
+  });
+
+  it('applies light and dark brand overlays when the user switches scheme', () => {
+    const colors = {
+      light: { accent: '#0066CC', onAccent: '#FFFFFF' },
+      dark: { accent: '#5AC8FA', onAccent: '#101214' },
+    };
+
+    expect(createTheme({ colorScheme: 'light', colors }).colors.accent).toBe(
+      '#0066CC',
+    );
+    expect(createTheme({ colorScheme: 'dark', colors }).colors.accent).toBe(
+      '#5AC8FA',
+    );
+  });
+
+  it('rejects mixing a flat overlay with light/dark maps', () => {
+    expect(() =>
+      createTheme({
+        colorScheme: 'light',
+        colors: {
+          accent: '#0066CC',
+          light: { accent: '#164F37' },
+        } as never,
+      }),
+    ).toThrow(/not both/);
   });
 });
 
@@ -76,6 +103,19 @@ describe('contrast', () => {
       contrastRatio(darkTheme.colors.onDanger, darkTheme.colors.danger),
     ).toBeGreaterThanOrEqual(4.5);
   });
+
+  it('keeps indigo accent readable on the canvas and away from success', () => {
+    expect(lightTheme.colors.accent).toBe('#5B3DF5');
+    expect(darkTheme.colors.accent).toBe('#A78BFA');
+    expect(
+      contrastRatio(lightTheme.colors.accent, lightTheme.colors.background),
+    ).toBeGreaterThanOrEqual(4.5);
+    expect(
+      contrastRatio(darkTheme.colors.accent, darkTheme.colors.background),
+    ).toBeGreaterThanOrEqual(4.5);
+    expect(lightTheme.colors.accent).not.toBe(lightTheme.colors.success);
+    expect(darkTheme.colors.accent).not.toBe(darkTheme.colors.success);
+  });
 });
 
 describe('generated CSS', () => {
@@ -97,12 +137,24 @@ describe('generated CSS', () => {
   });
 
   it('emits the document canvas, glass cards, and pill buttons', () => {
-    expect(css).toContain('[data-theme] a');
-    expect(css).toContain('text-decoration: none');
-    expect(css).toContain('--sw-glass-fill:');
+    expect(css).toMatch(/\[data-theme\] \[data-theme\] \{\s*min-height: 0;/);
+    expect(css).toContain('--sw-glass-specular:');
+    expect(css).toContain('inset 0 1px 0 var(--sw-glass-specular)');
     expect(css).toContain('.sw-card-glass');
     expect(css).toContain('backdrop-filter:');
     expect(css).toContain('border-radius: var(--sw-radius-pill)');
+    expect(css).toContain('.sw-app-header');
+    expect(css).toContain('.sw-nav a');
+    expect(css).toContain(".sw-nav a[aria-current='page']");
+    expect(css).toContain('.sw-field-xs');
+    expect(css).toContain('[data-theme] select');
+    expect(css).toContain('appearance: none');
+    expect(css).toContain('box-sizing: content-box');
+    expect(css).toContain('[data-theme] select:focus-visible');
+    expect(css).toContain(
+      'var(--sw-control-xs-padding-inline) + var(--sw-space-5)',
+    );
+    expect(css).toContain('textarea):focus-visible');
     expect(catalog).toEqual(
       expect.arrayContaining(['sw-card-glass', 'sw-card-outlined']),
     );
@@ -119,6 +171,71 @@ describe('generated CSS', () => {
     expect(css).toContain('.sw-button-primary');
     expect(css).toContain('--sw-control-md-min-height: 44px');
     expect(css).toContain('.sw-button-md { min-height: 44px');
+    expect(css).toContain('--sw-control-xs-min-height: 28px');
+    expect(css).toContain('.sw-button-xs { min-height: 28px');
+    expect(catalog).toContain('sw-button-xs');
+  });
+
+  it('emits opt-in density type, tabular numerals, and dashboard classes', () => {
+    expect(css).toContain('.sw-text-data');
+    expect(css).toContain('font-variant-numeric: tabular-nums');
+    expect(css).toContain('.sw-tabular');
+    expect(catalog).toEqual(
+      expect.arrayContaining([
+        'sw-text-data',
+        'sw-tabular',
+        'sw-badge',
+        'sw-badge-accent',
+        'sw-badge-sm',
+        'sw-segmented',
+        'sw-table',
+        'sw-table-numeric',
+        'sw-table-clip',
+        'sw-table-sticky',
+        'sw-table-compact',
+        'sw-table-row-selected',
+        'sw-bar-chart',
+        'sw-bar-chart-fill',
+      ]),
+    );
+    expect(css).toContain('.sw-badge-sm');
+    expect(css).toContain('.sw-table-compact');
+    expect(css).toContain('.sw-bar-chart-fill');
+    expect(css).toContain('width: calc(var(--sw-bar-fill, 0) * 100%)');
+    expect(css).toContain('.sw-dialog');
+    expect(css).toContain('.sw-dialog::backdrop');
+    expect(css).toContain('margin: auto');
+    expect(css).toContain('--sw-dialog-max: 32rem');
+    expect(css).toContain('--sw-select-max: 16rem');
+    expect(css).toContain('.sw-select-trigger');
+    expect(css).toContain('.sw-select-list');
+    expect(catalog).toContain('sw-select');
+    expect(catalog).toContain('sw-select-list');
+    expect(catalog).toContain('sw-select-action');
+    expect(css).toContain('.sw-select-action');
+    expect(catalog).toContain('sw-dialog');
+    expect(css).toContain('.sw-accordion');
+    expect(css).toContain('.sw-accordion-summary');
+    expect(catalog).toContain('sw-accordion');
+    expect(catalog).toContain('sw-accordion-summary');
+    expect(css).toContain('.sw-split');
+    expect(css).toContain('.sw-split-handle');
+    expect(css).toContain('.sw-split-grip');
+    expect(css).toContain('--sw-split-min: 14rem');
+    expect(css).toContain('--sw-split-size: 22rem');
+    expect(css).toContain('--sw-split-max: 32rem');
+    expect(catalog).toContain('sw-split');
+    expect(catalog).toContain('sw-split-handle');
+    expect(css).toContain('.sw-toast');
+    expect(css).toContain('sw-toast-float');
+    expect(css).toContain('--sw-quiet-opacity:');
+    expect(css).toContain('--sw-motion-default:');
+    expect(css).toContain(".sw-button[aria-pressed='false']");
+    expect(catalog).toContain('sw-toast');
+    expect(catalog).toContain('sw-toast-travel');
+    expect(css).toContain('--sw-motion-travel:');
+    expect(css).toContain('--sw-motion-travel-easing:');
+    expect(css).toContain('scale: 1.2');
   });
 
   it('keeps light and dark semantic color variables in parity', () => {

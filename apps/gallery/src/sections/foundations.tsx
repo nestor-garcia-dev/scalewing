@@ -125,16 +125,23 @@ export function FoundationsSection() {
         <Text variant="title">Glass</Text>
         <Text variant="caption">
           light fill {lightGlass.fill}, blur {lightGlass.blur}, saturate{' '}
-          {lightGlass.saturate}
+          {lightGlass.saturate}, specular {lightGlass.specular}
         </Text>
         <Text variant="caption">
-          dark fill {darkGlass.fill}, border {darkGlass.border}
+          dark fill {darkGlass.fill}, border {darkGlass.border}, specular{' '}
+          {darkGlass.specular}
+        </Text>
+        <Text variant="caption" color="muted">
+          Glass is derived from the merged accent. Overlaying accent retints
+          frost.
         </Text>
         <Text variant="title">Motion</Text>
         <Text variant="caption">
           {lightTheme.motion.duration.fast} /{' '}
-          {lightTheme.motion.duration.default}{' '}
-          {lightTheme.motion.easing.standard}
+          {lightTheme.motion.duration.default} /{' '}
+          {lightTheme.motion.duration.travel}{' '}
+          {lightTheme.motion.easing.standard} /{' '}
+          {lightTheme.motion.easing.travel}
         </Text>
       </Stack>
     </Section>

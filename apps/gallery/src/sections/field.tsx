@@ -1,28 +1,36 @@
 import { Field, Stack, Text } from '@scalewing/react';
 
 import { Section } from '../layout/Section.js';
+import { sampleHabitats } from '../sample-copy.js';
 
 export function FieldSection() {
   return (
     <Section
       id="field"
-      purpose="Field wraps a native control in a label and token gap. It does not restyle the control; the document canvas does."
+      purpose="Field wraps a native control in a label and token gap. size xs compacts the control. labelVisuallyHidden keeps the accessible name without a stacked caption. The document canvas paints the control, including the native select chevron and accent focus. Use Select when the open list must match the canvas."
       title="Field"
-      usage={`<Field label="Scoring">
+      usage={`<Field label="Habitat">
   <select>
-    <option>PPR</option>
+    <option>Forest</option>
   </select>
 </Field>`}
     >
       <Stack gap={3}>
-        <Field label="League name">
-          <input defaultValue="My league" name="league-name" />
+        <Field label="Species name">
+          <input defaultValue="Red fox" name="species-name" />
         </Field>
-        <Field label="Scoring">
-          <select defaultValue="ppr" name="scoring">
-            <option value="ppr">PPR</option>
-            <option value="half">Half PPR</option>
-            <option value="standard">Standard</option>
+        <Field label="Habitat">
+          <select defaultValue="forest" name="habitat">
+            {sampleHabitats.map((habitat) => (
+              <option key={habitat.value} value={habitat.value}>
+                {habitat.label}
+              </option>
+            ))}
+          </select>
+        </Field>
+        <Field label="Compact region" labelVisuallyHidden size="xs">
+          <select defaultValue="amazon" name="compact-region">
+            <option value="amazon">Field Notes · Amazon</option>
           </select>
         </Field>
         <Field label="Disabled control">

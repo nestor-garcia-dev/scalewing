@@ -6,7 +6,7 @@ const label = typographyVariants.label;
 function variantRules(): string {
   return [
     `.sw-button-primary { background: var(--sw-color-accent); border-color: transparent; color: var(--sw-color-onAccent); }`,
-    `.sw-button-secondary { background: var(--sw-glass-fill); border-color: var(--sw-glass-border); color: var(--sw-color-text); backdrop-filter: blur(var(--sw-glass-blur)) saturate(var(--sw-glass-saturate)); -webkit-backdrop-filter: blur(var(--sw-glass-blur)) saturate(var(--sw-glass-saturate)); }`,
+    `.sw-button-secondary { background: var(--sw-color-surface); border-color: var(--sw-color-border); color: var(--sw-color-text); }`,
     `.sw-button-ghost { background: transparent; border-color: transparent; color: var(--sw-color-accent); }`,
     `.sw-button-danger { background: var(--sw-color-danger); border-color: transparent; color: var(--sw-color-onDanger); }`,
   ].join('\n');
@@ -48,6 +48,10 @@ export function cssButtonClasses(): string {
 .sw-button:disabled {
   cursor: not-allowed;
   opacity: var(--sw-disabled-opacity);
+}
+
+.sw-button[aria-pressed='false'] {
+  opacity: var(--sw-quiet-opacity);
 }
 
 ${variantRules()}

@@ -9,15 +9,32 @@ import {
 import { useState } from 'react';
 import { SafeAreaView } from 'react-native';
 
+const demoPalettes = ['indigo', 'cerulean', 'sunburst'] as const;
+
 export default function App() {
   const [scheme, setScheme] = useState<'light' | 'dark'>('light');
+  const [palette, setPalette] =
+    useState<(typeof demoPalettes)[number]>('indigo');
 
   return (
-    <ThemeProvider colorScheme={scheme}>
+    <ThemeProvider colorScheme={scheme} palette={palette}>
       <SafeAreaView style={{ flex: 1 }}>
         <Stack gap={4} padding={4}>
           <Inline justify="between" align="center">
             <Text variant="heading">Scalewing</Text>
+            <Button
+              onPress={() => {
+                const index = demoPalettes.indexOf(palette);
+                const next = demoPalettes[(index + 1) % demoPalettes.length];
+                if (next) {
+                  setPalette(next);
+                }
+              }}
+              size="sm"
+              variant="secondary"
+            >
+              {palette}
+            </Button>
             <Button
               onPress={() =>
                 setScheme((current) => (current === 'light' ? 'dark' : 'light'))

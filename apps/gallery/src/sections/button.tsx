@@ -75,6 +75,24 @@ export function ButtonSection() {
             reset md enabled
           </Button>
         </Inline>
+        <Inline gap={2} wrap>
+          <Button
+            aria-pressed={false}
+            onPress={() => setLastPress('ghost xs unselected')}
+            size="xs"
+            variant="ghost"
+          >
+            Quiet
+          </Button>
+          <Button
+            aria-pressed
+            onPress={() => setLastPress('secondary xs selected')}
+            size="xs"
+            variant="secondary"
+          >
+            Selected
+          </Button>
+        </Inline>
         <Text variant="caption">Last press: {lastPress}</Text>
       </Stack>
     </Section>

@@ -3,28 +3,31 @@ import { useColorScheme, View } from 'react-native';
 import {
   createTheme,
   type ColorScheme,
-  type ColorTokens,
+  type PaletteId,
   type Theme,
+  type ThemeColors,
 } from '@scalewing/tokens';
 
 const ThemeContext = createContext<Theme | null>(null);
 
 export type ThemeProviderProps = {
   colorScheme?: ColorScheme | 'system';
-  colors?: Partial<ColorTokens>;
+  palette?: PaletteId;
+  colors?: ThemeColors;
   children: ReactNode;
 };
 
 export function ThemeProvider({
   colorScheme = 'system',
+  palette,
   colors,
   children,
 }: ThemeProviderProps) {
   const deviceScheme = useColorScheme() === 'dark' ? 'dark' : 'light';
   const resolvedScheme = colorScheme === 'system' ? deviceScheme : colorScheme;
   const theme = useMemo(
-    () => createTheme({ colorScheme: resolvedScheme, colors }),
-    [colors, resolvedScheme],
+    () => createTheme({ colorScheme: resolvedScheme, palette, colors }),
+    [colors, palette, resolvedScheme],
   );
 
   return (

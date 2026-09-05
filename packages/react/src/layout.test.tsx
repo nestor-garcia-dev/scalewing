@@ -58,6 +58,44 @@ describe('layout components', () => {
     expect(container.firstElementChild?.getAttribute('data-theme')).toBe(
       'dark',
     );
+    expect(
+      container.firstElementChild?.getAttribute('data-palette'),
+    ).toBeNull();
+    expect(
+      (
+        container.firstElementChild as HTMLElement | null
+      )?.style.getPropertyValue('--sw-glass-fill'),
+    ).toBeTruthy();
+  });
+
+  it('applies a named palette to data-palette and accent variables', () => {
+    const { container } = render(
+      <ThemeProvider colorScheme="light" palette="cerulean">
+        <Text>Board</Text>
+      </ThemeProvider>,
+    );
+
+    const root = container.firstElementChild as HTMLElement | null;
+    expect(root?.getAttribute('data-palette')).toBe('cerulean');
+    expect(root?.style.getPropertyValue('--sw-color-accent')).toBe('#0066CC');
+  });
+
+  it('picks the dark brand overlay when colorScheme is dark', () => {
+    const { container } = render(
+      <ThemeProvider
+        colorScheme="dark"
+        colors={{
+          light: { accent: '#0066CC' },
+          dark: { accent: '#5AC8FA' },
+        }}
+      >
+        <Text>Night</Text>
+      </ThemeProvider>,
+    );
+
+    const root = container.firstElementChild as HTMLElement | null;
+    expect(root?.getAttribute('data-theme')).toBe('dark');
+    expect(root?.style.getPropertyValue('--sw-color-accent')).toBe('#5AC8FA');
   });
 
   it('renders a real anchor when as is a', () => {

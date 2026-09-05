@@ -24,6 +24,10 @@
     "./styles.css": {
       "types": "./styles.css.d.ts",
       "default": "./dist/styles.css"
+    },
+    "./palette/*.css": {
+      "types": "./styles.css.d.ts",
+      "default": "./dist/palette/*.css"
     }
   },
   "files": [
@@ -34,7 +38,7 @@
     "README.md"
   ],
   "scripts": {
-    "build": "rm -rf dist && tsc -p tsconfig.json && cp ../tokens/dist/styles.css dist/styles.css",
+    "build": "rm -rf dist && tsc -p tsconfig.json && cp ../tokens/dist/styles.css dist/styles.css && rm -rf dist/palette && mkdir -p dist/palette && cp ../tokens/dist/palette/*.css dist/palette/",
     "prepack": "pnpm build",
     "test": "vitest run",
     "typecheck": "tsc -p tsconfig.json --noEmit"
@@ -66,6 +70,10 @@
       "./styles.css": {
         "types": "./styles.css.d.ts",
         "default": "./dist/styles.css"
+      },
+      "./palette/*.css": {
+        "types": "./styles.css.d.ts",
+        "default": "./dist/palette/*.css"
       }
     }
   }

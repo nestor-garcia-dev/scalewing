@@ -15,6 +15,7 @@ const manifest = JSON.parse(
     exports: {
       '.': { types: string; import: string };
       './styles.css': string;
+      './palette/*.css': string;
     };
   };
 };
@@ -29,6 +30,9 @@ describe('publish manifest', () => {
     });
     expect(manifest.publishConfig.exports['./styles.css']).toBe(
       './dist/styles.css',
+    );
+    expect(manifest.publishConfig.exports['./palette/*.css']).toBe(
+      './dist/palette/*.css',
     );
   });
 });

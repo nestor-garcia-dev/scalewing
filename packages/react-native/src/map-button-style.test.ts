@@ -32,6 +32,17 @@ describe('mapButtonViewStyle', () => {
     expect(style.opacity).toBe(lightTheme.disabledOpacity);
     expect(style.backgroundColor).toBe('transparent');
   });
+
+  it('maps xs to the 28px compact control', () => {
+    const style = mapButtonViewStyle(lightTheme, {
+      disabled: false,
+      size: 'xs',
+      variant: 'secondary',
+    });
+
+    expect(style.minHeight).toBe(28);
+    expect(style.backgroundColor).toBe(lightTheme.colors.surface);
+  });
 });
 
 describe('mapButtonLabelStyle', () => {

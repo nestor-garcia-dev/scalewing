@@ -11,15 +11,17 @@ import {
   createTheme,
   semanticColorKeys,
   type ColorScheme,
-  type ColorTokens,
+  type PaletteId,
   type Theme,
+  type ThemeColors,
 } from '@scalewing/tokens';
 
 const ThemeContext = createContext<Theme | null>(null);
 
 export type ThemeProviderProps = {
   colorScheme?: ColorScheme | 'system';
-  colors?: Partial<ColorTokens>;
+  palette?: PaletteId;
+  colors?: ThemeColors;
   children: ReactNode;
 };
 
@@ -43,11 +45,18 @@ function themeCssVars(theme: Theme): CSSProperties {
     vars[`--sw-color-${key}`] = theme.colors[key];
   }
 
+  vars['--sw-glass-blur'] = `${theme.glass.blur}px`;
+  vars['--sw-glass-saturate'] = String(theme.glass.saturate);
+  vars['--sw-glass-fill'] = theme.glass.fill;
+  vars['--sw-glass-border'] = theme.glass.border;
+  vars['--sw-glass-specular'] = theme.glass.specular;
+
   return vars as CSSProperties;
 }
 
 export function ThemeProvider({
   colorScheme = 'system',
+  palette,
   colors,
   children,
 }: ThemeProviderProps) {
@@ -71,13 +80,17 @@ export function ThemeProvider({
 
   const resolvedScheme = colorScheme === 'system' ? systemScheme : colorScheme;
   const theme = useMemo(
-    () => createTheme({ colorScheme: resolvedScheme, colors }),
-    [colors, resolvedScheme],
+    () => createTheme({ colorScheme: resolvedScheme, palette, colors }),
+    [colors, palette, resolvedScheme],
   );
 
   return (
     <ThemeContext.Provider value={theme}>
-      <div data-theme={theme.colorScheme} style={themeCssVars(theme)}>
+      <div
+        data-palette={palette}
+        data-theme={theme.colorScheme}
+        style={themeCssVars(theme)}
+      >
         {children}
       </div>
     </ThemeContext.Provider>

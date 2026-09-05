@@ -10,7 +10,7 @@ function CardDemo({ variant }: { variant: CardVariant }) {
         <Text variant="title">{variant}</Text>
         <Text color="muted">
           {variant === 'glass'
-            ? 'Default frosted surface. Reduced transparency uses solid surface.'
+            ? 'Default light surface is opaque white with a hairline. Dark glass stays translucent.'
             : variant === 'outlined'
               ? 'Solid surface with a hairline border.'
               : 'Solid surface with elevation.sm.'}
@@ -26,7 +26,7 @@ export function CardSection() {
       id="card"
       purpose="Card defaults to glass. outlined and elevated are the exceptions. Toggle the gallery theme to inspect both palettes."
       title="Card"
-      usage={`<Card padding={4}>Sunday kickoff</Card>
+      usage={`<Card padding={4}>Red fox den</Card>
 <Card variant="outlined">…</Card>
 <Card variant="elevated">…</Card>`}
     >

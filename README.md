@@ -14,8 +14,12 @@ Design tokens and layout primitives for web (DOM) and React Native.
 
 ```ts
 import '@scalewing/react/styles.css';
-import { Box, Button, Card, Field, Stack, Text } from '@scalewing/react';
+import { Box, Button, Card, Field, Stack, Text, ThemeProvider } from '@scalewing/react';
+
+<ThemeProvider palette="cerulean">{children}</ThemeProvider>
 ```
+
+Optional CSS-only path: `import '@scalewing/react/palette/cerulean.css'` after the stylesheet, or set `data-palette="cerulean"` on the `data-theme` node.
 
 ```html
 <section class="sw-padding-4 sw-padding-top-2"></section>
@@ -47,4 +51,4 @@ pnpm dev:web
 
 `pnpm dev:web` rebuilds tokens and `@scalewing/react` (so `styles.css` is current) then starts the gallery. Use `pnpm build:gallery` and `pnpm preview:gallery` to inspect the production bundle before tagging a release.
 
-See `docs/CONTRIBUTING.md` for the first laptop publish and later GitLab OIDC releases. Product apps follow `docs/CONSUMER_REQUESTS.md`.
+See `docs/CONTRIBUTING.md` for the first laptop publish and later GitLab OIDC releases. Product apps follow `docs/CONSUMER_REQUESTS.md` and file requests in `docs/requests/`.

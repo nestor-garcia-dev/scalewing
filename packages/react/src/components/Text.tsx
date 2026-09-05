@@ -2,23 +2,29 @@ import {
   type SemanticColorKey,
   type TypographyVariant,
 } from '@scalewing/tokens';
-import { forwardRef, type HTMLAttributes } from 'react';
+import {
+  forwardRef,
+  type HTMLAttributes,
+  type LabelHTMLAttributes,
+} from 'react';
 
 import { cx } from '../class-names.js';
 
 export type TextElement =
   'p' | 'span' | 'h1' | 'h2' | 'h3' | 'h4' | 'label' | 'strong';
 
-export type TextProps = HTMLAttributes<HTMLElement> & {
-  as?: TextElement;
-  color?: SemanticColorKey;
-  truncate?: boolean;
-  variant?: TypographyVariant;
-};
+export type TextProps = HTMLAttributes<HTMLElement> &
+  Pick<LabelHTMLAttributes<HTMLLabelElement>, 'htmlFor'> & {
+    as?: TextElement;
+    color?: SemanticColorKey;
+    truncate?: boolean;
+    variant?: TypographyVariant;
+  };
 
 const defaultElement: Record<TypographyVariant, TextElement> = {
   body: 'p',
   caption: 'span',
+  data: 'span',
   display: 'h1',
   heading: 'h2',
   label: 'span',

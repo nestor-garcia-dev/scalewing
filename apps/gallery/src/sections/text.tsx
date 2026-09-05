@@ -31,7 +31,7 @@ export function TextSection() {
       id="text"
       purpose="Text maps variant to generated sw-text-* classes and semantic color to CSS variables. Truncation is opt-in."
       title="Text"
-      usage={`<Text variant="title" color="accent">Sunday kickoff</Text>`}
+      usage={`<Text variant="title" color="accent">Snow leopard</Text>`}
     >
       <Stack gap={3}>
         {typeNames.map((variant) => (

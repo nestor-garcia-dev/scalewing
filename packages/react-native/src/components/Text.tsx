@@ -5,6 +5,7 @@ import {
 import {
   Text as NativeText,
   type TextProps as NativeTextProps,
+  type TextStyle,
 } from 'react-native';
 
 import { useTheme } from '../theme/ThemeProvider.js';
@@ -24,6 +25,8 @@ export function Text({
 }: TextProps) {
   const theme = useTheme();
   const type = theme.typography[variant];
+  const fontVariant: TextStyle['fontVariant'] =
+    'tabularNums' in type && type.tabularNums ? ['tabular-nums'] : undefined;
 
   return (
     <NativeText
@@ -32,6 +35,7 @@ export function Text({
         {
           color: theme.colors[color],
           fontSize: type.fontSize,
+          fontVariant,
           fontWeight: String(type.fontWeight) as
             '400' | '500' | '600' | '700' | '800',
           letterSpacing: type.letterSpacing,

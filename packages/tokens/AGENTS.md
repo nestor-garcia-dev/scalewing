@@ -6,7 +6,7 @@ Follow the root `AGENTS.md`. On conflict, the root wins.
 
 1. This package is pure and deterministic. It may write `styles.css` only from `scripts/write-css.js`. Do not compile that entry into the published `dist` catalog.
 2. Do not import React, React Native, Expo, `react-dom`, CSS-in-JS libraries, or example apps.
-3. Semantic colors, spacing steps, typography, radius, elevation, motion, control sizes, and glass live here.
+3. Semantic colors, named palettes, spacing steps, typography, radius, elevation, motion, control sizes, and glass live here.
 4. Generate CSS custom properties and `sw-*` classes from those tokens. Do not keep a second hand-written catalog.
 5. `sw-padding-top-4` means spacing step `4`, not `4px`.
 6. Fail closed on invalid theme overlays: unknown keys or empty color values.

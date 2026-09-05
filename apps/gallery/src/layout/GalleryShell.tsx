@@ -1,17 +1,31 @@
-import { Box, Button, Inline, Stack, Text } from '@scalewing/react';
+import {
+  Box,
+  Field,
+  Inline,
+  SegmentedControl,
+  Stack,
+  Text,
+} from '@scalewing/react';
+import {
+  familyLabel,
+  isPaletteId,
+  paletteFamilies,
+  palettes,
+} from '@scalewing/tokens';
 import { type ReactNode } from 'react';
 
-import { type ThemePreference } from '../theme-preference.js';
+import { useGalleryPalette } from '../palette-context.js';
+import {
+  isThemePreference,
+  type ThemePreference,
+} from '../theme-preference.js';
 import { GalleryNav } from './GalleryNav.js';
 
-const themeChoices: ReadonlyArray<{
-  label: string;
-  value: ThemePreference;
-}> = [
-  { label: 'Light theme', value: 'light' },
-  { label: 'Dark theme', value: 'dark' },
-  { label: 'System theme', value: 'system' },
-];
+const themeItems = [
+  { id: 'light', label: 'Light' },
+  { id: 'dark', label: 'Dark' },
+  { id: 'system', label: 'System' },
+] as const;
 
 export function GalleryShell({
   children,
@@ -22,8 +36,13 @@ export function GalleryShell({
   onPreferenceChange: (preference: ThemePreference) => void;
   preference: ThemePreference;
 }) {
+  const { palette, setPalette } = useGalleryPalette();
+
   return (
     <>
+      <Box as="a" className="gallery-skip" href="#gallery-main">
+        Skip to catalog
+      </Box>
       <Box as="header" className="gallery-header" paddingY={3}>
         <Box className="gallery-frame" paddingX={4}>
           <Inline align="center" gap={3} justify="between" wrap>
@@ -33,20 +52,41 @@ export function GalleryShell({
                 Workspace preview
               </Text>
             </Inline>
-            <Inline gap={2} wrap>
-              {themeChoices.map((choice) => (
-                <Button
-                  aria-pressed={preference === choice.value}
-                  key={choice.value}
-                  onPress={() => onPreferenceChange(choice.value)}
-                  size="sm"
-                  variant={
-                    preference === choice.value ? 'primary' : 'secondary'
+            <Inline align="end" gap={3} wrap>
+              <SegmentedControl
+                aria-label="Color scheme"
+                items={themeItems}
+                onChange={(id) => {
+                  if (isThemePreference(id)) {
+                    onPreferenceChange(id);
                   }
+                }}
+                value={preference}
+              />
+              <Field label="Palette" size="xs">
+                <select
+                  name="gallery-palette"
+                  onChange={(event) => {
+                    const next = event.currentTarget.value;
+                    if (isPaletteId(next)) {
+                      setPalette(next);
+                    }
+                  }}
+                  value={palette}
                 >
-                  {choice.label}
-                </Button>
-              ))}
+                  {paletteFamilies.map((family) => (
+                    <optgroup key={family} label={familyLabel[family]}>
+                      {palettes
+                        .filter((item) => item.family === family)
+                        .map((item) => (
+                          <option key={item.id} value={item.id}>
+                            {item.name}
+                          </option>
+                        ))}
+                    </optgroup>
+                  ))}
+                </select>
+              </Field>
             </Inline>
           </Inline>
         </Box>
@@ -54,30 +94,11 @@ export function GalleryShell({
       <Box className="gallery-frame" padding={4} paddingTop={5}>
         <div className="gallery-body">
           <GalleryNav />
-          <Box as="main">
+          <Box as="main" id="gallery-main">
             <Stack gap={8}>{children}</Stack>
           </Box>
         </div>
       </Box>
     </>
-  );
-}
-
-export function GalleryHero() {
-  return (
-    <Stack gap={3}>
-      <Text variant="display">
-        Quiet glass for products that share a system.
-      </Text>
-      <Text color="muted">
-        Live catalog of public `@scalewing/react` and `@scalewing/tokens`
-        exports. This preview uses workspace packages, not the latest npm
-        release.
-      </Text>
-      <pre className="gallery-code">
-        <code>{`pnpm add @scalewing/react
-import '@scalewing/react/styles.css';`}</code>
-      </pre>
-    </Stack>
   );
 }
