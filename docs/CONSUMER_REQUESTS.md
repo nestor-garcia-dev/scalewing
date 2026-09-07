@@ -112,7 +112,7 @@ Proposed API (optional, reusable names only):
 ## Scalewing
 
 This product uses Scalewing for layout primitives and generated CSS. Read
-`https://gitlab.com/dna-consulting/scalewing/-/blob/main/docs/CONSUMER_REQUESTS.md`.
+`https://github.com/nestor-garcia-dev/scalewing/blob/main/docs/CONSUMER_REQUESTS.md`.
 
 - Web: `pnpm add @scalewing/react@0.3.0` and `import '@scalewing/react/styles.css'` once.
 - Native: `pnpm add @scalewing/react-native@0.3.0`. No CSS class API.

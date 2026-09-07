@@ -12,38 +12,36 @@ Then read:
 
 Use pnpm. Run focused tests while iterating and `pnpm check` before a cross-package change. The web catalog is `apps/gallery`. `pnpm dev:web` builds tokens and `@scalewing/react` first so `styles.css` is current, then starts the gallery.
 
-Public API changes need a changeset. Do not store an npm write token in GitLab. Later releases publish with OIDC trusted publishing on GitLab.com shared runners.
+Use Node 22.23.2 (`nvm use`) and pnpm 11.19.0. Install with `pnpm install --frozen-lockfile`. Public API changes need a changeset. Never store an npm write token in either CI system. GitHub Actions runs checks on pull requests, main, and version tags; publication is an explicit dispatch.
 
 Product agents request missing primitives by writing `docs/requests/<consumer>-<surface>.md` (template in `docs/CONSUMER_REQUESTS.md`). Do not paste the filled template into a Scalewing chat. One consumer is enough. Do not add a new public component, class family, or renderer because a product UI looks like it might need one, and do not add a parallel control when an existing surface already covers the use case. Ship a reusable name so later apps can import the same primitive.
 
-## First publish
+## npm trusted publisher setup
 
-npm cannot attach a trusted publisher until the package exists. Publish `0.1.0` once from a laptop, then let CI own every later version.
+For each existing package (`@scalewing/tokens`, `@scalewing/react`, `@scalewing/react-native`), configure a GitHub Actions trusted publisher in npm package settings:
 
-```sh
-pnpm check
-npm login
-pnpm publish -r --access public --no-git-checks
-```
+| Field                | Value               |
+| -------------------- | ------------------- |
+| Organization or user | `nestor-garcia-dev` |
+| Repository           | `scalewing`         |
+| Workflow filename    | `publish.yml`       |
+| Environment          | `npm`               |
 
-That publishes `@scalewing/tokens`, `@scalewing/react`, and `@scalewing/react-native`. The gallery and native example stay private. Confirm with `npm view @scalewing/react version`.
+Allow direct `npm publish`. Create the GitHub environment `npm` and restrict deployment to the `main` branch: the workflow is dispatched from main and checks out the requested release tag. Only after this setup is verified, set repository Actions variable `NPM_PUBLISH_ENABLED` to `true`.
 
-Then on each package at npmjs.com: **Settings → Trusted Publisher → GitLab CI/CD**:
+The legacy `.gitlab-ci.yml` release job is retained during migration. Keep the GitLab repository recoverable; retire its publisher and archive it after GitHub release setup is verified. Never release the same version from both systems.
 
-| Field             | Value            |
-| ----------------- | ---------------- |
-| Namespace         | `dna-consulting` |
-| Project name      | `scalewing`      |
-| Top-level CI file | `.gitlab-ci.yml` |
+Existing package names and versions are preserved during repository migration. New versions are a separate release task. A new package's first publication may require a one-time local publish before attaching trusted publishing; do not republish existing versions.
 
-Allow **npm publish**, not only staged publish. After a later OIDC release succeeds, set **Require 2FA and disallow tokens**.
+## Explicit release
 
-## Later releases
+1. Apply the intended changesets and commit matching versions for all three public packages on `main`.
+2. Create an immutable `v<version>` tag on that commit and push it to GitHub. Use a commit containing the GitHub workflow and `.nvmrc`; historical pre-migration tags do not include that setup.
+3. Run **Release packages** from `main`, enter the tag, and leave **publish** unchecked for validation only.
+4. For an intended npm release, dispatch again with **publish** checked after the trusted publisher is configured.
 
-Workspace `exports` point at TypeScript source so example apps typecheck against the packages. `publishConfig.exports` remaps those entries to `dist` for npm. Packed tarballs must not include `src`.
+Validation checks tag format, membership in main's history, all three package versions, and `pnpm check`. Publication uses the exact commit that passed validation, requires the enablement variable and the `npm` environment, and is dispatched from main only. A single concurrency group prevents overlapping GitHub releases.
 
-1. Land the version you want on `main`. Package versions must match.
-2. Tag the commit as `v<version>`, for example `v0.1.1`, and push the tag.
-3. Run the manual `publish` job on that tag pipeline. It must run on GitLab.com shared runners, not a self-hosted runner.
+Packages are packed using pnpm so `publishConfig.exports` maps source entries to distribution files. Only the three public package tarballs are published using npm OIDC and provenance. Gallery and native-example applications are never published. Inspect tarballs before release: build output, declarations, CSS, license, README, changelog, and metadata only; no source or credentials.
 
-The tag pipeline runs `check`, then waits for the manual `publish` job. `publish` refuses to run when `NPM_ID_TOKEN` is empty or when the tag does not match the three package versions. Do not tag `v0.1.0` after the laptop publish; that version is already on npm.
+If publication partially succeeds, inspect npm versions before retrying. Do not overwrite a released version or force-move its tag.

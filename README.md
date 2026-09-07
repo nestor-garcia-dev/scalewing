@@ -2,6 +2,18 @@
 
 Design tokens and layout primitives for web (DOM) and React Native.
 
+Built by [Nestor Garcia](https://github.com/nestor-garcia-dev/portfolio) to share a consistent visual foundation across independent applications. Scalewing is actively developed and MIT licensed.
+
+## Why Scalewing
+
+Shared colors and spacing should not require every application to maintain its own stylesheet or force web and native components into the same implementation. Scalewing keeps theme and token logic independent of rendering, generates web CSS from that source, and provides separate DOM and React Native components.
+
+- Pure token calculations can be tested without a browser or native runtime.
+- Applications consume package exports and own their product-specific layouts and copy.
+- The gallery demonstrates existing components, palettes, and meaningful interaction states.
+
+For an engineering walkthrough, start with [architecture](docs/ARCHITECTURE.md), then explore `packages/tokens`, the renderer packages, and `apps/gallery`.
+
 ## Packages
 
 | Package                   | Use                             |
@@ -43,12 +55,18 @@ Native has no CSS classes. Use the same spacing steps as props.
 
 ## Development
 
+Use Node 22.23.2 and pnpm 11.19.0 (the pinned versions used by GitHub checks).
+
 ```sh
-pnpm install
+corepack enable
+corepack prepare pnpm@11.19.0 --activate
+pnpm install --frozen-lockfile
 pnpm check
 pnpm dev:web
 ```
 
+Open the local URL printed by Vite to explore the gallery. No hosted account or backend is required. `pnpm check` runs formatting, lint, tests, builds, and type checking, including release-tag validation tests.
+
 `pnpm dev:web` rebuilds tokens and `@scalewing/react` (so `styles.css` is current) then starts the gallery. Use `pnpm build:gallery` and `pnpm preview:gallery` to inspect the production bundle before tagging a release.
 
-See `docs/CONTRIBUTING.md` for the first laptop publish and later GitLab OIDC releases. Product apps follow `docs/CONSUMER_REQUESTS.md` and file requests in `docs/requests/`.
+See [Contributing](docs/CONTRIBUTING.md) for development and explicit npm releases through GitHub Actions. Product apps follow [Consumer requests](docs/CONSUMER_REQUESTS.md) and file requests in `docs/requests/`.

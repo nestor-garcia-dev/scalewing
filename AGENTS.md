@@ -170,7 +170,7 @@ Check:
 - Use `pnpm` and workspace packages.
 - Keep packages separately publishable.
 - React and React Native are peer dependencies of the renderer packages.
-- Do not auto-publish every merge. Releases use Changesets and an explicit CI job.
+- Do not auto-publish every merge. Releases use Changesets and an explicit GitHub Actions dispatch. Keep the legacy GitLab job available until npm trusted publishing has migrated and been verified; see `docs/CONTRIBUTING.md`.
 - Reserve and use the `@scalewing` npm scope. If the scope is unavailable, stop and choose a new name rather than silently renaming packages.
 
 ## Quality gates

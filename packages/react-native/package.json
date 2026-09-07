@@ -6,12 +6,12 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://gitlab.com/dna-consulting/scalewing.git",
+    "url": "git+https://github.com/nestor-garcia-dev/scalewing.git",
     "directory": "packages/react-native"
   },
-  "homepage": "https://gitlab.com/dna-consulting/scalewing#readme",
+  "homepage": "https://github.com/nestor-garcia-dev/scalewing#readme",
   "bugs": {
-    "url": "https://gitlab.com/dna-consulting/scalewing/-/issues"
+    "url": "https://github.com/nestor-garcia-dev/scalewing/issues"
   },
   "sideEffects": false,
   "exports": {
