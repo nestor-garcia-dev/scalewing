@@ -7,10 +7,10 @@ metadata, and lockstep public versions.
 
 ## Next action
 
-Tag `v0.4.0` and run GitHub **Release packages** from `main`. Dry-run first,
-then publish after the npm trusted publisher, `npm` environment, and
-`NPM_PUBLISH_ENABLED` are set. Pin consumers to `@scalewing/react@0.4.0` /
-`@scalewing/react-native@0.4.0` and drop local `link:` specifiers.
+`v0.4.0` is on npm. Pin consumers to `@scalewing/react@0.4.0` /
+`@scalewing/react-native@0.4.0` and drop local `link:` specifiers. New
+primitives still go through `docs/requests/` and a local `link:` until the
+next release.
 
 ## Later
 
