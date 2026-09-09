@@ -1,16 +1,22 @@
 # @scalewing/react-native
 
-## Unreleased
+## 0.4.0
 
 ### Minor Changes
 
-- Add `TabBar` with tab semantics, selected accent labels, icon slots, and
-  optional `TabBarTrailing` for a round trailing control. `bottomInset` is the
-  device safe-area padding in addition to token space.
-- Add native `Table` (`TableHeader`, `TableBody`, `TableRow`, `TableCell`) with
-  compact density and numeric/end alignment for scores and standings.
-- Add native `SegmentedControl` with radiogroup semantics, a glass pill
-  track, and a surface-filled selected item.
+- Keep public package versions matched for the GitHub `v0.4.0` release tag.
+  Native TabBar, Table, and SegmentedControl ship in this version.
+- feef1f8: Add native SegmentedControl with radiogroup semantics, a glass pill track, and a surface-filled selected item. Labels stay in the consumer.
+- feef1f8: Add native TabBar with selected tab semantics, icon slots, and an optional trailing control for round search-style actions.
+- feef1f8: Add native Table with compact density, numeric cells, and the same row/cell language as the web table.
+
+### Patch Changes
+
+- 01b138f: Point package metadata to the GitHub source repository and document explicit GitHub Actions releases. Package names and runtime APIs are unchanged.
+- feef1f8: Allow optional `onPress` on native TableRow so compact score rows can open a detail screen without a product-only MatchRow.
+- Updated dependencies [01b138f]
+- Updated dependencies
+  - @scalewing/tokens@0.4.0
 
 ## 0.3.0
 

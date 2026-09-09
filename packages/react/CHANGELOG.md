@@ -1,5 +1,19 @@
 # @scalewing/react
 
+## 0.4.0
+
+### Minor Changes
+
+- Keep public package versions matched for the GitHub `v0.4.0` release tag.
+  Native TabBar, Table, and SegmentedControl ship in this version.
+
+### Patch Changes
+
+- 01b138f: Point package metadata to the GitHub source repository and document explicit GitHub Actions releases. Package names and runtime APIs are unchanged.
+- Updated dependencies [01b138f]
+- Updated dependencies
+  - @scalewing/tokens@0.4.0
+
 ## 0.3.0
 
 ### Minor Changes

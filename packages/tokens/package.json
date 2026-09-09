@@ -1,6 +1,6 @@
 {
   "name": "@scalewing/tokens",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Scalewing design tokens, themes, and generated CSS.",
   "type": "module",
   "license": "MIT",

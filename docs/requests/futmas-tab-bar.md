@@ -14,10 +14,14 @@ Existing surface this might already be: web Nav (DOM only). Button.
 Workaround I almost used: four product Pressables with hex, a second nav kit,
 or Expo default tabs with a custom tint.
 Proposed API (reusable names only):
+
+```tsx
 <TabBar
   items={[{ key, label, icon, selected, onPress }]}
   trailing={node}
   bottomInset={number}
 />
+```
+
 Icons are slots. Product copy and pictograms stay in the consumer. Do not
 name the primitive MatchesBar or FotMobNav.
