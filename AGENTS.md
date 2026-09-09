@@ -21,7 +21,7 @@
 15. Use pnpm only. Do not bypass frozen lockfiles in CI.
 16. If a task appears to require violating a hard rule, stop and ask rather than working around it.
 17. Do not mark work done because files exist. Apply `docs/DEFINITION_OF_DONE.md`.
-18. A new public component, utility family, or renderer is its own planned change. Do not dump a catalog in one implementation. Do not add a new public surface without a filled file in `docs/requests/`. One consumer is enough. Prefer reusing an existing surface over adding a parallel one. Public names stay generic; product copy stays in the consumer.
+18. A new public component, utility family, or renderer is its own planned change. Do not dump a catalog in one implementation. Do not add a new public surface without a filled file in `docs/requests/`. One consumer is enough. Prefer reusing an existing surface over adding a parallel one. Public names stay generic; product copy stays in the consumer. When the same agent can write this checkout and a consumer (for example both under Dragon Tails), write the request file, then implement here following this file and `docs/DELIVERY_WORKFLOW.md`. Do not wait for a second Scalewing chat or an npm publish. Consumers verify with a local `link:` (never committed) before the pin bumps.
 
 ## Product
 
@@ -31,7 +31,7 @@ This repository is **Scalewing**, a design system for multiple products. It publ
 - `@scalewing/react` — DOM components and the consumer stylesheet
 - `@scalewing/react-native` — Expo / React Native components
 
-Consuming apps own product copy, routing, domain components, and brand overlays. Scalewing owns primitives and generated layout CSS.
+Consuming apps own product copy, routing, domain components, brand overlays, and pictograms (Lucide for generic UI glyphs; custom SVG for brand marks). Scalewing owns primitives, generated layout CSS, and private control chrome. See `docs/adr/0008-icon-slots-and-lucide.md`.
 
 Read `docs/ARCHITECTURE.md`, `docs/DELIVERY_WORKFLOW.md`, `docs/CONSUMER_REQUESTS.md`, and `docs/DEFINITION_OF_DONE.md` before changing public API, CSS ownership, or package boundaries.
 
@@ -46,6 +46,7 @@ Quiet and glass-minimal, in the same family as Apple.com: system sans, generous 
 - Card defaults to `glass`. `outlined` and `elevated` are the exceptions.
 - Native approximates glass with translucent fills. Do not add BlurView to get a literal Apple material.
 - Respect `prefers-reduced-transparency` on web (already in the generated CSS).
+- Generic UI glyphs are Lucide in the consumer, sized and colored from tokens. Do not publish an icon catalog.
 
 ## Coding Agent Guidelines
 
@@ -103,7 +104,7 @@ Responsible for DOM `ThemeProvider` (including `palette`), Box, Stack, Inline, S
 
 #### packages/react-native
 
-Responsible for native `ThemeProvider` (including `palette`) and the matching layout primitives plus Button (`Pressable`). Spacing uses token steps as props, not CSS class names. Field, Select, Dialog, Accordion, Split, and Toast are web-only.
+Responsible for native `ThemeProvider` (including `palette`) and the matching layout primitives plus Button (`Pressable`), TabBar, and Table. Spacing uses token steps as props, not CSS class names. Field, Select, Dialog, Accordion, Split, and Toast are web-only.
 
 #### apps/gallery and apps/native-example
 

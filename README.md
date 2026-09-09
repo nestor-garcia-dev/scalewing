@@ -69,4 +69,4 @@ Open the local URL printed by Vite to explore the gallery. No hosted account or 
 
 `pnpm dev:web` rebuilds tokens and `@scalewing/react` (so `styles.css` is current) then starts the gallery. Use `pnpm build:gallery` and `pnpm preview:gallery` to inspect the production bundle before tagging a release.
 
-See [Contributing](docs/CONTRIBUTING.md) for development and explicit npm releases through GitHub Actions. Product apps follow [Consumer requests](docs/CONSUMER_REQUESTS.md) and file requests in `docs/requests/`.
+See [Contributing](docs/CONTRIBUTING.md) for development and explicit npm releases through GitHub Actions. Product apps follow [Consumer requests](docs/CONSUMER_REQUESTS.md): write `docs/requests/`, implement in this checkout, and verify with a local link before publishing.

@@ -17,7 +17,7 @@ Repository documents are durable memory. Chat is not.
 When asked “What’s next?”:
 
 1. Read `docs/ROADMAP.md`, `docs/CONSUMER_REQUESTS.md`, `docs/requests/`, and this workflow.
-2. Prefer a filled file in `docs/requests/` over speculation. Do not scrape product UIs to guess a catalog. Do not wait for a chat paste.
+2. Prefer a filled file in `docs/requests/` over speculation. Do not scrape product UIs to guess a catalog. If the same agent can write this repository, write that file and implement the story here; do not wait for a chat paste or a separate Scalewing session.
 3. Identify the highest-priority unfinished item whose dependencies are met.
 4. Confirm it with the user.
 5. Plan one lane: `tokens`, `react`, or `react-native`.

@@ -3,7 +3,7 @@
 React Native / Expo primitives that consume the same Scalewing tokens as the DOM package.
 
 ```ts
-import { Button, Card, Stack, Text, ThemeProvider } from '@scalewing/react-native';
+import { Button, Card, SegmentedControl, Stack, TabBar, Text, ThemeProvider } from '@scalewing/react-native';
 
 <ThemeProvider colorScheme="system" palette="cerulean">
   <Card padding={4}>

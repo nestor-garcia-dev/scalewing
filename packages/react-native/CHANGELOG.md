@@ -1,5 +1,17 @@
 # @scalewing/react-native
 
+## Unreleased
+
+### Minor Changes
+
+- Add `TabBar` with tab semantics, selected accent labels, icon slots, and
+  optional `TabBarTrailing` for a round trailing control. `bottomInset` is the
+  device safe-area padding in addition to token space.
+- Add native `Table` (`TableHeader`, `TableBody`, `TableRow`, `TableCell`) with
+  compact density and numeric/end alignment for scores and standings.
+- Add native `SegmentedControl` with radiogroup semantics, a glass pill
+  track, and a surface-filled selected item.
+
 ## 0.3.0
 
 ### Minor Changes

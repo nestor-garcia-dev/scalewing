@@ -14,7 +14,7 @@ Use pnpm. Run focused tests while iterating and `pnpm check` before a cross-pack
 
 Use Node 22.23.2 (`nvm use`) and pnpm 11.19.0. Install with `pnpm install --frozen-lockfile`. Public API changes need a changeset. Never store an npm write token in either CI system. GitHub Actions runs checks on pull requests, main, and version tags; publication is an explicit dispatch.
 
-Product agents request missing primitives by writing `docs/requests/<consumer>-<surface>.md` (template in `docs/CONSUMER_REQUESTS.md`). Do not paste the filled template into a Scalewing chat. One consumer is enough. Do not add a new public component, class family, or renderer because a product UI looks like it might need one, and do not add a parallel control when an existing surface already covers the use case. Ship a reusable name so later apps can import the same primitive.
+When a product needs a missing primitive, write `docs/requests/<consumer>-<surface>.md` (template in `docs/CONSUMER_REQUESTS.md`) and implement it in this repository, one lane at a time. Do not paste the filled template into a separate Scalewing chat. Consumers verify with a local `link:` (see `docs/CONSUMER_REQUESTS.md`) instead of waiting on npm. One consumer is enough. Do not add a new public component, class family, or renderer because a product UI looks like it might need one, and do not add a parallel control when an existing surface already covers the use case. Ship a reusable name so later apps can import the same primitive.
 
 ## npm trusted publisher setup
 

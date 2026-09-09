@@ -14,7 +14,7 @@ apps/native-example ──> react-native
 
 - **`@scalewing/tokens`**: theme objects, named palettes, scales, contrast checks, CSS custom properties, and generated `sw-*` classes.
 - **`@scalewing/react`**: DOM components plus `@scalewing/react/styles.css` and optional `@scalewing/react/palette/<id>.css`. Button is a real `<button>`. `Box as="a"` is a layout link. Field wraps a native control with a label and token gap. Select is a labeled listbox menu. Badge, SegmentedControl, Table, BarChart, AppHeader, Nav, and Toast are web dashboard primitives. Split, Accordion, Dialog, Select, and Toast are web-only.
-- **`@scalewing/react-native`**: React Native components and a theme provider. No CSS class API. Button is a `Pressable`. Field is web-only.
+- **`@scalewing/react-native`**: React Native components and a theme provider. No CSS class API. Button is a `Pressable`. TabBar is a bottom tab list. Table is a compact row/cell layout. Field is web-only.
 
 ## CSS ownership
 
@@ -33,6 +33,10 @@ React Native has no CSS classes. The same step is `paddingTop={4}`.
 ## Theming
 
 Light and dark palettes are first-class themes. Web applies them with `data-theme`, optional `data-palette`, CSS variables, and a generated document canvas (background, type, links, native text controls). Native applies them through React context and a full-screen canvas `View`. Products may pick a named palette (`ThemeProvider palette` or `import '@scalewing/react/palette/<id>.css'`), overlay brand colors through `createTheme` (`colors` may be flat or `{ light, dark }`), and let users choose light, dark, or system via `colorScheme`. They do not fork the class sheet. Card defaults to `glass` (opaque white on light).
+
+## Icons
+
+Scalewing does not ship glyphs. Components that need a consumer pictogram take a slot (`TabBar` `icon`). Generic UI icons in products use Lucide; control chrome stays private to the component. See [ADR 0008](adr/0008-icon-slots-and-lucide.md).
 
 ## Renderers
 

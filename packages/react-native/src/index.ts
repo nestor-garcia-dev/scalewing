@@ -9,6 +9,31 @@ export { Card, type CardProps, type CardVariant } from './components/Card.js';
 export { Inline, type InlineProps } from './components/Inline.js';
 export { Stack, type StackProps } from './components/Stack.js';
 export { type Align, type Justify } from './alignment.js';
+export {
+  SegmentedControl,
+  type SegmentedControlProps,
+  type SegmentedItem,
+} from './components/SegmentedControl.js';
+export {
+  TabBar,
+  TabBarTrailing,
+  type TabBarItem,
+  type TabBarProps,
+  type TabBarTrailingProps,
+} from './components/TabBar.js';
+export {
+  Table,
+  TableBody,
+  TableCell,
+  TableHeader,
+  TableRow,
+  type TableBodyProps,
+  type TableCellProps,
+  type TableDensity,
+  type TableHeaderProps,
+  type TableProps,
+  type TableRowProps,
+} from './components/Table.js';
 export { Text, type TextProps } from './components/Text.js';
 export {
   ThemeProvider,
