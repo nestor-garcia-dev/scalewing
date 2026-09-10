@@ -104,7 +104,10 @@ Responsible for DOM `ThemeProvider` (including `palette`), Box, Stack, Inline, S
 
 #### packages/react-native
 
-Responsible for native `ThemeProvider` (including `palette`) and the matching layout primitives plus Button (`Pressable`), TabBar, and Table. Spacing uses token steps as props, not CSS class names. Field, Select, Dialog, Accordion, Split, and Toast are web-only.
+Responsible for native `ThemeProvider` (including `palette`) and the matching
+layout primitives plus Button (`Pressable`), Field (`TextInput`), TabBar, and
+Table. Spacing uses token steps as props, not CSS class names. Select, Dialog,
+Accordion, Split, and Toast are web-only.
 
 #### apps/gallery and apps/native-example
 

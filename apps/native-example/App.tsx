@@ -1,6 +1,7 @@
 import {
   Button,
   Card,
+  Field,
   Inline,
   Stack,
   TabBar,
@@ -58,6 +59,7 @@ export default function App() {
   const [section, setSection] = useState('table');
   const [searchCount, setSearchCount] = useState(0);
   const [rowPresses, setRowPresses] = useState(0);
+  const [teamName, setTeamName] = useState('Harbor United');
 
   return (
     <ThemeProvider colorScheme={scheme} palette={palette}>
@@ -91,6 +93,12 @@ export default function App() {
           <Text color="muted">
             Native uses spacing step props, not CSS class names.
           </Text>
+          <Field
+            hint="Shown on schedules and standings."
+            label="Team name"
+            onChangeText={setTeamName}
+            value={teamName}
+          />
           <SegmentedControl
             accessibilityLabel="Sections"
             items={[
