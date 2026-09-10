@@ -1,5 +1,17 @@
 # @scalewing/react
 
+## 0.5.0
+
+### Minor Changes
+
+- Keep public package versions matched for the GitHub `v0.5.0` release tag.
+  Native Field ships in this version.
+
+### Patch Changes
+
+- Updated dependencies
+  - @scalewing/tokens@0.5.0
+
 ## 0.4.0
 
 ### Minor Changes

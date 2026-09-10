@@ -1,5 +1,12 @@
 # @scalewing/tokens
 
+## 0.5.0
+
+### Minor Changes
+
+- Keep public package versions matched for the GitHub `v0.5.0` release tag.
+  Native Field ships in this version.
+
 ## 0.4.0
 
 ### Minor Changes

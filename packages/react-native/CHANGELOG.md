@@ -1,5 +1,19 @@
 # @scalewing/react-native
 
+## 0.5.0
+
+### Minor Changes
+
+- Keep public package versions matched for the GitHub `v0.5.0` release tag.
+  Native Field ships in this version.
+- 7cf64df: Add an accessible token-styled native `Field` with label, hint,
+  error, focus, disabled, and standard React Native text-input behavior.
+
+### Patch Changes
+
+- Updated dependencies
+  - @scalewing/tokens@0.5.0
+
 ## 0.4.0
 
 ### Minor Changes

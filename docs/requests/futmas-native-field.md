@@ -1,3 +1,5 @@
+Status: implemented for the 0.5.0 release.
+
 Scalewing request from FutMas.
 
 Renderer: react-native
