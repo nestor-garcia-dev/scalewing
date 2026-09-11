@@ -1,5 +1,19 @@
 # @scalewing/react-native
 
+## 0.6.0
+
+### Minor Changes
+
+- ebbbd43: Add a controlled native Accordion with optional separate title navigation,
+  leading/metadata slots, expanded accessibility state, and theme-owned chrome.
+
+### Patch Changes
+
+- ebbbd43: Make native segmented selection visible with paired accent/onAccent colors
+  and a larger minimum touch height. Existing component props are unchanged.
+- Updated dependencies
+  - @scalewing/tokens@0.6.0
+
 ## 0.5.0
 
 ### Minor Changes

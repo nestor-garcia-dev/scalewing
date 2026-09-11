@@ -1,5 +1,17 @@
 # @scalewing/react
 
+## 0.6.0
+
+### Minor Changes
+
+- Align the public packages with the 0.6.0 native Accordion release, as required
+  by the lockstep release workflow. No new token or DOM component API is added.
+
+### Patch Changes
+
+- Updated dependencies
+  - @scalewing/tokens@0.6.0
+
 ## 0.5.0
 
 ### Minor Changes

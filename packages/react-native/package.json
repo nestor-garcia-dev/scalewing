@@ -1,6 +1,6 @@
 {
   "name": "@scalewing/react-native",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "Scalewing React Native layout primitives.",
   "type": "module",
   "license": "MIT",
