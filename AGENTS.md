@@ -106,8 +106,9 @@ Responsible for DOM `ThemeProvider` (including `palette`), Box, Stack, Inline, S
 
 Responsible for native `ThemeProvider` (including `palette`) and the matching
 layout primitives plus Button (`Pressable`), Field (`TextInput`), TabBar, and
-Table. Spacing uses token steps as props, not CSS class names. Select, Dialog,
-Accordion, Split, and Toast are web-only.
+Table and Accordion. Spacing uses token steps as props, not CSS class names.
+Accordion has controlled disclosure with optional independent title navigation.
+Select, Dialog, Split, and Toast are web-only.
 
 #### apps/gallery and apps/native-example
 
@@ -188,6 +189,14 @@ Run focused package checks while developing:
 Run `pnpm check` before declaring a cross-package change complete.
 
 ## Code review rules
+
+Before committing code, use an independent read-only Bar Raiser reviewer on
+`gpt-5.6-sol`. The project agent definition is `.codex/agents/bar-raiser.toml`;
+when spawning directly, select that model explicitly and pass only the review
+assignment, not the full chat. If unavailable, ask before substituting a model.
+Review the exact staged diff against the owning consumer requests and these
+rules. Resolve blockers and required changes, then re-review the staged result
+before committing. Never let the implementing agent approve its own work.
 
 - Flag React Native imports in `@scalewing/react`.
 - Flag React DOM or CSS class APIs in `@scalewing/react-native`.

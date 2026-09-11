@@ -23,15 +23,15 @@ export function mapSegmentedItemStyle(
 ): ViewStyle {
   return {
     alignItems: 'center',
-    backgroundColor: selected ? theme.colors.surface : 'transparent',
+    backgroundColor: selected ? theme.colors.accent : 'transparent',
     borderRadius: theme.radius.pill,
     flex: 1,
     justifyContent: 'center',
-    minHeight: theme.control.xs.minHeight,
+    minHeight: theme.control.md.minHeight,
     paddingHorizontal: theme.control.xs.paddingInline,
   };
 }
 
 export function segmentedItemColor(selected: boolean): SemanticColorKey {
-  return selected ? 'text' : 'muted';
+  return selected ? 'onAccent' : 'muted';
 }

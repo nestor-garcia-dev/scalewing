@@ -13,8 +13,8 @@ apps/native-example ──> react-native
 ```
 
 - **`@scalewing/tokens`**: theme objects, named palettes, scales, contrast checks, CSS custom properties, and generated `sw-*` classes.
-- **`@scalewing/react`**: DOM components plus `@scalewing/react/styles.css` and optional `@scalewing/react/palette/<id>.css`. Button is a real `<button>`. `Box as="a"` is a layout link. Field wraps a native control with a label and token gap. Select is a labeled listbox menu. Badge, SegmentedControl, Table, BarChart, AppHeader, Nav, and Toast are web dashboard primitives. Split, Accordion, Dialog, Select, and Toast are web-only.
-- **`@scalewing/react-native`**: React Native components and a theme provider. No CSS class API. Button is a `Pressable`. TabBar is a bottom tab list. Table is a compact row/cell layout. Field is web-only.
+- **`@scalewing/react`**: DOM components plus `@scalewing/react/styles.css` and optional `@scalewing/react/palette/<id>.css`. Button is a real `<button>`. `Box as="a"` is a layout link. Field wraps a native control with a label and token gap. Select is a labeled listbox menu. Badge, SegmentedControl, Table, BarChart, AppHeader, Nav, and Toast are web dashboard primitives. Split, Dialog, Select, and Toast are web-only.
+- **`@scalewing/react-native`**: React Native components and a theme provider. No CSS class API. Button is a `Pressable`. Field is a labeled native text input. TabBar is a bottom tab list. Table is a compact row/cell layout. Accordion is a controlled disclosure with optional independent title navigation.
 
 ## CSS ownership
 
@@ -39,6 +39,10 @@ Light and dark palettes are first-class themes. Web applies them with `data-them
 Scalewing does not ship glyphs. Components that need a consumer pictogram take a slot (`TabBar` `icon`). Generic UI icons in products use Lucide; control chrome stays private to the component. See [ADR 0008](adr/0008-icon-slots-and-lucide.md).
 
 ## Renderers
+
+Native Accordion owns a controlled disclosure surface and optional separate
+title action. It uses native Pressables and token styles; the DOM Accordion
+keeps its existing implementation. No renderer code or DOM API is shared.
 
 Do not share React Native component files with the DOM package. Do not introduce React Native Web to unify them.
 

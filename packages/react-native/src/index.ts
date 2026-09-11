@@ -41,3 +41,4 @@ export {
   useTheme,
   type ThemeProviderProps,
 } from './theme/ThemeProvider.js';
+export { Accordion, type AccordionProps } from './components/Accordion.js';

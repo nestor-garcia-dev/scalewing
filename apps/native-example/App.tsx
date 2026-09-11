@@ -1,4 +1,5 @@
 import {
+  Accordion,
   Button,
   Card,
   Field,
@@ -16,7 +17,7 @@ import {
   useTheme,
 } from '@scalewing/react-native';
 import { useState } from 'react';
-import { SafeAreaView, View } from 'react-native';
+import { SafeAreaView, ScrollView, View } from 'react-native';
 
 const demoPalettes = ['indigo', 'cerulean', 'sunburst'] as const;
 
@@ -60,83 +61,104 @@ export default function App() {
   const [searchCount, setSearchCount] = useState(0);
   const [rowPresses, setRowPresses] = useState(0);
   const [teamName, setTeamName] = useState('Harbor United');
+  const [groupOpen, setGroupOpen] = useState(true);
+  const [titlePresses, setTitlePresses] = useState(0);
 
   return (
     <ThemeProvider colorScheme={scheme} palette={palette}>
       <SafeAreaView style={{ flex: 1 }}>
-        <Stack gap={4} padding={4} style={{ flex: 1 }}>
-          <Inline justify="between" align="center">
-            <Text variant="heading">Scalewing</Text>
-            <Button
-              onPress={() => {
-                const index = demoPalettes.indexOf(palette);
-                const next = demoPalettes[(index + 1) % demoPalettes.length];
-                if (next) {
-                  setPalette(next);
+        <ScrollView style={{ flex: 1 }}>
+          <Stack gap={4} padding={4} style={{ flex: 1 }}>
+            <Inline justify="between" align="center">
+              <Text variant="heading">Scalewing</Text>
+              <Button
+                onPress={() => {
+                  const index = demoPalettes.indexOf(palette);
+                  const next = demoPalettes[(index + 1) % demoPalettes.length];
+                  if (next) {
+                    setPalette(next);
+                  }
+                }}
+                size="sm"
+                variant="secondary"
+              >
+                {palette}
+              </Button>
+              <Button
+                onPress={() =>
+                  setScheme((current) =>
+                    current === 'light' ? 'dark' : 'light',
+                  )
                 }
-              }}
-              size="sm"
-              variant="secondary"
-            >
-              {palette}
-            </Button>
-            <Button
-              onPress={() =>
-                setScheme((current) => (current === 'light' ? 'dark' : 'light'))
+                size="sm"
+                variant="secondary"
+              >
+                {scheme === 'light' ? 'Dark theme' : 'Light theme'}
+              </Button>
+            </Inline>
+            <Text color="muted">
+              Native uses spacing step props, not CSS class names.
+            </Text>
+            <Field
+              hint="Shown on schedules and standings."
+              label="Team name"
+              onChangeText={setTeamName}
+              value={teamName}
+            />
+            <SegmentedControl
+              accessibilityLabel="Sections"
+              items={[
+                { id: 'table', label: 'Table' },
+                { id: 'fixtures', label: 'Fixtures' },
+              ]}
+              onChange={setSection}
+              value={section}
+            />
+            <Text color="muted">Selected section {section}.</Text>
+            <Text color="muted">Row presses {rowPresses}.</Text>
+            <Accordion
+              title="Woodland habitats"
+              accessibilityLabel={
+                groupOpen ? 'Collapse habitats' : 'Expand habitats'
               }
-              size="sm"
-              variant="secondary"
+              titleAccessibilityLabel="Open woodland habitats"
+              onTitlePress={() => setTitlePresses((count) => count + 1)}
+              open={groupOpen}
+              onOpenChange={setGroupOpen}
+              metadata={<Text variant="data">2</Text>}
             >
-              {scheme === 'light' ? 'Dark theme' : 'Light theme'}
-            </Button>
-          </Inline>
-          <Text color="muted">
-            Native uses spacing step props, not CSS class names.
-          </Text>
-          <Field
-            hint="Shown on schedules and standings."
-            label="Team name"
-            onChangeText={setTeamName}
-            value={teamName}
-          />
-          <SegmentedControl
-            accessibilityLabel="Sections"
-            items={[
-              { id: 'table', label: 'Table' },
-              { id: 'fixtures', label: 'Fixtures' },
-            ]}
-            onChange={setSection}
-            value={section}
-          />
-          <Text color="muted">Selected section {section}.</Text>
-          <Text color="muted">Row presses {rowPresses}.</Text>
-          <Card padding={4}>
-            <Stack gap={2}>
-              <Text variant="title">Sunday kickoff</Text>
-              <Table density="compact">
-                <TableBody>
-                  <TableRow
-                    accessibilityLabel="North FC 2–1 Harbor United"
-                    onPress={() => {
-                      setRowPresses((count) => count + 1);
-                    }}
-                  >
-                    <TableCell truncate>North FC</TableCell>
-                    <TableCell flex={0} numeric>
-                      2–1
-                    </TableCell>
-                    <TableCell align="end" truncate>
-                      Harbor United
-                    </TableCell>
-                  </TableRow>
-                </TableBody>
-              </Table>
-            </Stack>
-          </Card>
-          <Text color="muted">
-            Selected tab {tab}. Trailing presses {searchCount}.
-          </Text>
-        </Stack>
+              <Text>Oak grove</Text>
+              <Text>Birch forest</Text>
+            </Accordion>
+            <Text color="muted">Title presses {titlePresses}.</Text>
+            <Card padding={4}>
+              <Stack gap={2}>
+                <Text variant="title">Sunday kickoff</Text>
+                <Table density="compact">
+                  <TableBody>
+                    <TableRow
+                      accessibilityLabel="North FC 2–1 Harbor United"
+                      onPress={() => {
+                        setRowPresses((count) => count + 1);
+                      }}
+                    >
+                      <TableCell truncate>North FC</TableCell>
+                      <TableCell flex={0} numeric>
+                        2–1
+                      </TableCell>
+                      <TableCell align="end" truncate>
+                        Harbor United
+                      </TableCell>
+                    </TableRow>
+                  </TableBody>
+                </Table>
+              </Stack>
+            </Card>
+            <Text color="muted">
+              Selected tab {tab}. Trailing presses {searchCount}.
+            </Text>
+          </Stack>
+        </ScrollView>
         <TabBar
           items={[
             {

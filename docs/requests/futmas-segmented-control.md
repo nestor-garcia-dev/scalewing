@@ -22,3 +22,20 @@ onChange={(id) => void}
 value={string}
 />
 Labels are product copy. Do not name it TableFixturesControl or LeagueTabs.
+
+## September 11: visible native segmented selection
+
+Renderer: react-native. Existing surface: SegmentedControl.
+
+The native light selected fill and track are both white, making selection
+depend on label weight/color. FutMas needs a visible Table/Fixtures state.
+This is a correction to the existing surface; no new public API is needed.
+
+Approved mobile refresh dependency, September 11, 2026: keep the glass track,
+use accent/onAccent for the selected segment, and use the medium control
+minimum height for comfortable tapping. Test light/dark and named palettes.
+Existing native-example SegmentedControl demonstrates both states.
+
+Status: implemented; full `pnpm check` passes (106 tests including release
+checks, builds, lint, and types). FutMas iOS export succeeds against the local
+link. Await iPhone screenshots for native visual acceptance; no publish made.

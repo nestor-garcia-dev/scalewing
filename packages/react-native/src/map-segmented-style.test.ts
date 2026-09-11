@@ -1,4 +1,9 @@
-import { lightTheme, trackInset } from '@scalewing/tokens';
+import {
+  createTheme,
+  contrastRatio,
+  lightTheme,
+  trackInset,
+} from '@scalewing/tokens';
 import { describe, expect, it } from 'vitest';
 
 import {
@@ -21,20 +26,32 @@ describe('mapSegmentedControlStyle', () => {
 });
 
 describe('mapSegmentedItemStyle', () => {
-  it('fills the selected item with surface', () => {
+  it('fills the selected item with accent and preserves a touch target', () => {
     const selected = mapSegmentedItemStyle(lightTheme, true);
     const rest = mapSegmentedItemStyle(lightTheme, false);
 
-    expect(selected.backgroundColor).toBe(lightTheme.colors.surface);
+    expect(selected.backgroundColor).toBe(lightTheme.colors.accent);
     expect(rest.backgroundColor).toBe('transparent');
-    expect(selected.minHeight).toBe(lightTheme.control.xs.minHeight);
+    expect(selected.minHeight).toBeGreaterThanOrEqual(44);
     expect(selected.flex).toBe(1);
   });
 });
 
 describe('segmentedItemColor', () => {
-  it('uses text when selected and muted otherwise', () => {
-    expect(segmentedItemColor(true)).toBe('text');
+  it('uses onAccent when selected and muted otherwise', () => {
+    expect(segmentedItemColor(true)).toBe('onAccent');
     expect(segmentedItemColor(false)).toBe('muted');
   });
+});
+
+describe('selected segment contrast', () => {
+  it.each(['light', 'dark'] as const)(
+    'keeps Ink labels readable in %s',
+    (scheme) => {
+      const theme = createTheme({ colorScheme: scheme, palette: 'ink' });
+      expect(
+        contrastRatio(theme.colors.accent, theme.colors.onAccent),
+      ).toBeGreaterThanOrEqual(4.5);
+    },
+  );
 });

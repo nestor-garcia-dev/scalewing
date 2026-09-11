@@ -42,8 +42,10 @@
   },
   "devDependencies": {
     "@types/react": "^19.2.2",
+    "@types/react-test-renderer": "^19.3.0",
     "react": "19.2.3",
-    "react-native": "0.86.3"
+    "react-native": "0.86.3",
+    "react-test-renderer": "19.2.3"
   },
   "publishConfig": {
     "access": "public",
