@@ -2,6 +2,10 @@ import { type ReactNode } from 'react';
 import { Pressable } from 'react-native';
 
 import {
+  mapTabBarContentStyle,
+  mapTabBarDestinationStyle,
+  mapTabBarItemStyle,
+  mapTabBarLabelStyle,
   mapTabBarStyle,
   mapTabBarTrailingStyle,
   tabBarItemColor,
@@ -60,7 +64,7 @@ export function TabBar({ bottomInset = 0, items, trailing }: TabBarProps) {
       style={mapTabBarStyle(theme, { bottomInset })}
     >
       <Inline align="center" gap={3}>
-        <Inline align="center" justify="around" style={{ flex: 1 }}>
+        <Inline align="center" style={mapTabBarDestinationStyle()}>
           {items.map((item) => (
             <Pressable
               accessibilityLabel={item.label}
@@ -68,10 +72,16 @@ export function TabBar({ bottomInset = 0, items, trailing }: TabBarProps) {
               accessibilityState={{ selected: item.selected }}
               key={item.key}
               onPress={item.onPress}
+              style={mapTabBarItemStyle(theme)}
             >
-              <Stack align="center" gap={1}>
+              <Stack align="center" gap={1} style={mapTabBarContentStyle()}>
                 {item.icon}
-                <Text color={tabBarItemColor(item.selected)} variant="caption">
+                <Text
+                  color={tabBarItemColor(item.selected)}
+                  style={mapTabBarLabelStyle()}
+                  truncate
+                  variant="caption"
+                >
                   {item.label}
                 </Text>
               </Stack>

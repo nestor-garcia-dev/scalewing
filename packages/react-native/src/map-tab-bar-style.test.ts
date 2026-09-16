@@ -2,6 +2,10 @@ import { lightTheme } from '@scalewing/tokens';
 import { describe, expect, it } from 'vitest';
 
 import {
+  mapTabBarContentStyle,
+  mapTabBarDestinationStyle,
+  mapTabBarItemStyle,
+  mapTabBarLabelStyle,
   mapTabBarStyle,
   mapTabBarTrailingStyle,
   tabBarItemColor,
@@ -33,6 +37,24 @@ describe('tabBarItemColor', () => {
   });
 });
 
+describe('tab bar destination layout', () => {
+  it('constrains destinations to equal shrinking columns', () => {
+    expect(mapTabBarDestinationStyle()).toEqual({ flex: 1, minWidth: 0 });
+    expect(mapTabBarItemStyle(lightTheme)).toMatchObject({
+      alignItems: 'center',
+      flex: 1,
+      minHeight: lightTheme.control.md.minHeight,
+      minWidth: 0,
+      paddingHorizontal: lightTheme.space[1],
+    });
+    expect(mapTabBarContentStyle()).toEqual({ minWidth: 0, width: '100%' });
+    expect(mapTabBarLabelStyle()).toEqual({
+      maxWidth: '100%',
+      textAlign: 'center',
+    });
+  });
+});
+
 describe('mapTabBarTrailingStyle', () => {
   it('is a pill control sized to the md hit target', () => {
     const style = mapTabBarTrailingStyle(lightTheme);
@@ -41,5 +63,6 @@ describe('mapTabBarTrailingStyle', () => {
     expect(style.height).toBe(lightTheme.control.md.minHeight);
     expect(style.borderRadius).toBe(lightTheme.radius.pill);
     expect(style.backgroundColor).toBe(lightTheme.colors.surface);
+    expect(style.flexShrink).toBe(0);
   });
 });

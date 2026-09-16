@@ -164,7 +164,7 @@ export default function App() {
             {
               icon: <TabMark selected={tab === 'one'} />,
               key: 'one',
-              label: 'One',
+              label: 'Woodlands',
               onPress: () => {
                 setTab('one');
               },
@@ -173,7 +173,7 @@ export default function App() {
             {
               icon: <TabMark selected={tab === 'two'} />,
               key: 'two',
-              label: 'Two',
+              label: 'River habitats',
               onPress: () => {
                 setTab('two');
               },
@@ -182,11 +182,20 @@ export default function App() {
             {
               icon: <TabMark selected={tab === 'three'} />,
               key: 'three',
-              label: 'Three',
+              label: 'Conservation',
               onPress: () => {
                 setTab('three');
               },
               selected: tab === 'three',
+            },
+            {
+              icon: <TabMark selected={tab === 'four'} />,
+              key: 'four',
+              label: 'Settings',
+              onPress: () => {
+                setTab('four');
+              },
+              selected: tab === 'four',
             },
           ]}
           trailing={

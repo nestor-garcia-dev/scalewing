@@ -25,3 +25,9 @@ Proposed API (reusable names only):
 
 Icons are slots. Product copy and pictograms stay in the consumer. Do not
 name the primitive MatchesBar or FotMobNav.
+
+Large-text follow-up (FutMas F-012 native acceptance, 2026-09-16): destination
+labels must keep system font scaling without overflowing neighboring tabs or
+the optional trailing control. Destinations use equal shrinking columns; their
+visible one-line labels may ellipsize while each tab retains its full accessible
+name. The trailing control remains fixed at the token-owned hit target.

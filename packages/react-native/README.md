@@ -34,4 +34,9 @@ is `"light"`, `"dark"`, or `"system"`. Named palettes include both schemes;
 selected section, with a 44-point minimum touch height. Labels grow with
 system text size. The native example demonstrates switching sections.
 
+`TabBar` gives destinations equal-width, shrinking columns and keeps an
+optional trailing control at its token-owned hit target. Destination labels
+continue to scale with the system and ellipsize visually when space is tight;
+their full accessible names remain on the tab controls.
+
 React and React Native are peer dependencies so the host Expo app owns the runtime. Rationale: duplicating React Native inside this package would fight Metro and Expo upgrades.
