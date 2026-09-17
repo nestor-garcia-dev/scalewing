@@ -1,5 +1,13 @@
 # @scalewing/react-native
 
+## 0.6.1
+
+### Patch Changes
+
+- e2f410c: Keep native TabBar destinations from overlapping at large Dynamic Type sizes.
+- Updated dependencies
+  - @scalewing/tokens@0.6.1
+
 ## 0.6.0
 
 ### Minor Changes

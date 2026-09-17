@@ -1,5 +1,14 @@
 # @scalewing/react
 
+## 0.6.1
+
+### Patch Changes
+
+- Keep public package versions aligned with the native TabBar accessibility
+  correction. No DOM renderer API changed.
+- Updated dependencies
+  - @scalewing/tokens@0.6.1
+
 ## 0.6.0
 
 ### Minor Changes

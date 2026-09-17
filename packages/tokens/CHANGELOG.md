@@ -1,5 +1,12 @@
 # @scalewing/tokens
 
+## 0.6.1
+
+### Patch Changes
+
+- Keep public package versions aligned with the native TabBar accessibility
+  correction. No token API changed.
+
 ## 0.6.0
 
 ### Minor Changes
