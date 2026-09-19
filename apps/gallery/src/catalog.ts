@@ -1,6 +1,7 @@
 import { ActionMenuSection } from './sections/action-menu.js';
 import { SwitchSection } from './sections/switch.js';
 import { DateFieldSection } from './sections/date-field.js';
+import { CheckboxSection } from './sections/checkbox.js';
 import { type ComponentType } from 'react';
 
 import { AccordionSection } from './sections/accordion.js';
@@ -95,6 +96,12 @@ export const catalog = [
     Section: ActionMenuSection,
   },
   { id: 'switch', label: 'Switch', group: 'controls', Section: SwitchSection },
+  {
+    id: 'checkbox',
+    label: 'Checkbox',
+    group: 'controls',
+    Section: CheckboxSection,
+  },
   {
     id: 'date-field',
     label: 'DateField',

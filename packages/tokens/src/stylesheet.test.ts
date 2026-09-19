@@ -230,6 +230,23 @@ describe('generated CSS', () => {
       expect(catalog).toContain(className);
     }
     expect(css).toContain('.sw-switch-input:checked + .sw-switch-track');
+    for (const className of [
+      'sw-checkbox',
+      'sw-checkbox-label',
+      'sw-checkbox-control',
+      'sw-checkbox-input',
+      'sw-checkbox-mark',
+      'sw-checkbox-text',
+      'sw-checkbox-description',
+      'sw-checkbox-error',
+    ]) {
+      expect(css).toContain(`.${className}`);
+      expect(catalog).toContain(className);
+    }
+    expect(css).toContain('.sw-checkbox-input:checked + .sw-checkbox-mark');
+    expect(css).toContain(
+      '.sw-checkbox-input:focus-visible + .sw-checkbox-mark',
+    );
     expect(css).toContain('@media (forced-colors: active)');
     for (const className of [
       'sw-date-field',

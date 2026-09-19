@@ -2,6 +2,7 @@ import { cssActionMenuClasses } from './css-action-menu.js';
 import { cssAccordionClasses } from './css-accordion.js';
 import { cssButtonClasses } from './css-button.js';
 import { cssChartClasses } from './css-chart.js';
+import { cssCheckboxClasses } from './css-checkbox.js';
 import { cssChromeClasses } from './css-chrome.js';
 import { cssDataClasses } from './css-data.js';
 import { cssDateFieldClasses } from './css-date-field.js';
@@ -81,6 +82,8 @@ export function cssComponentClasses(): string {
 ${textVariantRules()}
 
 ${cssButtonClasses()}
+
+${cssCheckboxClasses()}
 
 ${cssDataClasses()}
 

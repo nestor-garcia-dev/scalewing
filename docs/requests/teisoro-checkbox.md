@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: planned under Teisoro F-002-S05 task 530.
+Status: implemented under Teisoro F-002-S05 task 530; pending review and packed-consumer verification.
 Renderer: react
 Missing surface: `Checkbox`.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: Field plus raw input leaves reusable checkmark, focus, disabled, and invalid appearance in product CSS. Switch represents a persistent setting, not a discrete form choice.
