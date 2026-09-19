@@ -1,5 +1,36 @@
 # @scalewing/react
 
+## 0.7.0
+
+### Minor Changes
+
+- 630bed9: Add wrapping, accessible FilterChips for long single-choice filter sets.
+- fad8f45: Add an accessible React ActionMenu with generated token styling for independent commands.
+- 1d69e34: Add a controlled date-only DateField with native calendar behavior and generated styling.
+- 05e23f5: Add stable hint, error, and required semantics to Field with generated invalid styling.
+- b718519: Add supplementary Tooltip help for labelled triggers with keyboard, pointer, and touch access.
+- 9e47362: Add a controlled native Checkbox with generated token styling, validation copy, and accessible form semantics.
+- 6dac120: Add a controlled React Switch with native checkbox semantics and generated token styling.
+- 39a85a4: Add an accessible indeterminate Spinner with generated animation, size variants, and reduced-motion styling.
+- de943eb: Add measured Progress with native progressbar semantics and generated tone styling.
+- b0ce196: Add a controlled native RadioGroup with token-generated styling and long-label form choices.
+- 944f7ef: Add semantic and decorative horizontal or vertical separators with generated token styling.
+
+### Patch Changes
+
+- Updated dependencies [630bed9]
+- Updated dependencies [fad8f45]
+- Updated dependencies [1d69e34]
+- Updated dependencies [05e23f5]
+- Updated dependencies [b718519]
+- Updated dependencies [9e47362]
+- Updated dependencies [6dac120]
+- Updated dependencies [39a85a4]
+- Updated dependencies [de943eb]
+- Updated dependencies [b0ce196]
+- Updated dependencies [944f7ef]
+  - @scalewing/tokens@0.7.0
+
 ## 0.6.1
 
 ### Patch Changes

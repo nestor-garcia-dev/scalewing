@@ -1,5 +1,22 @@
 # @scalewing/react-native
 
+## 0.7.0
+
+### Patch Changes
+
+- Updated dependencies [630bed9]
+- Updated dependencies [fad8f45]
+- Updated dependencies [1d69e34]
+- Updated dependencies [05e23f5]
+- Updated dependencies [b718519]
+- Updated dependencies [9e47362]
+- Updated dependencies [6dac120]
+- Updated dependencies [39a85a4]
+- Updated dependencies [de943eb]
+- Updated dependencies [b0ce196]
+- Updated dependencies [944f7ef]
+  - @scalewing/tokens@0.7.0
+
 ## 0.6.1
 
 ### Patch Changes
