@@ -190,10 +190,12 @@ Run `pnpm check` before declaring a cross-package change complete.
 
 ## Code review rules
 
-Before committing code, use an independent read-only Bar Raiser reviewer on
-`gpt-5.6-sol`. The project agent definition is `.codex/agents/bar-raiser.toml`;
-when spawning directly, select that model explicitly and pass only the review
-assignment, not the full chat. If unavailable, ask before substituting a model.
+Before committing code, use an independent read-only Bar Raiser reviewer.
+The project agent definition, including the reviewer model and reasoning effort,
+is `.codex/agents/bar-raiser.toml`. When spawning directly, read both settings
+from that file and pass only the review assignment, not the full chat. Do not
+copy the model or effort into another instruction. If the configured model is
+unavailable, ask before substituting one.
 Review the exact staged diff against the owning consumer requests and these
 rules. Resolve blockers and required changes, then re-review the staged result
 before committing. Never let the implementing agent approve its own work.

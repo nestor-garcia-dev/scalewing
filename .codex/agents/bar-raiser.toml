@@ -1,6 +1,7 @@
 name = "bar_raiser"
 description = "Independent read-only pre-commit reviewer for Scalewing."
-model = "gpt-5.6-sol"
+model = "gpt-5.6-terra"
+model_reasoning_effort = "high"
 sandbox_mode = "read-only"
 developer_instructions = """
 Read AGENTS.md, applicable nested instructions, the owning consumer requests,
