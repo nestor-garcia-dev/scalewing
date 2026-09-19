@@ -4,6 +4,7 @@ import { cssButtonClasses } from './css-button.js';
 import { cssChartClasses } from './css-chart.js';
 import { cssChromeClasses } from './css-chrome.js';
 import { cssDataClasses } from './css-data.js';
+import { cssDateFieldClasses } from './css-date-field.js';
 import { cssDialogClasses } from './css-dialog.js';
 import { cssSelectClasses } from './css-select.js';
 import { cssSplitClasses } from './css-split.js';
@@ -82,6 +83,8 @@ ${textVariantRules()}
 ${cssButtonClasses()}
 
 ${cssDataClasses()}
+
+${cssDateFieldClasses()}
 
 ${cssChartClasses()}
 

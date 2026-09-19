@@ -231,6 +231,16 @@ describe('generated CSS', () => {
     }
     expect(css).toContain('.sw-switch-input:checked + .sw-switch-track');
     expect(css).toContain('@media (forced-colors: active)');
+    for (const className of [
+      'sw-date-field',
+      'sw-date-field-label',
+      'sw-date-field-input',
+      'sw-date-field-description',
+      'sw-date-field-error',
+    ]) {
+      expect(css).toContain(`.${className}`);
+      expect(catalog).toContain(className);
+    }
     expect(catalog).toContain('sw-dialog');
     expect(css).toContain('.sw-accordion');
     expect(css).toContain('.sw-accordion-summary');

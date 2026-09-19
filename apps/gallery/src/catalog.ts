@@ -1,5 +1,6 @@
 import { ActionMenuSection } from './sections/action-menu.js';
 import { SwitchSection } from './sections/switch.js';
+import { DateFieldSection } from './sections/date-field.js';
 import { type ComponentType } from 'react';
 
 import { AccordionSection } from './sections/accordion.js';
@@ -94,6 +95,12 @@ export const catalog = [
     Section: ActionMenuSection,
   },
   { id: 'switch', label: 'Switch', group: 'controls', Section: SwitchSection },
+  {
+    id: 'date-field',
+    label: 'DateField',
+    group: 'controls',
+    Section: DateFieldSection,
+  },
   { id: 'dialog', label: 'Dialog', group: 'controls', Section: DialogSection },
   { id: 'toast', label: 'Toast', group: 'controls', Section: ToastSection },
   { id: 'table', label: 'Table', group: 'data', Section: TableSection },

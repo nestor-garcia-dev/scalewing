@@ -106,7 +106,11 @@ describe('gallery', () => {
     for (const control of document.querySelectorAll('input, select')) {
       const labeled =
         control.getAttribute('aria-label') !== null ||
-        control.closest('label') !== null;
+        control.closest('label') !== null ||
+        (control.id !== '' &&
+          Array.from(
+            document.querySelectorAll<HTMLLabelElement>('label[for]'),
+          ).some((label) => label.htmlFor === control.id));
       expect(labeled).toBe(true);
     }
 

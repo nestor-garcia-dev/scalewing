@@ -6,6 +6,7 @@ export {
 export { Accordion } from './components/Accordion.js';
 export type { AccordionProps } from './components/Accordion.js';
 export { Switch, type SwitchProps } from './components/Switch.js';
+export { DateField, type DateFieldProps } from './components/DateField.js';
 export { AppHeader, type AppHeaderProps } from './components/AppHeader.js';
 export {
   Badge,

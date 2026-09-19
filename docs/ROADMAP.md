@@ -16,7 +16,8 @@ release workflow completed successfully.
 ## Next action
 
 Teisoro F-002-S05: ActionMenu task 500 is reviewed and committed as `fad8f45`.
-Implement Switch in task 510, then DateField in task 520. Publish the
+Switch task 510 is reviewed and committed as `6dac120`. Implement DateField in
+task 520, then Checkbox in task 530. Publish the
 coordinated primitive set only in task 610 after each surface passes consumer
 verification.
 

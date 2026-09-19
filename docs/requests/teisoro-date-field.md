@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: planned under Teisoro F-002-S05 task 520.
+Status: implementation in progress under Teisoro F-002-S05 task 520.
 Renderer: react
 Missing surface: `DateField`.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: Field labels a child but does not own a consistently styled date input or date-only contract. A hand-styled native date input in Teisoro would duplicate the control skin.
