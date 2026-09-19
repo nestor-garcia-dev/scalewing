@@ -294,6 +294,15 @@ describe('generated CSS', () => {
       expect(catalog).toContain(className);
     }
     expect(css).toContain('.sw-tooltip[hidden] { display: none; }');
+    for (const className of [
+      'sw-separator',
+      'sw-separator-horizontal',
+      'sw-separator-vertical',
+    ]) {
+      expect(css).toContain(`.${className}`);
+      expect(catalog).toContain(className);
+    }
+    expect(css).toContain('.sw-separator { background: CanvasText; }');
     expect(css).toContain(
       '.sw-checkbox-input:focus-visible + .sw-checkbox-mark',
     );

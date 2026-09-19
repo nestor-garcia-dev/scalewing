@@ -89,3 +89,9 @@ export {
   useTheme,
   type ThemeProviderProps,
 } from './theme/ThemeProvider.js';
+
+export { Separator } from './components/Separator.js';
+export type {
+  SeparatorOrientation,
+  SeparatorProps,
+} from './components/Separator.js';
