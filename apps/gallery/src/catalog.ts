@@ -2,6 +2,7 @@ import { ActionMenuSection } from './sections/action-menu.js';
 import { SwitchSection } from './sections/switch.js';
 import { DateFieldSection } from './sections/date-field.js';
 import { CheckboxSection } from './sections/checkbox.js';
+import { RadioGroupSection } from './sections/radio-group.js';
 import { type ComponentType } from 'react';
 
 import { AccordionSection } from './sections/accordion.js';
@@ -96,6 +97,12 @@ export const catalog = [
     Section: ActionMenuSection,
   },
   { id: 'switch', label: 'Switch', group: 'controls', Section: SwitchSection },
+  {
+    id: 'radio-group',
+    label: 'RadioGroup',
+    group: 'controls',
+    Section: RadioGroupSection,
+  },
   {
     id: 'checkbox',
     label: 'Checkbox',

@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: planned under Teisoro F-002-S05 task 540.
+Status: implemented under Teisoro F-002-S05 task 540; pending review and packed-consumer verification.
 Renderer: react
 Missing surface: `RadioGroup`.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: SegmentedControl works for short button toggles but its compact horizontal presentation does not fit longer vertical form options. A raw radio group would require product control styling.

@@ -3,6 +3,7 @@ import { accordionClassCatalog } from './css-accordion.js';
 import { switchClassCatalog } from './css-switch.js';
 import { dateFieldClassCatalog } from './css-date-field.js';
 import { checkboxClassCatalog } from './css-checkbox.js';
+import { radioGroupClassCatalog } from './css-radio-group.js';
 import { cssComponentClasses } from './css-components.js';
 import { buttonClassCatalog } from './css-button.js';
 import { chartClassCatalog } from './css-chart.js';
@@ -46,6 +47,7 @@ export function utilityClassCatalog(): string[] {
     ...switchClassCatalog(),
     ...dateFieldClassCatalog(),
     ...checkboxClassCatalog(),
+    ...radioGroupClassCatalog(),
     ...splitClassCatalog(),
     ...toastClassCatalog(),
   ];

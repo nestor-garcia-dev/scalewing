@@ -3,6 +3,7 @@ import { cssAccordionClasses } from './css-accordion.js';
 import { cssButtonClasses } from './css-button.js';
 import { cssChartClasses } from './css-chart.js';
 import { cssCheckboxClasses } from './css-checkbox.js';
+import { cssRadioGroupClasses } from './css-radio-group.js';
 import { cssChromeClasses } from './css-chrome.js';
 import { cssDataClasses } from './css-data.js';
 import { cssDateFieldClasses } from './css-date-field.js';
@@ -84,6 +85,8 @@ ${textVariantRules()}
 ${cssButtonClasses()}
 
 ${cssCheckboxClasses()}
+
+${cssRadioGroupClasses()}
 
 ${cssDataClasses()}
 

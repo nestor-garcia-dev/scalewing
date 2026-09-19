@@ -244,6 +244,24 @@ describe('generated CSS', () => {
       expect(catalog).toContain(className);
     }
     expect(css).toContain('.sw-checkbox-input:checked + .sw-checkbox-mark');
+    for (const className of [
+      'sw-radio-group',
+      'sw-radio-group-legend',
+      'sw-radio-group-options',
+      'sw-radio-group-option',
+      'sw-radio-group-control',
+      'sw-radio-group-input',
+      'sw-radio-group-mark',
+      'sw-radio-group-text',
+      'sw-radio-group-description',
+      'sw-radio-group-error',
+    ]) {
+      expect(css).toContain(`.${className}`);
+      expect(catalog).toContain(className);
+    }
+    expect(css).toContain(
+      '.sw-radio-group-input:checked + .sw-radio-group-mark',
+    );
     expect(css).toContain(
       '.sw-checkbox-input:focus-visible + .sw-checkbox-mark',
     );
