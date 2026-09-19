@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: proposed; implementation plan in Teisoro F-002-S05 task 500.
+Status: implemented locally for Teisoro F-002-S05 task 500; release and Teisoro pin remain in task 610.
 Renderer: react
 Missing surface: `ActionMenu`, a reusable labelled trigger and menu of independent commands.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this:

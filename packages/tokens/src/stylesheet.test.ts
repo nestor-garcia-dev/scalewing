@@ -213,6 +213,9 @@ describe('generated CSS', () => {
     expect(catalog).toContain('sw-select-list');
     expect(catalog).toContain('sw-select-action');
     expect(css).toContain('.sw-select-action');
+    expect(css).toContain('.sw-action-menu-list');
+    expect(css).toContain('.sw-action-menu-item-danger');
+    expect(catalog).toContain('sw-action-menu-trigger');
     expect(catalog).toContain('sw-dialog');
     expect(css).toContain('.sw-accordion');
     expect(css).toContain('.sw-accordion-summary');

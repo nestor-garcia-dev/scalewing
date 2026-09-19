@@ -1,3 +1,4 @@
+import { ActionMenuSection } from './sections/action-menu.js';
 import { type ComponentType } from 'react';
 
 import { AccordionSection } from './sections/accordion.js';
@@ -85,6 +86,12 @@ export const catalog = [
   },
   { id: 'field', label: 'Field', group: 'controls', Section: FieldSection },
   { id: 'select', label: 'Select', group: 'controls', Section: SelectSection },
+  {
+    id: 'action-menu',
+    label: 'ActionMenu',
+    group: 'controls',
+    Section: ActionMenuSection,
+  },
   { id: 'dialog', label: 'Dialog', group: 'controls', Section: DialogSection },
   { id: 'toast', label: 'Toast', group: 'controls', Section: ToastSection },
   { id: 'table', label: 'Table', group: 'data', Section: TableSection },

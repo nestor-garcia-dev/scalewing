@@ -1,3 +1,4 @@
+import { cssActionMenuClasses } from './css-action-menu.js';
 import { cssAccordionClasses } from './css-accordion.js';
 import { cssButtonClasses } from './css-button.js';
 import { cssChartClasses } from './css-chart.js';
@@ -57,6 +58,7 @@ export function cssComponentClasses(): string {
   .sw-dialog,
   .sw-accordion,
   .sw-select-list,
+  .sw-action-menu-list,
   .sw-toast {
     background: var(--sw-color-surface);
     backdrop-filter: none;
@@ -89,6 +91,8 @@ ${cssDialogClasses()}
 ${cssAccordionClasses()}
 
 ${cssSelectClasses()}
+
+${cssActionMenuClasses()}
 
 ${cssSplitClasses()}
 

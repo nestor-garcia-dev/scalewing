@@ -1,3 +1,4 @@
+import { actionMenuClassCatalog } from './css-action-menu.js';
 import { accordionClassCatalog } from './css-accordion.js';
 import { cssComponentClasses } from './css-components.js';
 import { buttonClassCatalog } from './css-button.js';
@@ -38,6 +39,7 @@ export function utilityClassCatalog(): string[] {
     ...dialogClassCatalog(),
     ...accordionClassCatalog(),
     ...selectClassCatalog(),
+    ...actionMenuClassCatalog(),
     ...splitClassCatalog(),
     ...toastClassCatalog(),
   ];

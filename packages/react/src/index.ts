@@ -1,3 +1,8 @@
+export {
+  ActionMenu,
+  type ActionMenuItem,
+  type ActionMenuProps,
+} from './components/ActionMenu.js';
 export { Accordion } from './components/Accordion.js';
 export type { AccordionProps } from './components/Accordion.js';
 export { AppHeader, type AppHeaderProps } from './components/AppHeader.js';
