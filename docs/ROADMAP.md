@@ -18,7 +18,9 @@ release workflow completed successfully.
 Teisoro F-002-S05: ActionMenu task 500 is reviewed and committed as `fad8f45`.
 Switch task 510 is reviewed and committed as `6dac120`. DateField task 520 is
 reviewed and committed as `1d69e34`. Checkbox task 530 is reviewed and committed
-as `9e47362`. Implement RadioGroup in task 540. Publish the
+as `9e47362`. RadioGroup task 540 is reviewed and committed as `b0ce196`.
+Spinner implementation in task 550 is ready for review and commit; Progress task
+560 is next. Publish the
 coordinated primitive set only in task 610 after each surface passes consumer
 verification.
 

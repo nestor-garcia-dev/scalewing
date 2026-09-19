@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: planned under Teisoro F-002-S05 task 550.
+Status: implemented under Teisoro F-002-S05 task 550; pending review and packed-consumer verification.
 Renderer: react
 Missing surface: `Spinner`.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: A product CSS animation would recreate the Material spinner in Teisoro; Progress is for measured completion.

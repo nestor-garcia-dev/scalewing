@@ -14,6 +14,7 @@ import {
   Card,
   Checkbox,
   RadioGroup,
+  Spinner,
   DateField,
   Field,
   Select,
@@ -46,6 +47,8 @@ Import the CSS once at the application entry. Do not copy it into your source tr
 `Checkbox` is a controlled native checkbox for one independent form or confirmation choice. `checked` and `onCheckedChange` own its state. The consumer supplies `error` after validation to announce and style an invalid choice; `required` retains native form semantics.
 
 `RadioGroup` is a controlled fieldset of native radio choices. Supply a unique nonempty `value` for each option, one selected `value` or an empty value for no selection, a `legend`, and `onChange`. Long labels wrap in a vertical group. The consumer provides localized option labels and validation `error`; `required` keeps native form semantics.
+
+`Spinner` shows indeterminate loading in small, medium, or large sizes. Supply localized `label` for the one announced status in a loading region. Use `decorative` on additional indicators beside that status so screen readers do not hear the same message repeatedly. Reduced motion leaves a static accented ring.
 
 `DateField` is a controlled native date input. Supply `value`, `min`, and `max` as valid `YYYY-MM-DD` dates; use an empty `value` for a blank field. Its callback returns a date-only string or an empty string, without timezone conversion. Invalid serialized dates and inverted bounds throw; a value outside the bounds remains visible with invalid styling. For a blank required field, supply `error` when form validation runs to show the message and invalid styling. The browser chooses the calendar and localized display.
 

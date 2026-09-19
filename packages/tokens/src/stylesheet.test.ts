@@ -262,6 +262,18 @@ describe('generated CSS', () => {
     expect(css).toContain(
       '.sw-radio-group-input:checked + .sw-radio-group-mark',
     );
+    for (const className of [
+      'sw-spinner',
+      'sw-spinner-sm',
+      'sw-spinner-md',
+      'sw-spinner-lg',
+      'sw-spinner-icon',
+    ]) {
+      expect(css).toContain(`.${className}`);
+      expect(catalog).toContain(className);
+    }
+    expect(css).toContain('@keyframes sw-spinner-rotate');
+    expect(css).toContain('.sw-spinner-icon { animation: none; }');
     expect(css).toContain(
       '.sw-checkbox-input:focus-visible + .sw-checkbox-mark',
     );

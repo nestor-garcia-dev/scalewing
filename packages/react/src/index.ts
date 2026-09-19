@@ -9,6 +9,11 @@ export { Switch, type SwitchProps } from './components/Switch.js';
 export { DateField, type DateFieldProps } from './components/DateField.js';
 export { Checkbox, type CheckboxProps } from './components/Checkbox.js';
 export {
+  Spinner,
+  type SpinnerProps,
+  type SpinnerSize,
+} from './components/Spinner.js';
+export {
   RadioGroup,
   type RadioGroupOption,
   type RadioGroupProps,
