@@ -42,7 +42,9 @@ import {
 
 Import the CSS once at the application entry. Do not copy it into your source tree. Optional: import one `@scalewing/react/palette/<id>.css` file after it, or set `data-palette` on the `data-theme` node. React apps can set `palette` on `ThemeProvider` instead.
 
-`Box as="a"` is a layout link. Use `Button` for press actions. `Field` wraps a native `<input>` or `<select>` with a label and token gap; native text controls inherit the generated document canvas. `Select` is a labeled listbox menu when the open list must match the canvas.
+`Box as="a"` is a layout link. Use `Button` for press actions. `Field` associates a native `<input>` or `<select>` with a label and token gap; native text controls inherit the generated document canvas. `Select` is a labeled listbox menu when the open list must match the canvas.
+
+`Field` supports optional `description`, `error`, and `required` on one native input, select, or textarea child. It preserves an existing `aria-describedby`, appends a stable message ID, and replaces the hint with an alert when an error is supplied. `error` sets `aria-invalid` and token-owned invalid styling. The consumer owns validation and localized messages.
 
 `ActionMenu` opens independent commands from a labelled button. Provide localized command labels and callbacks; use `disabled` for unavailable commands and `destructive` for a dangerous command's presentation. Escape returns focus to the trigger, and outside interaction dismisses the menu.
 

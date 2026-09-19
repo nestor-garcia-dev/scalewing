@@ -315,6 +315,19 @@ describe('generated CSS', () => {
       expect(catalog).toContain(className);
     }
     expect(css).toContain('flex-wrap: wrap;');
+    for (const className of [
+      'sw-field',
+      'sw-field-required',
+      'sw-field-description',
+      'sw-field-error',
+      'sw-field-invalid',
+    ]) {
+      expect(css).toContain(`.${className}`);
+      expect(catalog).toContain(className);
+    }
+    expect(css).toContain(
+      '[data-theme] .sw-field-invalid :is(input, select, textarea)',
+    );
     expect(css).toContain(
       '.sw-checkbox-input:focus-visible + .sw-checkbox-mark',
     );

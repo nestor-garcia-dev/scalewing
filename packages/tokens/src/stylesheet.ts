@@ -9,6 +9,7 @@ import { progressClassCatalog } from './css-progress.js';
 import { tooltipClassCatalog } from './css-tooltip.js';
 import { separatorClassCatalog } from './css-separator.js';
 import { filterChipsClassCatalog } from './css-filter-chips.js';
+import { fieldClassCatalog } from './css-field.js';
 import { cssComponentClasses } from './css-components.js';
 import { buttonClassCatalog } from './css-button.js';
 import { chartClassCatalog } from './css-chart.js';
@@ -58,6 +59,7 @@ export function utilityClassCatalog(): string[] {
     ...tooltipClassCatalog(),
     ...separatorClassCatalog(),
     ...filterChipsClassCatalog(),
+    ...fieldClassCatalog(),
     ...splitClassCatalog(),
     ...toastClassCatalog(),
   ];

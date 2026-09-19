@@ -1,13 +1,19 @@
-import { Field, Stack, Text } from '@scalewing/react';
+import { Button, Field, Stack, Text } from '@scalewing/react';
+import { useState } from 'react';
 
 import { Section } from '../layout/Section.js';
 import { sampleHabitats } from '../sample-copy.js';
 
 export function FieldSection() {
+  const [sightingName, setSightingName] = useState('');
+  const [validated, setValidated] = useState(false);
+  const error =
+    validated && !sightingName.trim() ? 'Enter a sighting name' : undefined;
+
   return (
     <Section
       id="field"
-      purpose="Field wraps a native control in a label and token gap. size xs compacts the control. labelVisuallyHidden keeps the accessible name without a stacked caption. The document canvas paints the control, including the native select chevron and accent focus. Use Select when the open list must match the canvas."
+      purpose="Field labels native controls and associates optional hints, required state, and validation errors. Validation stays with the consumer. size xs compacts the control; the canvas paints its native surface."
       title="Field"
       usage={`<Field label="Habitat">
   <select>
@@ -16,10 +22,25 @@ export function FieldSection() {
 </Field>`}
     >
       <Stack gap={3}>
+        <Field
+          description="Use the name printed on the sighting card"
+          error={error}
+          label="Sighting name"
+          required
+        >
+          <input
+            name="sighting-name"
+            onChange={(event) => setSightingName(event.currentTarget.value)}
+            value={sightingName}
+          />
+        </Field>
+        <Button onPress={() => setValidated(true)} variant="secondary">
+          Validate sighting
+        </Button>
         <Field label="Species name">
           <input defaultValue="Red fox" name="species-name" />
         </Field>
-        <Field label="Habitat">
+        <Field description="Choose the observation habitat" label="Habitat">
           <select defaultValue="forest" name="habitat">
             {sampleHabitats.map((habitat) => (
               <option key={habitat.value} value={habitat.value}>
@@ -37,7 +58,7 @@ export function FieldSection() {
           <input disabled defaultValue="Cannot edit" name="disabled-control" />
         </Field>
         <Text color="muted" variant="caption">
-          The label wraps the control. Clicking the label name focuses the
+          The label names the control. Clicking the label name focuses the
           field. Default gap is spacing step 1.
         </Text>
       </Stack>

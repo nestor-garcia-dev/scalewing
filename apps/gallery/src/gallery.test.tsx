@@ -65,7 +65,7 @@ describe('gallery', () => {
 
     const habitat = screen.getByLabelText('Habitat');
     expect(habitat.tagName).toBe('SELECT');
-    expect(habitat.closest('label')).not.toBeNull();
+    expect(document.querySelector(`label[for="${habitat.id}"]`)).not.toBeNull();
 
     const disabledField = screen.getByLabelText('Disabled control');
     expect(disabledField).toHaveProperty('disabled', true);
