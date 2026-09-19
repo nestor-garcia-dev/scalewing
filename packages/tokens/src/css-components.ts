@@ -15,6 +15,7 @@ import { cssSpinnerClasses } from './css-spinner.js';
 import { cssProgressClasses } from './css-progress.js';
 import { cssTooltipClasses } from './css-tooltip.js';
 import { cssSeparatorClasses } from './css-separator.js';
+import { cssFilterChipsClasses } from './css-filter-chips.js';
 import { cssToastClasses } from './css-toast.js';
 import { typographyVariants } from './typography.js';
 
@@ -117,6 +118,8 @@ ${cssProgressClasses()}
 ${cssTooltipClasses()}
 
 ${cssSeparatorClasses()}
+
+${cssFilterChipsClasses()}
 
 ${cssSplitClasses()}
 

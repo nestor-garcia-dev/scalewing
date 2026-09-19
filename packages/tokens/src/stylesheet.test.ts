@@ -303,6 +303,18 @@ describe('generated CSS', () => {
       expect(catalog).toContain(className);
     }
     expect(css).toContain('.sw-separator { background: CanvasText; }');
+    for (const className of [
+      'sw-filter-chips',
+      'sw-filter-chips-legend',
+      'sw-filter-chips-options',
+      'sw-filter-chip',
+      'sw-filter-chip-input',
+      'sw-filter-chip-face',
+    ]) {
+      expect(css).toContain(`.${className}`);
+      expect(catalog).toContain(className);
+    }
+    expect(css).toContain('flex-wrap: wrap;');
     expect(css).toContain(
       '.sw-checkbox-input:focus-visible + .sw-checkbox-mark',
     );

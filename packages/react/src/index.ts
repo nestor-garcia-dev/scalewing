@@ -95,3 +95,9 @@ export type {
   SeparatorOrientation,
   SeparatorProps,
 } from './components/Separator.js';
+
+export { FilterChips } from './components/FilterChips.js';
+export type {
+  FilterChipOption,
+  FilterChipsProps,
+} from './components/FilterChips.js';
