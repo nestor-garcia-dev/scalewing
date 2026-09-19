@@ -289,6 +289,11 @@ describe('generated CSS', () => {
     }
     expect(css).toContain('.sw-progress-bar::-webkit-progress-value');
     expect(css).toContain('.sw-progress-bar::-moz-progress-bar');
+    for (const className of ['sw-tooltip-anchor', 'sw-tooltip']) {
+      expect(css).toContain(`.${className}`);
+      expect(catalog).toContain(className);
+    }
+    expect(css).toContain('.sw-tooltip[hidden] { display: none; }');
     expect(css).toContain(
       '.sw-checkbox-input:focus-visible + .sw-checkbox-mark',
     );

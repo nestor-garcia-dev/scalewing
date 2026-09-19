@@ -6,6 +6,7 @@ import { checkboxClassCatalog } from './css-checkbox.js';
 import { radioGroupClassCatalog } from './css-radio-group.js';
 import { spinnerClassCatalog } from './css-spinner.js';
 import { progressClassCatalog } from './css-progress.js';
+import { tooltipClassCatalog } from './css-tooltip.js';
 import { cssComponentClasses } from './css-components.js';
 import { buttonClassCatalog } from './css-button.js';
 import { chartClassCatalog } from './css-chart.js';
@@ -52,6 +53,7 @@ export function utilityClassCatalog(): string[] {
     ...radioGroupClassCatalog(),
     ...spinnerClassCatalog(),
     ...progressClassCatalog(),
+    ...tooltipClassCatalog(),
     ...splitClassCatalog(),
     ...toastClassCatalog(),
   ];

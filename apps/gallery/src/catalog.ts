@@ -5,6 +5,7 @@ import { CheckboxSection } from './sections/checkbox.js';
 import { RadioGroupSection } from './sections/radio-group.js';
 import { SpinnerSection } from './sections/spinner.js';
 import { ProgressSection } from './sections/progress.js';
+import { TooltipSection } from './sections/tooltip.js';
 import { type ComponentType } from 'react';
 
 import { AccordionSection } from './sections/accordion.js';
@@ -110,6 +111,12 @@ export const catalog = [
     label: 'Progress',
     group: 'controls',
     Section: ProgressSection,
+  },
+  {
+    id: 'tooltip',
+    label: 'Tooltip',
+    group: 'controls',
+    Section: TooltipSection,
   },
   {
     id: 'radio-group',

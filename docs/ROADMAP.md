@@ -20,7 +20,8 @@ Switch task 510 is reviewed and committed as `6dac120`. DateField task 520 is
 reviewed and committed as `1d69e34`. Checkbox task 530 is reviewed and committed
 as `9e47362`. RadioGroup task 540 is reviewed and committed as `b0ce196`.
 Spinner task 550 is reviewed and committed as `39a85a4`. Progress task 560 is
-ready for review and commit; Tooltip task 570 follows. Publish the
+reviewed and committed as `de943eb`. Tooltip task 570 is ready for review and
+commit; Separator task 580 follows. Publish the
 coordinated primitive set only in task 610 after each surface passes consumer
 verification.
 

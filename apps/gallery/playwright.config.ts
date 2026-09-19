@@ -20,6 +20,7 @@ export default defineConfig({
       name: 'mobile-es',
       use: {
         locale: 'es-ES',
+        hasTouch: true,
         timezoneId: 'Europe/Madrid',
         viewport: { width: 390, height: 844 },
         launchOptions: { args: ['--lang=es-ES'] },

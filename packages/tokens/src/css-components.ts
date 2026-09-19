@@ -13,6 +13,7 @@ import { cssSplitClasses } from './css-split.js';
 import { cssSwitchClasses } from './css-switch.js';
 import { cssSpinnerClasses } from './css-spinner.js';
 import { cssProgressClasses } from './css-progress.js';
+import { cssTooltipClasses } from './css-tooltip.js';
 import { cssToastClasses } from './css-toast.js';
 import { typographyVariants } from './typography.js';
 
@@ -111,6 +112,8 @@ ${cssSwitchClasses()}
 ${cssSpinnerClasses()}
 
 ${cssProgressClasses()}
+
+${cssTooltipClasses()}
 
 ${cssSplitClasses()}
 
