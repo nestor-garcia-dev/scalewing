@@ -274,6 +274,21 @@ describe('generated CSS', () => {
     }
     expect(css).toContain('@keyframes sw-spinner-rotate');
     expect(css).toContain('.sw-spinner-icon { animation: none; }');
+    for (const className of [
+      'sw-progress',
+      'sw-progress-accent',
+      'sw-progress-success',
+      'sw-progress-danger',
+      'sw-progress-heading',
+      'sw-progress-label',
+      'sw-progress-count',
+      'sw-progress-bar',
+    ]) {
+      expect(css).toContain(`.${className}`);
+      expect(catalog).toContain(className);
+    }
+    expect(css).toContain('.sw-progress-bar::-webkit-progress-value');
+    expect(css).toContain('.sw-progress-bar::-moz-progress-bar');
     expect(css).toContain(
       '.sw-checkbox-input:focus-visible + .sw-checkbox-mark',
     );

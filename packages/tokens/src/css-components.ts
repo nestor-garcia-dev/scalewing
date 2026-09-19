@@ -12,6 +12,7 @@ import { cssSelectClasses } from './css-select.js';
 import { cssSplitClasses } from './css-split.js';
 import { cssSwitchClasses } from './css-switch.js';
 import { cssSpinnerClasses } from './css-spinner.js';
+import { cssProgressClasses } from './css-progress.js';
 import { cssToastClasses } from './css-toast.js';
 import { typographyVariants } from './typography.js';
 
@@ -108,6 +109,8 @@ ${cssActionMenuClasses()}
 ${cssSwitchClasses()}
 
 ${cssSpinnerClasses()}
+
+${cssProgressClasses()}
 
 ${cssSplitClasses()}
 

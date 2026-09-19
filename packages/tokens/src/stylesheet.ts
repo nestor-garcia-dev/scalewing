@@ -5,6 +5,7 @@ import { dateFieldClassCatalog } from './css-date-field.js';
 import { checkboxClassCatalog } from './css-checkbox.js';
 import { radioGroupClassCatalog } from './css-radio-group.js';
 import { spinnerClassCatalog } from './css-spinner.js';
+import { progressClassCatalog } from './css-progress.js';
 import { cssComponentClasses } from './css-components.js';
 import { buttonClassCatalog } from './css-button.js';
 import { chartClassCatalog } from './css-chart.js';
@@ -50,6 +51,7 @@ export function utilityClassCatalog(): string[] {
     ...checkboxClassCatalog(),
     ...radioGroupClassCatalog(),
     ...spinnerClassCatalog(),
+    ...progressClassCatalog(),
     ...splitClassCatalog(),
     ...toastClassCatalog(),
   ];

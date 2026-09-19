@@ -14,6 +14,11 @@ export {
   type SpinnerSize,
 } from './components/Spinner.js';
 export {
+  Progress,
+  type ProgressProps,
+  type ProgressTone,
+} from './components/Progress.js';
+export {
   RadioGroup,
   type RadioGroupOption,
   type RadioGroupProps,

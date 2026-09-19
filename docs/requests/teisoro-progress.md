@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: planned under Teisoro F-002-S05 task 560.
+Status: implemented under Teisoro F-002-S05 task 560; pending review and packed-consumer verification.
 Renderer: react
 Missing surface: `Progress`.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: Spinner cannot represent a known numerator and denominator; a raw progress control needs Scalewing-owned styling.
