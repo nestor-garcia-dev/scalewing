@@ -216,6 +216,21 @@ describe('generated CSS', () => {
     expect(css).toContain('.sw-action-menu-list');
     expect(css).toContain('.sw-action-menu-item-danger');
     expect(catalog).toContain('sw-action-menu-trigger');
+    for (const className of [
+      'sw-switch',
+      'sw-switch-control',
+      'sw-switch-input',
+      'sw-switch-track',
+      'sw-switch-thumb',
+      'sw-switch-copy',
+      'sw-switch-label',
+      'sw-switch-description',
+    ]) {
+      expect(css).toContain(`.${className}`);
+      expect(catalog).toContain(className);
+    }
+    expect(css).toContain('.sw-switch-input:checked + .sw-switch-track');
+    expect(css).toContain('@media (forced-colors: active)');
     expect(catalog).toContain('sw-dialog');
     expect(css).toContain('.sw-accordion');
     expect(css).toContain('.sw-accordion-summary');

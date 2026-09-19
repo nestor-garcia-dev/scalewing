@@ -1,4 +1,5 @@
 import { ActionMenuSection } from './sections/action-menu.js';
+import { SwitchSection } from './sections/switch.js';
 import { type ComponentType } from 'react';
 
 import { AccordionSection } from './sections/accordion.js';
@@ -92,6 +93,7 @@ export const catalog = [
     group: 'controls',
     Section: ActionMenuSection,
   },
+  { id: 'switch', label: 'Switch', group: 'controls', Section: SwitchSection },
   { id: 'dialog', label: 'Dialog', group: 'controls', Section: DialogSection },
   { id: 'toast', label: 'Toast', group: 'controls', Section: ToastSection },
   { id: 'table', label: 'Table', group: 'data', Section: TableSection },

@@ -15,9 +15,10 @@ release workflow completed successfully.
 
 ## Next action
 
-Teisoro F-002-S05: complete the ActionMenu review and commit from task 500, then
-implement Switch in task 510. Publish the coordinated primitive set only in
-task 610 after each surface passes consumer verification.
+Teisoro F-002-S05: ActionMenu task 500 is reviewed and committed as `fad8f45`.
+Implement Switch in task 510, then DateField in task 520. Publish the
+coordinated primitive set only in task 610 after each surface passes consumer
+verification.
 
 Version 0.6.0 is published for all three packages from tag `v0.6.0` (commit
 `7a7800d`). Independent review, full local checks (113 tests), packed-artifact

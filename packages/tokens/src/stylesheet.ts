@@ -1,5 +1,6 @@
 import { actionMenuClassCatalog } from './css-action-menu.js';
 import { accordionClassCatalog } from './css-accordion.js';
+import { switchClassCatalog } from './css-switch.js';
 import { cssComponentClasses } from './css-components.js';
 import { buttonClassCatalog } from './css-button.js';
 import { chartClassCatalog } from './css-chart.js';
@@ -40,6 +41,7 @@ export function utilityClassCatalog(): string[] {
     ...accordionClassCatalog(),
     ...selectClassCatalog(),
     ...actionMenuClassCatalog(),
+    ...switchClassCatalog(),
     ...splitClassCatalog(),
     ...toastClassCatalog(),
   ];

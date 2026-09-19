@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: planned under Teisoro F-002-S05 task 510.
+Status: implementation in progress under Teisoro F-002-S05 task 510.
 Renderer: react
 Missing surface: `Switch`.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: Neither Field plus an unstyled checkbox nor SegmentedControl owns the small persistent on/off control and switch semantics.

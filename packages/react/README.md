@@ -14,6 +14,7 @@ import {
   Card,
   Field,
   Select,
+  Switch,
   Split,
   Stack,
   Text,
@@ -36,6 +37,17 @@ Import the CSS once at the application entry. Do not copy it into your source tr
 `Box as="a"` is a layout link. Use `Button` for press actions. `Field` wraps a native `<input>` or `<select>` with a label and token gap; native text controls inherit the generated document canvas. `Select` is a labeled listbox menu when the open list must match the canvas.
 
 `ActionMenu` opens independent commands from a labelled button. Provide localized command labels and callbacks; use `disabled` for unavailable commands and `destructive` for a dangerous command's presentation. Escape returns focus to the trigger, and outside interaction dismisses the menu.
+
+`Switch` is a controlled on/off input. It keeps native checkbox keyboard behavior and exposes switch semantics. Provide the current `checked` value and update it in `onCheckedChange`.
+
+```tsx
+<Switch
+  label="Active habitats only"
+  checked={activeOnly}
+  onCheckedChange={setActiveOnly}
+  description="Hide archived habitats"
+/>
+```
 
 ```tsx
 <ActionMenu
