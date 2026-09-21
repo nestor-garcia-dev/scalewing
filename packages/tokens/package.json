@@ -13,6 +13,7 @@
   "bugs": {
     "url": "https://github.com/nestor-garcia-dev/scalewing/issues"
   },
+  "sideEffects": false,
   "exports": {
     ".": {
       "types": "./src/index.ts",
