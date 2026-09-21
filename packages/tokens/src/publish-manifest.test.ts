@@ -14,8 +14,6 @@ const manifest = JSON.parse(
     access: string;
     exports: {
       '.': { types: string; import: string };
-      './styles.css': string;
-      './palette/*.css': string;
     };
   };
 };
@@ -28,11 +26,6 @@ describe('publish manifest', () => {
       types: './dist/index.d.ts',
       import: './dist/index.js',
     });
-    expect(manifest.publishConfig.exports['./styles.css']).toBe(
-      './dist/styles.css',
-    );
-    expect(manifest.publishConfig.exports['./palette/*.css']).toBe(
-      './dist/palette/*.css',
-    );
+    expect(Object.keys(manifest.publishConfig.exports)).toEqual(['.']);
   });
 });

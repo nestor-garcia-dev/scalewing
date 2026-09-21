@@ -2,11 +2,14 @@ import {
   type BadgeSize,
   type BadgeTone,
   badgeClassNames,
-} from '@scalewing/tokens';
+  badgeSizes,
+  badgeTones,
+} from '../css/css-data.js';
 import { forwardRef, type HTMLAttributes, type ReactNode } from 'react';
 
 import { cx } from '../class-names.js';
 
+export { badgeSizes, badgeTones };
 export type { BadgeSize, BadgeTone };
 
 export type BadgeProps = HTMLAttributes<HTMLSpanElement> & {

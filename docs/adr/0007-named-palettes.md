@@ -13,7 +13,7 @@ Consumers apply a palette in one of three ways:
 2. `data-palette="cerulean"` on the same node as `data-theme`, after importing `@scalewing/react/styles.css`.
 3. `import '@scalewing/react/palette/cerulean.css'` after `styles.css`, which overrides `:root` / `[data-theme]` variables without the attribute.
 
-Palette CSS is generated from `@scalewing/tokens`. It is not a second class sheet, a color-utility matrix, or a per-product skin. `colors` on `createTheme` / `ThemeProvider` still wins over a named palette. `colors` may be a flat semantic map or `{ light, dark }` so a product declares both schemes and `colorScheme` (including `system`) selects the pair. Success and danger stay the semantic pair unless a product overlays them.
+Palette CSS is generated from `@scalewing/tokens` palette data by `@scalewing/react` (ADR 0010). It is not a second class sheet, a color-utility matrix, or a per-product skin. `colors` on `createTheme` / `ThemeProvider` still wins over a named palette. `colors` may be a flat semantic map or `{ light, dark }` so a product declares both schemes and `colorScheme` (including `system`) selects the pair. Success and danger stay the semantic pair unless a product overlays them.
 
 Retro palettes overlay `background` (cream or dark grounds). Light glass fill stays white.
 

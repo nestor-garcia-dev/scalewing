@@ -13,16 +13,11 @@
   "bugs": {
     "url": "https://github.com/nestor-garcia-dev/scalewing/issues"
   },
-  "sideEffects": [
-    "*.css"
-  ],
   "exports": {
     ".": {
       "types": "./src/index.ts",
       "import": "./src/index.ts"
-    },
-    "./styles.css": "./dist/styles.css",
-    "./palette/*.css": "./dist/palette/*.css"
+    }
   },
   "files": [
     "CHANGELOG.md",
@@ -31,7 +26,7 @@
     "README.md"
   ],
   "scripts": {
-    "build": "rm -rf dist && tsc -p tsconfig.json && node scripts/write-css.js",
+    "build": "rm -rf dist && tsc -p tsconfig.json",
     "prepack": "pnpm build",
     "test": "vitest run",
     "typecheck": "tsc -p tsconfig.json --noEmit"
@@ -44,9 +39,7 @@
       ".": {
         "types": "./dist/index.d.ts",
         "import": "./dist/index.js"
-      },
-      "./styles.css": "./dist/styles.css",
-      "./palette/*.css": "./dist/palette/*.css"
+      }
     }
   }
 }

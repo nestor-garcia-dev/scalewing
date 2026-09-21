@@ -1,14 +1,15 @@
 import {
+  type Theme,
   controlScale,
   disabledOpacity,
   focusRing,
   quietOpacity,
-} from './control.js';
-import { semanticColorKeys } from './colors.js';
-import { radiusScale } from './radius.js';
-import { spacingScale, spacingSteps } from './spacing.js';
-import { splitScale } from './split.js';
-import { type Theme } from './theme.js';
+  radiusScale,
+  semanticColorKeys,
+  spacingScale,
+  spacingSteps,
+  splitScale,
+} from '@scalewing/tokens';
 
 function colorDeclarations(theme: Theme): string {
   return semanticColorKeys

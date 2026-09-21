@@ -5,7 +5,7 @@ A public API change is complete when:
 - Behavior matches the accepted plan and this document.
 - Token, class-catalog, and renderer tests that cover the change pass.
 - `pnpm check` passes for cross-package work.
-- Generated CSS still comes from `@scalewing/tokens` with no parallel hand-written sheet.
+- Generated CSS still comes from the tokens through `@scalewing/react`'s generator with no parallel hand-written sheet.
 - Web examples import `@scalewing/react/styles.css` and do not vendor that CSS.
 - New or changed public web tokens, classes, variants, or components are demonstrated in `apps/gallery` with their meaningful states (a catalog section in the same change).
 - Public component and prop names are reusable across products. The requesting app’s domain copy is not the API.

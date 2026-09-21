@@ -6,7 +6,7 @@ import {
   generatePaletteStylesheet,
   generateStylesheet,
   paletteStylesheetIds,
-} from '../dist/stylesheet.js';
+} from '../dist/css/stylesheet.js';
 
 const distDirectory = join(dirname(fileURLToPath(import.meta.url)), '../dist');
 const paletteDirectory = join(distDirectory, 'palette');

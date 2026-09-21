@@ -1,5 +1,5 @@
 import { Box, Inline, Stack, Text } from '@scalewing/react';
-import { utilityClassCatalog } from '@scalewing/tokens';
+import { utilityClassCatalog } from '@scalewing/react';
 
 import { Section } from '../layout/Section.js';
 

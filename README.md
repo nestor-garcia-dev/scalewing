@@ -18,7 +18,7 @@ For an engineering walkthrough, start with [architecture](docs/ARCHITECTURE.md),
 
 | Package                   | Use                             |
 | ------------------------- | ------------------------------- |
-| `@scalewing/tokens`       | Themes, scales, generated CSS   |
+| `@scalewing/tokens`       | Themes, scales, shared values   |
 | `@scalewing/react`        | DOM components and `styles.css` |
 | `@scalewing/react-native` | React Native components         |
 

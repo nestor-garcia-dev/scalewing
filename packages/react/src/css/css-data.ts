@@ -1,5 +1,4 @@
-import { trackInset } from './control.js';
-import { typographyVariants } from './typography.js';
+import { trackInset, typographyVariants } from '@scalewing/tokens';
 
 export const badgeTones = ['neutral', 'accent', 'success', 'danger'] as const;
 

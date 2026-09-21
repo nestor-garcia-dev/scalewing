@@ -1,3 +1,4 @@
+import { typographyVariants } from '@scalewing/tokens';
 import { cssActionMenuClasses } from './css-action-menu.js';
 import { cssAccordionClasses } from './css-accordion.js';
 import { cssButtonClasses } from './css-button.js';
@@ -19,7 +20,6 @@ import { cssResponsiveClasses } from './css-responsive.js';
 import { cssFilterChipsClasses } from './css-filter-chips.js';
 import { cssFieldClasses } from './css-field.js';
 import { cssToastClasses } from './css-toast.js';
-import { typographyVariants } from './typography.js';
 
 function textVariantRules(): string {
   return Object.entries(typographyVariants)

@@ -13,7 +13,7 @@ The gallery is not a token source. It does not import package internals. It is n
 
 A single Card cannot prove the glass canvas, Button matrix, Field semantics, or theme switching before a release tag. A custom site built from Scalewing, in the same family as Tailwind and Angular Material docs, lets unpublished workspace changes be reviewed without Storybook or a second visual system.
 
-`@scalewing/react/styles.css` resolves to `packages/react/dist/styles.css`. Dev and gallery production builds must compile tokens, then React, then the gallery so stale CSS cannot be reviewed.
+`@scalewing/react/styles.css` resolves to `packages/react/dist/styles.css`. Dev and gallery production builds must compile tokens, then React (which generates the CSS), then the gallery so stale CSS cannot be reviewed.
 
 ## Consequences
 

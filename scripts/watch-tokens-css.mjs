@@ -1,5 +1,5 @@
-// Rebuild @scalewing/tokens then @scalewing/react on every token source
-// change, so a linked consumer (see docs/CONSUMER_REQUESTS.md, "Linked
+// Rebuild @scalewing/tokens then @scalewing/react on every token or CSS
+// generator source change, so a linked consumer (see docs/CONSUMER_REQUESTS.md, "Linked
 // development") picks up new CSS without a manual rebuild step.
 //
 // Component edits already hot-reload through the link with no build.
@@ -13,6 +13,7 @@ import { fileURLToPath } from 'node:url';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const tokensSourceDir = join(root, 'packages/tokens/src');
+const cssSourceDir = join(root, 'packages/react/src/css');
 const DEBOUNCE_MS = 200;
 
 let debounceTimer = null;
@@ -61,6 +62,9 @@ function scheduleRebuild() {
   debounceTimer = setTimeout(rebuild, DEBOUNCE_MS);
 }
 
-console.log(`[watch-tokens-css] watching ${tokensSourceDir}`);
+console.log(
+  `[watch-tokens-css] watching ${tokensSourceDir} and ${cssSourceDir}`,
+);
 rebuild();
 watch(tokensSourceDir, { recursive: true }, scheduleRebuild);
+watch(cssSourceDir, { recursive: true }, scheduleRebuild);

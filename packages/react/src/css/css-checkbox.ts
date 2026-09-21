@@ -1,4 +1,4 @@
-import { typographyVariants } from './typography.js';
+import { typographyVariants } from '@scalewing/tokens';
 
 const label = typographyVariants.label;
 const caption = typographyVariants.caption;

@@ -39,13 +39,9 @@ Release each public package independently from this repository. Do not split the
 
 - **Separate native and web token packages.** Rejected. Palettes, colors, spacing, typography, radius, and glass would exist twice and could drift, which is how products end up looking different by author. Shared values stay in one package.
 
-## Deferred follow-up: move web CSS generation out of tokens
+## Follow-up: web CSS generation moves out of tokens
 
-`@scalewing/tokens` mixes platform-neutral values (colors, palettes, spacing, typography, radius, motion, glass, elevation, themes) with web-only CSS generation (the `css-*.ts` files, `stylesheet.ts`, and `scripts/write-css.js`). Native reads only the values. Every web CSS change therefore bumps `tokens`, and every renderer that depends on it.
-
-Move the CSS generation, the class catalog, and `breakpointScale` into `@scalewing/react`, which already copies the generated `styles.css` into its own package. Tokens then changes only when a shared value changes, which is when both platforms need it. Do not create a fourth package unless a second web renderer needs the generator.
-
-`generateStylesheet` and `utilityClassCatalog` are exported from the bare `@scalewing/tokens` entry today, so removing them is a breaking export removal, a **major** release of `tokens` once it is `1.x`. Doing the extraction before the `1.0.0` release would avoid that major; otherwise budget it. `@scalewing/react` must absorb the `styles.css` and `palette/*.css` exports before tokens drops them. Consumers already import `@scalewing/react/styles.css`, so their import path does not change; FutMas imports only the bare tokens entry for values and no CSS. The `@scalewing/tokens/styles.css` and `@scalewing/tokens/palette/*.css` exports, the gallery, the react build script, and the stylesheet tests move or update. Land this as its own coordinated story after independent releases work; independent versioning alone lets native ship without web, and the extraction only reduces how often tokens bumps.
+Done before the `1.0.0` release, so removing the CSS exports needed no tokens major. See [ADR 0010](0010-web-css-in-react.md).
 
 ## Consequences
 

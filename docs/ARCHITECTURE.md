@@ -12,13 +12,13 @@ apps/gallery ──> react ────────┘
 apps/native-example ──> react-native
 ```
 
-- **`@scalewing/tokens`**: theme objects, named palettes, scales, contrast checks, CSS custom properties, and generated `sw-*` classes.
-- **`@scalewing/react`**: DOM components plus `@scalewing/react/styles.css` and optional `@scalewing/react/palette/<id>.css`. Button is a real `<button>`. `Box as="a"` is a layout link. Field wraps a native control with a label and token gap. Select is a labeled listbox menu. Badge, SegmentedControl, Table, BarChart, AppHeader, Nav, and Toast are web dashboard primitives. Split, Dialog, Select, and Toast are web-only.
+- **`@scalewing/tokens`**: platform-neutral theme objects, named palettes, scales, and contrast checks. No CSS.
+- **`@scalewing/react`**: DOM components, the CSS custom properties and generated `sw-*` classes (`packages/react/src/css`), plus `@scalewing/react/styles.css` and optional `@scalewing/react/palette/<id>.css`. Button is a real `<button>`. `Box as="a"` is a layout link. Field wraps a native control with a label and token gap. Select is a labeled listbox menu. Badge, SegmentedControl, Table, BarChart, AppHeader, Nav, and Toast are web dashboard primitives. Split, Dialog, Select, and Toast are web-only.
 - **`@scalewing/react-native`**: React Native components and a theme provider. No CSS class API. Button is a `Pressable`. Field is a labeled native text input. TabBar is a bottom tab list. Table is a compact row/cell layout. Accordion is a controlled disclosure with optional independent title navigation.
 
 ## CSS ownership
 
-The stylesheet is generated from tokens and published inside the packages. A web app imports it once:
+The stylesheet is generated from tokens by `@scalewing/react` and published inside that package (ADR 0010). A web app imports it once:
 
 ```ts
 import '@scalewing/react/styles.css';

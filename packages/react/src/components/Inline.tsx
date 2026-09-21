@@ -1,4 +1,5 @@
-import { type SpacingStep, spacingClass } from '@scalewing/tokens';
+import { type SpacingStep } from '@scalewing/tokens';
+import { spacingClass } from '../css/spacing-classes.js';
 
 import { cx } from '../class-names.js';
 import { Box, type BoxProps } from './Box.js';
