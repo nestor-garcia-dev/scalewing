@@ -35,7 +35,7 @@ public surface is authorized by this release.
 
 ## Later
 
-- GitLab Pages or a public URL for the gallery.
+- GitHub Pages or a public URL for the gallery.
 - Menu, AppShell, StatTile, other chart types when a filled request shows
   existing primitives cannot cover the use case.
 - Native Select, Dialog, Split, or Toast if a product needs those on React Native.

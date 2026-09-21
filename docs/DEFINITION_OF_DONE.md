@@ -21,4 +21,4 @@ A release additionally requires:
 
 - Packed tarballs contain only build output, declarations, CSS, license, README, and package metadata.
 - Renderer runtime libraries remain peer dependencies.
-- Publishing uses the explicit GitHub Actions release workflow, not a merge hook. The legacy GitLab job is retained only during the trusted-publisher migration. The first version of a new package may be published once from a laptop so a trusted publisher can be attached.
+- Publishing uses the explicit GitHub Actions release workflow, not a merge hook. The first version of a new package may be published once from a laptop so a trusted publisher can be attached.

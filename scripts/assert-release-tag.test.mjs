@@ -15,7 +15,6 @@ const version = JSON.parse(
 function validate(environment) {
   const env = { ...process.env };
   delete env.RELEASE_TAG;
-  delete env.CI_COMMIT_TAG;
   return spawnSync(
     process.execPath,
     [fileURLToPath(new URL('./assert-release-tag.mjs', import.meta.url))],
@@ -23,9 +22,8 @@ function validate(environment) {
   );
 }
 
-test('accepts a matching release tag in GitHub and legacy GitLab', () => {
+test('accepts a matching release tag', () => {
   assert.equal(validate({ RELEASE_TAG: `v${version}` }).status, 0);
-  assert.equal(validate({ CI_COMMIT_TAG: `v${version}` }).status, 0);
 });
 
 test('rejects missing, malformed, and mismatched release tags', () => {
@@ -37,13 +35,4 @@ test('rejects missing, malformed, and mismatched release tags', () => {
   ]) {
     assert.notEqual(validate(environment).status, 0);
   }
-});
-
-test('rejects conflicting release contexts', () => {
-  const result = validate({
-    RELEASE_TAG: `v${version}`,
-    CI_COMMIT_TAG: 'v99999.0.0',
-  });
-  assert.notEqual(result.status, 0);
-  assert.match(result.stderr, /disagree/);
 });

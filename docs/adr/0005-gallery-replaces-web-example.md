@@ -7,7 +7,7 @@
 
 Replace `apps/web-example` with `apps/gallery`, a private Vite app that consumes public `@scalewing/react` and `@scalewing/tokens` exports. It is the local documentation catalog and the required pre-publish QA surface for web primitives.
 
-The gallery is not a token source. It does not import package internals. It is not published to npm. Hosting (GitLab Pages or a custom domain) is a later decision.
+The gallery is not a token source. It does not import package internals. It is not published to npm. Hosting (GitHub Pages or a custom domain) is a later decision.
 
 ## Rationale
 

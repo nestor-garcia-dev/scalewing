@@ -12,9 +12,7 @@ const packageDirectories = [
 
 function versionFromTag(tag) {
   if (!tag) {
-    throw new Error(
-      'RELEASE_TAG (or legacy CI_COMMIT_TAG) is required for publish.',
-    );
+    throw new Error('RELEASE_TAG is required for publish.');
   }
 
   const version = tag.startsWith('v') ? tag.slice(1) : tag;
@@ -34,14 +32,7 @@ function readPackageVersion(directory) {
   return { name: manifest.name, version: manifest.version };
 }
 
-const releaseTag = process.env.RELEASE_TAG ?? process.env.CI_COMMIT_TAG ?? '';
-if (
-  process.env.RELEASE_TAG &&
-  process.env.CI_COMMIT_TAG &&
-  process.env.RELEASE_TAG !== process.env.CI_COMMIT_TAG
-) {
-  throw new Error('RELEASE_TAG and CI_COMMIT_TAG disagree.');
-}
+const releaseTag = process.env.RELEASE_TAG ?? '';
 const expectedVersion = versionFromTag(releaseTag);
 
 for (const directory of packageDirectories) {

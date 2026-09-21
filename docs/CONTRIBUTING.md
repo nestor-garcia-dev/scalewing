@@ -29,8 +29,6 @@ For each existing package (`@scalewing/tokens`, `@scalewing/react`, `@scalewing/
 
 Allow direct `npm publish`. Create the GitHub environment `npm` and restrict deployment to the `main` branch: the workflow is dispatched from main and checks out the requested release tag. Only after this setup is verified, set repository Actions variable `NPM_PUBLISH_ENABLED` to `true`.
 
-The legacy `.gitlab-ci.yml` release job is retained during migration. Keep the GitLab repository recoverable; retire its publisher and archive it after GitHub release setup is verified. Never release the same version from both systems.
-
 Existing package names and versions are preserved during repository migration. New versions are a separate release task. A new package's first publication may require a one-time local publish before attaching trusted publishing; do not republish existing versions.
 
 ## Explicit release
