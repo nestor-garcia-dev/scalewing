@@ -16,7 +16,7 @@ One lane: release tooling. One task per checklist item, landed in order.
 2. **Tag assert script.** Change `scripts/assert-release-tag.mjs` to parse `tokens-v`, `react-v`, and `react-native-v` tags, verify that package's manifest version, and reject unknown prefixes and legacy `vX.Y.Z` tags. Extend `assert-release-tag.test.mjs` with wrong-prefix, mismatched-version, prerelease, and unknown-package cases.
 3. **Scoped check.** Add a `check:package` script that runs format and lint, then tests, builds, and typechecks for one package, everything it depends on, and its example app (`gallery` for react, `native-example` for react-native). For `tokens` it also runs its dependents' tests, builds, and both example apps. Full `pnpm check` stays on every pull request and `main` push.
 4. **Publish workflow.** Add a `package` input to `publish.yml`. Validate the tag against that package, run its scoped check, pack and publish only its tarball with provenance, and verify before publishing a renderer that its `@scalewing/tokens` dependency version exists on npm. Keep the file name, the `npm` environment, and the `NPM_PUBLISH_ENABLED` gate. Confirm a trusted-publisher entry exists for each of the three packages.
-5. **Retire legacy release paths.** Retire or restrict the `.gitlab-ci.yml` `publish` job (it runs `pnpm publish -r` on any tag) before the first per-package tag exists. State that per-package tags do not trigger `check.yml`, whose `v*` trigger stays for the main-commit check.
+5. **Tag triggers.** State that per-package tags do not trigger `check.yml`, whose `v*` trigger stays for the main-commit check.
 6. **Documentation.** Update `docs/CONTRIBUTING.md`, `docs/CONSUMER_REQUESTS.md` (state versions per package and drop hard-coded current versions), the root and nested `AGENTS.md` release notes, and `docs/ROADMAP.md`. Document one changeset per package, the additive-as-patch tokens policy, and the rule that a tokens changeset states additive or breaking and needs both renderer agents' sign-off.
 7. **First independent release.** Publish one package alone (validation run first, then publication) and record both workflow runs in this file. Confirm consumers of the other packages need no new pin.
 
@@ -26,8 +26,7 @@ One lane: release tooling. One task per checklist item, landed in order.
 - A red web-only change on a branch does not block a native release cut from a `main` commit where it is absent, and full `pnpm check` still guards `main`.
 - A renderer release fails before publishing when its tokens dependency is not on npm.
 - A `changeset version` dry run with a tokens-only changeset bumps both renderers, and one naming a single renderer bumps only that renderer.
-- No legacy publisher can release a per-package tag.
-- Legacy `vX.Y.Z` tags are rejected by the assert script and do not trigger the retired GitLab publisher.
+- Legacy `vX.Y.Z` tags are rejected by the assert script.
 - Docs name a version per package, and no document claims the packages share a version.
 
 ## Non-goals
