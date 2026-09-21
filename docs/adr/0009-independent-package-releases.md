@@ -37,6 +37,16 @@ Release each public package independently from this repository. Do not split the
 - **Split into separate repositories.** Rejected. `tokens` is the piece both renderers share most tightly, and a repository boundary there adds a publish-then-consume round trip to every token change.
 - **Independent versions with no dependency rule.** Rejected. Without an ordering and compatibility rule, a renderer can publish against a tokens version that does not exist or that it does not support.
 
+- **Separate native and web token packages.** Rejected. Palettes, colors, spacing, typography, radius, and glass would exist twice and could drift, which is how products end up looking different by author. Shared values stay in one package.
+
+## Deferred follow-up: move web CSS generation out of tokens
+
+`@scalewing/tokens` mixes platform-neutral values (colors, palettes, spacing, typography, radius, motion, glass, elevation, themes) with web-only CSS generation (the `css-*.ts` files, `stylesheet.ts`, and `scripts/write-css.js`). Native reads only the values. Every web CSS change therefore bumps `tokens`, and every renderer that depends on it.
+
+Move the CSS generation, the class catalog, and `breakpointScale` into `@scalewing/react`, which already copies the generated `styles.css` into its own package. Tokens then changes only when a shared value changes, which is when both platforms need it. Do not create a fourth package unless a second web renderer needs the generator.
+
+Consumers already import `@scalewing/react/styles.css`, so their import path does not change. The `@scalewing/tokens/styles.css` and `@scalewing/tokens/palette/*.css` exports, the gallery, the react build script, and the stylesheet tests move or update. Land this as its own coordinated story after independent releases work; independent versioning alone lets native ship without web, and the extraction only reduces how often tokens bumps.
+
 ## Consequences
 
 - Version numbers stop matching across packages. Documentation that lists one Scalewing version (for example `docs/CONSUMER_REQUESTS.md`) names a version per package.

@@ -29,10 +29,11 @@ One lane: release tooling. One task per checklist item, landed in order.
 
 ## Non-goals
 
-No repository split, no new public API, no change to trusted-publisher settings, and no change to how consumers import packages. A breaking tokens policy beyond the rule in ADR 0009 is out of scope.
+No repository split, no new public API, no change to trusted-publisher settings, and no change to how consumers import packages. A breaking tokens policy beyond the rule in ADR 0009 is out of scope. Moving web CSS generation and `breakpointScale` out of `tokens` is the deferred follow-up recorded in ADR 0009 and needs its own request.
 
 ## Open questions for review
 
 - Does the native example app or a native check need to run as part of the tokens release gate?
 - Should `tokens` move to `1.0.0` to make caret ranges span additive changes, or should additive token changes ship as patches while `0.x`?
 - Who reviews a tokens change that both agents consume?
+- Should the deferred CSS extraction start immediately after the first independent release, or wait until tokens bumps cause real friction?
