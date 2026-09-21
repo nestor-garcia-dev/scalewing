@@ -35,6 +35,7 @@ public surface is authorized by this release.
 
 ## Later
 
+- Independent per-package releases: ADR 0009 and `docs/requests/independent-package-releases.md` are proposed and need web and native agent review before the story starts.
 - GitLab Pages or a public URL for the gallery.
 - Menu, AppShell, StatTile, other chart types when a filled request shows
   existing primitives cannot cover the use case.
