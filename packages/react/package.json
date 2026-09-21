@@ -1,6 +1,6 @@
 {
   "name": "@scalewing/react",
-  "version": "0.7.0",
+  "version": "1.0.0",
   "description": "Scalewing DOM components and package-owned CSS utilities.",
   "type": "module",
   "license": "MIT",

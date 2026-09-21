@@ -1,6 +1,6 @@
 {
   "name": "@scalewing/tokens",
-  "version": "0.7.0",
+  "version": "1.0.0",
   "description": "Scalewing design tokens, themes, and shared scales.",
   "type": "module",
   "license": "MIT",

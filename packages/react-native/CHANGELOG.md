@@ -1,5 +1,19 @@
 # @scalewing/react-native
 
+## 1.0.0
+
+### Major Changes
+
+- 52b45c0: Start stable versioning at 1.0.0. Packages now release independently with semantic versioning.
+
+  `@scalewing/tokens` no longer contains web CSS. It removes `generateStylesheet`, `utilityClassCatalog`, `buttonClassNames`, `badgeClassNames`, `badgeSizes`, `badgeTones`, `BadgeSize`, `BadgeTone`, `spacingClass`, `PaddingAxis`, `GapAxis`, `paddingAxes`, `gapAxes`, `breakpointScale`, `Breakpoint`, `HideDirection`, `hideClass` (never published), and the `./styles.css` and `./palette/*.css` exports. Web apps keep importing `@scalewing/react/styles.css` and `@scalewing/react/palette/<id>.css`, which are unchanged. `@scalewing/react` now generates that CSS and exports `utilityClassCatalog`, `badgeSizes`, and `badgeTones`.
+
+### Patch Changes
+
+- Updated dependencies [3a3240e]
+- Updated dependencies [52b45c0]
+  - @scalewing/tokens@1.0.0
+
 ## 0.7.0
 
 ### Patch Changes
