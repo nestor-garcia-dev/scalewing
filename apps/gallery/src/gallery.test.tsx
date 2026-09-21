@@ -5,7 +5,7 @@ import {
   screen,
   within,
 } from '@testing-library/react';
-import { utilityClassCatalog } from '@scalewing/tokens';
+import { utilityClassCatalog } from '@scalewing/react';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 
 import { App } from './App.js';

@@ -1,4 +1,4 @@
-import { type SpacingStep, spacingSteps } from './spacing.js';
+import { type SpacingStep, spacingSteps } from '@scalewing/tokens';
 
 export const paddingAxes = [
   'all',

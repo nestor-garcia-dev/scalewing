@@ -1,3 +1,9 @@
+import {
+  cardVariants,
+  darkTheme,
+  lightTheme,
+  typographyVariants,
+} from '@scalewing/tokens';
 import { actionMenuClassCatalog } from './css-action-menu.js';
 import { accordionClassCatalog } from './css-accordion.js';
 import { switchClassCatalog } from './css-switch.js';
@@ -24,14 +30,11 @@ import { cssDocumentCanvas } from './css-document.js';
 import { cssPaletteAttributes } from './css-palettes.js';
 import { cssUtilities } from './css-utilities.js';
 import { cssVariables } from './css-variables.js';
-import { cardVariants } from './card.js';
 import {
   gapClassNames,
   layoutClassNames,
   paddingClassNames,
 } from './spacing-classes.js';
-import { darkTheme, lightTheme } from './theme.js';
-import { typographyVariants } from './typography.js';
 
 export function utilityClassCatalog(): string[] {
   return [

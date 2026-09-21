@@ -1,12 +1,12 @@
-import { semanticColorKeys } from './colors.js';
-import { createTheme } from './create-theme.js';
 import {
+  type ColorScheme,
+  type PaletteId,
   colorsForPalette,
+  createTheme,
   paletteHasStylesheet,
   palettesWithStylesheets,
-  type PaletteId,
-} from './palettes.js';
-import { type ColorScheme } from './theme.js';
+  semanticColorKeys,
+} from '@scalewing/tokens';
 
 function paletteCustomProperties(id: PaletteId, scheme: ColorScheme): string {
   const overlay = colorsForPalette(id, scheme);

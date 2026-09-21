@@ -38,14 +38,3 @@ export const focusRing = {
 } as const;
 
 export const trackInset = 2;
-
-export function buttonClassNames(options: {
-  size: ButtonSize;
-  variant: ButtonVariant;
-}): string[] {
-  return [
-    'sw-button',
-    `sw-button-${options.variant}`,
-    `sw-button-${options.size}`,
-  ];
-}

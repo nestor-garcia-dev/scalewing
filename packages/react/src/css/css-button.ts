@@ -1,7 +1,24 @@
-import { buttonSizes, buttonVariants, controlScale } from './control.js';
-import { typographyVariants } from './typography.js';
+import {
+  type ButtonSize,
+  type ButtonVariant,
+  buttonSizes,
+  buttonVariants,
+  controlScale,
+  typographyVariants,
+} from '@scalewing/tokens';
 
 const label = typographyVariants.label;
+
+export function buttonClassNames(options: {
+  size: ButtonSize;
+  variant: ButtonVariant;
+}): string[] {
+  return [
+    'sw-button',
+    `sw-button-${options.variant}`,
+    `sw-button-${options.size}`,
+  ];
+}
 
 function variantRules(): string {
   return [

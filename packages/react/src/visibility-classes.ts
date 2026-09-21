@@ -1,4 +1,4 @@
-import { type Breakpoint, hideClass } from '@scalewing/tokens';
+import { type Breakpoint, hideClass } from './css/breakpoints.js';
 
 export type VisibilityProps = {
   hideBelow?: Breakpoint;

@@ -5,7 +5,7 @@
 
 ## Decision
 
-Generate a bounded `sw-*` utility stylesheet from tokens and publish it as `@scalewing/react/styles.css`. Consuming apps import that file once and do not copy it into their source tree.
+Generate a bounded `sw-*` utility stylesheet from tokens (generation lives in `@scalewing/react`, ADR 0010) and publish it as `@scalewing/react/styles.css`. Consuming apps import that file once and do not copy it into their source tree.
 
 Class names use spacing steps (`sw-padding-top-4`), not raw pixels. React Native uses the same steps as props.
 

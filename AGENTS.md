@@ -27,8 +27,8 @@
 
 This repository is **Scalewing**, a design system for multiple products. It publishes:
 
-- `@scalewing/tokens` — themes, scales, CSS generation
-- `@scalewing/react` — DOM components and the consumer stylesheet
+- `@scalewing/tokens` — themes, scales, shared values
+- `@scalewing/react` — DOM components, CSS generation, and the consumer stylesheet
 - `@scalewing/react-native` — Expo / React Native components
 
 Consuming apps own product copy, routing, domain components, brand overlays, and pictograms (Lucide for generic UI glyphs; custom SVG for brand marks). Scalewing owns primitives, generated layout CSS, and private control chrome. See `docs/adr/0008-icon-slots-and-lucide.md`.
@@ -96,11 +96,11 @@ Example apps must consume public package exports the way a real consumer would, 
 
 #### packages/tokens
 
-Responsible for spacing, color, type, radius, elevation, motion, theme objects, contrast checks, CSS custom properties, and the generated `sw-*` class catalog.
+Responsible for spacing, color, type, radius, elevation, motion, theme objects, contrast checks, and `createTheme`. It contains no CSS, class names, or breakpoints.
 
 #### packages/react
 
-Responsible for DOM `ThemeProvider` (including `palette`), Box, Stack, Inline, Split, Card, Accordion, Dialog, Toast, Text, Button, Field, Select, Badge, SegmentedControl, Table, BarChart, AppHeader, Nav, and re-exporting the generated stylesheet as `@scalewing/react/styles.css` plus optional `@scalewing/react/palette/<id>.css`. `Box as="a"` is a layout link. Use Button for press actions. Badge is not a press control. Split is a start pane with a drag separator. Accordion is a native details disclosure in page flow. Dialog is a modal on the native top layer. Toast is an auto-dismiss confirmation on the popover layer and does not trap focus. Select is a labeled listbox menu. BarChart is a labeled horizontal magnitude chart.
+Responsible for the CSS generators, class catalog, and breakpoint token (`src/css`), DOM `ThemeProvider` (including `palette`), Box, Stack, Inline, Split, Card, Accordion, Dialog, Toast, Text, Button, Field, Select, Badge, SegmentedControl, Table, BarChart, AppHeader, Nav, and re-exporting the generated stylesheet as `@scalewing/react/styles.css` plus optional `@scalewing/react/palette/<id>.css`. `Box as="a"` is a layout link. Use Button for press actions. Badge is not a press control. Split is a start pane with a drag separator. Accordion is a native details disclosure in page flow. Dialog is a modal on the native top layer. Toast is an auto-dismiss confirmation on the popover layer and does not trap focus. Select is a labeled listbox menu. BarChart is a labeled horizontal magnitude chart.
 
 #### packages/react-native
 
@@ -160,7 +160,7 @@ Check:
 
 | Path                              | Purpose                         |
 | --------------------------------- | ------------------------------- |
-| `packages/tokens/AGENTS.md`       | Pure tokens and CSS generation  |
+| `packages/tokens/AGENTS.md`       | Pure shared token values        |
 | `packages/react/AGENTS.md`        | DOM renderer                    |
 | `packages/react-native/AGENTS.md` | Native renderer                 |
 | `apps/gallery/AGENTS.md`          | Web gallery; animal sample copy |

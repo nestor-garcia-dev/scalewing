@@ -30,6 +30,8 @@ export {
   type BadgeProps,
   type BadgeSize,
   type BadgeTone,
+  badgeSizes,
+  badgeTones,
 } from './components/Badge.js';
 export {
   BarChart,
@@ -90,6 +92,7 @@ export {
   type ThemeProviderProps,
 } from './theme/ThemeProvider.js';
 
+export { utilityClassCatalog } from './css/stylesheet.js';
 export type { VisibilityProps } from './visibility-classes.js';
 export { Separator } from './components/Separator.js';
 export type {

@@ -1,8 +1,5 @@
-import {
-  buttonClassNames,
-  type ButtonSize,
-  type ButtonVariant,
-} from '@scalewing/tokens';
+import { type ButtonSize, type ButtonVariant } from '@scalewing/tokens';
+import { buttonClassNames } from '../css/css-button.js';
 import { forwardRef, type ButtonHTMLAttributes, type ReactNode } from 'react';
 
 import { cx } from '../class-names.js';

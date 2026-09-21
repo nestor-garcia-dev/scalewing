@@ -1,5 +1,11 @@
-import { Badge, Inline, Stack, Text } from '@scalewing/react';
-import { badgeSizes, badgeTones } from '@scalewing/tokens';
+import {
+  Badge,
+  Inline,
+  Stack,
+  Text,
+  badgeSizes,
+  badgeTones,
+} from '@scalewing/react';
 
 import { Section } from '../layout/Section.js';
 
