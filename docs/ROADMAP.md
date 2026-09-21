@@ -2,7 +2,7 @@
 
 ## Current focus
 
-Independent per-package releases (ADR 0009, `docs/requests/independent-package-releases.md`): approved by the product owner on 2026-09-21 and in implementation. The first release under it is 1.0.0 for all three packages, the start of stable versioning; it includes the web `Box` `hideBelow`/`hideFrom` props.
+Independent per-package releases (ADR 0009, `docs/requests/independent-package-releases.md`): approved by the product owner on 2026-09-21 and in implementation. The first release under it is 1.0.0 for all three packages, the start of stable versioning, released tokens first, then react, then react-native; it includes the web `Box` `hideBelow`/`hideFrom` props.
 
 Native Accordion for FutMas: independent title navigation and disclosure,
 controlled open state, theme-owned rounded grouping, accessible expanded

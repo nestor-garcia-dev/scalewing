@@ -18,7 +18,8 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "lint": "eslint .",
-    "test": "node --test scripts/assert-release-tag.test.mjs && pnpm --workspace-concurrency=1 -r --if-present test",
+    "test": "node --test scripts/assert-release-tag.test.mjs scripts/release-tooling.test.mjs && pnpm --workspace-concurrency=1 -r --if-present test",
+    "check:package": "node scripts/check-package.mjs",
     "typecheck": "pnpm --workspace-concurrency=1 -r --if-present typecheck"
   },
   "devDependencies": {

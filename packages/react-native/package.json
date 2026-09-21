@@ -34,7 +34,7 @@
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@scalewing/tokens": "workspace:*"
+    "@scalewing/tokens": "workspace:^"
   },
   "peerDependencies": {
     "react": "^19.0.0",

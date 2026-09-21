@@ -3,44 +3,23 @@ import { dirname, join } from 'node:path';
 import process from 'node:process';
 import { fileURLToPath } from 'node:url';
 
+import { parseReleaseTag } from './release-tag.mjs';
+
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
-const packageDirectories = [
-  'packages/tokens',
-  'packages/react',
-  'packages/react-native',
-];
-
-function versionFromTag(tag) {
-  if (!tag) {
-    throw new Error('RELEASE_TAG is required for publish.');
-  }
-
-  const version = tag.startsWith('v') ? tag.slice(1) : tag;
-
-  if (!/^\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?$/.test(version)) {
-    throw new Error(`Release tag ${tag} is not a package version.`);
-  }
-
-  return version;
-}
-
-function readPackageVersion(directory) {
-  const manifest = JSON.parse(
-    readFileSync(join(root, directory, 'package.json'), 'utf8'),
-  );
-
-  return { name: manifest.name, version: manifest.version };
-}
-
 const releaseTag = process.env.RELEASE_TAG ?? '';
-const expectedVersion = versionFromTag(releaseTag);
+const release = parseReleaseTag(releaseTag);
+const manifest = JSON.parse(
+  readFileSync(join(root, release.directory, 'package.json'), 'utf8'),
+);
 
-for (const directory of packageDirectories) {
-  const pkg = readPackageVersion(directory);
+if (manifest.name !== release.name) {
+  throw new Error(
+    `${release.directory} is ${manifest.name}, not ${release.name}.`,
+  );
+}
 
-  if (pkg.version !== expectedVersion) {
-    throw new Error(
-      `${pkg.name} is ${pkg.version}, but the release tag is ${releaseTag}.`,
-    );
-  }
+if (manifest.version !== release.version) {
+  throw new Error(
+    `${manifest.name} is ${manifest.version}, but the release tag is ${releaseTag}.`,
+  );
 }

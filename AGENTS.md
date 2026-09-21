@@ -175,6 +175,7 @@ Check:
 - Use `pnpm` and workspace packages.
 - Keep packages separately publishable.
 - React and React Native are peer dependencies of the renderer packages.
+- Packages release independently with semantic versioning from `1.0.0`, one changeset per affected package and one per-package release tag (`tokens-v…`, `react-v…`, `react-native-v…`). A tokens changeset states additive or breaking and needs both renderer agents' sign-off. See `docs/adr/0009-independent-package-releases.md`.
 - Do not auto-publish every merge. Releases use Changesets and an explicit GitHub Actions dispatch. See `docs/CONTRIBUTING.md`.
 - Reserve and use the `@scalewing` npm scope. If the scope is unavailable, stop and choose a new name rather than silently renaming packages.
 
@@ -186,7 +187,7 @@ Run focused package checks while developing:
 - `pnpm --filter @scalewing/react test`
 - `pnpm --filter @scalewing/react-native test`
 
-Run `pnpm check` before declaring a cross-package change complete.
+Run `pnpm check` before declaring a cross-package change complete. `pnpm check:package <tokens|react|react-native>` is the scoped gate used at release time.
 
 ## Code review rules
 

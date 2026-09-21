@@ -21,4 +21,5 @@ A release additionally requires:
 
 - Packed tarballs contain only build output, declarations, CSS, license, README, and package metadata.
 - Renderer runtime libraries remain peer dependencies.
+- One package is released per tag (`tokens-v…`, `react-v…`, `react-native-v…`); packed tarballs are checked for that package only.
 - Publishing uses the explicit GitHub Actions release workflow, not a merge hook. The first version of a new package may be published once from a laptop so a trusted publisher can be attached.

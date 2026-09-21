@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       tag:
-        description: Existing release tag matching all three package versions
+        description: Existing release tag for one package (tokens-vX.Y.Z, react-vX.Y.Z, or react-native-vX.Y.Z)
         required: true
         type: string
       publish:
@@ -26,15 +26,18 @@ jobs:
     timeout-minutes: 20
     outputs:
       commit: ${{ steps.release-commit.outputs.sha }}
+      package: ${{ steps.request.outputs.package }}
     steps:
       - name: Validate request
+        id: request
         env:
           RELEASE_TAG: ${{ inputs.tag }}
           PUBLISH: ${{ inputs.publish }}
           ENABLED: ${{ vars.NPM_PUBLISH_ENABLED }}
         run: |
           [[ "$GITHUB_REF" == refs/heads/main ]] || exit 1
-          [[ "$RELEASE_TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.-]+)?$ ]] || exit 1
+          [[ "$RELEASE_TAG" =~ ^(tokens|react-native|react)-v[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.-]+)?$ ]] || exit 1
+          echo "package=${BASH_REMATCH[1]}" >> "$GITHUB_OUTPUT"
           if [[ "$PUBLISH" == true && "$ENABLED" != true ]]; then
             echo "Configure the npm trusted publisher before enabling NPM_PUBLISH_ENABLED."
             exit 1
@@ -57,7 +60,12 @@ jobs:
       - run: node scripts/assert-release-tag.mjs
         env:
           RELEASE_TAG: ${{ inputs.tag }}
-      - run: pnpm check
+      - run: node scripts/assert-tokens-published.mjs
+        env:
+          RELEASE_TAG: ${{ inputs.tag }}
+      - run: pnpm check:package "$PACKAGE"
+        env:
+          PACKAGE: ${{ steps.request.outputs.package }}
 
   publish:
     if: inputs.publish
@@ -81,19 +89,24 @@ jobs:
       - run: node scripts/assert-release-tag.mjs
         env:
           RELEASE_TAG: ${{ inputs.tag }}
-      - run: npm install --global npm@11.5.1
-      - run: pnpm build
-      - name: Pack public packages
-        run: |
-          mkdir -p "$RUNNER_TEMP/scalewing-release"
-          pnpm --filter @scalewing/tokens pack --pack-destination "$RUNNER_TEMP/scalewing-release"
-          pnpm --filter @scalewing/react pack --pack-destination "$RUNNER_TEMP/scalewing-release"
-          pnpm --filter @scalewing/react-native pack --pack-destination "$RUNNER_TEMP/scalewing-release"
-      - name: Publish with npm trusted publishing
+      - run: node scripts/assert-tokens-published.mjs
         env:
           RELEASE_TAG: ${{ inputs.tag }}
+      - run: npm install --global npm@11.5.1
+      - name: Build the package and its dependencies
+        env:
+          PACKAGE: ${{ needs.validate.outputs.package }}
+        run: pnpm --filter "@scalewing/${PACKAGE}..." build
+      - name: Pack the public package
+        env:
+          PACKAGE: ${{ needs.validate.outputs.package }}
         run: |
-          version="${RELEASE_TAG#v}"
-          npm publish "$RUNNER_TEMP/scalewing-release/scalewing-tokens-$version.tgz" --access public --provenance
-          npm publish "$RUNNER_TEMP/scalewing-release/scalewing-react-$version.tgz" --access public --provenance
-          npm publish "$RUNNER_TEMP/scalewing-release/scalewing-react-native-$version.tgz" --access public --provenance
+          mkdir -p "$RUNNER_TEMP/scalewing-release"
+          pnpm --filter "@scalewing/${PACKAGE}" pack --pack-destination "$RUNNER_TEMP/scalewing-release"
+      - name: Publish with npm trusted publishing
+        env:
+          PACKAGE: ${{ needs.validate.outputs.package }}
+          RELEASE_TAG: ${{ inputs.tag }}
+        run: |
+          version="${RELEASE_TAG#*-v}"
+          npm publish "$RUNNER_TEMP/scalewing-release/scalewing-${PACKAGE}-${version}.tgz" --access public --provenance
