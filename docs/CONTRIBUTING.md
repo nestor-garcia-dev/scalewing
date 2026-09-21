@@ -16,6 +16,17 @@ Use Node 22.23.2 (`nvm use`) and pnpm 11.19.0. Install with `pnpm install --froz
 
 When a product needs a missing primitive, write `docs/requests/<consumer>-<surface>.md` (template in `docs/CONSUMER_REQUESTS.md`) and implement it in this repository, one lane at a time. Do not paste the filled template into a separate Scalewing chat. Consumers verify with a local `link:` (see `docs/CONSUMER_REQUESTS.md`) instead of waiting on npm. One consumer is enough. Do not add a new public component, class family, or renderer because a product UI looks like it might need one, and do not add a parallel control when an existing surface already covers the use case. Ship a reusable name so later apps can import the same primitive.
 
+## Working in parallel
+
+Several agents and people change Scalewing at once, so the shared checkout stays on a clean `main` and nobody edits it or switches its branch.
+
+1. Create a worktree and branch for your topic: `git -C /Users/neto/projects/scalewing worktree add ../scalewing-<topic> -b <branch>`.
+2. Run `pnpm install` in the worktree, then develop and run checks there.
+3. Open a pull request against `main`, get the independent review the rules require, and merge only when it is approved.
+4. Remove the worktree after the merge: `git worktree remove ../scalewing-<topic>`.
+
+To try unpublished changes in a product, point the product's link script at your worktree, for example `SCALEWING_PATH=<worktree> pnpm scalewing:link`. Never commit `link:` or `file:` specifiers. Releases stay per-package from tags on `main` (ADR 0009); a release tag never points at an unmerged branch.
+
 ## npm trusted publisher setup
 
 For each existing package (`@scalewing/tokens`, `@scalewing/react`, `@scalewing/react-native`), configure a GitHub Actions trusted publisher in npm package settings:
