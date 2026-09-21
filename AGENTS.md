@@ -176,6 +176,7 @@ Check:
 - Keep packages separately publishable.
 - React and React Native are peer dependencies of the renderer packages.
 - Packages release independently with semantic versioning from `1.0.0`, one changeset per affected package and one per-package release tag (`tokens-v…`, `react-v…`, `react-native-v…`). A tokens changeset states additive or breaking and needs both renderer agents' sign-off. See `docs/adr/0009-independent-package-releases.md`.
+- Every agent works in its own git worktree on its own branch and reaches `main` only through a reviewed pull request. The shared checkout at `/Users/neto/projects/scalewing` stays on a clean `main`: do not edit it or switch its branch. See `docs/CONTRIBUTING.md`, "Working in parallel".
 - Do not auto-publish every merge. Releases use Changesets and an explicit GitHub Actions dispatch. See `docs/CONTRIBUTING.md`.
 - Reserve and use the `@scalewing` npm scope. If the scope is unavailable, stop and choose a new name rather than silently renaming packages.
 
