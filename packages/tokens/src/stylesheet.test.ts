@@ -303,6 +303,12 @@ describe('generated CSS', () => {
       expect(catalog).toContain(className);
     }
     expect(css).toContain('.sw-separator { background: CanvasText; }');
+    for (const className of ['sw-hide-from-md', 'sw-hide-below-md']) {
+      expect(css).toContain(`.${className} { display: none; }`);
+      expect(catalog).toContain(className);
+    }
+    expect(css).toContain('@media (min-width: 48rem) {');
+    expect(css).toContain('@media not all and (min-width: 48rem) {');
     for (const className of [
       'sw-filter-chips',
       'sw-filter-chips-legend',

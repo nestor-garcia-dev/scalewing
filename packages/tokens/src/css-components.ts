@@ -15,6 +15,7 @@ import { cssSpinnerClasses } from './css-spinner.js';
 import { cssProgressClasses } from './css-progress.js';
 import { cssTooltipClasses } from './css-tooltip.js';
 import { cssSeparatorClasses } from './css-separator.js';
+import { cssResponsiveClasses } from './css-responsive.js';
 import { cssFilterChipsClasses } from './css-filter-chips.js';
 import { cssFieldClasses } from './css-field.js';
 import { cssToastClasses } from './css-toast.js';
@@ -126,5 +127,7 @@ ${cssFieldClasses()}
 
 ${cssSplitClasses()}
 
-${cssToastClasses()}`;
+${cssToastClasses()}
+
+${cssResponsiveClasses()}`;
 }

@@ -8,6 +8,7 @@ import { spinnerClassCatalog } from './css-spinner.js';
 import { progressClassCatalog } from './css-progress.js';
 import { tooltipClassCatalog } from './css-tooltip.js';
 import { separatorClassCatalog } from './css-separator.js';
+import { responsiveClassCatalog } from './css-responsive.js';
 import { filterChipsClassCatalog } from './css-filter-chips.js';
 import { fieldClassCatalog } from './css-field.js';
 import { cssComponentClasses } from './css-components.js';
@@ -62,6 +63,7 @@ export function utilityClassCatalog(): string[] {
     ...fieldClassCatalog(),
     ...splitClassCatalog(),
     ...toastClassCatalog(),
+    ...responsiveClassCatalog(),
   ];
 }
 

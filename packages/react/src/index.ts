@@ -90,6 +90,7 @@ export {
   type ThemeProviderProps,
 } from './theme/ThemeProvider.js';
 
+export type { VisibilityProps } from './visibility-classes.js';
 export { Separator } from './components/Separator.js';
 export type {
   SeparatorOrientation,

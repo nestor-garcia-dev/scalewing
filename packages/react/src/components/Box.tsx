@@ -7,6 +7,10 @@ import {
 
 import { cx } from '../class-names.js';
 import { spacingClassNames, type SpacingProps } from '../spacing-classes.js';
+import {
+  visibilityClassNames,
+  type VisibilityProps,
+} from '../visibility-classes.js';
 
 export type BoxElement =
   | 'div'
@@ -22,6 +26,7 @@ export type BoxElement =
   | 'label';
 
 export type BoxProps = SpacingProps &
+  VisibilityProps &
   HTMLAttributes<HTMLElement> &
   Pick<
     AnchorHTMLAttributes<HTMLAnchorElement>,
@@ -39,6 +44,8 @@ export const Box = forwardRef<HTMLElement, BoxProps>(function Box(
     background,
     border,
     className,
+    hideBelow,
+    hideFrom,
     padding,
     paddingBottom,
     paddingLeft,
@@ -67,6 +74,7 @@ export const Box = forwardRef<HTMLElement, BoxProps>(function Box(
           paddingX,
           paddingY,
         }),
+        ...visibilityClassNames({ hideBelow, hideFrom }),
         className,
       )}
       style={{

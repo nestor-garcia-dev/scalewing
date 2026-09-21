@@ -59,6 +59,12 @@ export {
   lightGlass,
 } from './glass.js';
 export { product } from './product.js';
+export {
+  type Breakpoint,
+  type HideDirection,
+  breakpointScale,
+  hideClass,
+} from './breakpoints.js';
 export { type SplitScale, splitScale } from './split.js';
 export { type RadiusStep, radiusScale } from './radius.js';
 export {
