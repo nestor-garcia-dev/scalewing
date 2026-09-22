@@ -29,7 +29,7 @@ export function TextSection() {
   return (
     <Section
       id="text"
-      purpose="Text maps variant to generated sw-text-* classes and semantic color to CSS variables. Alignment and truncation are opt-in."
+      purpose="Text maps variant to generated sw-text-* classes and semantic color to CSS variables. Below the md breakpoint, display and heading step down to their compact sizes. Alignment and truncation are opt-in."
       title="Text"
       usage={`<Text variant="title" color="accent">Snow leopard</Text>`}
     >
