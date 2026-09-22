@@ -4,7 +4,7 @@ import {
   type Breakpoint,
 } from './breakpoints.js';
 
-export const gridColumnCounts = [1, 2, 3, 4] as const;
+export const gridColumnCounts = [1, 2, 3, 4, 6] as const;
 
 export type GridColumns = (typeof gridColumnCounts)[number];
 

@@ -14,12 +14,19 @@ import { spacingClassNames } from '../spacing-classes.js';
 import { Stack } from './Stack.js';
 import { Text } from './Text.js';
 
+/**
+ * `md` is the reading width (32rem) for a message or a short form; `lg`
+ * (56rem) holds a row of six fields or a data grid without folding it.
+ */
+export type DialogSize = 'md' | 'lg';
+
 export type DialogProps = Omit<
   DialogHTMLAttributes<HTMLDialogElement>,
   'onClose' | 'open' | 'title' | 'children'
 > & {
   open: boolean;
   onClose: () => void;
+  size?: DialogSize;
   title: string;
   children: ReactNode;
 };
@@ -29,6 +36,7 @@ export function Dialog({
   className,
   onClose,
   open,
+  size = 'md',
   title,
   ...rest
 }: DialogProps) {
@@ -58,6 +66,7 @@ export function Dialog({
       aria-labelledby={titleId}
       className={cx(
         'sw-dialog',
+        size === 'lg' && 'sw-dialog-lg',
         ...spacingClassNames({ padding: 5 }),
         className,
       )}

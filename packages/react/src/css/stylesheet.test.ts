@@ -59,6 +59,8 @@ describe('generated CSS', () => {
       ]),
     );
     expect(css).toContain('.sw-grid-cols-below-md-2');
+    expect(css).toContain('.sw-grid-cols-6');
+    expect(catalog).toContain('sw-grid-cols-6');
     expect(catalog).not.toContain('sw-grid-cols-5');
     expect(css).toContain('.sw-stack');
     expect(css).not.toContain('!important');
@@ -116,6 +118,7 @@ describe('generated CSS', () => {
         'sw-badge-accent',
         'sw-badge-sm',
         'sw-segmented',
+        'sw-segmented-filled',
         'sw-table',
         'sw-table-numeric',
         'sw-table-clip',
@@ -130,10 +133,13 @@ describe('generated CSS', () => {
     expect(css).toContain('.sw-table-compact');
     expect(css).toContain('.sw-bar-chart-fill');
     expect(css).toContain('width: calc(var(--sw-bar-fill, 0) * 100%)');
+    expect(css).toContain('.sw-segmented-filled .sw-segmented-item-selected');
     expect(css).toContain('.sw-dialog');
     expect(css).toContain('.sw-dialog::backdrop');
     expect(css).toContain('margin: auto');
     expect(css).toContain('--sw-dialog-max: 32rem');
+    expect(css).toContain('--sw-dialog-max-lg: 56rem');
+    expect(css).toContain('.sw-dialog-lg');
     expect(css).toContain('--sw-select-max: 16rem');
     expect(css).toContain('.sw-select-trigger');
     expect(css).toContain('.sw-select-list');
@@ -279,6 +285,7 @@ describe('generated CSS', () => {
       expect(catalog).toContain(className);
     }
     expect(catalog).toContain('sw-dialog');
+    expect(catalog).toContain('sw-dialog-lg');
     expect(css).toContain('.sw-accordion');
     expect(css).toContain('.sw-accordion-summary');
     expect(catalog).toContain('sw-accordion');

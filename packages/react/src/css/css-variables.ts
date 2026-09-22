@@ -52,6 +52,7 @@ ${control}
   --sw-focus-ring-offset: ${focusRing.offset}px;
   --sw-container-max: 72rem;
   --sw-dialog-max: 32rem;
+  --sw-dialog-max-lg: 56rem;
   --sw-select-max: 16rem;
   --sw-split-min: ${splitScale.min}rem;
   --sw-split-size: ${splitScale.size}rem;

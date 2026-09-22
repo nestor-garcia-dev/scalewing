@@ -48,8 +48,22 @@ describe('Grid', () => {
     );
   });
 
+  it('offers six columns for a denomination row', () => {
+    render(
+      <Grid columns={6} columnsBelow={{ md: 2 }} data-testid="grid">
+        cell
+      </Grid>,
+    );
+    expect(screen.getByTestId('grid').className).toBe(
+      'sw-grid sw-grid-cols-6 sw-grid-cols-below-md-2 sw-gap-0',
+    );
+  });
+
   it('rejects column counts outside the bounded catalog', () => {
     expect(() => render(<Grid columns={5 as never}>cell</Grid>)).toThrow(
+      RangeError,
+    );
+    expect(() => render(<Grid columns={7 as never}>cell</Grid>)).toThrow(
       RangeError,
     );
     expect(() =>
@@ -73,10 +87,12 @@ describe('Grid', () => {
       'sw-grid-cols-2',
       'sw-grid-cols-3',
       'sw-grid-cols-4',
+      'sw-grid-cols-6',
       'sw-grid-cols-below-md-1',
       'sw-grid-cols-below-md-2',
       'sw-grid-cols-below-md-3',
       'sw-grid-cols-below-md-4',
+      'sw-grid-cols-below-md-6',
     ]);
   });
 });

@@ -15,6 +15,10 @@ export function cssDialogClasses(): string {
   width: calc(100% - var(--sw-space-8));
 }
 
+.sw-dialog-lg {
+  max-width: min(var(--sw-dialog-max-lg), calc(100vw - var(--sw-space-8)));
+}
+
 .sw-dialog::backdrop {
   background: color-mix(in srgb, var(--sw-color-text) 28%, transparent);
 }
@@ -26,5 +30,5 @@ export function cssDialogClasses(): string {
 }
 
 export function dialogClassCatalog(): string[] {
-  return ['sw-dialog'];
+  return ['sw-dialog', 'sw-dialog-lg'];
 }

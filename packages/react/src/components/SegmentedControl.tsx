@@ -11,16 +11,28 @@ type SegmentedLabel =
   | { 'aria-label': string; 'aria-labelledby'?: never }
   | { 'aria-label'?: never; 'aria-labelledby': string };
 
+/**
+ * `compact` is the quiet chip track for a section switch; `filled` gives every
+ * segment the same width and paints the selected one in the accent, for a
+ * choice that decides what a form does. It sizes to its container: the full
+ * width in a Stack, the width of its widest label in an Inline.
+ */
+export type SegmentedControlVariant = 'compact' | 'filled';
+
 export type SegmentedControlProps = SegmentedLabel & {
   items: readonly SegmentedItem[];
   onChange: (id: string) => void;
   value: string;
+  variant?: SegmentedControlVariant;
 };
 
 export const SegmentedControl = forwardRef<
   HTMLDivElement,
   SegmentedControlProps
->(function SegmentedControl({ items, onChange, value, ...labelProps }, ref) {
+>(function SegmentedControl(
+  { items, onChange, value, variant = 'compact', ...labelProps },
+  ref,
+) {
   function onKeyDown(event: KeyboardEvent<HTMLDivElement>) {
     if (event.key !== 'ArrowRight' && event.key !== 'ArrowLeft') {
       return;
@@ -42,7 +54,10 @@ export const SegmentedControl = forwardRef<
   return (
     <div
       ref={ref}
-      className="sw-segmented"
+      className={cx(
+        'sw-segmented',
+        variant === 'filled' && 'sw-segmented-filled',
+      )}
       onKeyDown={onKeyDown}
       role="radiogroup"
       {...labelProps}

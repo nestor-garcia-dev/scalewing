@@ -15,7 +15,7 @@ export function GridSection() {
   return (
     <Section
       id="grid"
-      purpose="Grid lays children out in equal-width columns. Choose one to four columns, a gap step, and optionally fewer columns below the md breakpoint so tiles and cards stay readable on a phone."
+      purpose="Grid lays children out in equal-width columns. Choose one to four columns, or six for a wide count row, a gap step, and optionally fewer columns below the md breakpoint so tiles and cards stay readable on a phone."
       title="Grid"
       usage={`<Grid columns={3} columnsBelow={{ md: 2 }} gap={2}>
   <Button variant="secondary" onPress={logSighting}>Log a sighting</Button>
