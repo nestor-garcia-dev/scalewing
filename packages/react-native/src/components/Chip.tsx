@@ -12,7 +12,7 @@ export type ChipProps = {
   selected: boolean;
 };
 
-/** Private checkable pill shared by MultiSelect and TimeField. */
+/** Private checkable pill shared by MultiSelect and SingleSelect. */
 export function Chip({
   accessibilityRole,
   disabled,

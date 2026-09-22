@@ -128,7 +128,9 @@ export default function App() {
               minutesLabel="Minutes"
               minuteStep={30}
               onChange={setFeedingTime}
+              periodLabel="Morning or afternoon"
               placeholder="Choose a time"
+              testID="feeding-time"
               value={feedingTime}
             />
             <MultiSelect
