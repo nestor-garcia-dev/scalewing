@@ -16,6 +16,7 @@ import { tooltipClassCatalog } from './css-tooltip.js';
 import { separatorClassCatalog } from './css-separator.js';
 import { responsiveClassCatalog } from './css-responsive.js';
 import { filterChipsClassCatalog } from './css-filter-chips.js';
+import { gridClassCatalog } from './css-grid.js';
 import { fieldClassCatalog } from './css-field.js';
 import { cssComponentClasses } from './css-components.js';
 import { buttonClassCatalog } from './css-button.js';
@@ -63,6 +64,7 @@ export function utilityClassCatalog(): string[] {
     ...tooltipClassCatalog(),
     ...separatorClassCatalog(),
     ...filterChipsClassCatalog(),
+    ...gridClassCatalog(),
     ...fieldClassCatalog(),
     ...splitClassCatalog(),
     ...toastClassCatalog(),

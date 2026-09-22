@@ -19,6 +19,7 @@ import {
   Tooltip,
   Separator,
   FilterChips,
+  Grid,
   DateField,
   Field,
   Select,
@@ -61,6 +62,8 @@ Import the CSS once at the application entry. Do not copy it into your source tr
 `Tooltip` adds supplementary plain-text help to one labelled, focusable trigger. Supply localized `content` and an existing trigger element with its own accessible name. It opens on hover or focus, closes on pointer leave, blur, Escape, or outside touch, and toggles on touch. Keep required instructions visible outside the tooltip.
 
 `Separator` divides sections with a token-colored line. It is horizontal by default; use `orientation="vertical"` in a flex row. Set `decorative` when the line only supports layout so assistive technology ignores it.
+
+`Grid` places children in one to four equal-width columns with a token `gap` step. `columnsBelow={{ md: 2 }}` drops to fewer columns below the `md` breakpoint so tiles and stat cards stay readable on a phone. It accepts every `Box` prop.
 
 `FilterChips` presents a long, wrapping single-choice filter set. Provide a localized group `label`, controlled `value`, `onChange`, and options with stable values and localized labels. Counts belong in those labels. Native radios provide arrow and Space navigation; disabled options are skipped.
 

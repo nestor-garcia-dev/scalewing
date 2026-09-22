@@ -22,6 +22,7 @@ import { DialogSection } from './sections/dialog.js';
 import { ToastSection } from './sections/toast.js';
 import { FieldSection } from './sections/field.js';
 import { FoundationsSection } from './sections/foundations.js';
+import { GridSection } from './sections/grid.js';
 import { LayoutSection } from './sections/layout.js';
 import { LinkSection } from './sections/link.js';
 import { NavSection } from './sections/nav.js';
@@ -77,6 +78,7 @@ export const catalog = [
     Section: FoundationsSection,
   },
   { id: 'layout', label: 'Layout', group: 'layout', Section: LayoutSection },
+  { id: 'grid', label: 'Grid', group: 'layout', Section: GridSection },
   { id: 'split', label: 'Split', group: 'layout', Section: SplitSection },
   { id: 'text', label: 'Text', group: 'content', Section: TextSection },
   { id: 'card', label: 'Card', group: 'content', Section: CardSection },
