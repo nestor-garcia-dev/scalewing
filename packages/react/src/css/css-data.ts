@@ -151,6 +151,11 @@ export function cssDataClasses(): string {
   width: 100%;
 }
 
+.sw-table-wrap:focus-visible {
+  outline: var(--sw-focus-ring-width) solid var(--sw-color-accent);
+  outline-offset: calc(-1 * var(--sw-focus-ring-width));
+}
+
 .sw-table {
   border-collapse: collapse;
   width: 100%;

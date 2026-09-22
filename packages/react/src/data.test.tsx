@@ -340,4 +340,38 @@ describe('Table', () => {
     expect(row.getAttribute('aria-selected')).toBe('true');
     expect(row.className).toContain('sw-table-row-selected');
   });
+
+  it('wraps the table in a keyboard-reachable group named after it', () => {
+    render(
+      <ThemeProvider colorScheme="light">
+        <h2 id="census-title">Census</h2>
+        <Table aria-labelledby="census-title">
+          <TableBody>
+            <TableRow>
+              <TableCell>Heron</TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>
+        <Table aria-label="Watch list">
+          <TableBody>
+            <TableRow>
+              <TableCell>Otter</TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>
+      </ThemeProvider>,
+    );
+
+    const byHeading = screen.getByRole('group', { name: 'Census' });
+    expect(byHeading.className).toBe('sw-table-wrap');
+    expect(byHeading.tabIndex).toBe(0);
+    expect(
+      byHeading.contains(screen.getByRole('table', { name: 'Census' })),
+    ).toBe(true);
+    const byLabel = screen.getByRole('group', { name: 'Watch list' });
+    expect(byLabel.getAttribute('aria-labelledby')).toBeNull();
+    expect(
+      byLabel.contains(screen.getByRole('table', { name: 'Watch list' })),
+    ).toBe(true);
+  });
 });
