@@ -72,6 +72,29 @@ describe('SegmentedControl', () => {
     draft.click();
     expect(onChange).toHaveBeenCalledWith('draft');
   });
+
+  it('stretches and fills the selected segment at the filled variant', () => {
+    render(
+      <ThemeProvider colorScheme="light">
+        <SegmentedControl
+          aria-label="Direction"
+          items={[
+            { id: 'remove', label: 'Remove' },
+            { id: 'add', label: 'Add' },
+          ]}
+          onChange={() => {}}
+          value="remove"
+          variant="filled"
+        />
+      </ThemeProvider>,
+    );
+
+    const group = screen.getByRole('radiogroup', { name: 'Direction' });
+    expect(group.className).toBe('sw-segmented sw-segmented-filled');
+    expect(screen.getByRole('radio', { name: 'Remove' }).className).toContain(
+      'sw-segmented-item-selected',
+    );
+  });
 });
 
 describe('Table', () => {

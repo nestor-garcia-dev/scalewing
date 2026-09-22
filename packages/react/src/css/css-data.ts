@@ -10,6 +10,7 @@ export type BadgeSize = (typeof badgeSizes)[number];
 
 const caption = typographyVariants.caption;
 const data = typographyVariants.data;
+const body = typographyVariants.body;
 
 export function badgeClassNames(
   tone: BadgeTone,
@@ -101,6 +102,30 @@ export function cssDataClasses(): string {
   color: var(--sw-color-text);
 }
 
+.sw-segmented-filled {
+  display: flex;
+  width: 100%;
+}
+
+.sw-segmented-filled .sw-segmented-item {
+  align-items: center;
+  color: var(--sw-color-text);
+  display: inline-flex;
+  flex: 1 1 0;
+  font-size: ${body.fontSize}px;
+  justify-content: center;
+  letter-spacing: ${body.letterSpacing}px;
+  line-height: ${body.lineHeight}px;
+  min-height: var(--sw-control-md-min-height);
+  min-width: 0;
+  padding-inline: var(--sw-control-md-padding-inline);
+}
+
+.sw-segmented-filled .sw-segmented-item-selected {
+  background: var(--sw-color-accent);
+  color: var(--sw-color-onAccent);
+}
+
 .sw-table-wrap {
   overflow: auto;
   width: 100%;
@@ -190,6 +215,7 @@ export function dataClassCatalog(): string[] {
     'sw-segmented',
     'sw-segmented-item',
     'sw-segmented-item-selected',
+    'sw-segmented-filled',
     'sw-table-wrap',
     'sw-table',
     'sw-table-end',

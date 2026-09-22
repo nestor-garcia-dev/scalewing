@@ -61,6 +61,7 @@ export { Nav, type NavProps } from './components/Nav.js';
 export {
   SegmentedControl,
   type SegmentedControlProps,
+  type SegmentedControlVariant,
   type SegmentedItem,
 } from './components/SegmentedControl.js';
 export { Select } from './components/Select.js';

@@ -118,6 +118,7 @@ describe('generated CSS', () => {
         'sw-badge-accent',
         'sw-badge-sm',
         'sw-segmented',
+        'sw-segmented-filled',
         'sw-table',
         'sw-table-numeric',
         'sw-table-clip',
@@ -132,6 +133,7 @@ describe('generated CSS', () => {
     expect(css).toContain('.sw-table-compact');
     expect(css).toContain('.sw-bar-chart-fill');
     expect(css).toContain('width: calc(var(--sw-bar-fill, 0) * 100%)');
+    expect(css).toContain('.sw-segmented-filled .sw-segmented-item-selected');
     expect(css).toContain('.sw-dialog');
     expect(css).toContain('.sw-dialog::backdrop');
     expect(css).toContain('margin: auto');
