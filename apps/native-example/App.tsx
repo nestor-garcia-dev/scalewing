@@ -2,8 +2,10 @@ import {
   Accordion,
   Button,
   Card,
+  DateField,
   Field,
   Inline,
+  MultiSelect,
   Stack,
   TabBar,
   TabBarTrailing,
@@ -14,6 +16,7 @@ import {
   TableRow,
   Text,
   ThemeProvider,
+  TimeField,
   useTheme,
 } from '@scalewing/react-native';
 import { useState } from 'react';
@@ -61,6 +64,9 @@ export default function App() {
   const [searchCount, setSearchCount] = useState(0);
   const [rowPresses, setRowPresses] = useState(0);
   const [teamName, setTeamName] = useState('Harbor United');
+  const [visitDate, setVisitDate] = useState('');
+  const [feedingTime, setFeedingTime] = useState('09:30');
+  const [habitats, setHabitats] = useState<string[]>(['river']);
   const [groupOpen, setGroupOpen] = useState(true);
   const [titlePresses, setTitlePresses] = useState(0);
 
@@ -104,6 +110,38 @@ export default function App() {
               label="Team name"
               onChangeText={setTeamName}
               value={teamName}
+            />
+            <DateField
+              hint="Trail walks run on weekends."
+              label="Visit date"
+              nextMonthLabel="Next month"
+              onChange={setVisitDate}
+              placeholder="Choose a day"
+              previousMonthLabel="Previous month"
+              value={visitDate}
+            />
+            <TimeField
+              hoursLabel="Hour"
+              label="Feeding time"
+              minutesLabel="Minutes"
+              minuteStep={30}
+              onChange={setFeedingTime}
+              placeholder="Choose a time"
+              value={feedingTime}
+            />
+            <MultiSelect
+              error={
+                habitats.length === 0 ? 'Pick at least one habitat.' : undefined
+              }
+              items={[
+                { id: 'woodland', label: 'Woodland' },
+                { id: 'river', label: 'River' },
+                { id: 'meadow', label: 'Meadow' },
+                { id: 'coast', label: 'Coast' },
+              ]}
+              label="Habitats"
+              onChange={setHabitats}
+              value={habitats}
             />
             <SegmentedControl
               accessibilityLabel="Sections"

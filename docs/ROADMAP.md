@@ -17,6 +17,13 @@ release workflow completed successfully.
 
 ## Next action
 
+FutMas F-015-S04 native schedule inputs: `DateField`, `TimeField`, and
+`MultiSelect` plus the `Field` clipping fix are implemented on
+`futmas/native-schedule-inputs` (requests `futmas-date-field.md`,
+`futmas-time-field.md`, `futmas-multi-select.md`). After the reviewed merge,
+apply the changeset, tag `react-native-v1.1.0`, validate, then publish with the
+owner's approval; FutMas bumps its pin from 1.0.0.
+
 Teisoro F-002-S05: ActionMenu task 500 is reviewed and committed as `fad8f45`.
 Switch task 510 is reviewed and committed as `6dac120`. DateField task 520 is
 reviewed and committed as `1d69e34`. Checkbox task 530 is reviewed and committed

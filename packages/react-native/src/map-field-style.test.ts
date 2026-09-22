@@ -18,6 +18,19 @@ describe('mapFieldInputStyle', () => {
     expect(style.paddingHorizontal).toBe(lightTheme.control.md.paddingInline);
   });
 
+  it('lets the native input own its line box so glyphs are not clipped', () => {
+    const style = mapFieldInputStyle(lightTheme, {
+      disabled: false,
+      focused: false,
+      invalid: false,
+    });
+
+    expect(style.lineHeight).toBeUndefined();
+    expect(style.fontSize).toBe(lightTheme.typography.body.fontSize);
+    expect(style.textAlignVertical).toBe('center');
+    expect(style.includeFontPadding).toBe(false);
+  });
+
   it('uses accent focus and danger invalid states', () => {
     const focused = mapFieldInputStyle(lightTheme, {
       disabled: false,
