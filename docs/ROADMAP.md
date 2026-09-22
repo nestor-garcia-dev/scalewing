@@ -17,14 +17,17 @@ release workflow completed successfully.
 
 ## Next action
 
-`@scalewing/react@1.1.0` is versioned for release from tag `react-v1.1.0`
-(merges `e9f89d7` and `bf4cfd6`): web `Grid`, `FilterChipOption.count`, and
-`DenominationGrid` for Teisoro F-002-S21 task 800 (requests `teisoro-grid.md`,
+`@scalewing/tokens@1.1.0` and `@scalewing/react@1.1.0` are versioned for
+release from tags `tokens-v1.1.0` and `react-v1.1.0` (merges `e9f89d7` and
+`bf4cfd6`, plus the release branch): web `Grid`, `FilterChipOption.count`,
+`DenominationGrid`, `Text` `align`, and compact `display`/`heading` sizes
+below `md` (tokens `compactTypographyVariants`) for Teisoro F-002-S21 task 800
+and its 805 preview feedback (requests `teisoro-grid.md`,
 `teisoro-filter-chips.md` follow-up, `teisoro-denomination-grid.md`). Each
 surface passed an independent Bar Raiser review and a packed-tarball
 verification against Teisoro. Run **Release packages** from `main` with the
-tag (validate, then publish) and record the run ids here. Teisoro then pins
-1.1.0 in task 805. An editable `DenominationGrid` mode is expected from
+tokens tag first, then the react tag (validate, then publish) and record the
+run ids here. Teisoro then pins both 1.1.0 packages in task 805. An editable `DenominationGrid` mode is expected from
 Teisoro task 810's design pass; StatTile stays a later request.
 
 `@scalewing/react-native@1.2.0` is published from tag `react-native-v1.2.0`
