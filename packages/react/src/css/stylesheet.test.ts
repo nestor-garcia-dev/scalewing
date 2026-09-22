@@ -211,6 +211,8 @@ describe('generated CSS', () => {
       'sw-filter-chip',
       'sw-filter-chip-input',
       'sw-filter-chip-face',
+      'sw-filter-chip-count',
+      'sw-filter-chip-quiet',
     ]) {
       expect(css).toContain(`.${className}`);
       expect(catalog).toContain(className);

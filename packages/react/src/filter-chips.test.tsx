@@ -76,6 +76,47 @@ describe('FilterChips', () => {
     ).toHaveProperty('checked', true);
   });
 
+  it('renders a tabular count after the label, quiets zero counts, and rejects invalid counts', () => {
+    const { container } = render(
+      <FilterChips
+        label="Sighting filters"
+        onChange={() => undefined}
+        options={[
+          { value: 'all', label: 'All sightings', count: 42 },
+          { value: 'forest', label: 'Forest sightings', count: 0 },
+          { value: 'desert', label: 'Desert sightings' },
+        ]}
+        value="all"
+      />,
+    );
+    const all = screen.getByRole('radio', { name: 'All sightings 42' });
+    const forest = screen.getByRole('radio', { name: 'Forest sightings 0' });
+    expect(all).toHaveProperty('checked', true);
+    expect(container.querySelectorAll('.sw-filter-chip-count')).toHaveLength(2);
+    expect(forest.closest('label')?.className).toContain(
+      'sw-filter-chip-quiet',
+    );
+    expect(all.closest('label')?.className).not.toContain(
+      'sw-filter-chip-quiet',
+    );
+    expect(
+      screen.getByRole('radio', { name: 'Desert sightings' }).closest('label')
+        ?.className,
+    ).not.toContain('sw-filter-chip-quiet');
+    for (const count of [-1, 1.5, Number.NaN]) {
+      expect(() =>
+        render(
+          <FilterChips
+            label="Filters"
+            onChange={() => undefined}
+            options={[{ value: 'x', label: 'One', count }]}
+            value="x"
+          />,
+        ),
+      ).toThrow(RangeError);
+    }
+  });
+
   it('rejects missing labels, empty or duplicate values, and stale selection', () => {
     const onChange = () => undefined;
     expect(() =>

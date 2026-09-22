@@ -12,19 +12,28 @@ test('FilterChips wraps long labels and supports native single-choice keyboard b
   }
   const section = page.locator('#filter-chips');
   const group = section.getByRole('group', { name: 'Sighting filters' });
-  const all = group.getByRole('radio', { name: 'All sightings (42)' });
+  const all = group.getByRole('radio', { name: 'All sightings 42' });
   const forest = group.getByRole('radio', {
-    name: 'Forest canopy records (18)',
+    name: 'Forest canopy records 18',
   });
-  const desert = group.getByRole('radio', { name: 'Desert scrub (0)' });
+  const desert = group.getByRole('radio', { name: 'Desert scrub 0' });
+  const tundra = group.getByRole('radio', { name: 'Tundra transects 0' });
   const wetland = group.getByRole('radio', {
-    name: 'Wetland observations across the migration season (12)',
+    name: 'Wetland observations across the migration season 12',
   });
   const selva = group.getByRole('radio', {
-    name: 'Observaciones de selva tropical (8)',
+    name: 'Observaciones de selva tropical 8',
   });
   await expect(all).toBeChecked();
   await expect(desert).toBeDisabled();
+  const quietFace = tundra.locator('xpath=..').locator('.sw-filter-chip-face');
+  if (testInfo.project.name !== 'forced-colors') {
+    await expect(quietFace).toHaveCSS('opacity', '0.55');
+  }
+  await expect(group.locator('.sw-filter-chip-count').first()).toHaveCSS(
+    'font-variant-numeric',
+    'tabular-nums',
+  );
   await expect(group.locator('.sw-filter-chips-options')).toHaveCSS(
     'flex-wrap',
     'wrap',
@@ -45,19 +54,25 @@ test('FilterChips wraps long labels and supports native single-choice keyboard b
   ).toBeVisible();
   await forest.press('ArrowRight');
   await expect(desert).not.toBeChecked();
+  await expect(tundra).toBeChecked();
+  await expect(quietFace).toHaveCSS('opacity', '1');
+  await expect(
+    section.getByText('Selected filter: tundra. Callbacks: 2.'),
+  ).toBeVisible();
+  await tundra.press('ArrowRight');
   await expect(wetland).toBeChecked();
   await expect(
-    section.getByText('Selected filter: wetland. Callbacks: 2.'),
+    section.getByText('Selected filter: wetland. Callbacks: 3.'),
   ).toBeVisible();
   await selva.focus();
   await selva.press('Space');
   await expect(selva).toBeChecked();
   await expect(
-    section.getByText('Selected filter: selva. Callbacks: 3.'),
+    section.getByText('Selected filter: selva. Callbacks: 4.'),
   ).toBeVisible();
   await section.getByRole('button', { name: 'Add sighting' }).click();
   await expect(
-    group.getByRole('radio', { name: 'All sightings (43)' }),
+    group.getByRole('radio', { name: 'All sightings 43' }),
   ).toBeVisible();
   await expect(selva).toBeChecked();
 });
