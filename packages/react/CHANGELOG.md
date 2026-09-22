@@ -1,5 +1,12 @@
 # @scalewing/react
 
+## 1.3.0
+
+### Minor Changes
+
+- 3ce39ea: Add `ButtonGroup`, the action row of a form or dialog: buttons on one line from the `md` breakpoint up, aligned `start`, `end` (default) or `between`; below `md` they stack full width in source order (generated `sw-button-group` and `sw-button-group-*`).
+- 3e20a6e: Add `SegmentedControl` `disabled`: the group reports `aria-disabled`, every segment is a disabled button, arrow keys and clicks are ignored, and the track fades to `--sw-disabled-opacity` (generated `sw-segmented-disabled`). The recorded choice stays visible, for an identity that can no longer change; a disabled control may omit `onChange`.
+
 ## 1.2.0
 
 ### Minor Changes
