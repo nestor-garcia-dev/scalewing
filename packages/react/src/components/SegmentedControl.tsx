@@ -12,9 +12,10 @@ type SegmentedLabel =
   | { 'aria-label'?: never; 'aria-labelledby': string };
 
 /**
- * `compact` is the quiet chip track for a section switch; `filled` stretches
- * to its container, gives every segment the same width and paints the
- * selected one in the accent, for a choice that decides what a form does.
+ * `compact` is the quiet chip track for a section switch; `filled` gives every
+ * segment the same width and paints the selected one in the accent, for a
+ * choice that decides what a form does. It sizes to its container: the full
+ * width in a Stack, the width of its widest label in an Inline.
  */
 export type SegmentedControlVariant = 'compact' | 'filled';
 

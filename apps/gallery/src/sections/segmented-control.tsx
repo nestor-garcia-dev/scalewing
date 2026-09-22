@@ -1,4 +1,4 @@
-import { SegmentedControl, Stack, Text } from '@scalewing/react';
+import { Inline, SegmentedControl, Stack, Text } from '@scalewing/react';
 import { useState } from 'react';
 
 import { Section } from '../layout/Section.js';
@@ -7,11 +7,12 @@ export function SegmentedControlSection() {
   const [animalClass, setAnimalClass] = useState('mammals');
   const [range, setRange] = useState('forest');
   const [period, setPeriod] = useState('day');
+  const [naming, setNaming] = useState('common');
 
   return (
     <Section
       id="segmented-control"
-      purpose="SegmentedControl is one exclusive choice. Use it instead of a row of independent Buttons. The compact variant is a quiet section switch; variant filled stretches to its container with equal segments and an accent-filled selection, for a choice that decides what a form does."
+      purpose="SegmentedControl is one exclusive choice. Use it instead of a row of independent Buttons. The compact variant is a quiet section switch; variant filled gives every segment the same width and an accent-filled selection, for a choice that decides what a form does; it takes the full width in a Stack and its labels' width in an Inline."
       title="SegmentedControl"
       usage={`<SegmentedControl
   aria-label="Class"
@@ -65,8 +66,21 @@ export function SegmentedControlSection() {
           value={period}
           variant="filled"
         />
+        <Inline gap={3} align="center" wrap>
+          <Text variant="caption">Species names</Text>
+          <SegmentedControl
+            aria-label="Species names"
+            items={[
+              { id: 'common', label: 'Common' },
+              { id: 'scientific', label: 'Scientific' },
+            ]}
+            onChange={setNaming}
+            value={naming}
+            variant="filled"
+          />
+        </Inline>
         <Text variant="caption">
-          Selected: {animalClass} · {range} · {period}
+          Selected: {animalClass} · {range} · {period} · {naming}
         </Text>
       </Stack>
     </Section>

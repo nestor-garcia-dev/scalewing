@@ -31,6 +31,23 @@ test('SegmentedControl filled variant stretches, splits evenly and fills the sel
   await night.click();
   await expect(night).toHaveAttribute('aria-checked', 'true');
   expect(await night.evaluate(fill)).toBe(selectedFill);
+  // In an Inline the same variant takes only its labels' width, halves still equal.
+  const inline = section.getByRole('radiogroup', { name: 'Species names' });
+  const inlineBox = await inline.boundingBox();
+  const inlineParent = await inline.evaluate(
+    (element) =>
+      (element.parentElement as HTMLElement).getBoundingClientRect().width,
+  );
+  expect(inlineBox?.width ?? 0).toBeLessThan(inlineParent * 0.6);
+  const common = await inline
+    .getByRole('radio', { name: 'Common' })
+    .boundingBox();
+  const scientific = await inline
+    .getByRole('radio', { name: 'Scientific' })
+    .boundingBox();
+  expect(
+    Math.abs((common?.width ?? 0) - (scientific?.width ?? 0)),
+  ).toBeLessThan(2);
   await section.screenshot({
     path: testInfo.outputPath('segmented-control.png'),
   });

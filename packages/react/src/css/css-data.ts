@@ -103,15 +103,15 @@ export function cssDataClasses(): string {
 }
 
 .sw-segmented-filled {
-  display: flex;
-  width: 100%;
+  display: grid;
+  grid-auto-columns: minmax(0, 1fr);
+  grid-auto-flow: column;
 }
 
 .sw-segmented-filled .sw-segmented-item {
   align-items: center;
   color: var(--sw-color-text);
   display: inline-flex;
-  flex: 1 1 0;
   font-size: ${body.fontSize}px;
   justify-content: center;
   letter-spacing: ${body.letterSpacing}px;
