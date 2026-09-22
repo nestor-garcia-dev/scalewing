@@ -22,7 +22,7 @@ part.
 
 ## Revision 2026-09-22: wheel instead of chips
 
-Status: in implementation for a `@scalewing/react-native` minor release.
+Status: implemented for the react-native 1.3.0 release.
 
 The owner tested playable windows on a phone: twenty-four hour chips and
 four minute chips are hard to scan and tap. The disclosure now opens

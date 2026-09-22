@@ -30,6 +30,12 @@ during registry propagation; react publish 35749934546. Teisoro pins both
 1.1.0 packages in task 805. An editable `DenominationGrid` mode is expected
 from Teisoro task 810's design pass; StatTile stays a later request.
 
+`@scalewing/react-native@1.3.0` is versioned from merge `84f56d5` (PR #19):
+`TimeField` discloses scrolling hour, minute, and period wheels for FutMas
+F-015-S09 (request `futmas-time-field.md`, revision 2026-09-22). Tag
+`react-native-v1.3.0`, validate, then publish through Release packages;
+FutMas pins 1.3.0 once it is on npm.
+
 `@scalewing/react-native@1.2.0` is published from tag `react-native-v1.2.0`
 (merge `7bc3951`): native `SingleSelect` for FutMas F-015-S06 (request
 `futmas-single-select.md`). Validation run
