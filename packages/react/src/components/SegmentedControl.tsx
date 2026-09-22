@@ -19,14 +19,24 @@ type SegmentedLabel =
  */
 export type SegmentedControlVariant = 'compact' | 'filled';
 
-export type SegmentedControlProps = SegmentedLabel & {
-  /** Keeps the current choice visible but inert, for an identity that can no longer change. */
-  disabled?: boolean;
-  items: readonly SegmentedItem[];
-  onChange: (id: string) => void;
-  value: string;
-  variant?: SegmentedControlVariant;
-};
+/**
+ * A disabled control can never report a change, so it needs no `onChange`;
+ * a live one must have it.
+ */
+type SegmentedChange =
+  | { disabled?: false; onChange: (id: string) => void }
+  | {
+      /** Keeps the current choice visible but inert, for an identity that can no longer change. */
+      disabled: true;
+      onChange?: (id: string) => void;
+    };
+
+export type SegmentedControlProps = SegmentedLabel &
+  SegmentedChange & {
+    items: readonly SegmentedItem[];
+    value: string;
+    variant?: SegmentedControlVariant;
+  };
 
 export const SegmentedControl = forwardRef<
   HTMLDivElement,
@@ -56,7 +66,7 @@ export const SegmentedControl = forwardRef<
     const delta = event.key === 'ArrowRight' ? 1 : -1;
     const next = items[(index + delta + items.length) % items.length];
     if (next) {
-      onChange(next.id);
+      onChange?.(next.id);
     }
   }
 
@@ -87,7 +97,7 @@ export const SegmentedControl = forwardRef<
             key={item.id}
             onClick={() => {
               if (!selected) {
-                onChange(item.id);
+                onChange?.(item.id);
               }
             }}
             role="radio"

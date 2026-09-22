@@ -118,6 +118,15 @@ describe('SegmentedControl', () => {
           value="cash"
           variant="filled"
         />
+        <SegmentedControl
+          aria-label="Habitat"
+          disabled
+          items={[
+            { id: 'reef', label: 'Reef' },
+            { id: 'kelp', label: 'Kelp' },
+          ]}
+          value="reef"
+        />
       </ThemeProvider>,
     );
 
@@ -134,6 +143,14 @@ describe('SegmentedControl', () => {
     card.click();
     fireEvent.keyDown(group, { key: 'ArrowRight' });
     expect(onChange).not.toHaveBeenCalled();
+
+    // A disabled control needs no onChange at all.
+    const habitat = screen.getByRole('radiogroup', { name: 'Habitat' });
+    screen.getByRole('radio', { name: 'Kelp' }).click();
+    fireEvent.keyDown(habitat, { key: 'ArrowRight' });
+    expect(
+      screen.getByRole('radio', { name: 'Reef' }).getAttribute('aria-checked'),
+    ).toBe('true');
   });
 });
 

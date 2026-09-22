@@ -86,7 +86,6 @@ export function SegmentedControlSection() {
             { id: 'wild', label: 'In the wild' },
             { id: 'captive', label: 'In captivity' },
           ]}
-          onChange={() => undefined}
           value="wild"
           variant="filled"
         />
