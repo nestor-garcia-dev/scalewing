@@ -114,4 +114,14 @@ describe('contrast', () => {
     expect(lightTheme.colors.accent).not.toBe(lightTheme.colors.success);
     expect(darkTheme.colors.accent).not.toBe(darkTheme.colors.success);
   });
+
+  it('keeps the warning tone readable on the canvas and apart from danger and success', () => {
+    for (const theme of [lightTheme, darkTheme]) {
+      expect(
+        contrastRatio(theme.colors.warning, theme.colors.background),
+      ).toBeGreaterThanOrEqual(4.5);
+      expect(theme.colors.warning).not.toBe(theme.colors.danger);
+      expect(theme.colors.warning).not.toBe(theme.colors.success);
+    }
+  });
 });

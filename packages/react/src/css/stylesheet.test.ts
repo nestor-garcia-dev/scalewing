@@ -119,6 +119,7 @@ describe('generated CSS', () => {
         'sw-tabular',
         'sw-badge',
         'sw-badge-accent',
+        'sw-badge-warning',
         'sw-badge-sm',
         'sw-segmented',
         'sw-segmented-filled',

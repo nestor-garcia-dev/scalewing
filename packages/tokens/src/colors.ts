@@ -8,6 +8,7 @@ export const semanticColorKeys = [
   'danger',
   'onDanger',
   'success',
+  'warning',
   'border',
 ] as const;
 
@@ -25,6 +26,7 @@ export const lightColors: ColorTokens = {
   danger: '#B42318',
   onDanger: '#FFFFFF',
   success: '#087443',
+  warning: '#B54708',
   border: '#D2D2D7',
 };
 
@@ -38,6 +40,7 @@ export const darkColors: ColorTokens = {
   danger: '#F97066',
   onDanger: '#101214',
   success: '#5BE0A0',
+  warning: '#FDB022',
   border: '#3A3A3C',
 };
 

@@ -37,6 +37,16 @@ describe('Badge', () => {
     expect(badge.className).toContain('sw-badge-md');
   });
 
+  it('paints the warning tone from its own colour token', () => {
+    render(
+      <ThemeProvider colorScheme="light">
+        <Badge tone="warning">Nesting</Badge>
+      </ThemeProvider>,
+    );
+
+    expect(screen.getByText('Nesting').className).toContain('sw-badge-warning');
+  });
+
   it('maps compact chicklets to the sm size class', () => {
     render(
       <ThemeProvider colorScheme="light">
