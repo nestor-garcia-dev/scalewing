@@ -1,5 +1,19 @@
 # @scalewing/react
 
+## 1.4.0
+
+### Minor Changes
+
+- e3b4ddc: Add `StatTile`, one prominent figure with its label: a glyph slot, a tabular value with a `tone` (`accent`, `success`, `danger`, `warning`), an optional caption, and `emphasis="primary"` that fills the tile in the accent for the figure a page leads with (generated `sw-stat-tile`, `sw-stat-tile-primary`, `sw-stat-tile-glyph`, `sw-stat-tile-body`, `sw-stat-tile-label`, `sw-stat-tile-value`, `sw-stat-tile-caption`; the tone colours the value through `Text color`).
+- 97e172a: Add `Tabs` and `TabPanel`: a `tablist` strip with an accent underline under the current tab, roving focus, ArrowLeft / ArrowRight / Home / End that move and select, sideways scrolling when the labels overflow (generated `sw-tabs`, `sw-tab`, `sw-tab-selected`), and a labelled `tabpanel` that hides itself while another tab is current.
+- 98ffed7: Add `Badge tone="warning"`, outlined in the new `warning` colour like `success` and `danger` (generated `sw-badge-warning`), for the middle status a product shows between good and blocked.
+
+### Patch Changes
+
+- aefecaf: `Table` scroll wrapper is keyboard reachable: the `sw-table-wrap` element is a `group` named after the table (`aria-label` / `aria-labelledby` mirrored) with `tabIndex={0}` and an accent focus ring, so a wide table with no focusable cell can be scrolled sideways from the keyboard and passes the axe `scrollable-region-focusable` rule.
+- Updated dependencies [98ffed7]
+  - @scalewing/tokens@1.2.0
+
 ## 1.3.0
 
 ### Minor Changes
