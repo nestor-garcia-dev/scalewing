@@ -96,9 +96,12 @@ describe('generated CSS', () => {
         'sw-button',
         'sw-button-primary',
         'sw-button-md',
+        'sw-button-group',
+        'sw-button-group-between',
       ]),
     );
     expect(css).toContain('.sw-button-primary');
+    expect(css).toContain('.sw-button-group > * { width: 100%; }');
     expect(css).toContain('--sw-control-md-min-height: 44px');
     expect(css).toContain('.sw-button-md { min-height: 44px');
     expect(css).toContain('--sw-control-xs-min-height: 28px');

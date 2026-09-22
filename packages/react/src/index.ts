@@ -45,6 +45,11 @@ export {
   type ButtonVariant,
 } from './components/Button.js';
 export { Box, type BoxElement, type BoxProps } from './components/Box.js';
+export {
+  ButtonGroup,
+  type ButtonGroupJustify,
+  type ButtonGroupProps,
+} from './components/ButtonGroup.js';
 export { Card, type CardProps, type CardVariant } from './components/Card.js';
 export {
   Dialog,

@@ -2,6 +2,7 @@ import { render, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 
 import { Box } from './components/Box.js';
+import { ButtonGroup } from './components/ButtonGroup.js';
 import { Card } from './components/Card.js';
 import { Inline } from './components/Inline.js';
 import { Stack } from './components/Stack.js';
@@ -126,5 +127,29 @@ describe('layout components', () => {
     expect(link.tagName).toBe('A');
     expect(link.getAttribute('href')).toBe('/draft');
     expect(link.className).toContain('sw-padding-2');
+  });
+});
+
+describe('ButtonGroup', () => {
+  it('lays actions out at the end by default and accepts another justify', () => {
+    render(
+      <ThemeProvider colorScheme="light">
+        <ButtonGroup aria-label="Sighting actions">
+          <button type="button">Discard</button>
+          <button type="button">Save sighting</button>
+        </ButtonGroup>
+        <ButtonGroup justify="between" aria-label="Transect actions">
+          <button type="button">Back</button>
+          <button type="button">Next</button>
+        </ButtonGroup>
+      </ThemeProvider>,
+    );
+
+    const end = screen.getByLabelText('Sighting actions');
+    expect(end.className).toBe('sw-button-group sw-button-group-end');
+    expect(end.children).toHaveLength(2);
+    expect(screen.getByLabelText('Transect actions').className).toBe(
+      'sw-button-group sw-button-group-between',
+    );
   });
 });
