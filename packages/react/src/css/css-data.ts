@@ -126,6 +126,14 @@ export function cssDataClasses(): string {
   color: var(--sw-color-onAccent);
 }
 
+.sw-segmented-disabled {
+  opacity: var(--sw-disabled-opacity);
+}
+
+.sw-segmented-item:disabled {
+  cursor: not-allowed;
+}
+
 .sw-table-wrap {
   overflow: auto;
   width: 100%;
@@ -216,6 +224,7 @@ export function dataClassCatalog(): string[] {
     'sw-segmented-item',
     'sw-segmented-item-selected',
     'sw-segmented-filled',
+    'sw-segmented-disabled',
     'sw-table-wrap',
     'sw-table',
     'sw-table-end',

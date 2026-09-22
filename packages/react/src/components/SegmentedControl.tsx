@@ -20,6 +20,8 @@ type SegmentedLabel =
 export type SegmentedControlVariant = 'compact' | 'filled';
 
 export type SegmentedControlProps = SegmentedLabel & {
+  /** Keeps the current choice visible but inert, for an identity that can no longer change. */
+  disabled?: boolean;
   items: readonly SegmentedItem[];
   onChange: (id: string) => void;
   value: string;
@@ -30,11 +32,18 @@ export const SegmentedControl = forwardRef<
   HTMLDivElement,
   SegmentedControlProps
 >(function SegmentedControl(
-  { items, onChange, value, variant = 'compact', ...labelProps },
+  {
+    disabled = false,
+    items,
+    onChange,
+    value,
+    variant = 'compact',
+    ...labelProps
+  },
   ref,
 ) {
   function onKeyDown(event: KeyboardEvent<HTMLDivElement>) {
-    if (event.key !== 'ArrowRight' && event.key !== 'ArrowLeft') {
+    if (disabled || (event.key !== 'ArrowRight' && event.key !== 'ArrowLeft')) {
       return;
     }
 
@@ -54,9 +63,11 @@ export const SegmentedControl = forwardRef<
   return (
     <div
       ref={ref}
+      aria-disabled={disabled || undefined}
       className={cx(
         'sw-segmented',
         variant === 'filled' && 'sw-segmented-filled',
+        disabled && 'sw-segmented-disabled',
       )}
       onKeyDown={onKeyDown}
       role="radiogroup"
@@ -72,6 +83,7 @@ export const SegmentedControl = forwardRef<
               'sw-segmented-item',
               selected && 'sw-segmented-item-selected',
             )}
+            disabled={disabled}
             key={item.id}
             onClick={() => {
               if (!selected) {

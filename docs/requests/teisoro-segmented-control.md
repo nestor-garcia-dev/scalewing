@@ -11,3 +11,12 @@ Proposed API: `variant?: 'compact' | 'filled'` on `SegmentedControl`, default `c
 Behavior and failure boundary: presentation only; radiogroup semantics, keyboard arrows and `onChange` are unchanged. No tone prop: the choice's meaning is carried by the consumer's surrounding copy and totals.
 
 Scalewing owns the class, tests, gallery evidence and changeset. Teisoro owns the labels and glyphs inside each segment.
+
+## Follow-up: `disabled` (Teisoro F-002-S21 task 815)
+
+Status: implemented under Teisoro F-002-S21 task 815; pending independent review and packed-consumer verification.
+Missing surface: `SegmentedControl` `disabled`.
+Why the existing surface cannot do this: the entry edit page shows the payment method (Cash / Debit card) as the same two-half toggle the new-entry page uses, but inert, because the entry contract locks that identity after creation; the workspace header also wants the language switch inert while a language save is in flight. Without the prop the consumer either hides the control (the employee loses the visual anchor Angular keeps) or wraps it in a product stylesheet.
+Teisoro use: `docs/design/entry-pages/08-edit-page.md` (identity read-only) and `WorkspaceShell` (saving state).
+Proposed API: `disabled?: boolean`, default `false`. The group gets `aria-disabled="true"` and `sw-segmented-disabled` (`opacity: var(--sw-disabled-opacity)`), each segment renders `disabled`, `onChange` never fires from a click or an arrow key, and the selected segment keeps its selected look.
+Behavior and failure boundary: presentation and interaction only; the consumer still decides the value.

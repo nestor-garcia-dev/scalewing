@@ -1,4 +1,10 @@
-import { cleanup, render, screen, within } from '@testing-library/react';
+import {
+  cleanup,
+  fireEvent,
+  render,
+  screen,
+  within,
+} from '@testing-library/react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import { Badge } from './components/Badge.js';
@@ -94,6 +100,40 @@ describe('SegmentedControl', () => {
     expect(screen.getByRole('radio', { name: 'Remove' }).className).toContain(
       'sw-segmented-item-selected',
     );
+  });
+
+  it('keeps the choice visible but inert when disabled', () => {
+    const onChange = vi.fn();
+
+    render(
+      <ThemeProvider colorScheme="light">
+        <SegmentedControl
+          aria-label="Payment"
+          disabled
+          items={[
+            { id: 'cash', label: 'Cash' },
+            { id: 'card', label: 'Card' },
+          ]}
+          onChange={onChange}
+          value="cash"
+          variant="filled"
+        />
+      </ThemeProvider>,
+    );
+
+    const group = screen.getByRole('radiogroup', { name: 'Payment' });
+    expect(group.className).toBe(
+      'sw-segmented sw-segmented-filled sw-segmented-disabled',
+    );
+    expect(group.getAttribute('aria-disabled')).toBe('true');
+    const cash = screen.getByRole('radio', { name: 'Cash' });
+    const card = screen.getByRole('radio', { name: 'Card' });
+    expect(cash.getAttribute('aria-checked')).toBe('true');
+    expect((card as HTMLButtonElement).disabled).toBe(true);
+
+    card.click();
+    fireEvent.keyDown(group, { key: 'ArrowRight' });
+    expect(onChange).not.toHaveBeenCalled();
   });
 });
 

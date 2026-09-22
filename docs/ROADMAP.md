@@ -66,6 +66,12 @@ and [publication](https://github.com/nestor-garcia-dev/scalewing/actions/runs/34
 Finish FutMas's registry-pin integration and native visual acceptance. No new
 public surface is authorized by this release.
 
+Teisoro F-002-S21 task 815 (service entry pages) requests one surface:
+`SegmentedControl` `disabled` (follow-up in
+`docs/requests/teisoro-segmented-control.md`), implemented on branch
+`teisoro/segmented-disabled` for the next `@scalewing/react` minor. Next
+action: independent review, merge, then release `react-v1.3.0`.
+
 `@scalewing/react@1.2.0` is versioned for release from tag `react-v1.2.0`
 (merge `cc7bb86` of PR #14): `Dialog` `size` (`docs/requests/teisoro-dialog-size.md`),
 six `Grid` columns (follow-up in `docs/requests/teisoro-grid.md`) and
