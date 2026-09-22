@@ -1,5 +1,11 @@
 # @scalewing/tokens
 
+## 1.1.0
+
+### Minor Changes
+
+- f45ef5d: Add `compactTypographyVariants`: the sizes that `display` and `heading` step down to on a compact (phone-width) canvas. Additive; no existing value changes.
+
 ## 1.0.0
 
 ### Major Changes

@@ -36,6 +36,19 @@ describe('generated CSS', () => {
     );
   });
 
+  it('steps display and heading down below the md breakpoint from the compact tokens', () => {
+    expect(css).toContain(
+      '@media not all and (min-width: 48rem) {\n  .sw-text-display { font-size: 32px; line-height: 38px; letter-spacing: -0.6px; }\n  .sw-text-heading { font-size: 24px; line-height: 30px; letter-spacing: -0.4px; }\n}',
+    );
+  });
+
+  it('emits the text alignment utilities', () => {
+    expect(catalog).toEqual(
+      expect.arrayContaining(['sw-text-align-center', 'sw-text-align-end']),
+    );
+    expect(css).toContain('.sw-text-align-center { text-align: center; }');
+  });
+
   it('includes the bounded layout catalog', () => {
     expect(catalog).toEqual(expect.arrayContaining(['sw-stack', 'sw-sr-only']));
     expect(catalog).toEqual(

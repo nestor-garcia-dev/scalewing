@@ -29,11 +29,17 @@ export function TextSection() {
   return (
     <Section
       id="text"
-      purpose="Text maps variant to generated sw-text-* classes and semantic color to CSS variables. Truncation is opt-in."
+      purpose="Text maps variant to generated sw-text-* classes and semantic color to CSS variables. Below the md breakpoint, display and heading step down to their compact sizes. Alignment and truncation are opt-in."
       title="Text"
       usage={`<Text variant="title" color="accent">Snow leopard</Text>`}
     >
       <Stack gap={3}>
+        <Text align="center" variant="heading">
+          Centered heading that wraps on a narrow screen
+        </Text>
+        <Text align="end" color="muted" variant="caption">
+          End-aligned caption
+        </Text>
         {typeNames.map((variant) => (
           <Text key={variant} variant={variant}>
             {variant}

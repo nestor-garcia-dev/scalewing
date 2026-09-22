@@ -21,6 +21,21 @@ describe('spacingClassNames', () => {
 });
 
 describe('layout components', () => {
+  it('maps Text align to a generated alignment class and leaves it off by default', () => {
+    render(
+      <>
+        <Text align="center" variant="heading">
+          Centered
+        </Text>
+        <Text>Plain</Text>
+      </>,
+    );
+    expect(screen.getByText('Centered').className).toBe(
+      'sw-text-heading sw-text-align-center',
+    );
+    expect(screen.getByText('Plain').className).toBe('sw-text-body');
+  });
+
   it('places card content with token classes', () => {
     render(
       <ThemeProvider colorScheme="light">

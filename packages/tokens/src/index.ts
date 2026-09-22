@@ -70,4 +70,6 @@ export {
   type TypographyVariant,
   fontFamily,
   typographyVariants,
+  compactTypographyVariants,
+  type CompactTypographyVariant,
 } from './typography.js';

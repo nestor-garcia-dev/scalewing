@@ -46,5 +46,23 @@ export const typographyVariants = {
 
 export type TypographyVariant = keyof typeof typographyVariants;
 
+/**
+ * Sizes the largest variants step down to on a compact (phone-width) canvas,
+ * so a page title or a panel figure does not dominate a 390px screen. The
+ * other variants keep their size. Web applies these below the `md`
+ * breakpoint; native may apply them on narrow windows.
+ */
+export const compactTypographyVariants = {
+  display: { fontSize: 32, lineHeight: 38, letterSpacing: -0.6 },
+  heading: { fontSize: 24, lineHeight: 30, letterSpacing: -0.4 },
+} as const satisfies Partial<
+  Record<
+    TypographyVariant,
+    { fontSize: number; lineHeight: number; letterSpacing: number }
+  >
+>;
+
+export type CompactTypographyVariant = keyof typeof compactTypographyVariants;
+
 export const fontFamily =
   'ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif';

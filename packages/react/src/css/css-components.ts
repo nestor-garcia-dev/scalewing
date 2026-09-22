@@ -1,4 +1,8 @@
-import { typographyVariants } from '@scalewing/tokens';
+import {
+  compactTypographyVariants,
+  typographyVariants,
+} from '@scalewing/tokens';
+import { breakpointQuery } from './breakpoints.js';
 import { cssActionMenuClasses } from './css-action-menu.js';
 import { cssAccordionClasses } from './css-accordion.js';
 import { cssButtonClasses } from './css-button.js';
@@ -33,6 +37,16 @@ function textVariantRules(): string {
       return `.sw-text-${name} { font-family: var(--sw-font-sans); font-size: ${variant.fontSize}px; line-height: ${variant.lineHeight}px; font-weight: ${variant.fontWeight}; letter-spacing: ${variant.letterSpacing}px;${tabular} }`;
     })
     .join('\n');
+}
+
+function compactTextVariantRules(): string {
+  const rules = Object.entries(compactTypographyVariants)
+    .map(
+      ([name, variant]) =>
+        `  .sw-text-${name} { font-size: ${variant.fontSize}px; line-height: ${variant.lineHeight}px; letter-spacing: ${variant.letterSpacing}px; }`,
+    )
+    .join('\n');
+  return `@media ${breakpointQuery('below', 'md')} {\n${rules}\n}`;
 }
 
 export function cssComponentClasses(): string {
@@ -79,6 +93,10 @@ export function cssComponentClasses(): string {
   }
 }
 
+.sw-text-align-start { text-align: start; }
+.sw-text-align-center { text-align: center; }
+.sw-text-align-end { text-align: end; }
+
 .sw-truncate {
   overflow: hidden;
   text-overflow: ellipsis;
@@ -90,6 +108,8 @@ export function cssComponentClasses(): string {
 }
 
 ${textVariantRules()}
+
+${compactTextVariantRules()}
 
 ${cssButtonClasses()}
 

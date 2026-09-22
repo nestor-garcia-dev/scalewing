@@ -85,7 +85,12 @@ export {
   type TableProps,
   type TableRowProps,
 } from './components/Table.js';
-export { Text, type TextElement, type TextProps } from './components/Text.js';
+export {
+  Text,
+  type TextAlign,
+  type TextElement,
+  type TextProps,
+} from './components/Text.js';
 export {
   ThemeProvider,
   useTheme,
