@@ -182,6 +182,7 @@ ${toneRules()}
   .sw-denomination-strip .sw-denomination-label { flex-direction: column; align-items: flex-start; gap: var(--sw-space-1); }
   .sw-denomination-strip th,
   .sw-denomination-strip td { padding: var(--sw-space-1); }
+  .sw-denomination-tile-list { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
 
 @media (forced-colors: active) {

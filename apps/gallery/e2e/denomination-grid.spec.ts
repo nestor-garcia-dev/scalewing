@@ -31,6 +31,14 @@ test('DenominationGrid renders the strip table with tones and moves totals under
   );
   const tiles = section.getByRole('group', { name: 'Tags in the field kit' });
   await expect(tiles.getByRole('listitem')).toHaveCount(6);
+  expect(
+    await tiles
+      .locator('.sw-denomination-tile-list')
+      .evaluate(
+        (element) =>
+          getComputedStyle(element).gridTemplateColumns.split(' ').length,
+      ),
+  ).toBe(isPhone ? 3 : 6);
   await expect(tiles.getByRole('listitem').nth(1)).toContainText('200 g');
   await expect(tiles.getByRole('listitem').nth(2)).toContainText('—');
   await expect(

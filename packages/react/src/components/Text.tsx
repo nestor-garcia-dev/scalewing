@@ -13,8 +13,11 @@ import { cx } from '../class-names.js';
 export type TextElement =
   'p' | 'span' | 'h1' | 'h2' | 'h3' | 'h4' | 'label' | 'strong';
 
+export type TextAlign = 'start' | 'center' | 'end';
+
 export type TextProps = HTMLAttributes<HTMLElement> &
   Pick<LabelHTMLAttributes<HTMLLabelElement>, 'htmlFor'> & {
+    align?: TextAlign;
     as?: TextElement;
     color?: SemanticColorKey;
     truncate?: boolean;
@@ -33,6 +36,7 @@ const defaultElement: Record<TypographyVariant, TextElement> = {
 
 export const Text = forwardRef<HTMLElement, TextProps>(function Text(
   {
+    align,
     as,
     className,
     color = 'text',
@@ -48,7 +52,12 @@ export const Text = forwardRef<HTMLElement, TextProps>(function Text(
   return (
     <Component
       ref={ref as never}
-      className={cx(`sw-text-${variant}`, truncate && 'sw-truncate', className)}
+      className={cx(
+        `sw-text-${variant}`,
+        align && `sw-text-align-${align}`,
+        truncate && 'sw-truncate',
+        className,
+      )}
       style={{ color: `var(--sw-color-${color})`, ...style }}
       {...rest}
     />

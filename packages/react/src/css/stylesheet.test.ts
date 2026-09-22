@@ -36,6 +36,13 @@ describe('generated CSS', () => {
     );
   });
 
+  it('emits the text alignment utilities', () => {
+    expect(catalog).toEqual(
+      expect.arrayContaining(['sw-text-align-center', 'sw-text-align-end']),
+    );
+    expect(css).toContain('.sw-text-align-center { text-align: center; }');
+  });
+
   it('includes the bounded layout catalog', () => {
     expect(catalog).toEqual(expect.arrayContaining(['sw-stack', 'sw-sr-only']));
     expect(catalog).toEqual(

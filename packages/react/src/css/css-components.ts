@@ -79,6 +79,10 @@ export function cssComponentClasses(): string {
   }
 }
 
+.sw-text-align-start { text-align: start; }
+.sw-text-align-center { text-align: center; }
+.sw-text-align-end { text-align: end; }
+
 .sw-truncate {
   overflow: hidden;
   text-overflow: ellipsis;
