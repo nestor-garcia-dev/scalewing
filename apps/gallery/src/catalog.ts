@@ -30,6 +30,7 @@ import { LinkSection } from './sections/link.js';
 import { NavSection } from './sections/nav.js';
 import { PalettesSection } from './sections/palettes.js';
 import { SegmentedControlSection } from './sections/segmented-control.js';
+import { StatTileSection } from './sections/stat-tile.js';
 import { SelectSection } from './sections/select.js';
 import { SplitSection } from './sections/split.js';
 import { TableSection } from './sections/table.js';
@@ -169,6 +170,12 @@ export const catalog = [
   },
   { id: 'dialog', label: 'Dialog', group: 'controls', Section: DialogSection },
   { id: 'toast', label: 'Toast', group: 'controls', Section: ToastSection },
+  {
+    id: 'stat-tile',
+    label: 'StatTile',
+    group: 'data',
+    Section: StatTileSection,
+  },
   { id: 'table', label: 'Table', group: 'data', Section: TableSection },
   {
     id: 'denomination-grid',

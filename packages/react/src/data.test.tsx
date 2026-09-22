@@ -9,6 +9,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import { Badge } from './components/Badge.js';
 import { SegmentedControl } from './components/SegmentedControl.js';
+import { StatTile } from './components/StatTile.js';
 import {
   Table,
   TableBody,
@@ -161,6 +162,43 @@ describe('SegmentedControl', () => {
     expect(
       screen.getByRole('radio', { name: 'Reef' }).getAttribute('aria-checked'),
     ).toBe('true');
+  });
+});
+
+describe('StatTile', () => {
+  it('names the figure, tones the value and fills the primary tile', () => {
+    render(
+      <ThemeProvider colorScheme="light">
+        <StatTile
+          caption="42 species"
+          emphasis="primary"
+          glyph={<svg data-testid="glyph" />}
+          label="Total sightings"
+          value="1,284"
+        />
+        <StatTile label="Range change" tone="danger" value="-3" />
+      </ThemeProvider>,
+    );
+
+    const primary = screen.getByText('Total sightings').closest('section');
+    expect(primary?.className).toContain('sw-stat-tile');
+    expect(primary?.className).toContain('sw-stat-tile-primary');
+    expect(screen.getByText('1,284').tagName).toBe('STRONG');
+    expect(screen.getByText('1,284').className).toContain('sw-stat-tile-value');
+    expect(screen.getByText('1,284').style.color).toBe(
+      'var(--sw-color-onAccent)',
+    );
+    expect(screen.getByText('42 species').className).toContain(
+      'sw-stat-tile-caption',
+    );
+    expect(
+      screen.getByTestId('glyph').parentElement?.getAttribute('aria-hidden'),
+    ).toBe('true');
+
+    const plain = screen.getByText('Range change').closest('section');
+    expect(plain?.className).not.toContain('sw-stat-tile-primary');
+    expect(plain?.querySelector('.sw-stat-tile-glyph')).toBeNull();
+    expect(screen.getByText('-3').style.color).toBe('var(--sw-color-danger)');
   });
 });
 

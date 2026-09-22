@@ -14,6 +14,7 @@ import { spinnerClassCatalog } from './css-spinner.js';
 import { progressClassCatalog } from './css-progress.js';
 import { tooltipClassCatalog } from './css-tooltip.js';
 import { separatorClassCatalog } from './css-separator.js';
+import { statTileClassCatalog } from './css-stat-tile.js';
 import { responsiveClassCatalog } from './css-responsive.js';
 import { filterChipsClassCatalog } from './css-filter-chips.js';
 import { gridClassCatalog } from './css-grid.js';
@@ -67,6 +68,7 @@ export function utilityClassCatalog(): string[] {
     ...progressClassCatalog(),
     ...tooltipClassCatalog(),
     ...separatorClassCatalog(),
+    ...statTileClassCatalog(),
     ...filterChipsClassCatalog(),
     ...gridClassCatalog(),
     ...denominationGridClassCatalog(),
