@@ -21,6 +21,7 @@ import { cssProgressClasses } from './css-progress.js';
 import { cssTooltipClasses } from './css-tooltip.js';
 import { cssSeparatorClasses } from './css-separator.js';
 import { cssStatTileClasses } from './css-stat-tile.js';
+import { cssTabsClasses } from './css-tabs.js';
 import { cssResponsiveClasses } from './css-responsive.js';
 import { cssFilterChipsClasses } from './css-filter-chips.js';
 import { cssGridClasses } from './css-grid.js';
@@ -145,6 +146,8 @@ ${cssTooltipClasses()}
 ${cssSeparatorClasses()}
 
 ${cssStatTileClasses()}
+
+${cssTabsClasses()}
 
 ${cssFilterChipsClasses()}
 

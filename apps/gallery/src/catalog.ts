@@ -31,6 +31,7 @@ import { NavSection } from './sections/nav.js';
 import { PalettesSection } from './sections/palettes.js';
 import { SegmentedControlSection } from './sections/segmented-control.js';
 import { StatTileSection } from './sections/stat-tile.js';
+import { TabsSection } from './sections/tabs.js';
 import { SelectSection } from './sections/select.js';
 import { SplitSection } from './sections/split.js';
 import { TableSection } from './sections/table.js';
@@ -105,6 +106,7 @@ export const catalog = [
     group: 'controls',
     Section: SegmentedControlSection,
   },
+  { id: 'tabs', label: 'Tabs', group: 'controls', Section: TabsSection },
   { id: 'field', label: 'Field', group: 'controls', Section: FieldSection },
   { id: 'select', label: 'Select', group: 'controls', Section: SelectSection },
   {

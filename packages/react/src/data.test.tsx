@@ -10,6 +10,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import { Badge } from './components/Badge.js';
 import { SegmentedControl } from './components/SegmentedControl.js';
 import { StatTile } from './components/StatTile.js';
+import { TabPanel, Tabs } from './components/Tabs.js';
 import {
   Table,
   TableBody,
@@ -199,6 +200,87 @@ describe('StatTile', () => {
     expect(plain?.className).not.toContain('sw-stat-tile-primary');
     expect(plain?.querySelector('.sw-stat-tile-glyph')).toBeNull();
     expect(screen.getByText('-3').style.color).toBe('var(--sw-color-danger)');
+  });
+});
+
+describe('Tabs', () => {
+  it('exposes a tablist whose panels point at their tabs and hide when not current', () => {
+    const onChange = vi.fn();
+
+    render(
+      <ThemeProvider colorScheme="light">
+        <Tabs
+          aria-label="Habitats"
+          id="habitats"
+          items={[
+            { id: 'forest', label: 'Forest' },
+            { id: 'ocean', label: 'Ocean' },
+          ]}
+          onChange={onChange}
+          value="forest"
+        />
+        <TabPanel id="forest" tabsId="habitats" value="forest">
+          Red fox
+        </TabPanel>
+        <TabPanel id="ocean" tabsId="habitats" value="forest">
+          Sea turtle
+        </TabPanel>
+      </ThemeProvider>,
+    );
+
+    const list = screen.getByRole('tablist', { name: 'Habitats' });
+    expect(list.className).toContain('sw-tabs');
+    const forest = screen.getByRole('tab', { name: 'Forest' });
+    const ocean = screen.getByRole('tab', { name: 'Ocean' });
+    expect(forest.getAttribute('aria-selected')).toBe('true');
+    expect(forest.className).toContain('sw-tab-selected');
+    expect(forest.tabIndex).toBe(0);
+    expect(ocean.tabIndex).toBe(-1);
+    expect(forest.getAttribute('aria-controls')).toBe('habitats-panel-forest');
+
+    const panel = screen.getByRole('tabpanel');
+    expect(panel.id).toBe('habitats-panel-forest');
+    expect(panel.getAttribute('aria-labelledby')).toBe('habitats-tab-forest');
+    expect(panel.textContent).toBe('Red fox');
+    expect(screen.getByText('Sea turtle').hidden).toBe(true);
+
+    ocean.click();
+    expect(onChange).toHaveBeenCalledWith('ocean');
+    forest.click();
+    expect(onChange).toHaveBeenCalledTimes(1);
+  });
+
+  it('moves and selects with the arrow keys, Home and End', () => {
+    const onChange = vi.fn();
+    const items = [
+      { id: 'forest', label: 'Forest' },
+      { id: 'ocean', label: 'Ocean' },
+      { id: 'desert', label: 'Desert' },
+    ];
+
+    render(
+      <ThemeProvider colorScheme="light">
+        <Tabs
+          aria-label="Habitats"
+          id="habitats"
+          items={items}
+          onChange={onChange}
+          value="ocean"
+        />
+      </ThemeProvider>,
+    );
+
+    const list = screen.getByRole('tablist', { name: 'Habitats' });
+    fireEvent.keyDown(list, { key: 'ArrowRight' });
+    expect(onChange).toHaveBeenLastCalledWith('desert');
+    fireEvent.keyDown(list, { key: 'ArrowLeft' });
+    expect(onChange).toHaveBeenLastCalledWith('forest');
+    fireEvent.keyDown(list, { key: 'Home' });
+    expect(onChange).toHaveBeenLastCalledWith('forest');
+    fireEvent.keyDown(list, { key: 'End' });
+    expect(onChange).toHaveBeenLastCalledWith('desert');
+    fireEvent.keyDown(list, { key: 'Enter' });
+    expect(onChange).toHaveBeenCalledTimes(4);
   });
 });
 
