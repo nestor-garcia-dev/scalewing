@@ -102,6 +102,14 @@ export type {
 
 export { Grid } from './components/Grid.js';
 export type { GridColumns, GridProps } from './components/Grid.js';
+export { DenominationGrid } from './components/DenominationGrid.js';
+export type {
+  DenominationGridColumn,
+  DenominationGridLayout,
+  DenominationGridProps,
+  DenominationGridRow,
+  DenominationGridTone,
+} from './components/DenominationGrid.js';
 
 export { FilterChips } from './components/FilterChips.js';
 export type {
