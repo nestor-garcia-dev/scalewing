@@ -4,8 +4,7 @@ import { TextInput, type TextInputProps } from 'react-native';
 import { mapFieldAccessibility } from '../map-field-accessibility.js';
 import { mapFieldInputStyle } from '../map-field-style.js';
 import { useTheme } from '../theme/ThemeProvider.js';
-import { Stack } from './Stack.js';
-import { Text } from './Text.js';
+import { LabeledControl } from './LabeledControl.js';
 
 export type FieldProps = Omit<
   TextInputProps,
@@ -37,11 +36,9 @@ export function Field({
 }: FieldProps) {
   const theme = useTheme();
   const [focused, setFocused] = useState(false);
-  const supportingText = error ?? hint;
 
   return (
-    <Stack gap={1}>
-      <Text variant="label">{label}</Text>
+    <LabeledControl error={error} hint={hint} label={label}>
       <TextInput
         {...inputProps}
         {...mapFieldAccessibility({
@@ -69,15 +66,6 @@ export function Field({
         })}
         value={value}
       />
-      {supportingText ? (
-        <Text
-          accessibilityLiveRegion={error ? 'polite' : 'none'}
-          color={error ? 'danger' : 'muted'}
-          variant="caption"
-        >
-          {supportingText}
-        </Text>
-      ) : null}
-    </Stack>
+    </LabeledControl>
   );
 }

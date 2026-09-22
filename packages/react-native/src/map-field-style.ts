@@ -1,33 +1,30 @@
 import { type Theme } from '@scalewing/tokens';
 import { type TextStyle } from 'react-native';
 
+import {
+  mapControlFrameStyle,
+  type ControlFrameState,
+} from './map-control-frame-style.js';
+
+/**
+ * Native text inputs size their own line box. A fixed `lineHeight` inside the
+ * 44-point control clips glyphs on iOS, so the input takes the body font
+ * without one and centers vertically on Android.
+ */
 export function mapFieldInputStyle(
   theme: Theme,
-  options: {
-    disabled: boolean;
-    focused: boolean;
-    invalid: boolean;
-  },
+  state: ControlFrameState,
 ): TextStyle {
   const type = theme.typography.body;
 
   return {
-    backgroundColor: theme.colors.surface,
-    borderColor: options.invalid
-      ? theme.colors.danger
-      : options.focused
-        ? theme.colors.accent
-        : theme.colors.border,
-    borderRadius: theme.radius.lg,
-    borderWidth: 1,
+    ...mapControlFrameStyle(theme, state),
     color: theme.colors.text,
     fontSize: type.fontSize,
     fontWeight: String(type.fontWeight) as TextStyle['fontWeight'],
+    includeFontPadding: false,
     letterSpacing: type.letterSpacing,
-    lineHeight: type.lineHeight,
-    minHeight: theme.control.md.minHeight,
-    opacity: options.disabled ? theme.disabledOpacity : 1,
-    paddingHorizontal: theme.control.md.paddingInline,
     paddingVertical: theme.space[2],
+    textAlignVertical: 'center',
   };
 }

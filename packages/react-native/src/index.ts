@@ -42,3 +42,11 @@ export {
   type ThemeProviderProps,
 } from './theme/ThemeProvider.js';
 export { Accordion, type AccordionProps } from './components/Accordion.js';
+export { DateField, type DateFieldProps } from './components/DateField.js';
+export { type WeekStart } from './calendar-month.js';
+export {
+  MultiSelect,
+  type MultiSelectItem,
+  type MultiSelectProps,
+} from './components/MultiSelect.js';
+export { TimeField, type TimeFieldProps } from './components/TimeField.js';
