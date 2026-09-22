@@ -100,6 +100,9 @@ export type {
   SeparatorProps,
 } from './components/Separator.js';
 
+export { Grid } from './components/Grid.js';
+export type { GridColumns, GridProps } from './components/Grid.js';
+
 export { FilterChips } from './components/FilterChips.js';
 export type {
   FilterChipOption,

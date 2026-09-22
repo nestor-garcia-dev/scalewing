@@ -18,6 +18,7 @@ import { cssTooltipClasses } from './css-tooltip.js';
 import { cssSeparatorClasses } from './css-separator.js';
 import { cssResponsiveClasses } from './css-responsive.js';
 import { cssFilterChipsClasses } from './css-filter-chips.js';
+import { cssGridClasses } from './css-grid.js';
 import { cssFieldClasses } from './css-field.js';
 import { cssToastClasses } from './css-toast.js';
 
@@ -122,6 +123,8 @@ ${cssTooltipClasses()}
 ${cssSeparatorClasses()}
 
 ${cssFilterChipsClasses()}
+
+${cssGridClasses()}
 
 ${cssFieldClasses()}
 

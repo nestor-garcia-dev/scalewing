@@ -18,6 +18,15 @@ describe('generated CSS', () => {
 
   it('includes the bounded layout catalog', () => {
     expect(catalog).toEqual(expect.arrayContaining(['sw-stack', 'sw-sr-only']));
+    expect(catalog).toEqual(
+      expect.arrayContaining([
+        'sw-grid',
+        'sw-grid-cols-3',
+        'sw-grid-cols-below-md-2',
+      ]),
+    );
+    expect(css).toContain('.sw-grid-cols-below-md-2');
+    expect(catalog).not.toContain('sw-grid-cols-5');
     expect(css).toContain('.sw-stack');
     expect(css).not.toContain('!important');
   });
