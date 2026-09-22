@@ -48,6 +48,20 @@ test('SegmentedControl filled variant stretches, splits evenly and fills the sel
   expect(
     Math.abs((common?.width ?? 0) - (scientific?.width ?? 0)),
   ).toBeLessThan(2);
+  // A disabled control keeps its recorded choice and refuses clicks and arrows.
+  const recorded = section.getByRole('radiogroup', {
+    name: 'Recorded sighting',
+  });
+  await expect(recorded).toHaveAttribute('aria-disabled', 'true');
+  const wild = recorded.getByRole('radio', { name: 'In the wild' });
+  const captive = recorded.getByRole('radio', { name: 'In captivity' });
+  await expect(captive).toBeDisabled();
+  await wild.focus();
+  await page.keyboard.press('ArrowRight');
+  await expect(wild).toHaveAttribute('aria-checked', 'true');
+  expect(
+    await recorded.evaluate((element) => getComputedStyle(element).opacity),
+  ).not.toBe('1');
   await section.screenshot({
     path: testInfo.outputPath('segmented-control.png'),
   });

@@ -96,9 +96,12 @@ describe('generated CSS', () => {
         'sw-button',
         'sw-button-primary',
         'sw-button-md',
+        'sw-button-group',
+        'sw-button-group-between',
       ]),
     );
     expect(css).toContain('.sw-button-primary');
+    expect(css).toContain('.sw-button-group > * { width: 100%; }');
     expect(css).toContain('--sw-control-md-min-height: 44px');
     expect(css).toContain('.sw-button-md { min-height: 44px');
     expect(css).toContain('--sw-control-xs-min-height: 28px');
@@ -119,6 +122,7 @@ describe('generated CSS', () => {
         'sw-badge-sm',
         'sw-segmented',
         'sw-segmented-filled',
+        'sw-segmented-disabled',
         'sw-table',
         'sw-table-numeric',
         'sw-table-clip',
@@ -134,6 +138,7 @@ describe('generated CSS', () => {
     expect(css).toContain('.sw-bar-chart-fill');
     expect(css).toContain('width: calc(var(--sw-bar-fill, 0) * 100%)');
     expect(css).toContain('.sw-segmented-filled .sw-segmented-item-selected');
+    expect(css).toContain('.sw-segmented-item:disabled');
     expect(css).toContain('.sw-dialog');
     expect(css).toContain('.sw-dialog::backdrop');
     expect(css).toContain('margin: auto');

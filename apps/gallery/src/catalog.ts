@@ -16,6 +16,7 @@ import { AccordionSection } from './sections/accordion.js';
 import { AppHeaderSection } from './sections/app-header.js';
 import { BadgeSection } from './sections/badge.js';
 import { BarChartSection } from './sections/bar-chart.js';
+import { ButtonGroupSection } from './sections/button-group.js';
 import { ButtonSection } from './sections/button.js';
 import { CanvasSection } from './sections/canvas.js';
 import { CardSection } from './sections/card.js';
@@ -90,6 +91,12 @@ export const catalog = [
     Section: AccordionSection,
   },
   { id: 'button', label: 'Button', group: 'controls', Section: ButtonSection },
+  {
+    id: 'button-group',
+    label: 'ButtonGroup',
+    group: 'controls',
+    Section: ButtonGroupSection,
+  },
   { id: 'badge', label: 'Badge', group: 'controls', Section: BadgeSection },
   {
     id: 'segmented-control',

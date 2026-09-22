@@ -7,6 +7,8 @@ import {
   typographyVariants,
 } from '@scalewing/tokens';
 
+import { breakpointQuery } from './breakpoints.js';
+
 const label = typographyVariants.label;
 
 export function buttonClassNames(options: {
@@ -72,7 +74,30 @@ export function cssButtonClasses(): string {
 }
 
 ${variantRules()}
-${sizeRules()}`;
+${sizeRules()}
+${groupRules()}`;
+}
+
+export const buttonGroupJustifies = ['start', 'end', 'between'] as const;
+
+/** The action row: one line from md up, full-width stacked buttons below it. */
+function groupRules(): string {
+  const justify = {
+    start: 'flex-start',
+    end: 'flex-end',
+    between: 'space-between',
+  } as const;
+  return [
+    `.sw-button-group { align-items: center; display: flex; flex-wrap: wrap; gap: var(--sw-space-2); min-width: 0; }`,
+    ...buttonGroupJustifies.map(
+      (name) =>
+        `.sw-button-group-${name} { justify-content: ${justify[name]}; }`,
+    ),
+    `@media ${breakpointQuery('below', 'md')} {
+  .sw-button-group { align-items: stretch; flex-direction: column; }
+  .sw-button-group > * { width: 100%; }
+}`,
+  ].join('\n');
 }
 
 export function buttonClassCatalog(): string[] {
@@ -80,5 +105,7 @@ export function buttonClassCatalog(): string[] {
     'sw-button',
     ...buttonVariants.map((variant) => `sw-button-${variant}`),
     ...buttonSizes.map((size) => `sw-button-${size}`),
+    'sw-button-group',
+    ...buttonGroupJustifies.map((name) => `sw-button-group-${name}`),
   ];
 }

@@ -12,7 +12,7 @@ export function SegmentedControlSection() {
   return (
     <Section
       id="segmented-control"
-      purpose="SegmentedControl is one exclusive choice. Use it instead of a row of independent Buttons. The compact variant is a quiet section switch; variant filled gives every segment the same width and an accent-filled selection, for a choice that decides what a form does; it takes the full width in a Stack and its labels' width in an Inline."
+      purpose="SegmentedControl is one exclusive choice. Use it instead of a row of independent Buttons. The compact variant is a quiet section switch; variant filled gives every segment the same width and an accent-filled selection, for a choice that decides what a form does; it takes the full width in a Stack and its labels' width in an Inline. disabled keeps the recorded choice visible but inert."
       title="SegmentedControl"
       usage={`<SegmentedControl
   aria-label="Class"
@@ -79,6 +79,16 @@ export function SegmentedControlSection() {
             variant="filled"
           />
         </Inline>
+        <SegmentedControl
+          aria-label="Recorded sighting"
+          disabled
+          items={[
+            { id: 'wild', label: 'In the wild' },
+            { id: 'captive', label: 'In captivity' },
+          ]}
+          value="wild"
+          variant="filled"
+        />
         <Text variant="caption">
           Selected: {animalClass} · {range} · {period} · {naming}
         </Text>

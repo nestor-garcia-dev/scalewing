@@ -19,22 +19,41 @@ type SegmentedLabel =
  */
 export type SegmentedControlVariant = 'compact' | 'filled';
 
-export type SegmentedControlProps = SegmentedLabel & {
-  items: readonly SegmentedItem[];
-  onChange: (id: string) => void;
-  value: string;
-  variant?: SegmentedControlVariant;
-};
+/**
+ * A disabled control can never report a change, so it needs no `onChange`;
+ * a live one must have it.
+ */
+type SegmentedChange =
+  | { disabled?: false; onChange: (id: string) => void }
+  | {
+      /** Keeps the current choice visible but inert, for an identity that can no longer change. */
+      disabled: true;
+      onChange?: (id: string) => void;
+    };
+
+export type SegmentedControlProps = SegmentedLabel &
+  SegmentedChange & {
+    items: readonly SegmentedItem[];
+    value: string;
+    variant?: SegmentedControlVariant;
+  };
 
 export const SegmentedControl = forwardRef<
   HTMLDivElement,
   SegmentedControlProps
 >(function SegmentedControl(
-  { items, onChange, value, variant = 'compact', ...labelProps },
+  {
+    disabled = false,
+    items,
+    onChange,
+    value,
+    variant = 'compact',
+    ...labelProps
+  },
   ref,
 ) {
   function onKeyDown(event: KeyboardEvent<HTMLDivElement>) {
-    if (event.key !== 'ArrowRight' && event.key !== 'ArrowLeft') {
+    if (disabled || (event.key !== 'ArrowRight' && event.key !== 'ArrowLeft')) {
       return;
     }
 
@@ -47,16 +66,18 @@ export const SegmentedControl = forwardRef<
     const delta = event.key === 'ArrowRight' ? 1 : -1;
     const next = items[(index + delta + items.length) % items.length];
     if (next) {
-      onChange(next.id);
+      onChange?.(next.id);
     }
   }
 
   return (
     <div
       ref={ref}
+      aria-disabled={disabled || undefined}
       className={cx(
         'sw-segmented',
         variant === 'filled' && 'sw-segmented-filled',
+        disabled && 'sw-segmented-disabled',
       )}
       onKeyDown={onKeyDown}
       role="radiogroup"
@@ -72,10 +93,11 @@ export const SegmentedControl = forwardRef<
               'sw-segmented-item',
               selected && 'sw-segmented-item-selected',
             )}
+            disabled={disabled}
             key={item.id}
             onClick={() => {
               if (!selected) {
-                onChange(item.id);
+                onChange?.(item.id);
               }
             }}
             role="radio"
