@@ -17,6 +17,7 @@ import { separatorClassCatalog } from './css-separator.js';
 import { responsiveClassCatalog } from './css-responsive.js';
 import { filterChipsClassCatalog } from './css-filter-chips.js';
 import { gridClassCatalog } from './css-grid.js';
+import { denominationGridClassCatalog } from './css-denomination-grid.js';
 import { fieldClassCatalog } from './css-field.js';
 import { cssComponentClasses } from './css-components.js';
 import { buttonClassCatalog } from './css-button.js';
@@ -65,6 +66,7 @@ export function utilityClassCatalog(): string[] {
     ...separatorClassCatalog(),
     ...filterChipsClassCatalog(),
     ...gridClassCatalog(),
+    ...denominationGridClassCatalog(),
     ...fieldClassCatalog(),
     ...splitClassCatalog(),
     ...toastClassCatalog(),

@@ -9,6 +9,7 @@ import { TooltipSection } from './sections/tooltip.js';
 import { SeparatorSection } from './sections/separator.js';
 import { ResponsiveVisibilitySection } from './sections/responsive-visibility.js';
 import { FilterChipsSection } from './sections/filter-chips.js';
+import { DenominationGridSection } from './sections/denomination-grid.js';
 import { type ComponentType } from 'react';
 
 import { AccordionSection } from './sections/accordion.js';
@@ -162,6 +163,12 @@ export const catalog = [
   { id: 'dialog', label: 'Dialog', group: 'controls', Section: DialogSection },
   { id: 'toast', label: 'Toast', group: 'controls', Section: ToastSection },
   { id: 'table', label: 'Table', group: 'data', Section: TableSection },
+  {
+    id: 'denomination-grid',
+    label: 'DenominationGrid',
+    group: 'data',
+    Section: DenominationGridSection,
+  },
   {
     id: 'bar-chart',
     label: 'BarChart',

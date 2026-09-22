@@ -16,6 +16,26 @@ describe('generated CSS', () => {
     expect(catalog).not.toContain('sw-padding-top-13px');
   });
 
+  it('emits the denomination grid from tones and breakpoints', () => {
+    expect(catalog).toEqual(
+      expect.arrayContaining([
+        'sw-denomination-grid',
+        'sw-denomination-row-danger',
+        'sw-denomination-cell-zero',
+        'sw-denomination-tile',
+      ]),
+    );
+    expect(css).toContain(
+      '.sw-denomination-row-success { --sw-denomination-tone: var(--sw-color-success); }',
+    );
+    expect(css).toContain(
+      '.sw-denomination-row-neutral { --sw-denomination-tone: var(--sw-color-muted); }',
+    );
+    expect(css).toContain(
+      '.sw-denomination-strip .sw-denomination-total { display: none; }',
+    );
+  });
+
   it('includes the bounded layout catalog', () => {
     expect(catalog).toEqual(expect.arrayContaining(['sw-stack', 'sw-sr-only']));
     expect(catalog).toEqual(
@@ -211,6 +231,8 @@ describe('generated CSS', () => {
       'sw-filter-chip',
       'sw-filter-chip-input',
       'sw-filter-chip-face',
+      'sw-filter-chip-count',
+      'sw-filter-chip-quiet',
     ]) {
       expect(css).toContain(`.${className}`);
       expect(catalog).toContain(className);

@@ -1,6 +1,7 @@
 import { typographyVariants } from '@scalewing/tokens';
 
 const label = typographyVariants.label;
+const data = typographyVariants.data;
 
 export function cssFilterChipsClasses(): string {
   return `.sw-filter-chips {
@@ -53,6 +54,7 @@ export function cssFilterChipsClasses(): string {
   display: inline-flex;
   font-family: var(--sw-font-sans);
   font-size: ${label.fontSize}px;
+  gap: var(--sw-space-2);
   line-height: ${label.lineHeight}px;
   min-height: var(--sw-control-md-min-height);
   min-width: 0;
@@ -60,10 +62,28 @@ export function cssFilterChipsClasses(): string {
   padding: var(--sw-space-1) var(--sw-space-3);
 }
 
+.sw-filter-chip-count {
+  color: var(--sw-color-muted);
+  flex: none;
+  font-size: ${data.fontSize}px;
+  font-variant-numeric: tabular-nums;
+  font-weight: ${data.fontWeight};
+  letter-spacing: ${data.letterSpacing}px;
+  line-height: ${data.lineHeight}px;
+}
+
+.sw-filter-chip-quiet:not(:has(.sw-filter-chip-input:checked)) .sw-filter-chip-face {
+  opacity: var(--sw-quiet-opacity);
+}
+
 .sw-filter-chip-input:checked + .sw-filter-chip-face {
   background: var(--sw-color-accent);
   border-color: var(--sw-color-accent);
   color: var(--sw-color-onAccent);
+}
+
+.sw-filter-chip-input:checked + .sw-filter-chip-face .sw-filter-chip-count {
+  color: inherit;
 }
 
 .sw-filter-chip-input:focus-visible + .sw-filter-chip-face {
@@ -80,6 +100,8 @@ export function cssFilterChipsClasses(): string {
   .sw-filter-chip-face { background: Canvas; border-color: CanvasText; color: CanvasText; }
   .sw-filter-chip-input:checked + .sw-filter-chip-face { background: Highlight; border-color: Highlight; color: HighlightText; }
   .sw-filter-chip-input:focus-visible + .sw-filter-chip-face { outline-color: Highlight; }
+  .sw-filter-chip-count { color: inherit; }
+  .sw-filter-chip-quiet:not(:has(.sw-filter-chip-input:checked)) .sw-filter-chip-face { opacity: 1; color: GrayText; border-color: GrayText; }
 }`;
 }
 
@@ -91,5 +113,7 @@ export function filterChipsClassCatalog(): string[] {
     'sw-filter-chip',
     'sw-filter-chip-input',
     'sw-filter-chip-face',
+    'sw-filter-chip-count',
+    'sw-filter-chip-quiet',
   ];
 }
