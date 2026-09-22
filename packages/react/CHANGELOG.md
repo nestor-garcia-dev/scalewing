@@ -1,5 +1,13 @@
 # @scalewing/react
 
+## 1.2.0
+
+### Minor Changes
+
+- 829dbdb: Add `Dialog` `size` (`'md' | 'lg'`): `lg` widens the modal to `--sw-dialog-max-lg` (56rem) so a row of six fields or a data grid fits without folding. The default stays `md` (32rem); phones keep the viewport gutter for both.
+- 28b53e0: `Grid` accepts `columns={6}` and `columnsBelow={{ md: 6 }}` (generated `sw-grid-cols-6` and `sw-grid-cols-below-md-6`) so a six-denomination entry row keeps one row on desktop. Five and seven still throw.
+- 9363116: Add `SegmentedControl` `variant` (`'compact' | 'filled'`): `filled` gives every segment the same width and an accent-filled selection (generated `sw-segmented-filled`); it takes the full width in a Stack and its labels' width in an Inline. The default `compact` look is unchanged.
+
 ## 1.1.0
 
 ### Minor Changes
