@@ -20,7 +20,7 @@ test('Dialog keeps the reading width by default and widens at size lg', async ({
   await expect(reading).toBeHidden();
 
   await section.getByRole('button', { name: 'Open wide dialog' }).click();
-  const wide = page.getByRole('dialog', { name: 'Count the till' });
+  const wide = page.getByRole('dialog', { name: 'Log a transect' });
   await expect(wide).toBeVisible();
   const wideBox = await wide.boundingBox();
   expect(wideBox).not.toBeNull();

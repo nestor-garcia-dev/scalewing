@@ -11,7 +11,14 @@ import { useState } from 'react';
 
 import { Section } from '../layout/Section.js';
 
-const bills = ['$1', '$5', '$10', '$20', '$50', '$100'];
+const transectHabitats = [
+  'Forest',
+  'Reef',
+  'Desert',
+  'Tundra',
+  'Wetland',
+  'Savanna',
+];
 
 export function DialogSection() {
   const [open, setOpen] = useState(false);
@@ -27,9 +34,9 @@ export function DialogSection() {
   <Button onPress={() => setOpen(false)}>Close</Button>
 </Dialog>
 
-<Dialog open={open} onClose={close} size="lg" title="Count the till">
+<Dialog open={open} onClose={close} size="lg" title="Log a transect">
   <Grid columns={6} columnsBelow={{ md: 2 }} gap={3}>
-    <Field label="$1"><input inputMode="numeric" /></Field>
+    <Field label="Forest"><input inputMode="numeric" /></Field>
     …
   </Grid>
 </Dialog>`}
@@ -77,20 +84,20 @@ export function DialogSection() {
           }}
           open={wideOpen}
           size="lg"
-          title="Count the till"
+          title="Log a transect"
         >
           <Text color="muted">
-            Enter how many of each bill are in the till. Six fields stay on one
-            row at the large size.
+            Enter the sightings per habitat along the transect. Six fields stay
+            on one row at the large size.
           </Text>
           <Grid columns={6} columnsBelow={{ md: 2 }} gap={3}>
-            {bills.map((bill) => (
-              <Field key={bill} label={bill}>
+            {transectHabitats.map((habitat) => (
+              <Field key={habitat} label={habitat}>
                 <input
                   autoComplete="off"
                   defaultValue="0"
                   inputMode="numeric"
-                  name={`till-${bill.slice(1)}`}
+                  name={`transect-${habitat.toLowerCase()}`}
                 />
               </Field>
             ))}
@@ -109,7 +116,7 @@ export function DialogSection() {
                 setWideOpen(false);
               }}
             >
-              Record count
+              Record transect
             </Button>
           </Inline>
         </Dialog>
