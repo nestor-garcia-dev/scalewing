@@ -46,8 +46,11 @@ export {
 } from './components/Button.js';
 export { Box, type BoxElement, type BoxProps } from './components/Box.js';
 export { Card, type CardProps, type CardVariant } from './components/Card.js';
-export { Dialog } from './components/Dialog.js';
-export type { DialogProps } from './components/Dialog.js';
+export {
+  Dialog,
+  type DialogProps,
+  type DialogSize,
+} from './components/Dialog.js';
 export { Toast } from './components/Toast.js';
 export type { ToastProps } from './components/Toast.js';
 export { Field, type FieldProps, type FieldSize } from './components/Field.js';

@@ -66,6 +66,11 @@ and [publication](https://github.com/nestor-garcia-dev/scalewing/actions/runs/34
 Finish FutMas's registry-pin integration and native visual acceptance. No new
 public surface is authorized by this release.
 
+Teisoro F-002-S21 task 810 (drawer close and support dialogs) requests one
+surface: `Dialog` `size` (`docs/requests/teisoro-dialog-size.md`), implemented
+on branch `teisoro/dialog-size` for the next `@scalewing/react` minor. Next
+action: independent review, merge, then release `react-v1.2.0`.
+
 ## Later
 
 - GitHub Pages or a public URL for the gallery.

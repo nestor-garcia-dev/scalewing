@@ -134,6 +134,8 @@ describe('generated CSS', () => {
     expect(css).toContain('.sw-dialog::backdrop');
     expect(css).toContain('margin: auto');
     expect(css).toContain('--sw-dialog-max: 32rem');
+    expect(css).toContain('--sw-dialog-max-lg: 56rem');
+    expect(css).toContain('.sw-dialog-lg');
     expect(css).toContain('--sw-select-max: 16rem');
     expect(css).toContain('.sw-select-trigger');
     expect(css).toContain('.sw-select-list');
@@ -279,6 +281,7 @@ describe('generated CSS', () => {
       expect(catalog).toContain(className);
     }
     expect(catalog).toContain('sw-dialog');
+    expect(catalog).toContain('sw-dialog-lg');
     expect(css).toContain('.sw-accordion');
     expect(css).toContain('.sw-accordion-summary');
     expect(catalog).toContain('sw-accordion');

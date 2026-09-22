@@ -55,6 +55,25 @@ describe('Dialog', () => {
     expect(closed.current).toBe(true);
   });
 
+  it('widens to the large size only when asked', () => {
+    render(
+      <ThemeProvider colorScheme="light">
+        <Dialog onClose={() => {}} open size="lg" title="Count the drawer">
+          <Text>Six fields in one row.</Text>
+        </Dialog>
+        <Dialog onClose={() => {}} open title="Confirm">
+          <Text>Reading width.</Text>
+        </Dialog>
+      </ThemeProvider>,
+    );
+
+    const wide = screen.getByRole('dialog', { name: 'Count the drawer' });
+    expect(wide.className).toContain('sw-dialog');
+    expect(wide.className).toContain('sw-dialog-lg');
+    const reading = screen.getByRole('dialog', { name: 'Confirm' });
+    expect(reading.className).not.toContain('sw-dialog-lg');
+  });
+
   it('closes when the pointer lands outside the dialog box', () => {
     const onClose = vi.fn();
     render(
