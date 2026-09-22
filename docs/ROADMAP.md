@@ -76,16 +76,15 @@ independent Bar Raiser review and a packed-tarball verification against
 Teisoro. Run **Release packages** from `main` with the tag (validate, then
 publish) and record the run ids here. Teisoro then pins 1.3.0 in task 815.
 
-`@scalewing/react@1.2.0` is versioned for release from tag `react-v1.2.0`
-(merge `cc7bb86` of PR #14): `Dialog` `size` (`docs/requests/teisoro-dialog-size.md`),
+`@scalewing/react@1.2.0` is published from tag `react-v1.2.0` (merge
+`181b8d7` of PR #15 on top of merge `cc7bb86` of PR #14): `Dialog` `size` (`docs/requests/teisoro-dialog-size.md`),
 six `Grid` columns (follow-up in `docs/requests/teisoro-grid.md`) and
 `SegmentedControl` `variant="filled"` (`docs/requests/teisoro-segmented-control.md`,
 sized to its container in `09a5c59`) for Teisoro F-002-S21 task 810 (drawer
 close and support dialogs, plus the workspace header language switch). Each
 surface passed an independent Bar Raiser review and a packed-tarball
-verification against Teisoro. Run **Release packages** from `main` with the
-tag (validate, then publish) and record the run ids here. Teisoro then pins
-1.2.0 in task 810.
+verification against Teisoro. Release packages runs on 2026-09-22: validate
+35770958220, publish 35772153078. Teisoro pins 1.2.0 in task 810.
 
 ## Later
 
