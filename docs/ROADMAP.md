@@ -79,8 +79,7 @@ disabled in `69fff20`) and `ButtonGroup` (`docs/requests/teisoro-button-group.md
 for Teisoro F-002-S21 task 815 (service entry pages and the void dialog; the
 drawer close dialogs adopt the action row too). Each surface passed an
 independent Bar Raiser review and a packed-tarball verification against
-Teisoro. Release packages runs on 2026-09-22: validate 35788031436, publish
-35788177846. Teisoro pins 1.3.0 in task 815.
+Teisoro. Release packages runs on 2026-09-22: validate 35788031436, publish 35788177846. Teisoro pins 1.3.0 in task 815.
 
 `@scalewing/react@1.2.0` is published from tag `react-v1.2.0` (merge
 `181b8d7` of PR #15 on top of merge `cc7bb86` of PR #14): `Dialog` `size` (`docs/requests/teisoro-dialog-size.md`),
