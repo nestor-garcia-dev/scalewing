@@ -49,4 +49,9 @@ export {
   type MultiSelectItem,
   type MultiSelectProps,
 } from './components/MultiSelect.js';
+export {
+  SingleSelect,
+  type SingleSelectItem,
+  type SingleSelectProps,
+} from './components/SingleSelect.js';
 export { TimeField, type TimeFieldProps } from './components/TimeField.js';

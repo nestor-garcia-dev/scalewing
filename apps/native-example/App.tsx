@@ -6,6 +6,7 @@ import {
   Field,
   Inline,
   MultiSelect,
+  SingleSelect,
   Stack,
   TabBar,
   TabBarTrailing,
@@ -67,6 +68,7 @@ export default function App() {
   const [visitDate, setVisitDate] = useState('');
   const [feedingTime, setFeedingTime] = useState('09:30');
   const [habitats, setHabitats] = useState<string[]>(['river']);
+  const [enclosure, setEnclosure] = useState('paddock');
   const [groupOpen, setGroupOpen] = useState(true);
   const [titlePresses, setTitlePresses] = useState(0);
 
@@ -142,6 +144,19 @@ export default function App() {
               label="Habitats"
               onChange={setHabitats}
               value={habitats}
+            />
+            <SingleSelect
+              hint="One enclosure per visit."
+              items={[
+                { id: 'paddock', label: 'Paddock' },
+                { id: 'aviary', label: 'Aviary' },
+                { id: 'pond', label: 'Pond' },
+                { id: 'nocturnal', label: 'Nocturnal house' },
+                { id: 'reptile', label: 'Reptile house' },
+              ]}
+              label="Enclosure"
+              onChange={setEnclosure}
+              value={enclosure}
             />
             <SegmentedControl
               accessibilityLabel="Sections"

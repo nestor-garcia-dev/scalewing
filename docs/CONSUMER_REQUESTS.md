@@ -43,6 +43,7 @@ import {
   DateField,
   Field,
   MultiSelect,
+  SingleSelect,
   Stack,
   TabBar,
   Text,
@@ -61,7 +62,7 @@ Visual language: quiet canvas (system sans, large radius, white light `Card`, no
 
 Do this in the product without a Scalewing change:
 
-- Compose screens from `ThemeProvider`, `Box`, `Stack`, `Inline`, `Split`, `Card`, `Accordion`, `Dialog`, `Toast`, `Text`, `Button`, `Field` (web), `Select` (web), `Badge`, `SegmentedControl`, `Table`, `BarChart`, `AppHeader`, and `Nav` (web). Native also has `TabBar`, `DateField`, `TimeField`, and `MultiSelect`.
+- Compose screens from `ThemeProvider`, `Box`, `Stack`, `Inline`, `Split`, `Card`, `Accordion`, `Dialog`, `Toast`, `Text`, `Button`, `Field` (web), `Select` (web), `Badge`, `SegmentedControl`, `Table`, `BarChart`, `AppHeader`, and `Nav` (web). Native also has `TabBar`, `DateField`, `TimeField`, `MultiSelect`, and `SingleSelect`.
 - Pick a named palette with `ThemeProvider palette`, `data-palette`, or a generated palette CSS file.
 - Keep product-only chrome in the app. `Box as="a"` is a layout link. Use `Button` for press actions.
 - Do not add app CSS that restyles `a`, inputs, or the page canvas.
