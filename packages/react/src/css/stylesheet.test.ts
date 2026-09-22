@@ -36,6 +36,12 @@ describe('generated CSS', () => {
     );
   });
 
+  it('gives the table scroll wrapper an accent focus ring', () => {
+    expect(css).toContain(
+      '.sw-table-wrap:focus-visible {\n  outline: var(--sw-focus-ring-width) solid var(--sw-color-accent);',
+    );
+  });
+
   it('steps display and heading down below the md breakpoint from the compact tokens', () => {
     expect(css).toContain(
       '@media not all and (min-width: 48rem) {\n  .sw-text-display { font-size: 32px; line-height: 38px; letter-spacing: -0.6px; }\n  .sw-text-heading { font-size: 24px; line-height: 30px; letter-spacing: -0.4px; }\n}',
@@ -119,10 +125,22 @@ describe('generated CSS', () => {
         'sw-tabular',
         'sw-badge',
         'sw-badge-accent',
+        'sw-badge-warning',
         'sw-badge-sm',
         'sw-segmented',
         'sw-segmented-filled',
         'sw-segmented-disabled',
+        'sw-stat-tile',
+        'sw-stat-tile-primary',
+        'sw-stat-tile-glyph',
+        'sw-stat-tile-body',
+        'sw-stat-tile-label',
+        'sw-stat-tile-value',
+        'sw-stat-tile-caption',
+        'sw-tabs',
+        'sw-tab',
+        'sw-tab-selected',
+        'sw-tab-panel',
         'sw-table',
         'sw-table-numeric',
         'sw-table-clip',

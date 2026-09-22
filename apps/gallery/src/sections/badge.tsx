@@ -34,8 +34,10 @@ export function BadgeSection() {
           ))}
         </Inline>
         <Text variant="caption" color="muted">
-          Neutral sits on glass. Accent, success, and danger are outlined. sm
-          drops the 28px control min-height so why chips stay dense.
+          Neutral sits on glass. Accent, success, danger, and warning are
+          outlined; warning is the caution between success and danger, for a
+          sighting to confirm or a count that drifted. sm drops the 28px control
+          min-height so why chips stay dense.
         </Text>
       </Stack>
     </Section>

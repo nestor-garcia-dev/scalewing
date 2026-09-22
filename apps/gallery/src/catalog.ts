@@ -30,6 +30,8 @@ import { LinkSection } from './sections/link.js';
 import { NavSection } from './sections/nav.js';
 import { PalettesSection } from './sections/palettes.js';
 import { SegmentedControlSection } from './sections/segmented-control.js';
+import { StatTileSection } from './sections/stat-tile.js';
+import { TabsSection } from './sections/tabs.js';
 import { SelectSection } from './sections/select.js';
 import { SplitSection } from './sections/split.js';
 import { TableSection } from './sections/table.js';
@@ -104,6 +106,7 @@ export const catalog = [
     group: 'controls',
     Section: SegmentedControlSection,
   },
+  { id: 'tabs', label: 'Tabs', group: 'controls', Section: TabsSection },
   { id: 'field', label: 'Field', group: 'controls', Section: FieldSection },
   { id: 'select', label: 'Select', group: 'controls', Section: SelectSection },
   {
@@ -169,6 +172,12 @@ export const catalog = [
   },
   { id: 'dialog', label: 'Dialog', group: 'controls', Section: DialogSection },
   { id: 'toast', label: 'Toast', group: 'controls', Section: ToastSection },
+  {
+    id: 'stat-tile',
+    label: 'StatTile',
+    group: 'data',
+    Section: StatTileSection,
+  },
   { id: 'table', label: 'Table', group: 'data', Section: TableSection },
   {
     id: 'denomination-grid',

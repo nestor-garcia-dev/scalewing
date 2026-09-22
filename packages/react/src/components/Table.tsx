@@ -14,6 +14,11 @@ export type TableProps = HTMLAttributes<HTMLTableElement> & {
   stickyHeader?: boolean;
 };
 
+/**
+ * The scroll wrapper is a keyboard stop named after the table, so a wide
+ * table with no focusable cell can still be scrolled sideways from the
+ * keyboard and is announced as one group.
+ */
 export const Table = forwardRef<HTMLTableElement, TableProps>(function Table(
   {
     children,
@@ -25,7 +30,13 @@ export const Table = forwardRef<HTMLTableElement, TableProps>(function Table(
   ref,
 ) {
   return (
-    <div className="sw-table-wrap">
+    <div
+      aria-label={rest['aria-label']}
+      aria-labelledby={rest['aria-labelledby']}
+      className="sw-table-wrap"
+      role="group"
+      tabIndex={0}
+    >
       <table
         ref={ref}
         className={cx(

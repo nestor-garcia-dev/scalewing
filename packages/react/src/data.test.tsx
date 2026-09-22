@@ -9,6 +9,8 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import { Badge } from './components/Badge.js';
 import { SegmentedControl } from './components/SegmentedControl.js';
+import { StatTile } from './components/StatTile.js';
+import { TabPanel, Tabs } from './components/Tabs.js';
 import {
   Table,
   TableBody,
@@ -35,6 +37,16 @@ describe('Badge', () => {
     expect(badge.className).toContain('sw-badge');
     expect(badge.className).toContain('sw-badge-accent');
     expect(badge.className).toContain('sw-badge-md');
+  });
+
+  it('paints the warning tone from its own colour token', () => {
+    render(
+      <ThemeProvider colorScheme="light">
+        <Badge tone="warning">Nesting</Badge>
+      </ThemeProvider>,
+    );
+
+    expect(screen.getByText('Nesting').className).toContain('sw-badge-warning');
   });
 
   it('maps compact chicklets to the sm size class', () => {
@@ -154,6 +166,124 @@ describe('SegmentedControl', () => {
   });
 });
 
+describe('StatTile', () => {
+  it('names the figure, tones the value and fills the primary tile', () => {
+    render(
+      <ThemeProvider colorScheme="light">
+        <StatTile
+          caption="42 species"
+          emphasis="primary"
+          glyph={<svg data-testid="glyph" />}
+          label="Total sightings"
+          value="1,284"
+        />
+        <StatTile label="Range change" tone="danger" value="-3" />
+      </ThemeProvider>,
+    );
+
+    const primary = screen.getByText('Total sightings').closest('section');
+    expect(primary?.className).toContain('sw-stat-tile');
+    expect(primary?.className).toContain('sw-stat-tile-primary');
+    expect(screen.getByText('1,284').tagName).toBe('STRONG');
+    expect(screen.getByText('1,284').className).toContain('sw-stat-tile-value');
+    expect(screen.getByText('1,284').style.color).toBe(
+      'var(--sw-color-onAccent)',
+    );
+    expect(screen.getByText('42 species').className).toContain(
+      'sw-stat-tile-caption',
+    );
+    expect(
+      screen.getByTestId('glyph').parentElement?.getAttribute('aria-hidden'),
+    ).toBe('true');
+
+    const plain = screen.getByText('Range change').closest('section');
+    expect(plain?.className).not.toContain('sw-stat-tile-primary');
+    expect(plain?.querySelector('.sw-stat-tile-glyph')).toBeNull();
+    expect(screen.getByText('-3').style.color).toBe('var(--sw-color-danger)');
+  });
+});
+
+describe('Tabs', () => {
+  it('exposes a tablist whose panels point at their tabs and hide when not current', () => {
+    const onChange = vi.fn();
+
+    render(
+      <ThemeProvider colorScheme="light">
+        <Tabs
+          aria-label="Habitats"
+          id="habitats"
+          items={[
+            { id: 'forest', label: 'Forest' },
+            { id: 'ocean', label: 'Ocean' },
+          ]}
+          onChange={onChange}
+          value="forest"
+        />
+        <TabPanel id="forest" tabsId="habitats" value="forest">
+          Red fox
+        </TabPanel>
+        <TabPanel id="ocean" tabsId="habitats" value="forest">
+          Sea turtle
+        </TabPanel>
+      </ThemeProvider>,
+    );
+
+    const list = screen.getByRole('tablist', { name: 'Habitats' });
+    expect(list.className).toContain('sw-tabs');
+    const forest = screen.getByRole('tab', { name: 'Forest' });
+    const ocean = screen.getByRole('tab', { name: 'Ocean' });
+    expect(forest.getAttribute('aria-selected')).toBe('true');
+    expect(forest.className).toContain('sw-tab-selected');
+    expect(forest.tabIndex).toBe(0);
+    expect(ocean.tabIndex).toBe(-1);
+    expect(forest.getAttribute('aria-controls')).toBe('habitats-panel-forest');
+
+    const panel = screen.getByRole('tabpanel');
+    expect(panel.id).toBe('habitats-panel-forest');
+    expect(panel.getAttribute('aria-labelledby')).toBe('habitats-tab-forest');
+    expect(panel.textContent).toBe('Red fox');
+    expect(screen.getByText('Sea turtle').hidden).toBe(true);
+
+    ocean.click();
+    expect(onChange).toHaveBeenCalledWith('ocean');
+    forest.click();
+    expect(onChange).toHaveBeenCalledTimes(1);
+  });
+
+  it('moves and selects with the arrow keys, Home and End', () => {
+    const onChange = vi.fn();
+    const items = [
+      { id: 'forest', label: 'Forest' },
+      { id: 'ocean', label: 'Ocean' },
+      { id: 'desert', label: 'Desert' },
+    ];
+
+    render(
+      <ThemeProvider colorScheme="light">
+        <Tabs
+          aria-label="Habitats"
+          id="habitats"
+          items={items}
+          onChange={onChange}
+          value="ocean"
+        />
+      </ThemeProvider>,
+    );
+
+    const list = screen.getByRole('tablist', { name: 'Habitats' });
+    fireEvent.keyDown(list, { key: 'ArrowRight' });
+    expect(onChange).toHaveBeenLastCalledWith('desert');
+    fireEvent.keyDown(list, { key: 'ArrowLeft' });
+    expect(onChange).toHaveBeenLastCalledWith('forest');
+    fireEvent.keyDown(list, { key: 'Home' });
+    expect(onChange).toHaveBeenLastCalledWith('forest');
+    fireEvent.keyDown(list, { key: 'End' });
+    expect(onChange).toHaveBeenLastCalledWith('desert');
+    fireEvent.keyDown(list, { key: 'Enter' });
+    expect(onChange).toHaveBeenCalledTimes(4);
+  });
+});
+
 describe('Table', () => {
   it('renders a sticky numeric table from compound parts', () => {
     render(
@@ -209,5 +339,39 @@ describe('Table', () => {
     const row = within(table).getByRole('row');
     expect(row.getAttribute('aria-selected')).toBe('true');
     expect(row.className).toContain('sw-table-row-selected');
+  });
+
+  it('wraps the table in a keyboard-reachable group named after it', () => {
+    render(
+      <ThemeProvider colorScheme="light">
+        <h2 id="census-title">Census</h2>
+        <Table aria-labelledby="census-title">
+          <TableBody>
+            <TableRow>
+              <TableCell>Heron</TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>
+        <Table aria-label="Watch list">
+          <TableBody>
+            <TableRow>
+              <TableCell>Otter</TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>
+      </ThemeProvider>,
+    );
+
+    const byHeading = screen.getByRole('group', { name: 'Census' });
+    expect(byHeading.className).toBe('sw-table-wrap');
+    expect(byHeading.tabIndex).toBe(0);
+    expect(
+      byHeading.contains(screen.getByRole('table', { name: 'Census' })),
+    ).toBe(true);
+    const byLabel = screen.getByRole('group', { name: 'Watch list' });
+    expect(byLabel.getAttribute('aria-labelledby')).toBeNull();
+    expect(
+      byLabel.contains(screen.getByRole('table', { name: 'Watch list' })),
+    ).toBe(true);
   });
 });

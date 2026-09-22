@@ -1,6 +1,12 @@
 import { trackInset, typographyVariants } from '@scalewing/tokens';
 
-export const badgeTones = ['neutral', 'accent', 'success', 'danger'] as const;
+export const badgeTones = [
+  'neutral',
+  'accent',
+  'success',
+  'danger',
+  'warning',
+] as const;
 
 export type BadgeTone = (typeof badgeTones)[number];
 
@@ -64,6 +70,12 @@ export function cssDataClasses(): string {
   background: transparent;
   border-color: var(--sw-color-danger);
   color: var(--sw-color-danger);
+}
+
+.sw-badge-warning {
+  background: transparent;
+  border-color: var(--sw-color-warning);
+  color: var(--sw-color-warning);
 }
 
 .sw-segmented {
@@ -137,6 +149,11 @@ export function cssDataClasses(): string {
 .sw-table-wrap {
   overflow: auto;
   width: 100%;
+}
+
+.sw-table-wrap:focus-visible {
+  outline: var(--sw-focus-ring-width) solid var(--sw-color-accent);
+  outline-offset: calc(-1 * var(--sw-focus-ring-width));
 }
 
 .sw-table {

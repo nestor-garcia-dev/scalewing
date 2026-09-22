@@ -56,6 +56,22 @@ export {
   type DialogProps,
   type DialogSize,
 } from './components/Dialog.js';
+export {
+  StatTile,
+  type StatTileEmphasis,
+  type StatTileProps,
+  type StatTileTone,
+  statTileTones,
+} from './components/StatTile.js';
+export {
+  TabPanel,
+  type TabItem,
+  type TabPanelProps,
+  Tabs,
+  type TabsProps,
+  tabId,
+  tabPanelId,
+} from './components/Tabs.js';
 export { Toast } from './components/Toast.js';
 export type { ToastProps } from './components/Toast.js';
 export { Field, type FieldProps, type FieldSize } from './components/Field.js';
