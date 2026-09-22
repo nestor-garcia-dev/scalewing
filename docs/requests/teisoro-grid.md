@@ -11,3 +11,5 @@ Proposed API: `columns` (1–4), `columnsBelow` (`{ md: 1–4 }`), `gap` (spacin
 Behavior and failure boundary: children stretch to their cell; column counts outside 1–4 throw a `RangeError`; the phone rule uses the existing `md` breakpoint token; no arbitrary column templates.
 
 Scalewing owns the reusable layout, generated classes, tests, gallery evidence, and changeset. Teisoro owns what goes in the cells.
+
+Follow-up (Teisoro F-002-S21 task 810, 2026-09-22): `columns` and `columnsBelow` also accept `6`, so a cash drawer's six bill fields (`$1` to `$100`) share one row on desktop and fold to two per row on a phone (`docs/design/drawer-close/README.md`, "Denomination entry grid"). Five and seven stay out of the catalog; the rule "no arbitrary column templates" is unchanged.

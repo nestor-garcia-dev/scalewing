@@ -59,6 +59,8 @@ describe('generated CSS', () => {
       ]),
     );
     expect(css).toContain('.sw-grid-cols-below-md-2');
+    expect(css).toContain('.sw-grid-cols-6');
+    expect(catalog).toContain('sw-grid-cols-6');
     expect(catalog).not.toContain('sw-grid-cols-5');
     expect(css).toContain('.sw-stack');
     expect(css).not.toContain('!important');
