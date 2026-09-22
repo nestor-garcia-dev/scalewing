@@ -66,15 +66,15 @@ and [publication](https://github.com/nestor-garcia-dev/scalewing/actions/runs/34
 Finish FutMas's registry-pin integration and native visual acceptance. No new
 public surface is authorized by this release.
 
-`@scalewing/react@1.3.0` is versioned for release from tag `react-v1.3.0`
-(merge `47efdef` of PR #17): `SegmentedControl` `disabled` (follow-up in
+`@scalewing/react@1.3.0` is published from tag `react-v1.3.0` (merge
+`f7ca688` of PR #18 on top of merge `47efdef` of PR #17): `SegmentedControl` `disabled` (follow-up in
 `docs/requests/teisoro-segmented-control.md`, `onChange` optional while
 disabled in `69fff20`) and `ButtonGroup` (`docs/requests/teisoro-button-group.md`)
 for Teisoro F-002-S21 task 815 (service entry pages and the void dialog; the
 drawer close dialogs adopt the action row too). Each surface passed an
 independent Bar Raiser review and a packed-tarball verification against
-Teisoro. Run **Release packages** from `main` with the tag (validate, then
-publish) and record the run ids here. Teisoro then pins 1.3.0 in task 815.
+Teisoro. Release packages runs on 2026-09-22: validate 35788031436, publish
+35788177846. Teisoro pins 1.3.0 in task 815.
 
 `@scalewing/react@1.2.0` is published from tag `react-v1.2.0` (merge
 `181b8d7` of PR #15 on top of merge `cc7bb86` of PR #14): `Dialog` `size` (`docs/requests/teisoro-dialog-size.md`),
