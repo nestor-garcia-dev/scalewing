@@ -38,7 +38,7 @@ export type WheelProps = {
 };
 
 /**
- * Private snapping column shared by the time columns: rows are radio targets,
+ * Private snapping column behind TimeField and WheelField: rows are radio targets,
  * a settled scroll selects the row in the band, and a tap centres its row.
  */
 export function Wheel({

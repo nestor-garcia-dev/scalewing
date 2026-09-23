@@ -55,3 +55,8 @@ export {
   type SingleSelectProps,
 } from './components/SingleSelect.js';
 export { TimeField, type TimeFieldProps } from './components/TimeField.js';
+export {
+  WheelField,
+  type WheelFieldItem,
+  type WheelFieldProps,
+} from './components/WheelField.js';
