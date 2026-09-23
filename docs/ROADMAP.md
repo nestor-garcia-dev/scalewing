@@ -17,6 +17,12 @@ release workflow completed successfully.
 
 ## Next action
 
+Native `Stepper` announces its value as the number, not a percentage of its
+range, for FutMas F-017-S09 (request `futmas-stepper-value-text.md`, found by
+its iOS flows on 2026-09-23). Branch `futmas/stepper-value-text` against
+`main`; a patch that ships in `@scalewing/react-native@1.5.0` with the
+picker-close and `Field` multi-line requests.
+
 `@scalewing/react-native@1.4.0` is versioned from merge `bf8d571` (PRs #25
 and #27): native `WheelField` (one snapping wheel over consumer items, for
 the season year) and `Stepper` (a bounded number between round minus and

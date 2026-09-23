@@ -99,7 +99,9 @@ export function Stepper({
           accessibilityLabel={label}
           accessibilityRole="adjustable"
           accessibilityState={{ disabled }}
-          accessibilityValue={{ max, min, now: value }}
+          // The text keeps iOS from announcing the value as a percentage of
+          // the range ("14%" for 1 of 1 to 8).
+          accessibilityValue={{ max, min, now: value, text: String(value) }}
           accessible
           onAccessibilityAction={(event) => {
             if (event.nativeEvent.actionName === 'increment') increase();
