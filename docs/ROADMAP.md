@@ -72,6 +72,19 @@ and [publication](https://github.com/nestor-garcia-dev/scalewing/actions/runs/34
 Finish FutMas's registry-pin integration and native visual acceptance. No new
 public surface is authorized by this release.
 
+`@scalewing/tokens@1.2.0` and `@scalewing/react@1.4.0` are published from tags
+`tokens-v1.2.0` and `react-v1.4.0` (merge `ea6f4ed` of PR #23 on top of merge
+`b07ce8b` of PR #22): the `warning` semantic colour
+(`docs/requests/teisoro-warning-tone.md`, `Badge tone="warning"`,
+`Text color="warning"`), `StatTile` (`docs/requests/teisoro-stat-tile.md`),
+`Tabs` with `TabPanel` (`docs/requests/teisoro-tabs.md`) and a keyboard-reachable
+`Table` scroll wrapper (found by the consumer's axe audit) for Teisoro
+F-002-S21 task 820 (employees, reports, risk management, NSF detail and the
+shell). Each commit passed an independent Bar Raiser review and a
+packed-tarball verification against Teisoro. Release packages runs on
+2026-09-22: tokens validate 35800259162 and publish 35800382950, react
+validate 35800621124 and publish 35800724561. Teisoro pins both in task 820.
+
 `@scalewing/react@1.3.0` is published from tag `react-v1.3.0` (merge
 `f7ca688` of PR #18 on top of merge `47efdef` of PR #17): `SegmentedControl` `disabled` (follow-up in
 `docs/requests/teisoro-segmented-control.md`, `onChange` optional while
