@@ -1,5 +1,26 @@
 # @scalewing/react-native
 
+## 1.4.0
+
+### Minor Changes
+
+- fba8568: Add `Stepper`, a labeled bounded number between raised round minus and plus
+  buttons on a glass pill track that fills its column, so several can share a
+  row (see `docs/requests/futmas-stepper.md`). Props: `label`, `value`,
+  `onChange`, `min`, `max`, `step` (default 1), `decrementLabel`,
+  `incrementLabel`, `disabled`, `hint`, `error`, and `testID` (parts
+  `<testID>-decrement`, `-value`, `-increment`). A button fades and stops at
+  its bound; the value is one adjustable element with increment and decrement
+  actions. No new dependency.
+- 03ef416: Add `WheelField`, a labeled field-shaped disclosure that opens one snapping
+  wheel over an ordered list of `{ id, label }` items for choices that chips
+  cannot hold, such as a year (see `docs/requests/futmas-wheel-field.md`). It
+  reuses the wheel behind `TimeField` with no native module or new dependency:
+  rows are radio targets, a settled scroll or a tap selects, an empty value
+  rests on the first item and reports nothing until a tap or a scroll. Props:
+  `items`, `value`, `onChange`, `label`, `placeholder`, `disabled`, `hint`,
+  `error`, `wheelLabel`, and `testID` (the column is `<testID>-wheel`).
+
 ## 1.3.0
 
 ### Minor Changes

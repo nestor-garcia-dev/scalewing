@@ -1,4 +1,4 @@
-Status: implemented for the next react-native release.
+Status: implemented for the react-native 1.4.0 release.
 
 Scalewing request from FutMas.
 
