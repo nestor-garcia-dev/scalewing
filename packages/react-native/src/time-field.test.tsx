@@ -117,8 +117,37 @@ describe('TimeField', () => {
     expect(onChange).toHaveBeenLastCalledWith('21:30');
     act(() => pressable(renderer.root, '45')?.props.onPress());
     expect(onChange).toHaveBeenLastCalledWith('18:45');
+    open(renderer.root);
     act(() => pressable(renderer.root, 'AM')?.props.onPress());
     expect(onChange).toHaveBeenLastCalledWith('06:30');
+  });
+
+  it('stays open on a tapped hour and closes on a tapped minute or period', () => {
+    const { renderer } = renderTimeField();
+    const wheels = () => renderer.root.findAllByType('ScrollView').length;
+    open(renderer.root);
+
+    act(() => pressable(renderer.root, '9')?.props.onPress());
+    expect(wheels()).toBe(3);
+    act(() => pressable(renderer.root, '45')?.props.onPress());
+    expect(wheels()).toBe(0);
+    open(renderer.root);
+    act(() => pressable(renderer.root, 'AM')?.props.onPress());
+    expect(wheels()).toBe(0);
+  });
+
+  it('stays open when a scroll settles on any column', () => {
+    const { onChange, renderer } = renderTimeField();
+    open(renderer.root);
+    const minutes = column(renderer.root, 'Minutes')?.findByType('ScrollView');
+
+    act(() =>
+      minutes?.props.onMomentumScrollEnd({
+        nativeEvent: { contentOffset: { y: 44 * 3 } },
+      }),
+    );
+    expect(onChange).toHaveBeenLastCalledWith('18:45');
+    expect(renderer.root.findAllByType('ScrollView')).toHaveLength(3);
   });
 
   it('selects the row a scroll settles on and ignores a drag that still moves', () => {
