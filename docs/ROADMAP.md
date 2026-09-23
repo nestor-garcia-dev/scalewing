@@ -17,18 +17,14 @@ release workflow completed successfully.
 
 ## Next action
 
-Native `Stepper` for FutMas (request `futmas-stepper.md`, owner request
-2026-09-22): a labeled bounded number between round minus and plus buttons
-on a pill track, so table points (win, draw, loss) sit side by side instead
-of as three stacked text fields. Branch `futmas/stepper`, stacked on
-`futmas/wheel-field`; both ship in `@scalewing/react-native@1.4.0`.
-
-Native `WheelField` for FutMas F-017-S01 (request `futmas-wheel-field.md`,
-owner feedback 2026-09-22): a labeled disclosure over one snapping wheel of
-consumer items, reusing the `TimeField` wheel, so a season year is picked from
-the current year onward instead of typed. Branch `futmas/wheel-field`; after
-the PR merges, version and publish `@scalewing/react-native@1.4.0` (tokens
-stay 1.2.0) and FutMas bumps its pins.
+`@scalewing/react-native@1.4.0` is versioned from merge `bf8d571` (PRs #25
+and #27): native `WheelField` (one snapping wheel over consumer items, for
+the season year) and `Stepper` (a bounded number between round minus and
+plus buttons, for table points) for FutMas F-017-S01 (requests
+`futmas-wheel-field.md`, `futmas-stepper.md`). Tag `react-native-v1.4.0`,
+validate, then publish through Release packages; FutMas pins 1.4.0 with
+tokens 1.2.0 once it is on npm. PR #26 merged into its stacked base after
+#25 had landed, so #27 carried the stepper to `main`.
 
 `@scalewing/tokens@1.1.0` and `@scalewing/react@1.1.0` are published from tags
 `tokens-v1.1.0` and `react-v1.1.0` (merge `0982e68` of PR #12): web `Grid`,
