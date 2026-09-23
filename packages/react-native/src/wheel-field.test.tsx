@@ -123,6 +123,7 @@ describe('WheelField', () => {
     act(() => pressable(renderer.root, '2029')?.props.onPress());
     expect(onChange).toHaveBeenLastCalledWith('2029');
     onChange.mockClear();
+    open(renderer.root);
 
     const wheel = column(renderer.root, 'Year')?.findByType('ScrollView');
     act(() =>
@@ -153,8 +154,32 @@ describe('WheelField', () => {
     expect(onChange).not.toHaveBeenCalled();
     act(() => pressable(renderer.root, '2026')?.props.onPress());
     expect(onChange).toHaveBeenLastCalledWith('2026');
+    open(renderer.root);
     act(() => pressable(renderer.root, '2028')?.props.onPress());
     expect(onChange).toHaveBeenLastCalledWith('2028');
+  });
+
+  it('closes on a tapped row, even the current one, and stays open after a scroll', () => {
+    const { onChange, renderer } = renderWheelField();
+    const wheels = () => renderer.root.findAllByType('ScrollView').length;
+    open(renderer.root);
+
+    act(() =>
+      column(renderer.root, 'Year')
+        ?.findByType('ScrollView')
+        .props.onMomentumScrollEnd({
+          nativeEvent: { contentOffset: { y: 88 } },
+        }),
+    );
+    expect(onChange).toHaveBeenLastCalledWith('2028');
+    expect(wheels()).toBe(1);
+    onChange.mockClear();
+    act(() => pressable(renderer.root, '2027')?.props.onPress());
+    expect(onChange).not.toHaveBeenCalled();
+    expect(wheels()).toBe(0);
+    expect(
+      pressable(renderer.root, 'Year')?.props.accessibilityState.expanded,
+    ).toBe(false);
   });
 
   it('shows the error, marks the control invalid, and disables the wheel', () => {

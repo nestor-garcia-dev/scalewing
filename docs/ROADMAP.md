@@ -17,6 +17,18 @@ release workflow completed successfully.
 
 ## Next action
 
+Native pickers close on a pick for FutMas F-015-S11 (request
+`futmas-wheel-close.md`, owner report 2026-09-22): a tapped wheel row closes
+`WheelField` and a tapped minute or AM/PM row closes `TimeField`; settled
+scrolls keep them open; `ThemeProvider` keeps one picker open at a time.
+Branch `futmas/wheel-close` against `main`; ships in
+`@scalewing/react-native@1.5.0` with the native `Field` multi-line request.
+
+Native `Field` `rows` for FutMas F-017-S08 (request
+`futmas-field-multiline.md`): a multi-line field for adding teams one per
+line. Branch `futmas/field-multiline` against `main`; ships in
+`@scalewing/react-native@1.5.0` with the picker close change.
+
 Native `Stepper` announces its value as the number, not a percentage of its
 range, for FutMas F-017-S09 (request `futmas-stepper-value-text.md`, found by
 its iOS flows on 2026-09-23). Branch `futmas/stepper-value-text` against

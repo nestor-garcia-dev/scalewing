@@ -21,6 +21,7 @@ import {
   wheelIndexForOffset,
   wheelOffsetForIndex,
 } from '../wheel-geometry.js';
+import { type WheelPick } from '../wheel-close.js';
 import { Text } from './Text.js';
 
 export type WheelItem = {
@@ -32,7 +33,8 @@ export type WheelProps = {
   accessibilityLabel: string;
   disabled: boolean;
   items: readonly WheelItem[];
-  onSelect: (id: string) => void;
+  /** A tapped row or a scroll that settled on a row. */
+  onSelect: (id: string, pick: WheelPick) => void;
   selectedId: string;
   testID?: string;
 };
@@ -67,7 +69,7 @@ export function Wheel({
 
   function settle(offset: number) {
     const item = items[wheelIndexForOffset(offset, rowHeight, items.length)];
-    if (item && item.id !== selectedId) onSelect(item.id);
+    if (item && item.id !== selectedId) onSelect(item.id, 'scroll');
   }
 
   function onDragEnd(event: NativeSyntheticEvent<NativeScrollEvent>) {
@@ -105,7 +107,7 @@ export function Wheel({
               accessibilityState={{ disabled, selected }}
               disabled={disabled}
               key={item.id}
-              onPress={() => onSelect(item.id)}
+              onPress={() => onSelect(item.id, 'tap')}
               style={mapWheelRowStyle(theme)}
             >
               <Text color={wheelRowColor(selected)} variant="label">

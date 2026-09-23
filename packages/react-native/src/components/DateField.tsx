@@ -1,4 +1,6 @@
 import { useState } from 'react';
+
+import { useExclusiveDisclosure } from '../theme/DisclosureGroup.js';
 import { Pressable, View } from 'react-native';
 
 import {
@@ -66,8 +68,11 @@ export function DateField({
   if (min !== undefined && max !== undefined && min > max)
     throw new RangeError('min must not be after max');
 
-  const [visibleMonth, setVisibleMonth] = useState<CalendarMonth | null>(null);
-  const open = visibleMonth !== null;
+  const [open, setOpen] = useExclusiveDisclosure();
+  const [browsedMonth, setBrowsedMonth] = useState<CalendarMonth | null>(null);
+  const visibleMonth = open
+    ? (browsedMonth ?? monthOf(value, new Date()))
+    : null;
   const invalid = Boolean(error) || isOutsideDateRange(value, min, max);
 
   return (
@@ -78,9 +83,10 @@ export function DateField({
         expanded={open}
         invalid={invalid}
         label={label}
-        onPress={() =>
-          setVisibleMonth(open ? null : monthOf(value, new Date()))
-        }
+        onPress={() => {
+          setBrowsedMonth(null);
+          setOpen(!open);
+        }}
         placeholder={placeholder}
         valueText={formatDateLabel(value, locale, 'medium')}
       />
@@ -91,9 +97,9 @@ export function DateField({
           min={min}
           month={visibleMonth}
           nextMonthLabel={nextMonthLabel}
-          onMonthChange={setVisibleMonth}
+          onMonthChange={setBrowsedMonth}
           onSelect={(next) => {
-            setVisibleMonth(null);
+            setOpen(false);
             onChange(next);
           }}
           previousMonthLabel={previousMonthLabel}

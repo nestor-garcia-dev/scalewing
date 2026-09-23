@@ -8,6 +8,8 @@ import {
   type ThemeColors,
 } from '@scalewing/tokens';
 
+import { DisclosureGroup } from './DisclosureGroup.js';
+
 const ThemeContext = createContext<Theme | null>(null);
 
 export type ThemeProviderProps = {
@@ -32,9 +34,11 @@ export function ThemeProvider({
 
   return (
     <ThemeContext.Provider value={theme}>
-      <View style={{ backgroundColor: theme.colors.background, flex: 1 }}>
-        {children}
-      </View>
+      <DisclosureGroup>
+        <View style={{ backgroundColor: theme.colors.background, flex: 1 }}>
+          {children}
+        </View>
+      </DisclosureGroup>
     </ThemeContext.Provider>
   );
 }
