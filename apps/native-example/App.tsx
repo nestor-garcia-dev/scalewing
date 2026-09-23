@@ -8,6 +8,7 @@ import {
   MultiSelect,
   SingleSelect,
   Stack,
+  Stepper,
   TabBar,
   TabBarTrailing,
   SegmentedControl,
@@ -69,6 +70,8 @@ export default function App() {
   const [visitDate, setVisitDate] = useState('');
   const [feedingTime, setFeedingTime] = useState('09:30');
   const [hatchYear, setHatchYear] = useState('2024');
+  const [nestEggs, setNestEggs] = useState(3);
+  const [nestChicks, setNestChicks] = useState(1);
   const [habitats, setHabitats] = useState<string[]>(['river']);
   const [enclosure, setEnclosure] = useState('paddock');
   const [groupOpen, setGroupOpen] = useState(true);
@@ -146,6 +149,31 @@ export default function App() {
               testID="hatch-year"
               value={hatchYear}
             />
+            <Inline align="start" gap={2}>
+              <View style={{ flex: 1 }}>
+                <Stepper
+                  decrementLabel="Fewer eggs"
+                  incrementLabel="More eggs"
+                  label="Eggs"
+                  max={10}
+                  min={0}
+                  onChange={setNestEggs}
+                  testID="nest-eggs"
+                  value={nestEggs}
+                />
+              </View>
+              <View style={{ flex: 1 }}>
+                <Stepper
+                  decrementLabel="Fewer chicks"
+                  incrementLabel="More chicks"
+                  label="Chicks"
+                  max={nestEggs}
+                  min={0}
+                  onChange={setNestChicks}
+                  value={Math.min(nestChicks, nestEggs)}
+                />
+              </View>
+            </Inline>
             <MultiSelect
               error={
                 habitats.length === 0 ? 'Pick at least one habitat.' : undefined
