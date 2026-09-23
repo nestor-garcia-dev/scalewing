@@ -1,5 +1,5 @@
-import { useState } from 'react';
-
+import { useExclusiveDisclosure } from '../theme/DisclosureGroup.js';
+import { closesOnPick } from '../wheel-close.js';
 import {
   assertWheelFieldValue,
   restingWheelItem,
@@ -30,9 +30,11 @@ export type WheelFieldProps = {
 /**
  * A labeled field-shaped button that discloses one snapping wheel for a
  * choice from a long ordered list (years, counts, durations) where chips
- * would not fit. Rows are radio targets; a settled scroll or a tap selects.
- * An empty value rests on the first item and reports nothing until the
- * person taps a row or scrolls the wheel.
+ * would not fit. Rows are radio targets; a settled scroll selects and keeps
+ * the wheel open for browsing, a tap selects and closes it. An empty value
+ * rests on the first item and reports nothing until the person taps a row or
+ * scrolls the wheel. Opening it closes any other picker under the same
+ * ThemeProvider.
  */
 export function WheelField({
   disabled = false,
@@ -48,7 +50,7 @@ export function WheelField({
 }: WheelFieldProps) {
   assertWheelFieldValue(items, value);
 
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useExclusiveDisclosure();
   const selected = items.find((item) => item.id === value);
 
   return (
@@ -59,7 +61,7 @@ export function WheelField({
         expanded={open}
         invalid={Boolean(error)}
         label={label}
-        onPress={() => setOpen((current) => !current)}
+        onPress={() => setOpen(!open)}
         placeholder={placeholder}
         valueText={selected?.label ?? ''}
       />
@@ -68,7 +70,10 @@ export function WheelField({
           accessibilityLabel={wheelLabel ?? label}
           disabled={disabled}
           items={items}
-          onSelect={onChange}
+          onSelect={(id, pick) => {
+            if (id !== value) onChange(id);
+            if (closesOnPick('single', pick)) setOpen(false);
+          }}
           selectedId={restingWheelItem(items, value)?.id ?? ''}
           testID={testID ? `${testID}-wheel` : undefined}
         />
