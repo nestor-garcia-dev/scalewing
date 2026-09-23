@@ -1,5 +1,26 @@
 # @scalewing/react-native
 
+## 1.5.0
+
+### Minor Changes
+
+- 28ef041: Native `Field` takes `rows` for a multi-line field that starts that many body
+  lines tall, aligns text to the top, and grows with its content (see
+  `docs/requests/futmas-field-multiline.md`). The existing `multiline`
+  passthrough is unchanged.
+- 03faf65: Pickers close the way people expect (see `docs/requests/futmas-wheel-close.md`).
+  A tapped row closes `WheelField`; `TimeField` stays open on a tapped hour and
+  closes on a tapped minute or AM/PM row; a scroll that settles on a row selects
+  and keeps the picker open. Opening a `DateField`, `TimeField`, or `WheelField`
+  closes any other one open under the same `ThemeProvider`. No prop changes.
+
+### Patch Changes
+
+- 7d92139: `Stepper` announces its value as the number itself (see
+  `docs/requests/futmas-stepper-value-text.md`). iOS read the adjustable value
+  as a percentage of its range, so VoiceOver said "14 percent" for 1 of 1 to 8
+  and UI tests read "14%". No prop changes.
+
 ## 1.4.0
 
 ### Minor Changes
