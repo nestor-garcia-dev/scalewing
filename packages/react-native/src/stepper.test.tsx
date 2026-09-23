@@ -112,7 +112,7 @@ describe('Stepper', () => {
       accessibilityHint: 'Up to ten.',
       accessibilityLabel: 'Eggs',
       accessibilityRole: 'adjustable',
-      accessibilityValue: { max: 10, min: 0, now: 3 },
+      accessibilityValue: { max: 10, min: 0, now: 3, text: '3' },
       accessible: true,
     });
     act(() =>
