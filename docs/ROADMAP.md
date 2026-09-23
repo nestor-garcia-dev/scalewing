@@ -17,6 +17,12 @@ release workflow completed successfully.
 
 ## Next action
 
+Native `Stepper` for FutMas (request `futmas-stepper.md`, owner request
+2026-09-22): a labeled bounded number between round minus and plus buttons
+on a pill track, so table points (win, draw, loss) sit side by side instead
+of as three stacked text fields. Branch `futmas/stepper`, stacked on
+`futmas/wheel-field`; both ship in `@scalewing/react-native@1.4.0`.
+
 Native `WheelField` for FutMas F-017-S01 (request `futmas-wheel-field.md`,
 owner feedback 2026-09-22): a labeled disclosure over one snapping wheel of
 consumer items, reusing the `TimeField` wheel, so a season year is picked from

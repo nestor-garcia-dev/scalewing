@@ -54,6 +54,7 @@ export {
   type SingleSelectItem,
   type SingleSelectProps,
 } from './components/SingleSelect.js';
+export { Stepper, type StepperProps } from './components/Stepper.js';
 export { TimeField, type TimeFieldProps } from './components/TimeField.js';
 export {
   WheelField,
