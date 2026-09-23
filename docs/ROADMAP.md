@@ -17,6 +17,13 @@ release workflow completed successfully.
 
 ## Next action
 
+Native `WheelField` for FutMas F-017-S01 (request `futmas-wheel-field.md`,
+owner feedback 2026-09-22): a labeled disclosure over one snapping wheel of
+consumer items, reusing the `TimeField` wheel, so a season year is picked from
+the current year onward instead of typed. Branch `futmas/wheel-field`; after
+the PR merges, version and publish `@scalewing/react-native@1.4.0` (tokens
+stay 1.2.0) and FutMas bumps its pins.
+
 `@scalewing/tokens@1.1.0` and `@scalewing/react@1.1.0` are published from tags
 `tokens-v1.1.0` and `react-v1.1.0` (merge `0982e68` of PR #12): web `Grid`,
 `FilterChipOption.count`, `DenominationGrid`, `Text` `align`, and compact

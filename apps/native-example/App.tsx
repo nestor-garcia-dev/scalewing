@@ -18,6 +18,7 @@ import {
   Text,
   ThemeProvider,
   TimeField,
+  WheelField,
   useTheme,
 } from '@scalewing/react-native';
 import { useState } from 'react';
@@ -67,6 +68,7 @@ export default function App() {
   const [teamName, setTeamName] = useState('Harbor United');
   const [visitDate, setVisitDate] = useState('');
   const [feedingTime, setFeedingTime] = useState('09:30');
+  const [hatchYear, setHatchYear] = useState('2024');
   const [habitats, setHabitats] = useState<string[]>(['river']);
   const [enclosure, setEnclosure] = useState('paddock');
   const [groupOpen, setGroupOpen] = useState(true);
@@ -132,6 +134,17 @@ export default function App() {
               placeholder="Choose a time"
               testID="feeding-time"
               value={feedingTime}
+            />
+            <WheelField
+              hint="Wheels suit long ordered lists."
+              items={['2021', '2022', '2023', '2024', '2025', '2026'].map(
+                (year) => ({ id: year, label: year }),
+              )}
+              label="Hatch year"
+              onChange={setHatchYear}
+              placeholder="Choose a year"
+              testID="hatch-year"
+              value={hatchYear}
             />
             <MultiSelect
               error={
