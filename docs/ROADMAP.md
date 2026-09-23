@@ -17,32 +17,23 @@ release workflow completed successfully.
 
 ## Next action
 
-Native pickers close on a pick for FutMas F-015-S11 (request
-`futmas-wheel-close.md`, owner report 2026-09-22): a tapped wheel row closes
-`WheelField` and a tapped minute or AM/PM row closes `TimeField`; settled
-scrolls keep them open; `ThemeProvider` keeps one picker open at a time.
-Branch `futmas/wheel-close` against `main`; ships in
-`@scalewing/react-native@1.5.0` with the native `Field` multi-line request.
-
-Native `Field` `rows` for FutMas F-017-S08 (request
-`futmas-field-multiline.md`): a multi-line field for adding teams one per
-line. Branch `futmas/field-multiline` against `main`; ships in
-`@scalewing/react-native@1.5.0` with the picker close change.
-
-Native `Stepper` announces its value as the number, not a percentage of its
-range, for FutMas F-017-S09 (request `futmas-stepper-value-text.md`, found by
-its iOS flows on 2026-09-23). Branch `futmas/stepper-value-text` against
-`main`; a patch that ships in `@scalewing/react-native@1.5.0` with the
-picker-close and `Field` multi-line requests.
+`@scalewing/react-native@1.5.0` is versioned from merge `de7535f` (PRs #29,
+#30, and #31) for FutMas: pickers close on a tapped row and one stays open at
+a time (F-015-S11, `futmas-wheel-close.md`), native `Field` `rows` for a
+multi-line field (F-017-S08, `futmas-field-multiline.md`), and `Stepper`
+announcing its value as the number rather than a percentage (F-017-S09,
+`futmas-stepper-value-text.md`). Tag `react-native-v1.5.0`, validate, then
+publish through Release packages; FutMas pins 1.5.0 with tokens 1.2.0 once it
+is on npm. Owner approved the release on 2026-09-23.
 
 `@scalewing/react-native@1.4.0` is versioned from merge `bf8d571` (PRs #25
 and #27): native `WheelField` (one snapping wheel over consumer items, for
 the season year) and `Stepper` (a bounded number between round minus and
 plus buttons, for table points) for FutMas F-017-S01 (requests
-`futmas-wheel-field.md`, `futmas-stepper.md`). Tag `react-native-v1.4.0`,
-validate, then publish through Release packages; FutMas pins 1.4.0 with
-tokens 1.2.0 once it is on npm. PR #26 merged into its stacked base after
-#25 had landed, so #27 carried the stepper to `main`.
+`futmas-wheel-field.md`, `futmas-stepper.md`), published from tag
+`react-native-v1.4.0` on 2026-09-23; FutMas pins 1.4.0 with tokens 1.2.0.
+PR #26 merged into its stacked base after #25 had landed, so #27 carried the
+stepper to `main`.
 
 `@scalewing/tokens@1.1.0` and `@scalewing/react@1.1.0` are published from tags
 `tokens-v1.1.0` and `react-v1.1.0` (merge `0982e68` of PR #12): web `Grid`,
