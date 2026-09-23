@@ -67,6 +67,7 @@ export default function App() {
   const [searchCount, setSearchCount] = useState(0);
   const [rowPresses, setRowPresses] = useState(0);
   const [teamName, setTeamName] = useState('Harbor United');
+  const [habitatNotes, setHabitatNotes] = useState('Woodland\nRiver');
   const [visitDate, setVisitDate] = useState('');
   const [feedingTime, setFeedingTime] = useState('09:30');
   const [hatchYear, setHatchYear] = useState('2024');
@@ -117,6 +118,13 @@ export default function App() {
               label="Team name"
               onChangeText={setTeamName}
               value={teamName}
+            />
+            <Field
+              hint="One habitat per line."
+              label="Habitat notes"
+              onChangeText={setHabitatNotes}
+              rows={4}
+              value={habitatNotes}
             />
             <DateField
               hint="Trail walks run on weekends."

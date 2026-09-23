@@ -17,6 +17,11 @@ release workflow completed successfully.
 
 ## Next action
 
+Native `Field` `rows` for FutMas F-017-S08 (request
+`futmas-field-multiline.md`): a multi-line field for adding teams one per
+line. Branch `futmas/field-multiline` against `main`; ships in
+`@scalewing/react-native@1.5.0` with the picker close change.
+
 `@scalewing/react-native@1.4.0` is versioned from merge `bf8d571` (PRs #25
 and #27): native `WheelField` (one snapping wheel over consumer items, for
 the season year) and `Stepper` (a bounded number between round minus and

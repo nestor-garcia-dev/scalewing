@@ -54,5 +54,30 @@ describe('Field', () => {
       .filter((node) => typeof node.props.children === 'string')
       .map((node) => node.props.children);
     expect(captions).toEqual(['Team name', 'Required']);
+    expect(input.props.multiline).toBe(false);
+  });
+
+  it('becomes a multi-line field that starts several lines tall', () => {
+    let renderer!: ReturnType<typeof create>;
+    act(() => {
+      renderer = create(
+        <ThemeProvider colorScheme="light">
+          <Field
+            label="Team names"
+            onChangeText={vi.fn()}
+            rows={4}
+            value={'Chivas\nTropis'}
+          />
+        </ThemeProvider>,
+      );
+    });
+
+    const input = renderer.root.findByType('TextInput');
+    expect(input.props.multiline).toBe(true);
+    expect(input.props.style.textAlignVertical).toBe('top');
+    expect(input.props.style.minHeight).toBe(
+      lightTheme.typography.body.lineHeight * 4 + lightTheme.space[2] * 2,
+    );
+    expect(input.props.value).toBe('Chivas\nTropis');
   });
 });
