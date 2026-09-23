@@ -20,6 +20,12 @@ export type FieldProps = Omit<
   hint?: string;
   label: string;
   onChangeText: (value: string) => void;
+  /**
+   * Visible lines. More than one makes a multi-line field that starts this
+   * tall, aligns text to the top, and grows with its content; one (the
+   * default) is a single-line field.
+   */
+  rows?: number;
   value: string;
 };
 
@@ -31,6 +37,7 @@ export function Field({
   onBlur,
   onChangeText,
   onFocus,
+  rows = 1,
   value,
   ...inputProps
 }: FieldProps) {
@@ -49,6 +56,7 @@ export function Field({
           label,
         })}
         editable={!disabled}
+        multiline={rows > 1 || Boolean(inputProps.multiline)}
         onBlur={(event) => {
           setFocused(false);
           onBlur?.(event);
@@ -59,11 +67,11 @@ export function Field({
           onFocus?.(event);
         }}
         placeholderTextColor={theme.colors.muted}
-        style={mapFieldInputStyle(theme, {
-          disabled,
-          focused,
-          invalid: Boolean(error),
-        })}
+        style={mapFieldInputStyle(
+          theme,
+          { disabled, focused, invalid: Boolean(error) },
+          rows,
+        )}
         value={value}
       />
     </LabeledControl>

@@ -1,7 +1,7 @@
 import { lightTheme } from '@scalewing/tokens';
 import { describe, expect, it } from 'vitest';
 
-import { mapFieldInputStyle } from './map-field-style.js';
+import { fieldRowsHeight, mapFieldInputStyle } from './map-field-style.js';
 
 describe('mapFieldInputStyle', () => {
   it('uses the native control scale and neutral field chrome', () => {
@@ -56,5 +56,19 @@ describe('mapFieldInputStyle', () => {
     });
 
     expect(style.opacity).toBe(lightTheme.disabledOpacity);
+  });
+
+  it('sizes a multi-line field for its rows and aligns text to the top', () => {
+    const state = { disabled: false, focused: false, invalid: false };
+    const single = mapFieldInputStyle(lightTheme, state, 1);
+    const multi = mapFieldInputStyle(lightTheme, state, 5);
+
+    expect(single.minHeight).toBe(lightTheme.control.md.minHeight);
+    expect(single.textAlignVertical).toBe('center');
+    expect(multi.minHeight).toBe(fieldRowsHeight(lightTheme, 5));
+    expect(multi.textAlignVertical).toBe('top');
+    expect(fieldRowsHeight(lightTheme, 5)).toBeGreaterThan(
+      lightTheme.control.md.minHeight,
+    );
   });
 });

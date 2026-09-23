@@ -14,17 +14,29 @@ import {
 export function mapFieldInputStyle(
   theme: Theme,
   state: ControlFrameState,
+  rows = 1,
 ): TextStyle {
   const type = theme.typography.body;
+  const frame = mapControlFrameStyle(theme, state);
+  const single = rows <= 1;
 
   return {
-    ...mapControlFrameStyle(theme, state),
+    ...frame,
     color: theme.colors.text,
     fontSize: type.fontSize,
     fontWeight: String(type.fontWeight) as TextStyle['fontWeight'],
     includeFontPadding: false,
     letterSpacing: type.letterSpacing,
+    minHeight: single ? frame.minHeight : fieldRowsHeight(theme, rows),
     paddingVertical: theme.space[2],
-    textAlignVertical: 'center',
+    textAlignVertical: single ? 'center' : 'top',
   };
+}
+
+/**
+ * The height that shows `rows` lines of body text inside the frame's
+ * padding; a multi-line field starts there and grows with its text.
+ */
+export function fieldRowsHeight(theme: Theme, rows: number): number {
+  return theme.typography.body.lineHeight * rows + theme.space[2] * 2;
 }
