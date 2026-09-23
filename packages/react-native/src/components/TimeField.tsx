@@ -1,5 +1,3 @@
-import { useState } from 'react';
-
 import {
   assertClockTime,
   assertMinuteStep,
@@ -18,6 +16,12 @@ import {
   type ClockParts,
   type ClockPeriod,
 } from '../clock-time.js';
+import { useExclusiveDisclosure } from '../theme/DisclosureGroup.js';
+import {
+  closesOnPick,
+  type WheelColumn,
+  type WheelPick,
+} from '../wheel-close.js';
 import { DisclosureControl } from './DisclosureControl.js';
 import { Inline } from './Inline.js';
 import { LabeledControl } from './LabeledControl.js';
@@ -69,7 +73,7 @@ export function TimeField({
   assertClockTime('value', value, true);
   assertMinuteStep(minuteStep);
 
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useExclusiveDisclosure();
   const twelveHour = usesTwelveHourClock(locale);
   const parts = splitClockTime(
     parseClockTime(value) ?? restingTime,
@@ -77,8 +81,13 @@ export function TimeField({
   );
   const periods = periodLabels(locale);
 
-  function change(next: Partial<ClockParts>) {
+  function change(
+    next: Partial<ClockParts>,
+    column: WheelColumn,
+    pick: WheelPick,
+  ) {
     onChange(formatClockTime(composeClockTime({ ...parts, ...next })));
+    if (closesOnPick(column, pick)) setOpen(false);
   }
 
   return (
@@ -89,7 +98,7 @@ export function TimeField({
         expanded={open}
         invalid={Boolean(error)}
         label={label}
-        onPress={() => setOpen((current) => !current)}
+        onPress={() => setOpen(!open)}
         placeholder={placeholder}
         valueText={formatClockTimeLabel(value, locale)}
       />
@@ -102,7 +111,7 @@ export function TimeField({
               id: String(hour),
               label: formatWheelHourLabel(hour, twelveHour, locale),
             }))}
-            onSelect={(id) => change({ hour: Number(id) })}
+            onSelect={(id, pick) => change({ hour: Number(id) }, 'hours', pick)}
             selectedId={String(parts.hour)}
             testID={testID ? `${testID}-hours` : undefined}
           />
@@ -113,7 +122,9 @@ export function TimeField({
               id: String(minute),
               label: formatWheelMinuteLabel(minute),
             }))}
-            onSelect={(id) => change({ minute: Number(id) })}
+            onSelect={(id, pick) =>
+              change({ minute: Number(id) }, 'minutes', pick)
+            }
             selectedId={String(parts.minute)}
             testID={testID ? `${testID}-minutes` : undefined}
           />
@@ -125,8 +136,8 @@ export function TimeField({
                 id: period,
                 label: periods[period],
               }))}
-              onSelect={(id) => {
-                if (isPeriod(id)) change({ period: id });
+              onSelect={(id, pick) => {
+                if (isPeriod(id)) change({ period: id }, 'period', pick);
               }}
               selectedId={parts.period ?? 'am'}
               testID={testID ? `${testID}-period` : undefined}

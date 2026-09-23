@@ -17,6 +17,13 @@ release workflow completed successfully.
 
 ## Next action
 
+Native pickers close on a pick for FutMas F-015-S11 (request
+`futmas-wheel-close.md`, owner report 2026-09-22): a tapped wheel row closes
+`WheelField` and a tapped minute or AM/PM row closes `TimeField`; settled
+scrolls keep them open; `ThemeProvider` keeps one picker open at a time.
+Branch `futmas/wheel-close` against `main`; ships in
+`@scalewing/react-native@1.5.0` with the native `Field` multi-line request.
+
 `@scalewing/react-native@1.4.0` is versioned from merge `bf8d571` (PRs #25
 and #27): native `WheelField` (one snapping wheel over consumer items, for
 the season year) and `Stepper` (a bounded number between round minus and
