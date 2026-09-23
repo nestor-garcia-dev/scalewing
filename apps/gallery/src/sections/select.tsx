@@ -1,4 +1,4 @@
-import { Select, Stack, Text } from '@scalewing/react';
+import { Card, Field, Select, Stack, Text } from '@scalewing/react';
 import { useState } from 'react';
 
 import { Section } from '../layout/Section.js';
@@ -7,6 +7,7 @@ import { sampleHabitats } from '../sample-copy.js';
 export function SelectSection() {
   const [range, setRange] = useState('forest');
   const [compact, setCompact] = useState('savanna');
+  const [carded, setCarded] = useState('forest');
 
   return (
     <Section
@@ -43,6 +44,22 @@ export function SelectSection() {
         <Text color="muted" variant="caption">
           The closed trigger matches Field. The open list is glass, not the
           operating system menu. action is the last option and stays a command.
+        </Text>
+        <Card padding={4}>
+          <Select
+            label="Den range"
+            onChange={setCarded}
+            options={sampleHabitats}
+            value={carded}
+          />
+        </Card>
+        <Card padding={4}>
+          <Field label="Den notes">
+            <input name="den-notes" />
+          </Field>
+        </Card>
+        <Text color="muted" variant="caption">
+          A Select in a glass card opens over the card below it.
         </Text>
       </Stack>
     </Section>
