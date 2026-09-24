@@ -19,6 +19,7 @@ import { tabsClassCatalog } from './css-tabs.js';
 import { responsiveClassCatalog } from './css-responsive.js';
 import { filterChipsClassCatalog } from './css-filter-chips.js';
 import { gridClassCatalog } from './css-grid.js';
+import { gridSpanClassCatalog } from './css-grid-span.js';
 import { denominationGridClassCatalog } from './css-denomination-grid.js';
 import { fieldClassCatalog } from './css-field.js';
 import { cssComponentClasses } from './css-components.js';
@@ -73,6 +74,7 @@ export function utilityClassCatalog(): string[] {
     ...tabsClassCatalog(),
     ...filterChipsClassCatalog(),
     ...gridClassCatalog(),
+    ...gridSpanClassCatalog(),
     ...denominationGridClassCatalog(),
     ...fieldClassCatalog(),
     ...splitClassCatalog(),

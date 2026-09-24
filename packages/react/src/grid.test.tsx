@@ -1,9 +1,17 @@
 import { cleanup, render, screen } from '@testing-library/react';
 import { afterEach, describe, expect, it } from 'vitest';
 
+import { Box } from './components/Box.js';
 import { Button } from './components/Button.js';
+import { Card } from './components/Card.js';
 import { Grid } from './components/Grid.js';
+import { Stack } from './components/Stack.js';
+import { columnSpanClassNames } from './column-span-classes.js';
 import { cssGridClasses, gridClassCatalog } from './css/css-grid.js';
+import {
+  cssGridSpanClasses,
+  gridSpanClassCatalog,
+} from './css/css-grid-span.js';
 
 afterEach(() => cleanup());
 
@@ -93,6 +101,89 @@ describe('Grid', () => {
       'sw-grid-cols-below-md-3',
       'sw-grid-cols-below-md-4',
       'sw-grid-cols-below-md-6',
+    ]);
+  });
+});
+
+describe('columnSpan', () => {
+  it('maps a span to its generated class and nothing when unset', () => {
+    expect(columnSpanClassNames({})).toEqual([]);
+    expect(columnSpanClassNames({ columnSpan: 2 })).toEqual(['sw-grid-span-2']);
+  });
+
+  it('lays out two to one with any Box-based child and drops the prop from the DOM', () => {
+    render(
+      <Grid columns={3} columnsBelow={{ md: 1 }} data-testid="grid" gap={4}>
+        <Stack columnSpan={2} data-testid="form" gap={4}>
+          Sighting form
+        </Stack>
+        <Card data-testid="panel" variant="outlined">
+          Habitat lookup
+        </Card>
+      </Grid>,
+    );
+    expect(screen.getByTestId('grid').className).toBe(
+      'sw-grid sw-grid-cols-3 sw-grid-cols-below-md-1 sw-gap-4',
+    );
+    const form = screen.getByTestId('form');
+    expect(form.className.split(' ')).toContain('sw-grid-span-2');
+    expect(form.hasAttribute('columnspan')).toBe(false);
+    expect(screen.getByTestId('panel').className).not.toContain('sw-grid-span');
+  });
+
+  it('keeps spacing, visibility, and custom classes beside the span', () => {
+    render(
+      <Box
+        className="custom"
+        columnSpan={6}
+        data-testid="box"
+        hideBelow="md"
+        padding={2}
+      >
+        Census row
+      </Box>,
+    );
+    expect(screen.getByTestId('box').className).toBe(
+      'sw-padding-2 sw-hide-below-md sw-grid-span-6 custom',
+    );
+  });
+
+  it('rejects spans outside the bounded catalog', () => {
+    for (const span of [0, 5, 7, 1.5]) {
+      expect(() => render(<Box columnSpan={span as never}>cell</Box>)).toThrow(
+        new RangeError('columnSpan must be one of 1, 2, 3, 4, 6'),
+      );
+    }
+  });
+
+  it('generates span rules capped at the columns a grid has at each width', () => {
+    const css = cssGridSpanClasses();
+    expect(css).toContain('.sw-grid-span-2 { grid-column: span 2; }');
+    expect(css).toContain(
+      ':where(.sw-grid-cols-2) > .sw-grid-span-3 { grid-column: span 2; }',
+    );
+    expect(css).not.toContain(':where(.sw-grid-cols-3) > .sw-grid-span-2');
+    const phone = css.slice(
+      css.indexOf('@media not all and (min-width: 48rem) {'),
+    );
+    expect(phone).toContain(
+      '  :where(.sw-grid-cols-below-md-1) > .sw-grid-span-2 { grid-column: span 1; }',
+    );
+    expect(phone).toContain(
+      '  :where(.sw-grid-cols-below-md-4) > .sw-grid-span-4 { grid-column: span 4; }',
+    );
+    expect(css.indexOf('.sw-grid-span-6 {')).toBeLessThan(
+      css.indexOf(':where(.sw-grid-cols-1)'),
+    );
+    expect(css.indexOf(':where(.sw-grid-cols-4)')).toBeLessThan(
+      css.indexOf('@media'),
+    );
+    expect(gridSpanClassCatalog()).toEqual([
+      'sw-grid-span-1',
+      'sw-grid-span-2',
+      'sw-grid-span-3',
+      'sw-grid-span-4',
+      'sw-grid-span-6',
     ]);
   });
 });
