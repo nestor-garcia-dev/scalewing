@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: implemented in this checkout for a `@scalewing/react` minor (changeset `teisoro-dialog-close-and-menu-focus`); not yet published.
+Status: merged in PR #42 (`f3f5892`) and versioned as `@scalewing/react` 1.6.0, released from tag `react-v1.6.0`; product owner approved the release on 2026-09-24.
 Renderer: react
 Missing surface: none. A behavior fix to `Dialog`: `open` alone decides whether the native `<dialog>` is shown.
 Source: Teisoro owner review, "Scalewing follow-ups" (nestor-garcia-dev/teisoro PR 3).

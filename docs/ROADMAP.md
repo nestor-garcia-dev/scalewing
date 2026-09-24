@@ -17,13 +17,14 @@ release workflow completed successfully.
 
 ## Next action
 
-`@scalewing/react@1.5.0` is versioned from merge `3c7d749` (PR #39) for
-Teisoro D-9 (`teisoro-grid-column-span.md`, task 909): `Box` `columnSpan`
-lets a direct child of a `Grid` cover several columns, capped at the grid's
-count at each width, so the check-cashing form is twice the lookup panel on
-desktop and stacks on a phone. Tag `react-v1.5.0`, validate, then publish
-through Release packages; Teisoro pins 1.5.0 in task 909 once it is on npm.
-Owner approved the release on 2026-09-24.
+`@scalewing/react@1.6.0` is versioned from merge `f3f5892` (PR #42) for
+Teisoro (`teisoro-dialog-close.md`, `teisoro-action-menu.md`): `Dialog` is
+controlled by `open` alone and turns every close request into one `onClose`,
+`ActionMenu` returns focus to its trigger before a command, and a visible
+`Tooltip` keeps its Escape. Tag `react-v1.6.0`, validate, then publish through
+Release packages; Teisoro removes its dialog Escape workaround when it pins
+1.6.0. Owner approved the release on 2026-09-24. (`@scalewing/react@1.5.0`,
+`columnSpan`, was released the same day.)
 
 Native `Progress` for FutMas F-017-S18 (`futmas-native-progress.md`): the
 web component's props on a filled pill track, one accessible progress bar.
