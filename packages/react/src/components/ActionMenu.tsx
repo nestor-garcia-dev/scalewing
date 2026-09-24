@@ -158,7 +158,9 @@ export function ActionMenu({
 
   function select(item: ActionMenuItem) {
     if (!openRef.current || !enabled || item.disabled) return;
-    close();
+    // Focus leaves the hidden item first, so a dialog the command opens
+    // records the trigger as its opener and returns focus there on close.
+    close(true);
     item.onSelect();
   }
 

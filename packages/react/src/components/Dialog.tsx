@@ -1,16 +1,10 @@
 'use client';
 
-import {
-  useEffect,
-  useId,
-  useRef,
-  type DialogHTMLAttributes,
-  type PointerEvent,
-  type ReactNode,
-} from 'react';
+import { useId, type DialogHTMLAttributes, type ReactNode } from 'react';
 
 import { cx } from '../class-names.js';
 import { spacingClassNames } from '../spacing-classes.js';
+import { useDialogCloseRequests } from './dialog-close-requests.js';
 import { Stack } from './Stack.js';
 import { Text } from './Text.js';
 
@@ -24,7 +18,17 @@ export type DialogProps = Omit<
   DialogHTMLAttributes<HTMLDialogElement>,
   'onClose' | 'open' | 'title' | 'children'
 > & {
+  /** Whether the dialog is shown. The element follows it and nothing else. */
   open: boolean;
+  /**
+   * Asked on every close request: Escape, a backdrop press, a platform close
+   * request, or a `<form method="dialog">` submit. Each is prevented, so the
+   * element does not close itself. Set `open` to false to close; keep it true
+   * (for example while saving) and the dialog stays shown. It is not called
+   * when `open` turns false. A consumer `onKeyDown`, `onCancel`, `onSubmit`
+   * or `onPointerDown` that prevents the event vetoes that request. It is required: a dialog
+   * that must not be dismissed passes a callback that keeps `open` true.
+   */
   onClose: () => void;
   size?: DialogSize;
   title: string;
@@ -34,30 +38,25 @@ export type DialogProps = Omit<
 export function Dialog({
   children,
   className,
+  onCancel,
   onClose,
+  onKeyDown,
+  onPointerDown,
+  onSubmit,
   open,
   size = 'md',
   title,
   ...rest
 }: DialogProps) {
-  const nodeRef = useRef<HTMLDialogElement | null>(null);
   const titleId = useId();
-
-  useEffect(() => {
-    const node = nodeRef.current;
-    if (!node) {
-      return;
-    }
-    if (open) {
-      if (!node.open) {
-        node.showModal();
-      }
-      return;
-    }
-    if (node.open) {
-      node.close();
-    }
-  }, [open]);
+  const { nodeRef, handlers } = useDialogCloseRequests({
+    open,
+    onClose,
+    onCancel,
+    onKeyDown,
+    onPointerDown,
+    onSubmit,
+  });
 
   return (
     <dialog
@@ -70,18 +69,7 @@ export function Dialog({
         ...spacingClassNames({ padding: 5 }),
         className,
       )}
-      onClose={onClose}
-      onPointerDown={(event: PointerEvent<HTMLDialogElement>) => {
-        const rect = event.currentTarget.getBoundingClientRect();
-        const inside =
-          event.clientX >= rect.left &&
-          event.clientX <= rect.right &&
-          event.clientY >= rect.top &&
-          event.clientY <= rect.bottom;
-        if (!inside) {
-          onClose();
-        }
-      }}
+      {...handlers}
     >
       <Stack gap={4}>
         <Text id={titleId} variant="title">

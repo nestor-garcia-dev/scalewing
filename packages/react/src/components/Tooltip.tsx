@@ -45,7 +45,11 @@ export function Tooltip({ content, trigger }: TooltipProps) {
       }}
       onFocusCapture={() => setOpen(true)}
       onKeyDownCapture={(event) => {
-        if (event.key === 'Escape') setOpen(false);
+        // Escape hides a visible tooltip and nothing else, so a surrounding
+        // Dialog does not also close. A hidden tooltip leaves Escape alone.
+        if (event.key !== 'Escape' || !open) return;
+        event.preventDefault();
+        setOpen(false);
       }}
       onPointerEnter={(event) => {
         if (event.pointerType === 'mouse' || event.pointerType === 'pen')

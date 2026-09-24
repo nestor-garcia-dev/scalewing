@@ -36,10 +36,10 @@ The consumer supplies localized labels, icons, visible items, and authorization-
 
 ## Follow-up request (2026-09-24, Teisoro F-002-S17 task 930): focus the trigger before `onSelect`
 
-Status: requested; not implemented.
+Status: implemented in this checkout for a `@scalewing/react` minor (changeset `teisoro-dialog-close-and-menu-focus`); not yet published. `select` now calls `close(true)` before `onSelect`, the same focus return Escape uses. Unit test `action-menu.test.tsx` and Chromium check `apps/gallery/e2e/action-menu.spec.ts` (a gallery command opens a confirmation `Dialog`; closing it by Escape or a button returns focus to the trigger).
 
 Selecting an item hides the focused menu item and then runs `onSelect`, but focus is not returned to the trigger first. Escape does return it. When `onSelect` opens a `Dialog` (Teisoro's admin "Discard draft" on the closeout day), the native `showModal()` records no useful opener: the focused element was the item that was just hidden. Closing the dialog then leaves focus on the page body instead of on the menu trigger, so keyboard and screen-reader users lose their place.
 
 Proposed behavior: on selection, close the menu and move focus to the trigger before calling `onSelect`, as Escape already does. A dialog opened from `onSelect` then records the trigger as its opener, and the browser returns focus to it on close. No API change is needed.
 
-Teisoro does not work around this in product code. Its Chromium check (`apps/teisoro-web/e2e/closeout-day-preview.spec.ts`) asserts only that focus enters the discard dialog, and the gap is listed in `docs/design/daily-closeout/README.md`.
+Teisoro did not work around this in product code. Its Chromium check (`apps/teisoro-web/e2e/closeout-day-preview.spec.ts`) asserts only that focus enters the discard dialog, and the gap is listed in `docs/design/daily-closeout/README.md`.

@@ -171,4 +171,31 @@ describe('ActionMenu', () => {
     fireEvent.click(command);
     expect(action).not.toHaveBeenCalled();
   });
+
+  it('returns focus to the trigger before running a selected command', () => {
+    let focusedDuringSelect: Element | null = null;
+    const trigger = renderMenu([
+      {
+        id: 'delete',
+        label: 'Delete sighting',
+        destructive: true,
+        onSelect: () => {
+          focusedDuringSelect = document.activeElement;
+        },
+      },
+    ]);
+
+    fireEvent.click(trigger);
+    fireEvent.click(screen.getByRole('menuitem', { name: 'Delete sighting' }));
+    expect(focusedDuringSelect).toBe(trigger);
+    expect(document.activeElement).toBe(trigger);
+
+    focusedDuringSelect = null;
+    fireEvent.keyDown(trigger, { key: 'ArrowDown' });
+    fireEvent.keyDown(
+      screen.getByRole('menuitem', { name: 'Delete sighting' }),
+      { key: 'Enter' },
+    );
+    expect(focusedDuringSelect).toBe(trigger);
+  });
 });

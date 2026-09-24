@@ -48,3 +48,37 @@ test('Dialog keeps the reading width by default and widens at size lg', async ({
   await wide.getByRole('button', { name: 'Cancel' }).click();
   await expect(wide).toBeHidden();
 });
+
+test('Dialog asks onClose on Escape and stays open while the consumer is busy', async ({
+  page,
+}) => {
+  // The demo stays busy for 1.5 s; the test owns the clock so the busy window
+  // lasts exactly as long as the assertions need.
+  await page.clock.install();
+  await page.goto('/#dialog');
+  const section = page.locator('#dialog');
+
+  await section.getByRole('button', { name: 'Open dialog' }).click();
+  const reading = page.getByRole('dialog', { name: 'How we rank' });
+  await expect(reading).toBeVisible();
+  await page.keyboard.press('Escape');
+  await expect(reading).toBeHidden();
+
+  await section.getByRole('button', { name: 'Open wide dialog' }).click();
+  const wide = page.getByRole('dialog', { name: 'Log a transect' });
+  await expect(wide).toBeVisible();
+  await wide.getByRole('button', { name: 'Record transect' }).click();
+  await expect(wide.getByRole('button', { name: 'Recording…' })).toBeFocused();
+  await expect(wide.getByRole('button', { name: 'Cancel' })).toBeDisabled();
+  // Chromium lets a page cancel one Escape per user activation; the dialog
+  // must hold through repeated presses while open stays true.
+  for (let press = 0; press < 3; press += 1) {
+    await page.keyboard.press('Escape');
+  }
+  expect(await wide.evaluate((node: HTMLDialogElement) => node.open)).toBe(
+    true,
+  );
+  await expect(wide).toBeVisible();
+  await page.clock.runFor(1500);
+  await expect(wide).toBeHidden();
+});
