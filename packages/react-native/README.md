@@ -38,6 +38,15 @@ is `"light"`, `"dark"`, or `"system"`. Named palettes include both schemes;
 label with its value range, and it throws a `RangeError` for an empty label
 or a value outside 0..max, like the web `Progress`.
 
+`Calendar` is the `DateField` month grid shown inline and always open, for a
+screen whose one question is a date. It takes the same `value`, `min`, `max`,
+`locale`, `weekStartsOn`, and month-navigation labels, opens on the selected
+month (else today's), and stays open after a pick.
+
+`MultiSelect` takes `variant="list"` to stack full-width checkbox rows with a
+check mark on each selected row instead of wrapping chips. The value contract
+and item order are the same.
+
 `SegmentedControl` uses the active palette's accent/onAccent pair for the
 selected section, with a 44-point minimum touch height. Labels grow with
 system text size. The native example demonstrates switching sections.

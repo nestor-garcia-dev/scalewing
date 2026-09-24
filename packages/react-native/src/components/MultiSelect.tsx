@@ -1,4 +1,5 @@
 import { Inline } from './Inline.js';
+import { CheckList } from './CheckList.js';
 import { Chip } from './Chip.js';
 import { LabeledControl } from './LabeledControl.js';
 
@@ -15,7 +16,14 @@ export type MultiSelectProps = {
   label: string;
   onChange: (value: string[]) => void;
   value: readonly string[];
+  /**
+   * `chips` (default) wraps checkable pills; `list` stacks full-width rows
+   * with a check mark, for a screen whose one question is this choice.
+   */
+  variant?: MultiSelectVariant;
 };
+
+export type MultiSelectVariant = 'chips' | 'list';
 
 /** Toggles one id and reports the selection in item order. */
 export function toggleSelection(
@@ -40,7 +48,22 @@ export function MultiSelect({
   label,
   onChange,
   value,
+  variant = 'chips',
 }: MultiSelectProps) {
+  const toggle = (id: string) => onChange(toggleSelection(items, value, id));
+  if (variant === 'list') {
+    return (
+      <LabeledControl error={error} hint={hint} label={label}>
+        <CheckList
+          disabled={disabled}
+          items={items}
+          label={label}
+          onToggle={toggle}
+          value={value}
+        />
+      </LabeledControl>
+    );
+  }
   return (
     <LabeledControl error={error} hint={hint} label={label}>
       <Inline accessibilityLabel={label} gap={2} wrap>
@@ -50,7 +73,7 @@ export function MultiSelect({
             disabled={disabled}
             key={item.id}
             label={item.label}
-            onPress={() => onChange(toggleSelection(items, value, item.id))}
+            onPress={() => toggle(item.id)}
             selected={value.includes(item.id)}
           />
         ))}

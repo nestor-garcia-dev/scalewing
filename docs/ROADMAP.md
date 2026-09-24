@@ -17,6 +17,14 @@ release workflow completed successfully.
 
 ## Next action
 
+Native `Calendar` and a `list` variant of `MultiSelect` for FutMas F-015-S10
+(`futmas-schedule-steps.md`): a stepped schedule flow asks one question per
+screen, so the start-date step shows the month grid inline and the days and
+fields steps list their choices as full-width checkbox rows. Merge the PR,
+then version `@scalewing/react-native@1.8.0` and publish through Release
+packages; FutMas pins 1.8.0 once it is on npm. Owner approved the release on
+2026-09-24.
+
 `@scalewing/react@1.6.0` is versioned from merge `f3f5892` (PR #42) for
 Teisoro (`teisoro-dialog-close.md`, `teisoro-action-menu.md`): `Dialog` is
 controlled by `open` alone and turns every close request into one `onClose`,

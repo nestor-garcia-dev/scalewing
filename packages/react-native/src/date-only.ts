@@ -45,6 +45,15 @@ export function assertDateOnly(name: string, value: string, empty = false) {
     throw new RangeError(`${name} must be a valid YYYY-MM-DD date`);
 }
 
+/** Validates a picker's value and bounds; an empty value means no selection. */
+export function assertDateBounds(value: string, min?: string, max?: string) {
+  assertDateOnly('value', value, true);
+  if (min !== undefined) assertDateOnly('min', min);
+  if (max !== undefined) assertDateOnly('max', max);
+  if (min !== undefined && max !== undefined && min > max)
+    throw new RangeError('min must not be after max');
+}
+
 /** Date-only strings compare lexicographically once they are valid. */
 export function isOutsideDateRange(
   value: string,

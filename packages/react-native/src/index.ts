@@ -42,12 +42,14 @@ export {
   type ThemeProviderProps,
 } from './theme/ThemeProvider.js';
 export { Accordion, type AccordionProps } from './components/Accordion.js';
+export { Calendar, type CalendarProps } from './components/Calendar.js';
 export { DateField, type DateFieldProps } from './components/DateField.js';
 export { type WeekStart } from './calendar-month.js';
 export {
   MultiSelect,
   type MultiSelectItem,
   type MultiSelectProps,
+  type MultiSelectVariant,
 } from './components/MultiSelect.js';
 export {
   SingleSelect,

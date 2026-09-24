@@ -95,3 +95,42 @@ describe('MultiSelect', () => {
     expect(captions[0]?.props.children).toBe('Pick at least one day');
   });
 });
+
+describe('MultiSelect list variant', () => {
+  it('stacks one checkbox row per item with a check mark on the selected row', () => {
+    const { renderer } = renderMultiSelect({ variant: 'list' });
+
+    expect(checkbox(renderer.root, 'Monday')?.props.accessibilityRole).toBe(
+      'checkbox',
+    );
+    expect(
+      checkbox(renderer.root, 'Wednesday')?.props.accessibilityState,
+    ).toEqual({ checked: true, disabled: false });
+    const marks = renderer.root
+      .findAllByType('Text')
+      .filter((node) => node.props.children === '✓');
+    expect(marks).toHaveLength(1);
+    expect(marks[0]?.props.importantForAccessibility).toBe('no');
+  });
+
+  it('divides every row but the first from the row above', () => {
+    const { renderer } = renderMultiSelect({ variant: 'list' });
+    const rows = ['Monday', 'Wednesday', 'Friday'].map(
+      (label) => checkbox(renderer.root, label)?.props.style,
+    );
+
+    expect(rows.map((style) => style.borderTopWidth)).toEqual([0, 1, 1]);
+  });
+
+  it('toggles in item order and disables every row together', () => {
+    const { onChange, renderer } = renderMultiSelect({ variant: 'list' });
+
+    act(() => checkbox(renderer.root, 'Friday')?.props.onPress());
+    expect(onChange).toHaveBeenLastCalledWith(['wed', 'fri']);
+
+    const disabled = renderMultiSelect({ disabled: true, variant: 'list' });
+    expect(checkbox(disabled.renderer.root, 'Monday')?.props.disabled).toBe(
+      true,
+    );
+  });
+});
