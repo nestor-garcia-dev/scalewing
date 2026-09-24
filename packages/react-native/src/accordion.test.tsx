@@ -1,3 +1,4 @@
+import { lightTheme } from '@scalewing/tokens';
 import { act, create, type ReactTestInstance } from 'react-test-renderer';
 import { beforeAll, describe, expect, it, vi } from 'vitest';
 
@@ -82,6 +83,47 @@ describe('Accordion', () => {
 
     act(() => disclosure.props.onPress());
     expect(result.onOpenChange).toHaveBeenCalledWith(false);
+  });
+
+  it('shows a muted one-line subtitle and names the title action with it', () => {
+    let result!: ReturnType<typeof renderAccordion>;
+    act(() => {
+      result = renderAccordion({ onTitlePress: vi.fn(), subtitle: '7v7' });
+    });
+
+    const [subtitle] = result.renderer.root.findAll(
+      (node) => node.type === 'Text' && node.props.children === '7v7',
+    );
+    expect(subtitle?.props.numberOfLines).toBe(1);
+    expect(subtitle?.props.style).toContainEqual(
+      expect.objectContaining({ color: lightTheme.colors.muted }),
+    );
+
+    const [title] = pressables(result.renderer.root);
+    expect(title.props.accessibilityLabel).toBe('Matchday 1, 7v7');
+  });
+
+  it.each([
+    {
+      name: 'wraps the title by default',
+      truncateTitle: undefined,
+      lines: undefined,
+    },
+    {
+      name: 'keeps a truncated title on one line',
+      truncateTitle: true,
+      lines: 1,
+    },
+  ])('$name', ({ truncateTitle, lines }) => {
+    let result!: ReturnType<typeof renderAccordion>;
+    act(() => {
+      result = renderAccordion({ truncateTitle });
+    });
+
+    const [title] = result.renderer.root.findAll(
+      (node) => node.type === 'Text' && node.props.children === 'Matchday 1',
+    );
+    expect(title?.props.numberOfLines).toBe(lines);
   });
 
   it('unmounts children when collapsed', () => {

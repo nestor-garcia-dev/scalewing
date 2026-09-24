@@ -4,9 +4,11 @@ React Native / Expo primitives that consume the same Scalewing tokens as the DOM
 
 Native `Accordion` is controlled by `open` / `onOpenChange`. Provide a title,
 localized disclosure `accessibilityLabel`, and content. Optional `leading`
-and `metadata` slots support marks and counts. With `onTitlePress`, the title
-is a separate action (named by `titleAccessibilityLabel` or `title`) and only
-the trailing control toggles. Otherwise the entire header toggles. Collapsed
+and `metadata` slots support marks and counts. An optional `subtitle` adds one
+muted caption line below the title, and `truncateTitle` keeps the title on
+one line with a tail ellipsis instead of wrapping. With `onTitlePress`, the
+title is a separate action (named by `titleAccessibilityLabel`, or the title
+followed by the subtitle) and only the trailing control toggles. Otherwise the entire header toggles. Collapsed
 content unmounts and is absent from the accessibility tree.
 
 ```ts
