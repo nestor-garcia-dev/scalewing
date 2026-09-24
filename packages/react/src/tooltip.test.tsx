@@ -49,6 +49,27 @@ describe('Tooltip', () => {
     expect(tooltip).toHaveProperty('hidden', false);
   });
 
+  it('takes Escape only while the tooltip is visible', async () => {
+    const user = userEvent.setup();
+    const escapes: boolean[] = [];
+    function record(event: KeyboardEvent) {
+      if (event.key === 'Escape') escapes.push(event.defaultPrevented);
+    }
+    document.addEventListener('keydown', record);
+    render(
+      <Tooltip content="Supplemental help" trigger={<button>More</button>} />,
+    );
+    const tooltip = screen.getByText('Supplemental help');
+    await user.tab();
+    expect(tooltip).toHaveProperty('hidden', false);
+    await user.keyboard('{Escape}');
+    expect(tooltip).toHaveProperty('hidden', true);
+    await user.keyboard('{Escape}');
+    // The first Escape was used by the tooltip; the second reaches the page.
+    expect(escapes).toEqual([true, false]);
+    document.removeEventListener('keydown', record);
+  });
+
   it('toggles on touch and dismisses from outside', () => {
     render(
       <div>
