@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: implemented on `teisoro/popup-stacking`; pending review, merge and a `@scalewing/react` patch release.
+Status: merged in PR #33 (`151ad7e`) and versioned as `@scalewing/react` 1.4.1, released from tag `react-v1.4.1`; product owner approved the release on 2026-09-23.
 Renderer: react
 Missing surface: stacking for open popups (`Select` list, `ActionMenu` list, `Tooltip`) inside glass surfaces (`Card` glass, `Accordion`). No new class or prop.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: `.sw-card-glass` and `.sw-accordion` use `backdrop-filter`, which makes each one its own stacking context. The list's `z-index: 3` only counts inside its own card, so the next glass card in the page paints over the open list. A click on a covered option lands on the next card's field.

@@ -17,11 +17,12 @@ release workflow completed successfully.
 
 ## Next action
 
-`teisoro/popup-stacking` (Teisoro F-002-S15, `teisoro-popup-stacking.md`): a
-glass `Card` or `Accordion` holding an open `Select`, `ActionMenu` or
-`Tooltip` lifts above the surface below it, so a covered option can be
-clicked. Review and merge it, then release `@scalewing/react` 1.4.1 for
-Teisoro's NSF activity page.
+`@scalewing/react@1.4.1` is versioned from merge `151ad7e` (PR #33) for
+Teisoro F-002-S15 (`teisoro-popup-stacking.md`): a glass `Card` or
+`Accordion` holding an open `Select`, `ActionMenu` or `Tooltip` lifts above
+the surface below it, so a covered option can be clicked. Tag `react-v1.4.1`,
+validate, then publish through Release packages; Teisoro pins 1.4.1 once it
+is on npm. Owner approved the release on 2026-09-23.
 
 `@scalewing/react-native@1.5.0` is versioned from merge `de7535f` (PRs #29,
 #30, and #31) for FutMas: pickers close on a tapped row and one stays open at
