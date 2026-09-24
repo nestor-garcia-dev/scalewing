@@ -17,6 +17,12 @@ release workflow completed successfully.
 
 ## Next action
 
+`teisoro/popup-stacking` (Teisoro F-002-S15, `teisoro-popup-stacking.md`): a
+glass `Card` or `Accordion` holding an open `Select`, `ActionMenu` or
+`Tooltip` lifts above the surface below it, so a covered option can be
+clicked. Review and merge it, then release `@scalewing/react` 1.4.1 for
+Teisoro's NSF activity page.
+
 `@scalewing/react-native@1.5.0` is versioned from merge `de7535f` (PRs #29,
 #30, and #31) for FutMas: pickers close on a tapped row and one stays open at
 a time (F-015-S11, `futmas-wheel-close.md`), native `Field` `rows` for a

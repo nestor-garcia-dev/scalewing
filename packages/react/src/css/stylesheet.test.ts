@@ -96,6 +96,14 @@ describe('generated CSS', () => {
     );
   });
 
+  it('lifts a glass surface over the next one while it holds an open popup', () => {
+    const popups =
+      '.sw-select-list, .sw-action-menu-list:not([hidden]), .sw-tooltip:not([hidden])';
+    expect(css).toContain(
+      `.sw-card-glass:has(${popups}),\n.sw-accordion:has(${popups}) {\n  position: relative;\n  z-index: 1;\n}`,
+    );
+  });
+
   it('emits button classes from tokens, including a 44px md control', () => {
     expect(catalog).toEqual(
       expect.arrayContaining([

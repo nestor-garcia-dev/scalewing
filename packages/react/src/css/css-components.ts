@@ -65,6 +65,13 @@ export function cssComponentClasses(): string {
   -webkit-backdrop-filter: blur(var(--sw-glass-blur)) saturate(var(--sw-glass-saturate));
 }
 
+/* Backdrop blur makes a glass surface its own stacking context, so an open popup inside it would paint under the next surface. */
+.sw-card-glass:has(.sw-select-list, .sw-action-menu-list:not([hidden]), .sw-tooltip:not([hidden])),
+.sw-accordion:has(.sw-select-list, .sw-action-menu-list:not([hidden]), .sw-tooltip:not([hidden])) {
+  position: relative;
+  z-index: 1;
+}
+
 .sw-card-outlined {
   background: var(--sw-color-surface);
   border: 1px solid var(--sw-color-border);
