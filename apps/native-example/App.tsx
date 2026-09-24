@@ -6,6 +6,7 @@ import {
   Field,
   Inline,
   MultiSelect,
+  Progress,
   SingleSelect,
   Stack,
   Stepper,
@@ -182,6 +183,11 @@ export default function App() {
                 />
               </View>
             </Inline>
+            <Progress
+              label="Nests checked"
+              max={8}
+              value={Math.min(nestEggs, 8)}
+            />
             <MultiSelect
               error={
                 habitats.length === 0 ? 'Pick at least one habitat.' : undefined

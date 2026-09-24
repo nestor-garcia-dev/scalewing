@@ -54,6 +54,8 @@ export {
   type SingleSelectItem,
   type SingleSelectProps,
 } from './components/SingleSelect.js';
+export { Progress, type ProgressProps } from './components/Progress.js';
+export { type ProgressTone } from './map-progress-style.js';
 export { Stepper, type StepperProps } from './components/Stepper.js';
 export { TimeField, type TimeFieldProps } from './components/TimeField.js';
 export {

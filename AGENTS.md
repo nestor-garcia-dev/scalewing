@@ -106,7 +106,7 @@ Responsible for the CSS generators, class catalog, and breakpoint token (`src/cs
 
 Responsible for native `ThemeProvider` (including `palette`) and the matching
 layout primitives plus Button (`Pressable`), Field (`TextInput`), DateField,
-TimeField, WheelField, Stepper, MultiSelect, SingleSelect, TabBar, Table, and Accordion. Spacing uses token steps as props, not CSS class names.
+TimeField, WheelField, Stepper, Progress, MultiSelect, SingleSelect, TabBar, Table, and Accordion. Spacing uses token steps as props, not CSS class names.
 Accordion has controlled disclosure with optional independent title navigation.
 Select, Dialog, Split, and Toast are web-only.
 

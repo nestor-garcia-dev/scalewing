@@ -32,6 +32,12 @@ except styling and controlled semantics owned by the component. `colorScheme`
 is `"light"`, `"dark"`, or `"system"`. Named palettes include both schemes;
 `colors` may be `{ light, dark }`.
 
+`Progress` shows a known count out of a total: its `label`, a muted
+"value / max" count, and a pill track filled in the `tone` color (`accent`,
+`success`, or `danger`). It is one accessible progress bar named by the
+label with its value range, and it throws a `RangeError` for an empty label
+or a value outside 0..max, like the web `Progress`.
+
 `SegmentedControl` uses the active palette's accent/onAccent pair for the
 selected section, with a 44-point minimum touch height. Labels grow with
 system text size. The native example demonstrates switching sections.

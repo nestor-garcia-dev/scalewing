@@ -17,6 +17,12 @@ release workflow completed successfully.
 
 ## Next action
 
+Native `Progress` for FutMas F-017-S18 (`futmas-native-progress.md`): the
+web component's props on a filled pill track, one accessible progress bar.
+Merge the PR, then version `@scalewing/react-native@1.7.0` and publish
+through Release packages; FutMas pins 1.7.0 once it is on npm. Owner
+approved the release on 2026-09-24.
+
 `@scalewing/react@1.4.1` is versioned from merge `151ad7e` (PR #33) for
 Teisoro F-002-S15 (`teisoro-popup-stacking.md`): a glass `Card` or
 `Accordion` holding an open `Select`, `ActionMenu` or `Tooltip` lifts above
