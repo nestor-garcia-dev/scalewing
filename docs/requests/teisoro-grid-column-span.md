@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: implemented on `claude/project-thread-1c7nzp`; pending review, merge and a `@scalewing/react` minor release. The product owner approved the work on 2026-09-24 up to a merge in Scalewing; do not version, tag or publish until he says so.
+Status: merged in PR #39 (`3c7d749`) and versioned as `@scalewing/react` 1.5.0, released from tag `react-v1.5.0`; product owner approved the release on 2026-09-24.
 Renderer: react
 Missing surface: `columnSpan` on `Box` (and so on every Box-based component), covering several columns of the `Grid` the box sits in. Generated classes `sw-grid-span-1`, `-2`, `-3`, `-4`, `-6`.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: `Grid` (`teisoro-grid.md`) only makes equal-width columns (`columns` 1, 2, 3, 4 or 6, `columnsBelow`), so two children always split a row in half. Nothing lets one child cover two of three columns, and Teisoro owns no CSS, inline `style` or widths (`docs/operations/scalewing-consumer.md`).
