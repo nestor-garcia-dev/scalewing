@@ -1,6 +1,7 @@
 import {
   Accordion,
   Button,
+  Calendar,
   Card,
   DateField,
   Field,
@@ -75,6 +76,8 @@ export default function App() {
   const [nestEggs, setNestEggs] = useState(3);
   const [nestChicks, setNestChicks] = useState(1);
   const [habitats, setHabitats] = useState<string[]>(['river']);
+  const [walkDays, setWalkDays] = useState<string[]>(['sat']);
+  const [releaseDate, setReleaseDate] = useState('');
   const [enclosure, setEnclosure] = useState('paddock');
   const [groupOpen, setGroupOpen] = useState(true);
   const [titlePresses, setTitlePresses] = useState(0);
@@ -201,6 +204,24 @@ export default function App() {
               label="Habitats"
               onChange={setHabitats}
               value={habitats}
+            />
+            <MultiSelect
+              items={[
+                { id: 'fri', label: 'Friday' },
+                { id: 'sat', label: 'Saturday' },
+                { id: 'sun', label: 'Sunday' },
+              ]}
+              label="Trail walk days"
+              onChange={setWalkDays}
+              value={walkDays}
+              variant="list"
+            />
+            <Calendar
+              label="Release day"
+              nextMonthLabel="Next month"
+              onChange={setReleaseDate}
+              previousMonthLabel="Previous month"
+              value={releaseDate}
             />
             <SingleSelect
               hint="One enclosure per visit."
