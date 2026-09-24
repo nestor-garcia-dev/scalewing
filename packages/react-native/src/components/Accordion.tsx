@@ -19,8 +19,10 @@ export type AccordionProps = {
   onOpenChange: (open: boolean) => void;
   onTitlePress?: () => void;
   open: boolean;
+  subtitle?: string;
   title: string;
   titleAccessibilityLabel?: string;
+  truncateTitle?: boolean;
 };
 
 export function Accordion({
@@ -31,8 +33,10 @@ export function Accordion({
   onOpenChange,
   onTitlePress,
   open,
+  subtitle,
   title,
   titleAccessibilityLabel,
+  truncateTitle = false,
 }: AccordionProps) {
   const theme = useTheme();
   const toggle = () => onOpenChange(!open);
@@ -51,7 +55,7 @@ export function Accordion({
           accessibilityRole="button"
           accessibilityLabel={
             onTitlePress
-              ? (titleAccessibilityLabel ?? title)
+              ? (titleAccessibilityLabel ?? headingLabel(title, subtitle))
               : accessibilityLabel
           }
           accessibilityState={onTitlePress ? undefined : { expanded: open }}
@@ -62,9 +66,16 @@ export function Accordion({
           ]}
         >
           {leading}
-          <Text variant="label" style={{ flex: 1, minWidth: 0 }}>
-            {title}
-          </Text>
+          <Box style={{ flex: 1, minWidth: 0 }}>
+            <Text variant="label" truncate={truncateTitle}>
+              {title}
+            </Text>
+            {subtitle ? (
+              <Text variant="caption" color="muted" truncate>
+                {subtitle}
+              </Text>
+            ) : null}
+          </Box>
           {!onTitlePress ? (
             <>
               {metadata}
@@ -92,4 +103,8 @@ export function Accordion({
       ) : null}
     </Box>
   );
+}
+
+function headingLabel(title: string, subtitle: string | undefined): string {
+  return subtitle ? `${title}, ${subtitle}` : title;
 }

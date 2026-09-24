@@ -221,7 +221,9 @@ export default function App() {
             <Text color="muted">Selected section {section}.</Text>
             <Text color="muted">Row presses {rowPresses}.</Text>
             <Accordion
-              title="Woodland habitats"
+              title="Woodland habitats of the northern river valley"
+              subtitle="Temperate forest"
+              truncateTitle
               accessibilityLabel={
                 groupOpen ? 'Collapse habitats' : 'Expand habitats'
               }
