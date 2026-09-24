@@ -132,6 +132,8 @@ export type {
 
 export { Grid } from './components/Grid.js';
 export type { GridColumns, GridProps } from './components/Grid.js';
+export type { GridColumnSpan } from './css/css-grid-span.js';
+export type { ColumnSpanProps } from './column-span-classes.js';
 export { DenominationGrid } from './components/DenominationGrid.js';
 export type {
   DenominationGridColumn,

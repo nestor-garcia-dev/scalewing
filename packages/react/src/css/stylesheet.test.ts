@@ -68,6 +68,11 @@ describe('generated CSS', () => {
     expect(css).toContain('.sw-grid-cols-6');
     expect(catalog).toContain('sw-grid-cols-6');
     expect(catalog).not.toContain('sw-grid-cols-5');
+    expect(catalog).toContain('sw-grid-span-2');
+    expect(catalog).not.toContain('sw-grid-span-5');
+    expect(css.indexOf('.sw-grid-span-2 {')).toBeGreaterThan(
+      css.indexOf('.sw-grid-cols-below-md-6'),
+    );
     expect(css).toContain('.sw-stack');
     expect(css).not.toContain('!important');
   });

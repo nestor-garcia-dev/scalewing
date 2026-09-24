@@ -6,6 +6,10 @@ import {
 } from 'react';
 
 import { cx } from '../class-names.js';
+import {
+  columnSpanClassNames,
+  type ColumnSpanProps,
+} from '../column-span-classes.js';
 import { spacingClassNames, type SpacingProps } from '../spacing-classes.js';
 import {
   visibilityClassNames,
@@ -27,6 +31,7 @@ export type BoxElement =
 
 export type BoxProps = SpacingProps &
   VisibilityProps &
+  ColumnSpanProps &
   HTMLAttributes<HTMLElement> &
   Pick<
     AnchorHTMLAttributes<HTMLAnchorElement>,
@@ -44,6 +49,7 @@ export const Box = forwardRef<HTMLElement, BoxProps>(function Box(
     background,
     border,
     className,
+    columnSpan,
     hideBelow,
     hideFrom,
     padding,
@@ -75,6 +81,7 @@ export const Box = forwardRef<HTMLElement, BoxProps>(function Box(
           paddingY,
         }),
         ...visibilityClassNames({ hideBelow, hideFrom }),
+        ...columnSpanClassNames({ columnSpan }),
         className,
       )}
       style={{

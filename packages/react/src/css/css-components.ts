@@ -25,6 +25,7 @@ import { cssTabsClasses } from './css-tabs.js';
 import { cssResponsiveClasses } from './css-responsive.js';
 import { cssFilterChipsClasses } from './css-filter-chips.js';
 import { cssGridClasses } from './css-grid.js';
+import { cssGridSpanClasses } from './css-grid-span.js';
 import { cssDenominationGridClasses } from './css-denomination-grid.js';
 import { cssFieldClasses } from './css-field.js';
 import { cssToastClasses } from './css-toast.js';
@@ -159,6 +160,7 @@ ${cssTabsClasses()}
 ${cssFilterChipsClasses()}
 
 ${cssGridClasses()}
+${cssGridSpanClasses()}
 ${cssDenominationGridClasses()}
 
 ${cssFieldClasses()}

@@ -68,7 +68,20 @@ Import the CSS once at the application entry. Do not copy it into your source tr
 
 `Text` takes an optional `align` (`start`, `center`, `end`) mapped to generated `sw-text-align-*` classes, for a heading that must stay centered when it wraps.
 
-`Grid` places children in one to four equal-width columns with a token `gap` step. `columnsBelow={{ md: 2 }}` drops to fewer columns below the `md` breakpoint so tiles and stat cards stay readable on a phone. It accepts every `Box` prop.
+`Grid` places children in one to four (or six) equal-width columns with a token `gap` step. `columnsBelow={{ md: 2 }}` drops to fewer columns below the `md` breakpoint so tiles and stat cards stay readable on a phone. It accepts every `Box` prop.
+
+Every `Box`-based component (`Box`, `Stack`, `Inline`, `Card`, `Grid`, …) takes `columnSpan` (1, 2, 3, 4 or 6) to cover several columns of the `Grid` it sits in directly, through the generated `sw-grid-span-*` classes. A span is capped at the columns the grid has at the current width, so it never adds an implicit column, and `columnsBelow` still decides the phone layout. A form about twice the width of a side panel, stacking below `md`:
+
+```tsx
+<Grid columns={3} columnsBelow={{ md: 1 }} gap={4}>
+  <Stack columnSpan={2} gap={4}>
+    {form}
+  </Stack>
+  <Card variant="outlined">{panel}</Card>
+</Grid>
+```
+
+Values outside the catalog throw a `RangeError`. There is no per-breakpoint span and no arbitrary column template.
 
 `DenominationGrid` shows integer counts per unit across a fixed set of columns. The `strip` layout is a captioned table: each row has a toned label with an icon slot, muted zero cells, optional signed deltas toned by sign, and an optional consumer-formatted `total` that moves under the label on a phone. The `tiles` layout stacks the column label, the count, and an optional `subtotal` string per column. The primitive does no arithmetic and no currency formatting; tones reuse the Badge vocabulary. Invalid columns, rows, or cells throw.
 
