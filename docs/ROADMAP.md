@@ -17,13 +17,13 @@ release workflow completed successfully.
 
 ## Next action
 
-`Box` `columnSpan` for Teisoro D-9 (`teisoro-grid-column-span.md`, task 909):
-a direct child of a `Grid` covers several columns, capped at the grid's
+`@scalewing/react@1.5.0` is versioned from merge `3c7d749` (PR #39) for
+Teisoro D-9 (`teisoro-grid-column-span.md`, task 909): `Box` `columnSpan`
+lets a direct child of a `Grid` cover several columns, capped at the grid's
 count at each width, so the check-cashing form is twice the lookup panel on
-desktop and stacks on a phone. Owner approved the work on 2026-09-24 up to a
-merge only: review and merge the PR, then wait for the owner before
-`pnpm changeset version`, a `react-v` tag or Release packages. Teisoro pins
-the release in task 909.
+desktop and stacks on a phone. Tag `react-v1.5.0`, validate, then publish
+through Release packages; Teisoro pins 1.5.0 in task 909 once it is on npm.
+Owner approved the release on 2026-09-24.
 
 Native `Progress` for FutMas F-017-S18 (`futmas-native-progress.md`): the
 web component's props on a filled pill track, one accessible progress bar.
