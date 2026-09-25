@@ -43,3 +43,14 @@ Selecting an item hides the focused menu item and then runs `onSelect`, but focu
 Proposed behavior: on selection, close the menu and move focus to the trigger before calling `onSelect`, as Escape already does. A dialog opened from `onSelect` then records the trigger as its opener, and the browser returns focus to it on close. No API change is needed.
 
 Teisoro did not work around this in product code. Its Chromium check (`apps/teisoro-web/e2e/closeout-day-preview.spec.ts`) asserts only that focus enters the discard dialog, and the gap is listed in `docs/design/daily-closeout/README.md`.
+
+## Follow-up request (2026-09-25, Teisoro F-002-S19 task 1060): checked items for a period picker
+
+Status: requested by Teisoro F-002-S19 task 1060 (2026-09-25); not started.
+Missing surface: a period picker, a menu button whose items carry a checked state.
+Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: Angular's vault movements header is ‹ label ▾ › where ▾ opens Day, Week, Month and Year with a check on the current one and a calendar entry. `ActionMenu` items run commands and have no checked state, so Teisoro uses a `Select` labelled "Period" beside the ‹ › buttons and a separate "Jump to date" `DateField`: three controls where Angular had one.
+Existing surface this might already be: `ActionMenu` (commands, no `menuitemradio`); `Select`; `SegmentedControl` (too wide for four choices beside the arrows at 390 px).
+Workaround I almost used: `ActionMenu` items with a check glyph in the label.
+Teisoro use: the Recent transactions period controls on `/vault` (`apps/teisoro-web/src/app/vault-page/MovementsCard.tsx`), and the read-only `/vault/history`. Design: Teisoro `docs/design/vault/README.md` gap 4.
+Proposed API: `ActionMenu` items gain `checked?: boolean` (rendered as `menuitemradio` with `aria-checked` inside a group), so a period picker is an `ActionMenu` whose trigger shows the current label; an optional item may open a `DateField` popover.
+Behavior and failure boundary: keyboard and focus as `ActionMenu` today; the consumer owns the periods, labels and date arithmetic.

@@ -20,3 +20,13 @@ Why the existing surface cannot do this: the entry edit page shows the payment m
 Teisoro use: `docs/design/entry-pages/08-edit-page.md` (identity read-only) and `WorkspaceShell` (saving state).
 Proposed API: `disabled?: boolean`, default `false`; a disabled control may omit `onChange` (the type requires it only when the control is live). The group gets `aria-disabled="true"` and `sw-segmented-disabled` (`opacity: var(--sw-disabled-opacity)`), each segment renders `disabled`, `onChange` never fires from a click or an arrow key, and the selected segment keeps its selected look.
 Behavior and failure boundary: presentation and interaction only; the consumer still decides the value.
+
+## Follow-up request (2026-09-25, Teisoro F-002-S19 task 1060): an icon slot on items
+
+Status: requested; not started.
+
+`SegmentedControl` items take a `label` node, so a consumer can put an icon in it, but nothing states how an icon-only item gets its accessible name or how the icon sits beside the text at each size. Angular's vault movement filter used icons for All, In and Out; React shows the text alone.
+
+Proposed API: items gain `icon?: ReactNode` (decorative, `aria-hidden`, placed before the label with the control's gap) and `labelVisuallyHidden?: boolean` for an icon-only item whose `label` stays its accessible name. Radiogroup semantics, arrows and `onChange` are unchanged.
+
+Teisoro use: the direction control on `/vault` (`apps/teisoro-web/src/app/vault-page/MovementsCard.tsx`). Design: Teisoro `docs/design/vault/README.md`, Scalewing gap 6.
