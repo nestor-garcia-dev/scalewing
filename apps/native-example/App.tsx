@@ -79,6 +79,7 @@ export default function App() {
   const [walkDays, setWalkDays] = useState<string[]>(['sat']);
   const [releaseDate, setReleaseDate] = useState('');
   const [enclosure, setEnclosure] = useState('paddock');
+  const [tourLength, setTourLength] = useState('short');
   const [groupOpen, setGroupOpen] = useState(true);
   const [titlePresses, setTitlePresses] = useState(0);
 
@@ -235,6 +236,16 @@ export default function App() {
               label="Enclosure"
               onChange={setEnclosure}
               value={enclosure}
+            />
+            <SingleSelect
+              items={[
+                { id: 'short', label: 'Short tour', detail: 'One hour' },
+                { id: 'full', label: 'Full tour', detail: 'The whole park' },
+              ]}
+              label="Tour"
+              onChange={setTourLength}
+              value={tourLength}
+              variant="list"
             />
             <SegmentedControl
               accessibilityLabel="Sections"

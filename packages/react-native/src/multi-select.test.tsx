@@ -122,6 +122,21 @@ describe('MultiSelect list variant', () => {
     expect(rows.map((style) => style.borderTopWidth)).toEqual([0, 1, 1]);
   });
 
+  it('reads a detail line with its row', () => {
+    const { renderer } = renderMultiSelect({
+      items: [{ id: 'mon', label: 'Monday', detail: 'Evenings only' }],
+      value: [],
+      variant: 'list',
+    });
+
+    expect(checkbox(renderer.root, 'Monday, Evenings only')).toBeDefined();
+    expect(
+      renderer.root
+        .findAllByType('Text')
+        .some((node) => node.props.children === 'Evenings only'),
+    ).toBe(true);
+  });
+
   it('toggles in item order and disables every row together', () => {
     const { onChange, renderer } = renderMultiSelect({ variant: 'list' });
 

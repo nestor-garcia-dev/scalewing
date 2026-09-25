@@ -6,6 +6,8 @@ import { LabeledControl } from './LabeledControl.js';
 export type MultiSelectItem = {
   id: string;
   label: string;
+  /** A muted line under the label in the `list` variant; chips omit it. */
+  detail?: string;
 };
 
 export type MultiSelectProps = {
@@ -58,7 +60,8 @@ export function MultiSelect({
           disabled={disabled}
           items={items}
           label={label}
-          onToggle={toggle}
+          onPress={toggle}
+          role="checkbox"
           value={value}
         />
       </LabeledControl>

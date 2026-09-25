@@ -100,3 +100,73 @@ describe('SingleSelect', () => {
     expect(captions[0]?.props.children).toBe('Pick a gameweek');
   });
 });
+
+describe('SingleSelect list variant', () => {
+  const terms = [
+    { id: 'fall', label: 'Fall' },
+    { id: 'annual', label: 'Annual', detail: 'The whole year' },
+  ];
+
+  it('stacks radio rows in a labeled radiogroup with a mark on the chosen one', () => {
+    const { renderer } = renderSingleSelect({
+      items: terms,
+      label: 'Season',
+      value: 'annual',
+      variant: 'list',
+    });
+
+    const group = renderer.root
+      .findAllByType('View')
+      .find((node) => node.props.accessibilityRole === 'radiogroup');
+    expect(group?.props.accessibilityLabel).toBe('Season');
+    expect(radio(renderer.root, 'Fall')?.props).toMatchObject({
+      accessibilityRole: 'radio',
+      accessibilityState: { disabled: false, selected: false },
+    });
+    expect(
+      radio(renderer.root, 'Annual, The whole year')?.props.accessibilityState,
+    ).toEqual({ disabled: false, selected: true });
+    const marks = renderer.root
+      .findAllByType('Text')
+      .filter((node) => node.props.children === '✓');
+    expect(marks).toHaveLength(1);
+    expect(marks[0]?.props.importantForAccessibility).toBe('no');
+  });
+
+  it('shows a detail as a muted line under its label', () => {
+    const { renderer } = renderSingleSelect({
+      items: terms,
+      value: '',
+      variant: 'list',
+    });
+
+    const detail = renderer.root
+      .findAllByType('Text')
+      .find((node) => node.props.children === 'The whole year');
+    expect(detail).toBeDefined();
+    const marks = renderer.root
+      .findAllByType('Text')
+      .filter((node) => node.props.children === '✓');
+    expect(marks).toHaveLength(0);
+  });
+
+  it('reports a new id, ignores the chosen row, and disables every row', () => {
+    const { onChange, renderer } = renderSingleSelect({
+      items: terms,
+      value: 'fall',
+      variant: 'list',
+    });
+
+    act(() => radio(renderer.root, 'Fall')?.props.onPress());
+    expect(onChange).not.toHaveBeenCalled();
+    act(() => radio(renderer.root, 'Annual, The whole year')?.props.onPress());
+    expect(onChange).toHaveBeenLastCalledWith('annual');
+
+    const disabled = renderSingleSelect({
+      disabled: true,
+      items: terms,
+      variant: 'list',
+    });
+    expect(radio(disabled.renderer.root, 'Fall')?.props.disabled).toBe(true);
+  });
+});
