@@ -44,7 +44,6 @@ Proposed behavior: on selection, close the menu and move focus to the trigger be
 
 Teisoro did not work around this in product code. Its Chromium check (`apps/teisoro-web/e2e/closeout-day-preview.spec.ts`) asserts only that focus enters the discard dialog, and the gap is listed in `docs/design/daily-closeout/README.md`.
 
-
 ## Follow-up request (2026-09-25, Teisoro F-002-S19 task 1060): checked items for a period picker
 
 Status: requested by Teisoro F-002-S19 task 1060 (2026-09-25); not started.
