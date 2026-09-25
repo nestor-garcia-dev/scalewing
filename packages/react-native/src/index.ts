@@ -55,6 +55,7 @@ export {
   SingleSelect,
   type SingleSelectItem,
   type SingleSelectProps,
+  type SingleSelectVariant,
 } from './components/SingleSelect.js';
 export { Progress, type ProgressProps } from './components/Progress.js';
 export { type ProgressTone } from './map-progress-style.js';

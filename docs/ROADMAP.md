@@ -17,6 +17,14 @@ release workflow completed successfully.
 
 ## Next action
 
+`SingleSelect` `variant="list"` for FutMas F-002-S40
+(`futmas-new-season-steps.md`): the stepped new-season flow asks who plays,
+the age group, the term, and the meetings as full-width radio rows, some with
+a detail line ("Twice · Home and away"). List items of `MultiSelect` take the
+same optional `detail`. Merge the PR, then version
+`@scalewing/react-native@1.9.0` and publish through Release packages; FutMas
+pins 1.9.0 once it is on npm. Owner approved the release on 2026-09-25.
+
 Native `Calendar` and a `list` variant of `MultiSelect` for FutMas F-015-S10
 (`futmas-schedule-steps.md`): a stepped schedule flow asks one question per
 screen, so the start-date step shows the month grid inline and the days and

@@ -17,7 +17,10 @@ export function mapCheckListStyle(theme: Theme): ViewStyle {
   };
 }
 
-/** A full-width row on the control scale, divided from the row above. */
+/**
+ * A full-width row on the control scale, divided from the row above; it
+ * grows for a detail line.
+ */
 export function mapCheckRowStyle(
   theme: Theme,
   state: CheckRowState,
@@ -31,6 +34,8 @@ export function mapCheckRowStyle(
     minHeight: theme.control.md.minHeight,
     opacity: state.disabled ? theme.disabledOpacity : 1,
     paddingHorizontal: theme.control.md.paddingInline,
+    // Room for a detail line under the label.
+    paddingVertical: theme.space[2],
   };
 }
 

@@ -45,7 +45,10 @@ month (else today's), and stays open after a pick.
 
 `MultiSelect` takes `variant="list"` to stack full-width checkbox rows with a
 check mark on each selected row instead of wrapping chips. The value contract
-and item order are the same.
+and item order are the same. `SingleSelect` takes the same `variant="list"`
+for radio rows in one radiogroup, with the mark on the chosen row. In either
+list, an item's optional `detail` is a muted line under its label and part of
+its accessible name; chips omit it.
 
 `SegmentedControl` uses the active palette's accent/onAccent pair for the
 selected section, with a 44-point minimum touch height. Labels grow with
