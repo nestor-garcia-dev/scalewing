@@ -23,3 +23,15 @@ Proposed API: a cell may be `{ value, tone?, note? }` besides a number, where `t
 Behavior and failure boundary: presentation only; the grid still does no arithmetic. The tone never carries meaning alone: the note or the row label says it.
 
 Teisoro use: `apps/teisoro-web/src/app/vault-page/MovementDialog.tsx` (the vault's holdings in Remove Cash) and `apps/teisoro-web/src/app/change-orders/InventoryCard.tsx`. Design: Teisoro `docs/design/vault/README.md` gap 7 and `docs/design/vault/change-orders.md` gap 1.
+
+## Follow-up request (2026-09-25, Teisoro F-002-S24 task 988): a wide strip scrolls on a phone
+
+Status: requested; not started.
+
+A `strip` grid with eleven columns (seven bills and four coin rolls) does not fit a 390 px phone, and it does not scroll inside its card: it widens the page to about 630 px, so the whole page scrolls sideways. Teisoro's vault period summary now shows the same rows in two grids, bills and then coin rolls, to stay within the phone width.
+
+Proposed behavior: the `strip` layout scrolls horizontally inside its own container when its columns are wider than the container, as `Table` does, with the row labels kept readable; the page itself never scrolls sideways.
+
+Behavior and failure boundary: layout only; no API change and no arithmetic. A Playwright gallery check at 390 px asserts that the document's scroll width equals the viewport width with an eleven-column strip.
+
+Teisoro use: `apps/teisoro-web/src/app/VaultHistoryPage.tsx` (the period summary could return to one grid). Design: Teisoro `docs/design/audit-restorations/README.md`.
