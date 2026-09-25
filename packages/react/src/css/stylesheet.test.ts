@@ -166,6 +166,8 @@ describe('generated CSS', () => {
     );
     expect(css).toContain('.sw-badge-sm');
     expect(css).toContain('.sw-table-compact');
+    expect(css).toContain('.sw-table .sw-table-numeric {');
+    expect(css).toContain('.sw-table .sw-table-end {');
     expect(css).toContain('.sw-bar-chart-fill');
     expect(css).toContain('width: calc(var(--sw-bar-fill, 0) * 100%)');
     expect(css).toContain('.sw-segmented-filled .sw-segmented-item-selected');

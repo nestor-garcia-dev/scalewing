@@ -178,11 +178,12 @@ export function cssDataClasses(): string {
   line-height: ${caption.lineHeight}px;
 }
 
-.sw-table-end {
+/* Descendant form outranks .sw-table th / .sw-table td, which set text-align: start. */
+.sw-table .sw-table-end {
   text-align: end;
 }
 
-.sw-table-numeric {
+.sw-table .sw-table-numeric {
   font-variant-numeric: tabular-nums;
   text-align: end;
 }
