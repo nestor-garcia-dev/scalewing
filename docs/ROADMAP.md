@@ -25,14 +25,14 @@ then version `@scalewing/react-native@1.8.0` and publish through Release
 packages; FutMas pins 1.8.0 once it is on npm. Owner approved the release on
 2026-09-24.
 
-`@scalewing/react@1.6.0` is versioned from merge `f3f5892` (PR #42) for
-Teisoro (`teisoro-dialog-close.md`, `teisoro-action-menu.md`): `Dialog` is
-controlled by `open` alone and turns every close request into one `onClose`,
-`ActionMenu` returns focus to its trigger before a command, and a visible
-`Tooltip` keeps its Escape. Tag `react-v1.6.0`, validate, then publish through
-Release packages; Teisoro removes its dialog Escape workaround when it pins
-1.6.0. Owner approved the release on 2026-09-24. (`@scalewing/react@1.5.0`,
-`columnSpan`, was released the same day.)
+`@scalewing/react@1.6.1` is a patch for Teisoro: `TableCell numeric` and
+`align="end"` cells align to the end again. The base `.sw-table th, .sw-table td`
+rule had outranked the alignment classes since the table styles were added; the
+gallery now checks a numeric cell's computed `text-align`. Merge the PR, tag
+`react-v1.6.1`, validate, then publish through Release packages; Teisoro pins
+1.6.1 once it is on npm. Owner approved the release on 2026-09-25.
+(`@scalewing/react@1.6.0`, `Dialog` close requests and `ActionMenu` focus, was
+released on 2026-09-24.)
 
 Native `Progress` for FutMas F-017-S18 (`futmas-native-progress.md`): the
 web component's props on a filled pill track, one accessible progress bar.
