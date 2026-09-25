@@ -11,3 +11,15 @@ Proposed API: `label`, `columns` (`{ key, label }`), `rows` (`{ id, label, cells
 Behavior and failure boundary: read-only; the primitive does no money arithmetic (subtotals and totals are consumer-formatted strings, so currency and locale stay in the product); null and zero cells render the zero label at quiet opacity; a signed row prefixes positive counts and tones cells by sign; tones reuse the Badge tone vocabulary; invalid columns, duplicate keys or ids, mismatched cell counts, fractional cells, or an empty zero label throw a `RangeError`. An editable mode (count entry with a live subtotal) is a later request from the drawer close design pass (Teisoro task 810).
 
 Scalewing owns the reusable layout, tone and zero rules, generated classes, tests, gallery evidence, and changeset. Teisoro owns column sets, localized labels, currency formatting, icons, and which rows a card shows.
+
+## Follow-up request (2026-09-25, Teisoro F-002-S19 task 1060): a tone per tile
+
+Status: requested; not started.
+
+`tone` is a row property. Two vault surfaces need it on one cell: Remove Cash marks the denominations the vault is short of (Teisoro now moves them to a second, danger-toned "Not enough" row instead of marking the tile in place), and the change-orders inventory marks each bill or coin tile as needing an order or stocked (Teisoro now uses cards with badges instead of toned tiles).
+
+Proposed API: a cell may be `{ value, tone?, note? }` besides a number, where `tone` reuses the Badge tones and `note` is a short consumer string shown under the count in the tiles layout (for example "Only 40 available" or "Order 2 boxes"). A row tone still applies to cells without their own.
+
+Behavior and failure boundary: presentation only; the grid still does no arithmetic. The tone never carries meaning alone: the note or the row label says it.
+
+Teisoro use: `apps/teisoro-web/src/app/vault-page/MovementDialog.tsx` (the vault's holdings in Remove Cash) and `apps/teisoro-web/src/app/change-orders/InventoryCard.tsx`. Design: Teisoro `docs/design/vault/README.md` gap 7 and `docs/design/vault/change-orders.md` gap 1.
