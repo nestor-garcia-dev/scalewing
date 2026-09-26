@@ -77,14 +77,36 @@ ${scrollRegionRules('.sw-denomination-scroll')}
   gap: var(--sw-space-2);
 }
 
-/* The row label stays in view while a wide strip scrolls under it. */
-.sw-denomination-strip .sw-denomination-label {
+/*
+ * The row labels and the header corner above them stay in view while a wide
+ * strip scrolls under them, so each column head stays over its counts.
+ */
+.sw-denomination-strip .sw-denomination-label,
+.sw-denomination-strip thead .sw-denomination-corner:first-child {
   background: var(--sw-glass-fill);
   backdrop-filter: blur(var(--sw-glass-blur)) saturate(var(--sw-glass-saturate));
   -webkit-backdrop-filter: blur(var(--sw-glass-blur)) saturate(var(--sw-glass-saturate));
   inset-inline-start: 0;
   position: sticky;
   z-index: 1;
+}
+
+/*
+ * A collapsed-table border does not travel with a sticky cell in every
+ * browser, so the pinned label draws its tone stripe as its own box.
+ */
+.sw-denomination-strip .sw-denomination-label {
+  border-inline-start: 0;
+  padding-inline-start: calc(var(--sw-space-2) + var(--sw-space-1));
+}
+
+.sw-denomination-strip .sw-denomination-label::before {
+  background: var(--sw-denomination-tone);
+  content: '';
+  inset-block: 0;
+  inset-inline-start: 0;
+  position: absolute;
+  width: var(--sw-space-1);
 }
 
 .sw-denomination-icon {
@@ -199,11 +221,13 @@ ${scrollRegionRules('.sw-denomination-scroll')}
   .sw-denomination-label-body { flex-direction: column; align-items: flex-start; gap: var(--sw-space-1); }
   .sw-denomination-strip th,
   .sw-denomination-strip td { padding: var(--sw-space-1); }
+  .sw-denomination-strip .sw-denomination-label { padding-inline-start: calc(var(--sw-space-1) * 2); }
   .sw-denomination-tile-list { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
 
 @media (forced-colors: active) {
   .sw-denomination-label { border-inline-start-color: CanvasText; color: CanvasText; }
+  .sw-denomination-strip .sw-denomination-label::before { background: CanvasText; forced-color-adjust: none; }
   .sw-denomination-cell-zero { color: GrayText; opacity: 1; }
   .sw-denomination-cell-negative,
   .sw-denomination-row-signed .sw-denomination-cell-positive,

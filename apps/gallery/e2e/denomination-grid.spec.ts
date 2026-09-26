@@ -103,6 +103,21 @@ test('a wide DenominationGrid strip scrolls inside its container and never widen
     // The label stays pinned at the region's start edge after scrolling.
     expect(after!.x).toBeGreaterThanOrEqual(regionBox!.x - 0.5);
     expect(after!.x).toBeLessThanOrEqual(before!.x + 0.5);
+    // The header corner stays pinned over the labels, so each column head
+    // stays over its counts.
+    const corner = await wide
+      .locator('thead .sw-denomination-corner')
+      .first()
+      .boundingBox();
+    expect(Math.abs(corner!.x - after!.x)).toBeLessThanOrEqual(0.5);
+    expect(Math.abs(corner!.width - after!.width)).toBeLessThanOrEqual(0.5);
+    // The tone stripe is the pinned label's own box, so it moves with it.
+    const stripe = await label.evaluate((element) => {
+      const style = getComputedStyle(element, '::before');
+      return { position: style.position, width: style.width };
+    });
+    expect(stripe.position).toBe('absolute');
+    expect(Number.parseFloat(stripe.width)).toBeGreaterThan(0);
   }
 
   const nested = section.getByRole('group', { name: 'Kit check by size' });
