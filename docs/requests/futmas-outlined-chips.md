@@ -1,5 +1,4 @@
-Status: in progress (react-native). MultiSelect and SingleSelect chips in
-the native example show the new look.
+Status: implemented for the react-native 1.10.0 release.
 
 Scalewing request from FutMas.
 

@@ -1,5 +1,25 @@
 # @scalewing/react
 
+## 1.7.0
+
+### Minor Changes
+
+- 2444ec5: Button `variant="tertiary"` is a solid fill on `--sw-color-tertiary` with
+  `--sw-color-onTertiary`. `secondary` now fills with `--sw-color-secondary`
+  and draws `--sw-button-secondary-border`, which stays the hairline unless a
+  palette fills the secondary action (for example `signal`). The stylesheet
+  emits the new semantic colour properties. Default and cerulean themes look
+  unchanged.
+- 622ab77: `Card variant="filled"` (`.sw-card-filled`) is a quiet `--sw-color-subtle`
+  fill with no border, for plain information apart from pressable rows.
+
+### Patch Changes
+
+- Updated dependencies [b5a56b7]
+- Updated dependencies [2444ec5]
+- Updated dependencies [622ab77]
+  - @scalewing/tokens@1.3.0
+
 ## 1.6.1
 
 ### Patch Changes
