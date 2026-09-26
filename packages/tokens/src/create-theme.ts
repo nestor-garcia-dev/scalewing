@@ -117,6 +117,12 @@ export function createTheme(overlay: ThemeOverlay): Theme {
     }
   }
 
+  // An unset secondary fill follows the surface, so a palette that changes
+  // the surface keeps its secondary action an outlined pill.
+  if (!colors.secondary) {
+    merged.secondary = merged.surface;
+  }
+
   return {
     ...base,
     colors: merged,

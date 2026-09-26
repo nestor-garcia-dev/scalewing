@@ -41,6 +41,18 @@ describe('palettes', () => {
         expect(
           contrastRatio(colors.onAccent, colors.accent),
         ).toBeGreaterThanOrEqual(4.5);
+        expect(
+          contrastRatio(colors.onSecondary, colors.secondary),
+        ).toBeGreaterThanOrEqual(4.5);
+        expect(
+          contrastRatio(colors.onTertiary, colors.tertiary),
+        ).toBeGreaterThanOrEqual(4.5);
+        expect(
+          contrastRatio(colors.text, colors.subtle),
+        ).toBeGreaterThanOrEqual(4.5);
+        // The three action fills stay apart from one another.
+        expect(colors.tertiary).not.toBe(colors.accent);
+        expect(colors.tertiary).not.toBe(colors.secondary);
         expect(colors.accent).not.toBe(colors.success);
         expect(colors.danger).toBe(themeForScheme(scheme).colors.danger);
       }
@@ -70,5 +82,28 @@ describe('palettes', () => {
   it('does not emit a stylesheet for the default indigo palette', () => {
     expect(paletteHasStylesheet('indigo')).toBe(false);
     expect(paletteById('cerulean').light.accent).toBe('#0066CC');
+  });
+
+  it('keeps an unset secondary on the surface, so it stays an outline', () => {
+    for (const scheme of ['light', 'dark'] as const) {
+      const synthwave = createTheme({
+        colorScheme: scheme,
+        palette: 'synthwave',
+      });
+      expect(synthwave.colors.secondary).toBe(synthwave.colors.surface);
+    }
+    const indigo = createTheme({ colorScheme: 'light' });
+    expect(indigo.colors.secondary).toBe(indigo.colors.surface);
+  });
+
+  it('fills every action in the signal palette', () => {
+    const light = createTheme({ colorScheme: 'light', palette: 'signal' });
+    expect(light.colors).toMatchObject({
+      accent: '#0066CC',
+      secondary: '#1D1D1F',
+      tertiary: '#7C5CD6',
+    });
+    const dark = createTheme({ colorScheme: 'dark', palette: 'signal' });
+    expect(dark.colors.secondary).not.toBe(dark.colors.surface);
   });
 });

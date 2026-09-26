@@ -8,6 +8,7 @@ export type PaletteFamily = (typeof paletteFamilies)[number];
 export const paletteIds = [
   'indigo',
   'cerulean',
+  'signal',
   'navy',
   'sky',
   'ink',
@@ -66,6 +67,29 @@ export const palettes: readonly PaletteDefinition[] = [
     family: 'quiet',
     summary: 'Apple-family blue with more contrast headroom than system blue.',
     ...accentPair('#0066CC', '#5AC8FA'),
+  },
+  {
+    id: 'signal',
+    name: 'Signal',
+    family: 'quiet',
+    summary:
+      'Cerulean primary, near-black secondary, and violet tertiary: every action a solid fill.',
+    light: {
+      accent: '#0066CC',
+      onAccent: onLight,
+      secondary: '#1D1D1F',
+      onSecondary: onLight,
+      tertiary: '#7C5CD6',
+      onTertiary: onLight,
+    },
+    dark: {
+      accent: '#5AC8FA',
+      onAccent: onDark,
+      secondary: '#F5F5F7',
+      onSecondary: onDark,
+      tertiary: '#C4B5FD',
+      onTertiary: onDark,
+    },
   },
   {
     id: 'navy',
