@@ -27,6 +27,8 @@ import {
 import { useState } from 'react';
 import { SafeAreaView, ScrollView, View } from 'react-native';
 
+import { ListDemo } from './ListDemo';
+
 const demoPalettes = ['indigo', 'cerulean', 'sunburst'] as const;
 
 function TabMark({ selected }: { selected: boolean }) {
@@ -187,6 +189,7 @@ export default function App() {
                 />
               </View>
             </Inline>
+            <ListDemo />
             <Progress
               label="Nests checked"
               max={8}

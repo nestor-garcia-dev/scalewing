@@ -54,6 +54,17 @@ for radio rows in one radiogroup, with the mark on the chosen row. In either
 list, an item's optional `detail` is a muted line under its label and part of
 its accessible name; chips omit it.
 
+`ListGroup` is one bordered panel of `ListRow`s with a hairline between each
+pair; an optional `accessibilityLabel` names it. A `ListRow` has a `title`,
+an optional muted `detail` line and trailing `value`, and an optional
+`leading` slot for a consumer mark or Lucide glyph. With `onPress` it is a
+button with a chevron (`accessory="none"` hides it for a row that acts in
+place) and fills with `subtle` while pressed. `selected` makes it a choice
+that shows a check while true and announces its selected state. Without
+`onPress` it is one read-only text element with no chevron. Its accessible
+name is the title, detail, and value unless `accessibilityLabel` replaces
+it.
+
 `SegmentedControl` uses the active palette's accent/onAccent pair for the
 selected section, with a 44-point minimum touch height. Labels grow with
 system text size. The native example demonstrates switching sections.
