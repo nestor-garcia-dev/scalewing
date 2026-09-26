@@ -1,5 +1,32 @@
 # @scalewing/react-native
 
+## 1.10.0
+
+### Minor Changes
+
+- 2444ec5: Button `variant="tertiary"` is a solid fill on `tertiary` with
+  `onTertiary`. `secondary` now fills with `secondary` and keeps its hairline
+  only while that fill is the surface, so default and cerulean themes look
+  unchanged and the `signal` palette gives three filled actions.
+- 622ab77: `Card variant="filled"` is a quiet `subtle` fill with no border, for plain
+  information apart from pressable rows.
+- 1c8e7a1: `ListGroup` and `ListRow`: one bordered panel of rows with hairlines
+  between them. A row opens another screen with a chevron, picks one option
+  in place with `selected` and a check, or only shows a value when it has no
+  `onPress`. Rows take a muted `detail`, a trailing `value`, and a `leading`
+  slot. Consumer request: `docs/requests/futmas-list-row.md`.
+- 7f96f82: `MultiSelect` and `SingleSelect` chips are outlined and never fill. A
+  selected chip has an accent outline and label and leads with a check, so it
+  no longer looks like a primary Button. No API change. Consumer request:
+  `docs/requests/futmas-outlined-chips.md`.
+
+### Patch Changes
+
+- Updated dependencies [b5a56b7]
+- Updated dependencies [2444ec5]
+- Updated dependencies [622ab77]
+  - @scalewing/tokens@1.3.0
+
 ## 1.9.0
 
 ### Minor Changes

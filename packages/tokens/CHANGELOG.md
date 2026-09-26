@@ -1,5 +1,24 @@
 # @scalewing/tokens
 
+## 1.3.0
+
+### Minor Changes
+
+- b5a56b7: Additive. Semantic colours `secondary`, `onSecondary`, `tertiary`,
+  `onTertiary`, and `subtle`, and a `signal` named palette (cerulean primary,
+  near-black secondary, violet tertiary). An unset `secondary` follows
+  `surface`, so existing secondary actions keep their outlined look.
+  Renderers pick these up through their caret dependency (ADR 0009); the web
+  stylesheet emits the new custom properties with its next release, which
+  the Button `tertiary` change brings. Consumer request:
+  `docs/requests/futmas-action-tiers.md`.
+- 2444ec5: Additive. `buttonVariants` gains `tertiary`, and `secondaryActionBorder`
+  returns the secondary action's outline: the hairline while `secondary`
+  follows `surface`, otherwise the fill itself so no ring shows. Consumer
+  request: `docs/requests/futmas-action-tiers.md`.
+- 622ab77: Additive. `cardVariants` gains `filled`. Consumer request:
+  `docs/requests/futmas-filled-card.md`.
+
 ## 1.2.0
 
 ### Minor Changes

@@ -1,5 +1,5 @@
-Status: in progress (tokens, react-native, react). Gallery and native
-example show the variant.
+Status: implemented for the tokens 1.3.0, react 1.7.0, and react-native
+1.10.0 releases.
 
 Scalewing request from FutMas.
 

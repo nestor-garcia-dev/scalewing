@@ -1,5 +1,4 @@
-Status: in progress (react-native). The native example shows a settings
-group, a choice group, and read-only rows.
+Status: implemented for the react-native 1.10.0 release.
 
 Scalewing request from FutMas.
 

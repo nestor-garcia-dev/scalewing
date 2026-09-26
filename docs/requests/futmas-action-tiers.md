@@ -1,6 +1,5 @@
-Status: in progress. Tokens (semantic colours and the `signal` palette)
-merged in #52. Button `tertiary` and the filled `secondary` on both
-renderers follow in one change.
+Status: implemented for the tokens 1.3.0, react 1.7.0, and react-native
+1.10.0 releases.
 
 Scalewing request from FutMas.
 
