@@ -84,6 +84,11 @@ export function cssComponentClasses(): string {
   box-shadow: var(--sw-elevation-sm);
 }
 
+/* Plain information on a quiet fill, apart from rows that press. */
+.sw-card-filled {
+  background: var(--sw-color-subtle);
+}
+
 @media (prefers-reduced-transparency: reduce) {
   .sw-card-glass,
   .sw-app-header,

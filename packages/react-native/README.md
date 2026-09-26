@@ -25,6 +25,10 @@ import { Button, Card, Field, SegmentedControl, Stack, TabBar, Text, ThemeProvid
 </ThemeProvider>
 ```
 
+`Card` defaults to `glass`; `outlined` and `elevated` are solid surfaces,
+and `filled` is a quiet `subtle` fill with no border for plain information
+apart from pressable rows.
+
 There is no CSS class API. `padding={4}` is spacing step 4, the same step as
 `sw-padding-4` on web. Native `Field` renders a controlled `TextInput` with a
 visible label and optional hint or error; it accepts standard text-input props

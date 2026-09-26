@@ -32,5 +32,13 @@ export function mapCardViewStyle(
         shadowOpacity: 0.08,
         shadowRadius: 20,
       };
+    case 'filled':
+      // Plain information on a quiet fill, apart from rows that press.
+      return {
+        backgroundColor: theme.colors.subtle,
+        borderColor: 'transparent',
+        borderRadius: theme.radius.lg,
+        borderWidth: 0,
+      };
   }
 }
