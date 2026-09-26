@@ -26,7 +26,7 @@ Teisoro use: `apps/teisoro-web/src/app/vault-page/MovementDialog.tsx` (the vault
 
 ## Follow-up request (2026-09-25, Teisoro F-002-S24 task 988): a wide strip scrolls on a phone
 
-Status: implemented under Teisoro F-002-S26 (`@scalewing/react` minor, unreleased); pending independent review and linked-consumer verification in Teisoro.
+Status: implemented for the react 1.8.0 release (Teisoro F-002-S26; PR #59 reviewed and merged); pending consumer verification in Teisoro.
 
 A `strip` grid with eleven columns (seven bills and four coin rolls) does not fit a 390 px phone, and it does not scroll inside its card: it widens the page to about 630 px, so the whole page scrolls sideways. Teisoro's vault period summary now shows the same rows in two grids, bills and then coin rolls, to stay within the phone width.
 
