@@ -12,6 +12,8 @@ Behavior and failure boundary: presentation and live-region semantics only; no d
 
 ## Follow-up: a pinned notice (Teisoro F-002-S25, 2026-09-26)
 
+Status: no Teisoro consumer. Teisoro's product owner decided on 2026-09-26 not to migrate the Close day reminder, and Teisoro F-002-S25 task 1090 removed it, so the files named below no longer exist. Kept as a record; build it only if another consumer needs a pinned notice.
+
 Missing surface: a notice pinned to a corner of the viewport (bottom end), over the page and clear of the safe areas, which the consumer can collapse to a small round button and expand again.
 Why Box/Stack/Inline/Card/Text/Button cannot do this: no Scalewing surface positions content fixed to the viewport except `Toast`, which dismisses itself on a timer and is a `status` popover, not a persistent control with actions.
 Teisoro use: the Close day reminder on the Services day (`apps/teisoro-web/src/app/services-day/CloseDayReminder.tsx`), which Angular floated in the bottom-right corner from an hour before closing until three hours after. Teisoro shows it in the page's flow until this ships. Design: Teisoro `docs/design/close-day-reminder/README.md`.
