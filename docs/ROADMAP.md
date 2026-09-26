@@ -19,9 +19,10 @@ release workflow completed successfully.
 
 Clear tap targets for FutMas F-018-S01 (`futmas-action-tiers.md`, owner
 approved 2026-09-26, release included): semantic `secondary`, `tertiary`,
-and `subtle` colours with the `signal` palette (this change), then Button
-`tertiary` on both renderers, a native `ListGroup`/`ListRow`, outlined
-choice chips, and a `filled` Card, each its own PR, released together.
+and `subtle` colours with the `signal` palette (merged in #52), Button
+`tertiary` and a filled `secondary` on both renderers (this change), then a
+native `ListGroup`/`ListRow`, outlined choice chips, and a `filled` Card,
+each its own PR, released together.
 
 `SingleSelect` `variant="list"` for FutMas F-002-S40
 (`futmas-new-season-steps.md`): the stepped new-season flow asks who plays,

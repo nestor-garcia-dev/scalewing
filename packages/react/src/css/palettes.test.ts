@@ -27,5 +27,14 @@ describe('generated palette CSS', () => {
     expect(cerulean).toContain('--sw-color-accent: #0066CC');
     expect(cerulean).toContain('--sw-color-accent: #5AC8FA');
     expect(cerulean).toContain('--sw-glass-fill:');
+    // Cerulean leaves the secondary on the surface, so its outline stays.
+    expect(cerulean).not.toContain('--sw-button-secondary-border');
+  });
+
+  it('drops the secondary ring where a palette fills it', () => {
+    const signal = generatePaletteStylesheet('signal');
+    expect(signal).toContain('--sw-color-secondary: #1D1D1F');
+    expect(signal).toContain('--sw-button-secondary-border: #1D1D1F');
+    expect(signal).toContain('--sw-color-tertiary: #7C5CD6');
   });
 });

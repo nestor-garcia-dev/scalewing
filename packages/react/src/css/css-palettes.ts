@@ -5,6 +5,7 @@ import {
   createTheme,
   paletteHasStylesheet,
   palettesWithStylesheets,
+  secondaryActionBorder,
   semanticColorKeys,
 } from '@scalewing/tokens';
 
@@ -17,6 +18,13 @@ function paletteCustomProperties(id: PaletteId, scheme: ColorScheme): string {
     if (overlay[key]) {
       lines.push(`  --sw-color-${key}: ${theme.colors[key]};`);
     }
+  }
+
+  // The secondary outline derives from these three, so it follows them.
+  if (overlay.secondary || overlay.surface || overlay.border) {
+    lines.push(
+      `  --sw-button-secondary-border: ${secondaryActionBorder(theme.colors)};`,
+    );
   }
 
   lines.push(`  --sw-glass-blur: ${theme.glass.blur}px;`);
