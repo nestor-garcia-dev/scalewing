@@ -11,6 +11,11 @@ const tagColumns = [
   { key: 'xxl', label: 'XXL' },
 ] as const;
 
+const hourColumns = [6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16].map((hour) => ({
+  key: `h${hour}`,
+  label: `${hour}h`,
+}));
+
 const tagWeightGrams: Record<(typeof tagColumns)[number]['key'], number> = {
   xs: 5,
   s: 8,
@@ -99,6 +104,67 @@ export function DenominationGridSection() {
         <Card padding={4}>
           <Stack gap={2}>
             <Text color="muted" variant="label">
+              Sightings by hour
+            </Text>
+            <DenominationGrid
+              columns={hourColumns}
+              label="Sightings by hour"
+              rows={[
+                {
+                  id: 'birds',
+                  label: 'Birds',
+                  tone: 'accent',
+                  cells: [14, 22, 18, 9, 6, 4, 3, 5, 8, 12, 16],
+                  total: '117 sightings',
+                },
+                {
+                  id: 'mammals',
+                  label: 'Mammals',
+                  cells: [6, 3, 1, 0, 0, 0, 1, 0, 2, 4, 7],
+                  total: '24 sightings',
+                },
+              ]}
+            />
+          </Stack>
+        </Card>
+        <Card padding={4}>
+          <Stack gap={2}>
+            <Text color="muted" variant="label">
+              Field kit check
+            </Text>
+            <Card padding={3} variant="outlined">
+              <DenominationGrid
+                columns={tagColumns}
+                label="Kit check by size"
+                rows={[
+                  {
+                    id: 'expected',
+                    label: 'Expected',
+                    cells: [40, 25, 0, 12, 6, 2],
+                    total: '1,020 g',
+                  },
+                  {
+                    id: 'counted',
+                    label: 'Counted',
+                    cells: [40, 24, 0, 12, 6, 2],
+                    total: '1,012 g',
+                  },
+                  {
+                    id: 'difference',
+                    label: 'Difference',
+                    tone: 'danger',
+                    cells: [0, -1, 0, 0, 0, 0],
+                    signed: true,
+                    total: '-8 g',
+                  },
+                ]}
+              />
+            </Card>
+          </Stack>
+        </Card>
+        <Card padding={4}>
+          <Stack gap={2}>
+            <Text color="muted" variant="label">
               Tags in the field kit
             </Text>
             <DenominationGrid
@@ -137,7 +203,8 @@ export function DenominationGridSection() {
           Zero and null counts render the zero label at quiet opacity. A signed
           row prefixes positive counts and tones them by sign. Totals are
           consumer-formatted strings; on a phone the strip moves each total
-          under its row label.
+          under its row label. A strip wider than its container scrolls sideways
+          inside it with the row labels pinned; the page never scrolls sideways.
         </Text>
       </Stack>
     </Section>

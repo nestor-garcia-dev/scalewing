@@ -36,6 +36,63 @@ describe('generated CSS', () => {
     );
   });
 
+  it('scrolls a wide denomination strip inside its own region with pinned row labels', () => {
+    expect(catalog).toEqual(
+      expect.arrayContaining([
+        'sw-denomination-scroll',
+        'sw-denomination-label-body',
+      ]),
+    );
+    expect(css).toContain(
+      '.sw-denomination-scroll {\n  overflow: auto;\n  width: 100%;\n}',
+    );
+    expect(css).toContain(
+      '.sw-denomination-scroll:focus-visible {\n  outline: var(--sw-focus-ring-width) solid var(--sw-color-accent);',
+    );
+    expect(css).toMatch(
+      /\.sw-denomination-strip \.sw-denomination-label,\n\.sw-denomination-strip thead \.sw-denomination-corner:first-child \{[^}]*inset-inline-start: 0;\n {2}position: sticky;/,
+    );
+    expect(css).toContain(
+      '.sw-denomination-strip .sw-denomination-label::before {\n  background: var(--sw-denomination-tone);',
+    );
+    expect(css).toMatch(
+      /prefers-reduced-transparency: reduce\) \{[^}]*\.sw-denomination-strip \.sw-denomination-label,\n {2}\.sw-denomination-strip thead \.sw-denomination-corner:first-child,/,
+    );
+  });
+
+  it('emits the Reduce Transparency fallback after every glass rule it overrides', () => {
+    const start = css.indexOf(
+      '@media (prefers-reduced-transparency: reduce) {\n  .sw-card-glass,',
+    );
+    const end = css.indexOf('\n}\n', start);
+    const selectors = css
+      .slice(
+        css.indexOf('{', start) + 1,
+        css.indexOf('{', css.indexOf('{', start) + 1),
+      )
+      .split(',')
+      .map((selector) => selector.trim());
+
+    expect(start).toBeGreaterThan(0);
+    expect(selectors).toContain(
+      '.sw-denomination-strip .sw-denomination-label',
+    );
+    for (const selector of selectors) {
+      expect(css.indexOf(selector)).toBeLessThan(start);
+      expect(css.indexOf(selector, end)).toBe(-1);
+      // Only glass surfaces fall back; a solid fill keeps its own colors.
+      const rules = [...css.slice(0, start).matchAll(/([^{}]+)\{([^{}]*)\}/g)]
+        .filter(([, list]) =>
+          list!.split(',').some((entry) => entry.trim().endsWith(selector)),
+        )
+        .map(([, , body]) => body);
+      expect(rules.some((body) => body!.includes('var(--sw-glass-fill)'))).toBe(
+        true,
+      );
+    }
+    expect(selectors).not.toContain('.sw-button-secondary');
+  });
+
   it('gives the table scroll wrapper an accent focus ring', () => {
     expect(css).toContain(
       '.sw-table-wrap:focus-visible {\n  outline: var(--sw-focus-ring-width) solid var(--sw-color-accent);',

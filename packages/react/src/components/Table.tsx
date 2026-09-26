@@ -6,6 +6,7 @@ import {
 } from 'react';
 
 import { cx } from '../class-names.js';
+import { ScrollRegion } from './ScrollRegion.js';
 
 export type TableDensity = 'comfortable' | 'compact';
 
@@ -14,11 +15,7 @@ export type TableProps = HTMLAttributes<HTMLTableElement> & {
   stickyHeader?: boolean;
 };
 
-/**
- * The scroll wrapper is a keyboard stop named after the table, so a wide
- * table with no focusable cell can still be scrolled sideways from the
- * keyboard and is announced as one group.
- */
+/** A wide table scrolls inside its own `ScrollRegion`, named after the table. */
 export const Table = forwardRef<HTMLTableElement, TableProps>(function Table(
   {
     children,
@@ -30,12 +27,10 @@ export const Table = forwardRef<HTMLTableElement, TableProps>(function Table(
   ref,
 ) {
   return (
-    <div
+    <ScrollRegion
       aria-label={rest['aria-label']}
       aria-labelledby={rest['aria-labelledby']}
       className="sw-table-wrap"
-      role="group"
-      tabIndex={0}
     >
       <table
         ref={ref}
@@ -49,7 +44,7 @@ export const Table = forwardRef<HTMLTableElement, TableProps>(function Table(
       >
         {children}
       </table>
-    </div>
+    </ScrollRegion>
   );
 });
 

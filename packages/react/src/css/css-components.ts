@@ -30,6 +30,33 @@ import { cssDenominationGridClasses } from './css-denomination-grid.js';
 import { cssFieldClasses } from './css-field.js';
 import { cssToastClasses } from './css-toast.js';
 
+/*
+ * Reduce Transparency swaps every glass surface for the solid surface. It is
+ * emitted after every component rule: at equal specificity the later rule wins,
+ * so a glass rule emitted after this block would keep its blur.
+ */
+function reducedTransparencyRules(): string {
+  return `@media (prefers-reduced-transparency: reduce) {
+  .sw-card-glass,
+  .sw-app-header,
+  .sw-badge-neutral,
+  .sw-segmented,
+  .sw-table-sticky thead th,
+  .sw-denomination-strip .sw-denomination-label,
+  .sw-denomination-strip thead .sw-denomination-corner:first-child,
+  .sw-bar-chart-track,
+  .sw-dialog,
+  .sw-accordion,
+  .sw-select-list,
+  .sw-action-menu-list,
+  .sw-toast {
+    background: var(--sw-color-surface);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+}`;
+}
+
 function textVariantRules(): string {
   return Object.entries(typographyVariants)
     .map(([name, variant]) => {
@@ -87,25 +114,6 @@ export function cssComponentClasses(): string {
 /* Plain information on a quiet fill, apart from rows that press. */
 .sw-card-filled {
   background: var(--sw-color-subtle);
-}
-
-@media (prefers-reduced-transparency: reduce) {
-  .sw-card-glass,
-  .sw-app-header,
-  .sw-button-secondary,
-  .sw-badge-neutral,
-  .sw-segmented,
-  .sw-table-sticky thead th,
-  .sw-bar-chart-track,
-  .sw-dialog,
-  .sw-accordion,
-  .sw-select-list,
-  .sw-action-menu-list,
-  .sw-toast {
-    background: var(--sw-color-surface);
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
-  }
 }
 
 .sw-text-align-start { text-align: start; }
@@ -174,5 +182,7 @@ ${cssSplitClasses()}
 
 ${cssToastClasses()}
 
-${cssResponsiveClasses()}`;
+${cssResponsiveClasses()}
+
+${reducedTransparencyRules()}`;
 }
