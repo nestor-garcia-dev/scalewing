@@ -25,7 +25,8 @@ export function buttonClassNames(options: {
 function variantRules(): string {
   return [
     `.sw-button-primary { background: var(--sw-color-accent); border-color: transparent; color: var(--sw-color-onAccent); }`,
-    `.sw-button-secondary { background: var(--sw-color-surface); border-color: var(--sw-color-border); color: var(--sw-color-text); }`,
+    `.sw-button-secondary { background: var(--sw-color-secondary); border-color: var(--sw-button-secondary-border); color: var(--sw-color-onSecondary); }`,
+    `.sw-button-tertiary { background: var(--sw-color-tertiary); border-color: transparent; color: var(--sw-color-onTertiary); }`,
     `.sw-button-ghost { background: transparent; border-color: transparent; color: var(--sw-color-accent); }`,
     `.sw-button-danger { background: var(--sw-color-danger); border-color: transparent; color: var(--sw-color-onDanger); }`,
   ].join('\n');

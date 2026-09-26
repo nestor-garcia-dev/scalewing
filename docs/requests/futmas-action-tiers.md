@@ -1,5 +1,6 @@
-Status: in progress. Tokens first (semantic colours and the `signal`
-palette), then Button `tertiary` on both renderers.
+Status: in progress. Tokens (semantic colours and the `signal` palette)
+merged in #52. Button `tertiary` and the filled `secondary` on both
+renderers follow in one change.
 
 Scalewing request from FutMas.
 

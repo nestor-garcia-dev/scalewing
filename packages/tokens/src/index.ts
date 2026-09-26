@@ -15,6 +15,7 @@ export {
   barChartScaleMax,
   formatBarChartValue,
 } from './bar-chart.js';
+export { secondaryActionBorder } from './action-colors.js';
 export { type CardVariant, cardVariants } from './card.js';
 export {
   type ColorTokens,

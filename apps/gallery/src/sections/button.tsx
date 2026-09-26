@@ -24,7 +24,7 @@ export function ButtonSection() {
   return (
     <Section
       id="button"
-      purpose="Button is a real button element. Use it for press actions. Disabled blocks onPress. Default type is button; forms may pass submit."
+      purpose="Button is a real button element. Use it for press actions. Primary, secondary, and tertiary are the three action tiers; secondary is outlined until a palette fills it (switch to signal to see all three filled). Ghost is text only; danger is destructive. Disabled blocks onPress. Default type is button; forms may pass submit."
       title="Button"
       usage={`<Button variant="primary" size="md" onPress={() => undefined}>
   Save

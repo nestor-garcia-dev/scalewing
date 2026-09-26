@@ -1,6 +1,7 @@
 export const buttonVariants = [
   'primary',
   'secondary',
+  'tertiary',
   'ghost',
   'danger',
 ] as const;

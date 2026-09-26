@@ -128,6 +128,18 @@ describe('generated CSS', () => {
     expect(catalog).toContain('sw-button-xs');
   });
 
+  it('fills the secondary and tertiary actions from their colours', () => {
+    expect(catalog).toContain('sw-button-tertiary');
+    expect(css).toContain(
+      '.sw-button-secondary { background: var(--sw-color-secondary); border-color: var(--sw-button-secondary-border); color: var(--sw-color-onSecondary); }',
+    );
+    expect(css).toContain(
+      '.sw-button-tertiary { background: var(--sw-color-tertiary); border-color: transparent; color: var(--sw-color-onTertiary); }',
+    );
+    // By default the secondary outline is the hairline.
+    expect(css).toContain('--sw-button-secondary-border: #D2D2D7;');
+  });
+
   it('emits opt-in density type, tabular numerals, and dashboard classes', () => {
     expect(css).toContain('.sw-text-data');
     expect(css).toContain('font-variant-numeric: tabular-nums');

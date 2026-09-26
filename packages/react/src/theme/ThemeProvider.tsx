@@ -9,6 +9,7 @@ import {
 } from 'react';
 import {
   createTheme,
+  secondaryActionBorder,
   semanticColorKeys,
   type ColorScheme,
   type PaletteId,
@@ -44,6 +45,7 @@ function themeCssVars(theme: Theme): CSSProperties {
   for (const key of semanticColorKeys) {
     vars[`--sw-color-${key}`] = theme.colors[key];
   }
+  vars['--sw-button-secondary-border'] = secondaryActionBorder(theme.colors);
 
   vars['--sw-glass-blur'] = `${theme.glass.blur}px`;
   vars['--sw-glass-saturate'] = String(theme.glass.saturate);

@@ -1,4 +1,4 @@
-import { lightTheme } from '@scalewing/tokens';
+import { createTheme, lightTheme } from '@scalewing/tokens';
 import { describe, expect, it } from 'vitest';
 
 import {
@@ -41,11 +41,41 @@ describe('mapButtonViewStyle', () => {
     });
 
     expect(style.minHeight).toBe(28);
+    // By default a secondary action is an outlined pill on the surface.
     expect(style.backgroundColor).toBe(lightTheme.colors.surface);
+    expect(style.borderColor).toBe(lightTheme.colors.border);
+  });
+
+  it('fills secondary and tertiary solid in a palette that sets them', () => {
+    const signal = createTheme({ colorScheme: 'light', palette: 'signal' });
+    const secondary = mapButtonViewStyle(signal, {
+      disabled: false,
+      size: 'md',
+      variant: 'secondary',
+    });
+    expect(secondary.backgroundColor).toBe(signal.colors.secondary);
+    // A solid fill shows no hairline ring.
+    expect(secondary.borderColor).toBe(signal.colors.secondary);
+    const tertiary = mapButtonViewStyle(signal, {
+      disabled: false,
+      size: 'md',
+      variant: 'tertiary',
+    });
+    expect(tertiary.backgroundColor).toBe(signal.colors.tertiary);
+    expect(tertiary.borderColor).toBe('transparent');
   });
 });
 
 describe('mapButtonLabelStyle', () => {
+  it('pairs each fill with its own label colour', () => {
+    expect(buttonLabelColor('secondary')).toBe('onSecondary');
+    expect(buttonLabelColor('tertiary')).toBe('onTertiary');
+    const signal = createTheme({ colorScheme: 'dark', palette: 'signal' });
+    expect(mapButtonLabelStyle(signal, 'tertiary').color).toBe(
+      signal.colors.onTertiary,
+    );
+  });
+
   it('uses onAccent for primary labels', () => {
     expect(buttonLabelColor('primary')).toBe('onAccent');
     expect(mapButtonLabelStyle(lightTheme, 'primary').color).toBe(

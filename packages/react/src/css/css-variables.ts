@@ -5,6 +5,7 @@ import {
   focusRing,
   quietOpacity,
   radiusScale,
+  secondaryActionBorder,
   semanticColorKeys,
   spacingScale,
   spacingSteps,
@@ -12,9 +13,12 @@ import {
 } from '@scalewing/tokens';
 
 function colorDeclarations(theme: Theme): string {
-  return semanticColorKeys
-    .map((key) => `  --sw-color-${key}: ${theme.colors[key]};`)
-    .join('\n');
+  return [
+    ...semanticColorKeys.map(
+      (key) => `  --sw-color-${key}: ${theme.colors[key]};`,
+    ),
+    `  --sw-button-secondary-border: ${secondaryActionBorder(theme.colors)};`,
+  ].join('\n');
 }
 
 function glassDeclarations(theme: Theme): string {

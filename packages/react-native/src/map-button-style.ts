@@ -3,6 +3,7 @@ import {
   type ButtonVariant,
   type SemanticColorKey,
   type Theme,
+  secondaryActionBorder,
 } from '@scalewing/tokens';
 import { type TextStyle, type ViewStyle } from 'react-native';
 
@@ -11,7 +12,9 @@ export function buttonLabelColor(variant: ButtonVariant): SemanticColorKey {
     case 'primary':
       return 'onAccent';
     case 'secondary':
-      return 'text';
+      return 'onSecondary';
+    case 'tertiary':
+      return 'onTertiary';
     case 'ghost':
       return 'accent';
     case 'danger':
@@ -73,8 +76,13 @@ function buttonFill(
       };
     case 'secondary':
       return {
-        backgroundColor: theme.colors.surface,
-        borderColor: theme.colors.border,
+        backgroundColor: theme.colors.secondary,
+        borderColor: secondaryActionBorder(theme.colors),
+      };
+    case 'tertiary':
+      return {
+        backgroundColor: theme.colors.tertiary,
+        borderColor: 'transparent',
       };
     case 'ghost':
       return {
