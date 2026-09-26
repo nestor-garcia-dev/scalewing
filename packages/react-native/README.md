@@ -43,6 +43,10 @@ screen whose one question is a date. It takes the same `value`, `min`, `max`,
 `locale`, `weekStartsOn`, and month-navigation labels, opens on the selected
 month (else today's), and stays open after a pick.
 
+`MultiSelect` and `SingleSelect` chips are outlined pills that never fill,
+so they do not read as buttons. A selected chip turns its outline and label
+to the accent and leads with a check.
+
 `MultiSelect` takes `variant="list"` to stack full-width checkbox rows with a
 check mark on each selected row instead of wrapping chips. The value contract
 and item order are the same. `SingleSelect` takes the same `variant="list"`

@@ -6,14 +6,18 @@ export type ChipState = {
   selected: boolean;
 };
 
-/** A checkable pill on the control scale so every chip is a 44-point target. */
+/**
+ * A checkable outlined pill on the control scale so every chip is a
+ * 44-point target. It never fills, so it cannot read as a button: a
+ * selected chip turns its outline and label to the accent and adds a check.
+ */
 export function mapChipStyle(theme: Theme, state: ChipState): ViewStyle {
   return {
     alignItems: 'center',
-    backgroundColor: state.selected
-      ? theme.colors.accent
-      : theme.colors.surface,
+    backgroundColor: 'transparent',
     borderColor: state.selected ? theme.colors.accent : theme.colors.border,
+    columnGap: theme.space[1],
+    flexDirection: 'row',
     borderRadius: theme.radius.pill,
     borderWidth: 1,
     justifyContent: 'center',
@@ -24,5 +28,5 @@ export function mapChipStyle(theme: Theme, state: ChipState): ViewStyle {
 }
 
 export function chipLabelColor(selected: boolean): SemanticColorKey {
-  return selected ? 'onAccent' : 'text';
+  return selected ? 'accent' : 'text';
 }
