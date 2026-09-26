@@ -67,6 +67,19 @@ describe('MultiSelect', () => {
     ).toEqual({ checked: true, disabled: false });
   });
 
+  it('leads only a selected chip with a check hidden from assistive technology', () => {
+    const { renderer } = renderMultiSelect();
+    const marks = (label: string) =>
+      checkbox(renderer.root, label)
+        ?.findAllByType('Text')
+        .filter((node) => node.props.children === '✓');
+
+    expect(marks('Monday')).toHaveLength(0);
+    const [mark] = marks('Wednesday') ?? [];
+    expect(mark?.props.accessibilityElementsHidden).toBe(true);
+    expect(mark?.props.importantForAccessibility).toBe('no');
+  });
+
   it('adds and removes ids in item order', () => {
     const { onChange, renderer } = renderMultiSelect();
 

@@ -5,17 +5,19 @@ import { calendarDayColor, mapCalendarDayStyle } from './map-calendar-style.js';
 import { chipLabelColor, mapChipStyle } from './map-chip-style.js';
 
 describe('chip and calendar day styles', () => {
-  it('fills selected chips with accent and keeps a 44-point target', () => {
+  it('outlines chips, never fills them, and keeps a 44-point target', () => {
     const selected = mapChipStyle(lightTheme, {
       disabled: false,
       selected: true,
     });
     const idle = mapChipStyle(lightTheme, { disabled: true, selected: false });
 
-    expect(selected.backgroundColor).toBe(lightTheme.colors.accent);
+    expect(selected.backgroundColor).toBe('transparent');
+    expect(selected.borderColor).toBe(lightTheme.colors.accent);
+    expect(selected.borderWidth).toBe(idle.borderWidth);
     expect(selected.minHeight).toBe(lightTheme.control.md.minHeight);
-    expect(chipLabelColor(true)).toBe('onAccent');
-    expect(idle.backgroundColor).toBe(lightTheme.colors.surface);
+    expect(chipLabelColor(true)).toBe('accent');
+    expect(idle.backgroundColor).toBe('transparent');
     expect(idle.borderColor).toBe(lightTheme.colors.border);
     expect(idle.opacity).toBe(lightTheme.disabledOpacity);
     expect(chipLabelColor(false)).toBe('text');

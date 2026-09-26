@@ -12,7 +12,10 @@ export type ChipProps = {
   selected: boolean;
 };
 
-/** Private checkable pill shared by MultiSelect and SingleSelect. */
+/**
+ * Private checkable outlined pill shared by MultiSelect and SingleSelect;
+ * a selected chip leads with a check.
+ */
 export function Chip({
   accessibilityRole,
   disabled,
@@ -35,6 +38,16 @@ export function Chip({
       onPress={onPress}
       style={mapChipStyle(theme, { disabled, selected })}
     >
+      {selected ? (
+        <Text
+          accessibilityElementsHidden
+          color={chipLabelColor(selected)}
+          importantForAccessibility="no"
+          variant="label"
+        >
+          ✓
+        </Text>
+      ) : null}
       <Text color={chipLabelColor(selected)} variant="label">
         {label}
       </Text>
