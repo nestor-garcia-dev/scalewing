@@ -1,5 +1,7 @@
 import { trackInset, typographyVariants } from '@scalewing/tokens';
 
+import { scrollRegionRules } from './css-scroll-region.js';
+
 export const badgeTones = [
   'neutral',
   'accent',
@@ -146,15 +148,7 @@ export function cssDataClasses(): string {
   cursor: not-allowed;
 }
 
-.sw-table-wrap {
-  overflow: auto;
-  width: 100%;
-}
-
-.sw-table-wrap:focus-visible {
-  outline: var(--sw-focus-ring-width) solid var(--sw-color-accent);
-  outline-offset: calc(-1 * var(--sw-focus-ring-width));
-}
+${scrollRegionRules('.sw-table-wrap')}
 
 .sw-table {
   border-collapse: collapse;

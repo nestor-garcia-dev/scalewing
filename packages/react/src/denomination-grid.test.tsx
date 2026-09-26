@@ -64,6 +64,10 @@ describe('DenominationGrid strip', () => {
     );
     const table = screen.getByRole('table', { name: 'Cash movement by note' });
     expect(table.className).toBe('sw-denomination-grid sw-denomination-strip');
+    const region = screen.getByRole('group', { name: 'Cash movement by note' });
+    expect(region.className).toBe('sw-denomination-scroll');
+    expect(region.tabIndex).toBe(0);
+    expect(region.firstElementChild).toBe(table);
     expect(
       within(table)
         .getAllByRole('columnheader')
@@ -90,6 +94,9 @@ describe('DenominationGrid strip', () => {
         .map((cell) => cell.textContent),
     ).toEqual(['+2', '-1', '—', '-$3']);
     expect(within(net).getByRole('rowheader').textContent).toBe('Net-$3');
+    expect(
+      within(net).getByRole('rowheader').firstElementChild?.className,
+    ).toBe('sw-denomination-label-body');
     expect(table.querySelector('.sw-denomination-icon')).not.toBeNull();
   });
 

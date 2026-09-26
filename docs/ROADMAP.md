@@ -26,6 +26,15 @@ renderers (this change, `futmas-filled-card.md`). Next: one release of
 `@scalewing/tokens`, `@scalewing/react`, and `@scalewing/react-native`
 through Release packages, then FutMas pins the new versions.
 
+A wide `DenominationGrid` strip scrolls inside its own container with pinned
+row labels for Teisoro F-002-S24 and F-002-S26 (`teisoro-denomination-grid.md`
+follow-up, this change): Table and the strip share generated scroll-region
+rules. Next: independent review and merge, then release `@scalewing/react`
+through Release packages; Teisoro verifies the vault period summary and the
+drawer audit card with a local link first. Found on the way: the gallery's
+`Split` demo widens the page at 390 px (the start pane plus handle is wider
+than the section), a separate Split request.
+
 `SingleSelect` `variant="list"` for FutMas F-002-S40
 (`futmas-new-season-steps.md`): the stepped new-season flow asks who plays,
 the age group, the term, and the meetings as full-width radio rows, some with

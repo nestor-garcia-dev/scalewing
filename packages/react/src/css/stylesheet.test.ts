@@ -36,6 +36,27 @@ describe('generated CSS', () => {
     );
   });
 
+  it('scrolls a wide denomination strip inside its own region with pinned row labels', () => {
+    expect(catalog).toEqual(
+      expect.arrayContaining([
+        'sw-denomination-scroll',
+        'sw-denomination-label-body',
+      ]),
+    );
+    expect(css).toContain(
+      '.sw-denomination-scroll {\n  overflow: auto;\n  width: 100%;\n}',
+    );
+    expect(css).toContain(
+      '.sw-denomination-scroll:focus-visible {\n  outline: var(--sw-focus-ring-width) solid var(--sw-color-accent);',
+    );
+    expect(css).toMatch(
+      /\.sw-denomination-strip \.sw-denomination-label \{[^}]*inset-inline-start: 0;\n {2}position: sticky;/,
+    );
+    expect(css).toMatch(
+      /prefers-reduced-transparency: reduce\) \{[^}]*\.sw-denomination-strip \.sw-denomination-label,/,
+    );
+  });
+
   it('gives the table scroll wrapper an accent focus ring', () => {
     expect(css).toContain(
       '.sw-table-wrap:focus-visible {\n  outline: var(--sw-focus-ring-width) solid var(--sw-color-accent);',

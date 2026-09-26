@@ -96,6 +96,7 @@ export function cssComponentClasses(): string {
   .sw-badge-neutral,
   .sw-segmented,
   .sw-table-sticky thead th,
+  .sw-denomination-strip .sw-denomination-label,
   .sw-bar-chart-track,
   .sw-dialog,
   .sw-accordion,

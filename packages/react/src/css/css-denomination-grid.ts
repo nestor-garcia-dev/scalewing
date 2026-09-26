@@ -2,6 +2,7 @@ import { typographyVariants } from '@scalewing/tokens';
 
 import { breakpointQuery } from './breakpoints.js';
 import { badgeTones } from './css-data.js';
+import { scrollRegionRules } from './css-scroll-region.js';
 
 const caption = typographyVariants.caption;
 const data = typographyVariants.data;
@@ -26,6 +27,8 @@ export function cssDenominationGridClasses(): string {
 }
 
 ${toneRules()}
+
+${scrollRegionRules('.sw-denomination-scroll')}
 
 .sw-denomination-strip {
   border-collapse: collapse;
@@ -56,18 +59,32 @@ ${toneRules()}
 }
 
 .sw-denomination-label {
-  align-items: center;
   border-inline-start: var(--sw-space-1) solid var(--sw-denomination-tone);
   color: var(--sw-denomination-tone);
-  display: flex;
-  flex-wrap: wrap;
   font-size: ${label.fontSize}px;
   font-weight: ${label.fontWeight};
-  gap: var(--sw-space-2);
   letter-spacing: ${label.letterSpacing}px;
   line-height: ${label.lineHeight}px;
   min-width: 0;
   text-align: start;
+}
+
+.sw-denomination-tiles .sw-denomination-label,
+.sw-denomination-label-body {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sw-space-2);
+}
+
+/* The row label stays in view while a wide strip scrolls under it. */
+.sw-denomination-strip .sw-denomination-label {
+  background: var(--sw-glass-fill);
+  backdrop-filter: blur(var(--sw-glass-blur)) saturate(var(--sw-glass-saturate));
+  -webkit-backdrop-filter: blur(var(--sw-glass-blur)) saturate(var(--sw-glass-saturate));
+  inset-inline-start: 0;
+  position: sticky;
+  z-index: 1;
 }
 
 .sw-denomination-icon {
@@ -179,7 +196,7 @@ ${toneRules()}
 @media ${breakpointQuery('below', 'md')} {
   .sw-denomination-strip .sw-denomination-total { display: none; }
   .sw-denomination-total-inline { display: block; }
-  .sw-denomination-strip .sw-denomination-label { flex-direction: column; align-items: flex-start; gap: var(--sw-space-1); }
+  .sw-denomination-label-body { flex-direction: column; align-items: flex-start; gap: var(--sw-space-1); }
   .sw-denomination-strip th,
   .sw-denomination-strip td { padding: var(--sw-space-1); }
   .sw-denomination-tile-list { grid-template-columns: repeat(3, minmax(0, 1fr)); }
@@ -198,6 +215,7 @@ ${toneRules()}
 export function denominationGridClassCatalog(): string[] {
   return [
     'sw-denomination-grid',
+    'sw-denomination-scroll',
     ...badgeTones.map((tone) => `sw-denomination-row-${tone}`),
     'sw-denomination-strip',
     'sw-denomination-head',
@@ -205,6 +223,7 @@ export function denominationGridClassCatalog(): string[] {
     'sw-denomination-row',
     'sw-denomination-row-signed',
     'sw-denomination-label',
+    'sw-denomination-label-body',
     'sw-denomination-label-text',
     'sw-denomination-icon',
     'sw-denomination-cell',
