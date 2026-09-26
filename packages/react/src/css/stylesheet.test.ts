@@ -80,7 +80,17 @@ describe('generated CSS', () => {
     for (const selector of selectors) {
       expect(css.indexOf(selector)).toBeLessThan(start);
       expect(css.indexOf(selector, end)).toBe(-1);
+      // Only glass surfaces fall back; a solid fill keeps its own colors.
+      const rules = [...css.slice(0, start).matchAll(/([^{}]+)\{([^{}]*)\}/g)]
+        .filter(([, list]) =>
+          list!.split(',').some((entry) => entry.trim().endsWith(selector)),
+        )
+        .map(([, , body]) => body);
+      expect(rules.some((body) => body!.includes('var(--sw-glass-fill)'))).toBe(
+        true,
+      );
     }
+    expect(selectors).not.toContain('.sw-button-secondary');
   });
 
   it('gives the table scroll wrapper an accent focus ring', () => {

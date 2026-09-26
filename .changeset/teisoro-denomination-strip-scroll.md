@@ -14,8 +14,9 @@ moves with it in every browser.
 
 Reduce Transparency now takes effect on every glass surface it lists: the
 fallback block is emitted after all component rules, where before most glass
-rules (app header, secondary button, sticky table head, dialog, toast and
-others) came after it and kept their blur.
+rules (app header, sticky table head, dialog, toast and others) came after it
+and kept their blur. The block lists glass surfaces only: the filled
+secondary button left it, so it keeps its own fill and text colors.
 
 New generated classes: `.sw-denomination-scroll` (the scroll region) and
 `.sw-denomination-label-body` (the icon, label, and phone total inside the

@@ -39,7 +39,6 @@ function reducedTransparencyRules(): string {
   return `@media (prefers-reduced-transparency: reduce) {
   .sw-card-glass,
   .sw-app-header,
-  .sw-button-secondary,
   .sw-badge-neutral,
   .sw-segmented,
   .sw-table-sticky thead th,
