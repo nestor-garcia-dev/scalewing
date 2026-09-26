@@ -5,5 +5,5 @@
     "noEmit": true,
     "lib": ["ES2022"]
   },
-  "include": ["App.tsx"]
+  "include": ["App.tsx", "ListDemo.tsx"]
 }
