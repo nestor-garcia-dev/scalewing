@@ -1,4 +1,4 @@
-import { lightTheme } from '@scalewing/tokens';
+import { darkTheme, lightTheme } from '@scalewing/tokens';
 import { describe, expect, it } from 'vitest';
 
 import { mapCardViewStyle } from './map-card-style.js';
@@ -9,6 +9,14 @@ describe('mapCardViewStyle', () => {
 
     expect(style.backgroundColor).toBe(lightTheme.glass.fill);
     expect(style.borderRadius).toBe(lightTheme.radius.lg);
+  });
+
+  it('fills plain information with subtle and no border', () => {
+    const style = mapCardViewStyle(darkTheme, 'filled');
+
+    expect(style.backgroundColor).toBe(darkTheme.colors.subtle);
+    expect(style.borderWidth).toBe(0);
+    expect(style.borderRadius).toBe(darkTheme.radius.lg);
   });
 
   it('uses solid surface for outlined cards', () => {

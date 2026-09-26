@@ -278,6 +278,14 @@ export default function App() {
               <Text>Birch forest</Text>
             </Accordion>
             <Text color="muted">Title presses {titlePresses}.</Text>
+            <Card padding={4} variant="filled">
+              <Stack gap={1}>
+                <Text variant="label">Feeding notes</Text>
+                <Text color="muted">
+                  Filled cards hold plain information that is not pressed.
+                </Text>
+              </Stack>
+            </Card>
             <Card padding={4}>
               <Stack gap={2}>
                 <Text variant="title">Sunday kickoff</Text>

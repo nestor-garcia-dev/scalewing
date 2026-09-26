@@ -101,6 +101,14 @@ describe('generated CSS', () => {
     );
   });
 
+  it('fills a filled card with the subtle colour', () => {
+    expect(catalog).toContain('sw-card-filled');
+    expect(css).toContain(
+      '.sw-card-filled {\n  background: var(--sw-color-subtle);\n}',
+    );
+    expect(css).toContain('--sw-color-subtle:');
+  });
+
   it('lifts a glass surface over the next one while it holds an open popup', () => {
     const popups =
       '.sw-select-list, .sw-action-menu-list:not([hidden]), .sw-tooltip:not([hidden])';
