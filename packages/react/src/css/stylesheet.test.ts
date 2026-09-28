@@ -446,6 +446,11 @@ describe('generated CSS', () => {
     expect(css).toMatch(
       /prefers-reduced-transparency: reduce\) \{[^}]*\.sw-date-field-calendar,/,
     );
+    const calendar = css.slice(css.indexOf('.sw-date-field-calendar {'));
+    // 100% of the top layer leaves out a classic scrollbar; 100vw does not.
+    expect(calendar.slice(0, calendar.indexOf('}'))).toContain(
+      'max-width: calc(100% - var(--sw-space-2) - var(--sw-space-2));',
+    );
     expect(catalog).toContain('sw-calendar-button');
     expect(css).toContain(
       '.sw-button.sw-calendar-button {\n  flex: none;\n  padding-inline: 0;\n}',

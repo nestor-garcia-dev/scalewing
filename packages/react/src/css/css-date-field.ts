@@ -147,7 +147,8 @@ function calendarRules(): string {
   height: auto;
   inset: auto;
   margin: 0;
-  max-width: calc(100vw - var(--sw-space-2) - var(--sw-space-2));
+  /* On the top layer 100% is the viewport without a classic scrollbar. */
+  max-width: calc(100% - var(--sw-space-2) - var(--sw-space-2));
   overflow: visible;
   padding: var(--sw-space-3);
   position: fixed;

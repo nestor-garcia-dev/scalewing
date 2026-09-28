@@ -25,6 +25,76 @@ function renderMenu(items: readonly ActionMenuItem[], disabled = false) {
   return screen.getByRole('button', { name: 'Sighting actions' });
 }
 
+const shareOnly: readonly ActionMenuItem[] = [
+  { id: 'share', label: 'Share sighting', onSelect: vi.fn() },
+];
+
+type Size = { width: number; height: number };
+
+type Layout = {
+  viewport: Size;
+  /** The root's client box; 0 (unset) falls back to the window size. */
+  client?: Size;
+  trigger: { x: number; y: number; width: number; height: number };
+  menu: Size;
+};
+
+/**
+ * Lays out the trigger and the menu, which jsdom does not, and reads the
+ * layout on every call, so a test may change it while the menu is open.
+ */
+function withLayout(layout: Layout, run: () => void) {
+  const prototype = HTMLElement.prototype;
+  const rect = prototype.getBoundingClientRect;
+  const offsetWidth = Object.getOwnPropertyDescriptor(prototype, 'offsetWidth');
+  const offsetHeight = Object.getOwnPropertyDescriptor(
+    prototype,
+    'offsetHeight',
+  );
+  const root = document.documentElement;
+  const { innerWidth, innerHeight } = window;
+  try {
+    window.innerWidth = layout.viewport.width;
+    window.innerHeight = layout.viewport.height;
+    Object.defineProperty(root, 'clientWidth', {
+      configurable: true,
+      get: () => layout.client?.width ?? 0,
+    });
+    Object.defineProperty(root, 'clientHeight', {
+      configurable: true,
+      get: () => layout.client?.height ?? 0,
+    });
+    prototype.getBoundingClientRect = function () {
+      return this.classList.contains('sw-action-menu-trigger')
+        ? DOMRect.fromRect(layout.trigger)
+        : rect.call(this);
+    };
+    Object.defineProperty(prototype, 'offsetWidth', {
+      configurable: true,
+      get() {
+        return this.getAttribute('role') === 'menu' ? layout.menu.width : 0;
+      },
+    });
+    Object.defineProperty(prototype, 'offsetHeight', {
+      configurable: true,
+      get() {
+        return this.getAttribute('role') === 'menu' ? layout.menu.height : 0;
+      },
+    });
+    run();
+  } finally {
+    window.innerWidth = innerWidth;
+    window.innerHeight = innerHeight;
+    Reflect.deleteProperty(root, 'clientWidth');
+    Reflect.deleteProperty(root, 'clientHeight');
+    prototype.getBoundingClientRect = rect;
+    if (offsetWidth)
+      Object.defineProperty(prototype, 'offsetWidth', offsetWidth);
+    if (offsetHeight)
+      Object.defineProperty(prototype, 'offsetHeight', offsetHeight);
+  }
+}
+
 describe('ActionMenu', () => {
   it('opens a labelled command menu and invokes an action once', () => {
     const share = vi.fn();
@@ -160,53 +230,41 @@ describe('ActionMenu', () => {
   });
 
   it('opens a gap below the trigger, inset from the viewport edge', () => {
-    const rect = HTMLElement.prototype.getBoundingClientRect;
-    const width = Object.getOwnPropertyDescriptor(
-      HTMLElement.prototype,
-      'offsetWidth',
+    withLayout(
+      {
+        viewport: { width: 390, height: 844 },
+        trigger: { x: 337, y: 100, width: 37, height: 28 },
+        menu: { width: 160, height: 120 },
+      },
+      () => {
+        fireEvent.click(renderMenu(shareOnly));
+        const menu = screen.getByRole('menu');
+        // Lined up with the trigger's end (374 - 160), 4 px (space-1) below it.
+        expect(menu.style.left).toBe('214px');
+        expect(menu.style.top).toBe('132px');
+      },
     );
-    const height = Object.getOwnPropertyDescriptor(
-      HTMLElement.prototype,
-      'offsetHeight',
-    );
-    const innerWidth = window.innerWidth;
-    try {
-      window.innerWidth = 390;
-      HTMLElement.prototype.getBoundingClientRect = function () {
-        return this.classList.contains('sw-action-menu-trigger')
-          ? DOMRect.fromRect({ x: 337, y: 100, width: 37, height: 28 })
-          : rect.call(this);
-      };
-      Object.defineProperty(HTMLElement.prototype, 'offsetWidth', {
-        configurable: true,
-        get() {
-          return this.getAttribute('role') === 'menu' ? 160 : 0;
-        },
-      });
-      Object.defineProperty(HTMLElement.prototype, 'offsetHeight', {
-        configurable: true,
-        get() {
-          return this.getAttribute('role') === 'menu' ? 120 : 0;
-        },
-      });
+  });
 
-      fireEvent.click(
-        renderMenu([
-          { id: 'share', label: 'Share sighting', onSelect: vi.fn() },
-        ]),
-      );
-      const menu = screen.getByRole('menu');
-      // Lined up with the trigger's end (374 - 160), 4 px (space-1) below it.
-      expect(menu.style.left).toBe('214px');
-      expect(menu.style.top).toBe('132px');
-    } finally {
-      window.innerWidth = innerWidth;
-      HTMLElement.prototype.getBoundingClientRect = rect;
-      if (width)
-        Object.defineProperty(HTMLElement.prototype, 'offsetWidth', width);
-      if (height)
-        Object.defineProperty(HTMLElement.prototype, 'offsetHeight', height);
-    }
+  it('fits the viewport without a classic scrollbar', () => {
+    withLayout(
+      {
+        // A 15 px scrollbar on each axis: innerWidth and innerHeight
+        // include it, the root's client box does not.
+        viewport: { width: 390, height: 844 },
+        client: { width: 375, height: 829 },
+        trigger: { x: 300, y: 740, width: 37, height: 28 },
+        menu: { width: 350, height: 60 },
+      },
+      () => {
+        fireEvent.click(renderMenu(shareOnly));
+        const menu = screen.getByRole('menu');
+        // Clamped to 375 - 8 - 350, not 390 - 8 - 350 = 32.
+        expect(menu.style.left).toBe('17px');
+        // 768 + 4 + 60 passes 829 - 8, so it opens above: 740 - 4 - 60.
+        expect(menu.style.top).toBe('676px');
+      },
+    );
   });
 
   it('closes and rejects a pending command when disabled after opening', () => {

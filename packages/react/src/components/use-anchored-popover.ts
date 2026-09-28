@@ -8,6 +8,19 @@ export type AnchoredPopoverPlacement = {
   flipInline?: boolean;
 };
 
+/**
+ * The viewport a fixed popover can use: the root's client box, which leaves
+ * out a classic scrollbar (`innerWidth` and `100vw` include it). Falls back
+ * to the window size where nothing is laid out, as in jsdom.
+ */
+function layoutViewport(): { width: number; height: number } {
+  const root = document.documentElement;
+  return {
+    width: root.clientWidth || window.innerWidth,
+    height: root.clientHeight || window.innerHeight,
+  };
+}
+
 function placePopover(
   node: HTMLElement,
   anchor: HTMLElement,
@@ -16,7 +29,7 @@ function placePopover(
   const position = anchoredPosition(
     anchor.getBoundingClientRect(),
     { width: node.offsetWidth, height: node.offsetHeight },
-    { width: window.innerWidth, height: window.innerHeight },
+    layoutViewport(),
     {
       gap: spacingScale[1],
       inset: spacingScale[2],
