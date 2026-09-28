@@ -134,6 +134,41 @@ describe('anchored popover position', () => {
       ).toBe(77);
     });
 
+    it('lines up with the trigger end first with align end', () => {
+      // A trigger mid-row: start-aligned the menu fits, but align end keeps
+      // it under the trigger's end, inside the card.
+      expect(
+        anchoredPosition(
+          { top: 100, bottom: 128, left: 200, right: 237 },
+          menu,
+          phone,
+          { gap: 4, inset: 8, align: 'end', flipInline: true },
+        ),
+      ).toEqual({ left: 77, top: 132 });
+    });
+
+    it('falls back to the trigger start with align end when the end does not fit', () => {
+      expect(
+        anchoredPosition(
+          { top: 100, bottom: 128, left: 16, right: 53 },
+          menu,
+          phone,
+          { inset: 8, align: 'end', flipInline: true },
+        ).left,
+      ).toBe(16);
+    });
+
+    it('mirrors align end in right-to-left text', () => {
+      expect(
+        anchoredPosition(
+          { top: 100, bottom: 128, left: 200, right: 237 },
+          menu,
+          phone,
+          { inset: 8, rtl: true, align: 'end', flipInline: true },
+        ).left,
+      ).toBe(200);
+    });
+
     it('opens above with the gap when the trigger is near the bottom', () => {
       expect(
         anchoredPosition(

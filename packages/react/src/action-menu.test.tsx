@@ -1,7 +1,11 @@
 import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
-import { ActionMenu, type ActionMenuItem } from './components/ActionMenu.js';
+import {
+  ActionMenu,
+  type ActionMenuAlign,
+  type ActionMenuItem,
+} from './components/ActionMenu.js';
 import { ThemeProvider } from './theme/ThemeProvider.js';
 
 const originalShowPopover = HTMLElement.prototype.showPopover;
@@ -15,10 +19,19 @@ afterEach(() => {
   HTMLElement.prototype.matches = originalMatches;
 });
 
-function renderMenu(items: readonly ActionMenuItem[], disabled = false) {
+function renderMenu(
+  items: readonly ActionMenuItem[],
+  disabled = false,
+  align?: ActionMenuAlign,
+) {
   render(
     <ThemeProvider colorScheme="light">
-      <ActionMenu disabled={disabled} items={items} label="Sighting actions" />
+      <ActionMenu
+        align={align}
+        disabled={disabled}
+        items={items}
+        label="Sighting actions"
+      />
       <button type="button">Outside</button>
     </ThemeProvider>,
   );
@@ -229,6 +242,26 @@ describe('ActionMenu', () => {
     expect(menu.hasAttribute('data-popover-open')).toBe(false);
     expect(screen.queryByRole('menu', { hidden: true })).toBeNull();
     expect(trigger.getAttribute('aria-expanded')).toBe('false');
+  });
+
+  it('lines up with the trigger end with align end, where the start would fit', () => {
+    // Teisoro ENT-13 at 1280 px: a trigger at x 1161-1199 near a card's end.
+    const layout = {
+      viewport: { width: 1280, height: 900 },
+      trigger: { x: 1161, y: 157, width: 38, height: 29 },
+      menu: { width: 59, height: 64 },
+    };
+    withLayout(layout, () => {
+      fireEvent.click(renderMenu(shareOnly, false, 'end'));
+      // 1199 - 59: the menu's end under the trigger's end, not past it.
+      expect(screen.getByRole('menu').style.left).toBe('1140px');
+    });
+    cleanup();
+    withLayout(layout, () => {
+      fireEvent.click(renderMenu(shareOnly));
+      // The default still starts at the trigger's start when that fits.
+      expect(screen.getByRole('menu').style.left).toBe('1161px');
+    });
   });
 
   it('opens a gap below the trigger, inset from the viewport edge', () => {

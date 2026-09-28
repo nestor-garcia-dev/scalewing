@@ -1,10 +1,12 @@
 import { spacingScale } from '@scalewing/tokens';
 import { useLayoutEffect, useRef, type RefObject } from 'react';
 
-import { anchoredPosition } from '../anchored-position.js';
+import { anchoredPosition, type InlineAlign } from '../anchored-position.js';
 
 export type AnchoredPopoverPlacement = {
-  /** Line up with the anchor's end when the start-aligned popover overflows. */
+  /** The anchor edge the popover prefers to line up with (default start). */
+  align?: InlineAlign;
+  /** Line up with the anchor's other edge when the preferred one overflows. */
   flipInline?: boolean;
 };
 
@@ -24,7 +26,7 @@ function layoutViewport(): { width: number; height: number } {
 function placePopover(
   node: HTMLElement,
   anchor: HTMLElement,
-  { flipInline = false }: AnchoredPopoverPlacement,
+  { align = 'start', flipInline = false }: AnchoredPopoverPlacement,
 ) {
   const position = anchoredPosition(
     anchor.getBoundingClientRect(),
@@ -34,6 +36,7 @@ function placePopover(
       gap: spacingScale[1],
       inset: spacingScale[2],
       rtl: getComputedStyle(anchor).direction === 'rtl',
+      align,
       flipInline,
     },
   );
@@ -54,7 +57,7 @@ export function useAnchoredPopover(
   anchorRef: RefObject<HTMLElement | null>,
   ignoreRef: RefObject<HTMLElement | null>,
   onDismiss: () => void,
-  { flipInline = false }: AnchoredPopoverPlacement = {},
+  { align = 'start', flipInline = false }: AnchoredPopoverPlacement = {},
 ) {
   const dismissRef = useRef(onDismiss);
   useLayoutEffect(() => {
@@ -72,7 +75,7 @@ export function useAnchoredPopover(
       node.setAttribute('popover', 'manual');
       if (!node.matches(':popover-open')) node.showPopover();
     }
-    placePopover(node, anchor, { flipInline });
+    placePopover(node, anchor, { align, flipInline });
 
     function onPointerDown(event: PointerEvent) {
       const target = event.target;
@@ -81,7 +84,7 @@ export function useAnchoredPopover(
       dismissRef.current();
     }
     function onMove() {
-      if (node && anchor) placePopover(node, anchor, { flipInline });
+      if (node && anchor) placePopover(node, anchor, { align, flipInline });
     }
     // A popover or anchor that changes size while open (new commands, a
     // month with another row of weeks, a relabelled trigger) moves too.
@@ -100,5 +103,5 @@ export function useAnchoredPopover(
       window.removeEventListener('scroll', onMove, true);
       if (supportsPopover && node.matches(':popover-open')) node.hidePopover();
     };
-  }, [anchorRef, flipInline, ignoreRef, popoverRef]);
+  }, [align, anchorRef, flipInline, ignoreRef, popoverRef]);
 }

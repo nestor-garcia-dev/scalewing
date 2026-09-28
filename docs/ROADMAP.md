@@ -25,7 +25,8 @@ column (SDAY-6) and a lone tiles row's total (ENT-7), both
 unpressed fade and with an accent ring when pressed, and a `Badge` on a
 filled button on the surface, and a quiet `FilterChips` chip in the muted
 color instead of faded (NSF-1, `teisoro-button.md`, `teisoro-badge.md`,
-`teisoro-filter-chips.md`). Next: the
+`teisoro-filter-chips.md`); `ActionMenu` `align="end"` (ENT-13,
+`teisoro-action-menu.md` follow-up). Next: the
 remaining Services findings, then pull request, review and merge, then
 release `@scalewing/react` and Teisoro pins it.
 

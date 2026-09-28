@@ -1,5 +1,6 @@
 export {
   ActionMenu,
+  type ActionMenuAlign,
   type ActionMenuItem,
   type ActionMenuProps,
 } from './components/ActionMenu.js';
