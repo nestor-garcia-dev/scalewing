@@ -116,6 +116,8 @@ Import the CSS once at the application entry. Do not copy it into your source tr
 
 `Text` steps `display` and `heading` down to the compact token sizes below the `md` breakpoint; consumers do not size type per viewport.
 
+`Text` has no margin of its own. Its default `p` and `h1`–`h4` elements drop the browser's block margins, so the `gap` of the `Stack` or `Inline` around it alone sets the spacing; put more space in that `gap`, not in a margin. The reset has zero specificity (`:where(.sw-text-*)`), so an authored margin, such as `sw-sr-only` or a consumer class, still applies.
+
 `Text` takes an optional `align` (`start`, `center`, `end`) mapped to generated `sw-text-align-*` classes, for a heading that must stay centered when it wraps.
 
 `Grid` places children in one to four (or six) equal-width columns with a token `gap` step. `columnsBelow={{ md: 2 }}` drops to fewer columns below the `md` breakpoint so tiles and stat cards stay readable on a phone. It accepts every `Box` prop.

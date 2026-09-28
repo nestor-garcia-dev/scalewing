@@ -105,6 +105,14 @@ describe('generated CSS', () => {
     );
   });
 
+  it('resets the browser margins of every Text variant at zero specificity', () => {
+    expect(css).toContain(
+      ':where(.sw-text-display, .sw-text-heading, .sw-text-title, .sw-text-body, .sw-text-label, .sw-text-caption, .sw-text-data) { margin: 0; }',
+    );
+    // An authored margin, such as the visually hidden utility's, still wins.
+    expect(css).toContain('.sw-sr-only { position: absolute;');
+  });
+
   it('emits the text alignment utilities', () => {
     expect(catalog).toEqual(
       expect.arrayContaining(['sw-text-align-center', 'sw-text-align-end']),

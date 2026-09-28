@@ -1,8 +1,3 @@
-import {
-  compactTypographyVariants,
-  typographyVariants,
-} from '@scalewing/tokens';
-import { breakpointQuery } from './breakpoints.js';
 import { cssActionBarClasses } from './css-action-bar.js';
 import { cssActionMenuClasses } from './css-action-menu.js';
 import { cssAccordionClasses } from './css-accordion.js';
@@ -18,6 +13,7 @@ import { cssDialogClasses } from './css-dialog.js';
 import { cssSelectClasses } from './css-select.js';
 import { cssSplitClasses } from './css-split.js';
 import { cssSwitchClasses } from './css-switch.js';
+import { cssTextClasses } from './css-text.js';
 import { cssSpinnerClasses } from './css-spinner.js';
 import { cssProgressClasses } from './css-progress.js';
 import { cssTooltipClasses } from './css-tooltip.js';
@@ -63,28 +59,6 @@ function reducedTransparencyRules(): string {
 }`;
 }
 
-function textVariantRules(): string {
-  return Object.entries(typographyVariants)
-    .map(([name, variant]) => {
-      const tabular =
-        'tabularNums' in variant && variant.tabularNums
-          ? ' font-variant-numeric: tabular-nums;'
-          : '';
-      return `.sw-text-${name} { font-family: var(--sw-font-sans); font-size: ${variant.fontSize}px; line-height: ${variant.lineHeight}px; font-weight: ${variant.fontWeight}; letter-spacing: ${variant.letterSpacing}px;${tabular} }`;
-    })
-    .join('\n');
-}
-
-function compactTextVariantRules(): string {
-  const rules = Object.entries(compactTypographyVariants)
-    .map(
-      ([name, variant]) =>
-        `  .sw-text-${name} { font-size: ${variant.fontSize}px; line-height: ${variant.lineHeight}px; letter-spacing: ${variant.letterSpacing}px; }`,
-    )
-    .join('\n');
-  return `@media ${breakpointQuery('below', 'md')} {\n${rules}\n}`;
-}
-
 export function cssComponentClasses(): string {
   return `.sw-card {
   border-radius: var(--sw-radius-lg);
@@ -117,10 +91,6 @@ ${cssPopupHostRules()}
   background: var(--sw-color-subtle);
 }
 
-.sw-text-align-start { text-align: start; }
-.sw-text-align-center { text-align: center; }
-.sw-text-align-end { text-align: end; }
-
 .sw-truncate {
   overflow: hidden;
   text-overflow: ellipsis;
@@ -131,9 +101,7 @@ ${cssPopupHostRules()}
   font-variant-numeric: tabular-nums;
 }
 
-${textVariantRules()}
-
-${compactTextVariantRules()}
+${cssTextClasses()}
 
 ${cssButtonClasses()}
 
