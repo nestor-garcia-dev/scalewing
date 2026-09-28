@@ -4,7 +4,7 @@ export {
   type ActionMenuProps,
 } from './components/ActionMenu.js';
 export { Accordion } from './components/Accordion.js';
-export type { AccordionProps } from './components/Accordion.js';
+export type { AccordionProps, AccordionSize } from './components/Accordion.js';
 export { Switch, type SwitchProps } from './components/Switch.js';
 export { DateField, type DateFieldProps } from './components/DateField.js';
 export { Checkbox, type CheckboxProps } from './components/Checkbox.js';

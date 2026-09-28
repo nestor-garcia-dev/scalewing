@@ -20,8 +20,9 @@ release workflow completed successfully.
 Closeout UX surfaces for Teisoro F-007-S03 task 1280 (the first UX review,
 closing a register): one `@scalewing/react` commit each on
 `claude/closeout-ux-surfaces`. Done so far: `Field` `prefix`/`suffix`
-(`teisoro-field-adornment.md`). Next: the Accordion summary line and
-marker, then independent review and merge; wait for the owner before
+(`teisoro-field-adornment.md`) and the `Accordion` `subtitle`, chevron and
+`size="sm"` (`teisoro-accordion-summary.md`). Next: `ActionBar`, then
+independent review and merge; wait for the owner before
 `pnpm changeset version`, a `react-v` tag or Release packages. Teisoro adopts
 the release in task 1285.
 

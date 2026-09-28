@@ -42,7 +42,7 @@ Scalewing does not ship glyphs. Components that need a consumer pictogram take a
 
 Native Accordion owns a controlled disclosure surface and optional separate
 title action. It uses native Pressables and token styles; the DOM Accordion
-keeps its existing implementation. No renderer code or DOM API is shared.
+stays a native `<details>` disclosure. Both take the same `subtitle` prop. No renderer code or DOM API is shared.
 
 Do not share React Native component files with the DOM package. Do not introduce React Native Web to unify them.
 
