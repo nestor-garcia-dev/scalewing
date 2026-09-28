@@ -27,7 +27,7 @@ describe('stacking order', () => {
   it('keeps a surface holding an open popup over the ActionBar and under the AppHeader', () => {
     const actionBar = zIndexOf('.sw-action-bar-sticky');
     const popupHost = zIndexOf(
-      '.sw-accordion:has(.sw-select-list, .sw-action-menu-list:not([hidden]), .sw-tooltip:not([hidden]))',
+      '.sw-accordion:has(.sw-select-list, .sw-action-menu-list:not([hidden]), .sw-tooltip:not([hidden]), .sw-date-field-calendar)',
     );
     const appHeader = zIndexOf('.sw-app-header-sticky');
     const stickyCell = zIndexOf('.sw-table-sticky thead th');
@@ -38,6 +38,7 @@ describe('stacking order', () => {
       '.sw-select-list',
       '.sw-action-menu-list',
       '.sw-tooltip',
+      '.sw-date-field-calendar',
     ])
       expect(zIndexOf(popup)).toBeGreaterThan(appHeader);
   });

@@ -168,7 +168,7 @@ describe('generated CSS', () => {
 
   it('lifts a glass surface over the next one and the ActionBar while it holds an open popup', () => {
     const popups =
-      '.sw-select-list, .sw-action-menu-list:not([hidden]), .sw-tooltip:not([hidden])';
+      '.sw-select-list, .sw-action-menu-list:not([hidden]), .sw-tooltip:not([hidden]), .sw-date-field-calendar';
     expect(css).toContain(
       `.sw-card-glass:has(${popups}),\n.sw-accordion:has(${popups}) {\n  position: relative;\n  z-index: 3;\n}`,
     );

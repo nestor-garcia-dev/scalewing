@@ -35,6 +35,8 @@ const openPopups = [
   '.sw-select-list',
   '.sw-action-menu-list:not([hidden])',
   '.sw-tooltip:not([hidden])',
+  // Rendered only while open; on the top layer where the popover API exists.
+  '.sw-date-field-calendar',
 ].join(', ');
 
 const popupHosts = ['.sw-card-glass', '.sw-accordion'];
