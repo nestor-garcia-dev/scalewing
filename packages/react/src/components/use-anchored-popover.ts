@@ -43,7 +43,8 @@ function placePopover(
 
 /**
  * Shows a mounted element on the top layer as a manual popover, keeps it
- * beside `anchorRef` through scroll and resize, a `space-1` gap from it and a
+ * beside `anchorRef` through scroll, window resize, and a change in its own
+ * or the anchor's size, a `space-1` gap from it and a
  * `space-2` inset from the viewport edges, and calls `onDismiss` for a press
  * outside it and outside `ignoreRef` (the button that toggles it).
  * Browsers without the popover API get the same fixed placement.
@@ -82,10 +83,18 @@ export function useAnchoredPopover(
     function onMove() {
       if (node && anchor) placePopover(node, anchor, { flipInline });
     }
+    // A popover or anchor that changes size while open (new commands, a
+    // month with another row of weeks, a relabelled trigger) moves too.
+    // ResizeObserver is missing in some runtimes, such as jsdom.
+    const resizes =
+      typeof ResizeObserver === 'function' ? new ResizeObserver(onMove) : null;
+    resizes?.observe(node);
+    resizes?.observe(anchor);
     document.addEventListener('pointerdown', onPointerDown);
     window.addEventListener('resize', onMove);
     window.addEventListener('scroll', onMove, true);
     return () => {
+      resizes?.disconnect();
       document.removeEventListener('pointerdown', onPointerDown);
       window.removeEventListener('resize', onMove);
       window.removeEventListener('scroll', onMove, true);

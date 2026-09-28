@@ -40,8 +40,10 @@ type Layout = {
 };
 
 /**
- * Lays out the trigger and the menu, which jsdom does not, and reads the
- * layout on every call, so a test may change it while the menu is open.
+ * Lays out the trigger and the menu, which jsdom does not: stubs the window
+ * size, the root's client box, the trigger's `getBoundingClientRect`, and the
+ * menu's `offsetWidth` and `offsetHeight`, then restores them all. It reads
+ * `layout` on every call, so a test may change it while the menu is open.
  */
 function withLayout(layout: Layout, run: () => void) {
   const prototype = HTMLElement.prototype;
@@ -265,6 +267,70 @@ describe('ActionMenu', () => {
         expect(menu.style.top).toBe('676px');
       },
     );
+  });
+
+  it('moves the open menu when its commands change size', () => {
+    const observers: FakeResizeObserver[] = [];
+    class FakeResizeObserver {
+      targets: Element[] = [];
+      disconnected = false;
+      constructor(readonly callback: () => void) {
+        observers.push(this);
+      }
+      observe(target: Element) {
+        this.targets.push(target);
+      }
+      disconnect() {
+        this.disconnected = true;
+      }
+    }
+    vi.stubGlobal('ResizeObserver', FakeResizeObserver);
+    const layout: Layout = {
+      viewport: { width: 390, height: 844 },
+      trigger: { x: 337, y: 100, width: 37, height: 28 },
+      menu: { width: 160, height: 60 },
+    };
+    try {
+      withLayout(layout, () => {
+        const { rerender } = render(
+          <ActionMenu items={shareOnly} label="Sighting actions" />,
+        );
+        fireEvent.click(
+          screen.getByRole('button', { name: 'Sighting actions' }),
+        );
+        const menu = screen.getByRole('menu');
+        expect(menu.style.left).toBe('214px');
+        const [observer] = observers;
+        expect(observer?.targets).toEqual([
+          menu,
+          screen.getByRole('button', { name: 'Sighting actions' }),
+        ]);
+
+        // A longer command arrives while the menu is open.
+        rerender(
+          <ActionMenu
+            items={[
+              ...shareOnly,
+              {
+                id: 'move',
+                label: 'Move to another survey',
+                onSelect: vi.fn(),
+              },
+            ]}
+            label="Sighting actions"
+          />,
+        );
+        layout.menu = { width: 250, height: 88 };
+        observer?.callback();
+        // Lined up with the trigger's end again: 374 - 250.
+        expect(menu.style.left).toBe('124px');
+
+        fireEvent.keyDown(menu, { key: 'Escape' });
+        expect(observer?.disconnected).toBe(true);
+      });
+    } finally {
+      vi.unstubAllGlobals();
+    }
   });
 
   it('closes and rejects a pending command when disabled after opening', () => {
