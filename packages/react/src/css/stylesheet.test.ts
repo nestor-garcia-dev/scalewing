@@ -31,8 +31,19 @@ describe('generated CSS', () => {
     expect(css).toContain(
       '.sw-denomination-row-neutral { --sw-denomination-tone: var(--sw-color-muted); }',
     );
-    expect(css).toContain(
+    // Below md the total cell is visually hidden, never display: none, so
+    // a screen reader still reads it (Teisoro SDAY-6).
+    expect(css).not.toContain(
       '.sw-denomination-strip .sw-denomination-total { display: none; }',
+    );
+    expect(css).toContain(
+      '.sw-denomination-total-value { position: absolute; width: 1px;',
+    );
+    expect(catalog).toEqual(
+      expect.arrayContaining([
+        'sw-denomination-total-head',
+        'sw-denomination-total-value',
+      ]),
     );
   });
 

@@ -8,6 +8,10 @@ import {
   spacingClass,
 } from './spacing-classes.js';
 
+/** The `sw-sr-only` declarations: kept for assistive technology, not drawn. */
+export const visuallyHiddenDeclarations =
+  'position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;';
+
 function paddingRule(axis: PaddingAxis, step: SpacingStep): string {
   const className = spacingClass('padding', axis, step);
   const value = `var(--sw-space-${step})`;
@@ -54,8 +58,7 @@ const layoutRules: Record<(typeof layoutClassNames)[number], string> = {
   'sw-full-width': '.sw-full-width { width: 100%; }',
   'sw-container':
     '.sw-container { width: 100%; max-width: var(--sw-container-max); margin-inline: auto; }',
-  'sw-sr-only':
-    '.sw-sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }',
+  'sw-sr-only': `.sw-sr-only { ${visuallyHiddenDeclarations} }`,
   'sw-align-start': '.sw-align-start { align-items: flex-start; }',
   'sw-align-center': '.sw-align-center { align-items: center; }',
   'sw-align-end': '.sw-align-end { align-items: flex-end; }',

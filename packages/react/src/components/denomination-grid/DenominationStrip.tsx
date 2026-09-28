@@ -5,13 +5,30 @@ import { type DenominationGridProps } from './types.js';
 
 type StripProps = Required<
   Pick<DenominationGridProps, 'label' | 'columns' | 'rows' | 'zeroLabel'>
->;
+> &
+  Pick<DenominationGridProps, 'totalLabel'>;
+
+/**
+ * The total column's header: a visually hidden `th` when the consumer names
+ * the column, otherwise the empty corner it has always been. Both carry
+ * `sw-denomination-total-head`, so below md the column takes no width.
+ */
+function TotalHead({ totalLabel }: Pick<StripProps, 'totalLabel'>) {
+  if (totalLabel === undefined)
+    return <td className="sw-denomination-corner sw-denomination-total-head" />;
+  return (
+    <th className="sw-denomination-total-head" scope="col">
+      <span className="sw-sr-only">{totalLabel}</span>
+    </th>
+  );
+}
 
 export function DenominationStrip({
   label,
   columns,
   rows,
   zeroLabel,
+  totalLabel,
 }: StripProps) {
   const hasTotals = rows.some((row) => row.total !== undefined);
 
@@ -27,7 +44,7 @@ export function DenominationStrip({
                 {column.label}
               </th>
             ))}
-            {hasTotals ? <td className="sw-denomination-corner" /> : null}
+            {hasTotals ? <TotalHead totalLabel={totalLabel} /> : null}
           </tr>
         </thead>
         <tbody>
@@ -76,7 +93,11 @@ export function DenominationStrip({
                 );
               })}
               {hasTotals ? (
-                <td className="sw-denomination-total">{row.total ?? ''}</td>
+                <td className="sw-denomination-total">
+                  <span className="sw-denomination-total-value">
+                    {row.total ?? ''}
+                  </span>
+                </td>
               ) : null}
             </tr>
           ))}

@@ -17,6 +17,13 @@ release workflow completed successfully.
 
 ## Next action
 
+Teisoro Services UX fixes (F-007-S05 task 1335, UX reviews
+`services-*.md`), each its own commit on `claude/services-ux-fixes`:
+`DenominationGrid` strip totals read at every width with a named total
+column (SDAY-6, `teisoro-denomination-grid.md` follow-up). Next: the
+remaining Services findings, then pull request, review and merge, then
+release `@scalewing/react` and Teisoro pins it.
+
 `ActionRow` for FutMas F-002-S25 (`futmas-action-row.md`, owner approved
 2026-09-28) on the new `accentSubtle` tint (`futmas-accent-subtle.md`, ADR 0011) is merged and versioned: `@scalewing/tokens@1.4.0`, then
 `@scalewing/react-native@1.11.0` and `@scalewing/react@1.11.0` through

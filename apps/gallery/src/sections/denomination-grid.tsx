@@ -61,6 +61,7 @@ export function DenominationGridSection() {
     { id: 'in', label: 'Tagged', tone: 'success', cells: [12, 0], total: '+124 g' },
     { id: 'net', label: 'Net', cells: [12, -3], signed: true, total: '+96 g' },
   ]}
+  totalLabel="Total weight"
 />`}
     >
       <Stack gap={4}>
@@ -72,6 +73,7 @@ export function DenominationGridSection() {
             <DenominationGrid
               columns={tagColumns}
               label="Tag movement by size"
+              totalLabel="Total weight"
               rows={[
                 {
                   id: 'in',
@@ -202,9 +204,11 @@ export function DenominationGridSection() {
         <Text color="muted" variant="caption">
           Zero and null counts render the zero label at quiet opacity. A signed
           row prefixes positive counts and tones them by sign. Totals are
-          consumer-formatted strings; on a phone the strip moves each total
-          under its row label. A strip wider than its container scrolls sideways
-          inside it with the row labels pinned; the page never scrolls sideways.
+          consumer-formatted strings; totalLabel names their column for a screen
+          reader. On a phone the strip shows each total under its row label and
+          keeps the total cell in the table, visually hidden. A strip wider than
+          its container scrolls sideways inside it with the row labels pinned;
+          the page never scrolls sideways.
         </Text>
       </Stack>
     </Section>

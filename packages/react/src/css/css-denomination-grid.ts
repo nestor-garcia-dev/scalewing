@@ -3,6 +3,7 @@ import { typographyVariants } from '@scalewing/tokens';
 import { breakpointQuery } from './breakpoints.js';
 import { badgeTones } from './css-data.js';
 import { scrollRegionRules } from './css-scroll-region.js';
+import { visuallyHiddenDeclarations } from './css-utilities.js';
 import { zIndex } from './stacking.js';
 
 const caption = typographyVariants.caption;
@@ -216,8 +217,15 @@ ${scrollRegionRules('.sw-denomination-scroll')}
   text-align: center;
 }
 
+/*
+ * Below md the aria-hidden copy under each row label is what shows; the
+ * total cell stays in the table, visually hidden, so a screen reader still
+ * reads each total in its row and under its column header.
+ */
 @media ${breakpointQuery('below', 'md')} {
-  .sw-denomination-strip .sw-denomination-total { display: none; }
+  .sw-denomination-strip .sw-denomination-total,
+  .sw-denomination-strip .sw-denomination-total-head { padding: 0; position: relative; }
+  .sw-denomination-total-value { ${visuallyHiddenDeclarations} }
   .sw-denomination-total-inline { display: block; }
   .sw-denomination-label-body { flex-direction: column; align-items: flex-start; gap: var(--sw-space-1); }
   .sw-denomination-strip th,
@@ -257,6 +265,8 @@ export function denominationGridClassCatalog(): string[] {
     'sw-denomination-cell-negative',
     'sw-denomination-total',
     'sw-denomination-total-inline',
+    'sw-denomination-total-head',
+    'sw-denomination-total-value',
     'sw-denomination-tiles',
     'sw-denomination-tile-list',
     'sw-denomination-tile',

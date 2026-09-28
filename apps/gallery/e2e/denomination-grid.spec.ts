@@ -9,7 +9,10 @@ test('DenominationGrid renders the strip table with tones and moves totals under
   }
   const section = page.locator('#denomination-grid');
   const strip = section.getByRole('table', { name: 'Tag movement by size' });
-  await expect(strip.getByRole('columnheader')).toHaveCount(6);
+  await expect(strip.getByRole('columnheader')).toHaveCount(7);
+  await expect(
+    strip.getByRole('columnheader', { name: 'Total weight' }),
+  ).toHaveAttribute('scope', 'col');
   const net = strip.getByRole('row', { name: /Net/ });
   await expect(net.getByRole('cell').first()).toHaveText('+9');
   await expect(net.getByRole('cell').nth(2)).toHaveText('-2');
@@ -17,9 +20,28 @@ test('DenominationGrid renders the strip table with tones and moves totals under
   const isPhone = testInfo.project.name === 'mobile-es';
   const totalCell = net.locator('td.sw-denomination-total');
   const inlineTotal = net.locator('.sw-denomination-total-inline');
+  // The total stays in the table at every width, so a screen reader reads
+  // it in its row, under its column header (Teisoro SDAY-6).
+  await expect(net).toHaveAccessibleName(/\+268 g/);
+  await expect(
+    strip.getByRole('cell', { name: '+268 g', exact: true }),
+  ).toHaveCount(1);
+  await expect(inlineTotal).toHaveAttribute('aria-hidden', 'true');
   if (isPhone) {
-    await expect(totalCell).toBeHidden();
+    // Drawn only under the row label; the cell's copy is visually hidden.
     await expect(inlineTotal).toBeVisible();
+    const drawn = await totalCell.evaluate((cell) => {
+      const value = cell.firstElementChild as HTMLElement;
+      const box = value.getBoundingClientRect();
+      return {
+        cellWidth: cell.getBoundingClientRect().width,
+        width: box.width,
+        clip: getComputedStyle(value).clip,
+      };
+    });
+    expect(drawn.width).toBeLessThanOrEqual(1);
+    expect(drawn.cellWidth).toBeLessThanOrEqual(1);
+    expect(drawn.clip).toBe('rect(0px, 0px, 0px, 0px)');
   } else {
     await expect(totalCell).toBeVisible();
     await expect(inlineTotal).toBeHidden();
@@ -119,6 +141,24 @@ test('a wide DenominationGrid strip scrolls inside its container and never widen
     expect(stripe.position).toBe('absolute');
     expect(Number.parseFloat(stripe.width)).toBeGreaterThan(0);
   }
+
+  // Without totalLabel the total column also takes no width on a phone:
+  // its corner and cells lose their padding (review of PR #73).
+  const unnamedTotals = wide.locator(
+    'thead .sw-denomination-total-head, td.sw-denomination-total',
+  );
+  await expect(wide.locator('thead .sw-denomination-total-head')).toHaveCount(
+    1,
+  );
+  for (const width of await unnamedTotals.evaluateAll((cells) =>
+    cells.map((cell) => cell.getBoundingClientRect().width),
+  )) {
+    if (isPhone) expect(width).toBeLessThanOrEqual(1);
+    else expect(width).toBeGreaterThan(8);
+  }
+  await expect(
+    wide.getByRole('cell', { name: '117 sightings', exact: true }),
+  ).toHaveCount(1);
 
   const nested = section.getByRole('group', { name: 'Kit check by size' });
   const outlined = nested.locator(

@@ -100,6 +100,63 @@ describe('DenominationGrid strip', () => {
     expect(table.querySelector('.sw-denomination-icon')).not.toBeNull();
   });
 
+  it('names the total column with a visually hidden header when totalLabel is given', () => {
+    render(
+      <DenominationGrid
+        columns={columns}
+        label="Cash flow"
+        rows={[
+          { id: 'in', label: 'In', cells: [0, 1, 0], total: '+$5' },
+          { id: 'out', label: 'Out', cells: [0, 0, 0] },
+        ]}
+        totalLabel="Total"
+      />,
+    );
+    const table = screen.getByRole('table', { name: 'Cash flow' });
+    const heads = within(table).getAllByRole('columnheader');
+    expect(heads.map((cell) => cell.textContent)).toEqual([
+      '$1',
+      '$5',
+      '$10',
+      'Total',
+    ]);
+    const totalHead = heads[3]!;
+    expect(totalHead.getAttribute('scope')).toBe('col');
+    expect(totalHead.className).toBe('sw-denomination-total-head');
+    expect(totalHead.firstElementChild?.className).toBe('sw-sr-only');
+    // The total cell keeps its text in the table at every width; below md
+    // only its inner copy is visually hidden (see the stylesheet test).
+    const total = within(
+      within(table).getByRole('row', { name: /In/ }),
+    ).getAllByRole('cell')[3]!;
+    expect(total.textContent).toBe('+$5');
+    expect(total.firstElementChild?.className).toBe(
+      'sw-denomination-total-value',
+    );
+    expect(
+      within(within(table).getByRole('row', { name: /Out/ }))
+        .getAllByRole('cell')
+        .at(-1)?.textContent,
+    ).toBe('');
+  });
+
+  it('keeps the empty corner over the totals without a totalLabel', () => {
+    render(
+      <DenominationGrid
+        columns={columns}
+        label="Cash flow"
+        rows={[{ id: 'in', label: 'In', cells: [0, 1, 0], total: '+$5' }]}
+      />,
+    );
+    expect(screen.getAllByRole('columnheader')).toHaveLength(3);
+    const corners = document.querySelectorAll('thead .sw-denomination-corner');
+    expect(corners).toHaveLength(2);
+    // The unnamed total corner still collapses below md with the column.
+    expect(corners[1]?.className).toBe(
+      'sw-denomination-corner sw-denomination-total-head',
+    );
+  });
+
   it('omits the total column when no row has a total', () => {
     render(
       <DenominationGrid
@@ -220,6 +277,18 @@ describe('DenominationGrid validation', () => {
             columns={columns}
             label="x"
             rows={[...rows, ...rows]}
+          />,
+        ),
+    ],
+    [
+      'blank total label',
+      () =>
+        render(
+          <DenominationGrid
+            columns={columns}
+            label="x"
+            rows={rows}
+            totalLabel=" "
           />,
         ),
     ],
