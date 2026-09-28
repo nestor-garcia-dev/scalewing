@@ -4,6 +4,7 @@ import {
   addDays,
   addMonths,
   monthGrid,
+  monthsInRange,
   monthInRange,
   monthOf,
   shiftMonth,
@@ -97,5 +98,32 @@ describe('calendar month', () => {
     expect(monthInRange(march, '2024-04-01')).toBe(false);
     expect(monthInRange(march, undefined, '2024-03-01')).toBe(true);
     expect(monthInRange(march, undefined, '2024-02-29')).toBe(false);
+  });
+
+  it('leaves the padding past the four-digit years empty', () => {
+    // January 1 of year 1 is a Monday, so a Sunday-first grid pads one day.
+    const first = monthGrid({ year: 1, month: 1 }, 0);
+    expect(first[0]?.[0]).toBeNull();
+    expect(first[0]?.[1]?.value).toBe('0001-01-01');
+    // December 31, 9999 is a Friday; the rest of the grid has no date.
+    const last = monthGrid({ year: 9999, month: 12 }, 0);
+    const cells = last.flat();
+    expect(cells.filter((cell) => cell !== null).at(-1)?.value).toBe(
+      '9999-12-31',
+    );
+    expect(cells.at(-1)).toBeNull();
+    expect(last.every((row) => row.length === 7)).toBe(true);
+    expect(last).toHaveLength(6);
+  });
+
+  it('lists the months of a year with a day inside the bounds', () => {
+    expect(monthsInRange(2024)).toEqual([
+      1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12,
+    ]);
+    expect(monthsInRange(2024, '2024-03-31', '2024-06-01')).toEqual([
+      3, 4, 5, 6,
+    ]);
+    expect(monthsInRange(2025, '2024-03-31', '2025-02-01')).toEqual([1, 2]);
+    expect(monthsInRange(2023, '2024-01-01')).toEqual([]);
   });
 });

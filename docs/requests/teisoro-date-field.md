@@ -36,7 +36,7 @@ Decided in implementation:
 
 - `locale` defaults to the nearest `lang` attribute when the field mounts, then `en-US`. A malformed explicit tag throws. Products that switch language without remounting pass `locale`.
 - `weekStartsOn` defaults to `0` on web so a US English screen reads Sunday first in every browser; `Intl` week data is not used because it differs between browsers.
-- Typed text also accepts eight bare digits and ISO `YYYY-MM-DD` in every locale. Text that is not a date keeps the last value, as the native input did, and after the person leaves the field sets `aria-invalid` with `labels.invalidEntry`.
+- Typed text also accepts eight bare digits and ISO `YYYY-MM-DD` in every locale. Text that is not a date keeps the last value, as the native input did, and after the person leaves the field sets `aria-invalid` with `labels.invalidEntry`. The entry blocks form submission as the native input's `badInput`, `rangeUnderflow` and `rangeOverflow` did, through `setCustomValidity` with `labels.invalidEntry` or `labels.outOfRange`.
 - The field label names only the text entry. The calendar button is named `labels.chooseDate` and described by the field label, so `getByLabel('<field label>')` stays unique.
 
 Teisoro must adapt: tests that drove `input[type=date]` now use the text entry (`getByLabel('<label>').fill('03/10/2024')` in en-US order, or `fill('2024-03-10')` in ISO) or the calendar (`getByRole('button', { name: 'Choose date' })`, then the `grid` and `gridcell` roles). Assertions on the input value now see the locale's display text, not `YYYY-MM-DD`; assert the serialized value from the product's state instead. Teisoro passes Spanish `labels` and `locale` on its bilingual screens.

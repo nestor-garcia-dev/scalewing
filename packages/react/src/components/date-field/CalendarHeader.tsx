@@ -1,6 +1,7 @@
 import { monthNames, monthTitle } from '../../calendar-labels.js';
 import {
   monthInRange,
+  monthsInRange,
   shiftMonth,
   type CalendarMonth,
 } from '../../calendar-month.js';
@@ -50,8 +51,9 @@ function MonthStep({
 }
 
 /**
- * Month stepping plus month and year selectors for jumping far, over a
- * visually hidden title that announces the shown month when it changes.
+ * Month stepping plus month and year selectors for jumping far, both cut to
+ * `min` and `max`, over a visually hidden title that announces the shown
+ * month when it changes.
  */
 export function CalendarHeader({
   labels,
@@ -64,6 +66,7 @@ export function CalendarHeader({
   todayYear,
 }: CalendarHeaderProps) {
   const range = calendarYearRange(month.year, todayYear, min, max);
+  const names = monthNames(locale);
   const stepProps = { max, min, month, onMonthChange };
   return (
     <div className="sw-date-field-header">
@@ -76,9 +79,10 @@ export function CalendarHeader({
           label={labels.month}
           labelVisuallyHidden
           onChange={(next) => onMonthChange({ ...month, month: Number(next) })}
-          options={monthNames(locale).map((name, index) => ({
-            value: String(index + 1),
-            label: name,
+          // Only months with a day inside the bounds; the shown one always is.
+          options={monthsInRange(month.year, min, max).map((number) => ({
+            value: String(number),
+            label: names[number - 1] ?? String(number),
           }))}
           size="xs"
           value={String(month.month)}

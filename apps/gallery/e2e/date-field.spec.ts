@@ -28,13 +28,29 @@ test('DateField types a date in the locale order and keeps it date-only', async 
   await expect(
     section.getByText('Serialized sighting date: 2024-11-04.'),
   ).toBeVisible();
+  // Typed key by key, ISO commits only once the day has both digits.
+  await sighting.fill('');
+  await sighting.pressSequentially('2024-11-1');
+  await expect(
+    section.getByText('Serialized sighting date: empty.'),
+  ).toBeVisible();
+  await sighting.press('5');
+  await expect(
+    section.getByText('Serialized sighting date: 2024-11-15.'),
+  ).toBeVisible();
   await sighting.fill('13/45/2024');
   await sighting.blur();
   await expect(sighting).toHaveAttribute('aria-invalid', 'true');
   await expect(section.getByText('Enter a valid date.')).toBeVisible();
   await expect(
-    section.getByText('Serialized sighting date: 2024-11-04.'),
+    section.getByText('Serialized sighting date: 2024-11-15.'),
   ).toBeVisible();
+  // Like the native date input, text that is not a date blocks a form.
+  expect(
+    await sighting.evaluate(
+      (input: HTMLInputElement) => input.validationMessage,
+    ),
+  ).toBe('Enter a valid date.');
   await expect(
     section.getByRole('textbox', { name: 'Review date' }),
   ).toHaveAttribute('aria-invalid', 'true');
@@ -122,6 +138,11 @@ test('DateField opens an out-of-range value on the nearest allowed day', async (
   await page.goto('/#date-field');
   const section = page.locator('#date-field');
   const review = field(section, 'Review date');
+  expect(
+    await review
+      .getByRole('textbox', { name: 'Review date' })
+      .evaluate((input: HTMLInputElement) => input.validationMessage),
+  ).toBe('Choose a date in the allowed range.');
   await review.getByRole('button', { name: 'Choose date' }).click();
   const calendar = page.getByRole('dialog', { name: 'Review date' });
   await expect(
@@ -133,6 +154,14 @@ test('DateField opens an out-of-range value on the nearest allowed day', async (
   await expect(leapDay).toHaveAttribute('aria-disabled', 'true');
   await expect(leapDay).toHaveAttribute('aria-selected', 'true');
   await leapDay.click({ force: true });
+  await expect(calendar).toBeVisible();
+  // The month list starts at March, the first month inside the bounds.
+  await calendar.getByRole('combobox', { name: 'Month' }).click();
+  await expect(calendar.getByRole('option').first()).toHaveText('March');
+  await expect(calendar.getByRole('option', { name: 'February' })).toHaveCount(
+    0,
+  );
+  await page.keyboard.press('Escape');
   await expect(calendar).toBeVisible();
   await page.keyboard.press('Escape');
   await expect(calendar).toBeHidden();

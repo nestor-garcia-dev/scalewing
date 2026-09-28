@@ -8,7 +8,6 @@ import {
   isDateOnly,
   isOutsideDateRange,
   parseDateOnly,
-  toLocalDate,
   todayDateOnly,
 } from './date-only.js';
 
@@ -77,14 +76,6 @@ describe('date-only arithmetic helpers', () => {
     // 23:30 local on March 10 is already March 11 in UTC for western zones.
     expect(todayDateOnly(new Date(2024, 2, 10, 23, 30))).toBe('2024-03-10');
     expect(todayDateOnly(new Date(2024, 2, 10, 0, 15))).toBe('2024-03-10');
-  });
-
-  it('builds local noon dates that keep years below 100', () => {
-    const date = toLocalDate({ year: 50, month: 2, day: 3 });
-    expect(date.getFullYear()).toBe(50);
-    expect(date.getMonth()).toBe(1);
-    expect(date.getDate()).toBe(3);
-    expect(date.getHours()).toBe(12);
   });
 
   it('validates value and bounds together', () => {

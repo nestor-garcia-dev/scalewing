@@ -12,6 +12,7 @@ const spanishLabels = {
   today: 'Hoy',
   clear: 'Borrar',
   invalidEntry: 'Escribe una fecha válida.',
+  outOfRange: 'Elige una fecha dentro del rango permitido.',
   yearPlaceholder: 'AAAA',
 };
 
