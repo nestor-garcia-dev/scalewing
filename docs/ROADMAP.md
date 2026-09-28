@@ -23,8 +23,9 @@ Teisoro closeout day fixes (F-007-S04 task 1305, UX review
 inset (DAY-8), `Text` without the browser's paragraph and heading margins
 (DAY-10, `teisoro-text.md`), and a 44 px `ActionMenu` trigger and commands
 on a coarse pointer (DAY-9, the Scalewing part); both `ActionMenu` changes
-are follow-ups in `teisoro-action-menu.md`. Next: pull request, review and
-merge, then release `@scalewing/react` and Teisoro pins it.
+are follow-ups in `teisoro-action-menu.md`. Merged in #68 with the
+code-review fixes and versioned as `@scalewing/react` 1.10.1 (all patches).
+Next: Teisoro pins 1.10.1 (F-007-S04 task 1310).
 
 `CalendarButton` for the Teisoro closeout day heading (F-007-S03 re-review,
 `teisoro-calendar-button.md`): an icon-only Button beside the day heading

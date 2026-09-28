@@ -57,7 +57,7 @@ Behavior and failure boundary: keyboard and focus as `ActionMenu` today; the con
 
 ## Follow-up request (2026-09-28, Teisoro F-007-S04 task 1305): a gap from the trigger and an inset from the screen edge
 
-Status: in PR #68 (`claude/closeout-day-fixes`), with the code-review fixes; merge and release remain.
+Status: merged in #68 (2026-09-28) and released in `@scalewing/react` 1.10.1; Teisoro pins it in F-007-S04 task 1310.
 Source: Teisoro UX review `closeouts-closeout-day-and-prior-day.md`, finding DAY-8 (the closeout day's "More actions for Register 2" menu).
 
 The menu's left edge started at the trigger and was clamped only to `window.innerWidth - width`: a trigger at the end of a card row pushed the menu flush against the screen edge (x 1137 to 1280 at 1280 px; flush to 390 on a phone), past the card, and it sat directly on the trigger with no gap. `ActionMenu` had its own positioning and outside-press code beside the shared `anchoredPosition` helper and `useAnchoredPopover` hook that the `DateField` calendar uses.
@@ -84,7 +84,7 @@ Evidence: `anchored-position.test.ts` (`flipInline`: start kept when it fits, en
 
 ## Follow-up request (2026-09-28, Teisoro F-007-S04 task 1305): a 44 px touch target on a coarse pointer
 
-Status: implemented locally on `claude/closeout-day-fixes`; review, merge and release remain.
+Status: merged in #68 (2026-09-28) and released in `@scalewing/react` 1.10.1; Teisoro pins it in F-007-S04 task 1310.
 Source: Teisoro UX review `closeouts-closeout-day-and-prior-day.md`, finding DAY-9, the Scalewing part (Teisoro owns its own button sizes).
 
 The trigger and its commands use `min-height: var(--sw-control-xs-min-height)`, 28 px: the closeout day's ⋮ trigger measured about 37 × 28 px on a phone, beside the card's Start and Continue, where a mis-tap opens Discard. That passes WCAG's 24 px minimum but not the 44 × 44 px target of Teisoro's rubric.
