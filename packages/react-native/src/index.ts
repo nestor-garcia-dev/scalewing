@@ -1,3 +1,9 @@
+export {
+  ActionRow,
+  type ActionRowAction,
+  type ActionRowMore,
+  type ActionRowProps,
+} from './components/ActionRow.js';
 export { Box, type BoxProps } from './components/Box.js';
 export {
   Button,

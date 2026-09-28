@@ -27,6 +27,7 @@ import {
 import { useState } from 'react';
 import { SafeAreaView, ScrollView, View } from 'react-native';
 
+import { ActionRowDemo } from './ActionRowDemo';
 import { ListDemo } from './ListDemo';
 
 const demoPalettes = ['indigo', 'cerulean', 'sunburst'] as const;
@@ -189,6 +190,7 @@ export default function App() {
                 />
               </View>
             </Inline>
+            <ActionRowDemo />
             <ListDemo />
             <Progress
               label="Nests checked"

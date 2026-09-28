@@ -17,6 +17,12 @@ release workflow completed successfully.
 
 ## Next action
 
+`ActionRow` for FutMas F-002-S25 (`futmas-action-row.md`, owner approved
+2026-09-28) on the new `accentSubtle` tint (`futmas-accent-subtle.md`, ADR
+0011): the tokens PR merges first, then this one. Next: release
+`@scalewing/tokens`, then `@scalewing/react` and `@scalewing/react-native`,
+through Release packages; FutMas verifies with a local link first.
+
 `CalendarButton` for the Teisoro closeout day heading (F-007-S03 re-review,
 `teisoro-calendar-button.md`): an icon-only Button beside the day heading
 opens the DateField calendar, replacing the separate "Go to a day" field.
