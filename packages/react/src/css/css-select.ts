@@ -71,6 +71,14 @@ export function cssSelectClasses(): string {
   visibility: hidden;
 }
 
+.sw-select-placeholder {
+  color: var(--sw-color-muted);
+}
+
+.sw-select-invalid .sw-select-trigger {
+  border-color: var(--sw-color-danger);
+}
+
 .sw-select-value-sizer::before {
   content: attr(data-label);
 }
@@ -96,6 +104,7 @@ export function cssSelectClasses(): string {
 
 @media (forced-colors: active) {
   .sw-select-trigger::after { border-color: CanvasText; }
+  .sw-select-invalid .sw-select-trigger { border-color: Mark; }
 }
 
 .sw-select-list {
@@ -159,6 +168,8 @@ export function selectClassCatalog(): string[] {
     'sw-select-value',
     'sw-select-value-text',
     'sw-select-value-sizer',
+    'sw-select-placeholder',
+    'sw-select-invalid',
     'sw-select-list',
     'sw-select-option',
     'sw-select-action',

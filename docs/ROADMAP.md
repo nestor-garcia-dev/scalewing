@@ -31,7 +31,8 @@ control without a live alert, as `Checkbox`'s are (CHK-3, DRW-6,
 `teisoro-field-validation.md` follow-up); the `DateField` required mark
 (NSF-15, `teisoro-date-field.md` follow-up); the `Select` trigger
 centred, with the Accordion chevron and a stable width (DRW-12,
-`teisoro-select.md` follow-up). Next: the
+`teisoro-select.md` follow-up) and its `placeholder`, `required` and
+`error` (DRW-12, `teisoro-select.md` follow-up). Next: the
 remaining Services findings, then pull request, review and merge, then
 release `@scalewing/react` and Teisoro pins it.
 

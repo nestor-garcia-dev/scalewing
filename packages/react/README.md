@@ -62,6 +62,20 @@ Import the CSS once at the application entry. Do not copy it into your source tr
 
 `Select` is a labeled listbox menu: supply `label`, `options` (`value` and `label`), a controlled `value` and `onChange`; `size="xs"` and `labelVisuallyHidden` are for toolbar chrome, and `action` is a last listbox command that never becomes the value. The closed trigger matches `Field`: its text is centred in the control, it ends in the `Accordion` chevron, and it is as wide as its longest option (as a native select is), so it keeps its width when the value changes; past the available width the label ellipsizes. The option labels that size it are drawn by CSS from `data-label`, so the trigger's text content and accessible value are only the current label.
 
+`Select` `placeholder` shows in the closed trigger, in the muted color, while `value` matches no option (such as `''`); it is not an option, is never selected in the list and never becomes the value, and it counts toward the trigger's width. `required` marks the label with `Field`'s `aria-hidden` asterisk and sets `aria-required` on the trigger. `error` renders a message under the control (`sw-field-error`), links it by `aria-describedby`, sets `aria-invalid` and the danger border; like `Field`'s it is announced politely from a live region that is always there, never as an alert, and an empty string is no error. A blank `placeholder` throws a `RangeError`.
+
+```tsx
+<Select
+  error={reasonError}
+  label="Reason"
+  onChange={setReason}
+  options={reasons}
+  placeholder="Choose a reason"
+  required
+  value={reason}
+/>
+```
+
 `Accordion` is a native `<details>` disclosure controlled by `open` and `onOpenChange`. A token chevron at the end of the header replaces the browser triangle and turns when it opens (it holds still under reduced motion). `subtitle` adds one muted caption line under the title, such as a summary of what the section holds; it wraps rather than truncating and is read after the title. `size="sm"` is a quieter disclosure nested inside other content: a label-size title, tighter padding, smaller corners and a header that is an `sm` control (at least 32px).
 
 ```tsx

@@ -1,16 +1,14 @@
 'use client';
 
-import { useEffect, useId, useRef, useState, type KeyboardEvent } from 'react';
+import { useId, useRef } from 'react';
 
 import { cx } from '../class-names.js';
-import {
-  selectIndexForKey,
-  selectedSelectIndex,
-  type SelectOption,
-} from '../select-list.js';
+import { selectedSelectIndex, type SelectOption } from '../select-list.js';
 import { type FieldSize } from './Field.js';
+import { FieldErrorRegion } from './FieldErrorRegion.js';
 import { SelectListbox } from './select/SelectListbox.js';
 import { SelectValue } from './select/SelectValue.js';
+import { useSelectList } from './select/use-select-list.js';
 import { Stack } from './Stack.js';
 import { Text } from './Text.js';
 
@@ -29,6 +27,15 @@ export type SelectProps = {
   options: readonly SelectOption[];
   size?: FieldSize;
   value: string;
+  /**
+   * Shown in the closed trigger, muted, while `value` matches no option
+   * (such as ''). It is not an option and never becomes the value.
+   */
+  placeholder?: string;
+  /** Marks the label as Field does and sets `aria-required`. */
+  required?: boolean;
+  /** A validation message under the control, wired as Field's error is. */
+  error?: string;
 };
 
 export function Select({
@@ -39,96 +46,40 @@ export function Select({
   options,
   size = 'md',
   value,
+  placeholder,
+  required = false,
+  error,
 }: SelectProps) {
+  if (placeholder !== undefined && !placeholder.trim())
+    throw new RangeError('placeholder must not be empty');
   const labelId = useId();
   const triggerId = useId();
   const listId = useId();
   const optionIdPrefix = useId();
+  const errorId = useId();
   const rootRef = useRef<HTMLDivElement>(null);
-  const [open, setOpen] = useState(false);
-  const [highlight, setHighlight] = useState(0);
-  const selectedIndex = selectedSelectIndex(options, value);
-  const selected = options[selectedIndex];
-  const actionIndex = options.length;
-  const itemCount = action ? actionIndex + 1 : actionIndex;
-
-  useEffect(() => {
-    if (!open) {
-      return;
-    }
-
-    function onPointerDown(event: globalThis.PointerEvent) {
-      if (!rootRef.current?.contains(event.target as Node)) {
-        setOpen(false);
-      }
-    }
-
-    document.addEventListener('pointerdown', onPointerDown);
-    return () => {
-      document.removeEventListener('pointerdown', onPointerDown);
-    };
-  }, [open]);
-
-  function openList() {
-    if (itemCount === 0) {
-      return;
-    }
-    setHighlight(selectedIndex);
-    setOpen(true);
-  }
-
-  function commit(index: number) {
-    if (action && index === actionIndex) {
-      action.onPress();
-      setOpen(false);
-      return;
-    }
-
-    const option = options[index];
-    if (option && option.value !== value) {
-      onChange(option.value);
-    }
-    setOpen(false);
-  }
-
-  function onTriggerKeyDown(event: KeyboardEvent<HTMLButtonElement>) {
-    if (event.key === 'Escape' && open) {
-      event.preventDefault();
-      event.stopPropagation();
-      setOpen(false);
-      return;
-    }
-
-    if (!open) {
-      if (
-        event.key === 'ArrowDown' ||
-        event.key === 'ArrowUp' ||
-        event.key === 'Enter' ||
-        event.key === ' '
-      ) {
-        event.preventDefault();
-        openList();
-      }
-      return;
-    }
-
-    if (event.key === 'Enter' || event.key === ' ') {
-      event.preventDefault();
-      commit(highlight);
-      return;
-    }
-
-    const next = selectIndexForKey(event.key, highlight, itemCount);
-    if (next !== null) {
-      event.preventDefault();
-      setHighlight(next);
-    }
-  }
+  const selected = options[selectedSelectIndex(options, value)];
+  const showsPlaceholder =
+    placeholder !== undefined &&
+    !options.some((option) => option.value === value);
+  const {
+    commit,
+    highlight,
+    onTriggerKeyDown,
+    open,
+    openList,
+    setHighlight,
+    setOpen,
+  } = useSelectList({ action, onChange, options, rootRef, value });
 
   return (
     <div
       ref={rootRef}
-      className={cx('sw-select', size === 'xs' && 'sw-select-xs')}
+      className={cx(
+        'sw-select',
+        size === 'xs' && 'sw-select-xs',
+        error && 'sw-select-invalid',
+      )}
     >
       <Stack gap={labelVisuallyHidden ? 0 : 1}>
         <Text
@@ -139,6 +90,12 @@ export function Select({
           variant={size === 'xs' ? 'caption' : 'label'}
         >
           {label}
+          {required ? (
+            <span aria-hidden="true" className="sw-field-required">
+              {' '}
+              *
+            </span>
+          ) : null}
         </Text>
         <div className="sw-select-control">
           <button
@@ -146,9 +103,12 @@ export function Select({
               open ? `${optionIdPrefix}-${highlight}` : undefined
             }
             aria-controls={open ? listId : undefined}
+            aria-describedby={error ? errorId : undefined}
             aria-expanded={open}
             aria-haspopup="listbox"
+            aria-invalid={error ? true : undefined}
             aria-labelledby={labelId}
+            aria-required={required || undefined}
             className="sw-select-trigger"
             id={triggerId}
             onBlur={(event) => {
@@ -169,7 +129,12 @@ export function Select({
             role="combobox"
             type="button"
           >
-            <SelectValue options={options} text={selected?.label ?? ''} />
+            <SelectValue
+              options={options}
+              placeholder={placeholder}
+              text={showsPlaceholder ? placeholder : (selected?.label ?? '')}
+              textIsPlaceholder={showsPlaceholder}
+            />
           </button>
           {open ? (
             <SelectListbox
@@ -185,6 +150,12 @@ export function Select({
             />
           ) : null}
         </div>
+        {/* A polite live region described on the trigger, as Field's is. */}
+        <FieldErrorRegion
+          className="sw-field-error"
+          id={errorId}
+          message={error}
+        />
       </Stack>
     </div>
   );

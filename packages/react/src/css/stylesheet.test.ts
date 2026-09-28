@@ -294,7 +294,15 @@ describe('generated CSS', () => {
         'sw-select-value',
         'sw-select-value-text',
         'sw-select-value-sizer',
+        'sw-select-placeholder',
+        'sw-select-invalid',
       ]),
+    );
+    expect(selectCss).toContain(
+      '.sw-select-placeholder {\n  color: var(--sw-color-muted);\n}',
+    );
+    expect(selectCss).toContain(
+      '.sw-select-invalid .sw-select-trigger {\n  border-color: var(--sw-color-danger);\n}',
     );
     expect(css).toContain('.sw-select-list');
     expect(catalog).toContain('sw-select');

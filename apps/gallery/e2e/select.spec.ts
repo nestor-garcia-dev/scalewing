@@ -67,3 +67,58 @@ test('Select keeps its width when the value changes and centres its text', async
   );
   await trigger.screenshot({ path: testInfo.outputPath('select-trigger.png') });
 });
+
+test('Select shows a placeholder, a required mark, and an error described on its trigger', async ({
+  page,
+}, testInfo) => {
+  await page.goto('/#select');
+  if (testInfo.project.name === 'forced-colors') {
+    await page.emulateMedia({ forcedColors: 'active' });
+  }
+  const section = page.locator('#select');
+  const trigger = section.getByRole('combobox', { name: 'Visit reason' });
+  // Teisoro DRW-12: "Choose a reason" was the first option.
+  await expect(trigger).toHaveText('Choose a reason');
+  await expect(trigger).toHaveAttribute('aria-required', 'true');
+  const label = section.locator('label', { hasText: 'Visit reason' });
+  await expect(label.locator('.sw-field-required')).toHaveText('*');
+  const before = await trigger.boundingBox();
+  // The polite error region exists, empty, before the error.
+  const region = trigger
+    .locator(
+      "xpath=ancestor::div[contains(concat(' ', @class, ' '), ' sw-select ')][1]",
+    )
+    .locator('.sw-field-error');
+  await expect(region).toHaveAttribute('aria-live', 'polite');
+  await expect(region).toHaveText('');
+
+  await section.getByRole('button', { name: 'Log visit' }).click();
+  await expect(region).toHaveText('Choose a reason for the visit.');
+  await expect(trigger).toHaveAttribute('aria-invalid', 'true');
+  await expect(trigger).toHaveAccessibleDescription(
+    'Choose a reason for the visit.',
+  );
+  await expect(section.getByRole('alert')).toHaveCount(0);
+  if (testInfo.project.name !== 'forced-colors') {
+    const border = await trigger.evaluate(
+      (node) => getComputedStyle(node).borderTopColor,
+    );
+    const danger = await section
+      .getByText('Choose a reason for the visit.')
+      .evaluate((node) => getComputedStyle(node).color);
+    expect(border).toBe(danger);
+  }
+  await section.screenshot({ path: testInfo.outputPath('select-error.png') });
+
+  await trigger.click();
+  await expect(section.getByRole('option')).toHaveText([
+    'Nest check',
+    'Migration count across the wetland reserve',
+    'Tagging',
+  ]);
+  await section.getByRole('option', { name: 'Tagging' }).click();
+  await expect(trigger).toHaveText('Tagging');
+  await expect(trigger).not.toHaveAttribute('aria-invalid', 'true');
+  const after = await trigger.boundingBox();
+  expect(Math.abs((after?.width ?? 0) - (before?.width ?? 0))).toBeLessThan(1);
+});
