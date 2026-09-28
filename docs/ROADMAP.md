@@ -32,9 +32,10 @@ control without a live alert, as `Checkbox`'s are (CHK-3, DRW-6,
 (NSF-15, `teisoro-date-field.md` follow-up); the `Select` trigger
 centred, with the Accordion chevron and a stable width (DRW-12,
 `teisoro-select.md` follow-up) and its `placeholder`, `required` and
-`error` (DRW-12, `teisoro-select.md` follow-up). Next: the
-remaining Services findings, then pull request, review and merge, then
-release `@scalewing/react` and Teisoro pins it.
+`error` (DRW-12, `teisoro-select.md` follow-up); and `Toast` `tone` and
+`icon` (DRW-14, `teisoro-toast.md`). Next: pull request, review and
+merge, then release `@scalewing/react` (minor) and Teisoro pins it for
+F-007-S05.
 
 `ActionRow` for FutMas F-002-S25 (`futmas-action-row.md`, owner approved
 2026-09-28) on the new `accentSubtle` tint (`futmas-accent-subtle.md`, ADR 0011) is merged and versioned: `@scalewing/tokens@1.4.0`, then

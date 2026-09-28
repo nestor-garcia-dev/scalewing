@@ -566,6 +566,20 @@ describe('generated CSS', () => {
     expect(cssButtonClasses()).not.toContain('forced-color-adjust');
     expect(catalog).toContain('sw-toast');
     expect(catalog).toContain('sw-toast-travel');
+    // Teisoro DRW-14: a tone tints the border and icon.
+    for (const tone of ['success', 'warning', 'danger']) {
+      expect(css).toContain(
+        `.sw-toast-${tone} { --sw-toast-tone: var(--sw-color-${tone}); border-color: var(--sw-toast-tone); }`,
+      );
+      expect(catalog).toContain(`sw-toast-${tone}`);
+    }
+    expect(catalog).toEqual(
+      expect.arrayContaining([
+        'sw-toast-row',
+        'sw-toast-icon',
+        'sw-toast-body',
+      ]),
+    );
     expect(css).toContain('--sw-motion-travel:');
     expect(css).toContain('--sw-motion-travel-easing:');
     expect(css).toContain('scale: 1.2');

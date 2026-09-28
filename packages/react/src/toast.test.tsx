@@ -164,4 +164,91 @@ describe('Toast', () => {
     origin.remove();
     destination.remove();
   });
+
+  it('tints a toned toast, shows its icon, and announces danger as an alert', () => {
+    const { rerender } = render(
+      <ThemeProvider colorScheme="light">
+        <Toast
+          icon={<svg data-testid="glyph" />}
+          onOpenChange={() => undefined}
+          open
+          tone="success"
+        >
+          <Text>Cash added to the drawer.</Text>
+        </Toast>
+      </ThemeProvider>,
+    );
+    const toast = screen.getByRole('status', { hidden: true });
+    expect(toast.className).toContain('sw-toast-success');
+    const icon = screen.getByTestId('glyph').parentElement;
+    expect(icon?.className).toBe('sw-toast-icon');
+    expect(icon?.getAttribute('aria-hidden')).toBe('true');
+    expect(toast.querySelector('.sw-toast-body')?.textContent).toBe(
+      'Cash added to the drawer.',
+    );
+
+    rerender(
+      <ThemeProvider colorScheme="light">
+        <Toast onOpenChange={() => undefined} open tone="danger">
+          <Text>The day is no longer open.</Text>
+        </Toast>
+      </ThemeProvider>,
+    );
+    const alert = screen.getByRole('alert', { hidden: true });
+    expect(alert.className).toContain('sw-toast-danger');
+    expect(screen.queryByRole('status', { hidden: true })).toBeNull();
+    // Without an icon the children are not wrapped.
+    expect(alert.querySelector('.sw-toast-row')).toBeNull();
+  });
+
+  it('keeps a neutral toast as it was: a status, no tone class', () => {
+    render(
+      <ThemeProvider colorScheme="light">
+        <Toast onOpenChange={() => undefined} open>
+          <Text variant="data">+3</Text>
+        </Toast>
+      </ThemeProvider>,
+    );
+    const toast = screen.getByRole('status', { hidden: true });
+    expect(toast.className).not.toMatch(/sw-toast-(success|warning|danger)/);
+    expect(toast.firstElementChild?.className).not.toBe('sw-toast-row');
+  });
+
+  it('keeps a warning or danger toast 6000 ms by default, and honors timeoutMs', () => {
+    vi.useFakeTimers();
+    for (const tone of ['warning', 'danger'] as const) {
+      const onOpenChange = vi.fn();
+      const { unmount } = render(
+        <Toast onOpenChange={onOpenChange} open tone={tone}>
+          <Text>Two notes wait for a signal.</Text>
+        </Toast>,
+      );
+      vi.advanceTimersByTime(800);
+      expect(onOpenChange, tone).not.toHaveBeenCalled();
+      vi.advanceTimersByTime(5199);
+      expect(onOpenChange, tone).not.toHaveBeenCalled();
+      vi.advanceTimersByTime(1);
+      expect(onOpenChange, tone).toHaveBeenCalledWith(false);
+      unmount();
+    }
+    for (const tone of ['neutral', 'success'] as const) {
+      const onOpenChange = vi.fn();
+      const { unmount } = render(
+        <Toast onOpenChange={onOpenChange} open tone={tone}>
+          <Text>Survey saved.</Text>
+        </Toast>,
+      );
+      vi.advanceTimersByTime(800);
+      expect(onOpenChange, tone).toHaveBeenCalledWith(false);
+      unmount();
+    }
+    const onOpenChange = vi.fn();
+    render(
+      <Toast onOpenChange={onOpenChange} open timeoutMs={1500} tone="danger">
+        <Text>The reserve log is already closed.</Text>
+      </Toast>,
+    );
+    vi.advanceTimersByTime(1500);
+    expect(onOpenChange).toHaveBeenCalledWith(false);
+  });
 });

@@ -1,3 +1,22 @@
+export const toastTones = ['neutral', 'success', 'warning', 'danger'] as const;
+
+export type ToastTone = (typeof toastTones)[number];
+
+const tintedTones = toastTones.filter((tone) => tone !== 'neutral');
+
+/*
+ * A tone tints the toast's border and its icon; the message keeps the text
+ * color, so it reads the same in every tone and the word carries the meaning.
+ */
+function toneRules(): string {
+  return tintedTones
+    .map(
+      (tone) =>
+        `.sw-toast-${tone} { --sw-toast-tone: var(--sw-color-${tone}); border-color: var(--sw-toast-tone); }`,
+    )
+    .join('\n');
+}
+
 export function cssToastClasses(): string {
   return `.sw-toast {
   background: var(--sw-glass-fill);
@@ -17,6 +36,29 @@ export function cssToastClasses(): string {
   position: fixed;
   translate: -50% 0;
   width: max-content;
+}
+
+${toneRules()}
+
+.sw-toast-row {
+  align-items: center;
+  display: flex;
+  gap: var(--sw-space-2);
+}
+
+.sw-toast-icon {
+  color: var(--sw-toast-tone, currentColor);
+  display: inline-flex;
+  flex: none;
+}
+
+.sw-toast-body {
+  min-width: 0;
+}
+
+@media (forced-colors: active) {
+  .sw-toast { border-color: CanvasText; }
+  .sw-toast-icon { color: CanvasText; }
 }
 
 .sw-toast:popover-open {
@@ -89,5 +131,12 @@ export function cssToastClasses(): string {
 }
 
 export function toastClassCatalog(): string[] {
-  return ['sw-toast', 'sw-toast-travel'];
+  return [
+    'sw-toast',
+    ...tintedTones.map((tone) => `sw-toast-${tone}`),
+    'sw-toast-row',
+    'sw-toast-icon',
+    'sw-toast-body',
+    'sw-toast-travel',
+  ];
 }
