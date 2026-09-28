@@ -29,5 +29,18 @@ test('Progress presents zero, partial, and complete measured values', async ({
   await expect(section.getByText('0 / 4')).toBeVisible();
   await expect(section.getByText('2 / 4')).toBeVisible();
   await expect(section.getByText('4 / 4')).toBeVisible();
+
+  const captioned = section.getByRole('progressbar', {
+    name: 'Transects walked',
+  });
+  await expect(captioned).toHaveAttribute('value', '2');
+  await expect(captioned).toHaveAttribute('max', '4');
+  await expect(
+    section.getByText('2 of 4 transects walked', { exact: true }),
+  ).toBeVisible();
+  await expect(
+    captioned.locator('xpath=..').locator('.sw-progress-count'),
+  ).toHaveCount(0);
+  await expect(section.getByText('2 / 4')).toHaveCount(1);
   await section.screenshot({ path: testInfo.outputPath('progress.png') });
 });

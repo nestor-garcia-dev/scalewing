@@ -1,5 +1,6 @@
 import { ActionMenuSection } from './sections/action-menu.js';
 import { SwitchSection } from './sections/switch.js';
+import { ActionBarSection } from './sections/action-bar.js';
 import { DateFieldSection } from './sections/date-field.js';
 import { CheckboxSection } from './sections/checkbox.js';
 import { RadioGroupSection } from './sections/radio-group.js';
@@ -98,6 +99,12 @@ export const catalog = [
     label: 'ButtonGroup',
     group: 'controls',
     Section: ButtonGroupSection,
+  },
+  {
+    id: 'action-bar',
+    label: 'ActionBar',
+    group: 'controls',
+    Section: ActionBarSection,
   },
   { id: 'badge', label: 'Badge', group: 'controls', Section: BadgeSection },
   {

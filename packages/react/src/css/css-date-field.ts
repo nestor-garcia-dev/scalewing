@@ -1,5 +1,7 @@
 import { typographyVariants } from '@scalewing/tokens';
 
+import { zIndex } from './stacking.js';
+
 const body = typographyVariants.body;
 const label = typographyVariants.label;
 const caption = typographyVariants.caption;
@@ -150,7 +152,7 @@ function calendarRules(): string {
   padding: var(--sw-space-3);
   position: fixed;
   width: max-content;
-  z-index: 10;
+  ${zIndex('popup')}
 }
 
 .sw-date-field-header {

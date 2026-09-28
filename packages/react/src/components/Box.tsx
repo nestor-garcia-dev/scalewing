@@ -6,6 +6,7 @@ import {
 } from 'react';
 
 import { cx } from '../class-names.js';
+import { boxBorderClass, type BoxBorderValue } from '../css/css-box-border.js';
 import {
   columnSpanClassNames,
   type ColumnSpanProps,
@@ -40,8 +41,11 @@ export type BoxProps = SpacingProps &
     as?: BoxElement;
     background?: Extract<SemanticColorKey, 'background' | 'surface'>;
     radius?: RadiusStep;
-    border?: boolean;
+    /** A hairline token border: `true` is solid, `'dashed'` marks a space to fill in by hand. */
+    border?: BoxBorder;
   };
+
+export type BoxBorder = BoxBorderValue;
 
 export const Box = forwardRef<HTMLElement, BoxProps>(function Box(
   {
@@ -82,13 +86,13 @@ export const Box = forwardRef<HTMLElement, BoxProps>(function Box(
         }),
         ...visibilityClassNames({ hideBelow, hideFrom }),
         ...columnSpanClassNames({ columnSpan }),
+        boxBorderClass(border),
         className,
       )}
       style={{
         backgroundColor: background
           ? `var(--sw-color-${background})`
           : undefined,
-        border: border ? '1px solid var(--sw-color-border)' : undefined,
         borderRadius: radius ? `var(--sw-radius-${radius})` : undefined,
         ...style,
       }}

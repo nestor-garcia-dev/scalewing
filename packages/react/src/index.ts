@@ -3,8 +3,9 @@ export {
   type ActionMenuItem,
   type ActionMenuProps,
 } from './components/ActionMenu.js';
+export { ActionBar, type ActionBarProps } from './components/ActionBar.js';
 export { Accordion } from './components/Accordion.js';
-export type { AccordionProps } from './components/Accordion.js';
+export type { AccordionProps, AccordionSize } from './components/Accordion.js';
 export { Switch, type SwitchProps } from './components/Switch.js';
 export {
   DateField,
@@ -49,7 +50,12 @@ export {
   type ButtonSize,
   type ButtonVariant,
 } from './components/Button.js';
-export { Box, type BoxElement, type BoxProps } from './components/Box.js';
+export {
+  Box,
+  type BoxBorder,
+  type BoxElement,
+  type BoxProps,
+} from './components/Box.js';
 export {
   ButtonGroup,
   type ButtonGroupJustify,
@@ -129,6 +135,7 @@ export {
 
 export { utilityClassCatalog } from './css/stylesheet.js';
 export type { VisibilityProps } from './visibility-classes.js';
+export type { Breakpoint } from './css/breakpoints.js';
 export { Separator } from './components/Separator.js';
 export type {
   SeparatorOrientation,

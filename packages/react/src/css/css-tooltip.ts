@@ -1,5 +1,7 @@
 import { typographyVariants } from '@scalewing/tokens';
 
+import { zIndex } from './stacking.js';
+
 const caption = typographyVariants.caption;
 
 export function cssTooltipClasses(): string {
@@ -23,7 +25,7 @@ export function cssTooltipClasses(): string {
   padding: var(--sw-space-2);
   position: absolute;
   width: max-content;
-  z-index: 10;
+  ${zIndex('popup')}
 }
 
 .sw-tooltip[hidden] { display: none; }

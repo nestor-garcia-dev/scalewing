@@ -13,7 +13,7 @@ apps/native-example ──> react-native
 ```
 
 - **`@scalewing/tokens`**: platform-neutral theme objects, named palettes, scales, and contrast checks. No CSS.
-- **`@scalewing/react`**: DOM components, the CSS custom properties and generated `sw-*` classes (`packages/react/src/css`), plus `@scalewing/react/styles.css` and optional `@scalewing/react/palette/<id>.css`. Button is a real `<button>`. `Box as="a"` is a layout link. Field wraps a native control with a label and token gap. Select is a labeled listbox menu. DateField is a typed date-only entry with a Scalewing-drawn calendar dialog, not the browser's date input. Badge, SegmentedControl, Table, BarChart, AppHeader, Nav, and Toast are web dashboard primitives. Split, Dialog, Select, and Toast are web-only.
+- **`@scalewing/react`**: DOM components, the CSS custom properties and generated `sw-*` classes (`packages/react/src/css`), plus `@scalewing/react/styles.css` and optional `@scalewing/react/palette/<id>.css`. Button is a real `<button>`. `Box as="a"` is a layout link. Field wraps a native control with a label and token gap. Select is a labeled listbox menu. DateField is a typed date-only entry with a Scalewing-drawn calendar dialog, not the browser's date input. Badge, SegmentedControl, Table, BarChart, AppHeader, ActionBar, Nav, and Toast are web dashboard primitives. Split, Dialog, Select, and Toast are web-only.
 - **`@scalewing/react-native`**: React Native components and a theme provider. No CSS class API. Button is a `Pressable`. Field is a labeled native text input. TabBar is a bottom tab list. Table is a compact row/cell layout. Accordion is a controlled disclosure with optional independent title navigation.
 
 ## CSS ownership
@@ -25,6 +25,8 @@ import '@scalewing/react/styles.css';
 ```
 
 Consumers do not copy that CSS into application source. Bundlers pull it from `node_modules`.
+
+Every generated `z-index` is one layer of the stacking order in `packages/react/src/css/stacking.ts`, lowest first: sticky table cells, the sticky `ActionBar`, a glass surface holding an open popup, the sticky `AppHeader`, then popups. Dialog and Toast sit above all of them on the browser's top layer. A new layered surface takes a layer from that table rather than a number of its own.
 
 `sw-padding-top-4` is spacing step `4` (16px in the default scale), not 4 pixels.
 
@@ -42,7 +44,7 @@ Scalewing does not ship glyphs. Components that need a consumer pictogram take a
 
 Native Accordion owns a controlled disclosure surface and optional separate
 title action. It uses native Pressables and token styles; the DOM Accordion
-keeps its existing implementation. No renderer code or DOM API is shared.
+stays a native `<details>` disclosure. Both take the same `subtitle` prop. No renderer code or DOM API is shared.
 
 Do not share React Native component files with the DOM package. Do not introduce React Native Web to unify them.
 

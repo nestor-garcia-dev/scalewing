@@ -1,5 +1,7 @@
 import { typographyVariants } from '@scalewing/tokens';
 
+import { zIndex } from './stacking.js';
+
 const caption = typographyVariants.caption;
 const label = typographyVariants.label;
 
@@ -16,7 +18,7 @@ export function cssChromeClasses(): string {
 .sw-app-header-sticky {
   position: sticky;
   top: 0;
-  z-index: 2;
+  ${zIndex('topChrome')}
 }
 
 .sw-nav {

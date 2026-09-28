@@ -4,6 +4,7 @@ import {
   lightTheme,
   typographyVariants,
 } from '@scalewing/tokens';
+import { actionBarClassCatalog } from './css-action-bar.js';
 import { actionMenuClassCatalog } from './css-action-menu.js';
 import { accordionClassCatalog } from './css-accordion.js';
 import { switchClassCatalog } from './css-switch.js';
@@ -22,6 +23,7 @@ import { gridClassCatalog } from './css-grid.js';
 import { gridSpanClassCatalog } from './css-grid-span.js';
 import { denominationGridClassCatalog } from './css-denomination-grid.js';
 import { fieldClassCatalog } from './css-field.js';
+import { boxBorderClassCatalog } from './css-box-border.js';
 import { cssComponentClasses } from './css-components.js';
 import { buttonClassCatalog } from './css-button.js';
 import { chartClassCatalog } from './css-chart.js';
@@ -62,6 +64,7 @@ export function utilityClassCatalog(): string[] {
     ...accordionClassCatalog(),
     ...selectClassCatalog(),
     ...actionMenuClassCatalog(),
+    ...actionBarClassCatalog(),
     ...switchClassCatalog(),
     ...dateFieldClassCatalog(),
     ...checkboxClassCatalog(),
@@ -80,6 +83,7 @@ export function utilityClassCatalog(): string[] {
     ...splitClassCatalog(),
     ...toastClassCatalog(),
     ...responsiveClassCatalog(),
+    ...boxBorderClassCatalog(),
   ];
 }
 

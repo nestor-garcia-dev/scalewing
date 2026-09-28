@@ -10,3 +10,5 @@ Teisoro use: F-002-S15 NSF activity page, where the activity-type `Select` sits 
 Proposed behavior: while a glass surface holds an open popup, it lifts one layer (`position: relative; z-index: 1`) above its siblings. `z-index: 1` keeps it under the sticky app header (`z-index: 2`).
 
 Verification: the gallery Select section now has a `Select` in a glass card above a second card. `apps/gallery/e2e/select.spec.ts` clicks the last option with a plain pointer click. It failed before the fix in desktop-en, mobile-es and forced-colors (the next card's input intercepted the click), and passes after it.
+
+Follow-up (`claude/closeout-ux-surfaces`, `teisoro-action-bar.md`): every generated `z-index` now reads one stacking order in `packages/react/src/css/stacking.ts`. A lifted surface sits at `z-index: 3`, over the sticky `ActionBar` (2) so an open list is not covered by the bar, and still under the sticky `AppHeader`, which moved to 4. The `Select` list moved from 3 to the popup layer (10) shared with `ActionMenu` and `Tooltip`.

@@ -1,7 +1,8 @@
-import { cleanup, render, screen } from '@testing-library/react';
+import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import { afterEach, describe, expect, it } from 'vitest';
 
 import { Field } from './components/Field.js';
+import { generateStylesheet, utilityClassCatalog } from './css/stylesheet.js';
 import { ThemeProvider } from './theme/ThemeProvider.js';
 
 afterEach(() => cleanup());
@@ -153,5 +154,180 @@ describe('Field', () => {
         </Field>,
       ),
     ).toThrow(TypeError);
+  });
+
+  it('names an adorned input with its label, prefix, and suffix', () => {
+    render(
+      <Field label="Drop amount" prefix="$" suffix="USD">
+        <input inputMode="decimal" name="drop-amount" />
+      </Field>,
+    );
+    const input = screen.getByRole('textbox', { name: 'Drop amount $ USD' });
+    const frame = input.parentElement;
+    expect(frame?.className).toBe('sw-field-adorned');
+    const prefix = frame?.querySelector('.sw-field-prefix');
+    const suffix = frame?.querySelector('.sw-field-suffix');
+    expect(prefix?.textContent).toBe('$');
+    expect(suffix?.textContent).toBe('USD');
+    expect(prefix?.getAttribute('aria-hidden')).toBe('true');
+    expect(suffix?.getAttribute('aria-hidden')).toBe('true');
+    expect(frame?.firstElementChild).toBe(prefix);
+    expect(frame?.lastElementChild).toBe(suffix);
+    const label = input.closest('.sw-field')?.querySelector('label');
+    expect(input.getAttribute('aria-labelledby')).toBe(
+      `${label?.id} ${prefix?.id} ${suffix?.id}`,
+    );
+    expect(label?.htmlFor).toBe(input.id);
+    expect((input as HTMLInputElement).value).toBe('');
+  });
+
+  it('keeps a lone suffix, validation, and an own aria-labelledby', () => {
+    const { rerender } = render(
+      <Field error="Enter a rate" label="Tax rate" required suffix="%">
+        <input name="tax-rate" />
+      </Field>,
+    );
+    const input = screen.getByRole('textbox', { name: 'Tax rate %' });
+    expect(input.parentElement?.querySelector('.sw-field-prefix')).toBeNull();
+    expect(input.getAttribute('aria-invalid')).toBe('true');
+    expect(input.getAttribute('aria-describedby')).toBe(
+      screen.getByRole('alert').id,
+    );
+    expect(input).toHaveProperty('required', true);
+    expect(input.closest('.sw-field')?.className).toContain('sw-field-invalid');
+    rerender(
+      <>
+        <span id="own-name">Rate</span>
+        <Field label="Tax rate" suffix="%">
+          <input aria-labelledby="own-name" name="tax-rate" />
+        </Field>
+      </>,
+    );
+    const named = screen.getByRole('textbox', {
+      name: 'Rate',
+      description: '%',
+    });
+    expect(named.getAttribute('aria-labelledby')).toBe('own-name');
+  });
+
+  it('keeps a child aria-label and describes the input with the adornment', () => {
+    render(
+      <>
+        <span id="drop-hint">Count it twice</span>
+        <Field
+          error="Enter an amount"
+          label="Drop amount"
+          prefix="$"
+          suffix="USD"
+        >
+          <input
+            aria-describedby="drop-hint"
+            aria-label="Cash dropped"
+            name="drop-amount"
+          />
+        </Field>
+      </>,
+    );
+    const input = screen.getByRole('textbox', {
+      name: 'Cash dropped',
+      description: 'Count it twice $ USD Enter an amount',
+    });
+    expect(input.getAttribute('aria-labelledby')).toBeNull();
+    const frame = input.parentElement;
+    expect(input.getAttribute('aria-describedby')).toBe(
+      [
+        'drop-hint',
+        frame?.querySelector('.sw-field-prefix')?.id,
+        frame?.querySelector('.sw-field-suffix')?.id,
+        screen.getByRole('alert').id,
+      ].join(' '),
+    );
+  });
+
+  it('focuses the input from a press on its prefix, suffix, or frame', () => {
+    render(
+      <Field label="Drop amount" prefix="$" suffix="USD">
+        <input name="drop-amount" />
+      </Field>,
+    );
+    const input = screen.getByRole('textbox', { name: 'Drop amount $ USD' });
+    const frame = input.parentElement as HTMLElement;
+    for (const target of [
+      frame.querySelector('.sw-field-prefix') as HTMLElement,
+      frame.querySelector('.sw-field-suffix') as HTMLElement,
+      frame,
+    ]) {
+      input.blur();
+      // fireEvent returns false when the handler prevented the default, which
+      // keeps the press from moving focus away or selecting the adornment.
+      expect(fireEvent.mouseDown(target)).toBe(false);
+      expect(document.activeElement).toBe(input);
+    }
+    // A press on the input keeps the browser's own caret and selection.
+    expect(fireEvent.mouseDown(input)).toBe(true);
+  });
+
+  it('leaves a disabled adorned input unfocused', () => {
+    render(
+      <Field label="Drop amount" prefix="$">
+        <input disabled name="drop-amount" />
+      </Field>,
+    );
+    const input = screen.getByRole('textbox', { name: 'Drop amount $' });
+    const prefix = input.parentElement?.querySelector('.sw-field-prefix');
+    expect(fireEvent.mouseDown(prefix as HTMLElement)).toBe(true);
+    expect(document.activeElement).not.toBe(input);
+  });
+
+  it('leaves an unadorned control unwrapped and unlabelled by id', () => {
+    render(
+      <Field label="Species name">
+        <input name="species" />
+      </Field>,
+    );
+    const input = screen.getByRole('textbox', { name: 'Species name' });
+    expect(input.getAttribute('aria-labelledby')).toBeNull();
+    expect(input.parentElement?.className).toContain('sw-field');
+  });
+
+  it('rejects an adornment on a control that is not a native input', () => {
+    expect(() =>
+      render(
+        <Field label="Habitat" prefix="#">
+          <select>
+            <option>Forest</option>
+          </select>
+        </Field>,
+      ),
+    ).toThrow('Field prefix and suffix require a native input child');
+    expect(() =>
+      render(
+        <Field label="Weight" suffix="kg">
+          <span>not a control</span>
+        </Field>,
+      ),
+    ).toThrow(TypeError);
+  });
+
+  it('generates the adornment frame from the control surface tokens', () => {
+    const css = generateStylesheet();
+    const catalog = utilityClassCatalog();
+    for (const className of [
+      'sw-field-adorned',
+      'sw-field-prefix',
+      'sw-field-suffix',
+    ]) {
+      expect(css).toContain(`.${className}`);
+      expect(catalog).toContain(className);
+    }
+    expect(css).toContain('[data-theme] .sw-field-adorned > input {');
+    expect(css).toContain('.sw-field-adorned:focus-within {');
+    expect(css).toContain(
+      '.sw-field-invalid .sw-field-adorned { border-color: var(--sw-color-danger); }',
+    );
+    expect(css).toContain('.sw-field-xs .sw-field-adorned {');
+    expect(css).not.toMatch(
+      /sw-field-(prefix|suffix|adorned)[^}]*#[0-9a-f]{3}/i,
+    );
   });
 });

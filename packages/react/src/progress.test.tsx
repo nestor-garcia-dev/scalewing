@@ -27,6 +27,34 @@ describe('Progress', () => {
     expect(bar.parentElement?.className).toContain('sw-progress-danger');
   });
 
+  it('hides the visible count on request and keeps the value semantics', () => {
+    const { rerender } = render(
+      <Progress
+        label="Habitats surveyed"
+        max={4}
+        showCount={false}
+        value={3}
+      />,
+    );
+    const bar = screen.getByRole('progressbar', { name: 'Habitats surveyed' });
+    expect(bar).toHaveProperty('value', 3);
+    expect(bar).toHaveProperty('max', 4);
+    expect(screen.queryByText('3 / 4')).toBeNull();
+    expect(document.querySelector('.sw-progress-count')).toBeNull();
+    expect(document.querySelector('.sw-progress-heading')?.textContent).toBe(
+      'Habitats surveyed',
+    );
+    rerender(
+      <Progress label="Habitats surveyed" max={4} showCount value={3} />,
+    );
+    const count = screen.getByText('3 / 4');
+    expect(count.className).toBe('sw-progress-count');
+    expect(count.getAttribute('aria-hidden')).toBe('true');
+    expect(screen.getByRole('progressbar', { name: 'Habitats surveyed' })).toBe(
+      bar,
+    );
+  });
+
   it('rejects invalid labels and ranges', () => {
     expect(() => render(<Progress label=" " max={4} value={0} />)).toThrow(
       RangeError,

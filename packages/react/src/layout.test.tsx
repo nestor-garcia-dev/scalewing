@@ -7,6 +7,7 @@ import { Card } from './components/Card.js';
 import { Inline } from './components/Inline.js';
 import { Stack } from './components/Stack.js';
 import { Text } from './components/Text.js';
+import { generateStylesheet, utilityClassCatalog } from './css/stylesheet.js';
 import { spacingClassNames } from './spacing-classes.js';
 import { ThemeProvider } from './theme/ThemeProvider.js';
 
@@ -127,6 +128,52 @@ describe('layout components', () => {
     expect(link.tagName).toBe('A');
     expect(link.getAttribute('href')).toBe('/draft');
     expect(link.className).toContain('sw-padding-2');
+  });
+
+  it('draws a solid or a dashed hairline border from generated classes', () => {
+    render(
+      <>
+        <Box border data-testid="solid" />
+        <Box border="dashed" data-testid="dashed" />
+        <Box data-testid="none" />
+        <Box border={false} data-testid="off" />
+        <Box
+          border="dashed"
+          className="slip"
+          data-testid="override"
+          style={{ borderStyle: 'dotted' }}
+        />
+      </>,
+    );
+
+    const solid = screen.getByTestId('solid');
+    expect(solid.className).toBe('sw-border');
+    expect(solid.style.border).toBe('');
+    expect(screen.getByTestId('dashed').className).toBe('sw-border-dashed');
+    expect(screen.getByTestId('none').className).toBe('');
+    expect(screen.getByTestId('off').className).toBe('');
+    // A consumer style is inline, so it still wins over the class.
+    const override = screen.getByTestId('override');
+    expect(override.className).toBe('sw-border-dashed slip');
+    expect(override.style.borderStyle).toBe('dotted');
+  });
+
+  it('generates the border classes from the border token after component frames', () => {
+    const css = generateStylesheet();
+    const catalog = utilityClassCatalog();
+    expect(catalog).toEqual(
+      expect.arrayContaining(['sw-border', 'sw-border-dashed']),
+    );
+    expect(css).toContain(
+      '.sw-border { border: 1px solid var(--sw-color-border); }',
+    );
+    expect(css).toContain(
+      '.sw-border-dashed { border: 1px dashed var(--sw-color-border); }',
+    );
+    // Emitted after the card frames so the prop wins on a Box-based Card.
+    expect(css.indexOf('.sw-border {')).toBeGreaterThan(
+      css.lastIndexOf('.sw-card-outlined {'),
+    );
   });
 });
 

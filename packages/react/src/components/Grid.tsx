@@ -10,16 +10,20 @@ import {
 import { spacingClass } from '../css/spacing-classes.js';
 import { assertGridCount } from '../grid-counts.js';
 import { Box, type BoxProps } from './Box.js';
+import { type Align } from './Stack.js';
 
 export type { GridColumns };
 
 export type GridProps = BoxProps & {
+  /** Where each child sits in the height of its row; unset, children stretch. */
+  align?: Align;
   columns?: GridColumns;
   columnsBelow?: Partial<Record<Breakpoint, GridColumns>>;
   gap?: SpacingStep;
 };
 
 export function Grid({
+  align,
   className,
   columns = 1,
   columnsBelow,
@@ -41,6 +45,7 @@ export function Grid({
         gridColumnsClass(columns),
         ...belowClasses,
         spacingClass('gap', 'all', gap),
+        align && `sw-align-${align}`,
         className,
       )}
       {...rest}

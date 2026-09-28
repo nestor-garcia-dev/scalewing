@@ -5,13 +5,19 @@ import { Section } from '../layout/Section.js';
 
 export function AccordionSection() {
   const [openId, setOpenId] = useState<'range' | 'habitat' | null>('range');
+  const [methodOpen, setMethodOpen] = useState(false);
 
   return (
     <Section
       id="accordion"
-      purpose="Accordion is a native details disclosure in page flow. Card is always expanded. Dialog leaves the canvas."
+      purpose="Accordion is a native details disclosure in page flow with a token chevron that turns when it opens. subtitle adds one muted line under the title. size sm is a quieter disclosure nested inside other content. Card is always expanded. Dialog leaves the canvas."
       title="Accordion"
-      usage={`<Accordion open={open} onOpenChange={setOpen} title="Why we watch">
+      usage={`<Accordion
+  open={open}
+  onOpenChange={setOpen}
+  subtitle="Twelve sightings · Two nests"
+  title="Wetlands"
+>
   <Text>Habitat loss is subtracted.</Text>
 </Accordion>`}
     >
@@ -21,11 +27,22 @@ export function AccordionSection() {
             setOpenId(open ? 'range' : null);
           }}
           open={openId === 'range'}
+          subtitle="Four regions · Wintering grounds labeled"
           title="Range"
         >
           <Text>
             Higher range raises the watch score. Wintering grounds stay labeled.
           </Text>
+          <Accordion
+            onOpenChange={setMethodOpen}
+            open={methodOpen}
+            size="sm"
+            title="How the range is measured"
+          >
+            <Text>
+              Field teams walk fixed transects at dawn and plot each sighting.
+            </Text>
+          </Accordion>
         </Accordion>
         <Accordion
           onOpenChange={(open) => {

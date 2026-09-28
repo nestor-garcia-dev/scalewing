@@ -1,5 +1,7 @@
 import { typographyVariants } from '@scalewing/tokens';
 
+import { zIndex } from './stacking.js';
+
 const label = typographyVariants.label;
 
 export function cssActionMenuClasses(): string {
@@ -47,7 +49,7 @@ export function cssActionMenuClasses(): string {
   overflow: auto;
   padding: var(--sw-space-1);
   position: fixed;
-  z-index: 10;
+  ${zIndex('popup')}
 }
 
 .sw-action-menu-list[hidden] {

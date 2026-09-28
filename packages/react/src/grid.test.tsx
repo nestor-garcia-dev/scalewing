@@ -4,10 +4,12 @@ import { afterEach, describe, expect, it } from 'vitest';
 import { Box } from './components/Box.js';
 import { Button } from './components/Button.js';
 import { Card } from './components/Card.js';
+import { Field } from './components/Field.js';
 import { Grid } from './components/Grid.js';
 import { Stack } from './components/Stack.js';
 import { columnSpanClassNames } from './column-span-classes.js';
 import { cssGridClasses, gridClassCatalog } from './css/css-grid.js';
+import { generateStylesheet } from './css/stylesheet.js';
 import {
   cssGridSpanClasses,
   gridSpanClassCatalog,
@@ -54,6 +56,37 @@ describe('Grid', () => {
     expect(screen.getByTestId('grid').className).toBe(
       'sw-grid sw-grid-cols-1 sw-gap-0',
     );
+  });
+
+  it('aligns children in their row with the shared align classes', () => {
+    render(
+      <Grid align="end" columns={2} data-testid="grid" gap={3}>
+        <Field label="Nest height above the waterline in metres">
+          <input name="nest-height" />
+        </Field>
+        <Field label="Eggs">
+          <input name="eggs" />
+        </Field>
+      </Grid>,
+    );
+    const grid = screen.getByTestId('grid');
+    expect(grid.className).toBe('sw-grid sw-grid-cols-2 sw-gap-3 sw-align-end');
+    expect(screen.getByRole('textbox', { name: 'Eggs' })).toBeTruthy();
+
+    for (const align of ['start', 'center', 'stretch'] as const) {
+      cleanup();
+      render(
+        <Grid align={align} data-testid="grid">
+          cell
+        </Grid>,
+      );
+      expect(screen.getByTestId('grid').className).toContain(
+        `sw-align-${align}`,
+      );
+    }
+    const css = generateStylesheet();
+    expect(css).toContain('.sw-align-end { align-items: flex-end; }');
+    expect(css).toContain('.sw-align-start { align-items: flex-start; }');
   });
 
   it('offers six columns for a denomination row', () => {

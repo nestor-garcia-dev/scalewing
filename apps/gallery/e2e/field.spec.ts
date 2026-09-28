@@ -42,3 +42,48 @@ test('Field associates hint, required state, and replaceable validation error', 
   await expect(hint).toBeVisible();
   await expect(input).toHaveAttribute('aria-describedby', hintId ?? '');
 });
+
+test('Field prefix and suffix sit inside the frame and join the name', async ({
+  page,
+}, testInfo) => {
+  await page.goto('/#field');
+  const section = page.locator('#field');
+  const fee = section.getByRole('textbox', { name: 'Reserve entry fee $' });
+  const wingspan = section.getByRole('textbox', { name: 'Wingspan cm' });
+  await expect(fee).toHaveValue('12.50');
+  await expect(wingspan).toHaveValue('38');
+  await expect(
+    section.getByRole('textbox', { name: 'Canopy cover %' }),
+  ).toBeVisible();
+
+  const frame = fee.locator('xpath=..');
+  const prefix = frame.locator('.sw-field-prefix');
+  const frameBox = await frame.boundingBox();
+  const prefixBox = await prefix.boundingBox();
+  const inputBox = await fee.boundingBox();
+  expect(frameBox && prefixBox && inputBox).toBeTruthy();
+  if (!frameBox || !prefixBox || !inputBox) return;
+  expect(prefixBox.x).toBeGreaterThan(frameBox.x);
+  expect(prefixBox.x + prefixBox.width).toBeLessThanOrEqual(inputBox.x);
+  expect(inputBox.x + inputBox.width).toBeLessThanOrEqual(
+    frameBox.x + frameBox.width,
+  );
+  expect(
+    await fee.evaluate((element) => getComputedStyle(element).borderTopWidth),
+  ).toBe('0px');
+  expect(
+    await frame.evaluate((element) => getComputedStyle(element).borderTopWidth),
+  ).toBe('1px');
+
+  // A press on the adornment focuses the input, as the text cursor promises.
+  await wingspan.locator('xpath=..').locator('.sw-field-suffix').click();
+  await expect(wingspan).toBeFocused();
+  await prefix.click();
+  await expect(fee).toBeFocused();
+  expect(
+    await frame.evaluate((element) => getComputedStyle(element).outlineStyle),
+  ).toBe('solid');
+  await fee.fill('20.00');
+  await expect(fee).toHaveValue('20.00');
+  await section.screenshot({ path: testInfo.outputPath('field-adorned.png') });
+});

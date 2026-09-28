@@ -7,6 +7,7 @@ import '@scalewing/react/styles.css';
 import '@scalewing/react/palette/cerulean.css';
 import {
   Accordion,
+  ActionBar,
   ActionMenu,
   BarChart,
   Box,
@@ -44,9 +45,53 @@ import {
 
 Import the CSS once at the application entry. Do not copy it into your source tree. Optional: import one `@scalewing/react/palette/<id>.css` file after it, or set `data-palette` on the `data-theme` node. React apps can set `palette` on `ThemeProvider` instead.
 
+`Box` `border` draws a hairline in the `border` color token: `border` (or `border={true}`) is solid, and `border="dashed"` is dashed (the generated `sw-border` and `sw-border-dashed` classes; a `style` you pass still wins), for a space to fill in by hand such as a blank on a printed form. It does not make the box look or act like an input. Every `Box`-based component takes it.
+
 `Box hideBelow="md"` hides a region under 48rem and `hideFrom="md"` hides it at 48rem and wider, so a product can swap a wide layout for a narrow one without its own stylesheet. Hidden regions leave the accessibility tree; do not use this to protect data. `Box as="a"` is a layout link. Use `Button` for press actions. `Field` associates a native `<input>` or `<select>` with a label and token gap; native text controls inherit the generated document canvas. `Select` is a labeled listbox menu when the open list must match the canvas.
 
 `Field` supports optional `description`, `error`, and `required` on one native input, select, or textarea child. It preserves an existing `aria-describedby`, appends a stable message ID, and replaces the hint with an alert when an error is supplied. `error` sets `aria-invalid` and token-owned invalid styling. The consumer owns validation and localized messages.
+
+`Field` `prefix` and `suffix` put short text such as `$` or `%` inside the frame of one native `<input>` child, before or after the value. The text is not part of the value; the input is named by its label plus the adornment (`"Drop amount $"`), unless it names itself with its own `aria-label` or `aria-labelledby`, in which case the adornment joins its description. A press anywhere on the frame focuses the input. Formatting the value stays with the consumer. Any other child throws a `TypeError`.
+
+```tsx
+<Field label="Drop amount" prefix="$">
+  <input inputMode="decimal" name="drop" />
+</Field>
+```
+
+`Accordion` is a native `<details>` disclosure controlled by `open` and `onOpenChange`. A token chevron at the end of the header replaces the browser triangle and turns when it opens (it holds still under reduced motion). `subtitle` adds one muted caption line under the title, such as a summary of what the section holds; it wraps rather than truncating and is read after the title. `size="sm"` is a quieter disclosure nested inside other content: a label-size title, tighter padding, smaller corners and a header that is an `sm` control (at least 32px).
+
+```tsx
+<Accordion
+  open={open}
+  onOpenChange={setOpen}
+  subtitle="Twelve sightings · Two nests"
+  title="Wetlands"
+>
+  <Accordion
+    open={methodOpen}
+    onOpenChange={setMethodOpen}
+    size="sm"
+    title="How the count is taken"
+  >
+    {method}
+  </Accordion>
+</Accordion>
+```
+
+`ActionBar` keeps the actions of a long page on a glass bar stuck to the bottom of the viewport, with an optional one-line `status` (such as when the work was last saved). Put it last in the content it acts on: it stays stuck while that content scrolls by and then rests in its own place at the end. `stickyBelow="md"` sticks only on a phone and leaves the bar in page flow from `md` up. The bar clears `env(safe-area-inset-bottom)` (set `viewport-fit=cover` in the page's viewport meta for the inset to apply). Its children are the actions: on a phone they share one row under the status. The status is a polite live region (`role="status"`, kept in the page even while empty), so a new status such as "Draft saved at 5:00 PM" is announced; do not announce the same save a second time with your own notice. An open `Select`, `ActionMenu` or `Tooltip` paints over the bar, including inside a glass `Card` or `Accordion`.
+
+```tsx
+<Stack gap={4}>
+  {longForm}
+  <ActionBar status="Draft saved at 5:00 PM" stickyBelow="md">
+    <Button variant="secondary" onPress={save}>
+      Save draft
+    </Button>
+    <Button onPress={finish}>Finish</Button>
+  </ActionBar>
+</Stack>
+```
 
 `ActionMenu` opens independent commands from a labelled button. Provide localized command labels and callbacks; use `disabled` for unavailable commands and `destructive` for a dangerous command's presentation. Escape and choosing a command both return focus to the trigger (before the command runs, so a `Dialog` it opens hands focus back to the trigger on close), and outside interaction dismisses the menu.
 
@@ -60,7 +105,7 @@ Import the CSS once at the application entry. Do not copy it into your source tr
 
 `Spinner` shows indeterminate loading in small, medium, or large sizes. Supply localized `label` for the one announced status in a loading region. Use `decorative` on additional indicators beside that status so screen readers do not hear the same message repeatedly. Reduced motion leaves a static accented ring.
 
-`Progress` shows a known value between zero and a positive maximum. It uses native progressbar semantics and displays the value and maximum beside the localized label. Invalid bounds throw instead of silently clamping. Optional `tone` is `accent`, `success`, or `danger`.
+`Progress` shows a known value between zero and a positive maximum. It uses native progressbar semantics and displays the value and maximum beside the localized label. Invalid bounds throw instead of silently clamping. Optional `tone` is `accent`, `success`, or `danger`. `showCount={false}` hides the visible `value / max` count when the page shows its own count caption, so the count appears once; the progress bar still exposes its value and maximum.
 
 `Tooltip` adds supplementary plain-text help to one labelled, focusable trigger. Supply localized `content` and an existing trigger element with its own accessible name. It opens on hover or focus, closes on pointer leave, blur, Escape, or outside touch, and toggles on touch. Keep required instructions visible outside the tooltip.
 
@@ -86,6 +131,15 @@ Every `Box`-based component (`Box`, `Stack`, `Inline`, `Card`, `Grid`, …) take
 ```
 
 Values outside the catalog throw a `RangeError`. There is no per-breakpoint span and no arbitrary column template.
+
+`Grid` `align` (`start`, `center`, `end`, `stretch`) sets where each child sits in the height of its row, with the same generated `sw-align-*` classes as `Stack` and `Inline`. Unset, children stretch. `align="end"` keeps a row of fields level when one label wraps:
+
+```tsx
+<Grid align="end" columns={2} gap={3}>
+  <Field label="Nest height above the waterline">{heightInput}</Field>
+  <Field label="Eggs">{eggsInput}</Field>
+</Grid>
+```
 
 `DenominationGrid` shows integer counts per unit across a fixed set of columns. The `strip` layout is a captioned table: each row has a toned label with an icon slot, muted zero cells, optional signed deltas toned by sign, and an optional consumer-formatted `total` that moves under the label on a phone. A strip wider than its container scrolls sideways inside its own keyboard-focusable region, named after `label`, with the row labels pinned at the start; the page never scrolls sideways. The `tiles` layout stacks the column label, the count, and an optional `subtotal` string per column. The primitive does no arithmetic and no currency formatting; tones reuse the Badge vocabulary. Invalid columns, rows, or cells throw.
 

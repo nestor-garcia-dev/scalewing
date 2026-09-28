@@ -17,6 +17,21 @@ release workflow completed successfully.
 
 ## Next action
 
+Closeout UX surfaces for Teisoro F-007-S03 task 1280 (the first UX review,
+closing a register), one `@scalewing/react` commit each on
+`claude/closeout-ux-surfaces`: `Field` `prefix`/`suffix`
+(`teisoro-field-adornment.md`), the `Accordion` `subtitle`, chevron and
+`size="sm"` (`teisoro-accordion-summary.md`), the new `ActionBar`
+(`teisoro-action-bar.md`), `Box border="dashed"`
+(`teisoro-box-border-style.md`), `Grid` `align` (`teisoro-grid.md`), and
+`Progress` `showCount` (`teisoro-progress.md`), plus code-review fixes: one
+generated stacking order so an open popup paints over the `ActionBar`, a live
+`ActionBar` status, `Field` adornment naming and frame focus, an `sm` control
+`Accordion` header, and generated `Box` border classes. Next: review and merge the
+branch's pull request, then wait for the owner before `pnpm changeset
+version`, a `react-v` tag or Release packages. Teisoro verifies with a local
+link and adopts the release in task 1285.
+
 `DateField` draws its own calendar for Teisoro (`teisoro-date-field.md`,
 2026-09-27 update, this change on `claude/date-picker`): a typed date-only
 entry in the locale's order plus a Scalewing-drawn WAI-ARIA date picker

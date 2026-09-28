@@ -1,5 +1,7 @@
 import { typographyVariants } from '@scalewing/tokens';
 
+import { zIndex } from './stacking.js';
+
 const caption = typographyVariants.caption;
 const label = typographyVariants.label;
 
@@ -91,7 +93,7 @@ export function cssSelectClasses(): string {
   padding: var(--sw-space-1);
   position: absolute;
   width: max-content;
-  z-index: 3;
+  ${zIndex('popup')}
 }
 
 .sw-select-option {

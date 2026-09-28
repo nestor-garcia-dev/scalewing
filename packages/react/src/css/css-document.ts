@@ -13,7 +13,8 @@ const typedInputs = [
   'textarea',
 ].join(', ');
 
-const controlSurface = `background-color: var(--sw-glass-fill);
+/** The frame every native text control draws: fill, hairline border, radius. */
+export const controlSurface = `background-color: var(--sw-glass-fill);
   border: 1px solid var(--sw-color-border);
   border-radius: var(--sw-radius-sm);
   color: inherit;

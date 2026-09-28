@@ -9,6 +9,8 @@ export type ProgressProps = {
   value: number;
   max: number;
   tone?: ProgressTone;
+  /** Shows the muted "value / max" count beside the label. Turn it off when the page shows its own count. */
+  showCount?: boolean;
 };
 
 export function Progress({
@@ -16,6 +18,7 @@ export function Progress({
   value,
   max,
   tone = 'accent',
+  showCount = true,
 }: ProgressProps) {
   if (!label.trim()) throw new RangeError('label must not be empty');
   if (!Number.isFinite(max) || max <= 0)
@@ -30,9 +33,11 @@ export function Progress({
         <span className="sw-progress-label" id={labelId}>
           {label}
         </span>
-        <span aria-hidden="true" className="sw-progress-count">
-          {value} / {max}
-        </span>
+        {showCount ? (
+          <span aria-hidden="true" className="sw-progress-count">
+            {value} / {max}
+          </span>
+        ) : null}
       </div>
       <progress
         aria-labelledby={labelId}
