@@ -23,6 +23,7 @@ import { gridClassCatalog } from './css-grid.js';
 import { gridSpanClassCatalog } from './css-grid-span.js';
 import { denominationGridClassCatalog } from './css-denomination-grid.js';
 import { fieldClassCatalog } from './css-field.js';
+import { boxBorderClassCatalog } from './css-box-border.js';
 import { cssComponentClasses } from './css-components.js';
 import { buttonClassCatalog } from './css-button.js';
 import { chartClassCatalog } from './css-chart.js';
@@ -82,6 +83,7 @@ export function utilityClassCatalog(): string[] {
     ...splitClassCatalog(),
     ...toastClassCatalog(),
     ...responsiveClassCatalog(),
+    ...boxBorderClassCatalog(),
   ];
 }
 

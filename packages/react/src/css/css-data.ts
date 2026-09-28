@@ -1,6 +1,7 @@
 import { trackInset, typographyVariants } from '@scalewing/tokens';
 
 import { scrollRegionRules } from './css-scroll-region.js';
+import { zIndex } from './stacking.js';
 
 export const badgeTones = [
   'neutral',
@@ -193,7 +194,7 @@ ${scrollRegionRules('.sw-table-wrap')}
   -webkit-backdrop-filter: blur(var(--sw-glass-blur)) saturate(var(--sw-glass-saturate));
   position: sticky;
   top: 0;
-  z-index: 1;
+  ${zIndex('stickyCell')}
 }
 
 .sw-table-compact th,

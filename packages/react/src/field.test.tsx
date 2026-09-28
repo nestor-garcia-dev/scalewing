@@ -1,4 +1,4 @@
-import { cleanup, render, screen } from '@testing-library/react';
+import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import { afterEach, describe, expect, it } from 'vitest';
 
 import { Field } from './components/Field.js';
@@ -203,7 +203,80 @@ describe('Field', () => {
         </Field>
       </>,
     );
-    expect(screen.getByRole('textbox', { name: 'Rate' })).toBeTruthy();
+    const named = screen.getByRole('textbox', {
+      name: 'Rate',
+      description: '%',
+    });
+    expect(named.getAttribute('aria-labelledby')).toBe('own-name');
+  });
+
+  it('keeps a child aria-label and describes the input with the adornment', () => {
+    render(
+      <>
+        <span id="drop-hint">Count it twice</span>
+        <Field
+          error="Enter an amount"
+          label="Drop amount"
+          prefix="$"
+          suffix="USD"
+        >
+          <input
+            aria-describedby="drop-hint"
+            aria-label="Cash dropped"
+            name="drop-amount"
+          />
+        </Field>
+      </>,
+    );
+    const input = screen.getByRole('textbox', {
+      name: 'Cash dropped',
+      description: 'Count it twice $ USD Enter an amount',
+    });
+    expect(input.getAttribute('aria-labelledby')).toBeNull();
+    const frame = input.parentElement;
+    expect(input.getAttribute('aria-describedby')).toBe(
+      [
+        'drop-hint',
+        frame?.querySelector('.sw-field-prefix')?.id,
+        frame?.querySelector('.sw-field-suffix')?.id,
+        screen.getByRole('alert').id,
+      ].join(' '),
+    );
+  });
+
+  it('focuses the input from a press on its prefix, suffix, or frame', () => {
+    render(
+      <Field label="Drop amount" prefix="$" suffix="USD">
+        <input name="drop-amount" />
+      </Field>,
+    );
+    const input = screen.getByRole('textbox', { name: 'Drop amount $ USD' });
+    const frame = input.parentElement as HTMLElement;
+    for (const target of [
+      frame.querySelector('.sw-field-prefix') as HTMLElement,
+      frame.querySelector('.sw-field-suffix') as HTMLElement,
+      frame,
+    ]) {
+      input.blur();
+      // fireEvent returns false when the handler prevented the default, which
+      // keeps the press from moving focus away or selecting the adornment.
+      expect(fireEvent.mouseDown(target)).toBe(false);
+      expect(document.activeElement).toBe(input);
+    }
+    // A press on the input keeps the browser's own caret and selection.
+    expect(fireEvent.mouseDown(input)).toBe(true);
+  });
+
+  it('leaves a disabled adorned input unfocused', () => {
+    render(
+      <Field label="Drop amount" prefix="$">
+        <input disabled name="drop-amount" />
+      </Field>,
+    );
+    const input = screen.getByRole('textbox', { name: 'Drop amount $' });
+    const prefix = input.parentElement?.querySelector('.sw-field-prefix');
+    expect(fireEvent.mouseDown(prefix as HTMLElement)).toBe(true);
+    expect(document.activeElement).not.toBe(input);
   });
 
   it('leaves an unadorned control unwrapped and unlabelled by id', () => {

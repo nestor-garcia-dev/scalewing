@@ -33,10 +33,10 @@ describe('ActionBar', () => {
     const bar = screen.getByRole('region', { name: 'Survey actions' });
     expect(ref.current).toBe(bar);
     expect(bar.className).toBe('sw-action-bar sw-action-bar-sticky survey-bar');
-    const status = screen.getByText('Survey saved at 5:00 PM');
+    const status = screen.getByRole('status');
+    expect(status.textContent).toBe('Survey saved at 5:00 PM');
     expect(status.tagName).toBe('P');
     expect(status.className).toBe('sw-action-bar-status');
-    expect(status.getAttribute('role')).toBeNull();
     expect(bar.firstElementChild).toBe(status);
     const actions = bar.lastElementChild;
     expect(actions?.className).toBe('sw-action-bar-actions');
@@ -45,16 +45,33 @@ describe('ActionBar', () => {
     expect(onSave).toHaveBeenCalledTimes(1);
   });
 
-  it('sticks only below a breakpoint and leaves out an empty status', () => {
-    render(
+  it('sticks only below a breakpoint and keeps an empty live status for the first update', () => {
+    const { rerender } = render(
       <ActionBar stickyBelow="md">
         <Button onPress={() => undefined}>Submit sightings</Button>
       </ActionBar>,
     );
     const bar = screen.getByRole('button').closest('.sw-action-bar');
     expect(bar?.className).toBe('sw-action-bar sw-action-bar-sticky-below-md');
-    expect(bar?.querySelector('.sw-action-bar-status')).toBeNull();
-    expect(bar?.children).toHaveLength(1);
+    const status = screen.getByRole('status');
+    expect(status.textContent).toBe('');
+    expect(bar?.firstElementChild).toBe(status);
+
+    // The same live region takes each new status, so each one is announced.
+    rerender(
+      <ActionBar status="Draft saved at 5:00 PM" stickyBelow="md">
+        <Button onPress={() => undefined}>Submit sightings</Button>
+      </ActionBar>,
+    );
+    expect(screen.getByRole('status')).toBe(status);
+    expect(status.textContent).toBe('Draft saved at 5:00 PM');
+    rerender(
+      <ActionBar status="Draft saved at 5:05 PM" stickyBelow="md">
+        <Button onPress={() => undefined}>Submit sightings</Button>
+      </ActionBar>,
+    );
+    expect(screen.getByRole('status')).toBe(status);
+    expect(status.textContent).toBe('Draft saved at 5:05 PM');
   });
 
   it('generates a glass bar that clears the safe area when stuck', () => {
@@ -83,6 +100,13 @@ describe('ActionBar', () => {
     expect(css.split('.sw-action-bar-sticky-below-md {')).toHaveLength(2);
     expect(css).toContain(
       'padding-left: max(var(--sw-space-4), env(safe-area-inset-left, 0px));',
+    );
+    // An empty status leaves the layout but stays in the accessibility tree.
+    expect(css).toMatch(
+      /\.sw-action-bar-status:empty \{\s*clip-path: inset\(50%\);\s*height: 1px;\s*overflow: hidden;\s*position: absolute;\s*width: 1px;\s*\}/,
+    );
+    expect(css).not.toMatch(
+      /\.sw-action-bar-status:empty \{[^}]*display: none/,
     );
     expect(css).toMatch(
       /@media \(prefers-reduced-transparency: reduce\) \{[^}]*\.sw-action-bar,/,

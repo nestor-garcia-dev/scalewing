@@ -15,6 +15,9 @@ before or after the value, such as a currency sign or a unit (see
 The text is not part of the value. The generated `sw-field-adorned` wrapper
 draws the control frame and focus ring, `sw-field-prefix` and
 `sw-field-suffix` are muted, and the input is named by its label plus the
-adornment ("Drop amount $") through `aria-labelledby`. Adornments need one
+adornment ("Drop amount $") through `aria-labelledby`. An input that names
+itself with its own `aria-label` or `aria-labelledby` keeps that name, and the
+adornment joins its `aria-describedby` instead. A press on the prefix, the
+suffix or the frame focuses the input. Adornments need one
 native `<input>` child; anything else throws a `TypeError`. Additive; an
 unadorned `Field` renders as before.

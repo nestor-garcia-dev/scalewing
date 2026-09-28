@@ -47,6 +47,11 @@ test('Accordion shows a subtitle, a turning chevron, and a smaller nested title'
   const nested = range.locator('details.sw-accordion-sm');
   const nestedTitle = nested.getByText('How the range is measured');
   expect(await fontSize(nestedTitle)).toBeLessThan(await fontSize(title));
+  // The nested header is an sm control: 32px at least, shorter than a md one.
+  const nestedHeader = await nested.locator(':scope > summary').boundingBox();
+  expect(nestedHeader).toBeTruthy();
+  expect(nestedHeader?.height).toBeGreaterThanOrEqual(32);
+  expect(nestedHeader?.height).toBeLessThan(44);
   await nested.locator('summary').click();
   await expect(nested).toHaveAttribute('open', '');
   await expect(nested.getByText(/Field teams walk/)).toBeVisible();

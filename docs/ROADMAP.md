@@ -24,7 +24,10 @@ closing a register), one `@scalewing/react` commit each on
 `size="sm"` (`teisoro-accordion-summary.md`), the new `ActionBar`
 (`teisoro-action-bar.md`), `Box border="dashed"`
 (`teisoro-box-border-style.md`), `Grid` `align` (`teisoro-grid.md`), and
-`Progress` `showCount` (`teisoro-progress.md`). Next: review and merge the
+`Progress` `showCount` (`teisoro-progress.md`), plus code-review fixes: one
+generated stacking order so an open popup paints over the `ActionBar`, a live
+`ActionBar` status, `Field` adornment naming and frame focus, an `sm` control
+`Accordion` header, and generated `Box` border classes. Next: review and merge the
 branch's pull request, then wait for the owner before `pnpm changeset
 version`, a `react-v` tag or Release packages. Teisoro verifies with a local
 link and adopts the release in task 1285.

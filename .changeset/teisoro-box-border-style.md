@@ -13,5 +13,10 @@ Box-based component takes it.
 </Box>
 ```
 
-New exported type `BoxBorder` (`boolean | 'dashed'`). Additive; `border` and
-`border={true}` are unchanged.
+New generated classes `sw-border` and `sw-border-dashed` and a new exported
+type `BoxBorder` (`boolean | 'dashed'`). `border` and `border={true}` look the
+same as before, but the solid hairline is now the `sw-border` class instead of
+an inline `style.border`; a consumer `style` still wins, and the prop still
+wins over a Box-based component's own frame. A test that read
+`element.style.border` should check the class instead. Additive for the
+public API.

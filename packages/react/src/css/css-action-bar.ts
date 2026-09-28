@@ -5,6 +5,7 @@ import {
   breakpointQuery,
   breakpoints,
 } from './breakpoints.js';
+import { zIndex } from './stacking.js';
 
 const caption = typographyVariants.caption;
 
@@ -13,7 +14,7 @@ function stuckToBottom(indent: string): string {
   return [
     'bottom: calc(var(--sw-space-2) + env(safe-area-inset-bottom, 0px));',
     'position: sticky;',
-    'z-index: 2;',
+    zIndex('bottomChrome'),
   ]
     .map((declaration) => `${indent}${declaration}`)
     .join('\n');
@@ -71,6 +72,16 @@ export function cssActionBarClasses(): string {
   line-height: ${caption.lineHeight}px;
   margin: 0;
   min-width: 0;
+}
+
+/* With no status the live region stays in the page, so a first status is
+   still announced, but it takes no room in the bar. */
+.sw-action-bar-status:empty {
+  clip-path: inset(50%);
+  height: 1px;
+  overflow: hidden;
+  position: absolute;
+  width: 1px;
 }
 
 .sw-action-bar-actions {

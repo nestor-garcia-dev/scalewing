@@ -3,7 +3,7 @@
 import { type DetailsHTMLAttributes, type ReactNode } from 'react';
 
 import { cx } from '../class-names.js';
-import { spacingClassNames } from '../spacing-classes.js';
+import { spacingClassNames, type SpacingProps } from '../spacing-classes.js';
 import { Stack } from './Stack.js';
 import { Text } from './Text.js';
 
@@ -24,6 +24,12 @@ export type AccordionProps = Omit<
 };
 
 const spaceBySize = { sm: 3, md: 4 } as const;
+/* The sm header is an sm control: a step of block padding over its generated
+   min-height instead of the full inset, so it sits lower than a section. */
+const summarySpacingBySize = {
+  sm: { paddingX: 3, paddingY: 1 },
+  md: { padding: 4 },
+} as const satisfies Record<AccordionSize, SpacingProps>;
 const titleVariantBySize = { sm: 'label', md: 'title' } as const;
 
 export function Accordion({
@@ -57,7 +63,7 @@ export function Accordion({
       <summary
         className={cx(
           'sw-accordion-summary',
-          ...spacingClassNames({ padding: space }),
+          ...spacingClassNames(summarySpacingBySize[size]),
         )}
       >
         <span className="sw-accordion-heading">

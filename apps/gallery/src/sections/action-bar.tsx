@@ -1,7 +1,16 @@
-import { ActionBar, Button, Card, Stack, Text } from '@scalewing/react';
+import {
+  Accordion,
+  ActionBar,
+  Button,
+  Card,
+  Select,
+  Stack,
+  Text,
+} from '@scalewing/react';
 import { useState } from 'react';
 
 import { Section } from '../layout/Section.js';
+import { sampleHabitats } from '../sample-copy.js';
 
 const transectStops = [
   'Stop 1 · Reed bed edge · Grey heron',
@@ -17,11 +26,14 @@ const transectStops = [
 export function ActionBarSection() {
   const [savedAt, setSavedAt] = useState<string | null>(null);
   const [submitted, setSubmitted] = useState(false);
+  const [habitatOpen, setHabitatOpen] = useState(true);
+  const [habitat, setHabitat] = useState('forest');
+  const [countSaved, setCountSaved] = useState(false);
 
   return (
     <Section
       id="action-bar"
-      purpose="ActionBar keeps a long page's actions on a glass bar stuck to the bottom of the viewport, with one short status line. Put it last in the content it acts on: it stays stuck while that content scrolls by and rests at the end. stickyBelow md keeps it in page flow on wider screens. It clears the bottom safe area."
+      purpose="ActionBar keeps a long page's actions on a glass bar stuck to the bottom of the viewport, with one short status line. Put it last in the content it acts on: it stays stuck while that content scrolls by and rests at the end. stickyBelow md keeps it in page flow on wider screens. It clears the bottom safe area. Its status line is a polite live region, so a new status is announced. An open popup, such as a Select list in an Accordion, paints over the bar."
       title="ActionBar"
       usage={`<Stack gap={4}>
   {longForm}
@@ -31,11 +43,30 @@ export function ActionBarSection() {
   </ActionBar>
 </Stack>
 
-<ActionBar stickyBelow="md" status="Not saved yet">…</ActionBar>`}
+<ActionBar stickyBelow="md" status={saved ? 'Saved' : undefined}>…</ActionBar>`}
     >
       <Stack gap={5}>
         <Stack data-testid="action-bar-survey" gap={3}>
-          {transectStops.map((stop) => (
+          {transectStops.slice(0, 4).map((stop) => (
+            <Card key={stop} padding={4} variant="outlined">
+              <Text>{stop}</Text>
+            </Card>
+          ))}
+          <Accordion
+            data-testid="action-bar-habitat"
+            onOpenChange={setHabitatOpen}
+            open={habitatOpen}
+            subtitle="An open list paints over the bar"
+            title="Habitat at stop 4"
+          >
+            <Select
+              label="Stop habitat"
+              onChange={setHabitat}
+              options={sampleHabitats}
+              value={habitat}
+            />
+          </Accordion>
+          {transectStops.slice(4).map((stop) => (
             <Card key={stop} padding={4} variant="outlined">
               <Text>{stop}</Text>
             </Card>
@@ -59,13 +90,17 @@ export function ActionBarSection() {
         </Stack>
         <Stack data-testid="action-bar-below-md" gap={3}>
           <Text variant="caption" color="muted">
-            stickyBelow md: stuck on a phone, in page flow from md up.
+            stickyBelow md: stuck on a phone, in page flow from md up. No status
+            until the count is saved.
           </Text>
           <Card padding={4} variant="outlined">
             <Text>Night count · Bat detector at the pond</Text>
           </Card>
-          <ActionBar stickyBelow="md" status="Night count not saved yet">
-            <Button onPress={() => undefined} variant="secondary">
+          <ActionBar
+            stickyBelow="md"
+            status={countSaved ? 'Night count saved' : undefined}
+          >
+            <Button onPress={() => setCountSaved(true)} variant="secondary">
               Save count
             </Button>
           </ActionBar>

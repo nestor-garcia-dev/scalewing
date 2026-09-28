@@ -98,8 +98,9 @@ describe('Accordion', () => {
       'sw-text-label',
     );
     const summary = disclosure?.querySelector('summary');
-    expect(summary?.className).toContain('sw-padding-3');
-    expect(summary?.className).not.toContain('sw-padding-4');
+    expect(summary?.className).toBe(
+      'sw-accordion-summary sw-padding-x-3 sw-padding-y-1',
+    );
     const body = screen.getByText('Transects at dawn.').parentElement;
     expect(body?.className).toContain('sw-gap-3');
     expect(body?.className).toContain('sw-padding-3');
@@ -119,6 +120,14 @@ describe('Accordion', () => {
     expect(css).toContain(
       '.sw-accordion-sm { border-radius: var(--sw-radius-md); }',
     );
+    // A nested header is an sm control (32px), a md header a md control (44px).
+    expect(css).toContain(
+      '.sw-accordion-sm > .sw-accordion-summary { min-height: var(--sw-control-sm-min-height); }',
+    );
+    expect(css).toMatch(
+      /\.sw-accordion-summary \{[^}]*min-height: var\(--sw-control-md-min-height\);/,
+    );
+    expect(css).toContain('--sw-control-sm-min-height: 32px;');
     expect(css).toContain('list-style: none;');
     expect(css).not.toContain('display: list-item;');
     expect(css).toContain(

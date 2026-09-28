@@ -75,7 +75,11 @@ test('Field prefix and suffix sit inside the frame and join the name', async ({
     await frame.evaluate((element) => getComputedStyle(element).borderTopWidth),
   ).toBe('1px');
 
-  await fee.focus();
+  // A press on the adornment focuses the input, as the text cursor promises.
+  await wingspan.locator('xpath=..').locator('.sw-field-suffix').click();
+  await expect(wingspan).toBeFocused();
+  await prefix.click();
+  await expect(fee).toBeFocused();
   expect(
     await frame.evaluate((element) => getComputedStyle(element).outlineStyle),
   ).toBe('solid');

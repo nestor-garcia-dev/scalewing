@@ -6,6 +6,7 @@ import {
 } from 'react';
 
 import { cx } from '../class-names.js';
+import { boxBorderClass, type BoxBorderValue } from '../css/css-box-border.js';
 import {
   columnSpanClassNames,
   type ColumnSpanProps,
@@ -44,13 +45,7 @@ export type BoxProps = SpacingProps &
     border?: BoxBorder;
   };
 
-export type BoxBorder = boolean | 'dashed';
-
-function borderStyle(border: BoxBorder | undefined): string | undefined {
-  if (!border) return undefined;
-  const style = border === 'dashed' ? 'dashed' : 'solid';
-  return `1px ${style} var(--sw-color-border)`;
-}
+export type BoxBorder = BoxBorderValue;
 
 export const Box = forwardRef<HTMLElement, BoxProps>(function Box(
   {
@@ -91,13 +86,13 @@ export const Box = forwardRef<HTMLElement, BoxProps>(function Box(
         }),
         ...visibilityClassNames({ hideBelow, hideFrom }),
         ...columnSpanClassNames({ columnSpan }),
+        boxBorderClass(border),
         className,
       )}
       style={{
         backgroundColor: background
           ? `var(--sw-color-${background})`
           : undefined,
-        border: borderStyle(border),
         borderRadius: radius ? `var(--sw-radius-${radius})` : undefined,
         ...style,
       }}

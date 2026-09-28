@@ -3,7 +3,11 @@
 import { type SpacingStep } from '@scalewing/tokens';
 import { cloneElement, isValidElement, useId, type ReactNode } from 'react';
 
-import { adornedLabelledBy, FieldAdornment } from './FieldAdornment.js';
+import {
+  type AdornedControlAria,
+  adornedControlAria,
+  FieldAdornment,
+} from './FieldAdornment.js';
 import { Stack } from './Stack.js';
 import { Text } from './Text.js';
 
@@ -11,6 +15,7 @@ export type FieldSize = 'xs' | 'md';
 
 type FieldControlProps = {
   'aria-describedby'?: string;
+  'aria-label'?: string;
   'aria-invalid'?: boolean | 'true' | 'false';
   'aria-labelledby'?: string;
   id?: string;
@@ -99,8 +104,17 @@ export function Field({
   if (adorned && children.type !== 'input')
     throw new TypeError('Field prefix and suffix require a native input child');
 
+  const adornment: AdornedControlAria = adorned
+    ? adornedControlAria(
+        children.props,
+        labelId,
+        prefix ? prefixId : undefined,
+        suffix ? suffixId : undefined,
+      )
+    : { labelledBy: children.props['aria-labelledby'] };
   const describedBy = [
     children.props['aria-describedby'],
+    adornment.describedBy,
     message ? messageId : null,
   ]
     .filter(Boolean)
@@ -109,14 +123,7 @@ export function Field({
     id: children.props.id || controlId,
     'aria-describedby': describedBy || undefined,
     'aria-invalid': error ? true : children.props['aria-invalid'],
-    'aria-labelledby': adorned
-      ? children.props['aria-labelledby'] ||
-        adornedLabelledBy(
-          labelId,
-          prefix ? prefixId : undefined,
-          suffix ? suffixId : undefined,
-        )
-      : children.props['aria-labelledby'],
+    'aria-labelledby': adornment.labelledBy,
     required: required || children.props.required,
   });
 

@@ -4,7 +4,8 @@
 
 `Accordion` takes `subtitle`, one muted caption line under the title, and
 `size="sm"` for a quieter disclosure nested inside other content (a
-label-size title, spacing step 3 and `md` corners). The header now draws a
+label-size title, spacing step 3, `md` corners, and a header that is an `sm`
+control of at least 32px instead of 44px). The header now draws a
 token chevron at its inline end in place of the browser's `details` triangle;
 it turns when the disclosure opens and holds still under reduced motion. See
 `docs/requests/teisoro-accordion-summary.md`.

@@ -3,6 +3,7 @@ import { typographyVariants } from '@scalewing/tokens';
 import { breakpointQuery } from './breakpoints.js';
 import { badgeTones } from './css-data.js';
 import { scrollRegionRules } from './css-scroll-region.js';
+import { zIndex } from './stacking.js';
 
 const caption = typographyVariants.caption;
 const data = typographyVariants.data;
@@ -88,7 +89,7 @@ ${scrollRegionRules('.sw-denomination-scroll')}
   -webkit-backdrop-filter: blur(var(--sw-glass-blur)) saturate(var(--sw-glass-saturate));
   inset-inline-start: 0;
   position: sticky;
-  z-index: 1;
+  ${zIndex('stickyCell')}
 }
 
 /*

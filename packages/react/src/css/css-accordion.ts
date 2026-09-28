@@ -53,6 +53,9 @@ export function cssAccordionClasses(): string {
   min-height: var(--sw-control-md-min-height);
 }
 
+/* A nested header is an sm control, still a comfortable pointer and touch target. */
+.sw-accordion-sm > .sw-accordion-summary { min-height: var(--sw-control-sm-min-height); }
+
 .sw-accordion-heading {
   display: flex;
   flex: 1 1 auto;

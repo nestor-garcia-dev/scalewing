@@ -45,13 +45,13 @@ import {
 
 Import the CSS once at the application entry. Do not copy it into your source tree. Optional: import one `@scalewing/react/palette/<id>.css` file after it, or set `data-palette` on the `data-theme` node. React apps can set `palette` on `ThemeProvider` instead.
 
-`Box` `border` draws a hairline in the `border` color token: `border` (or `border={true}`) is solid, and `border="dashed"` is dashed, for a space to fill in by hand such as a blank on a printed form. It does not make the box look or act like an input. Every `Box`-based component takes it.
+`Box` `border` draws a hairline in the `border` color token: `border` (or `border={true}`) is solid, and `border="dashed"` is dashed (the generated `sw-border` and `sw-border-dashed` classes; a `style` you pass still wins), for a space to fill in by hand such as a blank on a printed form. It does not make the box look or act like an input. Every `Box`-based component takes it.
 
 `Box hideBelow="md"` hides a region under 48rem and `hideFrom="md"` hides it at 48rem and wider, so a product can swap a wide layout for a narrow one without its own stylesheet. Hidden regions leave the accessibility tree; do not use this to protect data. `Box as="a"` is a layout link. Use `Button` for press actions. `Field` associates a native `<input>` or `<select>` with a label and token gap; native text controls inherit the generated document canvas. `Select` is a labeled listbox menu when the open list must match the canvas.
 
 `Field` supports optional `description`, `error`, and `required` on one native input, select, or textarea child. It preserves an existing `aria-describedby`, appends a stable message ID, and replaces the hint with an alert when an error is supplied. `error` sets `aria-invalid` and token-owned invalid styling. The consumer owns validation and localized messages.
 
-`Field` `prefix` and `suffix` put short text such as `$` or `%` inside the frame of one native `<input>` child, before or after the value. The text is not part of the value; the input is named by its label plus the adornment (`"Drop amount $"`). Formatting the value stays with the consumer. Any other child throws a `TypeError`.
+`Field` `prefix` and `suffix` put short text such as `$` or `%` inside the frame of one native `<input>` child, before or after the value. The text is not part of the value; the input is named by its label plus the adornment (`"Drop amount $"`), unless it names itself with its own `aria-label` or `aria-labelledby`, in which case the adornment joins its description. A press anywhere on the frame focuses the input. Formatting the value stays with the consumer. Any other child throws a `TypeError`.
 
 ```tsx
 <Field label="Drop amount" prefix="$">
@@ -59,7 +59,7 @@ Import the CSS once at the application entry. Do not copy it into your source tr
 </Field>
 ```
 
-`Accordion` is a native `<details>` disclosure controlled by `open` and `onOpenChange`. A token chevron at the end of the header replaces the browser triangle and turns when it opens (it holds still under reduced motion). `subtitle` adds one muted caption line under the title, such as a summary of what the section holds; it wraps rather than truncating and is read after the title. `size="sm"` is a quieter disclosure nested inside other content: a label-size title, tighter padding and smaller corners.
+`Accordion` is a native `<details>` disclosure controlled by `open` and `onOpenChange`. A token chevron at the end of the header replaces the browser triangle and turns when it opens (it holds still under reduced motion). `subtitle` adds one muted caption line under the title, such as a summary of what the section holds; it wraps rather than truncating and is read after the title. `size="sm"` is a quieter disclosure nested inside other content: a label-size title, tighter padding, smaller corners and a header that is an `sm` control (at least 32px).
 
 ```tsx
 <Accordion
@@ -79,7 +79,7 @@ Import the CSS once at the application entry. Do not copy it into your source tr
 </Accordion>
 ```
 
-`ActionBar` keeps the actions of a long page on a glass bar stuck to the bottom of the viewport, with an optional one-line `status` (such as when the work was last saved). Put it last in the content it acts on: it stays stuck while that content scrolls by and then rests in its own place at the end. `stickyBelow="md"` sticks only on a phone and leaves the bar in page flow from `md` up. The bar clears `env(safe-area-inset-bottom)` (set `viewport-fit=cover` in the page's viewport meta for the inset to apply). Its children are the actions: on a phone they share one row under the status. The status is not a live region; announce a save with your own notice or `Toast`.
+`ActionBar` keeps the actions of a long page on a glass bar stuck to the bottom of the viewport, with an optional one-line `status` (such as when the work was last saved). Put it last in the content it acts on: it stays stuck while that content scrolls by and then rests in its own place at the end. `stickyBelow="md"` sticks only on a phone and leaves the bar in page flow from `md` up. The bar clears `env(safe-area-inset-bottom)` (set `viewport-fit=cover` in the page's viewport meta for the inset to apply). Its children are the actions: on a phone they share one row under the status. The status is a polite live region (`role="status"`, kept in the page even while empty), so a new status such as "Draft saved at 5:00 PM" is announced; do not announce the same save a second time with your own notice. An open `Select`, `ActionMenu` or `Tooltip` paints over the bar, including inside a glass `Card` or `Accordion`.
 
 ```tsx
 <Stack gap={4}>
