@@ -69,6 +69,17 @@ that shows a check while true and announces its selected state. Without
 name is the title, detail, and value unless `accessibilityLabel` replaces
 it.
 
+`ActionRow` holds the actions for what a screen shows as tinted tiles under
+its title, iOS Contacts style: each `actions` item is a consumer `icon` over
+a one-line `label` on the `accentSubtle` tint. The row keeps four equal
+slots, so one to four actions keep quarter-width tiles from the start side.
+Past four, the first three show and the fourth is a `more` tile whose
+`onPress` receives the remaining actions for the product's action sheet;
+`more` is required then. Each tile is a button named by its label unless its
+`accessibilityLabel` gives a longer name; `disabled` dims it in place, and
+`testID` works on the row, each action, and More. Pass Lucide glyphs at
+spacing step 5 in `theme.colors.accent` (ADR 0008).
+
 `SegmentedControl` uses the active palette's accent/onAccent pair for the
 selected section, with a 44-point minimum touch height. Labels grow with
 system text size. The native example demonstrates switching sections.
