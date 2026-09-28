@@ -34,7 +34,8 @@ export function zIndex(layer: StackingLayer): string {
 
 const openPopups = [
   '.sw-select-list',
-  '.sw-action-menu-list:not([hidden])',
+  // Rendered only while open; on the top layer where the popover API exists.
+  '.sw-action-menu-list',
   '.sw-tooltip:not([hidden])',
   // DateField and CalendarButton share it. Rendered only while open; on the
   // top layer where the popover API exists.

@@ -105,6 +105,14 @@ describe('generated CSS', () => {
     );
   });
 
+  it('resets the browser margins of every Text variant at zero specificity', () => {
+    expect(css).toContain(
+      ':where(.sw-text-display, .sw-text-heading, .sw-text-title, .sw-text-body, .sw-text-label, .sw-text-caption, .sw-text-data) { margin: 0; }',
+    );
+    // An authored margin, such as the visually hidden utility's, still wins.
+    expect(css).toContain('.sw-sr-only { position: absolute;');
+  });
+
   it('emits the text alignment utilities', () => {
     expect(catalog).toEqual(
       expect.arrayContaining(['sw-text-align-center', 'sw-text-align-end']),
@@ -168,7 +176,7 @@ describe('generated CSS', () => {
 
   it('lifts a glass surface over the next one and the ActionBar while it holds an open popup', () => {
     const popups =
-      '.sw-select-list, .sw-action-menu-list:not([hidden]), .sw-tooltip:not([hidden]), .sw-date-field-calendar';
+      '.sw-select-list, .sw-action-menu-list, .sw-tooltip:not([hidden]), .sw-date-field-calendar';
     expect(css).toContain(
       `.sw-card-glass:has(${popups}),\n.sw-accordion:has(${popups}) {\n  position: relative;\n  z-index: 3;\n}`,
     );
@@ -262,6 +270,27 @@ describe('generated CSS', () => {
     expect(catalog).toContain('sw-select-list');
     expect(catalog).toContain('sw-select-action');
     expect(css).toContain('.sw-select-action');
+    expect(css).toContain(
+      '@media (pointer: coarse) {\n  .sw-action-menu-trigger {\n    min-height: var(--sw-control-md-min-height);\n    min-width: var(--sw-control-md-min-height);\n  }\n\n  .sw-action-menu-item {\n    min-height: var(--sw-control-md-min-height);\n  }\n}',
+    );
+    // At equal specificity the coarse-pointer target must follow the xs sizes.
+    expect(
+      css.indexOf('@media (pointer: coarse) {\n  .sw-action-menu-trigger'),
+    ).toBeGreaterThan(css.indexOf('.sw-action-menu-item {'));
+    const menuList = css.slice(css.indexOf('.sw-action-menu-list {'));
+    const menuListRule = menuList.slice(0, menuList.indexOf('}'));
+    // The popover layer's inset: 0 would override the placed left in RTL.
+    expect(menuListRule).toContain('inset: auto;');
+    // max-content width, so the viewport cap wins and long commands wrap.
+    expect(menuListRule).toContain('width: max-content;');
+    expect(menuListRule).toContain(
+      'max-width: calc(100% - var(--sw-space-2) - var(--sw-space-2));',
+    );
+    expect(menuListRule).toContain(
+      'min-width: var(--sw-control-md-min-height);',
+    );
+    expect(menuListRule).not.toContain('min-width: max-content');
+    expect(css).toContain('overflow-wrap: anywhere;');
     expect(css).toContain('.sw-action-menu-list');
     expect(css).toContain('.sw-action-menu-item-danger');
     expect(catalog).toContain('sw-action-menu-trigger');
@@ -416,6 +445,11 @@ describe('generated CSS', () => {
     expect(css).toContain(".sw-date-field-day[aria-disabled='true']");
     expect(css).toMatch(
       /prefers-reduced-transparency: reduce\) \{[^}]*\.sw-date-field-calendar,/,
+    );
+    const calendar = css.slice(css.indexOf('.sw-date-field-calendar {'));
+    // 100% of the top layer leaves out a classic scrollbar; 100vw does not.
+    expect(calendar.slice(0, calendar.indexOf('}'))).toContain(
+      'max-width: calc(100% - var(--sw-space-2) - var(--sw-space-2));',
     );
     expect(catalog).toContain('sw-calendar-button');
     expect(css).toContain(

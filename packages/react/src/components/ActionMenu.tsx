@@ -9,7 +9,7 @@ import {
   type ReactNode,
 } from 'react';
 
-import { cx } from '../class-names.js';
+import { ActionMenuList } from './action-menu/ActionMenuList.js';
 
 export type ActionMenuItem = {
   id: string;
@@ -47,9 +47,7 @@ export function ActionMenu({
   disabled = false,
 }: ActionMenuProps) {
   const menuId = useId();
-  const rootRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
-  const menuRef = useRef<HTMLDivElement>(null);
   const openRef = useRef(false);
   const [open, setOpen] = useState(false);
   const [focusIndex, setFocusIndex] = useState(-1);
@@ -74,54 +72,6 @@ export function ActionMenu({
     setFocusIndex(index);
     setOpen(true);
   }
-
-  function positionMenu() {
-    const triggerNode = triggerRef.current;
-    const menuNode = menuRef.current;
-    if (!triggerNode || !menuNode) return;
-    const rect = triggerNode.getBoundingClientRect();
-    const width = menuNode.offsetWidth;
-    const height = menuNode.offsetHeight;
-    menuNode.style.left = `${Math.max(0, Math.min(rect.left, window.innerWidth - width))}px`;
-    menuNode.style.top = `${Math.max(0, rect.bottom + height <= window.innerHeight ? rect.bottom : rect.top - height)}px`;
-  }
-
-  useLayoutEffect(() => {
-    const menuNode = menuRef.current;
-    if (!menuNode) return;
-    const supportsPopover = typeof menuNode.showPopover === 'function';
-    if (supportsPopover) menuNode.setAttribute('popover', 'manual');
-    if (!open) {
-      if (supportsPopover && menuNode.matches(':popover-open'))
-        menuNode.hidePopover();
-      return;
-    }
-    if (supportsPopover && !menuNode.matches(':popover-open'))
-      menuNode.showPopover();
-    positionMenu();
-    const commands =
-      menuNode.querySelectorAll<HTMLButtonElement>('[role="menuitem"]');
-    commands[focusIndex]?.focus();
-  }, [focusIndex, open]);
-
-  useLayoutEffect(() => {
-    if (!open) return;
-    function onPointerDown(event: PointerEvent) {
-      const target = event.target;
-      if (target instanceof Node && !rootRef.current?.contains(target)) close();
-    }
-    function onMove() {
-      positionMenu();
-    }
-    document.addEventListener('pointerdown', onPointerDown);
-    window.addEventListener('resize', onMove);
-    window.addEventListener('scroll', onMove, true);
-    return () => {
-      document.removeEventListener('pointerdown', onPointerDown);
-      window.removeEventListener('resize', onMove);
-      window.removeEventListener('scroll', onMove, true);
-    };
-  }, [open]);
 
   function onTriggerKeyDown(event: KeyboardEvent<HTMLButtonElement>) {
     if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
@@ -165,7 +115,7 @@ export function ActionMenu({
   }
 
   return (
-    <div className="sw-action-menu" ref={rootRef}>
+    <div className="sw-action-menu">
       <button
         aria-controls={open ? menuId : undefined}
         aria-expanded={open}
@@ -180,40 +130,19 @@ export function ActionMenu({
       >
         {trigger ?? label}
       </button>
-      <div
-        aria-label={label}
-        className="sw-action-menu-list"
-        hidden={!open}
-        id={menuId}
-        onKeyDown={onMenuKeyDown}
-        ref={menuRef}
-        role="menu"
-      >
-        {items.map((item, index) => (
-          <button
-            className={cx(
-              'sw-action-menu-item',
-              item.destructive && 'sw-action-menu-item-danger',
-            )}
-            disabled={item.disabled}
-            key={item.id}
-            onClick={() => select(item)}
-            onFocus={() => setFocusIndex(index)}
-            onKeyDown={(event) => {
-              if (event.key === 'Enter' || event.key === ' ') {
-                event.preventDefault();
-                select(item);
-              }
-            }}
-            role="menuitem"
-            tabIndex={index === focusIndex ? 0 : -1}
-            type="button"
-          >
-            {item.icon ? <span aria-hidden="true">{item.icon}</span> : null}
-            <span>{item.label}</span>
-          </button>
-        ))}
-      </div>
+      {open ? (
+        <ActionMenuList
+          focusIndex={focusIndex}
+          id={menuId}
+          items={items}
+          label={label}
+          onDismiss={() => close()}
+          onFocusIndex={setFocusIndex}
+          onKeyDown={onMenuKeyDown}
+          onSelect={select}
+          triggerRef={triggerRef}
+        />
+      ) : null}
     </div>
   );
 }

@@ -1,17 +1,40 @@
 import { spacingScale } from '@scalewing/tokens';
 import { useLayoutEffect, useRef, type RefObject } from 'react';
 
-import { anchoredPosition } from '../../anchored-position.js';
+import { anchoredPosition } from '../anchored-position.js';
 
-function placePopover(node: HTMLElement, anchor: HTMLElement) {
+export type AnchoredPopoverPlacement = {
+  /** Line up with the anchor's end when the start-aligned popover overflows. */
+  flipInline?: boolean;
+};
+
+/**
+ * The viewport a fixed popover can use: the root's client box, which leaves
+ * out a classic scrollbar (`innerWidth` and `100vw` include it). Falls back
+ * to the window size where nothing is laid out, as in jsdom.
+ */
+function layoutViewport(): { width: number; height: number } {
+  const root = document.documentElement;
+  return {
+    width: root.clientWidth || window.innerWidth,
+    height: root.clientHeight || window.innerHeight,
+  };
+}
+
+function placePopover(
+  node: HTMLElement,
+  anchor: HTMLElement,
+  { flipInline = false }: AnchoredPopoverPlacement,
+) {
   const position = anchoredPosition(
     anchor.getBoundingClientRect(),
     { width: node.offsetWidth, height: node.offsetHeight },
-    { width: window.innerWidth, height: window.innerHeight },
+    layoutViewport(),
     {
       gap: spacingScale[1],
       inset: spacingScale[2],
       rtl: getComputedStyle(anchor).direction === 'rtl',
+      flipInline,
     },
   );
   node.style.left = `${position.left}px`;
@@ -20,8 +43,10 @@ function placePopover(node: HTMLElement, anchor: HTMLElement) {
 
 /**
  * Shows a mounted element on the top layer as a manual popover, keeps it
- * beside `anchorRef` through scroll and resize, and calls `onDismiss` for a
- * press outside it and outside `ignoreRef` (the button that toggles it).
+ * beside `anchorRef` through scroll, window resize, and a change in its own
+ * or the anchor's size, a `space-1` gap from it and a
+ * `space-2` inset from the viewport edges, and calls `onDismiss` for a press
+ * outside it and outside `ignoreRef` (the button that toggles it).
  * Browsers without the popover API get the same fixed placement.
  */
 export function useAnchoredPopover(
@@ -29,6 +54,7 @@ export function useAnchoredPopover(
   anchorRef: RefObject<HTMLElement | null>,
   ignoreRef: RefObject<HTMLElement | null>,
   onDismiss: () => void,
+  { flipInline = false }: AnchoredPopoverPlacement = {},
 ) {
   const dismissRef = useRef(onDismiss);
   useLayoutEffect(() => {
@@ -46,7 +72,7 @@ export function useAnchoredPopover(
       node.setAttribute('popover', 'manual');
       if (!node.matches(':popover-open')) node.showPopover();
     }
-    placePopover(node, anchor);
+    placePopover(node, anchor, { flipInline });
 
     function onPointerDown(event: PointerEvent) {
       const target = event.target;
@@ -55,16 +81,24 @@ export function useAnchoredPopover(
       dismissRef.current();
     }
     function onMove() {
-      if (node && anchor) placePopover(node, anchor);
+      if (node && anchor) placePopover(node, anchor, { flipInline });
     }
+    // A popover or anchor that changes size while open (new commands, a
+    // month with another row of weeks, a relabelled trigger) moves too.
+    // ResizeObserver is missing in some runtimes, such as jsdom.
+    const resizes =
+      typeof ResizeObserver === 'function' ? new ResizeObserver(onMove) : null;
+    resizes?.observe(node);
+    resizes?.observe(anchor);
     document.addEventListener('pointerdown', onPointerDown);
     window.addEventListener('resize', onMove);
     window.addEventListener('scroll', onMove, true);
     return () => {
+      resizes?.disconnect();
       document.removeEventListener('pointerdown', onPointerDown);
       window.removeEventListener('resize', onMove);
       window.removeEventListener('scroll', onMove, true);
       if (supportsPopover && node.matches(':popover-open')) node.hidePopover();
     };
-  }, [anchorRef, ignoreRef, popoverRef]);
+  }, [anchorRef, flipInline, ignoreRef, popoverRef]);
 }

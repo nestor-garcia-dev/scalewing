@@ -21,6 +21,9 @@ const transectStops = [
   'Stop 6 · Hedgerow · Dormouse',
   'Stop 7 · Oak copse · Tawny owl',
   'Stop 8 · Stream bank · Kingfisher',
+  'Stop 9 · Salt marsh · Redshank',
+  'Stop 10 · Beech hanger · Nuthatch',
+  'Stop 11 · Chalk grassland · Adonis blue',
 ] as const;
 
 export function ActionBarSection() {

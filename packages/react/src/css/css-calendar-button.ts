@@ -1,7 +1,6 @@
 import { buttonSizes } from '@scalewing/tokens';
 
-/* The comfortable touch target: the md control height, 44 px, both ways. */
-const touchTarget = 'var(--sw-control-md-min-height)';
+import { coarsePointerQuery, touchTarget } from './touch-target.js';
 
 /* Square at every Button size: as wide as the size's control height. */
 function squareRules(): string {
@@ -27,7 +26,7 @@ ${squareRules()}
 }
 
 /* A coarse pointer gets the full touch target at the smaller sizes too. */
-@media (pointer: coarse) {
+@media ${coarsePointerQuery} {
   .sw-button.sw-calendar-button {
     min-height: ${touchTarget};
     min-width: ${touchTarget};

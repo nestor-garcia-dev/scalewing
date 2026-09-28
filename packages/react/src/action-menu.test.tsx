@@ -25,6 +25,78 @@ function renderMenu(items: readonly ActionMenuItem[], disabled = false) {
   return screen.getByRole('button', { name: 'Sighting actions' });
 }
 
+const shareOnly: readonly ActionMenuItem[] = [
+  { id: 'share', label: 'Share sighting', onSelect: vi.fn() },
+];
+
+type Size = { width: number; height: number };
+
+type Layout = {
+  viewport: Size;
+  /** The root's client box; 0 (unset) falls back to the window size. */
+  client?: Size;
+  trigger: { x: number; y: number; width: number; height: number };
+  menu: Size;
+};
+
+/**
+ * Lays out the trigger and the menu, which jsdom does not: stubs the window
+ * size, the root's client box, the trigger's `getBoundingClientRect`, and the
+ * menu's `offsetWidth` and `offsetHeight`, then restores them all. It reads
+ * `layout` on every call, so a test may change it while the menu is open.
+ */
+function withLayout(layout: Layout, run: () => void) {
+  const prototype = HTMLElement.prototype;
+  const rect = prototype.getBoundingClientRect;
+  const offsetWidth = Object.getOwnPropertyDescriptor(prototype, 'offsetWidth');
+  const offsetHeight = Object.getOwnPropertyDescriptor(
+    prototype,
+    'offsetHeight',
+  );
+  const root = document.documentElement;
+  const { innerWidth, innerHeight } = window;
+  try {
+    window.innerWidth = layout.viewport.width;
+    window.innerHeight = layout.viewport.height;
+    Object.defineProperty(root, 'clientWidth', {
+      configurable: true,
+      get: () => layout.client?.width ?? 0,
+    });
+    Object.defineProperty(root, 'clientHeight', {
+      configurable: true,
+      get: () => layout.client?.height ?? 0,
+    });
+    prototype.getBoundingClientRect = function () {
+      return this.classList.contains('sw-action-menu-trigger')
+        ? DOMRect.fromRect(layout.trigger)
+        : rect.call(this);
+    };
+    Object.defineProperty(prototype, 'offsetWidth', {
+      configurable: true,
+      get() {
+        return this.getAttribute('role') === 'menu' ? layout.menu.width : 0;
+      },
+    });
+    Object.defineProperty(prototype, 'offsetHeight', {
+      configurable: true,
+      get() {
+        return this.getAttribute('role') === 'menu' ? layout.menu.height : 0;
+      },
+    });
+    run();
+  } finally {
+    window.innerWidth = innerWidth;
+    window.innerHeight = innerHeight;
+    Reflect.deleteProperty(root, 'clientWidth');
+    Reflect.deleteProperty(root, 'clientHeight');
+    prototype.getBoundingClientRect = rect;
+    if (offsetWidth)
+      Object.defineProperty(prototype, 'offsetWidth', offsetWidth);
+    if (offsetHeight)
+      Object.defineProperty(prototype, 'offsetHeight', offsetHeight);
+  }
+}
+
 describe('ActionMenu', () => {
   it('opens a labelled command menu and invokes an action once', () => {
     const share = vi.fn();
@@ -146,14 +218,119 @@ describe('ActionMenu', () => {
     const trigger = renderMenu([
       { id: 'share', label: 'Share sighting', onSelect: vi.fn() },
     ]);
+    // The menu is rendered only while open.
+    expect(screen.queryByRole('menu', { hidden: true })).toBeNull();
+    fireEvent.click(trigger);
+    // jsdom's own :popover-open does not see the stub, so it reads as hidden.
     const menu = screen.getByRole('menu', { hidden: true });
     expect(menu.getAttribute('popover')).toBe('manual');
-    expect(menu.hasAttribute('data-popover-open')).toBe(false);
-    fireEvent.click(trigger);
     expect(menu.hasAttribute('data-popover-open')).toBe(true);
     fireEvent.keyDown(menu, { key: 'Escape' });
     expect(menu.hasAttribute('data-popover-open')).toBe(false);
+    expect(screen.queryByRole('menu', { hidden: true })).toBeNull();
     expect(trigger.getAttribute('aria-expanded')).toBe('false');
+  });
+
+  it('opens a gap below the trigger, inset from the viewport edge', () => {
+    withLayout(
+      {
+        viewport: { width: 390, height: 844 },
+        trigger: { x: 337, y: 100, width: 37, height: 28 },
+        menu: { width: 160, height: 120 },
+      },
+      () => {
+        fireEvent.click(renderMenu(shareOnly));
+        const menu = screen.getByRole('menu');
+        // Lined up with the trigger's end (374 - 160), 4 px (space-1) below it.
+        expect(menu.style.left).toBe('214px');
+        expect(menu.style.top).toBe('132px');
+      },
+    );
+  });
+
+  it('fits the viewport without a classic scrollbar', () => {
+    withLayout(
+      {
+        // A 15 px scrollbar on each axis: innerWidth and innerHeight
+        // include it, the root's client box does not.
+        viewport: { width: 390, height: 844 },
+        client: { width: 375, height: 829 },
+        trigger: { x: 300, y: 740, width: 37, height: 28 },
+        menu: { width: 350, height: 60 },
+      },
+      () => {
+        fireEvent.click(renderMenu(shareOnly));
+        const menu = screen.getByRole('menu');
+        // Clamped to 375 - 8 - 350, not 390 - 8 - 350 = 32.
+        expect(menu.style.left).toBe('17px');
+        // 768 + 4 + 60 passes 829 - 8, so it opens above: 740 - 4 - 60.
+        expect(menu.style.top).toBe('676px');
+      },
+    );
+  });
+
+  it('moves the open menu when its commands change size', () => {
+    const observers: FakeResizeObserver[] = [];
+    class FakeResizeObserver {
+      targets: Element[] = [];
+      disconnected = false;
+      constructor(readonly callback: () => void) {
+        observers.push(this);
+      }
+      observe(target: Element) {
+        this.targets.push(target);
+      }
+      disconnect() {
+        this.disconnected = true;
+      }
+    }
+    vi.stubGlobal('ResizeObserver', FakeResizeObserver);
+    const layout: Layout = {
+      viewport: { width: 390, height: 844 },
+      trigger: { x: 337, y: 100, width: 37, height: 28 },
+      menu: { width: 160, height: 60 },
+    };
+    try {
+      withLayout(layout, () => {
+        const { rerender } = render(
+          <ActionMenu items={shareOnly} label="Sighting actions" />,
+        );
+        fireEvent.click(
+          screen.getByRole('button', { name: 'Sighting actions' }),
+        );
+        const menu = screen.getByRole('menu');
+        expect(menu.style.left).toBe('214px');
+        const [observer] = observers;
+        expect(observer?.targets).toEqual([
+          menu,
+          screen.getByRole('button', { name: 'Sighting actions' }),
+        ]);
+
+        // A longer command arrives while the menu is open.
+        rerender(
+          <ActionMenu
+            items={[
+              ...shareOnly,
+              {
+                id: 'move',
+                label: 'Move to another survey',
+                onSelect: vi.fn(),
+              },
+            ]}
+            label="Sighting actions"
+          />,
+        );
+        layout.menu = { width: 250, height: 88 };
+        observer?.callback();
+        // Lined up with the trigger's end again: 374 - 250.
+        expect(menu.style.left).toBe('124px');
+
+        fireEvent.keyDown(menu, { key: 'Escape' });
+        expect(observer?.disconnected).toBe(true);
+      });
+    } finally {
+      vi.unstubAllGlobals();
+    }
   });
 
   it('closes and rejects a pending command when disabled after opening', () => {
