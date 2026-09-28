@@ -2,6 +2,7 @@ import { darkTheme, lightTheme } from '@scalewing/tokens';
 import { describe, expect, it } from 'vitest';
 
 import { cssButtonClasses } from './css-button.js';
+import { cssFilterChipsClasses } from './css-filter-chips.js';
 import { spacingClass } from './spacing-classes.js';
 import { generateStylesheet, utilityClassCatalog } from './stylesheet.js';
 
@@ -412,6 +413,13 @@ describe('generated CSS', () => {
       expect(css).toContain(`.${className}`);
       expect(catalog).toContain(className);
     }
+    // A zero-count chip is quiet in color, never faded (Teisoro NSF-1).
+    expect(css).toContain(
+      '.sw-filter-chip-quiet:not(:has(.sw-filter-chip-input:checked)) .sw-filter-chip-face {\n  background: transparent;\n  color: var(--sw-color-muted);\n}',
+    );
+    expect(cssFilterChipsClasses()).not.toContain(
+      'opacity: var(--sw-quiet-opacity)',
+    );
     expect(css).toContain('flex-wrap: wrap;');
     for (const className of [
       'sw-field',
