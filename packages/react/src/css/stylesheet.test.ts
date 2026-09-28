@@ -1,6 +1,7 @@
 import { darkTheme, lightTheme } from '@scalewing/tokens';
 import { describe, expect, it } from 'vitest';
 
+import { cssButtonClasses } from './css-button.js';
 import { spacingClass } from './spacing-classes.js';
 import { generateStylesheet, utilityClassCatalog } from './stylesheet.js';
 
@@ -496,7 +497,19 @@ describe('generated CSS', () => {
     expect(css).toContain('sw-toast-float');
     expect(css).toContain('--sw-quiet-opacity:');
     expect(css).toContain('--sw-motion-default:');
-    expect(css).toContain(".sw-button[aria-pressed='false']");
+    // An unpressed toggle keeps full contrast (Teisoro NSF-1, WCAG 1.4.3);
+    // the pressed one carries an accent ring outside its fill.
+    expect(css).not.toContain(".sw-button[aria-pressed='false']");
+    expect(css).toContain(
+      ".sw-button[aria-pressed='true'] { box-shadow: 0 0 0 2px var(--sw-color-background), 0 0 0 4px var(--sw-color-accent); }",
+    );
+    expect(css).toContain(
+      ".sw-button[aria-pressed='true']:focus-visible { outline-offset: calc(var(--sw-focus-ring-offset) + 4px); }",
+    );
+    expect(css).toContain(
+      ".sw-button[aria-pressed='true'] { background: Highlight; border-color: Highlight; color: HighlightText; }",
+    );
+    expect(cssButtonClasses()).not.toContain('forced-color-adjust');
     expect(catalog).toContain('sw-toast');
     expect(catalog).toContain('sw-toast-travel');
     expect(css).toContain('--sw-motion-travel:');
