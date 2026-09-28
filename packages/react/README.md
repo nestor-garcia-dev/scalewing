@@ -12,6 +12,7 @@ import {
   BarChart,
   Box,
   Button,
+  CalendarButton,
   Card,
   Checkbox,
   RadioGroup,
@@ -168,6 +169,29 @@ People type the date into a text entry in the locale's numeric order (`MM/DD/YYY
   value={fecha}
   onChange={setFecha}
 />
+```
+
+`CalendarButton` is an icon-only `Button` that opens the same calendar dialog for a date the page already shows, such as a day heading with its own previous and next steps: `‹ Tuesday, September 22, 2026 [calendar] ›`. It has no text entry and no empty value. Supply `label` (what pressing it does, such as "Choose survey day"), a `YYYY-MM-DD` `value`, and `onChange`; optional `min`, `max`, `disabled`, `locale`, and `weekStartsOn` behave as on `DateField`, and `id` and a `ref` reach the `<button>`. `labels` takes the calendar's words (`previousMonth`, `nextMonth`, `month`, `year`, `today`) and `nameSeparator`. The button's accessible name is `label`, `labels.nameSeparator` (default `", "`), then the spoken date (`"Choose survey day, Tuesday, September 22, 2026"`); pass the locale's own pause where a comma does not fit, such as `"、"` in Japanese. It comes with `aria-haspopup="dialog"`, `aria-expanded`, and `aria-controls` while open; the calendar dialog is named by `label`. Enter, Space, or a press opens it on `value`. As on `DateField`, a `value` outside `min`/`max` is kept rather than refused, and the calendar then opens on the nearest allowed day with `value` shown selected and disabled; a button has no invalid state, so the page that shows the date flags it if it must. Choosing a day or **Today** calls `onChange` with the new date only when it changed, closes, and returns focus to the button; Escape closes without a change and returns focus; a press outside closes without a change and leaves focus where it landed. An empty or malformed `value`, `min`, or `max`, inverted bounds, a bad `locale` or `weekStartsOn`, an empty `label`, or an empty label word throws a `RangeError`. `size` (`xs`, `sm`, `md`; default `md`) and `variant` (default `ghost`) follow `Button`; the button is square at every size, and on a coarse pointer it is at least 44 px at every size. Place it beside the heading, not inside it, so the heading's text stays only the date.
+
+```tsx
+<Inline gap={1}>
+  <Button aria-label="Previous day" variant="ghost" onPress={previousDay}>
+    ‹
+  </Button>
+  <Text as="h2" variant="title">
+    {spokenSurveyDay}
+  </Text>
+  <CalendarButton
+    label="Choose survey day"
+    value={surveyDay}
+    onChange={setSurveyDay}
+    min="2026-09-01"
+    max="2026-09-30"
+  />
+  <Button aria-label="Next day" variant="ghost" onPress={nextDay}>
+    ›
+  </Button>
+</Inline>
 ```
 
 ```tsx

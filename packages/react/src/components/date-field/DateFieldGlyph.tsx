@@ -10,9 +10,9 @@ const PATHS: Record<DateFieldGlyphName, string> = {
 };
 
 /**
- * Private control chrome for DateField. Stroke, size, and color come from
- * the generated `sw-date-field-glyph` rule; the chevrons mirror in
- * right-to-left text.
+ * Private control chrome for DateField and CalendarButton. Stroke, size,
+ * and color come from the generated `sw-date-field-glyph` rule; the
+ * chevrons mirror in right-to-left text.
  */
 export function DateFieldGlyph({ name }: { name: DateFieldGlyphName }) {
   return (

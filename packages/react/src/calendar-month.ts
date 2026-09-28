@@ -15,6 +15,12 @@ export type CalendarMonth = {
 /** 0 is Sunday, 1 is Monday, matching `Date.prototype.getDay`. */
 export type WeekStart = 0 | 1;
 
+/** Fails closed on a first weekday other than Sunday or Monday. */
+export function assertWeekStart(weekStartsOn: number) {
+  if (weekStartsOn !== 0 && weekStartsOn !== 1)
+    throw new RangeError('weekStartsOn must be 0 or 1');
+}
+
 export type CalendarCell = {
   value: string;
   day: number;

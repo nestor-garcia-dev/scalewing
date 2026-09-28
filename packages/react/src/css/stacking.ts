@@ -13,7 +13,8 @@
  * 4. `topChrome`: the sticky AppHeader, over a lifted surface that scrolls up
  *    under it (the header is the page's way back, and a popup opens downward).
  * 5. `popup`: a popup outside any lifted surface (Select list, ActionMenu
- *    list, Tooltip, DateField calendar) over everything in the page.
+ *    list, Tooltip, the DateField and CalendarButton calendar) over
+ *    everything in the page.
  *
  * Dialog and Toast sit on the browser's top layer, above all of these.
  */
@@ -35,7 +36,8 @@ const openPopups = [
   '.sw-select-list',
   '.sw-action-menu-list:not([hidden])',
   '.sw-tooltip:not([hidden])',
-  // Rendered only while open; on the top layer where the popover API exists.
+  // DateField and CalendarButton share it. Rendered only while open; on the
+  // top layer where the popover API exists.
   '.sw-date-field-calendar',
 ].join(', ');
 

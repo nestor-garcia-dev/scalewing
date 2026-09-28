@@ -52,3 +52,18 @@ export function formatDateLabel(value: string, locale: string): string {
     formatterDate(parts),
   );
 }
+
+/**
+ * An icon-only calendar trigger's name: its purpose, a separator, then the
+ * date it holds spoken in full, such as "Choose survey day, Tuesday,
+ * September 22, 2026". `Intl.ListFormat` has no neutral join (Spanish unit
+ * lists add "y", Chinese adds nothing), so the separator is the caller's.
+ */
+export function calendarTriggerName(
+  purpose: string,
+  value: string,
+  locale: string,
+  separator: string,
+): string {
+  return `${purpose}${separator}${formatDateLabel(value, locale)}`;
+}

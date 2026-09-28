@@ -417,6 +417,22 @@ describe('generated CSS', () => {
     expect(css).toMatch(
       /prefers-reduced-transparency: reduce\) \{[^}]*\.sw-date-field-calendar,/,
     );
+    expect(catalog).toContain('sw-calendar-button');
+    expect(css).toContain(
+      '.sw-button.sw-calendar-button {\n  flex: none;\n  padding-inline: 0;\n}',
+    );
+    for (const size of ['xs', 'sm', 'md'])
+      expect(css).toContain(
+        `.sw-button-${size}.sw-calendar-button { min-width: var(--sw-control-${size}-min-height); }`,
+      );
+    expect(css).toContain(
+      '@media (pointer: coarse) {\n  .sw-button.sw-calendar-button {\n    min-height: var(--sw-control-md-min-height);\n    min-width: var(--sw-control-md-min-height);',
+    );
+    expect(css).toContain('--sw-control-md-min-height: 44px;');
+    // At equal specificity the coarse-pointer target must follow the squares.
+    expect(css.indexOf('@media (pointer: coarse)')).toBeGreaterThan(
+      css.indexOf('.sw-button-md.sw-calendar-button'),
+    );
     expect(catalog).toContain('sw-dialog');
     expect(catalog).toContain('sw-dialog-lg');
     expect(css).toContain('.sw-accordion');

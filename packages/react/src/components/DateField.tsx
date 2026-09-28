@@ -1,21 +1,18 @@
 'use client';
 
-import { useEffect, useId, useMemo, useRef, useState } from 'react';
+import { useEffect, useId, useMemo, useRef } from 'react';
 
-import { type WeekStart } from '../calendar-month.js';
+import { assertWeekStart, type WeekStart } from '../calendar-month.js';
 import {
   resolveDateFieldLabels,
   type DateFieldLabels,
 } from '../date-field-labels.js';
 import { dateEntryPattern, dateEntryPlaceholder } from '../date-entry.js';
 import { dateEntryValidity } from '../date-entry-validity.js';
-import {
-  assertDateBounds,
-  isOutsideDateRange,
-  todayDateOnly,
-} from '../date-only.js';
+import { assertDateBounds, isOutsideDateRange } from '../date-only.js';
 import { CalendarDialog } from './date-field/CalendarDialog.js';
 import { DateFieldGlyph } from './date-field/DateFieldGlyph.js';
+import { useCalendarPopup } from './date-field/use-calendar-popup.js';
 import { useDateEntry } from './date-field/use-date-entry.js';
 import { useLangLocale } from './date-field/use-lang-locale.js';
 
@@ -59,13 +56,11 @@ export function DateField({
   labels,
 }: DateFieldProps) {
   assertDateBounds(value, min, max);
-  if (weekStartsOn !== 0 && weekStartsOn !== 1)
-    throw new RangeError('weekStartsOn must be 0 or 1');
+  assertWeekStart(weekStartsOn);
   const words = resolveDateFieldLabels(labels);
 
   const rootRef = useRef<HTMLDivElement>(null);
   const controlRef = useRef<HTMLDivElement>(null);
-  const buttonRef = useRef<HTMLButtonElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const resolvedLocale = useLangLocale(locale, rootRef);
   const pattern = useMemo(
@@ -80,14 +75,15 @@ export function DateField({
   useEffect(() => {
     inputRef.current?.setCustomValidity(validity);
   }, [validity]);
-  const [open, setOpen] = useState(false);
-  // Disabling the field closes its calendar for good, not just while disabled.
-  if (disabled && open) setOpen(false);
-  const shown = open && !disabled;
+  const { buttonRef, shown, toggle, trigger, dialog } = useCalendarPopup({
+    value,
+    disabled,
+    onChange,
+    beforeSelect: entry.reset,
+  });
 
   const inputId = useId();
   const labelId = useId();
-  const dialogId = useId();
   const descriptionId = useId();
   const entryErrorId = useId();
   const errorId = useId();
@@ -100,17 +96,6 @@ export function DateField({
     .join(' ');
   const invalid =
     Boolean(error) || entry.invalid || isOutsideDateRange(value, min, max);
-
-  function close(restoreFocus: boolean) {
-    setOpen(false);
-    if (restoreFocus) buttonRef.current?.focus();
-  }
-
-  function select(next: string) {
-    entry.reset();
-    close(true);
-    if (next !== value) onChange(next);
-  }
 
   return (
     <div className="sw-date-field" ref={rootRef}>
@@ -142,13 +127,11 @@ export function DateField({
           value={entry.text}
         />
         <button
-          aria-controls={shown ? dialogId : undefined}
-          aria-expanded={shown}
-          aria-haspopup="dialog"
+          {...trigger}
           aria-describedby={labelId}
           className="sw-date-field-button"
           disabled={disabled}
-          onClick={() => (shown ? close(true) : setOpen(true))}
+          onClick={toggle}
           ref={buttonRef}
           type="button"
         >
@@ -173,18 +156,15 @@ export function DateField({
       ) : null}
       {shown ? (
         <CalendarDialog
-          anchorRef={controlRef}
+          {...dialog}
           buttonRef={buttonRef}
-          id={dialogId}
+          anchorRef={controlRef}
           labelId={labelId}
           labels={words}
           locale={resolvedLocale}
           max={max}
           min={min}
-          onClose={close}
-          onSelect={select}
           required={required}
-          today={todayDateOnly()}
           value={value}
           weekStartsOn={weekStartsOn}
         />
