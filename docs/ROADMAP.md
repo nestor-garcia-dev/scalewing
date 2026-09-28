@@ -29,6 +29,15 @@ branch's pull request, then wait for the owner before `pnpm changeset
 version`, a `react-v` tag or Release packages. Teisoro verifies with a local
 link and adopts the release in task 1285.
 
+`DateField` draws its own calendar for Teisoro (`teisoro-date-field.md`,
+2026-09-27 update, this change on `claude/date-picker`): a typed date-only
+entry in the locale's order plus a Scalewing-drawn WAI-ARIA date picker
+dialog with month and year selectors, replacing the native date input.
+Next: independent review and merge, then Teisoro verifies its date screens
+and tests with a local link (`SCALEWING_PATH=<worktree> pnpm scalewing:link`),
+then version `@scalewing/react` (minor) and publish through Release packages
+once the owner approves the release.
+
 Clear tap targets for FutMas F-018-S01 (`futmas-action-tiers.md`, owner
 approved 2026-09-26, release included): semantic `secondary`, `tertiary`,
 and `subtle` colours with the `signal` palette (#52), Button `tertiary`

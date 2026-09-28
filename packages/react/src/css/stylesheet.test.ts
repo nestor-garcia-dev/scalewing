@@ -392,13 +392,31 @@ describe('generated CSS', () => {
     for (const className of [
       'sw-date-field',
       'sw-date-field-label',
+      'sw-date-field-control',
       'sw-date-field-input',
+      'sw-date-field-button',
+      'sw-date-field-glyph',
+      'sw-date-field-glyph-directional',
       'sw-date-field-description',
       'sw-date-field-error',
+      'sw-date-field-calendar',
+      'sw-date-field-header',
+      'sw-date-field-jump',
+      'sw-date-field-step',
+      'sw-date-field-grid',
+      'sw-date-field-day',
+      'sw-date-field-day-outside',
+      'sw-date-field-footer',
     ]) {
       expect(css).toContain(`.${className}`);
       expect(catalog).toContain(className);
     }
+    expect(css).toContain(".sw-date-field-day[aria-selected='true']");
+    expect(css).toContain(".sw-date-field-day[aria-current='date']");
+    expect(css).toContain(".sw-date-field-day[aria-disabled='true']");
+    expect(css).toMatch(
+      /prefers-reduced-transparency: reduce\) \{[^}]*\.sw-date-field-calendar,/,
+    );
     expect(catalog).toContain('sw-dialog');
     expect(catalog).toContain('sw-dialog-lg');
     expect(css).toContain('.sw-accordion');

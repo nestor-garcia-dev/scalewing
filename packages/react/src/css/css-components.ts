@@ -51,6 +51,7 @@ function reducedTransparencyRules(): string {
   .sw-accordion,
   .sw-select-list,
   .sw-action-menu-list,
+  .sw-date-field-calendar,
   .sw-toast {
     background: var(--sw-color-surface);
     backdrop-filter: none;
