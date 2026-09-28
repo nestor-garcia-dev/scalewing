@@ -14,7 +14,7 @@ Scalewing owns the reusable visual and interaction behavior, typed public API, g
 
 ## 2026-09-27 update: a Scalewing-drawn calendar
 
-Status: implemented on branch `claude/date-picker` for `@scalewing/react` (minor).
+Status: implemented for the react 1.9.0 release (Teisoro F-007-S03 task 1280; PR #61 reviewed and merged); pending consumer verification in Teisoro (task 1285).
 
 Decision: on 2026-09-27 the Teisoro product owner ruled that the native `<input type="date">` fails the acceptance matrix above. The browser draws its own calendar, so it differs by browser and operating system, cannot follow Scalewing's visual language (quiet, glass-minimal, large radius, hairline borders), and cannot be captured in screenshots for UX review. The "use native date-input behavior" and "do not invent a JavaScript calendar" lines above are kept as history and are superseded by this section.
 

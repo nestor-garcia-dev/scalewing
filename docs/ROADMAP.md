@@ -17,29 +17,14 @@ release workflow completed successfully.
 
 ## Next action
 
-Closeout UX surfaces for Teisoro F-007-S03 task 1280 (the first UX review,
-closing a register), one `@scalewing/react` commit each on
-`claude/closeout-ux-surfaces`: `Field` `prefix`/`suffix`
-(`teisoro-field-adornment.md`), the `Accordion` `subtitle`, chevron and
-`size="sm"` (`teisoro-accordion-summary.md`), the new `ActionBar`
-(`teisoro-action-bar.md`), `Box border="dashed"`
-(`teisoro-box-border-style.md`), `Grid` `align` (`teisoro-grid.md`), and
-`Progress` `showCount` (`teisoro-progress.md`), plus code-review fixes: one
-generated stacking order so an open popup paints over the `ActionBar`, a live
-`ActionBar` status, `Field` adornment naming and frame focus, an `sm` control
-`Accordion` header, and generated `Box` border classes. Next: review and merge the
-branch's pull request, then wait for the owner before `pnpm changeset
-version`, a `react-v` tag or Release packages. Teisoro verifies with a local
-link and adopts the release in task 1285.
-
-`DateField` draws its own calendar for Teisoro (`teisoro-date-field.md`,
-2026-09-27 update, this change on `claude/date-picker`): a typed date-only
-entry in the locale's order plus a Scalewing-drawn WAI-ARIA date picker
-dialog with month and year selectors, replacing the native date input.
-Next: independent review and merge, then Teisoro verifies its date screens
-and tests with a local link (`SCALEWING_PATH=<worktree> pnpm scalewing:link`),
-then version `@scalewing/react` (minor) and publish through Release packages
-once the owner approves the release.
+`@scalewing/react` 1.9.0 for Teisoro F-007-S03 task 1280 (the first UX
+review, closing a register): `DateField` draws its own calendar (#61,
+`teisoro-date-field.md`), and `Field` `prefix`/`suffix`, the `Accordion`
+`subtitle`, chevron and `size="sm"`, the new `ActionBar`, `Box
+border="dashed"`, `Grid` `align` and `Progress` `showCount` (#62), each
+reviewed, fixed after code review and merged. Next: tag `react-v1.9.0` on
+the merged version commit, validate and publish through Release packages,
+then Teisoro pins 1.9.0 and adopts it in task 1285.
 
 Clear tap targets for FutMas F-018-S01 (`futmas-action-tiers.md`, owner
 approved 2026-09-26, release included): semantic `secondary`, `tertiary`,

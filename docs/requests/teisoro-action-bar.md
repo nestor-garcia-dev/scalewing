@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: implemented on `claude/closeout-ux-surfaces`; pending review, merge and a `@scalewing/react` minor release. Do not version, tag or publish until the owner says so.
+Status: implemented for the react 1.9.0 release (Teisoro F-007-S03 task 1280; PR #62 reviewed and merged); pending consumer verification in Teisoro (task 1285).
 Renderer: react
 Missing surface: `ActionBar`, a new component: a page's actions and one short status line on a glass bar that sticks to the bottom of the viewport while the content above it scrolls, clearing the bottom safe area, with an option to stick only below the `md` breakpoint. Generated classes `sw-action-bar`, `sw-action-bar-status`, `sw-action-bar-actions`, `sw-action-bar-sticky`, `sw-action-bar-sticky-below-md`.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: nothing published is sticky at the bottom. `AppHeader` is sticky at the top only, `ButtonGroup` is an in-flow row, and `Card` has no position. A bottom bar needs `position: sticky`, a safe-area inset, a breakpoint query and a glass surface, and Teisoro owns no CSS, media queries or inline styles.
