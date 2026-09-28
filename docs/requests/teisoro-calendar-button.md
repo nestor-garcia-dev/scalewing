@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: implemented on branch `claude/date-button` (2026-09-28), PR #65 open with the code-review fixes applied; pending review and merge, a `@scalewing/react` minor release, and consumer verification in Teisoro.
+Status: merged in #65 (2026-09-28) and released in `@scalewing/react` 1.10.0; pending consumer verification in Teisoro (F-007-S03 task 1290).
 Renderer: react
 Missing surface: `CalendarButton`, an icon-only button that opens DateField's calendar dialog for a date the page already shows.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: `Button` can show a calendar glyph but has no calendar to open. The only Scalewing calendar lives inside `DateField`, which is a text entry with its own label, so using it for a day heading shows the date twice. Teisoro may not draw its own calendar (`teisoro-date-field.md`, 2026-09-27 ruling).
