@@ -128,6 +128,32 @@ describe('layout components', () => {
     expect(link.getAttribute('href')).toBe('/draft');
     expect(link.className).toContain('sw-padding-2');
   });
+
+  it('draws a solid or a dashed hairline border from the border token', () => {
+    render(
+      <>
+        <Box border data-testid="solid" />
+        <Box border="dashed" data-testid="dashed" />
+        <Box data-testid="none" />
+        <Box border={false} data-testid="off" />
+        <Box
+          border="dashed"
+          data-testid="override"
+          style={{ borderStyle: 'dotted' }}
+        />
+      </>,
+    );
+
+    expect(screen.getByTestId('solid').style.border).toBe(
+      '1px solid var(--sw-color-border)',
+    );
+    expect(screen.getByTestId('dashed').style.border).toBe(
+      '1px dashed var(--sw-color-border)',
+    );
+    expect(screen.getByTestId('none').style.border).toBe('');
+    expect(screen.getByTestId('off').style.border).toBe('');
+    expect(screen.getByTestId('override').style.borderStyle).toBe('dotted');
+  });
 });
 
 describe('ButtonGroup', () => {

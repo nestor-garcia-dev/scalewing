@@ -16,7 +16,7 @@ export function LayoutSection() {
   return (
     <Section
       id="layout"
-      purpose="Box is a semantic layout shell. Stack is a column. Inline is a row. Spacing step 4 is 16px, not 4px."
+      purpose="Box is a semantic layout shell. Stack is a column. Inline is a row. Spacing step 4 is 16px, not 4px. border draws a solid hairline; border dashed marks a space to fill in by hand, such as a blank on a printed form."
       title="Layout"
       usage={`<Stack gap={3}>
   <Inline gap={2} justify="between">
@@ -50,6 +50,19 @@ export function LayoutSection() {
           <Box background="surface" border padding={2} radius="sm">
             <Text variant="caption">Two</Text>
           </Box>
+        </Stack>
+        <Stack data-testid="layout-dashed" gap={2}>
+          <Text variant="label">border solid and dashed</Text>
+          <Inline gap={3} wrap>
+            <Box background="surface" border padding={3} radius="sm">
+              <Text variant="caption">Species · Red fox</Text>
+            </Box>
+            <Box background="surface" border="dashed" padding={3} radius="sm">
+              <Text color="muted" variant="caption">
+                Observer · write it in by hand
+              </Text>
+            </Box>
+          </Inline>
         </Stack>
         <Inline align="center" gap={2} justify="between" wrap>
           <Text variant="label">Inline between, align center</Text>

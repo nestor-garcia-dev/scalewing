@@ -40,8 +40,17 @@ export type BoxProps = SpacingProps &
     as?: BoxElement;
     background?: Extract<SemanticColorKey, 'background' | 'surface'>;
     radius?: RadiusStep;
-    border?: boolean;
+    /** A hairline token border: `true` is solid, `'dashed'` marks a space to fill in by hand. */
+    border?: BoxBorder;
   };
+
+export type BoxBorder = boolean | 'dashed';
+
+function borderStyle(border: BoxBorder | undefined): string | undefined {
+  if (!border) return undefined;
+  const style = border === 'dashed' ? 'dashed' : 'solid';
+  return `1px ${style} var(--sw-color-border)`;
+}
 
 export const Box = forwardRef<HTMLElement, BoxProps>(function Box(
   {
@@ -88,7 +97,7 @@ export const Box = forwardRef<HTMLElement, BoxProps>(function Box(
         backgroundColor: background
           ? `var(--sw-color-${background})`
           : undefined,
-        border: border ? '1px solid var(--sw-color-border)' : undefined,
+        border: borderStyle(border),
         borderRadius: radius ? `var(--sw-radius-${radius})` : undefined,
         ...style,
       }}

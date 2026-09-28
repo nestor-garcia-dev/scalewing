@@ -22,8 +22,9 @@ closing a register): one `@scalewing/react` commit each on
 `claude/closeout-ux-surfaces`. Done so far: `Field` `prefix`/`suffix`
 (`teisoro-field-adornment.md`) and the `Accordion` `subtitle`, chevron and
 `size="sm"` (`teisoro-accordion-summary.md`), and the new `ActionBar`
-(`teisoro-action-bar.md`). Next: `Box border="dashed"`, then independent
-review and merge; wait for the owner before
+(`teisoro-action-bar.md`), and `Box border="dashed"`
+(`teisoro-box-border-style.md`). Next: `Grid` `alignItems`, then
+independent review and merge; wait for the owner before
 `pnpm changeset version`, a `react-v` tag or Release packages. Teisoro adopts
 the release in task 1285.
 

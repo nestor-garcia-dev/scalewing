@@ -45,7 +45,12 @@ export {
   type ButtonSize,
   type ButtonVariant,
 } from './components/Button.js';
-export { Box, type BoxElement, type BoxProps } from './components/Box.js';
+export {
+  Box,
+  type BoxBorder,
+  type BoxElement,
+  type BoxProps,
+} from './components/Box.js';
 export {
   ButtonGroup,
   type ButtonGroupJustify,
