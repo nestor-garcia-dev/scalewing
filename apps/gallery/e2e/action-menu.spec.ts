@@ -138,3 +138,86 @@ test('ActionMenu gives its trigger and commands a 44 px target on a coarse point
   await page.keyboard.press('Escape');
   await expect(menu).toBeHidden();
 });
+
+test('ActionMenu keeps its placed left in right-to-left text', async ({
+  page,
+}) => {
+  await page.goto('/#action-menu');
+  await page.evaluate(() => {
+    document.documentElement.dir = 'rtl';
+  });
+  const section = page.locator('#action-menu');
+  const width = await page.evaluate(() => document.documentElement.clientWidth);
+
+  for (const name of ['Sighting actions', 'More actions for Snow leopard']) {
+    const trigger = section.getByRole('button', { name });
+    await trigger.evaluate((node) => node.scrollIntoView({ block: 'center' }));
+    await trigger.click();
+    const menu = page.getByRole('menu', { name });
+    await expect(menu).toBeVisible();
+    const box = await menu.boundingBox();
+    const placed = await menu.evaluate((node) =>
+      parseFloat((node as HTMLElement).style.left),
+    );
+    // The popover layer's inset: 0 must not override the placed left.
+    expect(box?.x).toBeCloseTo(placed, 0);
+    expect(box?.x).toBeGreaterThanOrEqual(inset);
+    expect((box?.x ?? 0) + (box?.width ?? 0)).toBeLessThanOrEqual(
+      width - inset,
+    );
+    if (name === 'Sighting actions') {
+      // At the start of a right-to-left row the menu keeps the trigger's
+      // right edge.
+      const anchor = await trigger.boundingBox();
+      expect((box?.x ?? 0) + (box?.width ?? 0)).toBeCloseTo(
+        (anchor?.x ?? 0) + (anchor?.width ?? 0),
+        0,
+      );
+    }
+    await page.keyboard.press('Escape');
+    await expect(menu).toBeHidden();
+  }
+});
+
+test('ActionMenu wraps a long command inside the screen', async ({
+  page,
+}, testInfo) => {
+  await page.goto('/#action-menu');
+  const section = page.locator('#action-menu');
+  const trigger = section.getByRole('button', {
+    name: 'Acciones del avistamiento',
+  });
+  await trigger.evaluate((node) => node.scrollIntoView({ block: 'center' }));
+  await trigger.click();
+  const menu = page.getByRole('menu', { name: 'Acciones del avistamiento' });
+  await expect(menu).toBeVisible();
+  const width = await page.evaluate(() => document.documentElement.clientWidth);
+  const box = await menu.boundingBox();
+  expect(box?.x).toBeGreaterThanOrEqual(inset);
+  expect((box?.x ?? 0) + (box?.width ?? 0)).toBeLessThanOrEqual(width - inset);
+  // No command runs past the menu's own edge.
+  expect(
+    await menu.evaluate((node) => node.scrollWidth - node.clientWidth),
+  ).toBe(0);
+
+  const long = menu.getByRole('menuitem', { name: /^Mover este avistamiento/ });
+  const short = menu.getByRole('menuitem', { name: 'Archivar avistamiento' });
+  const lines = async (item: typeof long) =>
+    item
+      .locator('span')
+      .last()
+      .evaluate((node) => {
+        const style = getComputedStyle(node);
+        return Math.round(
+          node.getBoundingClientRect().height / parseFloat(style.lineHeight),
+        );
+      });
+  expect(await lines(short)).toBe(1);
+  if (width < 600) expect(await lines(long)).toBeGreaterThan(1);
+  else expect(await lines(long)).toBe(1);
+  await page.screenshot({
+    path: testInfo.outputPath('action-menu-long-command.png'),
+  });
+  await page.keyboard.press('Escape');
+  await expect(menu).toBeHidden();
+});

@@ -57,7 +57,7 @@ Behavior and failure boundary: keyboard and focus as `ActionMenu` today; the con
 
 ## Follow-up request (2026-09-28, Teisoro F-007-S04 task 1305): a gap from the trigger and an inset from the screen edge
 
-Status: implemented locally on `claude/closeout-day-fixes`; review, merge and release remain.
+Status: in PR #68 (`claude/closeout-day-fixes`), with the code-review fixes; merge and release remain.
 Source: Teisoro UX review `closeouts-closeout-day-and-prior-day.md`, finding DAY-8 (the closeout day's "More actions for Register 2" menu).
 
 The menu's left edge started at the trigger and was clamped only to `window.innerWidth - width`: a trigger at the end of a card row pushed the menu flush against the screen edge (x 1137 to 1280 at 1280 px; flush to 390 on a phone), past the card, and it sat directly on the trigger with no gap. `ActionMenu` had its own positioning and outside-press code beside the shared `anchoredPosition` helper and `useAnchoredPopover` hook that the `DateField` calendar uses.
@@ -67,6 +67,8 @@ Behavior:
 - The open menu uses `useAnchoredPopover` (moved from `components/date-field/` to `components/`, since it now serves two surfaces): a `space-1` gap below the trigger, or above it when it only fits there, and a `space-2` inset from every viewport edge, the same tokens as the calendar. The hook also owns the popover layer, scroll and resize, and the outside press.
 - `anchoredPosition` gains an opt-in `flipInline`: when the popover would cross the viewport's inline end aligned to the anchor's start, it lines up with the anchor's end instead, if that fits (mirrored in right-to-left). `ActionMenu` turns it on; the calendar keeps its placement.
 - The menu is rendered only while open (`ActionMenuList`, `components/action-menu/`), so the hook shows and places it on mount, as it does the calendar.
+- The menu resets the popover layer's `inset: 0` (`inset: auto`, as the calendar does), so the placed `left` holds in a right-to-left document instead of the menu snapping to the right edge.
+- The menu is as wide as its longest command (`width: max-content`, at least the 44 px control height) up to the viewport less both insets (`100%` of the top layer, which leaves out a classic scrollbar). A longer command wraps, a word at a time if it must, instead of running off the screen.
 
 No API change. Teisoro needs no code change: its "More actions" trigger ends the card row, so its menu now lines up with the trigger's end.
 
@@ -76,7 +78,7 @@ Rejected alternatives:
 - Adding a gap and inset to `positionMenu` in `ActionMenu` only. It would keep a second copy of the placement, popover and outside-press code that already drifted from the calendar's.
 - Flipping the calendar too. `DateField` and `CalendarButton` are other surfaces; their placement was not part of the finding.
 
-Evidence: `anchored-position.test.ts` (`flipInline`: start kept when it fits, end at the row end, the inset clamp when neither fits, right-to-left, above near the bottom); `action-menu.test.tsx` (the menu's `left` and `top` at a 390 px viewport; the popover layer and the menu rendered only while open); `apps/gallery/e2e/action-menu.spec.ts` "opens a gap below its trigger and clear of the screen edge" on desktop-en, mobile-es (390 px) and forced-colors, with the gallery's new end-of-row menu ("More actions for Snow leopard").
+Evidence: `anchored-position.test.ts` (`flipInline`: start kept when it fits, end at the row end, the inset clamp when neither fits, right-to-left, above near the bottom); `action-menu.test.tsx` (the menu's `left` and `top` at a 390 px viewport; the popover layer and the menu rendered only while open); `apps/gallery/e2e/action-menu.spec.ts` "opens a gap below its trigger and clear of the screen edge" on desktop-en, mobile-es (390 px) and forced-colors, with the gallery's new end-of-row menu ("More actions for Snow leopard"); "keeps its placed left in right-to-left text" and "wraps a long command inside the screen" (the gallery's Spanish menu "Acciones del avistamiento") on the same three projects, added after the PR #68 code review; `css/stylesheet.test.ts` (the list's `inset`, width and caps).
 
 ## Follow-up request (2026-09-28, Teisoro F-007-S04 task 1305): a 44 px touch target on a coarse pointer
 

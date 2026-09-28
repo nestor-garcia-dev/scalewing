@@ -277,6 +277,20 @@ describe('generated CSS', () => {
     expect(
       css.indexOf('@media (pointer: coarse) {\n  .sw-action-menu-trigger'),
     ).toBeGreaterThan(css.indexOf('.sw-action-menu-item {'));
+    const menuList = css.slice(css.indexOf('.sw-action-menu-list {'));
+    const menuListRule = menuList.slice(0, menuList.indexOf('}'));
+    // The popover layer's inset: 0 would override the placed left in RTL.
+    expect(menuListRule).toContain('inset: auto;');
+    // max-content width, so the viewport cap wins and long commands wrap.
+    expect(menuListRule).toContain('width: max-content;');
+    expect(menuListRule).toContain(
+      'max-width: calc(100% - var(--sw-space-2) - var(--sw-space-2));',
+    );
+    expect(menuListRule).toContain(
+      'min-width: var(--sw-control-md-min-height);',
+    );
+    expect(menuListRule).not.toContain('min-width: max-content');
+    expect(css).toContain('overflow-wrap: anywhere;');
     expect(css).toContain('.sw-action-menu-list');
     expect(css).toContain('.sw-action-menu-item-danger');
     expect(catalog).toContain('sw-action-menu-trigger');

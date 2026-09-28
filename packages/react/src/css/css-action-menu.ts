@@ -43,13 +43,19 @@ export function cssActionMenuClasses(): string {
   -webkit-backdrop-filter: blur(var(--sw-glass-blur)) saturate(var(--sw-glass-saturate));
   box-sizing: border-box;
   color: var(--sw-color-text);
+  /* The popover layer's inset: 0 would ignore the placed left in right-to-left. */
+  inset: auto;
   margin: 0;
   max-height: var(--sw-select-max);
-  max-width: calc(100vw - var(--sw-space-2) - var(--sw-space-2));
-  min-width: max-content;
+  /* On the top layer 100% is the viewport without a classic scrollbar. */
+  max-width: calc(100% - var(--sw-space-2) - var(--sw-space-2));
+  /* Never narrower than a touch target. */
+  min-width: var(--sw-control-md-min-height);
   overflow: auto;
   padding: var(--sw-space-1);
   position: fixed;
+  /* As wide as its longest command, until max-width wraps it. */
+  width: max-content;
   ${zIndex('popup')}
 }
 
@@ -65,7 +71,11 @@ export function cssActionMenuClasses(): string {
   font-family: var(--sw-font-sans);
   font-size: ${label.fontSize}px;
   gap: var(--sw-space-2);
+  line-height: ${label.lineHeight}px;
   min-height: var(--sw-control-xs-min-height);
+  /* A long command wraps inside the capped menu, a word at a time if it must. */
+  overflow-wrap: anywhere;
+  padding-block: var(--sw-space-1);
   padding-inline: var(--sw-control-xs-padding-inline);
   text-align: start;
   width: 100%;
