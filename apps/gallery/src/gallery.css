@@ -89,6 +89,10 @@
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 }
 
+.gallery-accent-tint {
+  background: var(--sw-color-accentSubtle);
+}
+
 .gallery-swatch {
   display: inline-block;
   width: var(--sw-space-8);

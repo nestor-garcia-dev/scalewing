@@ -1,4 +1,5 @@
 import { lightColors, darkColors } from './colors.js';
+import { mixChannel } from './color-mix.js';
 import { parseHexColor } from './contrast.js';
 
 export type GlassTokens = {
@@ -8,10 +9,6 @@ export type GlassTokens = {
   saturate: number;
   specular: string;
 };
-
-function mixChannel(from: number, to: number, amount: number): number {
-  return Math.round(from + (to - from) * amount);
-}
 
 function rgba(red: number, green: number, blue: number, alpha: number): string {
   return `rgba(${red}, ${green}, ${blue}, ${alpha})`;

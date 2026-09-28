@@ -16,6 +16,7 @@ export {
   formatBarChartValue,
 } from './bar-chart.js';
 export { secondaryActionBorder } from './action-colors.js';
+export { accentSubtleFor } from './accent-subtle.js';
 export { type CardVariant, cardVariants } from './card.js';
 export {
   type ColorTokens,

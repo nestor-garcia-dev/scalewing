@@ -169,6 +169,17 @@ export function PalettesSection() {
                 </TableRow>
               </TableBody>
             </Table>
+            <Box className="gallery-accent-tint" padding={3} radius="md">
+              <Stack gap={1}>
+                <Text color="accent" variant="label">
+                  Track a sighting
+                </Text>
+                <Text color="accent" variant="caption">
+                  Accent on accentSubtle: at least 4.5:1, so the tint pales
+                  toward the surface for an accent close to that floor.
+                </Text>
+              </Stack>
+            </Box>
             <Field label="Preview habitat" size="xs">
               <select defaultValue="forest" name="palette-preview-habitat">
                 {sampleHabitats.map((habitat) => (
