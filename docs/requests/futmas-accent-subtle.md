@@ -1,5 +1,8 @@
 # FutMas: accent tint colour
 
+Status: implemented for `@scalewing/tokens@1.4.0` (web variable with
+`@scalewing/react@1.11.0`).
+
 Scalewing request from FutMas.
 
 Renderer: tokens (both renderers read it; web as `--sw-color-accentSubtle`)

@@ -18,10 +18,9 @@ release workflow completed successfully.
 ## Next action
 
 `ActionRow` for FutMas F-002-S25 (`futmas-action-row.md`, owner approved
-2026-09-28) on the new `accentSubtle` tint (`futmas-accent-subtle.md`, ADR
-0011): the tokens PR merges first, then this one. Next: release
-`@scalewing/tokens`, then `@scalewing/react` and `@scalewing/react-native`,
-through Release packages; FutMas verifies with a local link first.
+2026-09-28) on the new `accentSubtle` tint (`futmas-accent-subtle.md`, ADR 0011) is merged and versioned: `@scalewing/tokens@1.4.0`, then
+`@scalewing/react-native@1.11.0` and `@scalewing/react@1.11.0` through
+Release packages; FutMas pins them for S25.
 
 Teisoro closeout day fixes (F-007-S04 task 1305, UX review
 `closeouts-closeout-day-and-prior-day.md`), each its own commit on

@@ -1,5 +1,5 @@
-Status: implemented for the next react-native minor release (after
-`futmas-accent-subtle.md` lands in `@scalewing/tokens`).
+Status: implemented for `@scalewing/react-native@1.11.0` (on
+`@scalewing/tokens@1.4.0`).
 
 Scalewing request from FutMas.
 
