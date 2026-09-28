@@ -1,5 +1,145 @@
 # @scalewing/react
 
+## 1.9.0
+
+### Minor Changes
+
+- a4a30e8: `DateField` draws its own calendar instead of using the browser's `<input type="date">`, so it looks the same in every browser, follows Scalewing's tokens, and shows up in screenshots. The props, the date-only `YYYY-MM-DD` contract, and the `RangeError` guards are unchanged.
+
+  - People type the date into a text entry in the locale's numeric order (`MM/DD/YYYY` for en-US, `DD/MM/YYYY` for es); ISO `YYYY-MM-DD` and eight bare digits also work. A keystroke commits once the entry's last field is at full width (a four-digit year, or two digits for a trailing day or month); a shorter last field commits on blur or Enter. Typed text stays when the parent keeps the old value. Text that is not a date keeps the last value and, after the person leaves the field, sets `aria-invalid` with a message. As with the native input, the entry blocks form submission while its text is not a date or its date is outside `min`/`max` (`setCustomValidity`).
+  - A calendar button opens a WAI-ARIA date picker dialog anchored under the field on the popover layer, with month and year selectors for jumping decades, Today, and Clear (only when not `required`). Arrows, Home/End, PageUp/PageDown, and Shift+PageUp/PageDown move focus; Enter or Space selects; Escape closes and returns focus to the button. Days outside `min`/`max` are `aria-disabled`, the month selector offers only months inside them, and padding past `0001-01-01` or `9999-12-31` is blank and inert.
+  - New optional props: `locale` (BCP 47; defaults to the nearest `lang` attribute, then `en-US`), `weekStartsOn` (`0` Sunday by default, or `1` Monday), and `labels` for the control's own words (English defaults), including `outOfRange`, the form validation message for a date outside `min`/`max`. New types `DateFieldLabels` and `WeekStart`. New generated `sw-date-field-*` classes for the control and calendar.
+  - Migration for tests: there is no `input[type=date]` any more. Find the entry by its label (`getByLabel('Hire date')` or `getByRole('textbox', { name: 'Hire date' })`) and `fill` it in the locale's order or in ISO, or open the calendar with the **Choose date** button. The input's value is now the locale's display text (`03/10/2024`), not `2024-03-10`; assert the serialized value from your own state.
+
+  No new dependencies.
+
+- 4548fc2: `Accordion` takes `subtitle`, one muted caption line under the title, and
+  `size="sm"` for a quieter disclosure nested inside other content (a
+  label-size title, spacing step 3, `md` corners, and a header that is an `sm`
+  control of at least 32px instead of 44px). The header now draws a
+  token chevron at its inline end in place of the browser's `details` triangle;
+  it turns when the disclosure opens and holds still under reduced motion. See
+  `docs/requests/teisoro-accordion-summary.md`.
+
+  ```tsx
+  <Accordion
+    open={open}
+    onOpenChange={setOpen}
+    subtitle="Twelve sightings · Two nests"
+    title="Wetlands"
+  >
+    {children}
+  </Accordion>
+  ```
+
+  New generated classes `sw-accordion-sm`, `sw-accordion-heading` and
+  `sw-accordion-marker`, and a new exported type `AccordionSize`. The summary is
+  now a flex row instead of `display: list-item`, so the native marker is gone;
+  an app that styled `.sw-accordion-summary::marker` has nothing left to style.
+  Additive for the public API.
+
+- 38e6f09: New `ActionBar`: a long page's actions and one short `status` line on a glass
+  bar that sticks to the bottom of the viewport while the content above it
+  scrolls, then rests in place after it (see
+  `docs/requests/teisoro-action-bar.md`). `stickyBelow="md"` sticks only below
+  the `md` breakpoint and keeps the bar in page flow from `md` up. The bar clears
+  the safe-area insets (with `viewport-fit=cover`), is solid under Reduce
+  Transparency, and on a phone puts the status on its own line with the actions
+  sharing the row under it. The status is a polite live region
+  (`role="status"`), always rendered so the first status is announced too; an
+  empty status takes no room.
+
+  ```tsx
+  <Stack gap={4}>
+    {longForm}
+    <ActionBar status="Draft saved at 5:00 PM" stickyBelow="md">
+      <Button variant="secondary" onPress={save}>
+        Save draft
+      </Button>
+      <Button onPress={finish}>Finish</Button>
+    </ActionBar>
+  </Stack>
+  ```
+
+  New generated classes `sw-action-bar`, `sw-action-bar-status`,
+  `sw-action-bar-actions`, `sw-action-bar-sticky` and
+  `sw-action-bar-sticky-below-md`; new exported types `ActionBarProps` and `Breakpoint` (the breakpoint names
+  `stickyBelow`, `hideBelow` and `columnsBelow` already take, today only
+  `'md'`). Additive.
+
+  Every generated `z-index` now comes from one stacking order
+  (`src/css/stacking.ts`): sticky table cells 1, the ActionBar 2, a glass `Card`
+  or `Accordion` holding an open popup 3 (was 1), the sticky `AppHeader` 4 (was
+  2), and popups 10 (the `Select` list was 3). An open `Select`, `ActionMenu`
+  or `Tooltip` inside a glass surface now paints over a stuck ActionBar, and
+  still under the AppHeader. An app that layered its own element between these
+  values should check it against the new numbers.
+
+- affd090: `Box` `border` accepts `'dashed'` as well as `true`: a hairline dashed border
+  in the `border` color token, for a space to fill in by hand such as a blank on
+  a printed form (see `docs/requests/teisoro-box-border-style.md`). Every
+  Box-based component takes it.
+
+  ```tsx
+  <Box border="dashed" padding={2} radius="sm">
+    {hint}
+  </Box>
+  ```
+
+  New generated classes `sw-border` and `sw-border-dashed` and a new exported
+  type `BoxBorder` (`boolean | 'dashed'`). `border` and `border={true}` look the
+  same as before, but the solid hairline is now the `sw-border` class instead of
+  an inline `style.border`; a consumer `style` still wins, and the prop still
+  wins over a Box-based component's own frame. A test that read
+  `element.style.border` should check the class instead. Additive for the
+  public API.
+
+- 6a4c4ab: `Field` takes `prefix` and `suffix`: short text inside the control's frame
+  before or after the value, such as a currency sign or a unit (see
+  `docs/requests/teisoro-field-adornment.md`).
+
+  ```tsx
+  <Field label="Drop amount" prefix="$">
+    <input inputMode="decimal" name="drop" />
+  </Field>
+  ```
+
+  The text is not part of the value. The generated `sw-field-adorned` wrapper
+  draws the control frame and focus ring, `sw-field-prefix` and
+  `sw-field-suffix` are muted, and the input is named by its label plus the
+  adornment ("Drop amount $") through `aria-labelledby`. An input that names
+  itself with its own `aria-label` or `aria-labelledby` keeps that name, and the
+  adornment joins its `aria-describedby` instead. A press on the prefix, the
+  suffix or the frame focuses the input. Adornments need one
+  native `<input>` child; anything else throws a `TypeError`. Additive; an
+  unadorned `Field` renders as before.
+
+- 988bd2c: `Grid` takes `align` (`start`, `center`, `end`, `stretch`): where each child
+  sits in the height of its row, through the same generated `sw-align-*` classes
+  and `Align` type as `Stack` and `Inline` (see the 2026-09-28 follow-up in
+  `docs/requests/teisoro-grid.md`). `align="end"` keeps a row of fields level
+  when one label wraps:
+
+  ```tsx
+  <Grid align="end" columns={2} gap={3}>
+    {fields}
+  </Grid>
+  ```
+
+  Additive; unset, no class is added and children stretch as before.
+
+- c3d04a8: `Progress` takes `showCount` (default `true`). `showCount={false}` hides the
+  visible `value / max` count beside the label when the page shows its own count
+  caption, so the count appears once (see the 2026-09-28 follow-up in
+  `docs/requests/teisoro-progress.md`). The progress bar still exposes its value
+  and maximum to assistive tech.
+
+  ```tsx
+  <Progress label="Registers closed" max={2} showCount={false} value={0} />
+  ```
+
+  Additive; the count shows as before when the prop is left out.
+
 ## 1.8.0
 
 ### Minor Changes

@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: implemented on `claude/closeout-ux-surfaces`; pending review, merge and a `@scalewing/react` minor release. Do not version, tag or publish until the owner says so.
+Status: implemented for the react 1.9.0 release (Teisoro F-007-S03 task 1280; PR #62 reviewed and merged); pending consumer verification in Teisoro (task 1285).
 Renderer: react
 Change to an existing surface: web `Accordion` takes `subtitle` (one muted line under the title) and `size="sm"` (a nested disclosure), and draws a token chevron in place of the browser's `details` marker. Generated classes `sw-accordion-sm`, `sw-accordion-heading`, `sw-accordion-marker`.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: `Accordion` takes `title: string` only and renders it as one `title`-size line with `display: list-item`, so the browser's own triangle is the marker. A summary line, a different marker or a smaller header all need Scalewing's `summary` markup and CSS, which Teisoro does not own.

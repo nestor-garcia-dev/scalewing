@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: implemented on `claude/closeout-ux-surfaces`; pending review, merge and a `@scalewing/react` minor release. Do not version, tag or publish until the owner says so.
+Status: implemented for the react 1.9.0 release (Teisoro F-007-S03 task 1280; PR #62 reviewed and merged); pending consumer verification in Teisoro (task 1285).
 Renderer: react
 Missing surface: `prefix` and `suffix` on `Field`: short text inside the control's frame, before or after the value, that is not part of the value. Generated classes `sw-field-adorned`, `sw-field-prefix`, `sw-field-suffix`.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: `Field` labels one native control, and the generated canvas draws that control's frame on the `<input>` itself. Text placed beside the input with `Inline` sits outside the frame, and putting "$" in the value breaks parsing. Teisoro owns no CSS or inline styles.

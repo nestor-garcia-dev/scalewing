@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: implemented on `claude/closeout-ux-surfaces`; pending review, merge and a `@scalewing/react` minor release. Do not version, tag or publish until the owner says so.
+Status: implemented for the react 1.9.0 release (Teisoro F-007-S03 task 1280; PR #62 reviewed and merged); pending consumer verification in Teisoro (task 1285).
 Renderer: react
 Change to an existing surface: `Box` `border` accepts `'dashed'` as well as `true`, a hairline dashed border in the `border` color token (type `BoxBorder = boolean | 'dashed'`).
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: `Box border` is a solid hairline only, the same border the canvas gives a text input, so a box that is empty on purpose reads as a field to type into. `Card` variants (`glass`, `outlined`, `elevated`, `filled`) are surfaces, not a blank to fill by hand, and Teisoro owns no CSS or inline styles.
