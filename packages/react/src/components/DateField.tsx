@@ -102,6 +102,14 @@ export function DateField({
     <div className="sw-date-field" ref={rootRef}>
       <label className="sw-date-field-label" htmlFor={inputId} id={labelId}>
         {label}
+        {/* The same mark as Field's; the input's own required state is what
+            assistive technology reads. */}
+        {required ? (
+          <span aria-hidden="true" className="sw-field-required">
+            {' '}
+            *
+          </span>
+        ) : null}
       </label>
       <div className="sw-date-field-control" ref={controlRef}>
         <input

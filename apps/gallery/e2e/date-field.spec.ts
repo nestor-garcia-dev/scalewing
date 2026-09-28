@@ -166,3 +166,34 @@ test('DateField opens an out-of-range value on the nearest allowed day', async (
   await page.keyboard.press('Escape');
   await expect(calendar).toBeHidden();
 });
+
+test('a required DateField marks its label as Field does', async ({
+  page,
+}, testInfo) => {
+  await page.goto('/#date-field');
+  const section = page.locator('#date-field');
+  // Teisoro NSF-15: "Date reported" had no asterisk beside required fields.
+  const hatch = section.getByRole('textbox', { name: 'Hatch date' });
+  await expect(hatch).toHaveAttribute('required', '');
+  const label = section.locator('label', { has: page.getByText('Hatch date') });
+  const mark = label.locator('.sw-field-required');
+  await expect(mark).toBeVisible();
+  await expect(mark).toHaveText('*');
+  await expect(mark).toHaveAttribute('aria-hidden', 'true');
+  // The accessible name stays the label alone.
+  await expect(hatch).toHaveAccessibleName('Hatch date');
+  // An optional date has no mark.
+  await expect(
+    section
+      .locator('label', { has: page.getByText('Tagging date') })
+      .locator('.sw-field-required'),
+  ).toHaveCount(0);
+  if (testInfo.project.name !== 'forced-colors') {
+    const danger = await mark.evaluate((node) => getComputedStyle(node).color);
+    const text = await label.evaluate((node) => getComputedStyle(node).color);
+    expect(danger).not.toBe(text);
+  }
+  await label.screenshot({
+    path: testInfo.outputPath('date-field-required.png'),
+  });
+});
