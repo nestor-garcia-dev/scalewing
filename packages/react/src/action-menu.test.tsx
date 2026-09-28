@@ -146,14 +146,67 @@ describe('ActionMenu', () => {
     const trigger = renderMenu([
       { id: 'share', label: 'Share sighting', onSelect: vi.fn() },
     ]);
+    // The menu is rendered only while open.
+    expect(screen.queryByRole('menu', { hidden: true })).toBeNull();
+    fireEvent.click(trigger);
+    // jsdom's own :popover-open does not see the stub, so it reads as hidden.
     const menu = screen.getByRole('menu', { hidden: true });
     expect(menu.getAttribute('popover')).toBe('manual');
-    expect(menu.hasAttribute('data-popover-open')).toBe(false);
-    fireEvent.click(trigger);
     expect(menu.hasAttribute('data-popover-open')).toBe(true);
     fireEvent.keyDown(menu, { key: 'Escape' });
     expect(menu.hasAttribute('data-popover-open')).toBe(false);
+    expect(screen.queryByRole('menu', { hidden: true })).toBeNull();
     expect(trigger.getAttribute('aria-expanded')).toBe('false');
+  });
+
+  it('opens a gap below the trigger, inset from the viewport edge', () => {
+    const rect = HTMLElement.prototype.getBoundingClientRect;
+    const width = Object.getOwnPropertyDescriptor(
+      HTMLElement.prototype,
+      'offsetWidth',
+    );
+    const height = Object.getOwnPropertyDescriptor(
+      HTMLElement.prototype,
+      'offsetHeight',
+    );
+    const innerWidth = window.innerWidth;
+    try {
+      window.innerWidth = 390;
+      HTMLElement.prototype.getBoundingClientRect = function () {
+        return this.classList.contains('sw-action-menu-trigger')
+          ? DOMRect.fromRect({ x: 337, y: 100, width: 37, height: 28 })
+          : rect.call(this);
+      };
+      Object.defineProperty(HTMLElement.prototype, 'offsetWidth', {
+        configurable: true,
+        get() {
+          return this.getAttribute('role') === 'menu' ? 160 : 0;
+        },
+      });
+      Object.defineProperty(HTMLElement.prototype, 'offsetHeight', {
+        configurable: true,
+        get() {
+          return this.getAttribute('role') === 'menu' ? 120 : 0;
+        },
+      });
+
+      fireEvent.click(
+        renderMenu([
+          { id: 'share', label: 'Share sighting', onSelect: vi.fn() },
+        ]),
+      );
+      const menu = screen.getByRole('menu');
+      // Lined up with the trigger's end (374 - 160), 4 px (space-1) below it.
+      expect(menu.style.left).toBe('214px');
+      expect(menu.style.top).toBe('132px');
+    } finally {
+      window.innerWidth = innerWidth;
+      HTMLElement.prototype.getBoundingClientRect = rect;
+      if (width)
+        Object.defineProperty(HTMLElement.prototype, 'offsetWidth', width);
+      if (height)
+        Object.defineProperty(HTMLElement.prototype, 'offsetHeight', height);
+    }
   });
 
   it('closes and rejects a pending command when disabled after opening', () => {

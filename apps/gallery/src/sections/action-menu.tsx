@@ -1,6 +1,7 @@
 import {
   ActionMenu,
   Button,
+  Card,
   Dialog,
   Inline,
   Stack,
@@ -17,7 +18,7 @@ export function ActionMenuSection() {
   return (
     <Section
       id="action-menu"
-      purpose="ActionMenu holds independent commands. Select chooses a value; ActionMenu does not. The caller supplies localized names, icons, and callbacks. Focus returns to the trigger before a command runs, so a dialog opened from the menu hands focus back to it on close."
+      purpose="ActionMenu holds independent commands. Select chooses a value; ActionMenu does not. The caller supplies localized names, icons, and callbacks. Focus returns to the trigger before a command runs, so a dialog opened from the menu hands focus back to it on close. The menu opens a small gap below its trigger (above it near the bottom of the screen), keeps clear of the screen edges, and lines up with the trigger's end when the trigger ends a row."
       title="ActionMenu"
       usage={`<ActionMenu
   label="Sighting actions"
@@ -66,6 +67,28 @@ export function ActionMenuSection() {
           />
           <ActionMenu disabled items={[]} label="Unavailable menu" />
         </Inline>
+        <Card padding={3}>
+          <Inline gap={3} justify="between">
+            <Text variant="label">Snow leopard · Alpine</Text>
+            <ActionMenu
+              items={[
+                {
+                  id: 'move',
+                  label: 'Move to another survey',
+                  onSelect: () => setLastAction('Move to another survey'),
+                },
+                {
+                  id: 'remove',
+                  label: 'Remove from census',
+                  destructive: true,
+                  onSelect: () => setLastAction('Remove from census'),
+                },
+              ]}
+              label="More actions for Snow leopard"
+              trigger="⋯"
+            />
+          </Inline>
+        </Card>
         <Dialog
           onClose={() => setConfirmDelete(false)}
           open={confirmDelete}

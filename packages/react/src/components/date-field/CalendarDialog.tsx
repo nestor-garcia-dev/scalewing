@@ -23,7 +23,7 @@ import {
 import { Button } from '../Button.js';
 import { CalendarGrid } from './CalendarGrid.js';
 import { CalendarHeader } from './CalendarHeader.js';
-import { useAnchoredPopover } from './use-anchored-popover.js';
+import { useAnchoredPopover } from '../use-anchored-popover.js';
 
 export type CalendarDialogProps = {
   anchorRef: RefObject<HTMLElement | null>;

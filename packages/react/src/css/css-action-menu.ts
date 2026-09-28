@@ -44,16 +44,12 @@ export function cssActionMenuClasses(): string {
   color: var(--sw-color-text);
   margin: 0;
   max-height: var(--sw-select-max);
-  max-width: calc(100vw - var(--sw-space-2));
+  max-width: calc(100vw - var(--sw-space-2) - var(--sw-space-2));
   min-width: max-content;
   overflow: auto;
   padding: var(--sw-space-1);
   position: fixed;
   ${zIndex('popup')}
-}
-
-.sw-action-menu-list[hidden] {
-  display: none;
 }
 
 .sw-action-menu-item {

@@ -17,6 +17,12 @@ release workflow completed successfully.
 
 ## Next action
 
+Teisoro closeout day fixes (F-007-S04 task 1305, UX review
+`closeouts-closeout-day-and-prior-day.md`), each its own commit on
+`claude/closeout-day-fixes`: `ActionMenu` placement with a gap and a screen
+inset (DAY-8, `teisoro-action-menu.md` follow-up). Next: pull request,
+review and merge, then release `@scalewing/react` and Teisoro pins it.
+
 `CalendarButton` for the Teisoro closeout day heading (F-007-S03 re-review,
 `teisoro-calendar-button.md`): an icon-only Button beside the day heading
 opens the DateField calendar, replacing the separate "Go to a day" field.

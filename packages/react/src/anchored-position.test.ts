@@ -68,4 +68,81 @@ describe('anchored popover position', () => {
       ).top,
     ).toBe(92);
   });
+
+  describe('flipInline', () => {
+    const menu = { width: 160, height: 120 };
+    const phone = { width: 390, height: 844 };
+
+    it('keeps a menu that fits aligned to the trigger start', () => {
+      expect(
+        anchoredPosition(
+          { top: 100, bottom: 128, left: 16, right: 53 },
+          menu,
+          phone,
+          { gap: 4, inset: 8, flipInline: true },
+        ),
+      ).toEqual({ left: 16, top: 132 });
+    });
+
+    it('lines a menu up with the end of a trigger at the row end', () => {
+      expect(
+        anchoredPosition(
+          { top: 100, bottom: 128, left: 337, right: 374 },
+          menu,
+          phone,
+          { gap: 4, inset: 8, flipInline: true },
+        ),
+      ).toEqual({ left: 214, top: 132 });
+      // Without the flip it would only be clamped to the inset.
+      expect(
+        anchoredPosition(
+          { top: 100, bottom: 128, left: 337, right: 374 },
+          menu,
+          phone,
+          { gap: 4, inset: 8 },
+        ).left,
+      ).toBe(222);
+    });
+
+    it('clamps to the inset when neither alignment fits', () => {
+      expect(
+        anchoredPosition(
+          { top: 100, bottom: 128, left: 100, right: 140 },
+          { width: 360, height: 120 },
+          phone,
+          { inset: 8, flipInline: true },
+        ).left,
+      ).toBe(22);
+    });
+
+    it('mirrors in right-to-left text', () => {
+      expect(
+        anchoredPosition(
+          { top: 100, bottom: 128, left: 16, right: 53 },
+          menu,
+          phone,
+          { inset: 8, rtl: true, flipInline: true },
+        ).left,
+      ).toBe(16);
+      expect(
+        anchoredPosition(
+          { top: 100, bottom: 128, left: 200, right: 237 },
+          menu,
+          phone,
+          { inset: 8, rtl: true, flipInline: true },
+        ).left,
+      ).toBe(77);
+    });
+
+    it('opens above with the gap when the trigger is near the bottom', () => {
+      expect(
+        anchoredPosition(
+          { top: 780, bottom: 808, left: 337, right: 374 },
+          menu,
+          phone,
+          { gap: 4, inset: 8, flipInline: true },
+        ),
+      ).toEqual({ left: 214, top: 656 });
+    });
+  });
 });
