@@ -270,6 +270,13 @@ describe('generated CSS', () => {
     expect(catalog).toContain('sw-select-list');
     expect(catalog).toContain('sw-select-action');
     expect(css).toContain('.sw-select-action');
+    expect(css).toContain(
+      '@media (pointer: coarse) {\n  .sw-action-menu-trigger {\n    min-height: var(--sw-control-md-min-height);\n    min-width: var(--sw-control-md-min-height);\n  }\n\n  .sw-action-menu-item {\n    min-height: var(--sw-control-md-min-height);\n  }\n}',
+    );
+    // At equal specificity the coarse-pointer target must follow the xs sizes.
+    expect(
+      css.indexOf('@media (pointer: coarse) {\n  .sw-action-menu-trigger'),
+    ).toBeGreaterThan(css.indexOf('.sw-action-menu-item {'));
     expect(css).toContain('.sw-action-menu-list');
     expect(css).toContain('.sw-action-menu-item-danger');
     expect(catalog).toContain('sw-action-menu-trigger');

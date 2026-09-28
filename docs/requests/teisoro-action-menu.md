@@ -77,3 +77,23 @@ Rejected alternatives:
 - Flipping the calendar too. `DateField` and `CalendarButton` are other surfaces; their placement was not part of the finding.
 
 Evidence: `anchored-position.test.ts` (`flipInline`: start kept when it fits, end at the row end, the inset clamp when neither fits, right-to-left, above near the bottom); `action-menu.test.tsx` (the menu's `left` and `top` at a 390 px viewport; the popover layer and the menu rendered only while open); `apps/gallery/e2e/action-menu.spec.ts` "opens a gap below its trigger and clear of the screen edge" on desktop-en, mobile-es (390 px) and forced-colors, with the gallery's new end-of-row menu ("More actions for Snow leopard").
+
+## Follow-up request (2026-09-28, Teisoro F-007-S04 task 1305): a 44 px touch target on a coarse pointer
+
+Status: implemented locally on `claude/closeout-day-fixes`; review, merge and release remain.
+Source: Teisoro UX review `closeouts-closeout-day-and-prior-day.md`, finding DAY-9, the Scalewing part (Teisoro owns its own button sizes).
+
+The trigger and its commands use `min-height: var(--sw-control-xs-min-height)`, 28 px: the closeout day's ⋮ trigger measured about 37 × 28 px on a phone, beside the card's Start and Continue, where a mis-tap opens Discard. That passes WCAG's 24 px minimum but not the 44 × 44 px target of Teisoro's rubric.
+
+Behavior: under `@media (pointer: coarse)` the trigger is at least `--sw-control-md-min-height` (44 px) tall and wide, and every command is at least that tall. A fine pointer keeps the compact xs height, so desktop toolbars do not change. This is the convention `CalendarButton` introduced (`sw-calendar-button`: at least the md control height on a coarse pointer at every size); the touch-target value and the coarse-pointer query now live in one internal module, `css/touch-target.ts`, that both use.
+
+No API change. Teisoro needs no code change for the trigger; its own `Button size="sm"` actions remain its part of DAY-9.
+
+Rejected alternatives:
+
+- A `size` prop (`xs`, `sm`, `md`), as DAY-9 offered. Every known use is compact chrome on desktop and a thumb target on a phone, which is what the pointer tells apart; a size would make each consumer pick one height for both and add public API with no case yet. It can be added if a product needs a large trigger on a fine pointer.
+- A 44 px trigger at every pointer. It would enlarge desktop toolbars and table rows, where the compact trigger is the point.
+- Growing only the trigger. The commands are what a finger presses next; at 28 px, Discard would stay the small target the finding is about.
+- An invisible enlarged hit area (a pseudo-element) around a 28 px trigger. It overlaps neighbouring controls in a tight row and is not what `CalendarButton` does.
+
+Evidence: `css/stylesheet.test.ts` (the coarse-pointer rules after the xs sizes); `apps/gallery/e2e/action-menu.spec.ts` "gives its trigger and commands a 44 px target on a coarse pointer": at least 44 × 44 for the glyph and text triggers and 44 px commands on mobile-es (touch, coarse pointer), and under 32 px on desktop-en and forced-colors. The same spec file now emulates forced colors for its forced-colors project, as the other specs do.

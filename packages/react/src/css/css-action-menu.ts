@@ -1,6 +1,7 @@
 import { typographyVariants } from '@scalewing/tokens';
 
 import { zIndex } from './stacking.js';
+import { coarsePointerQuery, touchTarget } from './touch-target.js';
 
 const label = typographyVariants.label;
 
@@ -82,6 +83,18 @@ export function cssActionMenuClasses(): string {
 
 .sw-action-menu-item-danger {
   color: var(--sw-color-danger);
+}
+
+/* A coarse pointer gets the full touch target: the trigger at least square, and every command as tall. */
+@media ${coarsePointerQuery} {
+  .sw-action-menu-trigger {
+    min-height: ${touchTarget};
+    min-width: ${touchTarget};
+  }
+
+  .sw-action-menu-item {
+    min-height: ${touchTarget};
+  }
 }`;
 }
 

@@ -20,10 +20,11 @@ release workflow completed successfully.
 Teisoro closeout day fixes (F-007-S04 task 1305, UX review
 `closeouts-closeout-day-and-prior-day.md`), each its own commit on
 `claude/closeout-day-fixes`: `ActionMenu` placement with a gap and a screen
-inset (DAY-8, `teisoro-action-menu.md` follow-up) and `Text` without the
-browser's paragraph and heading margins (DAY-10, `teisoro-text.md`). Next:
-pull request, review and merge, then release `@scalewing/react` and Teisoro
-pins it.
+inset (DAY-8), `Text` without the browser's paragraph and heading margins
+(DAY-10, `teisoro-text.md`), and a 44 px `ActionMenu` trigger and commands
+on a coarse pointer (DAY-9, the Scalewing part); both `ActionMenu` changes
+are follow-ups in `teisoro-action-menu.md`. Next: pull request, review and
+merge, then release `@scalewing/react` and Teisoro pins it.
 
 `CalendarButton` for the Teisoro closeout day heading (F-007-S03 re-review,
 `teisoro-calendar-button.md`): an icon-only Button beside the day heading

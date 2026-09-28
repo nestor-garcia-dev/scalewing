@@ -18,7 +18,7 @@ export function ActionMenuSection() {
   return (
     <Section
       id="action-menu"
-      purpose="ActionMenu holds independent commands. Select chooses a value; ActionMenu does not. The caller supplies localized names, icons, and callbacks. Focus returns to the trigger before a command runs, so a dialog opened from the menu hands focus back to it on close. The menu opens a small gap below its trigger (above it near the bottom of the screen), keeps clear of the screen edges, and lines up with the trigger's end when the trigger ends a row."
+      purpose="ActionMenu holds independent commands. Select chooses a value; ActionMenu does not. The caller supplies localized names, icons, and callbacks. Focus returns to the trigger before a command runs, so a dialog opened from the menu hands focus back to it on close. The menu opens a small gap below its trigger (above it near the bottom of the screen), keeps clear of the screen edges, and lines up with the trigger's end when the trigger ends a row. On a touch screen the trigger is at least 44 px square and each command 44 px tall."
       title="ActionMenu"
       usage={`<ActionMenu
   label="Sighting actions"
