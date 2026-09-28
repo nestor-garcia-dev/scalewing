@@ -37,10 +37,13 @@ describe('calendar labels', () => {
 
   it('names a calendar trigger by its purpose and the date it holds', () => {
     expect(
-      calendarTriggerName('Choose survey day', '2026-09-22', 'en-US'),
+      calendarTriggerName('Choose survey day', '2026-09-22', 'en-US', ', '),
     ).toBe('Choose survey day, Tuesday, September 22, 2026');
     expect(
-      calendarTriggerName('Elegir día del censo', '2026-09-22', 'es-US'),
+      calendarTriggerName('Elegir día del censo', '2026-09-22', 'es-US', ', '),
     ).toBe('Elegir día del censo, martes, 22 de septiembre de 2026');
+    expect(calendarTriggerName('調査日を選ぶ', '2026-09-22', 'ja', '、')).toBe(
+      '調査日を選ぶ、2026年9月22日火曜日',
+    );
   });
 });

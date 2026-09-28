@@ -6,7 +6,7 @@ import {
   within,
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { useState } from 'react';
+import { createRef, useState } from 'react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import {
@@ -339,6 +339,10 @@ describe('CalendarButton', () => {
       [{ locale: 'en_US' }, 'locale must be a BCP 47 language tag'],
       [{ labels: { today: ' ' } }, 'labels.today must be non-empty text'],
       [{ label: '' }, 'label must be non-empty text'],
+      [
+        { labels: { nameSeparator: '' } },
+        'labels.nameSeparator must be non-empty text',
+      ],
     ];
     for (const [props, message] of cases)
       expect(() =>
@@ -351,6 +355,65 @@ describe('CalendarButton', () => {
           />,
         ),
       ).toThrow(new RangeError(message));
+  });
+
+  it('forwards its ref and id to the button', () => {
+    const ref = createRef<HTMLButtonElement>();
+    let called: HTMLButtonElement | null = null;
+    const { rerender } = render(
+      <CalendarButton
+        id="survey-day-picker"
+        label="Choose survey day"
+        onChange={vi.fn()}
+        ref={ref}
+        value="2026-09-22"
+      />,
+    );
+    expect(ref.current).toBe(trigger(NAME));
+    expect(ref.current?.id).toBe('survey-day-picker');
+    rerender(
+      <CalendarButton
+        label="Choose survey day"
+        onChange={vi.fn()}
+        ref={(node) => {
+          called = node;
+        }}
+        value="2026-09-22"
+      />,
+    );
+    expect(called).toBe(trigger(NAME));
+  });
+
+  it('keeps a value outside min and max and opens on the nearest allowed day', async () => {
+    const user = userEvent.setup();
+    const spy = vi.fn();
+    render(<ControlledButton max="2026-09-30" min="2026-09-24" spy={spy} />);
+    // The value is not changed or refused, as on DateField.
+    expect(trigger(NAME)).toBeTruthy();
+    await user.click(trigger());
+    expect(focusedDate()).toBe('2026-09-24');
+    const held = screen.getByRole('gridcell', {
+      name: 'Tuesday, September 22, 2026',
+    });
+    expect(held.getAttribute('aria-selected')).toBe('true');
+    expect(held.getAttribute('aria-disabled')).toBe('true');
+    await user.keyboard('{Enter}');
+    expect(spy).toHaveBeenCalledExactlyOnceWith('2026-09-24');
+  });
+
+  it('joins the label and the date with a localized separator', () => {
+    render(
+      <CalendarButton
+        label="調査日を選ぶ"
+        labels={{ nameSeparator: '、', today: '今日' }}
+        locale="ja"
+        onChange={vi.fn()}
+        value="2026-09-22"
+      />,
+    );
+    expect(
+      screen.getByRole('button', { name: '調査日を選ぶ、2026年9月22日火曜日' }),
+    ).toBeTruthy();
   });
 
   it('keeps ids unique and every ARIA reference resolvable', async () => {

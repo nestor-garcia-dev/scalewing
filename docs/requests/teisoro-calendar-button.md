@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: implemented on branch `claude/date-button` (2026-09-28); pending pull request review, a `@scalewing/react` minor release, and consumer verification in Teisoro.
+Status: implemented on branch `claude/date-button` (2026-09-28), PR #65 open with the code-review fixes applied; pending review and merge, a `@scalewing/react` minor release, and consumer verification in Teisoro.
 Renderer: react
 Missing surface: `CalendarButton`, an icon-only button that opens DateField's calendar dialog for a date the page already shows.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: `Button` can show a calendar glyph but has no calendar to open. The only Scalewing calendar lives inside `DateField`, which is a text entry with its own label, so using it for a day heading shows the date twice. Teisoro may not draw its own calendar (`teisoro-date-field.md`, 2026-09-27 ruling).
@@ -24,7 +24,7 @@ The owner first asked for the conventional pattern `‹ [📅 mar, 22 sept 2026 
 type CalendarButtonLabels = Pick<
   DateFieldLabels,
   'previousMonth' | 'nextMonth' | 'month' | 'year' | 'today'
->;
+> & { nameSeparator: string }; // default ", "
 
 type CalendarButtonProps = {
   label: string; // what pressing it does: "Choose closeout day"
@@ -33,6 +33,7 @@ type CalendarButtonProps = {
   min?: string;
   max?: string;
   disabled?: boolean;
+  id?: string; // the <button>'s id; a ref also reaches the <button>
   locale?: string; // BCP 47; nearest lang attribute, then en-US
   weekStartsOn?: 0 | 1; // default 0
   labels?: Partial<CalendarButtonLabels>;
@@ -44,9 +45,10 @@ type CalendarButtonProps = {
 Behavior:
 
 - A native `<button type="button">` drawn by `Button`, showing only the calendar glyph. Square at every size; on a coarse pointer at least the md control height (44 px) at every size.
-- Accessible name: `label`, a comma, then the value spoken in full in `locale` ("Choose closeout day, Tuesday, September 22, 2026"; "Elegir día de cierre, martes, 22 de septiembre de 2026"). `aria-haspopup="dialog"`, `aria-expanded`, and `aria-controls` while open, like DateField's calendar button.
-- Enter, Space, or a press opens DateField's calendar dialog (the same internal `CalendarDialog`, month grid, header, keys, and positioning), anchored to the button, named by `label`, on `value`. Picking a day or **Today** calls `onChange(date)` when it changed, closes, and returns focus to the button. Escape closes without a change and returns focus. A press outside closes without a change and leaves focus where the press put it, as DateField does. There is no **Clear**: the value is never empty.
-- Validation reuses DateField's guards and messages: an empty or malformed `value`, `min`, or `max`, `min` after `max`, a bad `locale`, a `weekStartsOn` other than 0 or 1, or an empty label word throw a `RangeError`. An empty `label` also throws, since it is the button's only name.
+- Accessible name: `label`, `labels.nameSeparator`, then the value spoken in full in `locale` ("Choose closeout day, Tuesday, September 22, 2026"; "Elegir día de cierre, martes, 22 de septiembre de 2026"). `aria-haspopup="dialog"`, `aria-expanded`, and `aria-controls` while open, like DateField's calendar button. The separator defaults to `", "`; `Intl.ListFormat` has no neutral join (a Spanish unit list adds "y", Chinese adds nothing), so a product whose language pauses differently passes its own, such as `"、"` in Japanese.
+- Enter, Space, or a press opens DateField's calendar dialog (the same internal `CalendarDialog`, month grid, header, keys, and positioning), anchored to the button, named by `label`, on `value`. As on DateField, a `value` outside `min`/`max` is kept, not refused; the calendar then opens on the nearest allowed day with `value` shown selected and disabled. A button has no invalid state (`aria-invalid` is not supported on the button role), so the page that shows the date flags it if it must. Picking a day or **Today** calls `onChange(date)` when it changed, closes, and returns focus to the button. Escape closes without a change and returns focus. A press outside closes without a change and leaves focus where the press put it, as DateField does. There is no **Clear**: the value is never empty.
+- Validation reuses DateField's guards and messages: an empty or malformed `value`, `min`, or `max`, `min` after `max`, a bad `locale`, a `weekStartsOn` other than 0 or 1, or an empty label word throw a `RangeError`. Two errors are new: an empty `label` throws `label must be non-empty text`, since it is the button's only name, and an empty `labels.nameSeparator` throws `labels.nameSeparator must be non-empty text`.
+- DateField and CalendarButton share one internal hook, `useCalendarPopup`, for the open state, closing when disabled, focus return, and reporting a changed date.
 - Styling reuses `Button`'s generated classes plus one generated `sw-calendar-button` class (square, no inline padding, coarse-pointer target). The calendar keeps `sw-date-field-calendar`, which is already the `popup` layer of `src/css/stacking.ts` and a lifted-surface popup; no new z-index. In forced colors the browser paints Button's transparent hairline in a system colour, so the icon-only button keeps visible bounds.
 
 Scalewing owns the reusable visual and interaction behavior, typed public API, generated CSS, tests, gallery evidence, and changeset. Teisoro owns the heading, its previous and next day buttons, the localized `label` and `labels`, and which days are allowed.
@@ -64,5 +66,5 @@ Scalewing owns the reusable visual and interaction behavior, typed public API, g
 
 ## Evidence
 
-- Unit tests: `packages/react/src/calendar-button.test.tsx` (names in en-US, es-US and from `lang`; opening with a press, Enter, and Space; arrows then Enter choosing a day with focus returned; Space and a press on a day; Today; Escape, a press outside, and a second press closing without a change; `min`/`max` disabling days; disabled and becoming disabled while open; every invalid prop; Button size and variant classes; unique ids and resolvable references), plus `calendarTriggerName` in `calendar-labels.test.ts`, `assertWeekStart` in `calendar-month.test.ts`, and the generated square and coarse-pointer rules in `css/stylesheet.test.ts`.
+- Unit tests: `packages/react/src/calendar-button.test.tsx` (names in en-US, es-US and from `lang`; opening with a press, Enter, and Space; arrows then Enter choosing a day with focus returned; Space and a press on a day; Today; Escape, a press outside, and a second press closing without a change; `min`/`max` disabling days; disabled and becoming disabled while open; every invalid prop; Button size and variant classes; the forwarded ref and id; a value outside the bounds; a Japanese separator; unique ids and resolvable references), plus `calendarTriggerName` in `calendar-labels.test.ts` (en-US, es-US, ja), `resolveCalendarButtonLabels` in `calendar-button-labels.test.ts`, `assertWeekStart` in `calendar-month.test.ts`, and the generated square and coarse-pointer rules in `css/stylesheet.test.ts`.
 - Gallery: the `CalendarButton` section (`apps/gallery/src/sections/calendar-button.tsx`) shows an English survey-day heading bounded to September 2026 and a Spanish census-day heading with Monday weeks, each with ghost previous and next buttons, plus small, extra-small, and disabled buttons. `apps/gallery/e2e/calendar-button.spec.ts` runs on desktop-en, mobile-es (390 px, touch, coarse pointer), and forced-colors.
