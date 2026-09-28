@@ -9,6 +9,7 @@ import {
 } from '../date-field-labels.js';
 import { dateEntryPattern, dateEntryPlaceholder } from '../date-entry.js';
 import { dateEntryValidity } from '../date-entry-validity.js';
+import { resolveDateEntryLocale } from '../date-field-locale.js';
 import {
   assertDateBounds,
   isOutsideDateRange,
@@ -38,6 +39,12 @@ export type DateFieldProps = {
    * field order. Defaults to the nearest `lang` attribute, then en-US.
    */
   locale?: string;
+  /**
+   * BCP 47 tag for the typed entry only: its field order, separator,
+   * placeholder and display text. Names, spoken dates and the calendar keep
+   * `locale`. Defaults to the resolved `locale`.
+   */
+  entryLocale?: string;
   /** First column of the calendar: 0 Sunday (default) or 1 Monday. */
   weekStartsOn?: WeekStart;
   /** The control's own words; English by default. */
@@ -55,6 +62,7 @@ export function DateField({
   description,
   error,
   locale,
+  entryLocale,
   weekStartsOn = 0,
   labels,
 }: DateFieldProps) {
@@ -68,9 +76,13 @@ export function DateField({
   const buttonRef = useRef<HTMLButtonElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const resolvedLocale = useLangLocale(locale, rootRef);
+  const resolvedEntryLocale = resolveDateEntryLocale(
+    entryLocale,
+    resolvedLocale,
+  );
   const pattern = useMemo(
-    () => dateEntryPattern(resolvedLocale),
-    [resolvedLocale],
+    () => dateEntryPattern(resolvedEntryLocale),
+    [resolvedEntryLocale],
   );
   const entry = useDateEntry(value, pattern, (next) => {
     if (!disabled) onChange(next);

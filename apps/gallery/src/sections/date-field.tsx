@@ -22,11 +22,12 @@ export function DateFieldSection() {
   const [hatchDate, setHatchDate] = useState('1961-05-14');
   const [reviewDate, setReviewDate] = useState('2024-02-29');
   const [spanishDate, setSpanishDate] = useState('2024-11-03');
+  const [releaseDate, setReleaseDate] = useState('2024-11-03');
 
   return (
     <Section
       id="date-field"
-      purpose="DateField keeps a date-only value. Type the date in the locale's order, or open the calendar: arrows move by day and week, PageUp and PageDown by month, Shift with them by year, and the month and year selectors jump decades. Callbacks receive YYYY-MM-DD or an empty value. Month and weekday names come from Intl; the control's own words come from labels."
+      purpose="DateField keeps a date-only value. Type the date in the locale's order, or open the calendar: arrows move by day and week, PageUp and PageDown by month, Shift with them by year, and the month and year selectors jump decades. Callbacks receive YYYY-MM-DD or an empty value. Month and weekday names come from Intl; the control's own words come from labels. entryLocale sets the typed order apart from the names."
       title="DateField"
       usage={`<DateField
   label="Sighting date"
@@ -82,6 +83,15 @@ export function DateFieldSection() {
             value={spanishDate}
             weekStartsOn={1}
           />
+          <DateField
+            description="Nombres en español, fecha en orden MM/DD/AAAA"
+            entryLocale="en-US"
+            label="Fecha de liberación"
+            labels={spanishLabels}
+            locale="es-US"
+            onChange={setReleaseDate}
+            value={releaseDate}
+          />
         </Grid>
         <Stack gap={1}>
           <Text color="muted" variant="caption">
@@ -98,6 +108,9 @@ export function DateFieldSection() {
           </Text>
           <Text color="muted" variant="caption">
             Serialized Spanish date: {spanishDate || 'empty'}.
+          </Text>
+          <Text color="muted" variant="caption">
+            Serialized release date: {releaseDate || 'empty'}.
           </Text>
         </Stack>
       </Stack>

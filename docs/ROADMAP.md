@@ -17,6 +17,13 @@ release workflow completed successfully.
 
 ## Next action
 
+`DateField` `entryLocale` for Teisoro F-007-S03 task 1285
+(`teisoro-date-field.md`, 2026-09-28 follow-up): the typed entry's order,
+separator, placeholder and display text apart from the names `locale`, so
+Spanish screens keep an `MM/DD/YYYY` entry. Next: review and merge, version
+the `@scalewing/react` minor, tag, validate and publish through Release
+packages, then Teisoro verifies with a local `link:` and pins it.
+
 `@scalewing/react` 1.9.0 for Teisoro F-007-S03 task 1280 (the first UX
 review, closing a register): `DateField` draws its own calendar (#61,
 `teisoro-date-field.md`), and `Field` `prefix`/`suffix`, the `Accordion`

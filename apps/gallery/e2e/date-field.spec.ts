@@ -166,3 +166,29 @@ test('DateField opens an out-of-range value on the nearest allowed day', async (
   await page.keyboard.press('Escape');
   await expect(calendar).toBeHidden();
 });
+
+test('DateField types in the entry locale and names in the locale', async ({
+  page,
+}) => {
+  await page.goto('/#date-field');
+  const section = page.locator('#date-field');
+  const release = field(section, 'Fecha de liberación');
+  const input = release.getByRole('textbox', { name: 'Fecha de liberación' });
+
+  await expect(input).toHaveValue('11/03/2024');
+  await expect(input).toHaveAttribute('placeholder', 'MM/DD/AAAA');
+  await input.fill('03/10/2024');
+  await expect(
+    section.getByText('Serialized release date: 2024-03-10.'),
+  ).toBeVisible();
+  await release.getByRole('button', { name: 'Elegir fecha' }).click();
+  const calendar = page.getByRole('dialog', { name: 'Fecha de liberación' });
+  await expect(
+    calendar.getByRole('grid', { name: 'marzo de 2024' }),
+  ).toBeVisible();
+  await expect(
+    calendar.getByRole('gridcell', { name: 'domingo, 10 de marzo de 2024' }),
+  ).toBeFocused();
+  await page.keyboard.press('Escape');
+  await expect(calendar).toBeHidden();
+});

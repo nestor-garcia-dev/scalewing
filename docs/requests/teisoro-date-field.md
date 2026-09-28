@@ -40,3 +40,22 @@ Decided in implementation:
 - The field label names only the text entry. The calendar button is named `labels.chooseDate` and described by the field label, so `getByLabel('<field label>')` stays unique.
 
 Teisoro must adapt: tests that drove `input[type=date]` now use the text entry (`getByLabel('<label>').fill('03/10/2024')` in en-US order, or `fill('2024-03-10')` in ISO) or the calendar (`getByRole('button', { name: 'Choose date' })`, then the `grid` and `gridcell` roles). Assertions on the input value now see the locale's display text, not `YYYY-MM-DD`; assert the serialized value from the product's state instead. Teisoro passes Spanish `labels` and `locale` on its bilingual screens.
+
+## 2026-09-28 follow-up: typed order apart from the names locale
+
+Status: implemented on `claude/date-entry-locale` for the next `@scalewing/react` minor (Teisoro F-007-S03 task 1285); pending review, merge, release and consumer verification.
+
+Renderer: react
+Missing surface: an `entryLocale` prop on the existing `DateField` (additive; no new component).
+Why the existing API cannot do this: `locale` sets both the month and weekday names and the typed field order, and `Intl` gives day-first `DD/MM/YYYY` for every Spanish locale (`es`, `es-US`, `es-MX`). Teisoro's product owner decided that dates stay in American numeric order (`MM/DD/YYYY`) in both English and Spanish, so Spanish screens cannot get Spanish names with an American typed order.
+Existing surface this might already be: `labels` sets only the placeholder letters, not the order; `locale="en-US"` would lose the Spanish names in the calendar.
+Workaround I almost used: `locale="en-US"` on Spanish screens with English month and weekday names, or product-side reformatting of the entry text.
+
+Decided in implementation:
+
+- `entryLocale?: string` is a BCP 47 tag validated like `locale`: a malformed tag throws `RangeError('entryLocale must be a BCP 47 language tag')`.
+- It sets only the typed entry: its field order, separator, placeholder and display text. It defaults to the resolved `locale` (explicit, then the nearest `lang`, then `en-US`), so existing fields are unchanged.
+- Month and weekday names, spoken day labels and everything in the calendar dialog keep `locale`. ISO `YYYY-MM-DD` and eight bare digits are still accepted, the digits split in the entry order.
+- The name is generic: any product can pair one language's names with another locale's numeric order.
+
+Teisoro use: `locale="es-US" entryLocale="en-US"` (or `entryLocale="en-US"` on every bilingual `DateField`) with its Spanish `labels`, so a Spanish screen shows `MM/DD/AAAA` and `marzo` together.

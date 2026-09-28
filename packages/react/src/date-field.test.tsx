@@ -362,6 +362,16 @@ describe('DateField typed entry', () => {
     expect(() =>
       render(
         <DateField
+          entryLocale="en_US"
+          label="Date"
+          onChange={onChange}
+          value=""
+        />,
+      ),
+    ).toThrow('entryLocale must be a BCP 47 language tag');
+    expect(() =>
+      render(
+        <DateField
           label="Date"
           labels={{ clear: '' }}
           onChange={onChange}
@@ -773,6 +783,46 @@ describe('DateField locales', () => {
     await user.type(input, '31/02/2024');
     await user.tab();
     expect(screen.getByText('Escribe una fecha válida.')).toBeTruthy();
+  });
+
+  it('names dates in one locale and types them in the entry locale', async () => {
+    const user = userEvent.setup();
+    const spy = vi.fn();
+    render(
+      <ControlledField
+        entryLocale="en-US"
+        initial="2024-11-03"
+        label="Fecha del avistamiento"
+        labels={spanish}
+        locale="es-US"
+        spy={spy}
+      />,
+    );
+    const input = entry('Fecha del avistamiento');
+    expect(input).toHaveProperty('value', '11/03/2024');
+    expect(input.getAttribute('placeholder')).toBe('MM/DD/AAAA');
+    await user.clear(input);
+    await user.type(input, '03/10/2024');
+    expect(spy).toHaveBeenLastCalledWith('2024-03-10');
+    expect(input).toHaveProperty('value', '03/10/2024');
+    await user.click(screen.getByRole('button', { name: 'Elegir fecha' }));
+    const calendar = screen.getByRole('dialog', {
+      name: 'Fecha del avistamiento',
+    });
+    expect(
+      within(calendar).getByRole('grid', { name: 'marzo de 2024' }),
+    ).toBeTruthy();
+    expect(
+      within(calendar).getAllByRole('columnheader')[0]?.getAttribute('abbr'),
+    ).toBe('domingo');
+    expect(
+      within(calendar).getByRole('gridcell', {
+        name: 'domingo, 10 de marzo de 2024',
+      }),
+    ).toBe(document.activeElement);
+    await user.keyboard('{ArrowRight}{Enter}');
+    expect(spy).toHaveBeenLastCalledWith('2024-03-11');
+    expect(input).toHaveProperty('value', '03/11/2024');
   });
 
   it('takes the locale from the nearest lang attribute by default', () => {
