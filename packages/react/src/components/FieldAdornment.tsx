@@ -36,7 +36,6 @@ export function FieldAdornment({
   return (
     // The frame is not a control: a press on it only moves focus to the input
     // inside, which keyboard and assistive technology users reach directly.
-    // eslint-disable-next-line jsx-a11y/no-static-element-interactions
     <span className="sw-field-adorned" onMouseDown={focusAdornedInput}>
       {prefix ? (
         <span aria-hidden="true" className="sw-field-prefix" id={prefixId}>
