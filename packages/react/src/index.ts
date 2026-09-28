@@ -6,7 +6,12 @@ export {
 export { Accordion } from './components/Accordion.js';
 export type { AccordionProps } from './components/Accordion.js';
 export { Switch, type SwitchProps } from './components/Switch.js';
-export { DateField, type DateFieldProps } from './components/DateField.js';
+export {
+  DateField,
+  type DateFieldLabels,
+  type DateFieldProps,
+  type WeekStart,
+} from './components/DateField.js';
 export { Checkbox, type CheckboxProps } from './components/Checkbox.js';
 export {
   Spinner,
