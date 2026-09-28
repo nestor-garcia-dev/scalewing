@@ -4,6 +4,7 @@ import {
   lightTheme,
   typographyVariants,
 } from '@scalewing/tokens';
+import { actionBarClassCatalog } from './css-action-bar.js';
 import { actionMenuClassCatalog } from './css-action-menu.js';
 import { accordionClassCatalog } from './css-accordion.js';
 import { switchClassCatalog } from './css-switch.js';
@@ -62,6 +63,7 @@ export function utilityClassCatalog(): string[] {
     ...accordionClassCatalog(),
     ...selectClassCatalog(),
     ...actionMenuClassCatalog(),
+    ...actionBarClassCatalog(),
     ...switchClassCatalog(),
     ...dateFieldClassCatalog(),
     ...checkboxClassCatalog(),

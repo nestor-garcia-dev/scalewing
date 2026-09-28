@@ -3,6 +3,7 @@ import {
   typographyVariants,
 } from '@scalewing/tokens';
 import { breakpointQuery } from './breakpoints.js';
+import { cssActionBarClasses } from './css-action-bar.js';
 import { cssActionMenuClasses } from './css-action-menu.js';
 import { cssAccordionClasses } from './css-accordion.js';
 import { cssButtonClasses } from './css-button.js';
@@ -39,6 +40,7 @@ function reducedTransparencyRules(): string {
   return `@media (prefers-reduced-transparency: reduce) {
   .sw-card-glass,
   .sw-app-header,
+  .sw-action-bar,
   .sw-badge-neutral,
   .sw-segmented,
   .sw-table-sticky thead th,
@@ -155,6 +157,8 @@ ${cssAccordionClasses()}
 ${cssSelectClasses()}
 
 ${cssActionMenuClasses()}
+
+${cssActionBarClasses()}
 
 ${cssSwitchClasses()}
 

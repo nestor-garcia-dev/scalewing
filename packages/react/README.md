@@ -7,6 +7,7 @@ import '@scalewing/react/styles.css';
 import '@scalewing/react/palette/cerulean.css';
 import {
   Accordion,
+  ActionBar,
   ActionMenu,
   BarChart,
   Box,
@@ -74,6 +75,20 @@ Import the CSS once at the application entry. Do not copy it into your source tr
     {method}
   </Accordion>
 </Accordion>
+```
+
+`ActionBar` keeps the actions of a long page on a glass bar stuck to the bottom of the viewport, with an optional one-line `status` (such as when the work was last saved). Put it last in the content it acts on: it stays stuck while that content scrolls by and then rests in its own place at the end. `stickyBelow="md"` sticks only on a phone and leaves the bar in page flow from `md` up. The bar clears `env(safe-area-inset-bottom)` (set `viewport-fit=cover` in the page's viewport meta for the inset to apply). Its children are the actions: on a phone they share one row under the status. The status is not a live region; announce a save with your own notice or `Toast`.
+
+```tsx
+<Stack gap={4}>
+  {longForm}
+  <ActionBar status="Draft saved at 5:00 PM" stickyBelow="md">
+    <Button variant="secondary" onPress={save}>
+      Save draft
+    </Button>
+    <Button onPress={finish}>Finish</Button>
+  </ActionBar>
+</Stack>
 ```
 
 `ActionMenu` opens independent commands from a labelled button. Provide localized command labels and callbacks; use `disabled` for unavailable commands and `destructive` for a dangerous command's presentation. Escape and choosing a command both return focus to the trigger (before the command runs, so a `Dialog` it opens hands focus back to the trigger on close), and outside interaction dismisses the menu.
