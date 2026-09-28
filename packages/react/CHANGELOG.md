@@ -1,5 +1,76 @@
 # @scalewing/react
 
+## 1.12.0
+
+### Minor Changes
+
+- f389c10: `ActionMenu` takes `align?: 'start' | 'end'` (default `'start'`, unchanged; type `ActionMenuAlign`) (`docs/requests/teisoro-action-menu.md`, 2026-09-28 align follow-up, Teisoro ENT-13). With `'end'` the open menu lines up with the trigger's inline end even where the start would fit, so a menu opened from the end of a card stays over that card instead of hanging past it toward the next one. It still takes the trigger's other edge when the preferred one would leave the screen, mirrored in right-to-left.
+
+  No breaking change and no new dependencies.
+
+- 37ef947: `DenominationGrid`'s strip reads its totals to a screen reader at every width (`docs/requests/teisoro-denomination-grid.md`, 2026-09-28 follow-up, Teisoro SDAY-6). Below `md` the total cell was `display: none`, so on a phone a screen reader never heard a row's total; it now stays in the table, visually hidden, while the `aria-hidden` copy under the row label is what shows.
+
+  - New optional prop `totalLabel?: string` names the total column with a visually hidden `th scope="col"` (class `sw-denomination-total-head`). Without it the header corner is the empty cell it was, and it carries the same class, so below `md` the hidden total column takes no width either way. A blank `totalLabel` throws a `RangeError`.
+  - New generated classes `sw-denomination-total-head` and `sw-denomination-total-value` (the total's text inside its cell).
+
+  No breaking change and no new dependencies.
+
+- 9a11c40: `Select` takes `placeholder`, `required` and `error` (`docs/requests/teisoro-select.md`, 2026-09-28 placeholder follow-up, Teisoro DRW-12), consistent with `Field`:
+
+  - `placeholder?: string` shows in the closed trigger, muted, while `value` matches no option (such as `''`). It is not an option, never becomes the value, and counts toward the trigger's width. A blank placeholder throws a `RangeError`.
+  - `required?: boolean` marks the label with `Field`'s `aria-hidden` asterisk and sets `aria-required` on the trigger.
+  - `error?: string` renders a `sw-field-error` message under the control, linked by `aria-describedby`, with `aria-invalid` and a danger border. Like `Field`'s, it is announced from a polite live region that is always rendered, never as an alert; an empty string is no error.
+  - New generated classes `sw-select-placeholder` and `sw-select-invalid`.
+
+  Without the new props nothing changes. No new dependencies.
+
+- cab64c8: `Toast` takes `tone` and `icon` (`docs/requests/teisoro-toast.md`, Teisoro DRW-14):
+
+  - `tone?: 'neutral' | 'success' | 'warning' | 'danger'` (default `neutral`, unchanged) tints the toast's border and icon; the message keeps the text color. A `danger` toast is `role="alert"`, the others `role="status"`. `ToastTone` and `toastTones` are exported.
+  - `icon?: ReactNode` puts a consumer glyph, hidden from assistive technology, before the message. Without it the children render unwrapped, as before.
+  - New generated classes `sw-toast-success`, `sw-toast-warning`, `sw-toast-danger`, `sw-toast-row`, `sw-toast-icon` and `sw-toast-body`.
+
+  Without `timeoutMs`, a `warning` or `danger` toast now stays 6000 ms instead of 800 ms, so it can be read; `neutral` and `success` keep 800 ms, and a given `timeoutMs` wins. A toned toast still dismisses itself. No breaking change and no new dependencies.
+
+### Patch Changes
+
+- a0550bd: A `Badge` inside a filled `Button` (`primary`, `secondary`, `tertiary` or `danger`) sits on `--sw-color-surface` with its words in `--sw-color-text` and its tone on its border (`docs/requests/teisoro-badge.md`, Teisoro NSF-1, WCAG 1.4.3). Its tone was drawn on the button's fill: a warning badge on the accent measured about 1.1:1. The text color is 4.5:1 or more on the surface in every palette and scheme, which the tone colors are not (for example `mocha` dark danger at 3.29:1); every tone border is at least 3:1.
+
+  No API change and no new dependencies.
+
+- 91249c3: A toggle `Button` (`aria-pressed`) no longer fades when it is not pressed (`docs/requests/teisoro-button.md`, Teisoro NSF-1, WCAG 1.4.3). `.sw-button[aria-pressed='false']` set `opacity: var(--sw-quiet-opacity)` (0.55), which took an unpressed button's label to about 3.8:1 and any badge inside it lower, although the button could be pressed.
+
+  - The unpressed button is drawn at full strength.
+  - The pressed button gets a 2 px accent ring outside its fill, past a 2 px gap in `--sw-color-background` (`box-shadow`), so it keeps the accent's contrast on the canvas (4.5:1 or more in every palette) whatever its variant or fill, and a toggle whose states share one variant still shows which is pressed. A focused pressed button moves its focus outline out past the ring.
+  - In forced colors, which drop box shadows, the pressed button is filled with `Highlight` and `HighlightText`, as a checked `FilterChips` chip is.
+
+  A visible change for every toggle button. No API change and no new dependencies.
+
+- d872a1c: A `required` `DateField` marks its label with the same `aria-hidden` asterisk as `Field` (`sw-field-required`) (`docs/requests/teisoro-date-field.md`, 2026-09-28 follow-up, Teisoro NSF-15). Before, a required date looked optional beside required fields. The entry's accessible name is unchanged; the label's text content now ends in " *", so a test that finds the entry with an exact `getByLabelText` should use its role and name instead.
+
+  No API change and no new dependencies.
+
+- 0d2c9ad: `DenominationGrid`'s tiles layout shows a lone row's `total` (`docs/requests/teisoro-denomination-grid.md`, 2026-09-28 follow-up, Teisoro ENT-7). A grid with one row and no icon dropped the `total` it was given; the row's label line, with the label and the total, now shows whenever the row has a total. A lone row with neither an icon nor a total is unchanged.
+
+  No API change and no new dependencies.
+
+- d8dc697: Field errors are announced politely from a live region instead of as alerts (`docs/requests/teisoro-field-validation.md`, 2026-09-28 follow-up, Teisoro CHK-3 and DRW-6). `Field`'s error was `role="alert"`, so a refused submit with several invalid fields fired one alert per field at once, while a `Checkbox` error beside them was not announced at all.
+
+  - `Field`, `Checkbox`, `RadioGroup` and `DateField` keep their error in an `aria-live="polite"` region that is always rendered, empty while there is no error, and swap the error's text into it: a new error is announced once, politely, whether it appears while typing or after a submit. The control lists the region in `aria-describedby` with `aria-invalid` while it has text. An empty region takes no room (`:empty { position: absolute; }`).
+  - `Field` still shows the error in place of the hint, but the two now have their own ids. `RadioGroup`'s invalid marks key off the fieldset's `aria-invalid`.
+
+  Consumer note: a refused submit is now announced politely rather than as several alerts; the form should also move focus to the first invalid control (or to one form-level summary). Tests that found the error by the hint's id should find it by its text. No API change and no new dependencies.
+
+- a522627: A zero-count `FilterChips` chip is quiet without fading (`docs/requests/teisoro-filter-chips.md`, 2026-09-28 follow-up, Teisoro NSF-1, WCAG 1.4.3). Its face had `opacity: var(--sw-quiet-opacity)` (0.55), about 3.8:1 for its label; it now drops the glass fill and sets its label in `--sw-color-muted` (4.5:1 or more in every palette). In forced colors it is drawn like the other chips instead of in `GrayText`.
+
+  No API change and no new dependencies.
+
+- 7effb60: `Select`'s closed trigger centres its text, ends in the `Accordion` chevron, and keeps its width when the value changes (`docs/requests/teisoro-select.md`, 2026-09-28 trigger follow-up, Teisoro DRW-12). It was sized to the current label, so it jumped when a longer value was chosen; it is now as wide as its longest option, as a native select is, and ellipsizes past the available width. The gradient-triangle caret is replaced by the stroked chevron (shared with `Accordion` through an internal `css/chevron.ts`).
+
+  - New generated classes `sw-select-value`, `sw-select-value-text` and `sw-select-value-sizer`. The trigger's text content and accessible value are still only the current label.
+
+  A visible change to every `Select`. No API change and no new dependencies.
+
 ## 1.11.0
 
 ### Minor Changes

@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: implemented on `claude/services-ux-fixes` for Teisoro F-007-S05 task 1335; pull request pending review.
+Status: merged in #73 (2026-09-28) and released in `@scalewing/react` 1.12.0; Teisoro pins it in F-007-S05 task 1340.
 Renderer: react
 Surface: `Button` with `aria-pressed` (a toggle button). No new prop.
 Source: Teisoro UX review `services-nsf.md`, finding NSF-1 (major, WCAG 1.4.3), the Scalewing part for buttons. The badge on a filled button is `teisoro-badge.md`, the quiet filter chip `teisoro-filter-chips.md`.

@@ -16,7 +16,7 @@ Verification on 2026-09-19: `pnpm check` passed format, lint, 30 token tests, 86
 
 ## Follow-up request (2026-09-28, Teisoro F-007-S05 task 1335): one announcement per submit
 
-Status: implemented on `claude/services-ux-fixes` for Teisoro F-007-S05 task 1335; pull request pending review.
+Status: merged in #73 (2026-09-28) and released in `@scalewing/react` 1.12.0; Teisoro pins it in F-007-S05 task 1340.
 Source: Teisoro UX reviews `services-check-cashing.md`, finding CHK-3 (major, WCAG 3.3.1 and 2.4.3, the Scalewing part), and `services-drawer-cash-and-audits.md`, finding DRW-6 (minor, WCAG 3.3.1 and 4.1.3, the Scalewing part).
 
 `Field` rendered every error with `role="alert"`, while `Checkbox`, `RadioGroup` and `DateField` tied their errors to the control without one. Two problems followed. A refused submit with several invalid fields fired several alerts at once (the new-customer form: three), so a screen reader read a pile of errors or only the last. And on a form that mixed a `Field` and a `Checkbox`, only the `Field` error was announced (the drawer audit: the recount checkbox's error was silent, the notes error was read).

@@ -23,7 +23,7 @@ Proposed API: `FilterChipOption.count?: number`; negative or fractional counts t
 
 ## Follow-up request (2026-09-28, Teisoro F-007-S05 task 1335): a quiet chip without the fade
 
-Status: implemented on `claude/services-ux-fixes` for Teisoro F-007-S05 task 1335; pull request pending review.
+Status: merged in #73 (2026-09-28) and released in `@scalewing/react` 1.12.0; Teisoro pins it in F-007-S05 task 1340.
 Source: Teisoro UX review `services-nsf.md`, finding NSF-1 (major, WCAG 1.4.3), the Scalewing part for quiet chips (the toggle button is `teisoro-button.md`).
 
 The zero-count chip's face had `opacity: var(--sw-quiet-opacity)` (0.55): Teisoro's "Written off 0" filter measured 3.8:1, although the chip can be chosen.
