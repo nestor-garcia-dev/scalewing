@@ -91,7 +91,11 @@ Values outside the catalog throw a `RangeError`. There is no per-breakpoint span
 
 `FilterChips` presents a long, wrapping single-choice filter set. Provide a localized group `label`, controlled `value`, `onChange`, and options with stable values and localized labels. An optional non-negative integer `count` renders as a tabular chicklet after the label and is part of the option's accessible name; a zero count quiets the chip until it is selected. Native radios provide arrow and Space navigation; disabled options are skipped.
 
-`DateField` is a controlled native date input. Supply `value`, `min`, and `max` as valid `YYYY-MM-DD` dates; use an empty `value` for a blank field. Its callback returns a date-only string or an empty string, without timezone conversion. Invalid serialized dates and inverted bounds throw; a value outside the bounds remains visible with invalid styling. For a blank required field, supply `error` when form validation runs to show the message and invalid styling. The browser chooses the calendar and localized display.
+`DateField` is a controlled date-only field that draws its own calendar. Supply `value`, `min`, and `max` as valid `YYYY-MM-DD` dates; use an empty `value` for a blank field. Its callback returns a date-only string or an empty string, without timezone conversion. Invalid serialized dates and inverted bounds throw; a value outside the bounds remains visible with invalid styling. For a blank required field, supply `error` when form validation runs to show the message and invalid styling.
+
+People type the date into a text entry in the locale's numeric order (`MM/DD/YYYY` for en-US, `DD/MM/YYYY` for es), with any non-digit separator, eight bare digits, or ISO `YYYY-MM-DD`. A keystroke calls `onChange` once the entry is complete, meaning its last field is at full width (four year digits, or two digits for a trailing day or month, as in ISO); otherwise the date commits when the person leaves the field or presses Enter, so typing `2024-03-10` never sends `2024-03-01` on the way. If the parent keeps the old value, the typed text stays on screen; any other outside change replaces it. Text that is not a date keeps the last value and, once the person leaves the field, sets `aria-invalid` and shows `labels.invalidEntry`. Like the native date input, the entry blocks form submission through `setCustomValidity`: `labels.invalidEntry` while its text is not a date, and `labels.outOfRange` while its date, typed or given, is outside `min`/`max`. The calendar button beside it opens a WAI-ARIA date picker dialog anchored under the field on the popover layer: the month grid shows today, the selected day, and days outside `min`/`max` as `aria-disabled` (padding before `0001-01-01` or after `9999-12-31` is blank and inert); arrows move by day and week, Home and End to the week's edges, PageUp and PageDown by month, Shift with them by year, Enter or Space selects and closes, and Escape closes and returns focus to the button. Month and year selectors in the header jump decades (the year list spans 120 years back and 20 ahead of today and the shown month, cut to `min` and `max`; the month list offers only months with a day inside them). A new `value`, `min`, or `max` while the calendar is open moves it to the new value or back inside the bounds. **Today** selects today; **Clear** appears only when the field is not `required`.
+
+`locale` (BCP 47) sets month and weekday names, spoken dates, and the typed order; it defaults to the nearest `lang` attribute when the field mounts, then `en-US`, and a malformed tag throws. `weekStartsOn` is `0` (Sunday, the default) or `1` (Monday). `labels` overrides the control's own words, English by default: `chooseDate`, `previousMonth`, `nextMonth`, `month`, `year`, `today`, `clear`, `invalidEntry`, `outOfRange`, and the placeholder letters `dayPlaceholder`, `monthPlaceholder`, `yearPlaceholder`. The field label names only the text entry; the calendar button is named `labels.chooseDate` and described by the field label, so tests find the entry with `getByLabel` or `getByRole('textbox', { name })`.
 
 ```tsx
 <DateField
@@ -100,6 +104,15 @@ Values outside the catalog throw a `RangeError`. There is no per-breakpoint span
   onChange={setSightingDate}
   min="2024-01-01"
   max="2024-12-31"
+/>
+
+<DateField
+  label="Fecha del avistamiento"
+  locale="es"
+  weekStartsOn={1}
+  labels={{ chooseDate: 'Elegir fecha', today: 'Hoy', clear: 'Borrar' }}
+  value={fecha}
+  onChange={setFecha}
 />
 ```
 
