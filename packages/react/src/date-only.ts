@@ -107,13 +107,3 @@ export function todayDateOnly(now: Date = new Date()): string {
     day: now.getDate(),
   });
 }
-
-/**
- * A local Date at noon, for Intl formatting only. `setFullYear` keeps years
- * below 100 literal instead of mapping them to the 1900s.
- */
-export function toLocalDate({ year, month, day }: DateParts): Date {
-  const date = new Date(2000, 0, 1, 12);
-  date.setFullYear(year, month - 1, day);
-  return date;
-}

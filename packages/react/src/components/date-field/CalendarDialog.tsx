@@ -98,9 +98,15 @@ export function CalendarDialog({
 }: CalendarDialogProps) {
   const titleId = useId();
   const dialogRef = useRef<HTMLDivElement>(null);
-  const [focusDate, setFocusDate] = useState(() =>
-    clampDateOnly(value || today, min, max),
-  );
+  const [rawFocusDate, setFocusDate] = useState(value || today);
+  // A new value while open moves the calendar to it.
+  const [shownValue, setShownValue] = useState(value);
+  if (value !== shownValue) {
+    setShownValue(value);
+    if (value !== '') setFocusDate(value);
+  }
+  // Clamped on every render, so new bounds while open move it inside.
+  const focusDate = clampDateOnly(rawFocusDate, min, max);
   const month = monthOf(focusDate);
   // Opening and grid keys move DOM focus to the focus date; header controls
   // and presses change the date without taking focus from where it is.
@@ -108,8 +114,12 @@ export function CalendarDialog({
 
   useAnchoredPopover(dialogRef, anchorRef, buttonRef, () => onClose(false));
 
+  // Whether a day holds DOM focus. Removing that day fires no blur, so this
+  // stays true when a new value or bounds move the grid out from under it.
+  const gridFocused = useRef(false);
+
   useLayoutEffect(() => {
-    if (!focusGrid.current) return;
+    if (!focusGrid.current && !gridFocused.current) return;
     focusGrid.current = false;
     dialogRef.current
       ?.querySelector<HTMLElement>(`[role="grid"] [data-date="${focusDate}"]`)
@@ -131,6 +141,12 @@ export function CalendarDialog({
       aria-modal="true"
       className="sw-date-field-calendar"
       id={id}
+      onBlur={() => {
+        gridFocused.current = false;
+      }}
+      onFocus={(event) => {
+        gridFocused.current = event.target.closest('[role="grid"]') !== null;
+      }}
       onKeyDown={onKeyDown}
       ref={dialogRef}
       role="dialog"
@@ -141,9 +157,7 @@ export function CalendarDialog({
         max={max}
         min={min}
         month={month}
-        onMonthChange={(next) =>
-          setFocusDate(clampDateOnly(sameDayIn(next, focusDate), min, max))
-        }
+        onMonthChange={(next) => setFocusDate(sameDayIn(next, focusDate))}
         titleId={titleId}
         todayYear={monthOf(today).year}
       />

@@ -1,8 +1,8 @@
+import { dateFormatter, formatterDate } from './date-formatters.js';
 import {
   formatDateOnly,
   isValidDateParts,
   parseDateOnly,
-  toLocalDate,
   type DateParts,
 } from './date-only.js';
 
@@ -28,11 +28,11 @@ function isEntryPart(type: string): type is DateEntryPart {
  * example month/day/year with "/" for en-US and day.month.year for de.
  */
 export function dateEntryPattern(locale: string): DateEntryPattern {
-  const parts = new Intl.DateTimeFormat(locale, {
+  const parts = dateFormatter(locale, {
     day: '2-digit',
     month: '2-digit',
     year: 'numeric',
-  }).formatToParts(toLocalDate({ year: 2023, month: 12, day: 31 }));
+  }).formatToParts(formatterDate({ year: 2023, month: 12, day: 31 }));
   const order = parts.map((part) => part.type).filter(isEntryPart);
   const separator = parts.find((part) => part.type === 'literal')?.value;
   if (order.length !== 3 || new Set(order).size !== 3 || !separator?.trim())
@@ -81,6 +81,32 @@ function splitDigits(text: string, pattern: DateEntryPattern): string[] | null {
 
 const ISO_ORDER: DateEntryPattern['order'] = ['year', 'month', 'day'];
 
+/** The field order typed text uses: ISO when it starts with four digits. */
+function typedOrder(
+  groups: readonly string[],
+  pattern: DateEntryPattern,
+): DateEntryPattern['order'] {
+  return groups[0]?.length === 4 ? ISO_ORDER : pattern.order;
+}
+
+/**
+ * Whether typed text is finished, so a date it forms can be committed while
+ * the person is still typing: eight bare digits, or three fields whose last
+ * one is at full width (four year digits, two for a trailing day or month).
+ * A shorter last field may still grow, as "2024-03-1" on the way to
+ * "2024-03-10", so it waits for blur or Enter instead.
+ */
+export function isCompleteDateEntry(
+  text: string,
+  pattern: DateEntryPattern,
+): boolean {
+  const groups = text.match(/\d+/g) ?? [];
+  if (groups.length === 1) return groups[0]?.length === 8;
+  if (groups.length !== 3) return false;
+  const last = typedOrder(groups, pattern)[2];
+  return groups[2]?.length === WIDTH[last];
+}
+
 /**
  * Parses typed text in the pattern's order. Day and month take one or two
  * digits, the year exactly four, and any non-digit run separates fields.
@@ -98,7 +124,7 @@ export function parseDateEntry(
   if (/\p{L}/u.test(trimmed)) return null;
   const groups = splitDigits(trimmed, pattern);
   if (!groups) return null;
-  const order = groups[0]?.length === 4 ? ISO_ORDER : pattern.order;
+  const order = typedOrder(groups, pattern);
   const date: DateParts = { year: 0, month: 0, day: 0 };
   for (const [index, part] of order.entries()) {
     const digits = groups[index] ?? '';

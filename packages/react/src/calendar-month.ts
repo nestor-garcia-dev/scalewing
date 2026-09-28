@@ -1,6 +1,7 @@
 import {
   daysInMonth,
   formatDateOnly,
+  isValidDateParts,
   parseDateOnly,
   type DateParts,
 } from './date-only.js';
@@ -120,19 +121,35 @@ export function monthInRange(
 }
 
 /**
+ * The months of `year` with any day inside `[min, max]`, 1–12, for a month
+ * selector that only offers months a person can open.
+ */
+export function monthsInRange(
+  year: number,
+  min?: string,
+  max?: string,
+): number[] {
+  return Array.from({ length: 12 }, (_, index) => index + 1).filter((month) =>
+    monthInRange({ year, month }, min, max),
+  );
+}
+
+/**
  * Six rows of seven cells covering the month, padded with the neighboring
- * months so the grid never changes height.
+ * months so the grid never changes height. Padding before 0001-01-01 or
+ * after 9999-12-31 is `null`: no four-digit date exists there.
  */
 export function monthGrid(
   month: CalendarMonth,
   weekStartsOn: WeekStart,
-): CalendarCell[][] {
+): (CalendarCell | null)[][] {
   const first = firstOfMonth(month);
   const leading = (weekdayOf(first) - weekStartsOn + 7) % 7;
   const start = toDayNumber(requireDate(first)) - leading;
   return Array.from({ length: 6 }, (_, row) =>
     Array.from({ length: 7 }, (_, column) => {
       const parts = fromDayNumber(start + row * 7 + column);
+      if (!isValidDateParts(parts)) return null;
       return {
         value: formatDateOnly(parts),
         day: parts.day,

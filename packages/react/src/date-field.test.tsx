@@ -155,6 +155,122 @@ describe('DateField typed entry', () => {
     expect(entry().hasAttribute('aria-describedby')).toBe(false);
   });
 
+  it('waits for the last field before committing a date that could still grow', async () => {
+    const user = userEvent.setup();
+    const spy = vi.fn();
+    render(<ControlledField spy={spy} />);
+    await user.type(entry(), '2024-03-1');
+    expect(spy).not.toHaveBeenCalled();
+    await user.type(entry(), '0');
+    expect(spy).toHaveBeenCalledExactlyOnceWith('2024-03-10');
+    await user.clear(entry());
+    spy.mockClear();
+    await user.type(entry(), '2024-3-5');
+    expect(spy).not.toHaveBeenCalled();
+    await user.keyboard('{Enter}');
+    expect(spy).toHaveBeenCalledExactlyOnceWith('2024-03-05');
+    expect(entry()).toHaveProperty('value', '03/05/2024');
+    await user.clear(entry());
+    spy.mockClear();
+    await user.type(entry(), '2024-3-7');
+    await user.tab();
+    expect(spy).toHaveBeenCalledExactlyOnceWith('2024-03-07');
+    expect(screen.getByTestId('value').textContent).toBe('2024-03-07');
+  });
+
+  it('keeps typed text when the parent keeps the old value', async () => {
+    const user = userEvent.setup();
+    const onChange = vi.fn();
+    const { rerender } = render(
+      <DateField
+        label="Sighting date"
+        onChange={onChange}
+        value="2024-03-10"
+      />,
+    );
+    await user.clear(entry());
+    await user.type(entry(), '12/25/2099');
+    expect(onChange).toHaveBeenLastCalledWith('2099-12-25');
+    expect(entry()).toHaveProperty('value', '12/25/2099');
+    await user.tab();
+    expect(entry()).toHaveProperty('value', '12/25/2099');
+    // Leaving the field does not send the refused date again.
+    expect(onChange.mock.calls).toEqual([[''], ['2099-12-25']]);
+    rerender(
+      <DateField
+        label="Sighting date"
+        onChange={onChange}
+        value="2024-04-01"
+      />,
+    );
+    expect(entry()).toHaveProperty('value', '04/01/2024');
+  });
+
+  it('follows an outside change back to the old value after a commit', async () => {
+    const user = userEvent.setup();
+    function Resettable() {
+      const [value, setValue] = useState('2024-03-10');
+      return (
+        <>
+          <DateField label="Sighting date" onChange={setValue} value={value} />
+          <button onClick={() => setValue('2024-03-10')} type="button">
+            Reset
+          </button>
+        </>
+      );
+    }
+    render(<Resettable />);
+    await user.clear(entry());
+    await user.type(entry(), '12/25/2024');
+    expect(entry()).toHaveProperty('value', '12/25/2024');
+    await user.click(screen.getByRole('button', { name: 'Reset' }));
+    expect(entry()).toHaveProperty('value', '03/10/2024');
+  });
+
+  it('blocks form submission for text that is not a date or a date outside the bounds', async () => {
+    const user = userEvent.setup();
+    const onSubmit = vi.fn((event: { preventDefault: () => void }) =>
+      event.preventDefault(),
+    );
+    render(
+      <form onSubmit={onSubmit}>
+        <ControlledField
+          initial="2024-02-29"
+          max="2024-03-31"
+          min="2024-03-01"
+        />
+        <button type="submit">Save</button>
+      </form>,
+    );
+    const input = entry() as HTMLInputElement;
+    const form = input.form!;
+    const save = screen.getByRole('button', { name: 'Save' });
+    // A given value outside the bounds.
+    expect(input.validationMessage).toBe('Choose a date in the allowed range.');
+    expect(form.checkValidity()).toBe(false);
+    await user.click(save);
+    expect(onSubmit).not.toHaveBeenCalled();
+    // Half-typed text.
+    await user.clear(input);
+    await user.type(input, '3/1');
+    expect(input.validationMessage).toBe('Enter a valid date.');
+    expect(form.checkValidity()).toBe(false);
+    await user.click(save);
+    expect(onSubmit).not.toHaveBeenCalled();
+    expect(input.getAttribute('aria-invalid')).toBe('true');
+    // A typed date outside the bounds.
+    await user.clear(input);
+    await user.type(input, '4/1/2024');
+    expect(input.validationMessage).toBe('Choose a date in the allowed range.');
+    expect(form.checkValidity()).toBe(false);
+    // An allowed date clears the message.
+    await user.clear(input);
+    await user.type(input, '3/15/2024');
+    expect(input.validationMessage).toBe('');
+    await user.click(save);
+    expect(onSubmit).toHaveBeenCalledOnce();
+  });
+
   it('clears an emptied field and shows range and supplied errors', async () => {
     const user = userEvent.setup();
     const onChange = vi.fn();
@@ -415,6 +531,123 @@ describe('DateField calendar', () => {
     expect(spy).toHaveBeenCalledExactlyOnceWith('1961-05-14');
   });
 
+  it('leaves days past the four-digit years blank and unselectable', async () => {
+    const user = userEvent.setup();
+    const spy = vi.fn();
+    render(<ControlledField initial="0001-01-10" spy={spy} />);
+    await user.click(calendarButton());
+    const cells = within(dialog()).getAllByRole('gridcell');
+    expect(cells).toHaveLength(42);
+    // January 1 of year 1 is a Monday; the Sunday before it has no date.
+    const blank = cells[0]!;
+    expect(blank.textContent).toBe('');
+    expect(blank.getAttribute('aria-disabled')).toBe('true');
+    expect(blank.hasAttribute('tabindex')).toBe(false);
+    expect(blank.hasAttribute('data-date')).toBe(false);
+    expect(cells[1]?.getAttribute('aria-label')).toBe('Monday, January 1, 1');
+    await user.click(blank);
+    expect(spy).not.toHaveBeenCalled();
+    expect(dialog()).toBeTruthy();
+    cells[1]!.focus();
+    await user.keyboard('{ArrowLeft}');
+    expect(focusedDate()).toBe('0001-01-01');
+  });
+
+  it('leaves the days after 9999-12-31 blank', async () => {
+    const user = userEvent.setup();
+    const spy = vi.fn();
+    render(<ControlledField initial="9999-12-30" spy={spy} />);
+    await user.click(calendarButton());
+    const cells = within(dialog()).getAllByRole('gridcell');
+    expect(cells.at(-1)?.textContent).toBe('');
+    await user.click(cells.at(-1)!);
+    expect(spy).not.toHaveBeenCalled();
+    screen
+      .getByRole('gridcell', { name: 'Thursday, December 30, 9999' })
+      .focus();
+    await user.keyboard('{ArrowDown}');
+    expect(focusedDate()).toBe('9999-12-31');
+  });
+
+  it('offers only the months with a day inside the bounds', async () => {
+    const user = userEvent.setup();
+    render(
+      <ControlledField
+        initial="2024-05-10"
+        max="2025-02-10"
+        min="2024-03-15"
+      />,
+    );
+    await user.click(calendarButton());
+    await user.click(screen.getByRole('combobox', { name: 'Month' }));
+    expect(
+      screen.getAllByRole('option').map((option) => option.textContent),
+    ).toEqual([
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December',
+    ]);
+    await user.keyboard('{Escape}');
+    await user.click(screen.getByRole('combobox', { name: 'Year' }));
+    await user.click(screen.getByRole('option', { name: '2025' }));
+    expect(screen.getByRole('grid', { name: 'February 2025' })).toBeTruthy();
+    await user.click(screen.getByRole('combobox', { name: 'Month' }));
+    expect(
+      screen.getAllByRole('option').map((option) => option.textContent),
+    ).toEqual(['January', 'February']);
+  });
+
+  it('follows a new value and new bounds while open', async () => {
+    const user = userEvent.setup();
+    const onChange = vi.fn();
+    const { rerender } = render(
+      <DateField
+        label="Sighting date"
+        onChange={onChange}
+        value="2024-03-10"
+      />,
+    );
+    await user.click(calendarButton());
+    expect(focusedDate()).toBe('2024-03-10');
+    rerender(
+      <DateField
+        label="Sighting date"
+        onChange={onChange}
+        value="2024-07-04"
+      />,
+    );
+    expect(screen.getByRole('grid', { name: 'July 2024' })).toBeTruthy();
+    expect(focusedDate()).toBe('2024-07-04');
+    rerender(
+      <DateField
+        label="Sighting date"
+        min="2024-08-02"
+        onChange={onChange}
+        value="2024-07-04"
+      />,
+    );
+    expect(screen.getByRole('grid', { name: 'August 2024' })).toBeTruthy();
+    expect(focusedDate()).toBe('2024-08-02');
+    rerender(
+      <DateField
+        label="Sighting date"
+        max="2024-06-30"
+        onChange={onChange}
+        value="2024-07-04"
+      />,
+    );
+    expect(screen.getByRole('grid', { name: 'June 2024' })).toBeTruthy();
+    expect(focusedDate()).toBe('2024-06-30');
+    expect(onChange).not.toHaveBeenCalled();
+  });
+
   it('keeps Tab inside the dialog', async () => {
     const user = userEvent.setup();
     render(<ControlledField initial="2024-03-10" />);
@@ -490,6 +723,7 @@ describe('DateField locales', () => {
     today: 'Hoy',
     clear: 'Borrar',
     invalidEntry: 'Escribe una fecha válida.',
+    outOfRange: 'Elige una fecha dentro del rango permitido.',
     yearPlaceholder: 'AAAA',
   };
 

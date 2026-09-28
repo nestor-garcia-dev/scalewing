@@ -1,6 +1,6 @@
 'use client';
 
-import { useId, useMemo, useRef, useState } from 'react';
+import { useEffect, useId, useMemo, useRef, useState } from 'react';
 
 import { type WeekStart } from '../calendar-month.js';
 import {
@@ -8,6 +8,7 @@ import {
   type DateFieldLabels,
 } from '../date-field-labels.js';
 import { dateEntryPattern, dateEntryPlaceholder } from '../date-entry.js';
+import { dateEntryValidity } from '../date-entry-validity.js';
 import {
   assertDateBounds,
   isOutsideDateRange,
@@ -65,6 +66,7 @@ export function DateField({
   const rootRef = useRef<HTMLDivElement>(null);
   const controlRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
   const resolvedLocale = useLangLocale(locale, rootRef);
   const pattern = useMemo(
     () => dateEntryPattern(resolvedLocale),
@@ -73,6 +75,11 @@ export function DateField({
   const entry = useDateEntry(value, pattern, (next) => {
     if (!disabled) onChange(next);
   });
+  const validity = dateEntryValidity(entry.parsed, words, min, max);
+  // Blocks form submission as the native date input's validity did.
+  useEffect(() => {
+    inputRef.current?.setCustomValidity(validity);
+  }, [validity]);
   const [open, setOpen] = useState(false);
   // Disabling the field closes its calendar for good, not just while disabled.
   if (disabled && open) setOpen(false);
@@ -128,6 +135,7 @@ export function DateField({
             month: words.monthPlaceholder,
             year: words.yearPlaceholder,
           })}
+          ref={inputRef}
           required={required}
           spellCheck={false}
           type="text"

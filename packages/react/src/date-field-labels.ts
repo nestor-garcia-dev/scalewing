@@ -18,8 +18,16 @@ export type DateFieldLabels = {
   today: string;
   /** Empties an optional field and closes the calendar. */
   clear: string;
-  /** Shown when typed text is not a date. */
+  /**
+   * Shown when typed text is not a date; also the entry's form validation
+   * message while its text is not a date.
+   */
   invalidEntry: string;
+  /**
+   * The entry's form validation message while its date, typed or given, is
+   * outside `min` and `max`.
+   */
+  outOfRange: string;
   /** Placeholder letters, arranged in the locale's field order. */
   dayPlaceholder: string;
   monthPlaceholder: string;
@@ -35,6 +43,7 @@ export const defaultDateFieldLabels: DateFieldLabels = {
   today: 'Today',
   clear: 'Clear',
   invalidEntry: 'Enter a valid date.',
+  outOfRange: 'Choose a date in the allowed range.',
   dayPlaceholder: 'DD',
   monthPlaceholder: 'MM',
   yearPlaceholder: 'YYYY',

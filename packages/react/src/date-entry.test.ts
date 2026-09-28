@@ -4,6 +4,7 @@ import {
   dateEntryPattern,
   dateEntryPlaceholder,
   formatDateEntry,
+  isCompleteDateEntry,
   parseDateEntry,
 } from './date-entry.js';
 
@@ -98,5 +99,22 @@ describe('typed date entry', () => {
       '01/01/0000',
     ])
       expect(parseDateEntry(text, us)).toBeNull();
+  });
+
+  it('calls typed text complete only when its last field is at full width', () => {
+    const us = dateEntryPattern('en-US');
+    const ja = dateEntryPattern('ja');
+    // The US year ends the entry: four digits finish it, whatever came first.
+    expect(isCompleteDateEntry('3/1/2024', us)).toBe(true);
+    expect(isCompleteDateEntry('3/1/202', us)).toBe(false);
+    // ISO ends with the day, which may still grow from 1 to 10.
+    expect(isCompleteDateEntry('2024-03-1', us)).toBe(false);
+    expect(isCompleteDateEntry('2024-03-10', us)).toBe(true);
+    expect(isCompleteDateEntry('2024/3/1', ja)).toBe(false);
+    expect(isCompleteDateEntry('2024/3/10', ja)).toBe(true);
+    expect(isCompleteDateEntry('03102024', us)).toBe(true);
+    expect(isCompleteDateEntry('0310202', us)).toBe(false);
+    expect(isCompleteDateEntry('3/10', us)).toBe(false);
+    expect(isCompleteDateEntry('', us)).toBe(false);
   });
 });
