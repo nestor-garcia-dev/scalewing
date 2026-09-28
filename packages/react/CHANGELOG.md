@@ -1,5 +1,33 @@
 # @scalewing/react
 
+## 1.10.1
+
+### Patch Changes
+
+- 7c27935: `ActionMenu` places its menu with the shared anchored-popover code that the `DateField` and `CalendarButton` calendar use (`docs/requests/teisoro-action-menu.md`, 2026-09-28 follow-up). The menu now opens a `space-1` (4 px) gap below its trigger, or above it when it only fits there, keeps at least `space-2` (8 px) from every viewport edge, and aligns to the trigger's inline start (its right edge in right-to-left), or to the trigger's other edge when the trigger ends a row and the menu would not fit from its start. Before, it sat directly on the trigger and was pushed flush against the screen edge.
+
+  - The menu element is rendered only while it is open, like the calendar; it was a `hidden` element before. `aria-controls` already pointed at it only while open. A test that looked for the closed menu with `{ hidden: true }` now finds nothing.
+  - `.sw-action-menu-list` is as wide as its longest command (`width: max-content`, at least the 44 px control height) up to the viewport less both insets, so a long command wraps inside the screen instead of running off it. It resets the popover layer's `inset`, so the placed position holds in right-to-left documents too. Commands take the label line height with a `space-1` block padding, still 28 px tall on one line.
+  - The unused `.sw-action-menu-list[hidden]` rule is gone.
+
+  No API change and no new dependencies.
+
+- ab61ca6: `ActionMenu` gives a coarse pointer the 44 px touch target (`docs/requests/teisoro-action-menu.md`, 2026-09-28 touch-target follow-up). Under `@media (pointer: coarse)` the trigger is at least `--sw-control-md-min-height` (44 px) tall and wide, and each command at least 44 px tall; a fine pointer keeps the compact xs height. This follows `CalendarButton`'s coarse-pointer rule, and both now read the target from one internal module.
+
+  Visual change on touch screens only. No API change and no new dependencies.
+
+- df1fa80: The `ActionMenu` menu and the `DateField` and `CalendarButton` calendar are placed again when the popover or its anchor changes size while open, such as commands that change while the menu is open or a month with another row of weeks (`docs/requests/teisoro-action-menu.md`, 2026-09-28 placement follow-up). Before, their shared placement ran only on opening, scroll and window resize. It uses `ResizeObserver` where the runtime has it.
+
+  No API change and no new dependencies.
+
+- 91665ce: The `DateField` and `CalendarButton` calendar and the `ActionMenu` menu now fit the viewport a classic scrollbar leaves (`docs/requests/teisoro-action-menu.md`, 2026-09-28 placement follow-up). Their shared placement measured `window.innerWidth` and `innerHeight`, which include a classic scrollbar, so a popover clamped to the right edge could sit under the scrollbar instead of `space-2` from it. It now measures the root element's client box. The calendar's `max-width` is `100%` of the top layer less both insets instead of `100vw`, as the menu's is.
+
+  Only pages with classic (non-overlay) scrollbars change. No API change and no new dependencies.
+
+- 7b4058e: `Text` drops the browser's paragraph and heading margins (`docs/requests/teisoro-text.md`). Its `p` and `h1`–`h4` elements kept about 1em of margin above and below, which a flex `Stack` or `Inline` adds to its `gap`. A generated `:where(.sw-text-*) { margin: 0; }` rule removes it at zero specificity, so an authored margin (`sw-sr-only`, a consumer class) still wins.
+
+  Visual change: text in a `Stack` or `Inline` sits at the `gap` the page asked for, so dialog titles, section headings and card text are tighter. A page that needs more space raises its `gap`. No API change and no new dependencies.
+
 ## 1.10.0
 
 ### Minor Changes

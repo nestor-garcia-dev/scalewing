@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: implemented locally on `claude/closeout-day-fixes` (Teisoro F-007-S04 task 1305); review, merge and release remain.
+Status: merged in #68 (2026-09-28) and released in `@scalewing/react` 1.10.1; Teisoro pins it in F-007-S04 task 1310.
 Renderer: react
 Missing surface: none new. `Text` keeps the browser's paragraph and heading margins, so the spacing between lines is not the token the page asked for.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: `Text` is the text primitive. Resetting margins per consumer means a `style` or class on every `Text`, which is the hand-written spacing hard rule 2 forbids.
