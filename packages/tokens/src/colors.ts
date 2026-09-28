@@ -1,3 +1,5 @@
+import { accentSubtleFor } from './accent-subtle.js';
+
 export const semanticColorKeys = [
   'background',
   'surface',
@@ -5,6 +7,7 @@ export const semanticColorKeys = [
   'muted',
   'accent',
   'onAccent',
+  'accentSubtle',
   'secondary',
   'onSecondary',
   'tertiary',
@@ -21,7 +24,7 @@ export type SemanticColorKey = (typeof semanticColorKeys)[number];
 
 export type ColorTokens = Record<SemanticColorKey, string>;
 
-export const lightColors: ColorTokens = {
+const lightBase: Omit<ColorTokens, 'accentSubtle'> = {
   background: '#FFFFFF',
   surface: '#FFFFFF',
   text: '#1D1D1F',
@@ -43,7 +46,7 @@ export const lightColors: ColorTokens = {
   border: '#D2D2D7',
 };
 
-export const darkColors: ColorTokens = {
+const darkBase: Omit<ColorTokens, 'accentSubtle'> = {
   background: '#000000',
   surface: '#1C1C1E',
   text: '#F5F5F7',
@@ -60,6 +63,18 @@ export const darkColors: ColorTokens = {
   success: '#5BE0A0',
   warning: '#FDB022',
   border: '#3A3A3C',
+};
+
+// A quiet fill tinted with the accent; it follows `accent` and `surface`
+// (see accent-subtle.ts and createTheme) unless an overlay sets it.
+export const lightColors: ColorTokens = {
+  ...lightBase,
+  accentSubtle: accentSubtleFor(lightBase.accent, lightBase.surface),
+};
+
+export const darkColors: ColorTokens = {
+  ...darkBase,
+  accentSubtle: accentSubtleFor(darkBase.accent, darkBase.surface),
 };
 
 export function isSemanticColorKey(value: string): value is SemanticColorKey {

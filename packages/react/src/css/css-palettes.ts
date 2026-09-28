@@ -1,6 +1,8 @@
 import {
   type ColorScheme,
+  type ColorTokens,
   type PaletteId,
+  type SemanticColorKey,
   colorsForPalette,
   createTheme,
   paletteHasStylesheet,
@@ -9,13 +11,27 @@ import {
   semanticColorKeys,
 } from '@scalewing/tokens';
 
+/**
+ * A palette sets the colours it overlays, plus the accent tint whenever it
+ * moves the accent or surface the tint is mixed from.
+ */
+function overlaidColorKey(
+  key: SemanticColorKey,
+  overlay: Partial<ColorTokens>,
+): boolean {
+  if (key === 'accentSubtle') {
+    return Boolean(overlay.accentSubtle || overlay.accent || overlay.surface);
+  }
+  return Boolean(overlay[key]);
+}
+
 function paletteCustomProperties(id: PaletteId, scheme: ColorScheme): string {
   const overlay = colorsForPalette(id, scheme);
   const theme = createTheme({ colorScheme: scheme, palette: id });
   const lines: string[] = [];
 
   for (const key of semanticColorKeys) {
-    if (overlay[key]) {
+    if (overlaidColorKey(key, overlay)) {
       lines.push(`  --sw-color-${key}: ${theme.colors[key]};`);
     }
   }

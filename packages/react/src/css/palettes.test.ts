@@ -31,6 +31,14 @@ describe('generated palette CSS', () => {
     expect(cerulean).not.toContain('--sw-button-secondary-border');
   });
 
+  it('retints the accent tint wherever a palette moves the accent', () => {
+    const signal = generatePaletteStylesheet('signal');
+    expect(signal).toContain('--sw-color-accentSubtle: #E6F0FA');
+    expect(signal).toContain('--sw-color-accentSubtle: #222D34');
+    expect(css).toContain('--sw-color-accentSubtle: #EFECFE');
+    expect(css).toContain('--sw-color-accentSubtle: #2A2734');
+  });
+
   it('drops the secondary ring where a palette fills it', () => {
     const signal = generatePaletteStylesheet('signal');
     expect(signal).toContain('--sw-color-secondary: #1D1D1F');

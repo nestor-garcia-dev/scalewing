@@ -1,3 +1,4 @@
+import { accentSubtleFor } from './accent-subtle.js';
 import {
   type ColorTokens,
   isSemanticColorKey,
@@ -121,6 +122,11 @@ export function createTheme(overlay: ThemeOverlay): Theme {
   // the surface keeps its secondary action an outlined pill.
   if (!colors.secondary) {
     merged.secondary = merged.surface;
+  }
+
+  // An unset accent tint follows the merged accent and surface.
+  if (!colors.accentSubtle) {
+    merged.accentSubtle = accentSubtleFor(merged.accent, merged.surface);
   }
 
   return {
