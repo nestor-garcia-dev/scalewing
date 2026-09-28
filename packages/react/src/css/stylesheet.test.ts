@@ -434,6 +434,20 @@ describe('generated CSS', () => {
     expect(css).toContain(
       '[data-theme] .sw-field-invalid :is(input, select, textarea)',
     );
+    // Error regions always exist as live regions; empty, they leave the
+    // layout but stay in the accessibility tree (review of PR #73).
+    for (const region of [
+      'sw-field-error',
+      'sw-checkbox-error',
+      'sw-radio-group-error',
+      'sw-date-field-error',
+    ]) {
+      expect(css).toContain(`.${region}:empty { position: absolute; }`);
+    }
+    expect(css).not.toContain(':has(.sw-radio-group-error)');
+    expect(css).toContain(
+      ".sw-radio-group[aria-invalid='true'] .sw-radio-group-mark",
+    );
     expect(css).toContain(
       '.sw-checkbox-input:focus-visible + .sw-checkbox-mark',
     );

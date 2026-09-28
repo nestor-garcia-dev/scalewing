@@ -12,6 +12,12 @@ test('Checkbox responds once to pointer and keyboard and preserves invalid and d
 
   await expect(source).not.toBeChecked();
   await expect(source).toHaveAttribute('aria-invalid', 'true');
+  await expect(source).toHaveAccessibleDescription(/Confirm the source/);
+  // Associated as Field's error is, in a polite live region, not an alert.
+  await expect(section.getByRole('alert')).toHaveCount(0);
+  const region = section.locator('.sw-checkbox-error').first();
+  await expect(region).toHaveAttribute('aria-live', 'polite');
+  await expect(region).toHaveText('Confirm the source');
   await expect(source).toHaveAttribute('required', '');
   await expect(disabled).toBeDisabled();
   const disabledLabel = section.getByText(
@@ -31,6 +37,9 @@ test('Checkbox responds once to pointer and keyboard and preserves invalid and d
   await section.getByText('Source confirmed', { exact: true }).click();
   await expect(source).toBeChecked();
   await expect(source).toHaveAttribute('aria-invalid', 'false');
+  // The region stays, empty, ready to announce the next error.
+  await expect(region).toHaveText('');
+  await expect(region).toHaveAttribute('aria-live', 'polite');
   await expect(section.getByText(/Callbacks: 1\./)).toBeVisible();
   await source.focus();
   await source.press('Space');

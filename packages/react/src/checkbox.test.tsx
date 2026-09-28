@@ -33,6 +33,15 @@ describe('Checkbox', () => {
     expect(document.getElementById(ids[1] ?? '')?.textContent).toBe(
       'Confirm the source',
     );
+    // Exposed as Field's error is: described and invalid, in a polite live
+    // region rather than an alert.
+    expect(
+      screen.getByRole('checkbox', {
+        name: 'Source confirmed',
+        description: 'Required for the sighting report Confirm the source',
+      }),
+    ).toBe(control);
+    expect(screen.queryByRole('alert')).toBeNull();
     rerender(
       <Checkbox
         checked

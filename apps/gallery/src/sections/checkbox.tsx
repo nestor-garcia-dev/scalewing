@@ -11,7 +11,7 @@ export function CheckboxSection() {
   return (
     <Section
       id="checkbox"
-      purpose="Checkbox is an independent form choice. The browser supplies native checkbox and keyboard semantics; the caller owns its value and validation copy."
+      purpose="Checkbox is an independent form choice. The browser supplies native checkbox and keyboard semantics; the caller owns its value and validation copy. Its error is described, marks it invalid, and is announced politely, as Field's is."
       title="Checkbox"
       usage={`<Checkbox
   label="Source confirmed"

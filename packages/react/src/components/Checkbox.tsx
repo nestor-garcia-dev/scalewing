@@ -2,6 +2,8 @@
 
 import { useId } from 'react';
 
+import { FieldErrorRegion } from './FieldErrorRegion.js';
+
 export type CheckboxProps = {
   label: string;
   checked: boolean;
@@ -55,11 +57,11 @@ export function Checkbox({
           {description}
         </span>
       ) : null}
-      {error ? (
-        <span className="sw-checkbox-error" id={errorId}>
-          {error}
-        </span>
-      ) : null}
+      <FieldErrorRegion
+        className="sw-checkbox-error"
+        id={errorId}
+        message={error}
+      />
     </div>
   );
 }

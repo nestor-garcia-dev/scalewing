@@ -61,6 +61,13 @@ describe('Field', () => {
     expect(input.getAttribute('aria-describedby')).toBe(`external-note ${id}`);
     expect(input).toHaveProperty('required', true);
     expect(screen.getByText('*').getAttribute('aria-hidden')).toBe('true');
+    // The error region exists, empty and polite, before any error, so a new
+    // error is announced once when its text is swapped in (not as an alert).
+    const region = input
+      .closest('.sw-field')
+      ?.querySelector('.sw-field-error') as HTMLElement;
+    expect(region.getAttribute('aria-live')).toBe('polite');
+    expect(region.textContent).toBe('');
     rerender(
       <Field
         description="Use the code on the sighting card"
@@ -72,7 +79,19 @@ describe('Field', () => {
       </Field>,
     );
     expect(screen.queryByText('Use the code on the sighting card')).toBeNull();
-    expect(screen.getByRole('alert').id).toBe(id);
+    // The error replaces the hint on screen, in the same region element that
+    // existed before, and it is not an alert (Teisoro CHK-3).
+    expect(screen.getByText('A code is required')).toBe(region);
+    expect(input.getAttribute('aria-describedby')).toBe(
+      `external-note ${region.id}`,
+    );
+    expect(screen.queryByRole('alert')).toBeNull();
+    expect(
+      screen.getByRole('textbox', {
+        name: 'Sighting code',
+        description: 'A code is required',
+      }),
+    ).toBe(input);
     expect(input.getAttribute('aria-invalid')).toBe('true');
     expect(input.closest('.sw-field')?.className).toContain('sw-field-invalid');
     rerender(
@@ -86,6 +105,8 @@ describe('Field', () => {
     );
     expect(screen.queryByRole('alert')).toBeNull();
     expect(screen.getByText('Use the code on the sighting card').id).toBe(id);
+    expect(region.textContent).toBe('');
+    expect(input.getAttribute('aria-describedby')).toBe(`external-note ${id}`);
     expect(input.getAttribute('aria-invalid')).toBeNull();
     expect(input.closest('.sw-field')?.className).not.toContain(
       'sw-field-invalid',
@@ -191,7 +212,7 @@ describe('Field', () => {
     expect(input.parentElement?.querySelector('.sw-field-prefix')).toBeNull();
     expect(input.getAttribute('aria-invalid')).toBe('true');
     expect(input.getAttribute('aria-describedby')).toBe(
-      screen.getByRole('alert').id,
+      screen.getByText('Enter a rate').id,
     );
     expect(input).toHaveProperty('required', true);
     expect(input.closest('.sw-field')?.className).toContain('sw-field-invalid');
@@ -239,7 +260,7 @@ describe('Field', () => {
         'drop-hint',
         frame?.querySelector('.sw-field-prefix')?.id,
         frame?.querySelector('.sw-field-suffix')?.id,
-        screen.getByRole('alert').id,
+        screen.getByText('Enter an amount').id,
       ].join(' '),
     );
   });
