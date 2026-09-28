@@ -17,6 +17,14 @@ release workflow completed successfully.
 
 ## Next action
 
+`CalendarButton` for the Teisoro closeout day heading (F-007-S03 re-review,
+`teisoro-calendar-button.md`): an icon-only Button beside the day heading
+opens the DateField calendar, replacing the separate "Go to a day" field.
+Implemented and reviewed on branch `claude/date-button`, not pushed. Next:
+open the pull request, review and merge, then version `@scalewing/react`
+1.10.0 and publish through Release packages; Teisoro verifies the heading
+with a local link first, then pins 1.10.0.
+
 `@scalewing/react` 1.9.0 for Teisoro F-007-S03 task 1280 (the first UX
 review, closing a register): `DateField` draws its own calendar (#61,
 `teisoro-date-field.md`), and `Field` `prefix`/`suffix`, the `Accordion`

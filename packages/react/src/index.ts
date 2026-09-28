@@ -13,6 +13,11 @@ export {
   type DateFieldProps,
   type WeekStart,
 } from './components/DateField.js';
+export {
+  CalendarButton,
+  type CalendarButtonLabels,
+  type CalendarButtonProps,
+} from './components/CalendarButton.js';
 export { Checkbox, type CheckboxProps } from './components/Checkbox.js';
 export {
   Spinner,

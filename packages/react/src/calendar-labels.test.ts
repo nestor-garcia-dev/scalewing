@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
 import {
+  calendarTriggerName,
   formatDateLabel,
   monthNames,
   monthTitle,
@@ -32,5 +33,14 @@ describe('calendar labels', () => {
       'domingo, 3 de noviembre de 2024',
     );
     expect(formatDateLabel('', 'en-US')).toBe('');
+  });
+
+  it('names a calendar trigger by its purpose and the date it holds', () => {
+    expect(
+      calendarTriggerName('Choose survey day', '2026-09-22', 'en-US'),
+    ).toBe('Choose survey day, Tuesday, September 22, 2026');
+    expect(
+      calendarTriggerName('Elegir día del censo', '2026-09-22', 'es-US'),
+    ).toBe('Elegir día del censo, martes, 22 de septiembre de 2026');
   });
 });

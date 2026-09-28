@@ -2,7 +2,7 @@
 
 import { useEffect, useId, useMemo, useRef, useState } from 'react';
 
-import { type WeekStart } from '../calendar-month.js';
+import { assertWeekStart, type WeekStart } from '../calendar-month.js';
 import {
   resolveDateFieldLabels,
   type DateFieldLabels,
@@ -59,8 +59,7 @@ export function DateField({
   labels,
 }: DateFieldProps) {
   assertDateBounds(value, min, max);
-  if (weekStartsOn !== 0 && weekStartsOn !== 1)
-    throw new RangeError('weekStartsOn must be 0 or 1');
+  assertWeekStart(weekStartsOn);
   const words = resolveDateFieldLabels(labels);
 
   const rootRef = useRef<HTMLDivElement>(null);

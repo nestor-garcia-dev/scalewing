@@ -52,3 +52,15 @@ export function formatDateLabel(value: string, locale: string): string {
     formatterDate(parts),
   );
 }
+
+/**
+ * An icon-only calendar trigger's name: its purpose, then the date it holds
+ * spoken in full, such as "Choose survey day, Tuesday, September 22, 2026".
+ */
+export function calendarTriggerName(
+  purpose: string,
+  value: string,
+  locale: string,
+): string {
+  return `${purpose}, ${formatDateLabel(value, locale)}`;
+}

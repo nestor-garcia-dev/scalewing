@@ -7,6 +7,7 @@ import { cssActionBarClasses } from './css-action-bar.js';
 import { cssActionMenuClasses } from './css-action-menu.js';
 import { cssAccordionClasses } from './css-accordion.js';
 import { cssButtonClasses } from './css-button.js';
+import { cssCalendarButtonClasses } from './css-calendar-button.js';
 import { cssChartClasses } from './css-chart.js';
 import { cssCheckboxClasses } from './css-checkbox.js';
 import { cssRadioGroupClasses } from './css-radio-group.js';
@@ -143,6 +144,8 @@ ${cssRadioGroupClasses()}
 ${cssDataClasses()}
 
 ${cssDateFieldClasses()}
+
+${cssCalendarButtonClasses()}
 
 ${cssChartClasses()}
 

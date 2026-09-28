@@ -9,6 +9,7 @@ import { actionMenuClassCatalog } from './css-action-menu.js';
 import { accordionClassCatalog } from './css-accordion.js';
 import { switchClassCatalog } from './css-switch.js';
 import { dateFieldClassCatalog } from './css-date-field.js';
+import { calendarButtonClassCatalog } from './css-calendar-button.js';
 import { checkboxClassCatalog } from './css-checkbox.js';
 import { radioGroupClassCatalog } from './css-radio-group.js';
 import { spinnerClassCatalog } from './css-spinner.js';
@@ -67,6 +68,7 @@ export function utilityClassCatalog(): string[] {
     ...actionBarClassCatalog(),
     ...switchClassCatalog(),
     ...dateFieldClassCatalog(),
+    ...calendarButtonClassCatalog(),
     ...checkboxClassCatalog(),
     ...radioGroupClassCatalog(),
     ...spinnerClassCatalog(),

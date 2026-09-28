@@ -3,6 +3,7 @@ import { describe, expect, it } from 'vitest';
 import {
   addDays,
   addMonths,
+  assertWeekStart,
   monthGrid,
   monthsInRange,
   monthInRange,
@@ -125,5 +126,14 @@ describe('calendar month', () => {
     ]);
     expect(monthsInRange(2025, '2024-03-31', '2025-02-01')).toEqual([1, 2]);
     expect(monthsInRange(2023, '2024-01-01')).toEqual([]);
+  });
+
+  it('accepts Sunday or Monday as the first weekday and nothing else', () => {
+    expect(() => assertWeekStart(0)).not.toThrow();
+    expect(() => assertWeekStart(1)).not.toThrow();
+    for (const bad of [2, -1, 0.5, Number.NaN])
+      expect(() => assertWeekStart(bad)).toThrow(
+        new RangeError('weekStartsOn must be 0 or 1'),
+      );
   });
 });
