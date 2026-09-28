@@ -3,6 +3,7 @@ import {
   Button,
   Card,
   Dialog,
+  Grid,
   Inline,
   Stack,
   Text,
@@ -18,7 +19,7 @@ export function ActionMenuSection() {
   return (
     <Section
       id="action-menu"
-      purpose="ActionMenu holds independent commands. Select chooses a value; ActionMenu does not. The caller supplies localized names, icons, and callbacks. Focus returns to the trigger before a command runs, so a dialog opened from the menu hands focus back to it on close. The menu opens a small gap below its trigger (above it near the bottom of the screen), keeps clear of the screen edges, and lines up with the trigger's end when the trigger ends a row. On a touch screen the trigger is at least 44 px square and each command 44 px tall. A long command wraps inside the screen."
+      purpose="ActionMenu holds independent commands. Select chooses a value; ActionMenu does not. The caller supplies localized names, icons, and callbacks. Focus returns to the trigger before a command runs, so a dialog opened from the menu hands focus back to it on close. The menu opens a small gap below its trigger (above it near the bottom of the screen), keeps clear of the screen edges, and lines up with the trigger's end when the trigger ends a row. align end lines it up with the trigger's end even where the start would fit, so a menu from the end of a card stays over that card. On a touch screen the trigger is at least 44 px square and each command 44 px tall. A long command wraps inside the screen."
       title="ActionMenu"
       usage={`<ActionMenu
   label="Sighting actions"
@@ -108,6 +109,33 @@ export function ActionMenuSection() {
             />
           </Inline>
         </Card>
+        <Grid columns={2} columnsBelow={{ md: 1 }} gap={3}>
+          {['Red fox', 'Green sea turtle'].map((animal) => (
+            <Card key={animal} padding={3}>
+              <Inline gap={3} justify="between">
+                <Text variant="label">{animal}</Text>
+                <ActionMenu
+                  align="end"
+                  items={[
+                    {
+                      id: 'flag',
+                      label: 'Flag for review',
+                      onSelect: () => setLastAction(`Flag ${animal}`),
+                    },
+                    {
+                      id: 'remove',
+                      label: 'Remove',
+                      destructive: true,
+                      onSelect: () => setLastAction(`Remove ${animal}`),
+                    },
+                  ]}
+                  label={`Actions for ${animal}`}
+                  trigger="⋯"
+                />
+              </Inline>
+            </Card>
+          ))}
+        </Grid>
         <Dialog
           onClose={() => setConfirmDelete(false)}
           open={confirmDelete}

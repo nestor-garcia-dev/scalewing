@@ -9,7 +9,10 @@ import {
   type ReactNode,
 } from 'react';
 
+import { type InlineAlign } from '../anchored-position.js';
 import { ActionMenuList } from './action-menu/ActionMenuList.js';
+
+export type ActionMenuAlign = InlineAlign;
 
 export type ActionMenuItem = {
   id: string;
@@ -25,6 +28,12 @@ export type ActionMenuProps = {
   items: readonly ActionMenuItem[];
   trigger?: ReactNode;
   disabled?: boolean;
+  /**
+   * The trigger edge the menu lines up with: its inline start (default) or
+   * its inline end, for a trigger that ends a card or row. Either way the
+   * menu takes the other edge when the preferred one would leave the screen.
+   */
+  align?: ActionMenuAlign;
 };
 
 function nextEnabled(
@@ -45,6 +54,7 @@ export function ActionMenu({
   items,
   trigger,
   disabled = false,
+  align = 'start',
 }: ActionMenuProps) {
   const menuId = useId();
   const triggerRef = useRef<HTMLButtonElement>(null);
@@ -132,6 +142,7 @@ export function ActionMenu({
       </button>
       {open ? (
         <ActionMenuList
+          align={align}
           focusIndex={focusIndex}
           id={menuId}
           items={items}

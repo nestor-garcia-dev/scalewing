@@ -94,7 +94,7 @@ export function cssRadioGroupClasses(): string {
   outline-offset: var(--sw-focus-ring-offset);
 }
 
-.sw-radio-group:has(.sw-radio-group-error) .sw-radio-group-mark {
+.sw-radio-group[aria-invalid='true'] .sw-radio-group-mark {
   border-color: var(--sw-color-danger);
 }
 
@@ -121,6 +121,7 @@ export function cssRadioGroupClasses(): string {
 
 .sw-radio-group-description { color: var(--sw-color-muted); }
 .sw-radio-group-error { color: var(--sw-color-danger); }
+.sw-radio-group-error:empty { position: absolute; }
 
 @media (prefers-reduced-transparency: reduce) {
   .sw-radio-group-mark { background: var(--sw-color-surface); }
@@ -131,7 +132,7 @@ export function cssRadioGroupClasses(): string {
   .sw-radio-group-mark { background: Canvas; border-color: CanvasText; }
   .sw-radio-group-input:checked + .sw-radio-group-mark { background: Highlight; border-color: Highlight; }
   .sw-radio-group-input:checked + .sw-radio-group-mark::after { background: HighlightText; }
-  .sw-radio-group:has(.sw-radio-group-error) .sw-radio-group-mark { border-color: CanvasText; }
+  .sw-radio-group[aria-invalid='true'] .sw-radio-group-mark { border-color: CanvasText; }
 }`;
 }
 

@@ -102,6 +102,7 @@ export function cssCheckboxClasses(): string {
 
 .sw-checkbox-description { color: var(--sw-color-muted); }
 .sw-checkbox-error { color: var(--sw-color-danger); }
+.sw-checkbox-error:empty { position: absolute; }
 
 @media (prefers-reduced-transparency: reduce) {
   .sw-checkbox-mark { background: var(--sw-color-surface); }

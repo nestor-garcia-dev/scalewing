@@ -10,6 +10,7 @@ import {
 import { dateEntryPattern, dateEntryPlaceholder } from '../date-entry.js';
 import { dateEntryValidity } from '../date-entry-validity.js';
 import { assertDateBounds, isOutsideDateRange } from '../date-only.js';
+import { FieldErrorRegion } from './FieldErrorRegion.js';
 import { CalendarDialog } from './date-field/CalendarDialog.js';
 import { DateFieldGlyph } from './date-field/DateFieldGlyph.js';
 import { useCalendarPopup } from './date-field/use-calendar-popup.js';
@@ -101,6 +102,14 @@ export function DateField({
     <div className="sw-date-field" ref={rootRef}>
       <label className="sw-date-field-label" htmlFor={inputId} id={labelId}>
         {label}
+        {/* The same mark as Field's; the input's own required state is what
+            assistive technology reads. */}
+        {required ? (
+          <span aria-hidden="true" className="sw-field-required">
+            {' '}
+            *
+          </span>
+        ) : null}
       </label>
       <div className="sw-date-field-control" ref={controlRef}>
         <input
@@ -144,16 +153,16 @@ export function DateField({
           {description}
         </span>
       ) : null}
-      {entry.invalid ? (
-        <span className="sw-date-field-error" id={entryErrorId}>
-          {words.invalidEntry}
-        </span>
-      ) : null}
-      {error ? (
-        <span className="sw-date-field-error" id={errorId}>
-          {error}
-        </span>
-      ) : null}
+      <FieldErrorRegion
+        className="sw-date-field-error"
+        id={entryErrorId}
+        message={entry.invalid ? words.invalidEntry : undefined}
+      />
+      <FieldErrorRegion
+        className="sw-date-field-error"
+        id={errorId}
+        message={error}
+      />
       {shown ? (
         <CalendarDialog
           {...dialog}

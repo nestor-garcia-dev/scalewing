@@ -1,11 +1,22 @@
 import { cx } from '../../class-names.js';
 import { denominationCellView } from '../../denomination-cells.js';
-import { type DenominationGridProps } from './types.js';
+import {
+  type DenominationGridProps,
+  type DenominationGridRow,
+} from './types.js';
 
 type TilesProps = Required<
   Pick<DenominationGridProps, 'label' | 'columns' | 'rows' | 'zeroLabel'>
 > &
   Pick<DenominationGridProps, 'subtotal'>;
+
+/**
+ * A lone row is named by the grid's own label, so its label line shows only
+ * when it adds something: an icon or a total. Several rows always show it.
+ */
+function showsRowLabel(rowCount: number, row: DenominationGridRow): boolean {
+  return rowCount > 1 || Boolean(row.icon) || row.total !== undefined;
+}
 
 export function DenominationTiles({
   label,
@@ -29,7 +40,7 @@ export function DenominationTiles({
           )}
           key={row.id}
         >
-          {rows.length > 1 || row.icon ? (
+          {showsRowLabel(rows.length, row) ? (
             <span className="sw-denomination-label">
               {row.icon ? (
                 <span aria-hidden="true" className="sw-denomination-icon">

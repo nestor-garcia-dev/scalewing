@@ -17,6 +17,26 @@ release workflow completed successfully.
 
 ## Next action
 
+Teisoro Services UX fixes (F-007-S05 task 1335, UX reviews
+`services-*.md`), each its own commit on `claude/services-ux-fixes`:
+`DenominationGrid` strip totals read at every width with a named total
+column (SDAY-6) and a lone tiles row's total (ENT-7), both
+`teisoro-denomination-grid.md` follow-ups; toggle `Button`s without the
+unpressed fade and with an accent ring when pressed, and a `Badge` on a
+filled button on the surface, and a quiet `FilterChips` chip in the muted
+color instead of faded (NSF-1, `teisoro-button.md`, `teisoro-badge.md`,
+`teisoro-filter-chips.md`); `ActionMenu` `align="end"` (ENT-13,
+`teisoro-action-menu.md` follow-up); `Field` errors described on the
+control without a live alert, as `Checkbox`'s are (CHK-3, DRW-6,
+`teisoro-field-validation.md` follow-up); the `DateField` required mark
+(NSF-15, `teisoro-date-field.md` follow-up); the `Select` trigger
+centred, with the Accordion chevron and a stable width (DRW-12,
+`teisoro-select.md` follow-up) and its `placeholder`, `required` and
+`error` (DRW-12, `teisoro-select.md` follow-up); and `Toast` `tone` and
+`icon` (DRW-14, `teisoro-toast.md`). Next: pull request, review and
+merge, then release `@scalewing/react` (minor) and Teisoro pins it for
+F-007-S05.
+
 `ActionRow` for FutMas F-002-S25 (`futmas-action-row.md`, owner approved
 2026-09-28) on the new `accentSubtle` tint (`futmas-accent-subtle.md`, ADR 0011) is merged and versioned: `@scalewing/tokens@1.4.0`, then
 `@scalewing/react-native@1.11.0` and `@scalewing/react@1.11.0` through

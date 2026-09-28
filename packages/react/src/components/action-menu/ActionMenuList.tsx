@@ -7,12 +7,14 @@ import {
   type RefObject,
 } from 'react';
 
+import { type InlineAlign } from '../../anchored-position.js';
 import { cx } from '../../class-names.js';
 import { useAnchoredPopover } from '../use-anchored-popover.js';
 import type { ActionMenuItem } from '../ActionMenu.js';
 
 type ActionMenuListProps = {
   id: string;
+  align: InlineAlign;
   label: string;
   items: readonly ActionMenuItem[];
   focusIndex: number;
@@ -25,12 +27,13 @@ type ActionMenuListProps = {
 
 /**
  * The open menu: on the popover layer beside the trigger (a gap below or
- * above it, inset from the viewport edges, and lined up with the trigger's
- * end when it would not fit from its start), with the focused command
- * holding DOM focus.
+ * above it, inset from the viewport edges, lined up with the trigger's start
+ * or, with `align="end"`, its end, and with the other edge when that one
+ * would not fit), with the focused command holding DOM focus.
  */
 export function ActionMenuList({
   id,
+  align,
   label,
   items,
   focusIndex,
@@ -42,6 +45,7 @@ export function ActionMenuList({
 }: ActionMenuListProps) {
   const menuRef = useRef<HTMLDivElement>(null);
   useAnchoredPopover(menuRef, triggerRef, triggerRef, onDismiss, {
+    align,
     flipInline: true,
   });
 

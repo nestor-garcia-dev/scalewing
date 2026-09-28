@@ -18,9 +18,12 @@ export function DenominationGrid({
   layout = 'strip',
   subtotal,
   zeroLabel = '—',
+  totalLabel,
 }: DenominationGridProps) {
   assertDenominationGrid(label, columns, rows);
   if (!zeroLabel) throw new RangeError('zeroLabel must not be empty');
+  if (totalLabel !== undefined && !totalLabel.trim())
+    throw new RangeError('totalLabel must not be empty');
 
   if (layout === 'tiles')
     return (
@@ -38,6 +41,7 @@ export function DenominationGrid({
       columns={columns}
       label={label}
       rows={rows}
+      totalLabel={totalLabel}
       zeroLabel={zeroLabel}
     />
   );

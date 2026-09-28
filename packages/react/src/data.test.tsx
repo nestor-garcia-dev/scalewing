@@ -5,9 +5,11 @@ import {
   screen,
   within,
 } from '@testing-library/react';
+import { contrastRatio, createTheme, paletteIds } from '@scalewing/tokens';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
-import { Badge } from './components/Badge.js';
+import { Badge, badgeTones } from './components/Badge.js';
+import { Button } from './components/Button.js';
 import { SegmentedControl } from './components/SegmentedControl.js';
 import { StatTile } from './components/StatTile.js';
 import { TabPanel, Tabs } from './components/Tabs.js';
@@ -25,6 +27,41 @@ afterEach(() => {
 });
 
 describe('Badge', () => {
+  it('reads at 4.5:1 inside a filled button, its tone border at 3:1, in every palette', () => {
+    for (const palette of paletteIds) {
+      for (const colorScheme of ['light', 'dark'] as const) {
+        const { colors } = createTheme({ colorScheme, palette });
+        const label = `${palette} ${colorScheme}`;
+        // The words are the text color on the surface in every tone.
+        expect(
+          contrastRatio(colors.text, colors.surface),
+          label,
+        ).toBeGreaterThanOrEqual(4.5);
+        // The tone is the border; neutral's is the card hairline.
+        for (const tone of badgeTones.filter((name) => name !== 'neutral')) {
+          expect(
+            contrastRatio(colors[tone], colors.surface),
+            `${label} ${tone}`,
+          ).toBeGreaterThanOrEqual(3);
+        }
+      }
+    }
+  });
+
+  it('nests in a button as a plain span the stylesheet puts on the surface', () => {
+    render(
+      <ThemeProvider colorScheme="light">
+        <Button aria-pressed onPress={() => undefined}>
+          Forest <Badge tone="warning">2 nests</Badge>
+        </Button>
+      </ThemeProvider>,
+    );
+    const button = screen.getByRole('button', { name: 'Forest 2 nests' });
+    expect(within(button).getByText('2 nests').className).toContain(
+      'sw-badge-warning',
+    );
+  });
+
   it('renders a non-interactive span with tone classes', () => {
     render(
       <ThemeProvider colorScheme="light">

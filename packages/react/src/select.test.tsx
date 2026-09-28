@@ -33,6 +33,152 @@ describe('select list helpers', () => {
 });
 
 describe('Select', () => {
+  it('shows a placeholder that is not an option until a value is chosen', () => {
+    const onChange = vi.fn();
+    const { rerender } = render(
+      <Select
+        label="Reason"
+        onChange={onChange}
+        options={habitats}
+        placeholder="Choose a habitat"
+        value=""
+      />,
+    );
+    const trigger = screen.getByRole('combobox', { name: 'Reason' });
+    expect(trigger.textContent).toBe('Choose a habitat');
+    const text = trigger.querySelector('.sw-select-value-text');
+    expect(text?.className).toContain('sw-select-placeholder');
+    // The placeholder also sizes the trigger, so choosing does not resize it.
+    expect(
+      [...trigger.querySelectorAll('.sw-select-value-sizer')].map((sizer) =>
+        sizer.getAttribute('data-label'),
+      ),
+    ).toEqual(['Forest', 'Savanna', 'Ocean', 'Choose a habitat']);
+    fireEvent.click(trigger);
+    expect(
+      screen.getAllByRole('option').map((option) => option.textContent),
+    ).toEqual(['Forest', 'Savanna', 'Ocean']);
+    expect(
+      screen
+        .getAllByRole('option')
+        .some((option) => option.getAttribute('aria-selected') === 'true'),
+    ).toBe(false);
+    fireEvent.click(screen.getByRole('option', { name: 'Savanna' }));
+    expect(onChange).toHaveBeenCalledWith('savanna');
+    rerender(
+      <Select
+        label="Reason"
+        onChange={onChange}
+        options={habitats}
+        placeholder="Choose a habitat"
+        value="savanna"
+      />,
+    );
+    expect(trigger.textContent).toBe('Savanna');
+    expect(
+      trigger.querySelector('.sw-select-value-text')?.className,
+    ).not.toContain('sw-select-placeholder');
+  });
+
+  it('marks a required select and wires its error as Field does', () => {
+    const { container, rerender } = render(
+      <Select
+        label="Reason"
+        onChange={vi.fn()}
+        options={habitats}
+        placeholder="Choose a habitat"
+        value=""
+      />,
+    );
+    // The polite region exists, empty, before the error (review of PR #73).
+    const region = container.querySelector('.sw-field-error');
+    expect(region?.getAttribute('aria-live')).toBe('polite');
+    expect(region?.textContent).toBe('');
+    rerender(
+      <Select
+        error="Choose a reason."
+        label="Reason"
+        onChange={vi.fn()}
+        options={habitats}
+        placeholder="Choose a habitat"
+        required
+        value=""
+      />,
+    );
+    const trigger = screen.getByRole('combobox', {
+      name: 'Reason',
+      description: 'Choose a reason.',
+    });
+    expect(trigger.getAttribute('aria-required')).toBe('true');
+    expect(trigger.getAttribute('aria-invalid')).toBe('true');
+    const mark = screen.getByText('*');
+    expect(mark.className).toBe('sw-field-required');
+    expect(mark.getAttribute('aria-hidden')).toBe('true');
+    const message = screen.getByText('Choose a reason.');
+    expect(message).toBe(region);
+    expect(message.className).toBe('sw-field-error');
+    expect(trigger.getAttribute('aria-describedby')).toBe(message.id);
+    expect(screen.queryByRole('alert')).toBeNull();
+    expect(trigger.closest('.sw-select')?.className).toContain(
+      'sw-select-invalid',
+    );
+    rerender(
+      <Select
+        error=""
+        label="Reason"
+        onChange={vi.fn()}
+        options={habitats}
+        value="forest"
+      />,
+    );
+    expect(trigger.getAttribute('aria-invalid')).toBeNull();
+    expect(trigger.getAttribute('aria-describedby')).toBeNull();
+    expect(trigger.getAttribute('aria-required')).toBeNull();
+    expect(trigger.closest('.sw-select')?.className).not.toContain(
+      'sw-select-invalid',
+    );
+  });
+
+  it('rejects a blank placeholder', () => {
+    expect(() =>
+      render(
+        <Select
+          label="Reason"
+          onChange={vi.fn()}
+          options={habitats}
+          placeholder=" "
+          value=""
+        />,
+      ),
+    ).toThrow(RangeError);
+  });
+
+  it('sizes the closed trigger to its longest option without adding text', () => {
+    render(
+      <ThemeProvider colorScheme="light">
+        <Select
+          label="Watch range"
+          onChange={vi.fn()}
+          options={habitats}
+          value="ocean"
+        />
+      </ThemeProvider>,
+    );
+    const trigger = screen.getByRole('combobox', { name: 'Watch range' });
+    // Only the current label is text; every option's label is a hidden
+    // sizer drawn from data-label by CSS (Teisoro DRW-12).
+    expect(trigger.textContent).toBe('Ocean');
+    const sizers = trigger.querySelectorAll('.sw-select-value-sizer');
+    expect(
+      [...sizers].map((sizer) => sizer.getAttribute('data-label')),
+    ).toEqual(['Forest', 'Savanna', 'Ocean']);
+    for (const sizer of sizers)
+      expect(sizer.getAttribute('aria-hidden')).toBe('true');
+    expect(trigger.querySelector('.sw-select-value-text')?.textContent).toBe(
+      'Ocean',
+    );
+  });
+
   it('opens a labeled glass listbox and commits a choice', () => {
     const onChange = vi.fn();
     render(

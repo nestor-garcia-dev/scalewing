@@ -1,4 +1,8 @@
-import { trackInset, typographyVariants } from '@scalewing/tokens';
+import {
+  buttonVariants,
+  trackInset,
+  typographyVariants,
+} from '@scalewing/tokens';
 
 import { scrollRegionRules } from './css-scroll-region.js';
 import { zIndex } from './stacking.js';
@@ -26,6 +30,22 @@ export function badgeClassNames(
   size: BadgeSize = 'md',
 ): string[] {
   return ['sw-badge', `sw-badge-${tone}`, `sw-badge-${size}`];
+}
+
+/*
+ * A badge inside a filled button would otherwise draw its tone on the
+ * button's fill (a warning badge on the accent is about 1.1:1), so it takes
+ * the surface and sets its words in the text color, which is 4.5:1 on the
+ * surface in every palette; its tone stays on its border (3:1 or more), as
+ * some palettes' tones are under 4.5:1 as text on the surface. A ghost
+ * button has no fill.
+ */
+function badgeOnFilledButtonRules(): string {
+  const filled = buttonVariants
+    .filter((variant) => variant !== 'ghost')
+    .map((variant) => `.sw-button-${variant}`)
+    .join(', ');
+  return `:is(${filled}) .sw-badge { background: var(--sw-color-surface); color: var(--sw-color-text); }`;
 }
 
 export function cssDataClasses(): string {
@@ -80,6 +100,8 @@ export function cssDataClasses(): string {
   border-color: var(--sw-color-warning);
   color: var(--sw-color-warning);
 }
+
+${badgeOnFilledButtonRules()}
 
 .sw-segmented {
   background: var(--sw-glass-fill);

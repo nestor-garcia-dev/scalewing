@@ -70,6 +70,9 @@ export function cssFieldClasses(): string {
 .sw-field-description { color: var(--sw-color-muted); }
 .sw-field-error { color: var(--sw-color-danger); }
 
+/* An error region is always rendered as a live region; empty, it leaves the layout (and its gap) but stays in the accessibility tree. */
+.sw-field-error:empty { position: absolute; }
+
 [data-theme] .sw-field-invalid :is(input, select, textarea) {
   border-color: var(--sw-color-danger);
 }

@@ -1,6 +1,9 @@
 import { darkTheme, lightTheme } from '@scalewing/tokens';
 import { describe, expect, it } from 'vitest';
 
+import { cssButtonClasses } from './css-button.js';
+import { cssFilterChipsClasses } from './css-filter-chips.js';
+import { cssSelectClasses } from './css-select.js';
 import { spacingClass } from './spacing-classes.js';
 import { generateStylesheet, utilityClassCatalog } from './stylesheet.js';
 
@@ -31,8 +34,19 @@ describe('generated CSS', () => {
     expect(css).toContain(
       '.sw-denomination-row-neutral { --sw-denomination-tone: var(--sw-color-muted); }',
     );
-    expect(css).toContain(
+    // Below md the total cell is visually hidden, never display: none, so
+    // a screen reader still reads it (Teisoro SDAY-6).
+    expect(css).not.toContain(
       '.sw-denomination-strip .sw-denomination-total { display: none; }',
+    );
+    expect(css).toContain(
+      '.sw-denomination-total-value { position: absolute; width: 1px;',
+    );
+    expect(catalog).toEqual(
+      expect.arrayContaining([
+        'sw-denomination-total-head',
+        'sw-denomination-total-value',
+      ]),
     );
   });
 
@@ -265,6 +279,31 @@ describe('generated CSS', () => {
     expect(css).toContain('.sw-dialog-lg');
     expect(css).toContain('--sw-select-max: 16rem');
     expect(css).toContain('.sw-select-trigger');
+    // Teisoro DRW-12: centred text, the Accordion chevron, a stable width.
+    const selectCss = cssSelectClasses();
+    expect(selectCss).toContain('.sw-select-trigger {\n  align-items: center;');
+    expect(selectCss).toContain(
+      '.sw-select-trigger::after {\n  border-bottom: 2px solid var(--sw-color-muted);',
+    );
+    expect(selectCss).not.toContain('linear-gradient');
+    expect(selectCss).toContain(
+      '.sw-select-value-sizer::before {\n  content: attr(data-label);\n}',
+    );
+    expect(catalog).toEqual(
+      expect.arrayContaining([
+        'sw-select-value',
+        'sw-select-value-text',
+        'sw-select-value-sizer',
+        'sw-select-placeholder',
+        'sw-select-invalid',
+      ]),
+    );
+    expect(selectCss).toContain(
+      '.sw-select-placeholder {\n  color: var(--sw-color-muted);\n}',
+    );
+    expect(selectCss).toContain(
+      '.sw-select-invalid .sw-select-trigger {\n  border-color: var(--sw-color-danger);\n}',
+    );
     expect(css).toContain('.sw-select-list');
     expect(catalog).toContain('sw-select');
     expect(catalog).toContain('sw-select-list');
@@ -400,6 +439,13 @@ describe('generated CSS', () => {
       expect(css).toContain(`.${className}`);
       expect(catalog).toContain(className);
     }
+    // A zero-count chip is quiet in color, never faded (Teisoro NSF-1).
+    expect(css).toContain(
+      '.sw-filter-chip-quiet:not(:has(.sw-filter-chip-input:checked)) .sw-filter-chip-face {\n  background: transparent;\n  color: var(--sw-color-muted);\n}',
+    );
+    expect(cssFilterChipsClasses()).not.toContain(
+      'opacity: var(--sw-quiet-opacity)',
+    );
     expect(css).toContain('flex-wrap: wrap;');
     for (const className of [
       'sw-field',
@@ -413,6 +459,20 @@ describe('generated CSS', () => {
     }
     expect(css).toContain(
       '[data-theme] .sw-field-invalid :is(input, select, textarea)',
+    );
+    // Error regions always exist as live regions; empty, they leave the
+    // layout but stay in the accessibility tree (review of PR #73).
+    for (const region of [
+      'sw-field-error',
+      'sw-checkbox-error',
+      'sw-radio-group-error',
+      'sw-date-field-error',
+    ]) {
+      expect(css).toContain(`.${region}:empty { position: absolute; }`);
+    }
+    expect(css).not.toContain(':has(.sw-radio-group-error)');
+    expect(css).toContain(
+      ".sw-radio-group[aria-invalid='true'] .sw-radio-group-mark",
     );
     expect(css).toContain(
       '.sw-checkbox-input:focus-visible + .sw-checkbox-mark',
@@ -485,9 +545,41 @@ describe('generated CSS', () => {
     expect(css).toContain('sw-toast-float');
     expect(css).toContain('--sw-quiet-opacity:');
     expect(css).toContain('--sw-motion-default:');
-    expect(css).toContain(".sw-button[aria-pressed='false']");
+    // A badge on a filled button draws on the surface in the text color,
+    // its tone on its border (Teisoro NSF-1).
+    expect(css).toContain(
+      ':is(.sw-button-primary, .sw-button-secondary, .sw-button-tertiary, .sw-button-danger) .sw-badge { background: var(--sw-color-surface); color: var(--sw-color-text); }',
+    );
+    expect(css).not.toContain('.sw-button .sw-badge { forced-color-adjust');
+    // An unpressed toggle keeps full contrast (Teisoro NSF-1, WCAG 1.4.3);
+    // the pressed one carries an accent ring outside its fill.
+    expect(css).not.toContain(".sw-button[aria-pressed='false']");
+    expect(css).toContain(
+      ".sw-button[aria-pressed='true'] { box-shadow: 0 0 0 2px var(--sw-color-background), 0 0 0 4px var(--sw-color-accent); }",
+    );
+    expect(css).toContain(
+      ".sw-button[aria-pressed='true']:focus-visible { outline-offset: calc(var(--sw-focus-ring-offset) + 4px); }",
+    );
+    expect(css).toContain(
+      ".sw-button[aria-pressed='true'] { background: Highlight; border-color: Highlight; color: HighlightText; }",
+    );
+    expect(cssButtonClasses()).not.toContain('forced-color-adjust');
     expect(catalog).toContain('sw-toast');
     expect(catalog).toContain('sw-toast-travel');
+    // Teisoro DRW-14: a tone tints the border and icon.
+    for (const tone of ['success', 'warning', 'danger']) {
+      expect(css).toContain(
+        `.sw-toast-${tone} { --sw-toast-tone: var(--sw-color-${tone}); border-color: var(--sw-toast-tone); }`,
+      );
+      expect(catalog).toContain(`sw-toast-${tone}`);
+    }
+    expect(catalog).toEqual(
+      expect.arrayContaining([
+        'sw-toast-row',
+        'sw-toast-icon',
+        'sw-toast-body',
+      ]),
+    );
     expect(css).toContain('--sw-motion-travel:');
     expect(css).toContain('--sw-motion-travel-easing:');
     expect(css).toContain('scale: 1.2');

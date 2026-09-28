@@ -221,3 +221,42 @@ test('ActionMenu wraps a long command inside the screen', async ({
   await page.keyboard.press('Escape');
   await expect(menu).toBeHidden();
 });
+
+test('ActionMenu with align end stays over the card its trigger ends', async ({
+  page,
+}, testInfo) => {
+  await page.goto('/#action-menu');
+  const section = page.locator('#action-menu');
+  // Teisoro ENT-13: from the first of two cards in a row, a start-aligned
+  // menu hung past its card toward the next one.
+  const trigger = section.getByRole('button', { name: 'Actions for Red fox' });
+  await trigger.evaluate((node) => node.scrollIntoView({ block: 'center' }));
+  const card = trigger.locator(
+    'xpath=ancestor::*[contains(@class, "sw-card")][1]',
+  );
+  await trigger.click();
+  const menu = page.getByRole('menu', { name: 'Actions for Red fox' });
+  await expect(menu).toBeVisible();
+  const triggerBox = await trigger.boundingBox();
+  const menuBox = await menu.boundingBox();
+  const cardBox = await card.boundingBox();
+  const menuEnd = (menuBox?.x ?? 0) + (menuBox?.width ?? 0);
+  expect(menuEnd).toBeCloseTo(
+    (triggerBox?.x ?? 0) + (triggerBox?.width ?? 0),
+    0,
+  );
+  expect(menuEnd).toBeLessThanOrEqual(
+    (cardBox?.x ?? 0) + (cardBox?.width ?? 0),
+  );
+  expect(menuBox?.x).toBeGreaterThanOrEqual(cardBox?.x ?? 0);
+  expect(menuBox?.y).toBeCloseTo(
+    (triggerBox?.y ?? 0) + (triggerBox?.height ?? 0) + gap,
+    0,
+  );
+  await page.screenshot({
+    path: testInfo.outputPath('action-menu-align-end.png'),
+  });
+  await page.keyboard.press('Escape');
+  await expect(menu).toBeHidden();
+  await expect(trigger).toBeFocused();
+});

@@ -40,3 +40,18 @@ Decided in implementation:
 - The field label names only the text entry. The calendar button is named `labels.chooseDate` and described by the field label, so `getByLabel('<field label>')` stays unique.
 
 Teisoro must adapt: tests that drove `input[type=date]` now use the text entry (`getByLabel('<label>').fill('03/10/2024')` in en-US order, or `fill('2024-03-10')` in ISO) or the calendar (`getByRole('button', { name: 'Choose date' })`, then the `grid` and `gridcell` roles). Assertions on the input value now see the locale's display text, not `YYYY-MM-DD`; assert the serialized value from the product's state instead. Teisoro passes Spanish `labels` and `locale` on its bilingual screens.
+
+## Follow-up request (2026-09-28, Teisoro F-007-S05 task 1335): the required mark
+
+Status: implemented on `claude/services-ux-fixes` for Teisoro F-007-S05 task 1335; pull request pending review.
+Source: Teisoro UX review `services-nsf.md`, finding NSF-15 (minor, the Scalewing part; Teisoro owns the block reason's `required`).
+
+`DateField` took `required` and set the entry's native `required`, but its label never showed the asterisk `Field` shows: on the NSF record form "Date reported" looked optional beside "NSF fee ($) *" until the person was stopped.
+
+Behavior: with `required`, the label ends in the same mark as `Field`'s (`<span aria-hidden="true" class="sw-field-required"> *</span>`, the danger color from the generated `sw-field-required` rule). The entry's accessible name stays the label alone, and the calendar button's description (the label, by `aria-describedby`) leaves the hidden mark out. No API change.
+
+Consumer note: the label's text content now ends in " *" when required, as `Field`'s does; a test that finds the entry with an exact `getByLabelText('<label>')` should use its role and name (`getByRole('textbox', { name })`) or `exact: false`.
+
+Rejected alternative: a separate DateField-only mark class. The mark is one convention across fields, so it reuses `sw-field-required`.
+
+Evidence: `date-field.test.tsx` (the mark, its class and `aria-hidden`, inside the entry's label; the button still described by "Sighting date"); `apps/gallery/e2e/date-field.spec.ts` "a required DateField marks its label as Field does" on desktop-en, mobile-es and forced-colors: the gallery's required "Hatch date" shows a visible `*` in a color apart from the label, the entry's accessible name is "Hatch date", and the optional "Tagging date" has no mark.

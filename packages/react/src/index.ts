@@ -1,5 +1,6 @@
 export {
   ActionMenu,
+  type ActionMenuAlign,
   type ActionMenuItem,
   type ActionMenuProps,
 } from './components/ActionMenu.js';
@@ -88,8 +89,8 @@ export {
   tabId,
   tabPanelId,
 } from './components/Tabs.js';
-export { Toast } from './components/Toast.js';
-export type { ToastProps } from './components/Toast.js';
+export { Toast, toastTones } from './components/Toast.js';
+export type { ToastProps, ToastTone } from './components/Toast.js';
 export { Field, type FieldProps, type FieldSize } from './components/Field.js';
 export { Inline, type InlineProps } from './components/Inline.js';
 export { Split } from './components/Split.js';

@@ -2,6 +2,8 @@
 
 import { useId } from 'react';
 
+import { FieldErrorRegion } from './FieldErrorRegion.js';
+
 export type RadioGroupOption = {
   value: string;
   label: string;
@@ -87,11 +89,11 @@ export function RadioGroup({
           </label>
         ))}
       </span>
-      {error ? (
-        <span className="sw-radio-group-error" id={errorId}>
-          {error}
-        </span>
-      ) : null}
+      <FieldErrorRegion
+        className="sw-radio-group-error"
+        id={errorId}
+        message={error}
+      />
     </fieldset>
   );
 }

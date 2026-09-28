@@ -23,7 +23,7 @@ export function FilterChipsSection() {
   return (
     <Section
       id="filter-chips"
-      purpose="FilterChips keeps long single-choice filter sets visible. Native radios supply arrow and Space behavior; options wrap on narrow screens. An optional count renders as a tabular chicklet after the label, and a zero count quiets the chip until it is selected."
+      purpose="FilterChips keeps long single-choice filter sets visible. Native radios supply arrow and Space behavior; options wrap on narrow screens. An optional count renders as a tabular chicklet after the label, and a zero count quiets the chip until it is selected: a muted label on no fill, never faded."
       title="FilterChips"
       usage={`<FilterChips
   label="Sighting filters"

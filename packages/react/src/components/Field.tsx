@@ -8,6 +8,7 @@ import {
   adornedControlAria,
   FieldAdornment,
 } from './FieldAdornment.js';
+import { FieldErrorRegion } from './FieldErrorRegion.js';
 import { Stack } from './Stack.js';
 import { Text } from './Text.js';
 
@@ -50,7 +51,8 @@ export function Field({
   suffix,
 }: FieldProps) {
   const controlId = useId();
-  const messageId = useId();
+  const descriptionId = useId();
+  const errorId = useId();
   const labelId = useId();
   const prefixId = useId();
   const suffixId = useId();
@@ -115,7 +117,8 @@ export function Field({
   const describedBy = [
     children.props['aria-describedby'],
     adornment.describedBy,
-    message ? messageId : null,
+    description && !error ? descriptionId : null,
+    error ? errorId : null,
   ]
     .filter(Boolean)
     .join(' ');
@@ -144,15 +147,19 @@ export function Field({
       ) : (
         control
       )}
-      {message ? (
-        <span
-          className={error ? 'sw-field-error' : 'sw-field-description'}
-          id={messageId}
-          role={error ? 'alert' : undefined}
-        >
-          {message}
+      {/* The error replaces the hint on screen; it is a polite live region,
+          not an alert, so a submit that finds several errors does not fire
+          several alerts at once. */}
+      {description && !error ? (
+        <span className="sw-field-description" id={descriptionId}>
+          {description}
         </span>
       ) : null}
+      <FieldErrorRegion
+        className="sw-field-error"
+        id={errorId}
+        message={error}
+      />
     </Stack>
   );
 }

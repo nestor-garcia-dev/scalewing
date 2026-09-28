@@ -72,8 +72,15 @@ export function cssFilterChipsClasses(): string {
   line-height: ${data.lineHeight}px;
 }
 
+/*
+ * A zero-count chip is quiet without fading: it drops the glass fill and
+ * sets its label in the muted color, which is 4.5:1 on the canvas, surface
+ * and subtle fill in every palette. It can still be chosen, so it never
+ * reads as disabled.
+ */
 .sw-filter-chip-quiet:not(:has(.sw-filter-chip-input:checked)) .sw-filter-chip-face {
-  opacity: var(--sw-quiet-opacity);
+  background: transparent;
+  color: var(--sw-color-muted);
 }
 
 .sw-filter-chip-input:checked + .sw-filter-chip-face {
@@ -101,7 +108,6 @@ export function cssFilterChipsClasses(): string {
   .sw-filter-chip-input:checked + .sw-filter-chip-face { background: Highlight; border-color: Highlight; color: HighlightText; }
   .sw-filter-chip-input:focus-visible + .sw-filter-chip-face { outline-color: Highlight; }
   .sw-filter-chip-count { color: inherit; }
-  .sw-filter-chip-quiet:not(:has(.sw-filter-chip-input:checked)) .sw-filter-chip-face { opacity: 1; color: GrayText; border-color: GrayText; }
 }`;
 }
 

@@ -101,3 +101,24 @@ Rejected alternatives:
 - An invisible enlarged hit area (a pseudo-element) around a 28 px trigger. It overlaps neighbouring controls in a tight row and is not what `CalendarButton` does.
 
 Evidence: `css/stylesheet.test.ts` (the coarse-pointer rules after the xs sizes); `apps/gallery/e2e/action-menu.spec.ts` "gives its trigger and commands a 44 px target on a coarse pointer": at least 44 × 44 for the glyph and text triggers and 44 px commands on mobile-es (touch, coarse pointer), and under 32 px on desktop-en and forced-colors. The same spec file now emulates forced colors for its forced-colors project, as the other specs do.
+
+## Follow-up request (2026-09-28, Teisoro F-007-S05 task 1335): `align="end"` for a trigger that ends a card
+
+Status: implemented on `claude/services-ux-fixes` for Teisoro F-007-S05 task 1335; pull request pending review.
+Source: Teisoro UX review `services-entries.md`, finding ENT-13 (minor).
+
+On the Services day at 1280 px, an entry's "…" trigger ends its card (x 1161–1199) but not the viewport, so the 1.10.1 placement kept the menu on the trigger's start: it ran 5 px past the card's right edge, and its "Void" command ended on the next row's "…" trigger. The 2026-09-28 DAY-8 follow-up above rejected an `align` prop because the flip covered every trigger then known to end a row at the screen edge; this one ends a card, not the screen.
+
+Behavior:
+
+- `ActionMenu` gains `align?: 'start' | 'end'` (default `'start'`, the current placement; exported type `ActionMenuAlign`). With `'end'` the menu's inline end lines up with the trigger's inline end (mirrored in right-to-left). The flip still applies the other way: an end-aligned menu that would cross the viewport's start takes the trigger's start.
+- The shared `anchoredPosition` gains the matching `align` option, and `flipInline` now means "take the other edge when the preferred one does not fit" for either preference. `useAnchoredPopover` passes it through. The calendar keeps its start placement.
+
+The rest of ENT-13 is already in 1.10.1 (DAY-8): the menu keeps a `space-1` gap from its own trigger and opens above it when it does not fit below with the `space-2` inset. With `align="end"` the Teisoro menu sits inside its card; it can still reach down over the next card's row, as any menu opens over the content below it.
+
+Rejected alternatives:
+
+- Choosing the end automatically when the trigger "ends its row" (the review's other option). The placement code sees the trigger and the viewport, not the card; finding the card would mean guessing which ancestor is the row. The consumer knows its layout and says so with one prop.
+- Keeping a gap from, or flipping away from, any other trigger the menu would cover (the review's gap suggestion). A menu is a popup over the page: it covers what is below it by design, is drawn on top, and closes on a press outside, so a press on the covered trigger closes the menu rather than acting on the wrong row. Searching the page for other triggers to avoid would make the placement depend on unrelated content.
+
+Evidence: `anchored-position.test.ts` (`align: 'end'` preferred where the start fits, falling back to the start, mirrored in right-to-left); `action-menu.test.tsx` "lines up with the trigger end with align end, where the start would fit" (the review's 1280 px geometry: left 1140 with `align="end"`, 1161 by default); `apps/gallery/e2e/action-menu.spec.ts` "ActionMenu with align end stays over the card its trigger ends" on desktop-en, mobile-es and forced-colors, with the gallery's two cards in a row ("Actions for Red fox"): the menu's end is at the trigger's end, inside the card, a gap below the trigger, and Escape returns focus.

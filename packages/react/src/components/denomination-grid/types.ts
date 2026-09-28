@@ -28,4 +28,9 @@ export type DenominationGridProps = {
   layout?: DenominationGridLayout;
   subtotal?: (count: number, column: DenominationGridColumn) => string;
   zeroLabel?: string;
+  /**
+   * Names the strip's total column for assistive technology (a visually
+   * hidden column header), such as "Total". Only the strip has that column.
+   */
+  totalLabel?: string;
 };

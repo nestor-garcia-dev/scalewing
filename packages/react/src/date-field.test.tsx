@@ -80,6 +80,11 @@ describe('DateField typed entry', () => {
     expect(input).toHaveProperty('type', 'text');
     expect(input).toHaveProperty('value', '03/10/2024');
     expect(input).toHaveProperty('required', true);
+    // The required mark Field shows, hidden from the accessible name.
+    const mark = screen.getByText('*');
+    expect(mark.className).toBe('sw-field-required');
+    expect(mark.getAttribute('aria-hidden')).toBe('true');
+    expect(mark.closest('label')?.htmlFor).toBe(input.id);
     expect(input.getAttribute('placeholder')).toBe('MM/DD/YYYY');
     expect(input.getAttribute('aria-invalid')).toBe('false');
     const descriptionId = input.getAttribute('aria-describedby') ?? '';
@@ -89,12 +94,21 @@ describe('DateField typed entry', () => {
     const button = calendarButton();
     expect(button.getAttribute('aria-haspopup')).toBe('dialog');
     expect(button.getAttribute('aria-expanded')).toBe('false');
+    expect(button.getAttribute('aria-describedby')).toBe(
+      mark.closest('label')?.id,
+    );
+    // The aria-hidden mark stays out of the button's description.
     expect(
-      document.getElementById(button.getAttribute('aria-describedby') ?? '')
-        ?.textContent,
-    ).toBe('Sighting date');
+      screen.getByRole('button', {
+        name: 'Choose date',
+        description: 'Sighting date',
+      }),
+    ).toBe(button);
     // The field label names only the text entry, so label lookups stay unique.
-    expect(screen.getAllByLabelText('Sighting date')).toEqual([input]);
+    // (Its text content now ends in the aria-hidden required mark.)
+    expect(screen.getAllByLabelText('Sighting date', { exact: false })).toEqual(
+      [input],
+    );
   });
 
   it('commits a typed date once it is complete, without UTC conversion', async () => {

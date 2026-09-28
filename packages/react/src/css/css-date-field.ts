@@ -127,7 +127,8 @@ ${input}:disabled,
 }
 
 .sw-date-field-description { color: var(--sw-color-muted); }
-.sw-date-field-error { color: var(--sw-color-danger); }`;
+.sw-date-field-error { color: var(--sw-color-danger); }
+.sw-date-field-error:empty { position: absolute; }`;
 }
 
 function calendarRules(): string {

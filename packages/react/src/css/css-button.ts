@@ -32,6 +32,26 @@ function variantRules(): string {
   ].join('\n');
 }
 
+/*
+ * A toggle button's pressed state is an accent ring drawn outside the fill,
+ * past a 2 px gap in the page background: the ring meets the background on
+ * both sides, so it keeps the accent's contrast on the canvas (4.5:1 or more
+ * in every palette, above WCAG 1.4.11's 3:1) whatever the variant's fill.
+ * A focused pressed button moves its focus outline out past the ring, so the
+ * two stay apart. The unpressed button keeps its full label contrast: no
+ * opacity. Forced colors, which drop box shadows, fill the pressed button
+ * with the system highlight, as a checked FilterChips chip or Checkbox is.
+ */
+export const pressedRingWidth = 4;
+
+function pressedRules(): string {
+  return `.sw-button[aria-pressed='true'] { box-shadow: 0 0 0 2px var(--sw-color-background), 0 0 0 ${pressedRingWidth}px var(--sw-color-accent); }
+.sw-button[aria-pressed='true']:focus-visible { outline-offset: calc(var(--sw-focus-ring-offset) + ${pressedRingWidth}px); }
+@media (forced-colors: active) {
+  .sw-button[aria-pressed='true'] { background: Highlight; border-color: Highlight; color: HighlightText; }
+}`;
+}
+
 function sizeRules(): string {
   return buttonSizes
     .map((size) => {
@@ -70,11 +90,8 @@ export function cssButtonClasses(): string {
   opacity: var(--sw-disabled-opacity);
 }
 
-.sw-button[aria-pressed='false'] {
-  opacity: var(--sw-quiet-opacity);
-}
-
 ${variantRules()}
+${pressedRules()}
 ${sizeRules()}
 ${groupRules()}`;
 }

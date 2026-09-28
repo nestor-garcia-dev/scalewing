@@ -1,5 +1,7 @@
 import { expect, test } from '@playwright/test';
 
+import { textContrast } from './contrast.js';
+
 test('FilterChips wraps long labels and supports native single-choice keyboard behavior', async ({
   page,
 }, testInfo) => {
@@ -27,8 +29,14 @@ test('FilterChips wraps long labels and supports native single-choice keyboard b
   await expect(all).toBeChecked();
   await expect(desert).toBeDisabled();
   const quietFace = tundra.locator('xpath=..').locator('.sw-filter-chip-face');
+  const plainFace = forest.locator('xpath=..').locator('.sw-filter-chip-face');
+  // A zero-count chip is quiet in color, never faded (Teisoro NSF-1).
+  await expect(quietFace).toHaveCSS('opacity', '1');
+  expect(await textContrast(quietFace)).toBeGreaterThanOrEqual(4.5);
   if (testInfo.project.name !== 'forced-colors') {
-    await expect(quietFace).toHaveCSS('opacity', '0.55');
+    const colorOf = (face: typeof quietFace) =>
+      face.evaluate((node) => getComputedStyle(node).color);
+    expect(await colorOf(quietFace)).not.toBe(await colorOf(plainFace));
   }
   await expect(group.locator('.sw-filter-chip-count').first()).toHaveCSS(
     'font-variant-numeric',
@@ -56,6 +64,7 @@ test('FilterChips wraps long labels and supports native single-choice keyboard b
   await expect(desert).not.toBeChecked();
   await expect(tundra).toBeChecked();
   await expect(quietFace).toHaveCSS('opacity', '1');
+  expect(await textContrast(quietFace)).toBeGreaterThanOrEqual(4.5);
   await expect(
     section.getByText('Selected filter: tundra. Callbacks: 2.'),
   ).toBeVisible();

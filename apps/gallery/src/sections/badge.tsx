@@ -1,5 +1,6 @@
 import {
   Badge,
+  Button,
   Inline,
   Stack,
   Text,
@@ -7,9 +8,18 @@ import {
   badgeTones,
 } from '@scalewing/react';
 
+import { useState } from 'react';
+
 import { Section } from '../layout/Section.js';
 
+const nestCounts = [
+  { value: 'marsh', label: 'Marsh', nests: 2, tone: 'warning' },
+  { value: 'reef', label: 'Reef', nests: 0, tone: 'success' },
+] as const;
+
 export function BadgeSection() {
+  const [site, setSite] = useState<string>(nestCounts[0].value);
+
   return (
     <Section
       id="badge"
@@ -33,11 +43,30 @@ export function BadgeSection() {
             </Badge>
           ))}
         </Inline>
+        <Inline aria-label="Nesting site" gap={2} role="group" wrap>
+          {nestCounts.map((option) => (
+            <Button
+              aria-pressed={option.value === site}
+              key={option.value}
+              onPress={() => setSite(option.value)}
+              variant={option.value === site ? 'primary' : 'secondary'}
+            >
+              <Inline gap={2}>
+                <span>{option.label}</span>
+                <Badge size="sm" tone={option.tone}>
+                  {option.nests} nests
+                </Badge>
+              </Inline>
+            </Button>
+          ))}
+        </Inline>
         <Text variant="caption" color="muted">
           Neutral sits on glass. Accent, success, danger, and warning are
           outlined; warning is the caution between success and danger, for a
           sighting to confirm or a count that drifted. sm drops the 28px control
-          min-height so why chips stay dense.
+          min-height so why chips stay dense. Inside a filled button a badge
+          sits on the surface in the text color, its tone on its border, so it
+          reads on any fill in every palette.
         </Text>
       </Stack>
     </Section>

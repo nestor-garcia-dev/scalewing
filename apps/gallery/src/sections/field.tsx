@@ -13,7 +13,7 @@ export function FieldSection() {
   return (
     <Section
       id="field"
-      purpose="Field labels native controls and associates optional hints, required state, and validation errors. Validation stays with the consumer. size xs compacts the control; the canvas paints its native surface. prefix and suffix put short text such as a unit inside an input's frame; it is not part of the value and joins the accessible name, or the description when the input names itself with aria-label. A press anywhere on the frame focuses the input."
+      purpose="Field labels native controls and associates optional hints, required state, and validation errors. An error is described on its control, marks it invalid, and is announced politely from a live region that is always there; it is never an alert, so several errors at once do not interrupt, and the form moves focus to the first invalid field. Validation stays with the consumer. size xs compacts the control; the canvas paints its native surface. prefix and suffix put short text such as a unit inside an input's frame; it is not part of the value and joins the accessible name, or the description when the input names itself with aria-label. A press anywhere on the frame focuses the input."
       title="Field"
       usage={`<Field label="Habitat">
   <select>

@@ -20,3 +20,16 @@ Missing surface: an optional non-negative integer `count` per option, rendered a
 Why the label string cannot do this: a count baked into the label is not tabular, is formatted by hand per consumer, and cannot be styled or quieted separately from the label. The frozen Angular Services day filters show a count on every chip and mute empty ones (Teisoro `docs/design/services-day/05-filters.md`).
 Workaround I almost used: the previous consumer-owned convention of appending "(count)" to the label, plus a product class for empty chips.
 Proposed API: `FilterChipOption.count?: number`; negative or fractional counts throw a `RangeError`.
+
+## Follow-up request (2026-09-28, Teisoro F-007-S05 task 1335): a quiet chip without the fade
+
+Status: implemented on `claude/services-ux-fixes` for Teisoro F-007-S05 task 1335; pull request pending review.
+Source: Teisoro UX review `services-nsf.md`, finding NSF-1 (major, WCAG 1.4.3), the Scalewing part for quiet chips (the toggle button is `teisoro-button.md`).
+
+The zero-count chip's face had `opacity: var(--sw-quiet-opacity)` (0.55): Teisoro's "Written off 0" filter measured 3.8:1, although the chip can be chosen.
+
+Behavior: the quiet chip drops the glass fill (`background: transparent`) and sets its label in `--sw-color-muted`, which the token tests hold at 4.5:1 on the canvas and every named palette's surface and subtle fill (4.52:1 at the lowest). The border and the count are unchanged; the count `0` stays in the accessible name. A selected quiet chip looks like any selected chip. In forced colors the quiet chip is drawn like the others (it was `GrayText`, the system's disabled color, which it is not). No API change.
+
+Rejected alternatives: fading only the border (the chip's frame would drop below its own boundary contrast); a dashed border (reads as a drop target or a placeholder); keeping the fade on the fill only (the glass fill is nearly white, so a faded fill shows no difference).
+
+Evidence: `css/stylesheet.test.ts` (the muted, unfilled quiet rule; no quiet opacity in the chips' CSS); `apps/gallery/e2e/filter-chips.spec.ts` on desktop-en, mobile-es and forced-colors: the "Tundra transects 0" chip has opacity 1 and at least 4.5:1 against its painted background before and after it is chosen, and its label color differs from a counted chip's.
