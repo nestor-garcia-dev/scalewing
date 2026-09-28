@@ -15,7 +15,7 @@ export function GridSection() {
   return (
     <Section
       id="grid"
-      purpose="Grid lays children out in equal-width columns. Choose one to four columns, or six for a wide count row, a gap step, and optionally fewer columns below the md breakpoint so tiles and cards stay readable on a phone. A direct child can take columnSpan to cover several columns, so three columns with a two-column form give a two-to-one page; a span never exceeds the columns the grid has at the current width, so the same page stacks on a phone."
+      purpose="Grid lays children out in equal-width columns. Choose one to four columns, or six for a wide count row, a gap step, and optionally fewer columns below the md breakpoint so tiles and cards stay readable on a phone. A direct child can take columnSpan to cover several columns, so three columns with a two-column form give a two-to-one page; a span never exceeds the columns the grid has at the current width, so the same page stacks on a phone. align sets where each child sits in its row: end keeps two inputs level when one label wraps."
       title="Grid"
       usage={`<Grid columns={3} columnsBelow={{ md: 2 }} gap={2}>
   <Button variant="secondary" onPress={logSighting}>Log a sighting</Button>
@@ -26,6 +26,11 @@ export function GridSection() {
 <Grid columns={3} columnsBelow={{ md: 1 }} gap={4}>
   <Stack columnSpan={2} gap={3}>{sightingForm}</Stack>
   <Card variant="outlined">{habitatLookup}</Card>
+</Grid>
+
+<Grid align="end" columns={2} gap={3}>
+  <Field label="Nest height above the waterline">…</Field>
+  <Field label="Eggs">…</Field>
 </Grid>`}
     >
       <Stack gap={4}>
@@ -88,6 +93,20 @@ export function GridSection() {
               </Text>
             </Stack>
           </Card>
+        </Grid>
+        <Grid
+          align="end"
+          aria-label="Nest survey"
+          as="section"
+          columns={2}
+          gap={3}
+        >
+          <Field label="Nest height above the waterline">
+            <input defaultValue="1.4" inputMode="decimal" name="nest-height" />
+          </Field>
+          <Field label="Eggs">
+            <input defaultValue="3" inputMode="numeric" name="nest-eggs" />
+          </Field>
         </Grid>
         <Grid aria-label="Full-width action" columns={1} gap={2}>
           <Button onPress={() => undefined} variant="secondary">
