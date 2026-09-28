@@ -4,10 +4,17 @@ import { useState } from 'react';
 import { Section } from '../layout/Section.js';
 import { sampleHabitats } from '../sample-copy.js';
 
+const surveyReasons = [
+  { value: 'nest', label: 'Nest check' },
+  { value: 'migration', label: 'Migration count across the wetland reserve' },
+  { value: 'tagging', label: 'Tagging' },
+] as const;
+
 export function SelectSection() {
   const [range, setRange] = useState('forest');
   const [compact, setCompact] = useState('savanna');
   const [carded, setCarded] = useState('forest');
+  const [reason, setReason] = useState('nest');
 
   return (
     <Section
@@ -30,6 +37,12 @@ export function SelectSection() {
           value={range}
         />
         <Select
+          label="Survey reason"
+          onChange={setReason}
+          options={surveyReasons}
+          value={reason}
+        />
+        <Select
           action={{
             label: 'Log a visit',
             onPress: () => undefined,
@@ -42,8 +55,11 @@ export function SelectSection() {
           value={compact}
         />
         <Text color="muted" variant="caption">
-          The closed trigger matches Field. The open list is glass, not the
-          operating system menu. action is the last option and stays a command.
+          The closed trigger matches Field: its text is centred and it ends in
+          the Accordion chevron. It is as wide as its longest option, so it
+          keeps its width when the value changes. The open list is glass, not
+          the operating system menu. action is the last option and stays a
+          command.
         </Text>
         <Card padding={4}>
           <Select

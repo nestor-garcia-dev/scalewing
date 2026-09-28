@@ -1,16 +1,10 @@
 import { typographyVariants } from '@scalewing/tokens';
 
+import { chevronStroke } from './chevron.js';
 import { zIndex } from './stacking.js';
 
 const caption = typographyVariants.caption;
 const label = typographyVariants.label;
-
-const chevronImage = `background-image:
-    linear-gradient(45deg, transparent 50%, var(--sw-color-muted) 50%),
-    linear-gradient(135deg, var(--sw-color-muted) 50%, transparent 50%);
-  background-repeat: no-repeat;
-  background-size: var(--sw-space-1) var(--sw-space-1),
-    var(--sw-space-1) var(--sw-space-1);`;
 
 export function cssSelectClasses(): string {
   return `.sw-select {
@@ -23,13 +17,10 @@ export function cssSelectClasses(): string {
 }
 
 .sw-select-trigger {
+  align-items: center;
   appearance: none;
   -webkit-appearance: none;
   background-color: var(--sw-glass-fill);
-  ${chevronImage}
-  background-position:
-    calc(100% - var(--sw-space-4)) calc(50% - 1px),
-    calc(100% - calc(var(--sw-space-4) - var(--sw-space-1))) calc(50% - 1px);
   border: 1px solid var(--sw-color-border);
   border-radius: var(--sw-radius-sm);
   box-sizing: border-box;
@@ -38,17 +29,50 @@ export function cssSelectClasses(): string {
   display: inline-flex;
   font-family: inherit;
   font-size: inherit;
+  gap: var(--sw-space-3);
   letter-spacing: inherit;
   line-height: inherit;
   margin: 0;
+  max-width: 100%;
   min-height: var(--sw-control-md-min-height);
   padding-block: 0;
   padding-inline: var(--sw-control-md-padding-inline);
-  padding-inline-end: calc(
-    var(--sw-control-md-padding-inline) + var(--sw-space-5)
-  );
   text-align: start;
+}
+
+/* The chevron Accordion uses, pointing down, centred on the text. */
+.sw-select-trigger::after {
+  ${chevronStroke}
+  content: '';
+  flex: none;
+  transform: translateY(-25%) rotate(45deg);
+}
+
+/*
+ * The current label and a hidden copy of every option's label share one grid
+ * cell, so the trigger is as wide as the longest option and keeps that width
+ * when the value changes; past the available width the label ellipsizes.
+ */
+.sw-select-value {
+  display: grid;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.sw-select-value > * {
+  grid-area: 1 / 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.sw-select-value-sizer {
+  visibility: hidden;
+}
+
+.sw-select-value-sizer::before {
+  content: attr(data-label);
 }
 
 .sw-select-trigger:focus {
@@ -62,17 +86,16 @@ export function cssSelectClasses(): string {
 }
 
 .sw-select-xs .sw-select-trigger {
-  background-position:
-    calc(100% - var(--sw-space-3)) calc(50% - 1px),
-    calc(100% - calc(var(--sw-space-3) - var(--sw-space-1))) calc(50% - 1px);
   font-size: ${caption.fontSize}px;
+  gap: var(--sw-space-2);
   letter-spacing: ${caption.letterSpacing}px;
   line-height: ${caption.lineHeight}px;
   min-height: var(--sw-control-xs-min-height);
   padding-inline: var(--sw-control-xs-padding-inline);
-  padding-inline-end: calc(
-    var(--sw-control-xs-padding-inline) + var(--sw-space-5)
-  );
+}
+
+@media (forced-colors: active) {
+  .sw-select-trigger::after { border-color: CanvasText; }
 }
 
 .sw-select-list {
@@ -133,6 +156,9 @@ export function selectClassCatalog(): string[] {
     'sw-select-xs',
     'sw-select-control',
     'sw-select-trigger',
+    'sw-select-value',
+    'sw-select-value-text',
+    'sw-select-value-sizer',
     'sw-select-list',
     'sw-select-option',
     'sw-select-action',

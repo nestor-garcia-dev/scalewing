@@ -3,6 +3,7 @@ import { describe, expect, it } from 'vitest';
 
 import { cssButtonClasses } from './css-button.js';
 import { cssFilterChipsClasses } from './css-filter-chips.js';
+import { cssSelectClasses } from './css-select.js';
 import { spacingClass } from './spacing-classes.js';
 import { generateStylesheet, utilityClassCatalog } from './stylesheet.js';
 
@@ -278,6 +279,23 @@ describe('generated CSS', () => {
     expect(css).toContain('.sw-dialog-lg');
     expect(css).toContain('--sw-select-max: 16rem');
     expect(css).toContain('.sw-select-trigger');
+    // Teisoro DRW-12: centred text, the Accordion chevron, a stable width.
+    const selectCss = cssSelectClasses();
+    expect(selectCss).toContain('.sw-select-trigger {\n  align-items: center;');
+    expect(selectCss).toContain(
+      '.sw-select-trigger::after {\n  border-bottom: 2px solid var(--sw-color-muted);',
+    );
+    expect(selectCss).not.toContain('linear-gradient');
+    expect(selectCss).toContain(
+      '.sw-select-value-sizer::before {\n  content: attr(data-label);\n}',
+    );
+    expect(catalog).toEqual(
+      expect.arrayContaining([
+        'sw-select-value',
+        'sw-select-value-text',
+        'sw-select-value-sizer',
+      ]),
+    );
     expect(css).toContain('.sw-select-list');
     expect(catalog).toContain('sw-select');
     expect(catalog).toContain('sw-select-list');

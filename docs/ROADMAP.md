@@ -29,7 +29,9 @@ color instead of faded (NSF-1, `teisoro-button.md`, `teisoro-badge.md`,
 `teisoro-action-menu.md` follow-up); `Field` errors described on the
 control without a live alert, as `Checkbox`'s are (CHK-3, DRW-6,
 `teisoro-field-validation.md` follow-up); the `DateField` required mark
-(NSF-15, `teisoro-date-field.md` follow-up). Next: the
+(NSF-15, `teisoro-date-field.md` follow-up); the `Select` trigger
+centred, with the Accordion chevron and a stable width (DRW-12,
+`teisoro-select.md` follow-up). Next: the
 remaining Services findings, then pull request, review and merge, then
 release `@scalewing/react` and Teisoro pins it.
 

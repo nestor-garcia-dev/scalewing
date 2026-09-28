@@ -1,14 +1,6 @@
 'use client';
 
-import {
-  useEffect,
-  useId,
-  useRef,
-  useState,
-  type KeyboardEvent,
-  type PointerEvent,
-  type ReactNode,
-} from 'react';
+import { useEffect, useId, useRef, useState, type KeyboardEvent } from 'react';
 
 import { cx } from '../class-names.js';
 import {
@@ -17,6 +9,8 @@ import {
   type SelectOption,
 } from '../select-list.js';
 import { type FieldSize } from './Field.js';
+import { SelectListbox } from './select/SelectListbox.js';
+import { SelectValue } from './select/SelectValue.js';
 import { Stack } from './Stack.js';
 import { Text } from './Text.js';
 
@@ -36,41 +30,6 @@ export type SelectProps = {
   size?: FieldSize;
   value: string;
 };
-
-function SelectListOption({
-  action = false,
-  active,
-  children,
-  id,
-  onCommit,
-  onHighlight,
-  selected,
-}: {
-  action?: boolean;
-  active: boolean;
-  children: ReactNode;
-  id: string;
-  onCommit: () => void;
-  onHighlight: () => void;
-  selected: boolean;
-}) {
-  return (
-    <div
-      aria-selected={selected}
-      className={cx('sw-select-option', action && 'sw-select-action')}
-      data-active={active ? 'true' : undefined}
-      id={id}
-      onClick={onCommit}
-      onPointerDown={(event: PointerEvent<HTMLDivElement>) => {
-        event.preventDefault();
-      }}
-      onPointerMove={onHighlight}
-      role="option"
-    >
-      {children}
-    </div>
-  );
-}
 
 export function Select({
   action,
@@ -210,48 +169,20 @@ export function Select({
             role="combobox"
             type="button"
           >
-            {selected?.label ?? ''}
+            <SelectValue options={options} text={selected?.label ?? ''} />
           </button>
           {open ? (
-            <div
-              aria-labelledby={labelId}
-              className="sw-select-list"
+            <SelectListbox
+              actionLabel={action?.label}
+              highlight={highlight}
               id={listId}
-              role="listbox"
-            >
-              {options.map((option, index) => (
-                <SelectListOption
-                  active={index === highlight}
-                  id={`${optionIdPrefix}-${index}`}
-                  key={option.value}
-                  onCommit={() => {
-                    commit(index);
-                  }}
-                  onHighlight={() => {
-                    setHighlight(index);
-                  }}
-                  selected={option.value === value}
-                >
-                  {option.label}
-                </SelectListOption>
-              ))}
-              {action ? (
-                <SelectListOption
-                  action
-                  active={highlight === actionIndex}
-                  id={`${optionIdPrefix}-${actionIndex}`}
-                  onCommit={() => {
-                    commit(actionIndex);
-                  }}
-                  onHighlight={() => {
-                    setHighlight(actionIndex);
-                  }}
-                  selected={false}
-                >
-                  {action.label}
-                </SelectListOption>
-              ) : null}
-            </div>
+              labelId={labelId}
+              onCommit={commit}
+              onHighlight={setHighlight}
+              optionIdPrefix={optionIdPrefix}
+              options={options}
+              value={value}
+            />
           ) : null}
         </div>
       </Stack>

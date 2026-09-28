@@ -1,17 +1,15 @@
+import { chevronStroke } from './chevron.js';
+
 function markerRules(): string {
   return `/* A token chevron replaces the user-agent triangle: it points to the inline end when closed and down when open. */
 .sw-accordion-summary::-webkit-details-marker { display: none; }
 
 .sw-accordion-marker {
-  border-bottom: 2px solid var(--sw-color-muted);
-  border-right: 2px solid var(--sw-color-muted);
-  box-sizing: border-box;
+  ${chevronStroke}
   flex: none;
-  height: var(--sw-space-2);
   margin-inline-end: var(--sw-space-1);
   transform: rotate(-45deg);
   transition: transform var(--sw-motion-default) var(--sw-motion-easing);
-  width: var(--sw-space-2);
 }
 
 .sw-accordion-marker:dir(rtl) { transform: rotate(135deg); }

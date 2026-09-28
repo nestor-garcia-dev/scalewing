@@ -33,6 +33,32 @@ describe('select list helpers', () => {
 });
 
 describe('Select', () => {
+  it('sizes the closed trigger to its longest option without adding text', () => {
+    render(
+      <ThemeProvider colorScheme="light">
+        <Select
+          label="Watch range"
+          onChange={vi.fn()}
+          options={habitats}
+          value="ocean"
+        />
+      </ThemeProvider>,
+    );
+    const trigger = screen.getByRole('combobox', { name: 'Watch range' });
+    // Only the current label is text; every option's label is a hidden
+    // sizer drawn from data-label by CSS (Teisoro DRW-12).
+    expect(trigger.textContent).toBe('Ocean');
+    const sizers = trigger.querySelectorAll('.sw-select-value-sizer');
+    expect(
+      [...sizers].map((sizer) => sizer.getAttribute('data-label')),
+    ).toEqual(['Forest', 'Savanna', 'Ocean']);
+    for (const sizer of sizers)
+      expect(sizer.getAttribute('aria-hidden')).toBe('true');
+    expect(trigger.querySelector('.sw-select-value-text')?.textContent).toBe(
+      'Ocean',
+    );
+  });
+
   it('opens a labeled glass listbox and commits a choice', () => {
     const onChange = vi.fn();
     render(

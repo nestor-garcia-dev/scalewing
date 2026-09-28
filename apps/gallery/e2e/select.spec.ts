@@ -16,3 +16,54 @@ test('Select in a glass card opens over the card below it', async ({
   await expect(trigger).toHaveText('Ocean');
   await expect(section.getByRole('listbox')).toHaveCount(0);
 });
+
+test('Select keeps its width when the value changes and centres its text', async ({
+  page,
+}, testInfo) => {
+  await page.goto('/#select');
+  if (testInfo.project.name === 'forced-colors') {
+    await page.emulateMedia({ forcedColors: 'active' });
+  }
+  const section = page.locator('#select');
+  const trigger = section.getByRole('combobox', { name: 'Survey reason' });
+  await expect(trigger).toHaveText('Nest check');
+  const before = await trigger.boundingBox();
+
+  // Teisoro DRW-12: the text sat near the top of a 44 px box.
+  const text = trigger.locator('.sw-select-value-text');
+  const textBox = await text.boundingBox();
+  const middle = (box: { y: number; height: number } | null) =>
+    (box?.y ?? 0) + (box?.height ?? 0) / 2;
+  expect(Math.abs(middle(textBox) - middle(before))).toBeLessThanOrEqual(1);
+
+  // The caret is the stroked Accordion chevron, not a gradient triangle.
+  const chevron = await trigger.evaluate((node) => {
+    const style = getComputedStyle(node, '::after');
+    return {
+      image: getComputedStyle(node).backgroundImage,
+      right: style.borderRightWidth,
+      bottom: style.borderBottomWidth,
+    };
+  });
+  expect(chevron.image).toBe('none');
+  expect(chevron.right).toBe('2px');
+  expect(chevron.bottom).toBe('2px');
+
+  // Teisoro DRW-12: the box grew from about 183 to 343 px once chosen.
+  await trigger.click();
+  await section
+    .getByRole('option', { name: 'Migration count across the wetland reserve' })
+    .click();
+  await expect(trigger).toHaveText(
+    'Migration count across the wetland reserve',
+  );
+  const after = await trigger.boundingBox();
+  expect(Math.abs((after?.width ?? 0) - (before?.width ?? 0))).toBeLessThan(1);
+  // Only the chosen label is the trigger's text and value.
+  await expect(trigger).toHaveAccessibleName('Survey reason');
+  const sectionBox = await section.boundingBox();
+  expect((after?.x ?? 0) + (after?.width ?? 0)).toBeLessThanOrEqual(
+    (sectionBox?.x ?? 0) + (sectionBox?.width ?? 0) + 1,
+  );
+  await trigger.screenshot({ path: testInfo.outputPath('select-trigger.png') });
+});
