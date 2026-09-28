@@ -69,6 +69,12 @@ test('DenominationGrid renders the strip table with tones and moves totals under
       .getByRole('region', { name: 'Counted' })
       .getByText('One S tag short'),
   ).toBeVisible();
+  // A lone row without an icon still shows its total (Teisoro ENT-7).
+  const fitted = section
+    .getByRole('group', { name: 'Tags fitted today' })
+    .getByRole('region', { name: 'Fitted' });
+  await expect(fitted.getByText('53 g', { exact: true })).toBeVisible();
+  await expect(fitted.getByText('Fitted', { exact: true })).toBeVisible();
   await section.screenshot({
     path: testInfo.outputPath('denomination-grid.png'),
   });

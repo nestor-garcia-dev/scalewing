@@ -183,6 +183,21 @@ export function DenominationGridSection() {
         <Card padding={4}>
           <DenominationGrid
             columns={tagColumns}
+            label="Tags fitted today"
+            layout="tiles"
+            rows={[
+              {
+                id: 'fitted',
+                label: 'Fitted',
+                cells: [2, 1, 0, 0, 1, 0],
+                total: '53 g',
+              },
+            ]}
+          />
+        </Card>
+        <Card padding={4}>
+          <DenominationGrid
+            columns={tagColumns}
             label="Kit audit"
             layout="tiles"
             rows={[

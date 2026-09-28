@@ -59,3 +59,19 @@ Rejected alternatives:
 - Keeping `display: none` and giving the row header the total as hidden text. The total would then be read as part of the row label, not as a cell under its column.
 
 Evidence: `denomination-grid.test.tsx` ("names the total column with a visually hidden header", "keeps the empty corner over the totals without a totalLabel", the blank label case); `css/stylesheet.test.ts` (no `display: none` on the total, the visually hidden value below md); `apps/gallery/e2e/denomination-grid.spec.ts` on desktop-en, mobile-es (390 px) and forced-colors: the gallery's "Tag movement by size" strip has a `Total weight` column header, the Net row's accessible name includes `+268 g` at every width, and on a phone the cell's copy is 1 px wide and clipped while the `aria-hidden` copy under the label shows; the "Sightings by hour" strip, which has no `totalLabel`, keeps its total cells in the table (`117 sightings`) and its total corner and cells at most 1 px wide on a phone. Chromium's own accessibility tree (CDP `Accessibility.getFullAXTree`) at 390 px lists `cell: +268 g` and `columnheader: Total weight`.
+
+## Follow-up request (2026-09-28, Teisoro F-007-S05 task 1335): a lone tiles row's total
+
+Status: implemented on `claude/services-ux-fixes` for Teisoro F-007-S05 task 1335; pull request pending review.
+Source: Teisoro UX review `services-entries.md`, finding ENT-7 (the Scalewing part; Teisoro owns showing the totals on a saved entry).
+
+In the `tiles` layout a row's label line, which carries its `total`, rendered only when the grid had several rows or the row had an icon. A lone row without an icon silently dropped its `total`: Teisoro passed "Cash received" and "Change given" totals to one-row grids and nothing showed, while the row's region was still named as if it had one.
+
+Behavior: the label line also shows when a lone row has a `total`, with the row label beside it so the figure has a name. A lone row with neither an icon nor a total is unchanged (the grid's `label` names it). No API change.
+
+Rejected alternatives:
+
+- Showing only the total, without the row label. A bare figure under the grid's heading would not say what it totals, and the label line's layout is shared with multi-row grids.
+- Documenting that the total is dropped. A prop that is silently ignored is a trap; showing it is what every consumer that passes it wants.
+
+Evidence: `denomination-grid.test.tsx` ("shows a single row's total, with its label, even without an icon"); `apps/gallery/e2e/denomination-grid.spec.ts` on desktop-en, mobile-es and forced-colors: the gallery's one-row "Tags fitted today" tiles show "Fitted" and "53 g".

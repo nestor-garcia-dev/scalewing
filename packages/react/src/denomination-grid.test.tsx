@@ -194,6 +194,26 @@ describe('DenominationGrid tiles', () => {
     expect(within(group).queryByText('Expected')).toBeNull();
   });
 
+  it("shows a single row's total, with its label, even without an icon", () => {
+    render(
+      <DenominationGrid
+        columns={columns}
+        label="Cash received"
+        layout="tiles"
+        rows={[
+          { id: 'received', label: 'Received', cells: [0, 2, 1], total: '$20' },
+        ]}
+      />,
+    );
+    const row = screen.getByRole('region', { name: 'Received' });
+    expect(within(row).getByText('$20').className).toBe(
+      'sw-denomination-total',
+    );
+    expect(within(row).getByText('Received').className).toBe(
+      'sw-denomination-label-text',
+    );
+  });
+
   it('labels each row when there are several rows or an icon', () => {
     render(
       <DenominationGrid

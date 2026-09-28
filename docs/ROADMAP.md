@@ -20,7 +20,8 @@ release workflow completed successfully.
 Teisoro Services UX fixes (F-007-S05 task 1335, UX reviews
 `services-*.md`), each its own commit on `claude/services-ux-fixes`:
 `DenominationGrid` strip totals read at every width with a named total
-column (SDAY-6, `teisoro-denomination-grid.md` follow-up). Next: the
+column (SDAY-6) and a lone tiles row's total (ENT-7), both
+`teisoro-denomination-grid.md` follow-ups. Next: the
 remaining Services findings, then pull request, review and merge, then
 release `@scalewing/react` and Teisoro pins it.
 
