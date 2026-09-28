@@ -22,8 +22,9 @@ Teisoro Services UX fixes (F-007-S05 task 1335, UX reviews
 `DenominationGrid` strip totals read at every width with a named total
 column (SDAY-6) and a lone tiles row's total (ENT-7), both
 `teisoro-denomination-grid.md` follow-ups; toggle `Button`s without the
-unpressed fade and with an accent ring when pressed (NSF-1,
-`teisoro-button.md`). Next: the
+unpressed fade and with an accent ring when pressed, and a `Badge` on a
+filled button on the surface (NSF-1, `teisoro-button.md`,
+`teisoro-badge.md`). Next: the
 remaining Services findings, then pull request, review and merge, then
 release `@scalewing/react` and Teisoro pins it.
 

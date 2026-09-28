@@ -497,6 +497,12 @@ describe('generated CSS', () => {
     expect(css).toContain('sw-toast-float');
     expect(css).toContain('--sw-quiet-opacity:');
     expect(css).toContain('--sw-motion-default:');
+    // A badge on a filled button draws on the surface in the text color,
+    // its tone on its border (Teisoro NSF-1).
+    expect(css).toContain(
+      ':is(.sw-button-primary, .sw-button-secondary, .sw-button-tertiary, .sw-button-danger) .sw-badge { background: var(--sw-color-surface); color: var(--sw-color-text); }',
+    );
+    expect(css).not.toContain('.sw-button .sw-badge { forced-color-adjust');
     // An unpressed toggle keeps full contrast (Teisoro NSF-1, WCAG 1.4.3);
     // the pressed one carries an accent ring outside its fill.
     expect(css).not.toContain(".sw-button[aria-pressed='false']");
