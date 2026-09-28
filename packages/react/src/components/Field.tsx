@@ -3,6 +3,7 @@
 import { type SpacingStep } from '@scalewing/tokens';
 import { cloneElement, isValidElement, useId, type ReactNode } from 'react';
 
+import { adornedLabelledBy, FieldAdornment } from './FieldAdornment.js';
 import { Stack } from './Stack.js';
 import { Text } from './Text.js';
 
@@ -11,6 +12,7 @@ export type FieldSize = 'xs' | 'md';
 type FieldControlProps = {
   'aria-describedby'?: string;
   'aria-invalid'?: boolean | 'true' | 'false';
+  'aria-labelledby'?: string;
   id?: string;
   required?: boolean;
 };
@@ -24,6 +26,10 @@ export type FieldProps = {
   description?: string;
   error?: string;
   required?: boolean;
+  /** Short text inside the control frame before the value, such as a currency sign. Not part of the value. */
+  prefix?: string;
+  /** Short text inside the control frame after the value, such as a unit. Not part of the value. */
+  suffix?: string;
 };
 
 export function Field({
@@ -35,11 +41,17 @@ export function Field({
   description,
   error,
   required = false,
+  prefix,
+  suffix,
 }: FieldProps) {
   const controlId = useId();
   const messageId = useId();
+  const labelId = useId();
+  const prefixId = useId();
+  const suffixId = useId();
   const message = error || description;
-  const needsControl = Boolean(message || required);
+  const adorned = Boolean(prefix || suffix);
+  const needsControl = Boolean(message || required || adorned);
   const className = [
     'sw-field',
     size === 'xs' && 'sw-field-xs',
@@ -70,7 +82,7 @@ export function Field({
   ) {
     if (needsControl)
       throw new TypeError(
-        'Field validation requires one native input, select, or textarea child',
+        'Field validation and adornments require one native input, select, or textarea child',
       );
     return (
       <Stack
@@ -84,6 +96,9 @@ export function Field({
     );
   }
 
+  if (adorned && children.type !== 'input')
+    throw new TypeError('Field prefix and suffix require a native input child');
+
   const describedBy = [
     children.props['aria-describedby'],
     message ? messageId : null,
@@ -94,13 +109,34 @@ export function Field({
     id: children.props.id || controlId,
     'aria-describedby': describedBy || undefined,
     'aria-invalid': error ? true : children.props['aria-invalid'],
+    'aria-labelledby': adorned
+      ? children.props['aria-labelledby'] ||
+        adornedLabelledBy(
+          labelId,
+          prefix ? prefixId : undefined,
+          suffix ? suffixId : undefined,
+        )
+      : children.props['aria-labelledby'],
     required: required || children.props.required,
   });
 
   return (
     <Stack as="div" className={className} gap={labelVisuallyHidden ? 0 : gap}>
-      <label htmlFor={children.props.id || controlId}>{labelText}</label>
-      {control}
+      <label htmlFor={children.props.id || controlId} id={labelId}>
+        {labelText}
+      </label>
+      {adorned ? (
+        <FieldAdornment
+          prefix={prefix}
+          prefixId={prefixId}
+          suffix={suffix}
+          suffixId={suffixId}
+        >
+          {control}
+        </FieldAdornment>
+      ) : (
+        control
+      )}
       {message ? (
         <span
           className={error ? 'sw-field-error' : 'sw-field-description'}

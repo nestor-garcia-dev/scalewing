@@ -13,7 +13,7 @@ export function FieldSection() {
   return (
     <Section
       id="field"
-      purpose="Field labels native controls and associates optional hints, required state, and validation errors. Validation stays with the consumer. size xs compacts the control; the canvas paints its native surface."
+      purpose="Field labels native controls and associates optional hints, required state, and validation errors. Validation stays with the consumer. size xs compacts the control; the canvas paints its native surface. prefix and suffix put short text such as a unit inside an input's frame; it is not part of the value and joins the accessible name."
       title="Field"
       usage={`<Field label="Habitat">
   <select>
@@ -53,6 +53,19 @@ export function FieldSection() {
           <select defaultValue="amazon" name="compact-region">
             <option value="amazon">Field Notes · Amazon</option>
           </select>
+        </Field>
+        <Field label="Wingspan" suffix="cm">
+          <input defaultValue="38" inputMode="decimal" name="wingspan" />
+        </Field>
+        <Field
+          description="Paid at the reserve gate"
+          label="Reserve entry fee"
+          prefix="$"
+        >
+          <input defaultValue="12.50" inputMode="decimal" name="entry-fee" />
+        </Field>
+        <Field label="Canopy cover" labelVisuallyHidden size="xs" suffix="%">
+          <input defaultValue="64" inputMode="numeric" name="canopy-cover" />
         </Field>
         <Field label="Disabled control">
           <input disabled defaultValue="Cannot edit" name="disabled-control" />

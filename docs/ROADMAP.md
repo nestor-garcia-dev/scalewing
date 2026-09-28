@@ -17,6 +17,14 @@ release workflow completed successfully.
 
 ## Next action
 
+Closeout UX surfaces for Teisoro F-007-S03 task 1280 (the first UX review,
+closing a register): one `@scalewing/react` commit each on
+`claude/closeout-ux-surfaces`. Done so far: `Field` `prefix`/`suffix`
+(`teisoro-field-adornment.md`). Next: the Accordion summary line and
+marker, then independent review and merge; wait for the owner before
+`pnpm changeset version`, a `react-v` tag or Release packages. Teisoro adopts
+the release in task 1285.
+
 Clear tap targets for FutMas F-018-S01 (`futmas-action-tiers.md`, owner
 approved 2026-09-26, release included): semantic `secondary`, `tertiary`,
 and `subtle` colours with the `signal` palette (#52), Button `tertiary`
