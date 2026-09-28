@@ -43,7 +43,7 @@ Teisoro must adapt: tests that drove `input[type=date]` now use the text entry (
 
 ## Follow-up request (2026-09-28, Teisoro F-007-S05 task 1335): the required mark
 
-Status: implemented on `claude/services-ux-fixes` for Teisoro F-007-S05 task 1335; pull request pending review.
+Status: merged in #73 (2026-09-28) and released in `@scalewing/react` 1.12.0; Teisoro pins it in F-007-S05 task 1340.
 Source: Teisoro UX review `services-nsf.md`, finding NSF-15 (minor, the Scalewing part; Teisoro owns the block reason's `required`).
 
 `DateField` took `required` and set the entry's native `required`, but its label never showed the asterisk `Field` shows: on the NSF record form "Date reported" looked optional beside "NSF fee ($) *" until the person was stopped.

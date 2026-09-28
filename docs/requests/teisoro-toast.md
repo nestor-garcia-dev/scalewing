@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: implemented on `claude/services-ux-fixes` for Teisoro F-007-S05 task 1335; pull request pending review.
+Status: merged in #73 (2026-09-28) and released in `@scalewing/react` 1.12.0; Teisoro pins it in F-007-S05 task 1340.
 Renderer: react
 Surface: `Toast` `tone` and `icon` (new optional props on an existing component; the component itself came from `fantasy-football-toast.md`).
 Source: Teisoro UX review `services-drawer-cash-and-audits.md`, finding DRW-14 (polish, the Scalewing part; Teisoro drops its inner `role`).

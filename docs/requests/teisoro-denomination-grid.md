@@ -42,7 +42,7 @@ Implementation: the strip renders inside a `ScrollRegion` (`.sw-denomination-scr
 
 ## Follow-up request (2026-09-28, Teisoro F-007-S05 task 1335): the strip's totals for a screen reader
 
-Status: implemented on `claude/services-ux-fixes` for Teisoro F-007-S05 task 1335; pull request pending review.
+Status: merged in #73 (2026-09-28) and released in `@scalewing/react` 1.12.0; Teisoro pins it in F-007-S05 task 1340.
 Source: Teisoro UX review `services-day-open-and-close.md`, finding SDAY-6 (major, WCAG 1.3.1).
 
 Below `md` the strip hid each row's total cell with `display: none` and showed an `aria-hidden` copy under the row label, so a screen reader on a phone heard the counts by bill but never the In, Out and Net totals. From `md` up the total was read, but its column header was an empty `td`, so it had no name.
@@ -62,7 +62,7 @@ Evidence: `denomination-grid.test.tsx` ("names the total column with a visually 
 
 ## Follow-up request (2026-09-28, Teisoro F-007-S05 task 1335): a lone tiles row's total
 
-Status: implemented on `claude/services-ux-fixes` for Teisoro F-007-S05 task 1335; pull request pending review.
+Status: merged in #73 (2026-09-28) and released in `@scalewing/react` 1.12.0; Teisoro pins it in F-007-S05 task 1340.
 Source: Teisoro UX review `services-entries.md`, finding ENT-7 (the Scalewing part; Teisoro owns showing the totals on a saved entry).
 
 In the `tiles` layout a row's label line, which carries its `total`, rendered only when the grid had several rows or the row had an icon. A lone row without an icon silently dropped its `total`: Teisoro passed "Cash received" and "Change given" totals to one-row grids and nothing showed, while the row's region was still named as if it had one.

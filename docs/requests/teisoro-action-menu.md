@@ -104,7 +104,7 @@ Evidence: `css/stylesheet.test.ts` (the coarse-pointer rules after the xs sizes)
 
 ## Follow-up request (2026-09-28, Teisoro F-007-S05 task 1335): `align="end"` for a trigger that ends a card
 
-Status: implemented on `claude/services-ux-fixes` for Teisoro F-007-S05 task 1335; pull request pending review.
+Status: merged in #73 (2026-09-28) and released in `@scalewing/react` 1.12.0; Teisoro pins it in F-007-S05 task 1340.
 Source: Teisoro UX review `services-entries.md`, finding ENT-13 (minor).
 
 On the Services day at 1280 px, an entry's "…" trigger ends its card (x 1161–1199) but not the viewport, so the 1.10.1 placement kept the menu on the trigger's start: it ran 5 px past the card's right edge, and its "Void" command ended on the next row's "…" trigger. The 2026-09-28 DAY-8 follow-up above rejected an `align` prop because the flip covered every trigger then known to end a row at the screen edge; this one ends a card, not the screen.

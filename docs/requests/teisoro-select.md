@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: requested by Teisoro F-002-S19 task 1060 (2026-09-25). `error` is implemented in the 2026-09-28 placeholder follow-up below (F-007-S05 task 1335); `disabled` is not started.
+Status: requested by Teisoro F-002-S19 task 1060 (2026-09-25). `error` is released in `@scalewing/react` 1.12.0 (the 2026-09-28 placeholder follow-up below); `disabled` is not started.
 Renderer: react
 Missing surface: `Select` `disabled` and `error` props.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: `Select` takes `label`, `options`, `value`, `onChange`, `size` and an optional `action`, but no way to show the choice as fixed or as invalid. `Field` has both (its validation props came from teisoro-field-validation.md), so a form that mixes text fields and selects reports errors two ways. Teisoro's vault Remove Cash dialog opens locked to one type for the monthly commission, and its Add Cash, Remove Cash, Edit movement and Resolve variance dialogs must say "Choose a source or reason." or "Choose a category." under the select after a first submit.
@@ -14,7 +14,7 @@ Scalewing owns the props, tests and gallery evidence. Teisoro owns the copy and 
 
 ## Follow-up request (2026-09-28, Teisoro F-007-S05 task 1335): the closed trigger
 
-Status: implemented on `claude/services-ux-fixes` for Teisoro F-007-S05 task 1335; pull request pending review. The placeholder, `required` and `error` from the same finding are the next follow-up.
+Status: merged in #73 (2026-09-28) and released in `@scalewing/react` 1.12.0; Teisoro pins it in F-007-S05 task 1340.
 Source: Teisoro UX review `services-drawer-cash-and-audits.md`, finding DRW-12 (polish, the Scalewing trigger part).
 
 In the drawer adjustment dialog's reason `Select`, the closed trigger's text sat near the top of its 44 px box (`.sw-select-trigger` was `inline-flex` with no `align-items`), its caret was two gradient triangles unlike the `Accordion` chevron, and the box grew from about 183 px to 343 px once a reason was chosen (`width: max-content` sized it to the current label).
@@ -36,7 +36,7 @@ Evidence: `select.test.tsx` ("sizes the closed trigger to its longest option wit
 
 ## Follow-up request (2026-09-28, Teisoro F-007-S05 task 1335): `placeholder`, `required` and `error`
 
-Status: implemented on `claude/services-ux-fixes` for Teisoro F-007-S05 task 1335; pull request pending review.
+Status: merged in #73 (2026-09-28) and released in `@scalewing/react` 1.12.0; Teisoro pins it in F-007-S05 task 1340.
 Source: Teisoro UX review `services-drawer-cash-and-audits.md`, finding DRW-12 (polish): "Add a `placeholder` prop, so 'Choose a reason' shows in the closed trigger but is not an option. Add `required` and `error`, as `Field` has, so the reason error sits on the control." Teisoro's `AdjustmentDialog.tsx` passes `{ value: '', label: text.choose }` as the first option today.
 
 Proposed and implemented API (all optional, no default change):
