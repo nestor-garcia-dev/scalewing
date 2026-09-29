@@ -1,5 +1,7 @@
 import { expect, test } from '@playwright/test';
 
+import { textContrast, tokenColor } from './contrast.js';
+
 test('Field associates hint, required state, and replaceable validation error', async ({
   page,
 }, testInfo) => {
@@ -108,4 +110,83 @@ test('Field prefix and suffix sit inside the frame and join the name', async ({
   await fee.fill('20.00');
   await expect(fee).toHaveValue('20.00');
   await section.screenshot({ path: testInfo.outputPath('field-adorned.png') });
+});
+
+test('a disabled Field looks locked and keeps its value readable', async ({
+  page,
+}, testInfo) => {
+  const forced = testInfo.project.name === 'forced-colors';
+  if (forced) await page.emulateMedia({ forcedColors: 'active' });
+  await page.goto('/#field');
+  expect(
+    await page.evaluate(() => matchMedia('(forced-colors: active)').matches),
+  ).toBe(forced);
+  const section = page.locator('#field');
+  const editable = section.getByRole('textbox', { name: 'Species name' });
+  const locked = section.getByRole('textbox', { name: 'Disabled control' });
+  const style = (element: HTMLElement) => {
+    const computed = getComputedStyle(element);
+    return {
+      background: computed.backgroundColor,
+      borderColor: computed.borderTopColor,
+      borderStyle: computed.borderTopStyle,
+      cursor: computed.cursor,
+      opacity: computed.opacity,
+    };
+  };
+  await expect(locked).toBeDisabled();
+  const lockedStyle = await locked.evaluate(style);
+  const editableStyle = await editable.evaluate(style);
+  // Teisoro DRW-17: a locked field was drawn exactly as an editable one.
+  expect(lockedStyle.borderStyle).toBe('dashed');
+  expect(editableStyle.borderStyle).toBe('solid');
+  expect(lockedStyle.cursor).toBe('not-allowed');
+  // Not faded as a disabled button is: the value keeps its contrast.
+  expect(lockedStyle.opacity).toBe('1');
+  if (forced) {
+    // The system's disabled color draws the dashed border.
+    expect(lockedStyle.borderColor).not.toBe(editableStyle.borderColor);
+  } else {
+    expect(await textContrast(locked)).toBeGreaterThanOrEqual(4.5);
+    expect(lockedStyle.background).not.toBe(editableStyle.background);
+  }
+
+  // The same look on a disabled select and textarea.
+  for (const control of [
+    section.getByRole('combobox', { name: 'Recorded habitat' }),
+    section.getByRole('textbox', { name: 'Survey notes' }),
+  ]) {
+    await expect(control).toBeDisabled();
+    const look = await control.evaluate(style);
+    expect(look).toMatchObject({
+      borderStyle: 'dashed',
+      cursor: 'not-allowed',
+      opacity: '1',
+    });
+    if (forced) {
+      expect(look.borderColor).not.toBe(editableStyle.borderColor);
+    } else {
+      expect(look.background).not.toBe(editableStyle.background);
+      expect(await textContrast(control)).toBeGreaterThanOrEqual(4.5);
+    }
+  }
+
+  // The placeholder is muted, which keeps 4.5:1 on the disabled fill.
+  const placeholder = await section
+    .getByRole('textbox', { name: 'Survey notes' })
+    .evaluate((element) => getComputedStyle(element, '::placeholder').color);
+  if (!forced) expect(placeholder).toBe(await tokenColor(page, 'muted'));
+
+  // An adorned field draws the locked look on its frame.
+  const nests = section.getByRole('textbox', { name: 'Counted nests nests' });
+  await expect(nests).toBeDisabled();
+  const frame = nests.locator('xpath=..');
+  expect(await frame.evaluate(style)).toMatchObject({
+    borderStyle: 'dashed',
+    cursor: 'not-allowed',
+    opacity: '1',
+  });
+  if (!forced) expect(await textContrast(nests)).toBeGreaterThanOrEqual(4.5);
+  await locked.scrollIntoViewIfNeeded();
+  await section.screenshot({ path: testInfo.outputPath('field-disabled.png') });
 });

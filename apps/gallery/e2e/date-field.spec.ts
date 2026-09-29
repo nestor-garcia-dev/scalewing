@@ -1,5 +1,7 @@
 import { expect, test, type Locator, type Page } from '@playwright/test';
 
+import { textContrast } from './contrast.js';
+
 function field(section: Locator, label: string) {
   return section.locator('.sw-date-field', {
     has: section.page().getByRole('textbox', { name: label, exact: true }),
@@ -196,4 +198,30 @@ test('a required DateField marks its label as Field does', async ({
   await label.screenshot({
     path: testInfo.outputPath('date-field-required.png'),
   });
+});
+
+test('a disabled DateField entry looks locked as a disabled Field does', async ({
+  page,
+}, testInfo) => {
+  const forced = testInfo.project.name === 'forced-colors';
+  if (forced) await page.emulateMedia({ forcedColors: 'active' });
+  await page.goto('/#date-field');
+  const section = page.locator('#date-field');
+  const archived = section.getByRole('textbox', { name: 'Archived date' });
+  await expect(archived).toBeDisabled();
+  const look = await archived.evaluate((element) => {
+    const computed = getComputedStyle(element);
+    return {
+      borderStyle: computed.borderTopStyle,
+      cursor: computed.cursor,
+      opacity: computed.opacity,
+    };
+  });
+  // Teisoro DRW-17: the same locked look as every text control, not faded.
+  expect(look).toEqual({
+    borderStyle: 'dashed',
+    cursor: 'not-allowed',
+    opacity: '1',
+  });
+  if (!forced) expect(await textContrast(archived)).toBeGreaterThanOrEqual(4.5);
 });

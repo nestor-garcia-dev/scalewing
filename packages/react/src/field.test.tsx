@@ -1,8 +1,10 @@
 import { cleanup, fireEvent, render, screen } from '@testing-library/react';
+import { contrastRatio, type SemanticColorKey } from '@scalewing/tokens';
 import { afterEach, describe, expect, it } from 'vitest';
 
 import { Field } from './components/Field.js';
 import { generateStylesheet, utilityClassCatalog } from './css/stylesheet.js';
+import { forEveryTheme } from './every-theme.test-support.js';
 import { ThemeProvider } from './theme/ThemeProvider.js';
 
 afterEach(() => cleanup());
@@ -349,6 +351,63 @@ describe('Field', () => {
     expect(css).toContain('.sw-field-xs .sw-field-adorned {');
     expect(css).not.toMatch(
       /sw-field-(prefix|suffix|adorned)[^}]*#[0-9a-f]{3}/i,
+    );
+  });
+});
+
+describe('disabled text controls', () => {
+  const css = generateStylesheet();
+  // The canvas rule for a disabled native text control, read from the
+  // stylesheet so the contrast check follows the token it uses.
+  const fill =
+    /:disabled,\n\[data-theme\] select:disabled \{\n {2}background-color: var\(--sw-color-(\w+)\);/.exec(
+      css,
+    );
+
+  it('fills, dashes and keeps the value unfaded without the button opacity', () => {
+    expect(fill).not.toBeNull();
+    const rule = css.slice(fill!.index, css.indexOf('}', fill!.index));
+    expect(rule).toContain('border-style: dashed;');
+    expect(rule).toContain('cursor: not-allowed;');
+    expect(rule).toContain('opacity: 1;');
+    expect(rule).not.toContain('--sw-disabled-opacity');
+    // The adorned frame and DateField's entry carry the same look.
+    expect(css).toContain('.sw-field-adorned:has(> input:disabled) {');
+    expect(css).toMatch(
+      /\.sw-date-field-input:disabled \{\n {2}background-color: var\(--sw-color-subtle\);\n {2}border-style: dashed;/,
+    );
+    expect(css).not.toMatch(
+      /\.sw-date-field-input:disabled,\n\.sw-date-field-button:disabled/,
+    );
+  });
+
+  it('keeps the dashed border in the system disabled color under forced colors', () => {
+    expect(css).toMatch(
+      /@media \(forced-colors: active\) \{\n {2}\[data-theme\] :is\(.*\):disabled,\n {2}\[data-theme\] select:disabled \{\n {4}border-color: GrayText;/,
+    );
+  });
+
+  it('keeps the value and placeholder at 4.5:1 on the fill in every palette and scheme', () => {
+    const fillToken = fill![1] as SemanticColorKey;
+    forEveryTheme((colors, label) => {
+      expect(
+        contrastRatio(colors.text, colors[fillToken]),
+        label,
+      ).toBeGreaterThanOrEqual(4.5);
+      // The placeholder, prefix and suffix are muted.
+      expect(
+        contrastRatio(colors.muted, colors[fillToken]),
+        label,
+      ).toBeGreaterThanOrEqual(4.5);
+    });
+  });
+
+  it('draws every typed placeholder in the muted color, which the disabled claim relies on', () => {
+    // The browser's own placeholder is #757575 in both schemes: 2.28:1 at the
+    // lowest on a field in the palettes, where muted keeps 4.55:1 or more,
+    // so the rule applies to enabled fields too.
+    expect(css).toContain(
+      "[data-theme] :is(input[type='text'], input[type='email'], input[type='number'], input[type='search'], input[type='url'], input[type='password'], input:not([type]), textarea)::placeholder {\n  color: var(--sw-color-muted);\n  opacity: 1;\n}",
     );
   });
 });

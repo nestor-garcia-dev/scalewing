@@ -1,4 +1,54 @@
-import { type Locator } from '@playwright/test';
+import { type Locator, type Page } from '@playwright/test';
+
+type Rgb = [number, number, number];
+
+/** A computed color, rgb()/rgba() or color(srgb …) in 0–1 units, as 0–255 channels. */
+function parseComputedColor(value: string): Rgb {
+  const parts = value.match(/[\d.]+/g)?.map(Number) ?? [0, 0, 0];
+  const scale = value.startsWith('color(srgb') ? 255 : 1;
+  return [parts[0]! * scale, parts[1]! * scale, parts[2]! * scale];
+}
+
+function relativeLuminance([red, green, blue]: Rgb): number {
+  const channel = (value: number) => {
+    const unit = value / 255;
+    return unit <= 0.03928 ? unit / 12.92 : ((unit + 0.055) / 1.055) ** 2.4;
+  };
+  return (
+    0.2126 * channel(red) + 0.7152 * channel(green) + 0.0722 * channel(blue)
+  );
+}
+
+/** The WCAG contrast ratio between two opaque computed colors. */
+export function colorContrast(first: string, second: string): number {
+  const [light, dark] = [
+    relativeLuminance(parseComputedColor(first)),
+    relativeLuminance(parseComputedColor(second)),
+  ].sort((a, b) => b - a);
+  return (light! + 0.05) / (dark! + 0.05);
+}
+
+/** A CSS color as the page computes it inside the themed canvas. */
+function computedColor(page: Page, value: string): Promise<string> {
+  return page.evaluate((color) => {
+    const probe = document.createElement('span');
+    probe.style.color = color;
+    (document.querySelector('[data-theme]') ?? document.body).append(probe);
+    const computed = getComputedStyle(probe).color;
+    probe.remove();
+    return computed;
+  }, value);
+}
+
+/** A system color keyword, such as `Highlight`, as the page resolves it. */
+export function systemColor(page: Page, name: string): Promise<string> {
+  return computedColor(page, name);
+}
+
+/** A semantic color token (`--sw-color-<token>`) as the page resolves it. */
+export function tokenColor(page: Page, token: string): Promise<string> {
+  return computedColor(page, `var(--sw-color-${token})`);
+}
 
 /**
  * The WCAG contrast ratio of an element's text color against the background

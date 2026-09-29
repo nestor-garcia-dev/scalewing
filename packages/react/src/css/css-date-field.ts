@@ -1,5 +1,9 @@
 import { typographyVariants } from '@scalewing/tokens';
 
+import {
+  disabledControlForcedColors,
+  disabledControlSurface,
+} from './css-document.js';
 import { zIndex } from './stacking.js';
 
 const body = typographyVariants.body;
@@ -75,7 +79,11 @@ ${input}[aria-invalid='true'] {
   border-color: var(--sw-color-danger);
 }
 
-${input}:disabled,
+/* The entry looks locked as every text control does; its button fades as buttons do. */
+${input}:disabled {
+  ${disabledControlSurface}
+}
+
 .sw-date-field-button:disabled {
   cursor: not-allowed;
   opacity: var(--sw-disabled-opacity);
@@ -276,6 +284,9 @@ function adaptiveRules(): string {
 
 @media (forced-colors: active) {
   ${input}[aria-invalid='true'] { border-color: CanvasText; }
+  ${input}:disabled {
+    ${disabledControlForcedColors}
+  }
   .sw-date-field-calendar { border-color: CanvasText; }
   .sw-date-field-day[aria-current='date'] { border-color: CanvasText; }
   .sw-date-field-day[aria-selected='true'] {

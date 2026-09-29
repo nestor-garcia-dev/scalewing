@@ -17,6 +17,12 @@ release workflow completed successfully.
 
 ## Next action
 
+Teisoro Services re-review fixes (F-007-S05 task 1350, the re-review
+sections of `services-*.md`), on `claude/services-rereview-fixes`: a
+disabled text control that looks locked (DRW-17,
+`teisoro-field-disabled.md`). Next: pull request, review and merge, then
+release `@scalewing/react` and Teisoro pins it.
+
 Teisoro Services UX fixes (F-007-S05 task 1335, UX reviews
 `services-*.md`), merged in #73 and released as `@scalewing/react` 1.12.0:
 `DenominationGrid` strip totals read at every width with a named total

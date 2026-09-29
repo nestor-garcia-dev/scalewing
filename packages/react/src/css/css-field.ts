@@ -1,6 +1,10 @@
 import { typographyVariants } from '@scalewing/tokens';
 
-import { controlSurface } from './css-document.js';
+import {
+  controlSurface,
+  disabledControlForcedColors,
+  disabledControlSurface,
+} from './css-document.js';
 
 const caption = typographyVariants.caption;
 
@@ -54,7 +58,14 @@ function adornmentRules(): string {
   padding-inline: var(--sw-control-xs-padding-inline);
 }
 
-.sw-field-invalid .sw-field-adorned { border-color: var(--sw-color-danger); }`;
+.sw-field-invalid .sw-field-adorned { border-color: var(--sw-color-danger); }
+
+/* The frame draws the surface, so it carries the disabled look for its input. */
+.sw-field-adorned:has(> input:disabled) {
+  ${disabledControlSurface}
+}
+
+[data-theme] .sw-field-adorned > input:disabled { background: transparent; }`;
 }
 
 export function cssFieldClasses(): string {
@@ -83,6 +94,9 @@ ${adornmentRules()}
   [data-theme] .sw-field-invalid :is(input, select, textarea),
   .sw-field-invalid .sw-field-adorned { border-color: Mark; }
   .sw-field-prefix, .sw-field-suffix { color: CanvasText; }
+  .sw-field-adorned:has(> input:disabled) {
+    ${disabledControlForcedColors}
+  }
   .sw-field-error, .sw-field-required { color: Mark; }
 }`;
 }
