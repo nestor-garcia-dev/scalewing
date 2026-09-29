@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test';
+import { expect, test, type Locator } from '@playwright/test';
 
 test('Select in a glass card opens over the card below it', async ({
   page,
@@ -158,4 +158,219 @@ test('a Select beside a Field lines up its label and control', async ({
   await section.screenshot({
     path: testInfo.outputPath('select-beside-field.png'),
   });
+});
+
+/**
+ * A full-width Select's trigger, its grid track, and where its chevron ends:
+ * the value takes the free space, so the chevron (the trigger's `::after`,
+ * which has no box of its own) ends one gap and its own width past the value.
+ */
+async function fullWidthGeometry(trigger: Locator) {
+  return trigger.evaluate((node) => {
+    const grid = node.closest('.sw-grid');
+    if (!(grid instanceof HTMLElement)) throw new Error('not in a Grid');
+    const cell = [...grid.children].find((child) => child.contains(node));
+    // Each cell is one column here; below md the grid is one column.
+    const tracks = getComputedStyle(grid)
+      .gridTemplateColumns.split(' ')
+      .map(Number.parseFloat);
+    const track =
+      tracks[[...grid.children].indexOf(cell!) % tracks.length] ?? Number.NaN;
+    const style = getComputedStyle(node);
+    const box = node.getBoundingClientRect();
+    const value = node.querySelector('.sw-select-value')!;
+    const valueBox = value.getBoundingClientRect();
+    const chevron = Number.parseFloat(getComputedStyle(node, '::after').width);
+    const gap = Number.parseFloat(style.columnGap);
+    const rtl = style.direction === 'rtl';
+    const contentEnd = rtl
+      ? box.left +
+        Number.parseFloat(style.borderLeftWidth) +
+        Number.parseFloat(style.paddingLeft)
+      : box.right -
+        Number.parseFloat(style.borderRightWidth) -
+        Number.parseFloat(style.paddingRight);
+    const chevronEnd = rtl
+      ? valueBox.left - gap - chevron
+      : valueBox.right + gap + chevron;
+    const text = node.querySelector('.sw-select-value-text')!;
+    return {
+      box: { left: box.left, right: box.right, width: box.width },
+      chevronEnd,
+      contentEnd,
+      rtl,
+      textClientWidth: text.clientWidth,
+      textOverflow: getComputedStyle(text).textOverflow,
+      textScrollWidth: text.scrollWidth,
+      textRight: text.getBoundingClientRect().right,
+      textLeft: text.getBoundingClientRect().left,
+      track,
+    };
+  });
+}
+
+test('Select width full fills its column, its list and its chevron follow', async ({
+  page,
+}, testInfo) => {
+  await page.goto('/#select');
+  if (testInfo.project.name === 'forced-colors') {
+    await page.emulateMedia({ forcedColors: 'active' });
+  }
+  const section = page.locator('#select');
+  const viewport = page.viewportSize()!;
+  // A Stack in a Grid cell, a bare Grid cell, and a right-to-left cell.
+  const cases = [
+    { name: 'Show', shot: 'stack' },
+    { name: 'Cell habitat', shot: 'cell' },
+    { name: 'الموطن', shot: 'rtl' },
+  ];
+  for (const { name, shot } of cases) {
+    const trigger = section.getByRole('combobox', { name });
+    await trigger.scrollIntoViewIfNeeded();
+    const geometry = await fullWidthGeometry(trigger);
+    // Teisoro F-007-S05: about 225 px beside full-width cards on a phone.
+    expect(Math.abs(geometry.box.width - geometry.track)).toBeLessThan(0.5);
+    if (testInfo.project.name === 'mobile-es') {
+      const grid = await trigger
+        .locator('xpath=ancestor::div[contains(@class, "sw-grid")][1]')
+        .boundingBox();
+      expect(Math.abs(geometry.box.width - (grid?.width ?? 0))).toBeLessThan(
+        0.5,
+      );
+    }
+    expect(geometry.rtl).toBe(name === 'الموطن');
+    expect(Math.abs(geometry.chevronEnd - geometry.contentEnd)).toBeLessThan(1);
+
+    await trigger.click();
+    const list = section.getByRole('listbox', { name });
+    const listBox = (await list.boundingBox())!;
+    // Exactly the trigger's width: never narrower, and never wider.
+    expect(listBox.width).toBeGreaterThanOrEqual(geometry.box.width - 0.5);
+    expect(listBox.width).toBeLessThanOrEqual(geometry.box.width + 0.5);
+    // It opens from the trigger's inline start and stays on screen.
+    if (geometry.rtl) {
+      expect(
+        Math.abs(listBox.x + listBox.width - geometry.box.right),
+      ).toBeLessThan(0.5);
+    } else {
+      expect(Math.abs(listBox.x - geometry.box.left)).toBeLessThan(0.5);
+    }
+    expect(listBox.x).toBeGreaterThanOrEqual(0);
+    expect(listBox.x + listBox.width).toBeLessThanOrEqual(viewport.width);
+    await page.screenshot({
+      path: testInfo.outputPath(`select-full-${shot}.png`),
+    });
+    await page.keyboard.press('Escape');
+    await expect(list).toHaveCount(0);
+  }
+
+  // The longest filter keeps the width and ellipsizes inside the trigger.
+  const longest =
+    'Migration counts across the wetland reserve and the tidal flats';
+  const show = section.getByRole('combobox', { name: 'Show' });
+  const before = await fullWidthGeometry(show);
+  await show.click();
+  await section.getByRole('option', { name: longest }).click();
+  await expect(show).toHaveText(longest);
+  const after = await fullWidthGeometry(show);
+  expect(Math.abs(after.box.width - before.box.width)).toBeLessThan(0.5);
+  expect(after.textOverflow).toBe('ellipsis');
+  // The label is cut, not merely allowed to be: it overflows its box.
+  expect(after.textScrollWidth).toBeGreaterThan(after.textClientWidth);
+  expect(after.textRight).toBeLessThanOrEqual(after.contentEnd + 0.5);
+  expect(Math.abs(after.chevronEnd - after.contentEnd)).toBeLessThan(1);
+
+  // Opened again, the chosen long option wraps inside the trigger's width.
+  await show.click();
+  const list = section.getByRole('listbox', { name: 'Show' });
+  const listBox = (await list.boundingBox())!;
+  expect(listBox.width).toBeLessThanOrEqual(after.box.width + 0.5);
+  const oneLine = (await section
+    .getByRole('option', { name: 'Nests' })
+    .boundingBox())!.height;
+  const wrapped = (await section
+    .getByRole('option', { name: longest })
+    .boundingBox())!.height;
+  expect(wrapped).toBeGreaterThan(oneLine + 1);
+  await page.screenshot({
+    path: testInfo.outputPath('select-full-wrapped.png'),
+  });
+  await page.keyboard.press('Escape');
+});
+
+test('Select width full wraps a long word in its list instead of scrolling it sideways', async ({
+  page,
+}, testInfo) => {
+  await page.goto('/#select');
+  if (testInfo.project.name === 'forced-colors') {
+    await page.emulateMedia({ forcedColors: 'active' });
+  }
+  const section = page.locator('#select');
+  const trigger = section.getByRole('combobox', { name: 'Cell habitat' });
+  await trigger.scrollIntoViewIfNeeded();
+  await trigger.click();
+  const list = section.getByRole('listbox', { name: 'Cell habitat' });
+  const word = 'Wattenmeernationalparkschutzgebietsvogelbestandserfassung';
+  const option = section.getByRole('option', { name: word });
+  await expect(option).toBeVisible();
+  // One word longer than the column: it breaks across lines in the option.
+  const oneLine = (await section
+    .getByRole('option', { name: 'Forest' })
+    .boundingBox())!.height;
+  expect((await option.boundingBox())!.height).toBeGreaterThan(oneLine + 1);
+  const overflow = await list.evaluate((node) => ({
+    client: node.clientWidth,
+    scroll: node.scrollWidth,
+  }));
+  expect(overflow.scroll).toBeLessThanOrEqual(overflow.client);
+  const listBox = (await list.boundingBox())!;
+  const triggerBox = (await trigger.boundingBox())!;
+  expect(Math.abs(listBox.width - triggerBox.width)).toBeLessThan(0.5);
+  await page.screenshot({
+    path: testInfo.outputPath('select-full-long-word.png'),
+  });
+});
+
+test('Select width full in an Inline takes the space a Button beside it leaves', async ({
+  page,
+}, testInfo) => {
+  await page.goto('/#select');
+  if (testInfo.project.name === 'forced-colors') {
+    await page.emulateMedia({ forcedColors: 'active' });
+  }
+  const section = page.locator('#select');
+  const trigger = section.getByRole('combobox', { name: 'Sighting filter' });
+  const button = section.getByRole('button', { name: 'Log a new sighting' });
+  await trigger.scrollIntoViewIfNeeded();
+  const row = trigger.locator(
+    "xpath=ancestor::div[contains(concat(' ', @class, ' '), ' sw-inline ')][1]",
+  );
+  const measure = await row.evaluate((node) => {
+    const field = node.querySelector('.sw-select-full')!;
+    const press = node.querySelector('button:not([role])')!;
+    const range = document.createRange();
+    range.selectNodeContents(press);
+    const lineTops = new Set(
+      [...range.getClientRects()].map((rect) => Math.round(rect.top)),
+    );
+    return {
+      buttonLines: lineTops.size,
+      buttonWidth: press.getBoundingClientRect().width,
+      fieldWidth: field.getBoundingClientRect().width,
+      gap: Number.parseFloat(getComputedStyle(node).columnGap),
+      rowWidth: node.getBoundingClientRect().width,
+    };
+  });
+  // A width: 100% field squeezed the button until its label wrapped.
+  expect(measure.buttonLines).toBe(1);
+  await expect(button).toBeVisible();
+  // The field takes exactly what the button and the gap leave.
+  expect(
+    Math.abs(
+      measure.fieldWidth + measure.gap + measure.buttonWidth - measure.rowWidth,
+    ),
+  ).toBeLessThan(1);
+  const triggerBox = (await trigger.boundingBox())!;
+  expect(Math.abs(triggerBox.width - measure.fieldWidth)).toBeLessThan(0.5);
+  await row.screenshot({ path: testInfo.outputPath('select-full-inline.png') });
 });

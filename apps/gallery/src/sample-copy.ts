@@ -42,6 +42,13 @@ export const sampleWatchRows = [
   },
 ] as const;
 
+/** Habitats in Arabic, for a right-to-left full-width select. */
+export const sampleHabitatsArabic = [
+  { value: 'forest', label: 'الغابة' },
+  { value: 'savanna', label: 'السافانا' },
+  { value: 'ocean', label: 'المحيط' },
+] as const;
+
 /** The same collars in Arabic, for a right-to-left table. */
 export const sampleCollarRowsArabic = [
   { id: 'c-104', animal: 'ذئب رمادي', habitat: 'التايغا' },

@@ -1,4 +1,5 @@
 import {
+  Box,
   Button,
   Card,
   Field,
@@ -11,12 +12,30 @@ import {
 import { useState } from 'react';
 
 import { Section } from '../layout/Section.js';
-import { sampleHabitats } from '../sample-copy.js';
+import { sampleHabitats, sampleHabitatsArabic } from '../sample-copy.js';
 
 const surveyReasons = [
   { value: 'nest', label: 'Nest check' },
   { value: 'migration', label: 'Migration count across the wetland reserve' },
   { value: 'tagging', label: 'Tagging' },
+] as const;
+
+const sightingFilters = [
+  { value: 'all', label: 'All sightings' },
+  { value: 'nests', label: 'Nests' },
+  {
+    value: 'migration',
+    label: 'Migration counts across the wetland reserve and the tidal flats',
+  },
+] as const;
+
+/** One long compound word, which must wrap inside a narrow open list. */
+const cellHabitats = [
+  ...sampleHabitats,
+  {
+    value: 'wadden',
+    label: 'Wattenmeernationalparkschutzgebietsvogelbestandserfassung',
+  },
 ] as const;
 
 export function SelectSection() {
@@ -27,11 +46,15 @@ export function SelectSection() {
   const [visit, setVisit] = useState('');
   const [visitError, setVisitError] = useState<string | undefined>();
   const [plot, setPlot] = useState('savanna');
+  const [shown, setShown] = useState('all');
+  const [cellHabitat, setCellHabitat] = useState('forest');
+  const [arabicHabitat, setArabicHabitat] = useState('forest');
+  const [toolbarFilter, setToolbarFilter] = useState('all');
 
   return (
     <Section
       id="select"
-      purpose="Select is a labeled listbox menu painted with the canvas. Field wraps a native OS picker; that open list cannot be themed. action is a last command in the list; it does not become the value. Its label row matches Field's, so a Select beside a text field lines up."
+      purpose="Select is a labeled listbox menu painted with the canvas. Field wraps a native OS picker; that open list cannot be themed. action is a last command in the list; it does not become the value. width full fills the container instead of sizing to the longest option. Its label row matches Field's, so a Select beside a text field lines up."
       title="Select"
       usage={`<Select
   label="Watch range"
@@ -49,6 +72,14 @@ export function SelectSection() {
   value={reason}
   onChange={setReason}
   options={reasons}
+/>
+
+<Select
+  label="Show"
+  width="full"
+  value={filter}
+  onChange={setFilter}
+  options={filters}
 />`}
     >
       <Stack gap={3}>
@@ -94,6 +125,58 @@ export function SelectSection() {
           keeps its width when the value changes. The open list is glass, not
           the operating system menu. action is the last option and stays a
           command.
+        </Text>
+        <Grid columns={3} columnsBelow={{ md: 1 }} gap={3}>
+          <Stack gap={3}>
+            <Select
+              label="Show"
+              onChange={setShown}
+              options={sightingFilters}
+              value={shown}
+              width="full"
+            />
+            <Card padding={4}>
+              <Text>Red fox · Forest · 42 sightings</Text>
+            </Card>
+          </Stack>
+          <Select
+            label="Cell habitat"
+            onChange={setCellHabitat}
+            options={cellHabitats}
+            value={cellHabitat}
+            width="full"
+          />
+          <Box dir="rtl" lang="ar">
+            <Select
+              label="الموطن"
+              onChange={setArabicHabitat}
+              options={sampleHabitatsArabic}
+              value={arabicHabitat}
+              width="full"
+            />
+          </Box>
+        </Grid>
+        <Inline gap={2}>
+          <Select
+            label="Sighting filter"
+            labelVisuallyHidden
+            onChange={setToolbarFilter}
+            options={sightingFilters}
+            size="xs"
+            value={toolbarFilter}
+            width="full"
+          />
+          <Button onPress={() => undefined} size="sm" variant="secondary">
+            Log a new sighting
+          </Button>
+        </Inline>
+        <Text color="muted" variant="caption">
+          width full fills the column, in a Stack, a Grid cell or right to left,
+          and the open list is the trigger's width. A label longer than the
+          column ellipsizes and the chevron stays at the end; a long word wraps
+          in the open list. On a phone each column is the full width, beside
+          full-width cards. In an Inline row it takes the space the button
+          leaves.
         </Text>
         <Card padding={4}>
           <Select

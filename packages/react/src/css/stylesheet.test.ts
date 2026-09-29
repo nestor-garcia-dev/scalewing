@@ -304,6 +304,28 @@ describe('generated CSS', () => {
     expect(selectCss).toContain(
       '.sw-select-invalid .sw-select-trigger {\n  border-color: var(--sw-color-danger);\n}',
     );
+    // width="full" (Teisoro F-007-S05): the field and trigger fill the
+    // container, after the content rule so it wins, and the open list is the
+    // trigger's width.
+    expect(selectCss).toContain('.sw-select-full {\n  width: 100%;\n}');
+    expect(selectCss.indexOf('.sw-select-full {')).toBeGreaterThan(
+      selectCss.indexOf('.sw-select {'),
+    );
+    expect(selectCss).toContain(
+      '.sw-select-full .sw-select-trigger {\n  width: 100%;\n}',
+    );
+    expect(selectCss).toContain(
+      '.sw-select-full .sw-select-list {\n  width: 100%;\n}',
+    );
+    // In an Inline row it takes the leftover space, not the whole row.
+    expect(selectCss).toContain(
+      '.sw-inline > .sw-select-full {\n  flex: 1 1 0;\n  min-width: 0;\n}',
+    );
+    // A long word wraps instead of scrolling the list sideways.
+    expect(selectCss).toContain(
+      '.sw-select-full .sw-select-option {\n  overflow-wrap: anywhere;\n}',
+    );
+    expect(catalog).toContain('sw-select-full');
     expect(css).toContain('.sw-select-list');
     expect(catalog).toContain('sw-select');
     expect(catalog).toContain('sw-select-list');

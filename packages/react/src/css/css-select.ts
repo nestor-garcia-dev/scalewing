@@ -12,6 +12,25 @@ export function cssSelectClasses(): string {
   width: max-content;
 }
 
+/*
+ * width="full": the field and its trigger fill the container's inline size.
+ * The value still takes the free space and ellipsizes, and the chevron stays
+ * last, at the inline end. In an Inline row the field takes only the space
+ * its siblings leave, so a Button beside it keeps its label on one line.
+ */
+.sw-select-full {
+  width: 100%;
+}
+
+.sw-inline > .sw-select-full {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.sw-select-full .sw-select-trigger {
+  width: 100%;
+}
+
 .sw-select-control {
   position: relative;
 }
@@ -128,6 +147,15 @@ export function cssSelectClasses(): string {
   ${zIndex('popup')}
 }
 
+/*
+ * A full-width field's open list is exactly the trigger's width (min-width
+ * already beats the dialog-max cap), so it never runs past a phone's edge;
+ * a long option wraps inside it, even a single long word.
+ */
+.sw-select-full .sw-select-list {
+  width: 100%;
+}
+
 .sw-select-option {
   border-radius: var(--sw-radius-sm);
   box-sizing: border-box;
@@ -136,6 +164,10 @@ export function cssSelectClasses(): string {
   align-items: center;
   min-height: var(--sw-control-xs-min-height);
   padding-inline: var(--sw-control-xs-padding-inline);
+}
+
+.sw-select-full .sw-select-option {
+  overflow-wrap: anywhere;
 }
 
 .sw-select-option[aria-selected='true'] {
@@ -163,6 +195,7 @@ export function selectClassCatalog(): string[] {
   return [
     'sw-select',
     'sw-select-xs',
+    'sw-select-full',
     'sw-select-control',
     'sw-select-trigger',
     'sw-select-value',
