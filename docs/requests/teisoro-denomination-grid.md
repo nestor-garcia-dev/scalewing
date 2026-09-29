@@ -75,3 +75,18 @@ Rejected alternatives:
 - Documenting that the total is dropped. A prop that is silently ignored is a trap; showing it is what every consumer that passes it wants.
 
 Evidence: `denomination-grid.test.tsx` ("shows a single row's total, with its label, even without an icon"); `apps/gallery/e2e/denomination-grid.spec.ts` on desktop-en, mobile-es and forced-colors: the gallery's one-row "Tags fitted today" tiles show "Fitted" and "53 g".
+
+## Follow-up request (2026-09-28, Teisoro F-007-S05 task 1350): a lone tiles row names itself once
+
+Status: implemented on `claude/services-rereview-fixes` for Teisoro F-007-S05 task 1350; pull request pending review.
+Source: Teisoro UX re-review `services-day-open-and-close.md`, finding SDAY-31 (polish). Open 03's accessibility tree read `heading "Expected from last close"`, then `group "Expected from last close"`, then `region "Expected from last close"`; close 08 read `group "Dropped denominations"` › `region "Dropped denominations"`, and so did every `BillTiles`. Each tiles row was a `section aria-label={row.label}`, a region, even a lone row whose label line is hidden because the grid's label already names it.
+
+Behavior: a row names itself (`aria-label`, so a region) unless it is a lone row without its label line (no icon, no `total`) whose `label` is the grid's own `label`. That row renders its `section` without a name (a generic element, not a landmark), so the grid's `group` is its only name. A lone plain row with different words keeps its region: its label line is hidden, so the region's name is the only place those words are said (code review of PR #75; the first version dropped every lone plain row's name). No API change; `label` stays required and still names the group, so consumers that pass a label are unaffected. The heading above the grid is the consumer's: Teisoro can keep it, since a heading and the group it introduces is the expected pattern, or pass the heading's words as `label` only.
+
+Rejected alternatives:
+
+- An `aria-labelledby` prop pointing the group at the consumer's heading. It would still name the group with the heading's words, so the heading and the group would still both be heard; it adds API without removing a name.
+- Dropping the group role on a lone-row grid. The group is what `label` names and what a consumer's tests find; the region was the duplicate.
+- Rendering every row without a region. Several rows need their own names ("Expected", "Counted") to tell them apart.
+
+Evidence: `denomination-grid.test.tsx` ("names a lone plain row only by the grid, not by a second region": with the grid's label, no `region` role, no `aria-label`, tiles still render; "keeps a lone plain row's own name when it differs from the grid's": a region named "Expected" inside the "Drawer count" group), with the existing lone-row-with-total and several-rows tests still finding their regions; `apps/gallery/e2e/denomination-grid.spec.ts` on desktop-en, mobile-es and forced-colors: the gallery's lone plain "Tags in the field kit" (its row now labelled with the grid's words, Teisoro's pattern) has no region and none in its ARIA snapshot, while "Tags fitted today" (a lone row with a total) and "Kit audit" (several rows) keep theirs.
