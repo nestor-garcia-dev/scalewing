@@ -17,6 +17,11 @@ release workflow completed successfully.
 
 ## Next action
 
+Teisoro F-007-S05 task 1355: `Select` `width="full"` (`teisoro-select.md`,
+2026-09-29 follow-up), so a filter fills a phone row beside full-width
+cards. Implemented on `claude/select-width-full`; next: review and merge,
+then release `@scalewing/react` (minor) and Teisoro pins it.
+
 Teisoro Services re-review fixes (F-007-S05 task 1350, the re-review
 sections of `services-*.md`), merged in #75 and released as
 `@scalewing/react` 1.13.0: a

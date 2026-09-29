@@ -78,6 +78,18 @@ A disabled native text control (`<input>`, `<select>` or `<textarea>` on the can
 />
 ```
 
+`Select` `width` is `'content'` (the default: the field is as wide as its longest option, as above) or `'full'`: the field and its trigger fill the container's inline size in a `Stack`, a `Grid` cell or any narrow column, such as a filter above full-width cards on a phone. In an `Inline` row it takes the space its siblings leave, so a `Button` beside it keeps its label on one line. The value still takes the free space and ellipsizes past it, the chevron stays at the inline end (the left, right to left), and the open list is exactly the trigger's width, so it never runs past the screen's edge; a long option wraps inside it, even a single long word.
+
+```tsx
+<Select
+  label="Show"
+  onChange={setFilter}
+  options={filters}
+  value={filter}
+  width="full"
+/>
+```
+
 `Accordion` is a native `<details>` disclosure controlled by `open` and `onOpenChange`. A token chevron at the end of the header replaces the browser triangle and turns when it opens (it holds still under reduced motion). `subtitle` adds one muted caption line under the title, such as a summary of what the section holds; it wraps rather than truncating and is read after the title. `size="sm"` is a quieter disclosure nested inside other content: a label-size title, tighter padding, smaller corners and a header that is an `sm` control (at least 32px).
 
 ```tsx

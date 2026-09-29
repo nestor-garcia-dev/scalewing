@@ -180,6 +180,50 @@ describe('Select', () => {
     );
   });
 
+  it('fills its container with width full and keeps content width by default', () => {
+    const { rerender } = render(
+      <Select
+        label="Show"
+        onChange={vi.fn()}
+        options={habitats}
+        value="forest"
+      />,
+    );
+    const trigger = screen.getByRole('combobox', { name: 'Show' });
+    const root = trigger.closest('.sw-select');
+    // The default is today's field, sized to its longest option.
+    expect(root?.className).toBe('sw-select');
+    rerender(
+      <Select
+        label="Show"
+        onChange={vi.fn()}
+        options={habitats}
+        size="xs"
+        value="forest"
+        width="full"
+      />,
+    );
+    // The same field and trigger, marked full (Teisoro F-007-S05).
+    expect(trigger.closest('.sw-select')).toBe(root);
+    expect(root?.className).toBe('sw-select sw-select-xs sw-select-full');
+    expect(trigger.className).toBe('sw-select-trigger');
+    expect(trigger.textContent).toBe('Forest');
+    fireEvent.click(trigger);
+    // The open list is inside the full field, so the full rule sizes it.
+    const list = screen.getByRole('listbox', { name: 'Show' });
+    expect(list.closest('.sw-select-full')).toBe(root);
+    rerender(
+      <Select
+        label="Show"
+        onChange={vi.fn()}
+        options={habitats}
+        value="forest"
+        width="content"
+      />,
+    );
+    expect(root?.className).toBe('sw-select');
+  });
+
   it('opens a labeled glass listbox and commits a choice', () => {
     const onChange = vi.fn();
     render(

@@ -107,6 +107,7 @@ export type {
   SelectAction,
   SelectOption,
   SelectProps,
+  SelectWidth,
 } from './components/Select.js';
 export {
   Stack,

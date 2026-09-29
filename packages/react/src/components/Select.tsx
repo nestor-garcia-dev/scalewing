@@ -14,6 +14,13 @@ import { Stack } from './Stack.js';
 
 export type { SelectOption };
 
+/**
+ * `content` (the default) sizes the field to its longest option, as a native
+ * select is; `full` fills the container's inline size (in an Inline row, the
+ * space its siblings leave).
+ */
+export type SelectWidth = 'content' | 'full';
+
 export type SelectAction = {
   label: string;
   onPress: () => void;
@@ -36,6 +43,12 @@ export type SelectProps = {
   required?: boolean;
   /** A validation message under the control, wired as Field's error is. */
   error?: string;
+  /**
+   * `full` makes the field, its trigger and its open list fill the
+   * container's inline size; the chosen label still ellipsizes past it.
+   * Default `content`.
+   */
+  width?: SelectWidth;
 };
 
 export function Select({
@@ -49,6 +62,7 @@ export function Select({
   placeholder,
   required = false,
   error,
+  width = 'content',
 }: SelectProps) {
   if (placeholder !== undefined && !placeholder.trim())
     throw new RangeError('placeholder must not be empty');
@@ -78,6 +92,7 @@ export function Select({
       className={cx(
         'sw-select',
         size === 'xs' && 'sw-select-xs',
+        width === 'full' && 'sw-select-full',
         error && 'sw-select-invalid',
       )}
     >
