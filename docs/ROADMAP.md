@@ -29,7 +29,8 @@ moves no column (NSF-12, `teisoro-table.md` follow-up); a
 `teisoro-date-field.md` follow-up); and a `RadioGroup` option `icon`
 (CHK-13, `teisoro-radio-group.md` follow-up). Found while verifying:
 a pressed toggle `Button`'s label readable in forced colors, a 1.12.0
-regression (`teisoro-button.md` follow-up). Next: pull request, review and merge, then
+regression (`teisoro-button.md` follow-up); and the `Select` label row
+matching `Field`'s (`teisoro-select.md` follow-up). Next: pull request, review and merge, then
 release `@scalewing/react` and Teisoro pins it.
 
 Teisoro Services UX fixes (F-007-S05 task 1335, UX reviews

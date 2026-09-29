@@ -2,6 +2,7 @@ import {
   Button,
   Card,
   Field,
+  Grid,
   Inline,
   Select,
   Stack,
@@ -25,11 +26,12 @@ export function SelectSection() {
   const [reason, setReason] = useState('nest');
   const [visit, setVisit] = useState('');
   const [visitError, setVisitError] = useState<string | undefined>();
+  const [plot, setPlot] = useState('savanna');
 
   return (
     <Section
       id="select"
-      purpose="Select is a labeled listbox menu painted with the canvas. Field wraps a native OS picker; that open list cannot be themed. action is a last command in the list; it does not become the value."
+      purpose="Select is a labeled listbox menu painted with the canvas. Field wraps a native OS picker; that open list cannot be themed. action is a last command in the list; it does not become the value. Its label row matches Field's, so a Select beside a text field lines up."
       title="Select"
       usage={`<Select
   label="Watch range"
@@ -50,6 +52,18 @@ export function SelectSection() {
 />`}
     >
       <Stack gap={3}>
+        <Grid columns={2} gap={3}>
+          <Select
+            label="Survey plot"
+            onChange={setPlot}
+            options={sampleHabitats}
+            required
+            value={plot}
+          />
+          <Field label="Plot size" required suffix="ha">
+            <input defaultValue="12" inputMode="decimal" name="plot-size" />
+          </Field>
+        </Grid>
         <Select
           label="Watch range"
           onChange={setRange}

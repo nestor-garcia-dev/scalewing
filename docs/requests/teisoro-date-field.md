@@ -65,7 +65,7 @@ Cause: both use a `space-1` gap. `Field`'s `<label>` keeps the canvas's body typ
 
 Behavior (no API change): `DateField` draws its label with `Field`'s own markup, a new internal `FieldLabelText` (the label words as a `Text` label span, then the `aria-hidden` required mark) that `Field` now uses too, inside its `.sw-date-field-label` element, which no longer sets its own font size, weight or line height. The two label rows are the same height, so a `DateField` and a `Field` side by side line up at the label and at the control. The label's text, the entry's accessible name and the calendar button's description are unchanged.
 
-Not changed here: `Select`'s label row is also 20 px (measured in the gallery), so a `Select` beside a `Field` sits 5 px higher too. No review has filed it; it can reuse `FieldLabelText` when one does.
+`Select`'s label row was also 20 px (measured in the gallery), so a `Select` beside a `Field` sat 5 px higher too; it now uses `FieldLabelText` as well (`teisoro-select.md`, 2026-09-28 label row follow-up).
 
 Rejected alternatives:
 

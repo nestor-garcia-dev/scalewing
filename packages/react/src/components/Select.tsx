@@ -6,11 +6,11 @@ import { cx } from '../class-names.js';
 import { selectedSelectIndex, type SelectOption } from '../select-list.js';
 import { type FieldSize } from './Field.js';
 import { FieldErrorRegion } from './FieldErrorRegion.js';
+import { FieldLabelText } from './FieldLabelText.js';
 import { SelectListbox } from './select/SelectListbox.js';
 import { SelectValue } from './select/SelectValue.js';
 import { useSelectList } from './select/use-select-list.js';
 import { Stack } from './Stack.js';
-import { Text } from './Text.js';
 
 export type { SelectOption };
 
@@ -82,21 +82,17 @@ export function Select({
       )}
     >
       <Stack gap={labelVisuallyHidden ? 0 : 1}>
-        <Text
-          as="label"
-          className={labelVisuallyHidden ? 'sw-sr-only' : undefined}
-          htmlFor={triggerId}
-          id={labelId}
-          variant={size === 'xs' ? 'caption' : 'label'}
-        >
-          {label}
-          {required ? (
-            <span aria-hidden="true" className="sw-field-required">
-              {' '}
-              *
-            </span>
-          ) : null}
-        </Text>
+        {/* Field's label words and mark inside a label that keeps the
+            canvas type, so the label row and its gap to the trigger match a
+            Field beside it (the label row was 5 px shorter). */}
+        <label htmlFor={triggerId} id={labelId}>
+          <FieldLabelText
+            label={label}
+            required={required}
+            size={size}
+            visuallyHidden={labelVisuallyHidden}
+          />
+        </label>
         <div className="sw-select-control">
           <button
             aria-activedescendant={
