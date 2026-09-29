@@ -225,3 +225,40 @@ test('a disabled DateField entry looks locked as a disabled Field does', async (
   });
   if (!forced) expect(await textContrast(archived)).toBeGreaterThanOrEqual(4.5);
 });
+
+test('a DateField beside a Field lines up its label and control', async ({
+  page,
+}, testInfo) => {
+  await page.goto('/#date-field');
+  const section = page.locator('#date-field');
+  const date = section.getByRole('textbox', { name: 'Survey start' });
+  const observers = section.getByRole('textbox', { name: 'Observers' });
+  const top = async (locator: typeof date) =>
+    (await locator.boundingBox())?.y ?? Number.NaN;
+  const labelTop = (name: string) =>
+    section
+      .locator('label')
+      .filter({ hasText: name })
+      .evaluate((label) => {
+        const range = document.createRange();
+        range.selectNodeContents(label);
+        return range.getBoundingClientRect().y;
+      });
+  // Teisoro NSF-35: the date's entry sat 5 px above the fee field's.
+  expect(Math.abs((await top(date)) - (await top(observers)))).toBeLessThan(
+    0.5,
+  );
+  expect(
+    Math.abs((await labelTop('Survey start')) - (await labelTop('Observers'))),
+  ).toBeLessThan(0.5);
+  const height = (name: string) =>
+    section
+      .locator('label')
+      .filter({ hasText: name })
+      .evaluate((label) => label.getBoundingClientRect().height);
+  expect(await height('Survey start')).toBe(await height('Observers'));
+  await date.scrollIntoViewIfNeeded();
+  await section.screenshot({
+    path: testInfo.outputPath('date-field-beside-field.png'),
+  });
+});

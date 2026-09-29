@@ -11,6 +11,7 @@ import { dateEntryPattern, dateEntryPlaceholder } from '../date-entry.js';
 import { dateEntryValidity } from '../date-entry-validity.js';
 import { assertDateBounds, isOutsideDateRange } from '../date-only.js';
 import { FieldErrorRegion } from './FieldErrorRegion.js';
+import { FieldLabelText } from './FieldLabelText.js';
 import { CalendarDialog } from './date-field/CalendarDialog.js';
 import { DateFieldGlyph } from './date-field/DateFieldGlyph.js';
 import { useCalendarPopup } from './date-field/use-calendar-popup.js';
@@ -100,16 +101,10 @@ export function DateField({
 
   return (
     <div className="sw-date-field" ref={rootRef}>
+      {/* Field's label words and mark, so the label row and its gap to the
+          entry match a Field beside it (Teisoro NSF-35). */}
       <label className="sw-date-field-label" htmlFor={inputId} id={labelId}>
-        {label}
-        {/* The same mark as Field's; the input's own required state is what
-            assistive technology reads. */}
-        {required ? (
-          <span aria-hidden="true" className="sw-field-required">
-            {' '}
-            *
-          </span>
-        ) : null}
+        <FieldLabelText label={label} required={required} />
       </label>
       <div className="sw-date-field-control" ref={controlRef}>
         <input

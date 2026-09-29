@@ -9,8 +9,8 @@ import {
   FieldAdornment,
 } from './FieldAdornment.js';
 import { FieldErrorRegion } from './FieldErrorRegion.js';
+import { FieldLabelText } from './FieldLabelText.js';
 import { Stack } from './Stack.js';
-import { Text } from './Text.js';
 
 export type FieldSize = 'xs' | 'md';
 
@@ -67,19 +67,12 @@ export function Field({
     .filter(Boolean)
     .join(' ');
   const labelText = (
-    <Text
-      as="span"
-      className={labelVisuallyHidden ? 'sw-sr-only' : undefined}
-      variant={size === 'xs' ? 'caption' : 'label'}
-    >
-      {label}
-      {required ? (
-        <span aria-hidden="true" className="sw-field-required">
-          {' '}
-          *
-        </span>
-      ) : null}
-    </Text>
+    <FieldLabelText
+      label={label}
+      required={required}
+      size={size}
+      visuallyHidden={labelVisuallyHidden}
+    />
   );
 
   if (

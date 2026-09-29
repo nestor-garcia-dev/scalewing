@@ -27,12 +27,11 @@ function fieldRules(): string {
   width: max-content;
 }
 
+/* The label inherits the canvas's body type, as Field's does; the label
+   words inside it are a Text label span. The same line box gives the same
+   gap to the entry as a Field beside it. */
 .sw-date-field-label {
   color: var(--sw-color-text);
-  font-family: var(--sw-font-sans);
-  font-size: ${label.fontSize}px;
-  font-weight: ${label.fontWeight};
-  line-height: ${label.lineHeight}px;
 }
 
 .sw-date-field-control {
