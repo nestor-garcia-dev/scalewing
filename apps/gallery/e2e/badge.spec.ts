@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test';
 
-import { textContrast } from './contrast.js';
+import { textContrast, tokenColor } from './contrast.js';
 
 test('Badge paints the warning tone apart from success and danger', async ({
   page,
@@ -40,23 +40,18 @@ test('a Badge inside a filled button sits on the surface and keeps its contrast'
     expect(await textContrast(badge)).toBeGreaterThanOrEqual(4.5);
   }
   if (testInfo.project.name !== 'forced-colors') {
-    const badge = await marsh.getByText('2 nests').evaluate((node) => {
-      const style = getComputedStyle(node);
-      const probe = document.createElement('span');
-      node.closest('[data-theme]')?.append(probe);
-      probe.style.color = 'var(--sw-color-text)';
-      const text = getComputedStyle(probe).color;
-      probe.style.color = 'var(--sw-color-warning)';
-      const warning = getComputedStyle(probe).color;
-      probe.remove();
-      return {
-        background: style.backgroundColor,
-        border: style.borderTopColor,
-        color: style.color,
-        text,
-        warning,
-      };
-    });
+    const badge = {
+      ...(await marsh.getByText('2 nests').evaluate((node) => {
+        const style = getComputedStyle(node);
+        return {
+          background: style.backgroundColor,
+          border: style.borderTopColor,
+          color: style.color,
+        };
+      })),
+      text: await tokenColor(page, 'text'),
+      warning: await tokenColor(page, 'warning'),
+    };
     expect(badge.background).toMatch(/^rgb\(/);
     // Words in the text color, the tone on the border (review of PR #73:
     // some palettes' tones are under 4.5:1 as text on the surface).
