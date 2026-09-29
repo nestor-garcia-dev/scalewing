@@ -1,5 +1,6 @@
 import { Card, DenominationGrid, Stack, Text } from '@scalewing/react';
 
+import { Glyph } from '../glyph.js';
 import { Section } from '../layout/Section.js';
 
 const tagColumns = [
@@ -32,27 +33,14 @@ function ArrowGlyph({ direction }: { direction: 'in' | 'out' | 'sum' }) {
       : direction === 'out'
         ? 'M8 13V5m0 0-3 3m3-3 3 3M3 3h10'
         : 'M4 3h8l-5 5 5 5H4';
-  return (
-    <svg
-      fill="none"
-      height="16"
-      stroke="currentColor"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeWidth="1.75"
-      viewBox="0 0 16 16"
-      width="16"
-    >
-      <path d={path} />
-    </svg>
-  );
+  return <Glyph path={path} />;
 }
 
 export function DenominationGridSection() {
   return (
     <Section
       id="denomination-grid"
-      purpose="DenominationGrid shows counts per unit across a fixed set of columns: the strip layout is a captioned table with a toned row label, muted zeros, signed deltas, and an optional total; the tiles layout stacks label, count, and a consumer-formatted subtotal per column. Icons are consumer slots."
+      purpose="DenominationGrid shows counts per unit across a fixed set of columns: the strip layout is a captioned table with a toned row label, muted zeros, signed deltas, and an optional total; the tiles layout stacks label, count, and a consumer-formatted subtotal per column. A lone tiles row without an icon or total whose label repeats the grid's is named only by the grid; any other row names its own region. Icons are consumer slots."
       title="DenominationGrid"
       usage={`<DenominationGrid
   label="Tag movement by size"
@@ -173,7 +161,13 @@ export function DenominationGridSection() {
               columns={tagColumns}
               label="Tags in the field kit"
               layout="tiles"
-              rows={[{ id: 'kit', label: 'Kit', cells: [40, 25, 0, 12, 6, 2] }]}
+              rows={[
+                {
+                  id: 'kit',
+                  label: 'Tags in the field kit',
+                  cells: [40, 25, 0, 12, 6, 2],
+                },
+              ]}
               subtotal={(count, column) =>
                 `${count * tagWeightGrams[column.key as keyof typeof tagWeightGrams]} g`
               }

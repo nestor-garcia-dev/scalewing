@@ -55,3 +55,21 @@ Consumer note: the label's text content now ends in " *" when required, as `Fiel
 Rejected alternative: a separate DateField-only mark class. The mark is one convention across fields, so it reuses `sw-field-required`.
 
 Evidence: `date-field.test.tsx` (the mark, its class and `aria-hidden`, inside the entry's label; the button still described by "Sighting date"); `apps/gallery/e2e/date-field.spec.ts` "a required DateField marks its label as Field does" on desktop-en, mobile-es and forced-colors: the gallery's required "Hatch date" shows a visible `*` in a color apart from the label, the entry's accessible name is "Hatch date", and the optional "Tagging date" has no mark.
+
+## Follow-up request (2026-09-28, Teisoro F-007-S05 task 1350): the label row matches Field's
+
+Status: implemented on `claude/services-rereview-fixes` for Teisoro F-007-S05 task 1350; pull request pending review.
+Source: Teisoro UX re-review `services-nsf.md`, finding NSF-35 (polish): on the NSF record form "Date reported *" and "NSF fee *" sit side by side, but the date's box top is at y 147 and the fee's at 152 (labels at 127 and 129). "Give `DateField` the same label-to-control gap as `Field`, so a date and a text field side by side line up."
+
+Cause: both use a `space-1` gap. `Field`'s `<label>` keeps the canvas's body type (17/25 px) around a label-size `Text` span (15/20 px), so its line box is 25 px tall; `DateField`'s `<label>` set the label type on itself, so its line box was 20 px. The entry therefore sat 5 px higher (measured in the gallery: label rows 25 and 20 px, controls 29 and 24 px below the field's top).
+
+Behavior (no API change): `DateField` draws its label with `Field`'s own markup, a new internal `FieldLabelText` (the label words as a `Text` label span, then the `aria-hidden` required mark) that `Field` now uses too, inside its `.sw-date-field-label` element, which no longer sets its own font size, weight or line height. The two label rows are the same height, so a `DateField` and a `Field` side by side line up at the label and at the control. The label's text, the entry's accessible name and the calendar button's description are unchanged.
+
+`Select`'s label row was also 20 px (measured in the gallery), so a `Select` beside a `Field` sat 5 px higher too; it now uses `FieldLabelText` as well (`teisoro-select.md`, 2026-09-28 label row follow-up).
+
+Rejected alternatives:
+
+- Setting the DateField label's `line-height` to the body's. It matches only while the label and body fonts keep their current sizes and baselines; sharing the markup keeps them equal by construction.
+- Shrinking `Field`'s label row to 20 px instead. Every `Field` in every consumer would move by 5 px.
+
+Evidence: `date-field.test.tsx` ("DateField label row": the DateField label's markup equals a required `Field`'s with its own words, and the `.sw-date-field-label` rule sets no font size, weight or line height); `field.test.tsx` and the existing required-mark tests unchanged; `apps/gallery/e2e/date-field.spec.ts` "a DateField beside a Field lines up its label and control" on desktop-en, mobile-es and forced-colors, with the gallery's new "Survey start" date beside an "Observers" field in a two-column grid: the entries' tops and the label text tops are within 0.5 px, and the label rows are the same height.

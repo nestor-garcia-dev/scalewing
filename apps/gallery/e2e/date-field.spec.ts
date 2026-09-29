@@ -1,5 +1,7 @@
 import { expect, test, type Locator, type Page } from '@playwright/test';
 
+import { textContrast } from './contrast.js';
+
 function field(section: Locator, label: string) {
   return section.locator('.sw-date-field', {
     has: section.page().getByRole('textbox', { name: label, exact: true }),
@@ -195,5 +197,68 @@ test('a required DateField marks its label as Field does', async ({
   }
   await label.screenshot({
     path: testInfo.outputPath('date-field-required.png'),
+  });
+});
+
+test('a disabled DateField entry looks locked as a disabled Field does', async ({
+  page,
+}, testInfo) => {
+  const forced = testInfo.project.name === 'forced-colors';
+  if (forced) await page.emulateMedia({ forcedColors: 'active' });
+  await page.goto('/#date-field');
+  const section = page.locator('#date-field');
+  const archived = section.getByRole('textbox', { name: 'Archived date' });
+  await expect(archived).toBeDisabled();
+  const look = await archived.evaluate((element) => {
+    const computed = getComputedStyle(element);
+    return {
+      borderStyle: computed.borderTopStyle,
+      cursor: computed.cursor,
+      opacity: computed.opacity,
+    };
+  });
+  // Teisoro DRW-17: the same locked look as every text control, not faded.
+  expect(look).toEqual({
+    borderStyle: 'dashed',
+    cursor: 'not-allowed',
+    opacity: '1',
+  });
+  if (!forced) expect(await textContrast(archived)).toBeGreaterThanOrEqual(4.5);
+});
+
+test('a DateField beside a Field lines up its label and control', async ({
+  page,
+}, testInfo) => {
+  await page.goto('/#date-field');
+  const section = page.locator('#date-field');
+  const date = section.getByRole('textbox', { name: 'Survey start' });
+  const observers = section.getByRole('textbox', { name: 'Observers' });
+  const top = async (locator: typeof date) =>
+    (await locator.boundingBox())?.y ?? Number.NaN;
+  const labelTop = (name: string) =>
+    section
+      .locator('label')
+      .filter({ hasText: name })
+      .evaluate((label) => {
+        const range = document.createRange();
+        range.selectNodeContents(label);
+        return range.getBoundingClientRect().y;
+      });
+  // Teisoro NSF-35: the date's entry sat 5 px above the fee field's.
+  expect(Math.abs((await top(date)) - (await top(observers)))).toBeLessThan(
+    0.5,
+  );
+  expect(
+    Math.abs((await labelTop('Survey start')) - (await labelTop('Observers'))),
+  ).toBeLessThan(0.5);
+  const height = (name: string) =>
+    section
+      .locator('label')
+      .filter({ hasText: name })
+      .evaluate((label) => label.getBoundingClientRect().height);
+  expect(await height('Survey start')).toBe(await height('Observers'));
+  await date.scrollIntoViewIfNeeded();
+  await section.screenshot({
+    path: testInfo.outputPath('date-field-beside-field.png'),
   });
 });

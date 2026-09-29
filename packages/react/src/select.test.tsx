@@ -1,6 +1,7 @@
 import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
+import { Field } from './components/Field.js';
 import { Select } from './components/Select.js';
 import { ThemeProvider } from './theme/ThemeProvider.js';
 import {
@@ -319,5 +320,36 @@ describe('Select', () => {
     fireEvent.keyDown(trigger, { key: 'Enter' });
     expect(onPress).toHaveBeenCalledOnce();
     expect(onChange).not.toHaveBeenCalled();
+  });
+});
+
+describe('Select label row', () => {
+  it("draws its label as Field's, so the two line up side by side", () => {
+    render(
+      <>
+        <Field label="Observers" required>
+          <input name="observers" />
+        </Field>
+        <Select
+          label="Survey habitat"
+          onChange={() => undefined}
+          options={habitats}
+          required
+          value="forest"
+        />
+      </>,
+    );
+    const fieldLabel = screen.getByText('Observers').closest('label')!;
+    const selectLabel = screen.getByText('Survey habitat').closest('label')!;
+    // The same words span and mark inside a label that keeps the canvas
+    // type, so both label rows are the same height (the Select's was 5 px
+    // shorter, as DateField's was in Teisoro NSF-35).
+    expect(selectLabel.innerHTML).toBe(
+      fieldLabel.innerHTML.replace('Observers', 'Survey habitat'),
+    );
+    expect(selectLabel.className).toBe('');
+    const trigger = screen.getByRole('combobox', { name: 'Survey habitat' });
+    expect(trigger.getAttribute('aria-labelledby')).toBe(selectLabel.id);
+    expect(selectLabel.htmlFor).toBe(trigger.id);
   });
 });

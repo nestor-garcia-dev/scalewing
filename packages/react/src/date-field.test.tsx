@@ -10,6 +10,8 @@ import { useState } from 'react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { DateField, type DateFieldProps } from './components/DateField.js';
+import { Field } from './components/Field.js';
+import { cssDateFieldClasses } from './css/css-date-field.js';
 
 beforeEach(() => {
   // Only Date is faked, so user-event timers still run. Today is 2024-03-20.
@@ -853,5 +855,43 @@ describe('DateField accessibility', () => {
     ).toBe('polite');
     for (const svg of document.querySelectorAll('svg'))
       expect(svg.getAttribute('aria-hidden')).toBe('true');
+  });
+});
+
+describe('DateField label row', () => {
+  it("draws its label as Field's, so the two line up side by side", () => {
+    render(
+      <>
+        <Field label="Observers" required>
+          <input name="observers" />
+        </Field>
+        <DateField
+          label="Survey start"
+          onChange={() => undefined}
+          required
+          value=""
+        />
+      </>,
+    );
+    const fieldLabel = screen.getByText('Observers').closest('label')!;
+    const dateLabel = screen.getByText('Survey start').closest('label')!;
+    // Teisoro NSF-35: the same words span and mark inside a label that
+    // keeps the canvas type, so both label rows are the same height.
+    expect(dateLabel.innerHTML).toBe(
+      fieldLabel.innerHTML.replace('Observers', 'Survey start'),
+    );
+    expect(dateLabel.className).toBe('sw-date-field-label');
+    expect(screen.getByRole('textbox', { name: 'Survey start' }).id).toBe(
+      dateLabel.htmlFor,
+    );
+  });
+
+  it('leaves the label element to the canvas type', () => {
+    const css = cssDateFieldClasses();
+    const rule = css.slice(
+      css.indexOf('.sw-date-field-label {'),
+      css.indexOf('}', css.indexOf('.sw-date-field-label {')),
+    );
+    expect(rule).not.toMatch(/font-size|line-height|font-weight/);
   });
 });

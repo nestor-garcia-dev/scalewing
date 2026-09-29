@@ -1,5 +1,7 @@
 import { expect, test } from '@playwright/test';
 
+import { tokenColor } from './contrast.js';
+
 test('a toned Toast tints its border and icon and announces danger as an alert', async ({
   page,
 }, testInfo) => {
@@ -7,15 +9,7 @@ test('a toned Toast tints its border and icon and announces danger as an alert',
   const forced = testInfo.project.name === 'forced-colors';
   if (forced) await page.emulateMedia({ forcedColors: 'active' });
   const section = page.locator('#toast');
-  const colorOf = (token: string) =>
-    page.evaluate((name) => {
-      const probe = document.createElement('span');
-      probe.style.color = `var(--sw-color-${name})`;
-      document.querySelector('[data-theme]')?.append(probe);
-      const color = getComputedStyle(probe).color;
-      probe.remove();
-      return color;
-    }, token);
+  const colorOf = (token: string) => tokenColor(page, token);
 
   // Teisoro DRW-14: every toast was the same neutral glass pill.
   await section.getByRole('button', { name: 'Save survey' }).click();

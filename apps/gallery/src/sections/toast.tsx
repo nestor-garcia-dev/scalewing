@@ -8,6 +8,7 @@ import {
 } from '@scalewing/react';
 import { useRef, useState } from 'react';
 
+import { Glyph } from '../glyph.js';
 import { Section } from '../layout/Section.js';
 
 function ToneGlyph({ tone }: { tone: ToastTone }) {
@@ -17,20 +18,7 @@ function ToneGlyph({ tone }: { tone: ToastTone }) {
       : tone === 'danger'
         ? 'M8 3v6m0 3.5v.5'
         : 'M8 2 14.5 13.5h-13L8 2Zm0 4.5v3.5m0 2v.5';
-  return (
-    <svg
-      fill="none"
-      height="16"
-      stroke="currentColor"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeWidth="1.75"
-      viewBox="0 0 16 16"
-      width="16"
-    >
-      <path d={path} />
-    </svg>
-  );
+  return <Glyph path={path} />;
 }
 
 const tonedToasts: ReadonlyArray<{

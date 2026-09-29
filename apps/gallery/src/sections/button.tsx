@@ -112,9 +112,11 @@ export function ButtonSection() {
           <Text color="muted" variant="caption">
             aria-pressed draws the pressed button with an accent ring outside
             its fill, past a gap, whatever its variant; a focused pressed button
-            moves its focus outline out past the ring. An unpressed button keeps
-            its full contrast; pair primary and secondary, as in Survey shift,
-            to make the choice stand out further.
+            moves its focus outline out past the ring. In forced colors the ring
+            and border are the system highlight and the label keeps the forced
+            button colors. An unpressed button keeps its full contrast; pair
+            primary and secondary, as in Survey shift, to make the choice stand
+            out further.
           </Text>
         </Stack>
         <Text variant="caption">Last press: {lastPress}</Text>

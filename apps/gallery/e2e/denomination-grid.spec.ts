@@ -53,6 +53,10 @@ test('DenominationGrid renders the strip table with tones and moves totals under
   );
   const tiles = section.getByRole('group', { name: 'Tags in the field kit' });
   await expect(tiles.getByRole('listitem')).toHaveCount(6);
+  // A lone plain row labelled with the grid's words is named once, by the
+  // grid's group: no region inside it repeats the name (Teisoro SDAY-31).
+  await expect(tiles.getByRole('region')).toHaveCount(0);
+  expect(await tiles.ariaSnapshot()).not.toContain('region');
   expect(
     await tiles.locator('.sw-denomination-tile-list').evaluate(
       // auto-fit lists collapsed empty tracks as 0px; count the filled ones.

@@ -1,6 +1,9 @@
-import { forwardRef, type KeyboardEvent, type ReactNode } from 'react';
+'use client';
+
+import { forwardRef, useId, type KeyboardEvent, type ReactNode } from 'react';
 
 import { cx } from '../class-names.js';
+import { FieldErrorRegion } from './FieldErrorRegion.js';
 
 export type SegmentedItem = {
   id: string;
@@ -36,6 +39,14 @@ export type SegmentedControlProps = SegmentedLabel &
     items: readonly SegmentedItem[];
     value: string;
     variant?: SegmentedControlVariant;
+    /**
+     * A validation message under the control, as `Field`'s: announced from a
+     * polite live region, linked by `aria-describedby`, with `aria-invalid`
+     * and a danger outline on the group. An empty string is no error.
+     */
+    error?: string;
+    /** Sets `aria-required` on the group; the visible mark belongs to the element that labels it. */
+    required?: boolean;
   };
 
 export const SegmentedControl = forwardRef<
@@ -44,14 +55,18 @@ export const SegmentedControl = forwardRef<
 >(function SegmentedControl(
   {
     disabled = false,
+    error,
     items,
     onChange,
+    required = false,
     value,
     variant = 'compact',
     ...labelProps
   },
   ref,
 ) {
+  const errorId = useId();
+
   function onKeyDown(event: KeyboardEvent<HTMLDivElement>) {
     if (disabled || (event.key !== 'ArrowRight' && event.key !== 'ArrowLeft')) {
       return;
@@ -70,43 +85,60 @@ export const SegmentedControl = forwardRef<
     }
   }
 
+  // The wrapper is always rendered, so an error that appears later swaps
+  // text into a live region that already exists and the group keeps focus.
   return (
     <div
-      ref={ref}
-      aria-disabled={disabled || undefined}
       className={cx(
-        'sw-segmented',
-        variant === 'filled' && 'sw-segmented-filled',
-        disabled && 'sw-segmented-disabled',
+        'sw-segmented-field',
+        variant === 'filled' && 'sw-segmented-field-filled',
       )}
-      onKeyDown={onKeyDown}
-      role="radiogroup"
-      {...labelProps}
     >
-      {items.map((item) => {
-        const selected = item.id === value;
+      <div
+        ref={ref}
+        aria-describedby={error ? errorId : undefined}
+        aria-disabled={disabled || undefined}
+        aria-invalid={error ? true : undefined}
+        aria-required={required || undefined}
+        className={cx(
+          'sw-segmented',
+          variant === 'filled' && 'sw-segmented-filled',
+          disabled && 'sw-segmented-disabled',
+        )}
+        onKeyDown={onKeyDown}
+        role="radiogroup"
+        {...labelProps}
+      >
+        {items.map((item) => {
+          const selected = item.id === value;
 
-        return (
-          <button
-            aria-checked={selected}
-            className={cx(
-              'sw-segmented-item',
-              selected && 'sw-segmented-item-selected',
-            )}
-            disabled={disabled}
-            key={item.id}
-            onClick={() => {
-              if (!selected) {
-                onChange?.(item.id);
-              }
-            }}
-            role="radio"
-            type="button"
-          >
-            {item.label}
-          </button>
-        );
-      })}
+          return (
+            <button
+              aria-checked={selected}
+              className={cx(
+                'sw-segmented-item',
+                selected && 'sw-segmented-item-selected',
+              )}
+              disabled={disabled}
+              key={item.id}
+              onClick={() => {
+                if (!selected) {
+                  onChange?.(item.id);
+                }
+              }}
+              role="radio"
+              type="button"
+            >
+              {item.label}
+            </button>
+          );
+        })}
+      </div>
+      <FieldErrorRegion
+        className="sw-field-error"
+        id={errorId}
+        message={error}
+      />
     </div>
   );
 });

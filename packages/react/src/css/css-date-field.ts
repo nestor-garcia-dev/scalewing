@@ -1,5 +1,9 @@
 import { typographyVariants } from '@scalewing/tokens';
 
+import {
+  disabledControlForcedColors,
+  disabledControlSurface,
+} from './css-document.js';
 import { zIndex } from './stacking.js';
 
 const body = typographyVariants.body;
@@ -23,12 +27,11 @@ function fieldRules(): string {
   width: max-content;
 }
 
+/* The label inherits the canvas's body type, as Field's does; the label
+   words inside it are a Text label span. The same line box gives the same
+   gap to the entry as a Field beside it. */
 .sw-date-field-label {
   color: var(--sw-color-text);
-  font-family: var(--sw-font-sans);
-  font-size: ${label.fontSize}px;
-  font-weight: ${label.fontWeight};
-  line-height: ${label.lineHeight}px;
 }
 
 .sw-date-field-control {
@@ -75,7 +78,11 @@ ${input}[aria-invalid='true'] {
   border-color: var(--sw-color-danger);
 }
 
-${input}:disabled,
+/* The entry looks locked as every text control does; its button fades as buttons do. */
+${input}:disabled {
+  ${disabledControlSurface}
+}
+
 .sw-date-field-button:disabled {
   cursor: not-allowed;
   opacity: var(--sw-disabled-opacity);
@@ -276,6 +283,9 @@ function adaptiveRules(): string {
 
 @media (forced-colors: active) {
   ${input}[aria-invalid='true'] { border-color: CanvasText; }
+  ${input}:disabled {
+    ${disabledControlForcedColors}
+  }
   .sw-date-field-calendar { border-color: CanvasText; }
   .sw-date-field-day[aria-current='date'] { border-color: CanvasText; }
   .sw-date-field-day[aria-selected='true'] {

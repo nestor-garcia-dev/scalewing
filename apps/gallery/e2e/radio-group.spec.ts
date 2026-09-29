@@ -42,3 +42,49 @@ test('RadioGroup uses native arrow navigation and preserves long labels and disa
   ).toBeVisible();
   await expect(group).toHaveAttribute('aria-invalid', 'false');
 });
+
+test('RadioGroup options show a glyph beside the label, named by the label', async ({
+  page,
+}, testInfo) => {
+  const forced = testInfo.project.name === 'forced-colors';
+  if (forced) await page.emulateMedia({ forcedColors: 'active' });
+  await page.goto('/#radio-group');
+  const group = page
+    .locator('#radio-group')
+    .getByRole('group', { name: 'Sighting source' });
+  // Teisoro CHK-13: a real radio group with a glyph per option, each
+  // option still named by its text alone.
+  const observer = group.getByRole('radio', {
+    name: 'Field observer',
+    exact: true,
+  });
+  const camera = group.getByRole('radio', { name: 'Camera trap', exact: true });
+  await expect(observer).toBeChecked();
+  const option = camera.locator('xpath=ancestor::label[1]');
+  const icon = option.locator('.sw-radio-group-icon');
+  const text = option.locator('.sw-radio-group-text');
+  await expect(icon).toHaveAttribute('aria-hidden', 'true');
+  await expect(icon.locator('svg')).toBeVisible();
+  const mark = option.locator('.sw-radio-group-mark');
+  const [markBox, iconBox, textBox] = await Promise.all([
+    mark.boundingBox(),
+    icon.boundingBox(),
+    text.boundingBox(),
+  ]);
+  expect(markBox!.x + markBox!.width).toBeLessThanOrEqual(iconBox!.x);
+  expect(iconBox!.x + iconBox!.width).toBeLessThanOrEqual(textBox!.x);
+  // Vertically centred on the label line.
+  expect(
+    Math.abs(
+      iconBox!.y + iconBox!.height / 2 - (textBox!.y + textBox!.height / 2),
+    ),
+  ).toBeLessThan(2);
+  // Drawn in the label's color, so it reads as part of it.
+  const color = (element: Element) => getComputedStyle(element).color;
+  expect(await icon.evaluate(color)).toBe(await text.evaluate(color));
+  await icon.click();
+  await expect(camera).toBeChecked();
+  await page.locator('#radio-group').screenshot({
+    path: testInfo.outputPath('radio-group-icons.png'),
+  });
+});

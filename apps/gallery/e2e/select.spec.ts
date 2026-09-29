@@ -122,3 +122,40 @@ test('Select shows a placeholder, a required mark, and an error described on its
   const after = await trigger.boundingBox();
   expect(Math.abs((after?.width ?? 0) - (before?.width ?? 0))).toBeLessThan(1);
 });
+
+test('a Select beside a Field lines up its label and control', async ({
+  page,
+}, testInfo) => {
+  await page.goto('/#select');
+  const section = page.locator('#select');
+  const trigger = section.getByRole('combobox', { name: 'Survey plot' });
+  const size = section.getByRole('textbox', { name: 'Plot size ha' });
+  const frame = size.locator('xpath=..');
+  const top = async (locator: typeof trigger) =>
+    (await locator.boundingBox())?.y ?? Number.NaN;
+  const label = (name: string) =>
+    section.locator('label').filter({ hasText: name });
+  const textTop = (name: string) =>
+    label(name).evaluate((element) => {
+      const range = document.createRange();
+      range.selectNodeContents(element);
+      return range.getBoundingClientRect().y;
+    });
+  // The Select's label row was 20 px against Field's 25 px, so its trigger
+  // sat 5 px higher, as DateField's entry did (Teisoro NSF-35).
+  expect(Math.abs((await top(trigger)) - (await top(frame)))).toBeLessThan(0.5);
+  expect(
+    Math.abs((await textTop('Survey plot')) - (await textTop('Plot size'))),
+  ).toBeLessThan(0.5);
+  const height = (name: string) =>
+    label(name).evaluate((element) => element.getBoundingClientRect().height);
+  expect(await height('Survey plot')).toBe(await height('Plot size'));
+  // A visually hidden label still takes no row.
+  const compact = section.getByRole('combobox', { name: 'Compact range' });
+  await expect(compact).toBeVisible();
+  expect(await height('Compact range')).toBeLessThanOrEqual(1);
+  await trigger.scrollIntoViewIfNeeded();
+  await section.screenshot({
+    path: testInfo.outputPath('select-beside-field.png'),
+  });
+});

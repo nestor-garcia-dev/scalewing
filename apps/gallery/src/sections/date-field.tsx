@@ -1,4 +1,4 @@
-import { DateField, Grid, Stack, Text } from '@scalewing/react';
+import { DateField, Field, Grid, Stack, Text } from '@scalewing/react';
 import { useState } from 'react';
 
 import { Section } from '../layout/Section.js';
@@ -22,11 +22,12 @@ export function DateFieldSection() {
   const [hatchDate, setHatchDate] = useState('1961-05-14');
   const [reviewDate, setReviewDate] = useState('2024-02-29');
   const [spanishDate, setSpanishDate] = useState('2024-11-03');
+  const [surveyStart, setSurveyStart] = useState('2024-04-02');
 
   return (
     <Section
       id="date-field"
-      purpose="DateField keeps a date-only value. Type the date in the locale's order, or open the calendar: arrows move by day and week, PageUp and PageDown by month, Shift with them by year, and the month and year selectors jump decades. Callbacks receive YYYY-MM-DD or an empty value. Month and weekday names come from Intl; the control's own words come from labels."
+      purpose="DateField keeps a date-only value. Type the date in the locale's order, or open the calendar: arrows move by day and week, PageUp and PageDown by month, Shift with them by year, and the month and year selectors jump decades. Callbacks receive YYYY-MM-DD or an empty value. Month and weekday names come from Intl; the control's own words come from labels. Its label row matches Field's, so a date beside a text field lines up."
       title="DateField"
       usage={`<DateField
   label="Sighting date"
@@ -37,6 +38,17 @@ export function DateFieldSection() {
 />`}
     >
       <Stack gap={4}>
+        <Grid columns={2} gap={3}>
+          <DateField
+            label="Survey start"
+            onChange={setSurveyStart}
+            required
+            value={surveyStart}
+          />
+          <Field label="Observers" required>
+            <input defaultValue="3" inputMode="numeric" name="observers" />
+          </Field>
+        </Grid>
         <Grid columns={2} columnsBelow={{ md: 1 }} gap={4}>
           <DateField
             description="Days outside 2024 are unavailable"

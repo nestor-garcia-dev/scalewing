@@ -9,7 +9,11 @@ import {
 import { describe, expect, it, vi } from 'vitest';
 
 import { Button } from './components/Button.js';
-import { cssButtonClasses } from './css/css-button.js';
+import {
+  cssButtonClasses,
+  pressedRingGap,
+  pressedRingWidth,
+} from './css/css-button.js';
 import { ThemeProvider } from './theme/ThemeProvider.js';
 
 describe('Button', () => {
@@ -105,5 +109,38 @@ describe('pressed ring contrast', () => {
         }
       }
     }
+  });
+});
+
+describe('pressed toggle in forced colors', () => {
+  const css = cssButtonClasses();
+  const forced = css.slice(css.indexOf('@media (forced-colors: active)'));
+  const block = forced.slice(0, forced.indexOf('\n}') + 2);
+
+  it('keeps the forced button colors, so the label is never drawn in HighlightText', () => {
+    // Teisoro, 1.12.0: a Highlight fill with HighlightText erased the label
+    // (Chromium paints the forced backplate behind a button's text in
+    // Canvas), measured at 1.00:1 on the painted pixels.
+    expect(block).not.toMatch(/background|HighlightText|[{;] color:/);
+    expect(css).not.toContain('forced-color-adjust');
+  });
+
+  it('marks the pressed button with a Highlight border and the same ring as outside forced colors', () => {
+    expect(block).toContain(
+      ".sw-button[aria-pressed='true'] { border-color: Highlight; position: relative; }",
+    );
+    const ring =
+      /\.sw-button\[aria-pressed='true'\]::after \{ border: (\d+)px solid Highlight; border-radius: inherit; content: ''; inset: calc\(-1px - (\d+)px\); pointer-events: none; position: absolute; \}/.exec(
+        block,
+      );
+    expect(ring).not.toBeNull();
+    // The ring's outer edge is the shadow ring's (4 px past the border box,
+    // across the 1 px border), 2 px wide, so it leaves the 2 px gap and the
+    // pressed focus outline's extra offset still clears it.
+    expect(Number(ring![2])).toBe(pressedRingWidth);
+    expect(Number(ring![1])).toBe(pressedRingWidth - pressedRingGap);
+    expect(css).toContain(
+      `outline-offset: calc(var(--sw-focus-ring-offset) + ${pressedRingWidth}px)`,
+    );
   });
 });

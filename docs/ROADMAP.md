@@ -17,6 +17,22 @@ release workflow completed successfully.
 
 ## Next action
 
+Teisoro Services re-review fixes (F-007-S05 task 1350, the re-review
+sections of `services-*.md`), on `claude/services-rereview-fixes`: a
+disabled text control that looks locked (DRW-17,
+`teisoro-field-disabled.md`); `SegmentedControl` `error` and `required`
+(DRW-20, `teisoro-segmented-control.md` follow-up); a lone
+`DenominationGrid` tiles row named once, by the grid (SDAY-31,
+`teisoro-denomination-grid.md` follow-up); a `TableRow selected` bar that
+moves no column (NSF-12, `teisoro-table.md` follow-up); a
+`DateField` label row that matches `Field`'s (NSF-35,
+`teisoro-date-field.md` follow-up); and a `RadioGroup` option `icon`
+(CHK-13, `teisoro-radio-group.md` follow-up). Found while verifying:
+a pressed toggle `Button`'s label readable in forced colors, a 1.12.0
+regression (`teisoro-button.md` follow-up); and the `Select` label row
+matching `Field`'s (`teisoro-select.md` follow-up). Next: pull request, review and merge, then
+release `@scalewing/react` and Teisoro pins it.
+
 Teisoro Services UX fixes (F-007-S05 task 1335, UX reviews
 `services-*.md`), merged in #73 and released as `@scalewing/react` 1.12.0:
 `DenominationGrid` strip totals read at every width with a named total

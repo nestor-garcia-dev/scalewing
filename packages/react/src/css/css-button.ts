@@ -39,16 +39,25 @@ function variantRules(): string {
  * in every palette, above WCAG 1.4.11's 3:1) whatever the variant's fill.
  * A focused pressed button moves its focus outline out past the ring, so the
  * two stay apart. The unpressed button keeps its full label contrast: no
- * opacity. Forced colors, which drop box shadows, fill the pressed button
- * with the system highlight, as a checked FilterChips chip or Checkbox is.
+ * opacity.
+ *
+ * Forced colors drop box shadows, so there the same ring is a Highlight
+ * border on an out-of-flow ::after, and the button's own border turns
+ * Highlight. The button keeps the forced ButtonFace and ButtonText of every
+ * other button: a Highlight fill cannot be used, because Chromium paints
+ * the forced backplate behind a button's text in Canvas, which erased a
+ * HighlightText label (1.00:1, Teisoro's pressed toggles in 1.12.0), and
+ * forced-color-adjust: none would let every descendant keep author colors.
  */
+export const pressedRingGap = 2;
 export const pressedRingWidth = 4;
 
 function pressedRules(): string {
-  return `.sw-button[aria-pressed='true'] { box-shadow: 0 0 0 2px var(--sw-color-background), 0 0 0 ${pressedRingWidth}px var(--sw-color-accent); }
+  return `.sw-button[aria-pressed='true'] { box-shadow: 0 0 0 ${pressedRingGap}px var(--sw-color-background), 0 0 0 ${pressedRingWidth}px var(--sw-color-accent); }
 .sw-button[aria-pressed='true']:focus-visible { outline-offset: calc(var(--sw-focus-ring-offset) + ${pressedRingWidth}px); }
 @media (forced-colors: active) {
-  .sw-button[aria-pressed='true'] { background: Highlight; border-color: Highlight; color: HighlightText; }
+  .sw-button[aria-pressed='true'] { border-color: Highlight; position: relative; }
+  .sw-button[aria-pressed='true']::after { border: ${pressedRingWidth - pressedRingGap}px solid Highlight; border-radius: inherit; content: ''; inset: calc(-1px - ${pressedRingWidth}px); pointer-events: none; position: absolute; }
 }`;
 }
 

@@ -194,6 +194,49 @@ describe('DenominationGrid tiles', () => {
     expect(within(group).queryByText('Expected')).toBeNull();
   });
 
+  it('names a lone plain row only by the grid, not by a second region', () => {
+    render(
+      <DenominationGrid
+        columns={columns}
+        label="Expected from last close"
+        layout="tiles"
+        rows={[
+          {
+            id: 'expected',
+            label: 'Expected from last close',
+            cells: [1, 2, 3],
+          },
+        ]}
+      />,
+    );
+    const group = screen.getByRole('group', {
+      name: 'Expected from last close',
+    });
+    // Teisoro SDAY-31: the row was also a region with the grid's name.
+    expect(screen.queryByRole('region')).toBeNull();
+    const row = group.querySelector('.sw-denomination-row');
+    expect(row).not.toBeNull();
+    expect(row!.hasAttribute('aria-label')).toBe(false);
+    expect(within(group).getAllByRole('listitem')).toHaveLength(3);
+  });
+
+  it("keeps a lone plain row's own name when it differs from the grid's", () => {
+    render(
+      <DenominationGrid
+        columns={columns}
+        label="Drawer count"
+        layout="tiles"
+        rows={[{ id: 'expected', label: 'Expected', cells: [1, 2, 3] }]}
+      />,
+    );
+    // Nothing on screen says "Expected" (the label line is hidden), so the
+    // row keeps it as its region's name (review of PR #75).
+    const group = screen.getByRole('group', { name: 'Drawer count' });
+    expect(
+      within(group).getByRole('region', { name: 'Expected' }),
+    ).toBeTruthy();
+  });
+
   it("shows a single row's total, with its label, even without an icon", () => {
     render(
       <DenominationGrid

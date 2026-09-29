@@ -1,24 +1,7 @@
 import { Grid, Stack, StatTile, Text } from '@scalewing/react';
 
+import { Glyph } from '../glyph.js';
 import { Section } from '../layout/Section.js';
-
-function Glyph({ path }: { path: string }) {
-  return (
-    <svg
-      aria-hidden="true"
-      fill="none"
-      height="20"
-      stroke="currentColor"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeWidth="1.75"
-      viewBox="0 0 24 24"
-      width="20"
-    >
-      <path d={path} />
-    </svg>
-  );
-}
 
 const paw =
   'M12 14c-3 0-5 2-5 4a3 3 0 0 0 5 2 3 3 0 0 0 5-2c0-2-2-4-5-4Zm-6-3a2 2 0 1 0 0-4 2 2 0 0 0 0 4Zm12 0a2 2 0 1 0 0-4 2 2 0 0 0 0 4ZM9 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4Zm6 0a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z';
@@ -46,13 +29,13 @@ export function StatTileSection() {
         <StatTile
           caption="42 species across 6 habitats this season"
           emphasis="primary"
-          glyph={<Glyph path={paw} />}
+          glyph={<Glyph grid={24} path={paw} size={20} />}
           label="Total sightings"
           value="1,284"
         />
         <Grid columns={4} columnsBelow={{ md: 1 }} gap={3}>
           <StatTile
-            glyph={<Glyph path={leaf} />}
+            glyph={<Glyph grid={24} path={leaf} size={20} />}
             label="Forest"
             tone="success"
             value="612"

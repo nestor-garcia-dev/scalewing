@@ -4,6 +4,8 @@ import { useState } from 'react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import { RadioGroup } from './components/RadioGroup.js';
+import { cssRadioGroupClasses } from './css/css-radio-group.js';
+import { utilityClassCatalog } from './css/stylesheet.js';
 
 afterEach(() => cleanup());
 
@@ -116,5 +118,56 @@ describe('RadioGroup', () => {
         />,
       ),
     ).toThrow(RangeError);
+  });
+});
+
+describe('RadioGroup option icons', () => {
+  const glyph = (title: string) => (
+    <svg data-testid={title} viewBox="0 0 16 16">
+      <title>{title}</title>
+      <circle cx="8" cy="8" r="4" />
+    </svg>
+  );
+
+  it('draws a hidden glyph between the radio and its label, keeping the name the label', async () => {
+    const onChange = vi.fn();
+    render(
+      <RadioGroup
+        legend="Check type"
+        onChange={onChange}
+        options={[
+          { value: 'personal', label: 'Personal check', icon: glyph('Person') },
+          { value: 'company', label: 'Company check', icon: glyph('Building') },
+          { value: 'other', label: 'Other' },
+        ]}
+        value=""
+      />,
+    );
+    // Teisoro CHK-13: the name is the text alone, not the glyph's title.
+    const company = screen.getByRole('radio', { name: 'Company check' });
+    expect(screen.getByRole('radio', { name: 'Personal check' })).toBeTruthy();
+    const option = company.closest('label')!;
+    const icon = option.querySelector('.sw-radio-group-icon')!;
+    expect(icon.getAttribute('aria-hidden')).toBe('true');
+    expect(icon.contains(screen.getByTestId('Building'))).toBe(true);
+    // Order: the radio's control, the glyph, then the words.
+    expect(Array.from(option.children).map((child) => child.className)).toEqual(
+      ['sw-radio-group-control', 'sw-radio-group-icon', 'sw-radio-group-text'],
+    );
+    // An option without an icon renders no slot.
+    const other = screen
+      .getByRole('radio', { name: 'Other' })
+      .closest('label')!;
+    expect(other.querySelector('.sw-radio-group-icon')).toBeNull();
+
+    await userEvent.click(screen.getByTestId('Building'));
+    expect(onChange).toHaveBeenCalledWith('company');
+  });
+
+  it('generates the icon slot in the text color', () => {
+    expect(cssRadioGroupClasses()).toContain(
+      '.sw-radio-group-icon {\n  align-items: center;\n  color: var(--sw-color-text);',
+    );
+    expect(utilityClassCatalog()).toContain('sw-radio-group-icon');
   });
 });

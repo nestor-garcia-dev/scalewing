@@ -22,6 +22,24 @@ export const controlSurface = `background-color: var(--sw-glass-fill);
   font-size: inherit;
   padding-inline: var(--sw-control-md-padding-inline);`;
 
+/*
+ * A disabled text control keeps its value in the text color, so a locked
+ * value stays readable (4.5:1 or more on the subtle fill in every palette),
+ * and says it is locked with the quiet subtle fill and a dashed hairline
+ * instead of the opacity buttons use. WebKit fades a disabled entry's text
+ * with its own fill color and opacity, so both are set back.
+ */
+export const disabledControlSurface = `background-color: var(--sw-color-subtle);
+  border-style: dashed;
+  cursor: not-allowed;
+  opacity: 1;
+  -webkit-text-fill-color: currentColor;`;
+
+/* Forced colors keep the dashed border; the system's disabled color draws it. */
+export const disabledControlForcedColors = `border-color: GrayText;
+  color: GrayText;
+  -webkit-text-fill-color: GrayText;`;
+
 export function cssDocumentCanvas(): string {
   return `html,
 body {
@@ -103,5 +121,24 @@ body {
 [data-theme] select:focus-visible {
   outline: var(--sw-focus-ring-width) solid var(--sw-color-accent);
   outline-offset: var(--sw-focus-ring-offset);
+}
+
+/* The browser's placeholder gray is one fixed #757575 (2.3:1 on a dark
+   field); muted is tuned per palette and scheme. */
+[data-theme] :is(${typedInputs})::placeholder {
+  color: var(--sw-color-muted);
+  opacity: 1;
+}
+
+[data-theme] :is(${typedInputs}):disabled,
+[data-theme] select:disabled {
+  ${disabledControlSurface}
+}
+
+@media (forced-colors: active) {
+  [data-theme] :is(${typedInputs}):disabled,
+  [data-theme] select:disabled {
+    ${disabledControlForcedColors}
+  }
 }`;
 }
