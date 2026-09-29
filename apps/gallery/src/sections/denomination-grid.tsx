@@ -1,5 +1,6 @@
 import { Card, DenominationGrid, Stack, Text } from '@scalewing/react';
 
+import { Glyph } from '../glyph.js';
 import { Section } from '../layout/Section.js';
 
 const tagColumns = [
@@ -32,20 +33,7 @@ function ArrowGlyph({ direction }: { direction: 'in' | 'out' | 'sum' }) {
       : direction === 'out'
         ? 'M8 13V5m0 0-3 3m3-3 3 3M3 3h10'
         : 'M4 3h8l-5 5 5 5H4';
-  return (
-    <svg
-      fill="none"
-      height="16"
-      stroke="currentColor"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeWidth="1.75"
-      viewBox="0 0 16 16"
-      width="16"
-    >
-      <path d={path} />
-    </svg>
-  );
+  return <Glyph path={path} />;
 }
 
 export function DenominationGridSection() {

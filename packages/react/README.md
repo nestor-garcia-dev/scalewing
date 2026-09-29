@@ -126,7 +126,19 @@ A `Button` that toggles something passes `aria-pressed`. The pressed button gets
 
 `Checkbox` is a controlled native checkbox for one independent form or confirmation choice. `checked` and `onCheckedChange` own its state. The consumer supplies `error` after validation to describe and style an invalid choice (associated by `aria-describedby` with `aria-invalid` and announced from a polite live region, as `Field`'s error is, never an alert); `required` retains native form semantics.
 
-`RadioGroup` is a controlled fieldset of native radio choices. Supply a unique nonempty `value` for each option, one selected `value` or an empty value for no selection, a `legend`, and `onChange`. Long labels wrap in a vertical group. The consumer provides localized option labels and validation `error`; `required` keeps native form semantics.
+`RadioGroup` is a controlled fieldset of native radio choices. Supply a unique nonempty `value` for each option, one selected `value` or an empty value for no selection, a `legend`, and `onChange`. Long labels wrap in a vertical group. The consumer provides localized option labels and validation `error`; `required` keeps native form semantics. An option's optional `icon` (a `ReactNode`, such as a Lucide glyph) sits between the radio and the label, in the text color and the option's gap; it is `aria-hidden`, so the radio's accessible name stays the `label` text, and a press on it chooses the option as the label does.
+
+```tsx
+<RadioGroup
+  legend="Check type"
+  onChange={setCheckType}
+  options={[
+    { value: 'personal', label: 'Personal check', icon: <User /> },
+    { value: 'company', label: 'Company check', icon: <Building2 /> },
+  ]}
+  value={checkType}
+/>
+```
 
 `SegmentedControl` is one exclusive choice shown as a track of segments (`role="radiogroup"`), named by `aria-label` or `aria-labelledby`, with a controlled `value` and `onChange`; `variant="filled"` gives every segment the same width and fills the selection with the accent, and `disabled` keeps the choice visible but inert. `error` puts a message under the track (`sw-field-error`), links it to the group by `aria-describedby` and sets `aria-invalid` and a danger outline on the group (`Mark` in forced colors); as `Field`'s it is announced politely from a live region that is always there, never as an alert, and an empty string is no error. `required` sets `aria-required` on the group; since the control has no label of its own, the element that labels it shows the mark. The track sits in a `.sw-segmented-field` wrapper that holds the message and takes the track's place in the layout, so a `ref` still reaches the `radiogroup`. `error` is for a control in a `Stack` or block layout, where the track keeps its width and the message wraps under it. While it shows a message the field is at least 24ch wide, capped at its container, so a short compact track does not squeeze the message into a column. In an `Inline` the field therefore grows and the rest of the row moves, while the track keeps its labels' width.
 

@@ -1,6 +1,6 @@
 'use client';
 
-import { useId } from 'react';
+import { useId, type ReactNode } from 'react';
 
 import { FieldErrorRegion } from './FieldErrorRegion.js';
 
@@ -8,6 +8,12 @@ export type RadioGroupOption = {
   value: string;
   label: string;
   disabled?: boolean;
+  /**
+   * A decorative glyph between the radio and the label, such as a person or
+   * a building for the kind of check. It is `aria-hidden` and drawn in the
+   * text color: the option's accessible name stays its `label` text.
+   */
+  icon?: ReactNode;
 };
 
 export type RadioGroupProps = {
@@ -85,6 +91,11 @@ export function RadioGroup({
               />
               <span aria-hidden="true" className="sw-radio-group-mark" />
             </span>
+            {option.icon ? (
+              <span aria-hidden="true" className="sw-radio-group-icon">
+                {option.icon}
+              </span>
+            ) : null}
             <span className="sw-radio-group-text">{option.label}</span>
           </label>
         ))}

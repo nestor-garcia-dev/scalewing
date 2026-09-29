@@ -103,6 +103,14 @@ export function cssRadioGroupClasses(): string {
   opacity: var(--sw-disabled-opacity);
 }
 
+/* A consumer glyph beside the label, in the label's color and the option's gap. */
+.sw-radio-group-icon {
+  align-items: center;
+  color: var(--sw-color-text);
+  display: inline-flex;
+  flex: none;
+}
+
 .sw-radio-group-text {
   color: var(--sw-color-text);
   font-family: var(--sw-font-sans);
@@ -145,6 +153,7 @@ export function radioGroupClassCatalog(): string[] {
     'sw-radio-group-control',
     'sw-radio-group-input',
     'sw-radio-group-mark',
+    'sw-radio-group-icon',
     'sw-radio-group-text',
     'sw-radio-group-description',
     'sw-radio-group-error',

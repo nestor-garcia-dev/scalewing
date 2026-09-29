@@ -26,7 +26,8 @@ disabled text control that looks locked (DRW-17,
 `teisoro-denomination-grid.md` follow-up); a `TableRow selected` bar that
 moves no column (NSF-12, `teisoro-table.md` follow-up); a
 `DateField` label row that matches `Field`'s (NSF-35,
-`teisoro-date-field.md` follow-up). Next: pull request, review and merge, then
+`teisoro-date-field.md` follow-up); and a `RadioGroup` option `icon`
+(CHK-13, `teisoro-radio-group.md` follow-up). Next: pull request, review and merge, then
 release `@scalewing/react` and Teisoro pins it.
 
 Teisoro Services UX fixes (F-007-S05 task 1335, UX reviews
