@@ -561,7 +561,7 @@ describe('generated CSS', () => {
       ".sw-button[aria-pressed='true']:focus-visible { outline-offset: calc(var(--sw-focus-ring-offset) + 4px); }",
     );
     expect(css).toContain(
-      ".sw-button[aria-pressed='true'] { background: Highlight; border-color: Highlight; color: HighlightText; }",
+      ".sw-button[aria-pressed='true'] { border-color: Highlight; position: relative; }",
     );
     expect(cssButtonClasses()).not.toContain('forced-color-adjust');
     expect(catalog).toContain('sw-toast');

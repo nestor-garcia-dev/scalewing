@@ -117,3 +117,50 @@ export function textContrast(locator: Locator): Promise<number> {
     return (light! + 0.05) / (dark! + 0.05);
   });
 }
+
+/**
+ * The contrast of what is actually painted inside an element's text: a
+ * screenshot of the text's own box, decoded in the page, and the WCAG ratio
+ * between its lightest and darkest pixels. Unlike `textContrast`, which reads
+ * computed colors, it sees what the browser draws on top of them, such as
+ * the forced-colors backplate behind text (a HighlightText label on a Canvas
+ * backplate paints as 1.00:1 while its computed colors say 11:1).
+ * Antialiasing only lowers the extremes, so the result is a floor.
+ */
+export async function paintedTextContrast(locator: Locator): Promise<number> {
+  await locator.scrollIntoViewIfNeeded();
+  const box = await locator.evaluate((element) => {
+    const range = document.createRange();
+    range.selectNodeContents(element);
+    const rect = range.getBoundingClientRect();
+    return { x: rect.x, y: rect.y, width: rect.width, height: rect.height };
+  });
+  const page = locator.page();
+  const png = await page.screenshot({ clip: box });
+  return page.evaluate(async (base64) => {
+    const image = new Image();
+    image.src = `data:image/png;base64,${base64}`;
+    await image.decode();
+    const canvas = document.createElement('canvas');
+    canvas.width = image.width;
+    canvas.height = image.height;
+    const context = canvas.getContext('2d')!;
+    context.drawImage(image, 0, 0);
+    const pixels = context.getImageData(0, 0, canvas.width, canvas.height).data;
+    const channel = (value: number) => {
+      const unit = value / 255;
+      return unit <= 0.03928 ? unit / 12.92 : ((unit + 0.055) / 1.055) ** 2.4;
+    };
+    let darkest = 1;
+    let lightest = 0;
+    for (let index = 0; index < pixels.length; index += 4) {
+      const luminance =
+        0.2126 * channel(pixels[index]!) +
+        0.7152 * channel(pixels[index + 1]!) +
+        0.0722 * channel(pixels[index + 2]!);
+      darkest = Math.min(darkest, luminance);
+      lightest = Math.max(lightest, luminance);
+    }
+    return (lightest + 0.05) / (darkest + 0.05);
+  }, png.toString('base64'));
+}
