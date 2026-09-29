@@ -6,6 +6,7 @@ import { Checkbox } from './components/Checkbox.js';
 import { DateField } from './components/DateField.js';
 import { Field } from './components/Field.js';
 import { RadioGroup } from './components/RadioGroup.js';
+import { SegmentedControl } from './components/SegmentedControl.js';
 
 afterEach(() => cleanup());
 
@@ -71,6 +72,23 @@ const controls: Array<{
       <DateField error={error} label="Date reported" onChange={noop} value="" />
     ),
     control: () => screen.getByRole('textbox', { name: 'Date reported' }),
+  },
+  {
+    name: 'SegmentedControl',
+    region: '.sw-field-error',
+    render: (error) => (
+      <SegmentedControl
+        aria-label="Direction"
+        error={error}
+        items={[
+          { id: 'in', label: 'In' },
+          { id: 'out', label: 'Out' },
+        ]}
+        onChange={noop}
+        value=""
+      />
+    ),
+    control: () => screen.getByRole('radiogroup', { name: 'Direction' }),
   },
 ];
 

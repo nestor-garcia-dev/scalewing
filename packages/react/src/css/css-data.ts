@@ -1,8 +1,4 @@
-import {
-  buttonVariants,
-  trackInset,
-  typographyVariants,
-} from '@scalewing/tokens';
+import { buttonVariants, typographyVariants } from '@scalewing/tokens';
 
 import { scrollRegionRules } from './css-scroll-region.js';
 import { zIndex } from './stacking.js';
@@ -22,8 +18,6 @@ export const badgeSizes = ['sm', 'md'] as const;
 export type BadgeSize = (typeof badgeSizes)[number];
 
 const caption = typographyVariants.caption;
-const data = typographyVariants.data;
-const body = typographyVariants.body;
 
 export function badgeClassNames(
   tone: BadgeTone,
@@ -102,74 +96,6 @@ export function cssDataClasses(): string {
 }
 
 ${badgeOnFilledButtonRules()}
-
-.sw-segmented {
-  background: var(--sw-glass-fill);
-  border: 1px solid var(--sw-glass-border);
-  border-radius: var(--sw-radius-pill);
-  box-sizing: border-box;
-  display: inline-flex;
-  gap: ${trackInset}px;
-  padding: ${trackInset}px;
-}
-
-.sw-segmented-item {
-  appearance: none;
-  background: transparent;
-  border: 0;
-  border-radius: var(--sw-radius-pill);
-  color: var(--sw-color-muted);
-  cursor: pointer;
-  font-family: var(--sw-font-sans);
-  font-size: ${data.fontSize}px;
-  font-weight: 600;
-  letter-spacing: ${data.letterSpacing}px;
-  line-height: ${data.lineHeight}px;
-  min-height: var(--sw-control-xs-min-height);
-  padding-inline: var(--sw-control-xs-padding-inline);
-}
-
-.sw-segmented-item:focus-visible {
-  outline: var(--sw-focus-ring-width) solid var(--sw-color-accent);
-  outline-offset: var(--sw-focus-ring-offset);
-}
-
-.sw-segmented-item-selected {
-  background: var(--sw-color-surface);
-  color: var(--sw-color-text);
-}
-
-.sw-segmented-filled {
-  display: grid;
-  grid-auto-columns: minmax(0, 1fr);
-  grid-auto-flow: column;
-}
-
-.sw-segmented-filled .sw-segmented-item {
-  align-items: center;
-  color: var(--sw-color-text);
-  display: inline-flex;
-  font-size: ${body.fontSize}px;
-  justify-content: center;
-  letter-spacing: ${body.letterSpacing}px;
-  line-height: ${body.lineHeight}px;
-  min-height: var(--sw-control-md-min-height);
-  min-width: 0;
-  padding-inline: var(--sw-control-md-padding-inline);
-}
-
-.sw-segmented-filled .sw-segmented-item-selected {
-  background: var(--sw-color-accent);
-  color: var(--sw-color-onAccent);
-}
-
-.sw-segmented-disabled {
-  opacity: var(--sw-disabled-opacity);
-}
-
-.sw-segmented-item:disabled {
-  cursor: not-allowed;
-}
 
 ${scrollRegionRules('.sw-table-wrap')}
 
@@ -255,11 +181,6 @@ export function dataClassCatalog(): string[] {
     'sw-badge',
     ...badgeTones.map((tone) => `sw-badge-${tone}`),
     ...badgeSizes.map((size) => `sw-badge-${size}`),
-    'sw-segmented',
-    'sw-segmented-item',
-    'sw-segmented-item-selected',
-    'sw-segmented-filled',
-    'sw-segmented-disabled',
     'sw-table-wrap',
     'sw-table',
     'sw-table-end',

@@ -29,6 +29,7 @@ import { cssComponentClasses } from './css-components.js';
 import { buttonClassCatalog } from './css-button.js';
 import { chartClassCatalog } from './css-chart.js';
 import { dataClassCatalog } from './css-data.js';
+import { segmentedClassCatalog } from './css-segmented.js';
 import { chromeClassCatalog } from './css-chrome.js';
 import { dialogClassCatalog } from './css-dialog.js';
 import { selectClassCatalog } from './css-select.js';
@@ -59,6 +60,7 @@ export function utilityClassCatalog(): string[] {
     ...Object.keys(typographyVariants).map((name) => `sw-text-${name}`),
     ...buttonClassCatalog(),
     ...dataClassCatalog(),
+    ...segmentedClassCatalog(),
     ...chartClassCatalog(),
     ...chromeClassCatalog(),
     ...dialogClassCatalog(),
