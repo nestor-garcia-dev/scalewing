@@ -35,7 +35,7 @@ No API change. `--sw-quiet-opacity` stays for the muted zero cells of `Denominat
 
 ## Follow-up (2026-09-28, Teisoro F-007-S05 task 1350): the pressed label in forced colors
 
-Status: implemented on `claude/services-rereview-fixes` for Teisoro F-007-S05 task 1350; pull request pending review.
+Status: merged in #75 (2026-09-28) and released in `@scalewing/react` 1.13.0; Teisoro pins it in F-007-S05.
 Source: found while verifying the Services re-review fixes (PR #75), a regression from this request's 1.12.0 change. With forced colors active, a pressed toggle's label disappeared: the gallery's pressed "Select c-221" and "Forest", and the "Marsh" label beside its badge, showed as an empty light box inside a dark pill.
 
 Cause: in forced colors the pressed rule filled the button with `Highlight` and set `color: HighlightText`. Chromium paints the forced-colors backplate behind a `<button>`'s text in `Canvas`, so the label was `HighlightText` on `Canvas`, measured at 1.00:1 on the painted pixels. The computed colors say 11:1, which is why the 1.12.0 e2e check (`textContrast`, computed colors) passed. A `FilterChips` chip, a `<span>` face, draws the same pair readably, at 11.31:1 painted. Teisoro's pressed toggles were affected: the NSF check picker's "Select", the risk party rows and the company choice.

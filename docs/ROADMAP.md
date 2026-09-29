@@ -18,7 +18,8 @@ release workflow completed successfully.
 ## Next action
 
 Teisoro Services re-review fixes (F-007-S05 task 1350, the re-review
-sections of `services-*.md`), on `claude/services-rereview-fixes`: a
+sections of `services-*.md`), merged in #75 and released as
+`@scalewing/react` 1.13.0: a
 disabled text control that looks locked (DRW-17,
 `teisoro-field-disabled.md`); `SegmentedControl` `error` and `required`
 (DRW-20, `teisoro-segmented-control.md` follow-up); a lone
@@ -30,8 +31,10 @@ moves no column (NSF-12, `teisoro-table.md` follow-up); a
 (CHK-13, `teisoro-radio-group.md` follow-up). Found while verifying:
 a pressed toggle `Button`'s label readable in forced colors, a 1.12.0
 regression (`teisoro-button.md` follow-up); and the `Select` label row
-matching `Field`'s (`teisoro-select.md` follow-up). Next: pull request, review and merge, then
-release `@scalewing/react` and Teisoro pins it.
+matching `Field`'s (`teisoro-select.md` follow-up). The code-review fixes
+are in (the selected row keeps only its bar, no tint; a muted placeholder).
+Open for the owner: documenting browser targets (`:has()` already ships in
+Checkbox, FilterChips, RadioGroup and Switch). Next: Teisoro pins 1.13.0.
 
 Teisoro Services UX fixes (F-007-S05 task 1335, UX reviews
 `services-*.md`), merged in #73 and released as `@scalewing/react` 1.12.0:

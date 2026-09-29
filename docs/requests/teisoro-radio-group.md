@@ -14,7 +14,7 @@ Scalewing owns the reusable visual and interaction behavior, typed public API, g
 
 ## Follow-up request (2026-09-28, Teisoro F-007-S05 task 1350): a glyph per option
 
-Status: implemented on `claude/services-rereview-fixes` for Teisoro F-007-S05 task 1350; pull request pending review.
+Status: merged in #75 (2026-09-28) and released in `@scalewing/react` 1.13.0; Teisoro pins it in F-007-S05.
 Source: Teisoro UX re-review `services-check-cashing.md`, finding CHK-13 (partly fixed, the Scalewing part). The check-cashing company choice is still `group "Select company"` with `button … [pressed]` toggles, "which task 1325 leaves because Scalewing's `RadioGroup` takes text-only options". The first review's suggested fix was a real radio group with the name and the type glyph in each option.
 
 Teisoro use: the check-cashing form's check type, personal or company (`apps/teisoro-web/src/app/check-cashing/ChecksSection.tsx`), each with a Lucide glyph (a person, a building) beside the words.

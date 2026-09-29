@@ -56,7 +56,7 @@ Evidence: `select.test.tsx` ("shows a placeholder that is not an option until a 
 
 ## Follow-up (2026-09-28, Teisoro F-007-S05 task 1350): the label row matches Field's
 
-Status: implemented on `claude/services-rereview-fixes` for Teisoro F-007-S05 task 1350; pull request pending review.
+Status: merged in #75 (2026-09-28) and released in `@scalewing/react` 1.13.0; Teisoro pins it in F-007-S05.
 Source: found while fixing Teisoro's NSF-35 for `DateField` (`teisoro-date-field.md`, 2026-09-28 label row follow-up). The same measurement in the gallery showed `Select`'s label row at 20 px, where `Field`'s is 25 px, so a `Select` beside a `Field` sat 5 px higher. The cause is the same: `Select` rendered its label as `<Text as="label" variant="label">`, with the label type on the `<label>` itself, while `Field`'s `<label>` keeps the canvas's body type around a label-size span.
 
 Behavior (no API change): `Select` draws its label with `FieldLabelText`, the internal component that `Field` and `DateField` use (the label words as a `Text` label span, or a caption span at `size="xs"`, then the `aria-hidden` required mark), inside a plain `<label htmlFor id>`. The label rows are the same height, so a `Select` beside a `Field` lines up at the label and the control. `labelVisuallyHidden` now hides the span inside the label, as `Field` does; the label still takes no row. The trigger's `aria-labelledby`, its accessible name and the label's `htmlFor` are unchanged.

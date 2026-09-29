@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: implemented on `claude/services-rereview-fixes` for Teisoro F-007-S05 task 1350; pull request pending review.
+Status: merged in #75 (2026-09-28) and released in `@scalewing/react` 1.13.0; Teisoro pins it in F-007-S05.
 Renderer: react
 Surface: a disabled native text control: `Field`'s `<input>`, `<select>` and `<textarea>` (the generated canvas rule), `Field`'s adorned frame, and `DateField`'s entry. No new prop.
 Source: Teisoro UX re-review `services-drawer-cash-and-audits.md`, finding DRW-17 (minor, the Scalewing part; Teisoro owns a line in the warning).
