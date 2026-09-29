@@ -69,7 +69,7 @@ Evidence: `select.test.tsx` ("Select label row": the Select label's markup equal
 
 ## Follow-up request (2026-09-29, Teisoro F-007-S05 task 1355): `width="full"`
 
-Status: implemented on `claude/select-width-full`, in review; not released. Teisoro pins it once `@scalewing/react` releases it.
+Status: merged in #77 (2026-09-29) and released in `@scalewing/react` 1.14.0; Teisoro pins it in F-007-S05 task 1355.
 Source: Teisoro F-007-S05 task 1355. Teisoro's phone filter is a `Select` labelled "Show" above a list of full-width cards. Since 1.12.0 the trigger is as wide as its longest option (the sizer grid above), so on a 390 px phone the filter is about 225 px wide beside cards that fill the row, and `Select` has no prop to fill it. The 2026-09-28 closed-trigger follow-up rejected `width="full"` until a consumer needed it; this is that consumer.
 Existing surface this might already be: none. No Scalewing web component has a width prop (`Button`, `Field`, `SegmentedControl` and `DateField` have none: `Field` fills its column by default, and `SegmentedControl`'s full-width track is its `filled` variant, which also changes its look). The `sw-full-width` layout utility is a class on a Box, not a Select prop, and cannot reach the trigger. So there is no convention to follow; the name and values are the ones the closed-trigger follow-up proposed, and `'content'` names the default.
 
