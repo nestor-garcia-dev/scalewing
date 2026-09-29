@@ -9,6 +9,7 @@ import { cssRadioGroupClasses } from './css-radio-group.js';
 import { cssChromeClasses } from './css-chrome.js';
 import { cssDataClasses } from './css-data.js';
 import { cssSegmentedClasses } from './css-segmented.js';
+import { cssTableClasses } from './css-table.js';
 import { cssDateFieldClasses } from './css-date-field.js';
 import { cssDialogClasses } from './css-dialog.js';
 import { cssSelectClasses } from './css-select.js';
@@ -113,6 +114,8 @@ ${cssRadioGroupClasses()}
 ${cssDataClasses()}
 
 ${cssSegmentedClasses()}
+
+${cssTableClasses()}
 
 ${cssDateFieldClasses()}
 

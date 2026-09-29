@@ -23,7 +23,8 @@ disabled text control that looks locked (DRW-17,
 `teisoro-field-disabled.md`); `SegmentedControl` `error` and `required`
 (DRW-20, `teisoro-segmented-control.md` follow-up); a lone
 `DenominationGrid` tiles row named once, by the grid (SDAY-31,
-`teisoro-denomination-grid.md` follow-up). Next: pull request, review and merge, then
+`teisoro-denomination-grid.md` follow-up); a `TableRow selected` bar that
+moves no column (NSF-12, `teisoro-table.md` follow-up). Next: pull request, review and merge, then
 release `@scalewing/react` and Teisoro pins it.
 
 Teisoro Services UX fixes (F-007-S05 task 1335, UX reviews

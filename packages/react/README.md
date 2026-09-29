@@ -145,6 +145,8 @@ A `Button` that toggles something passes `aria-pressed`. The pressed button gets
 />
 ```
 
+`Table` aligns data in rows inside its own keyboard-reachable scroll region, named after the table. `TableCell` takes `numeric` (tabular numerals, end aligned), `align` and `truncate`; `density="compact"` densifies cells. `TableRow selected` sets `aria-selected` and marks the row with a 4 px accent bar at its inline start (3:1 or more against the surface and the page), the right edge in a right-to-left table. The bar is drawn inside the first cell's padding and takes no layout space, so no column moves when a row is picked, and the row takes no fill, so text, muted and accent text keep their contrast; forced colors keep the bar in the system highlight.
+
 `Spinner` shows indeterminate loading in small, medium, or large sizes. Supply localized `label` for the one announced status in a loading region. Use `decorative` on additional indicators beside that status so screen readers do not hear the same message repeatedly. Reduced motion leaves a static accented ring.
 
 `Progress` shows a known value between zero and a positive maximum. It uses native progressbar semantics and displays the value and maximum beside the localized label. Invalid bounds throw instead of silently clamping. Optional `tone` is `accent`, `success`, or `danger`. `showCount={false}` hides the visible `value / max` count when the page shows its own count caption, so the count appears once; the progress bar still exposes its value and maximum.

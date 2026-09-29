@@ -42,6 +42,25 @@ export const sampleWatchRows = [
   },
 ] as const;
 
+/** The same collars in Arabic, for a right-to-left table. */
+export const sampleCollarRowsArabic = [
+  { id: 'c-104', animal: 'ذئب رمادي', habitat: 'التايغا' },
+  { id: 'c-221', animal: 'فيل أفريقي', habitat: 'السافانا' },
+  { id: 'c-317', animal: 'نمر الثلج', habitat: 'جبال الألب' },
+] as const;
+
+/** Tracking collars to pick one from, for a table with a selectable row. */
+export const sampleCollarRows = [
+  { id: 'c-104', animal: 'Grey wolf', habitat: 'Taiga', battery: '82%' },
+  {
+    id: 'c-221',
+    animal: 'African elephant',
+    habitat: 'Savanna',
+    battery: '64%',
+  },
+  { id: 'c-317', animal: 'Snow leopard', habitat: 'Alpine', battery: '91%' },
+] as const;
+
 export const sampleTraitFactors = [
   { label: 'Speed', value: 5 },
   { label: 'Camouflage', value: 4.4 },
