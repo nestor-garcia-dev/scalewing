@@ -58,7 +58,7 @@ Evidence: `date-field.test.tsx` (the mark, its class and `aria-hidden`, inside t
 
 ## Follow-up request (2026-09-28, Teisoro F-007-S05 task 1350): the label row matches Field's
 
-Status: implemented on `claude/services-rereview-fixes` for Teisoro F-007-S05 task 1350; pull request pending review.
+Status: merged in #75 (2026-09-28) and released in `@scalewing/react` 1.13.0; Teisoro pins it in F-007-S05.
 Source: Teisoro UX re-review `services-nsf.md`, finding NSF-35 (polish): on the NSF record form "Date reported *" and "NSF fee *" sit side by side, but the date's box top is at y 147 and the fee's at 152 (labels at 127 and 129). "Give `DateField` the same label-to-control gap as `Field`, so a date and a text field side by side line up."
 
 Cause: both use a `space-1` gap. `Field`'s `<label>` keeps the canvas's body type (17/25 px) around a label-size `Text` span (15/20 px), so its line box is 25 px tall; `DateField`'s `<label>` set the label type on itself, so its line box was 20 px. The entry therefore sat 5 px higher (measured in the gallery: label rows 25 and 20 px, controls 29 and 24 px below the field's top).

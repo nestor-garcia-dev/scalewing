@@ -12,7 +12,7 @@ Behavior and failure boundary: presentation only; the semantic table stays for a
 
 ## Follow-up request (2026-09-28, Teisoro F-007-S05 task 1350): a selected row that moves no column
 
-Status: implemented on `claude/services-rereview-fixes` for Teisoro F-007-S05 task 1350; pull request pending review.
+Status: merged in #75 (2026-09-28) and released in `@scalewing/react` 1.13.0; Teisoro pins it in F-007-S05.
 Source: Teisoro UX re-review `services-nsf.md`, finding NSF-12 (partly fixed after 1.12.0, the Scalewing part). On the NSF record form the columns still moved when a check was picked, by 11 px (the Customer header from x 283 to 294, Company 454 to 464, Check # 747 to 753), and the row was not tinted (its pixels white). `TableRow selected` drew an 8 px accent dot at the row's start and added `padding-inline-start: var(--sw-space-5)` to the first cell; that padding was the shift. The review's remaining fix: reserve the marker's space or draw it outside the cell's padding, and add the tint Teisoro's `NsfRecordPage.tsx:645–647` expected.
 
 Teisoro use: the NSF record form's check picker (`apps/teisoro-web/src/app/NsfRecordPage.tsx`), a comfortable table whose rows are chosen with a pressed "Select" button.

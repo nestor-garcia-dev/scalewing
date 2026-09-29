@@ -33,7 +33,7 @@ Teisoro use: the direction control on `/vault` (`apps/teisoro-web/src/app/vault-
 
 ## Follow-up request (2026-09-28, Teisoro F-007-S05 task 1350): `error` and `required`
 
-Status: implemented on `claude/services-rereview-fixes` for Teisoro F-007-S05 task 1350; pull request pending review.
+Status: merged in #75 (2026-09-28) and released in `@scalewing/react` 1.13.0; Teisoro pins it in F-007-S05.
 Source: Teisoro UX re-review `services-drawer-cash-and-audits.md`, finding DRW-20 (polish): after a refused adjustment the direction control's border stays grey (rgb(210,210,215)) while Reason and Notes are outlined in red; only the caption "Choose add or remove." marks it. "Give Scalewing's segmented control (or `RadioGroup`) an `error` prop that draws the danger border and sets `aria-invalid`, as `Select` got in 1.12.0. Teisoro then drops its `data-invalid` group."
 
 Teisoro use: the adjustment dialog's direction (`apps/teisoro-web/src/app/drawer-support/AdjustmentDialog.tsx`), which renders its own caption and a `data-invalid` wrapper today.

@@ -1,5 +1,34 @@
 # @scalewing/react
 
+## 1.13.0
+
+### Minor Changes
+
+- ca9350c: `RadioGroup` options take an `icon` (`docs/requests/teisoro-radio-group.md`, 2026-09-28 follow-up, Teisoro CHK-13). `RadioGroupOption.icon?: ReactNode` renders a decorative glyph between the radio and its label, `aria-hidden`, in the text color (new generated class `sw-radio-group-icon`). The option's accessible name stays its `label` text, and a press on the glyph chooses the option. Without `icon` nothing changes. No new dependencies.
+- 4b0a029: `SegmentedControl` takes `error` and `required` (`docs/requests/teisoro-segmented-control.md`, 2026-09-28 follow-up, Teisoro DRW-20):
+
+  - `error?: string` renders a `sw-field-error` message under the track in the same polite live region as `Field`'s (always rendered, never an alert), links it to the `radiogroup` by `aria-describedby`, and sets `aria-invalid` and a danger outline on the group (`Mark` in forced colors). An empty string is no error.
+  - `required?: boolean` sets `aria-required` on the `radiogroup`; the element that labels the control shows the visible mark.
+  - The track now renders inside a `.sw-segmented-field` wrapper (new generated classes `sw-segmented-field` and `sw-segmented-field-filled`) that takes its place in the layout, so the track's width in a Stack, an Inline or block flow is unchanged and a `ref` still reaches the `radiogroup`. A test that measured the control against its `parentElement` should use the wrapper's parent. `error` is meant for a Stack or block layout: while a message shows, the field is at least 24ch wide (capped at its container), so in an `Inline` the row grows.
+
+  Without the new props nothing else changes. No new dependencies.
+
+### Patch Changes
+
+- 6a5b226: A pressed toggle `Button` keeps its label readable in forced colors (`docs/requests/teisoro-button.md`, 2026-09-28 follow-up; a regression from 1.12.0). The `Highlight` fill with `HighlightText` is gone: Chromium paints the forced backplate behind a button's text in `Canvas`, which erased the label (1.00:1 painted). The pressed button now keeps the forced button colors, so its label, glyphs and badges stay readable, and it is marked by the same 2 px ring as outside forced colors, drawn as a `Highlight` border on an out-of-flow `::after`, with a `Highlight` border on the button itself. No `forced-color-adjust`, no API change and no new dependencies.
+- d4ef0dc: `DateField`'s label row matches `Field`'s (`docs/requests/teisoro-date-field.md`, 2026-09-28 label row follow-up, Teisoro NSF-35). Its label now uses `Field`'s own label markup (the label words as a `Text` label span and the `aria-hidden` required mark, inside a `<label>` that keeps the canvas type), so a `DateField` beside a `Field` lines up at the label and the control; before, its entry sat 5 px higher. `.sw-date-field-label` no longer sets its own font size, weight or line height. No API change and no new dependencies.
+- 58ea2f8: A lone `DenominationGrid` tiles row without an icon or `total`, whose `label` is the grid's own `label`, no longer names itself (`docs/requests/teisoro-denomination-grid.md`, 2026-09-28 lone-row name follow-up, Teisoro SDAY-31). It was a region with the grid's own words inside the grid's group; now the group, named by `label`, is its only name. Every other row, including a lone plain row with different words, is still a region named by its `label`. No API change and no new dependencies.
+- 6f5a37c: A disabled text control looks locked (`docs/requests/teisoro-field-disabled.md`, Teisoro DRW-17). A disabled native `input`, `select` or `textarea` on the canvas, `Field`'s adorned frame and `DateField`'s entry take the subtle fill, a dashed border and `cursor: not-allowed`; the value stays in the text color at full opacity (4.5:1 or more in every palette), and forced colors keep the dashed border in `GrayText`. `DateField`'s entry no longer fades to the disabled opacity; its calendar button still does. Every typed input's placeholder is now drawn in `--sw-color-muted` (4.5:1 or more on every palette's field fill) instead of the browser's fixed gray, which fell to 2.3:1 on dark fields. No API change and no new dependencies.
+- a747fc5: `Select`'s label row matches `Field`'s (`docs/requests/teisoro-select.md`, 2026-09-28 label row follow-up). Its label now uses `Field`'s own label markup (the label words as a `Text` span and the `aria-hidden` required mark, inside a plain `<label>` that keeps the canvas type), so a `Select` beside a `Field` lines up at the label and the control; before, its trigger sat 5 px higher. `labelVisuallyHidden` hides the span inside the label, as `Field` does. No API change and no new dependencies.
+
+  Consumer and migration notes:
+
+  - The `<label>` element no longer carries `sw-text-label` (or `sw-sr-only` with `labelVisuallyHidden`); a `<span>` inside it does. A selector or test that targeted `label.sw-text-label` in a `Select` should target the label element (`label[for]`, or `getByText(label)` for the span) instead.
+  - A visible `size="xs"` label row goes from 18 px (the caption line height on the label itself) to 25 px (the canvas body line box, as a visible `xs` `Field` label has), so an `xs` Select with a visible label sits 7 px lower. Toolbar `xs` Selects with `labelVisuallyHidden` are unchanged: the hidden label takes no row.
+  - A visible `md` label row goes from 20 px to 25 px, so the trigger sits 5 px lower, level with a `Field` beside it.
+
+- 2f7e4b0: `TableRow selected` marks the row without moving a column (`docs/requests/teisoro-table.md`, 2026-09-28 follow-up, Teisoro NSF-12). The first cell no longer gains `padding-inline-start` and the 8 px dot is gone. A 4 px accent bar at the row's inline start (3:1 or more against the page and the surface) is drawn inside the first cell's padding, out of flow; it follows the writing direction. The row takes no fill, so text, muted and accent text keep their contrast. Forced colors keep the bar in `Highlight`. No API change and no new dependencies.
+
 ## 1.12.0
 
 ### Minor Changes
