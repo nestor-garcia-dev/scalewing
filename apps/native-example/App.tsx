@@ -5,6 +5,7 @@ import {
   Card,
   DateField,
   Field,
+  FloatingAction,
   Inline,
   MultiSelect,
   Progress,
@@ -69,6 +70,7 @@ export default function App() {
     useState<(typeof demoPalettes)[number]>('indigo');
   const [tab, setTab] = useState('one');
   const [section, setSection] = useState('table');
+  const [sightings, setSightings] = useState(0);
   const [searchCount, setSearchCount] = useState(0);
   const [rowPresses, setRowPresses] = useState(0);
   const [teamName, setTeamName] = useState('Harbor United');
@@ -312,10 +314,19 @@ export default function App() {
               </Stack>
             </Card>
             <Text color="muted">
-              Selected tab {tab}. Trailing presses {searchCount}.
+              Selected tab {tab}. Trailing presses {searchCount}. Sightings
+              logged {sightings}.
             </Text>
           </Stack>
         </ScrollView>
+        <FloatingAction
+          onPress={() => {
+            setSightings((count) => count + 1);
+          }}
+          testID="log-sighting"
+        >
+          Log sighting
+        </FloatingAction>
         <TabBar
           items={[
             {

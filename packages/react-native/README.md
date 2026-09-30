@@ -71,6 +71,14 @@ something, such as Sign out; any confirm stays the consumer's. Without
 name is the title, detail, and value unless `accessibilityLabel` replaces
 it.
 
+`FloatingAction` is a screen's one action as a lifted accent capsule in
+thumb reach, over a fade from clear to the page colour so content scrolling
+under it fades out. It places nothing itself: the consumer puts it at the
+bottom of the screen and lets the platform's keyboard avoidance lift it, with
+no keyboard toolbar. Only the capsule takes touches. A string child is its
+accessible name; `disabled` dims it and `testID` reaches the capsule. The fade
+uses React Native's `experimental_backgroundImage` (New Architecture).
+
 `ActionRow` holds the actions for what a screen shows as tinted tiles under
 its title, iOS Contacts style: each `actions` item is a consumer `icon` over
 a one-line `label` on the `accentSubtle` tint. The row keeps four equal
