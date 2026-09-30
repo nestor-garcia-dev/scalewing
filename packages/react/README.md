@@ -124,6 +124,15 @@ A disabled native text control (`<input>`, `<select>` or `<textarea>` on the can
 </Stack>
 ```
 
+A `Button`'s own children are laid out in a row one token gap apart (spacing step 2, 8 px), so a glyph passed beside the label never touches it. Pass the glyph and the label as direct children. An icon-only button has one child and is unchanged, and a visually hidden name (`sw-sr-only`) is out of the flow, so it adds no gap. A label already wrapped in one element with its own gap, such as `<Inline as="span" gap={2}>`, is a single child and gets no second gap; it can drop the wrapper. Keep words that must read as one phrase in one text run or one element, since separate elements are also a gap apart.
+
+```tsx
+<Button onPress={logSighting}>
+  <Plus aria-hidden />
+  Log sighting
+</Button>
+```
+
 A `Button` that toggles something passes `aria-pressed`. The pressed button gets a 2 px accent ring outside its fill, past a 2 px gap in `--sw-color-background`, so the ring meets only the page and keeps the accent's contrast on the canvas (4.5:1 or more in every palette, at least the 3:1 a state indicator needs) whatever its `variant` or fill. A focused pressed button moves its focus outline out past the ring. In forced colors, which drop shadows, the pressed button keeps the forced button colors, so its label and any glyph or badge inside it stay readable, and draws the same ring and its own border in the system highlight (`Highlight`); nothing opts out of forced colors. An unpressed button is drawn at full strength, so its label keeps its contrast. To make the choice stand out further, give the pressed button `primary` and the others `secondary`.
 
 `Badge` is a non-interactive chicklet with a `tone` (`neutral`, `accent`, `success`, `danger`, `warning`) and a `size` (`md`, or `sm` for a table cell). A badge inside a filled `Button` (every variant but `ghost`) sits on `--sw-color-surface` with its words in the text color and its tone on its border, so it reads at 4.5:1 in every palette whatever the button's fill.

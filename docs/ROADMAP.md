@@ -23,6 +23,8 @@ sections of `services-*.md`), one surface per commit on
 
 - `Toast` keeps the page gutter on a phone (DRW-29, `teisoro-toast.md`
   follow-up).
+- `Button` sets a glyph one token gap from its label (`services-nsf.md`
+  final check, `teisoro-button.md` follow-up).
 
 Next: pull request, review and merge, then release `@scalewing/react`
 and Teisoro pins it.

@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { cleanup, render, screen } from '@testing-library/react';
 import {
   buttonVariants,
   contrastRatio,
@@ -6,14 +6,17 @@ import {
   paletteIds,
   type SemanticColorKey,
 } from '@scalewing/tokens';
-import { describe, expect, it, vi } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import { Button } from './components/Button.js';
+import { Inline } from './components/Inline.js';
 import {
+  buttonContentGap,
   cssButtonClasses,
   pressedRingGap,
   pressedRingWidth,
 } from './css/css-button.js';
+import { visuallyHiddenDeclarations } from './css/css-utilities.js';
 import { ThemeProvider } from './theme/ThemeProvider.js';
 
 describe('Button', () => {
@@ -70,6 +73,55 @@ describe('Button', () => {
     });
     expect(control.getAttribute('aria-pressed')).toBe('false');
     expect(control.className).toContain('sw-button-secondary');
+  });
+});
+
+describe('icon-to-label gap', () => {
+  afterEach(cleanup);
+  const css = cssButtonClasses();
+  const base = css.slice(css.indexOf('.sw-button {'));
+  const rule = base.slice(0, base.indexOf('}'));
+
+  it("sets one token gap between the button's own children", () => {
+    // Teisoro (services-nsf.md, final check): every glyph sat about 2 px
+    // from its label, because .sw-button had no gap.
+    expect(buttonContentGap).toBe('var(--sw-space-2)');
+    expect(rule).toContain('display: inline-flex;');
+    expect(rule).toContain('gap: var(--sw-space-2);');
+  });
+
+  it("keeps a glyph and its label as the button's direct children", () => {
+    render(
+      <Button onPress={() => undefined}>
+        <svg aria-hidden="true" data-testid="glyph" />
+        Log sighting
+      </Button>,
+    );
+    const button = screen.getByRole('button', { name: 'Log sighting' });
+    // No wrapper: the gap applies between the glyph and the text.
+    expect(button.firstElementChild).toBe(screen.getByTestId('glyph'));
+    expect(button.childNodes).toHaveLength(2);
+  });
+
+  it('adds no second gap to a label already wrapped in one Inline', () => {
+    render(
+      <Button onPress={() => undefined}>
+        <Inline as="span" gap={2}>
+          <svg aria-hidden="true" />
+          Log sighting
+        </Inline>
+      </Button>,
+    );
+    // One flex item: the button's gap has nothing to separate.
+    expect(
+      screen.getByRole('button', { name: 'Log sighting' }).childNodes,
+    ).toHaveLength(1);
+  });
+
+  it('keeps a visually hidden name out of the flex flow', () => {
+    // CalendarButton's name is an sr-only span beside its glyph; absolutely
+    // positioned, it is no flex item, so the glyph stays centred.
+    expect(visuallyHiddenDeclarations).toContain('position: absolute;');
   });
 });
 

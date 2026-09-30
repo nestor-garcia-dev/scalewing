@@ -53,3 +53,30 @@ Rejected alternatives (each was drawn and measured on the painted pixels in the 
 - A `Highlight` outline for the pressed state. It is readable, but the focus outline uses the same property, so a focused pressed button would lose one of the two cues.
 
 Evidence: `button.test.tsx` ("pressed toggle in forced colors": the forced block sets no background, `HighlightText` or `color`; no `forced-color-adjust` in the button's CSS; the `::after` ring is a `Highlight` border whose width and inset follow `pressedRingGap` and `pressedRingWidth`, and the pressed focus offset still clears it); `css/stylesheet.test.ts` (the forced-colors pressed rule); `apps/gallery/e2e/contrast.ts` gains `paintedTextContrast`, which screenshots a text box and returns the ratio between its lightest and darkest pixels, so it sees the backplate; `apps/gallery/e2e/button.spec.ts`, with `emulateMedia({ forcedColors: 'active' })`: "a pressed toggle Button keeps its label readable in forced colors" measures the pressed "Forest" (secondary), "Day" (primary), and "Marsh"'s label span and badge at 4.5:1 or more painted, and fails at 1.00:1 against the 1.12.0 rule. The toggle test's forced-colors branch checks the `::after` ring (`Highlight`, solid, 2 px), none on an unpressed button, and the `Highlight` border.
+
+## Follow-up request (2026-09-30, Teisoro F-007-S05 task 1375): a glyph's gap from its label
+
+Status: implemented on `claude/services-leftovers` for Teisoro F-007-S05 task 1375; pull request pending review.
+Source: Teisoro UX final check `services-nsf.md`, "Seen and not filed" (app-wide, older than the Services changes): every button with a glyph sets it about 2 px from its label ("Record payment", "Log activity", "Write off", "Buscar"; `logs-a-call-with-a-follow-up-and-lists-it-on-the-record/en-1280/02-the-activity-logged.part-1.png`). `.sw-button` had no `gap` in any release.
+
+Teisoro need: `<Button><Glyph icon={Plus} />{copy.record}</Button>` (for example `NsfListPage.tsx`, `NsfRecordPage.tsx`) reads as one glyph and one label, a consistent space apart. Other Teisoro buttons wrap the two in `<Inline as="span" gap={2} align="center">` (24 of them) or `gap={1}` (the back links), so the product has three spacings for one pattern.
+
+Existing surface this might already be: `Inline` inside the button, which is what Teisoro's wrapped buttons use. It works, but every consumer has to remember it, and the ones that do not get a glyph touching its label; the button is a flex container already, so the gap belongs on it.
+
+Behavior (no API change): `.sw-button` gains `gap: var(--sw-space-2)` (8 px). The button's own children are its flex items, so:
+
+- a glyph and a label passed as direct children sit 8 px apart, at every `size`;
+- an icon-only button has one item and is unchanged;
+- a glyph and label already wrapped in one element (Teisoro's `<Inline as="span" gap={2}>`) are one item, so there is no second gap: the wrapper's own gap is the only one. The wrapper can be dropped, and the `gap={1}` back links get 8 px once they drop theirs;
+- a visually hidden name (`sw-sr-only`, as in `CalendarButton`) is absolutely positioned, out of the flex flow, so it adds no gap and the glyph stays centred;
+- an element hidden below a breakpoint (`Box hideBelow="md"`, Teisoro's "Services reports") is `display: none` there, so the icon-only phone button has no gap either.
+
+Migration: nothing breaks. A button whose children are several elements meant to read as one phrase (`Save <strong>draft</strong>`) now shows 8 px between them instead of a word space; keep such a phrase in one element.
+
+Rejected alternatives:
+
+- A gap per `size` (4 px on `xs`). The glyph is the same 16 px at every size, and Teisoro's wrappers use 8 px on every size; one token is the consistent answer the finding asks for.
+- An `icon` prop on `Button`. It would fix the gap only for consumers that migrate, add a slot that `children` already covers, and need rules for its position and its name; the gap fixes every existing button.
+- `margin-inline-end` on a direct `svg` child. It misses a glyph wrapped in a span and adds space after an icon-only glyph; `gap` separates items only.
+
+Evidence: `button.test.tsx` ("icon-to-label gap": the base rule's `gap: var(--sw-space-2)` on an `inline-flex` button; a glyph and a label stay direct children; a label wrapped in one `Inline` is a single child; the visually hidden declarations are absolutely positioned); `apps/gallery/e2e/button.spec.ts` "a Button sets its glyph one token gap from its label, once" on desktop-en, mobile-es and forced-colors, with the gallery's new "With a glyph" row: "Log sighting" at `xs`, `sm` and `md` has 8 px between the glyph and the first letter, the "Field log" button wrapped in `<Inline as="span" gap={2}>` also 8 px (not 16), and the icon-only "Back to the field log", named by a visually hidden `sw-sr-only` span beside its glyph, keeps the glyph centred. Without the rule the glyph touches the label (0 px).
