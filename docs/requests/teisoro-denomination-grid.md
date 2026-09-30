@@ -109,3 +109,31 @@ Rejected alternatives:
 - A prop to choose the layout. There is no case where the glyph should sit over its words.
 
 Evidence: `denomination-grid.test.tsx` ("DenominationGrid row label line": the strip's body is the line (glyph then words) then the phone total; a tiles row's line sits before its total; the line's rule has no `flex-wrap`, and below `md` the body stacks while the line keeps a row with a step 1 gap); `apps/gallery/e2e/denomination-grid.spec.ts` "a DenominationGrid row keeps its glyph beside its words at every width" on desktop-en, mobile-es and forced-colors: in "Tag movement by size" each row's words start after its glyph on the glyph's line, and on a phone the total sits under them; in the new "Den watch" strip, "Returned to the den at dusk" wraps onto two lines on a phone with every line starting after the glyph.
+
+## Follow-up request (2026-09-30, Teisoro F-007-S05 task 1375): count columns that line up from grid to grid
+
+Status: implemented on `claude/services-leftovers` for Teisoro F-007-S05 task 1375; pull request pending review.
+Source: Teisoro UX final check `services-drawer-cash-and-audits.md`, finding DRW-27 (polish, the part left for Scalewing). `admin/09-the-adjustment-recorded.part-3.png`: the "$1" header sits at about x 522 on the adjustment card, 515 on the drop card and 483 on the vault-to-drawer card; `audit/06-…part-3.png` at about x 468; the same at 390 px (es 05 part-3 and part-4). The review asked for "a fixed row-label width … If `DenominationGrid` has no prop for that, ask Scalewing for a `labelWidth`."
+
+Teisoro need: the Services day's activity feed (`apps/teisoro-web/src/app/services-day/ActivityCard.tsx`, `FlowStrips`: one strip per card, the same six bill columns, row labels such as "Received", "Removed", "Agregado") puts each bill column under the one on the card above.
+
+Existing surface this might already be: none. The strip is an auto-layout table at `width: 100%`, so the browser sizes the label column by its words and shares the spare width among the count columns by their widest count; two cards with different labels or counts put "$1" in different places. `columns` has no width, and Teisoro owns no CSS.
+
+Proposed and implemented API (optional, no default change): `labelWidth?: number`, the row-label column's width in characters of the label type (`ch`), a positive integer (anything else throws a `RangeError`). The strip then takes `sw-denomination-strip-aligned` and sets `--sw-denomination-label-width` on the table:
+
+- the row labels get `width: var(--sw-denomination-label-width)`, and every count column head gets one token width (`--sw-space-8`, `--sw-space-5` below `md`), so no column is sized by its content any more;
+- without totals every column is fixed, and the table shares any spare width among them in proportion to those widths; with totals the total column, left without a width, takes the spare width at the end (below `md` it still takes none). Either way, strips of the same width, columns and `labelWidth` put each count column in the same place;
+- a label longer than the width wraps its words beside its icon (the previous follow-up), so on a phone it does not widen the column; on a desktop the label column's share of the spare width usually fits it on one line;
+- a single word longer than the width, or a count wider than its column (three digits on a phone), still widens that column: the table never cuts content. The README says so.
+- the tiles layout has no label column and ignores it, as it ignores `totalLabel`.
+
+Why characters: the width must be the same for every card, whatever its labels, so it cannot come from the content; `ch` follows the label type, the locale's text size and the user's zoom, as `DateField`'s 12ch entry does. The consumer knows its longest label in each language ("Removed", "Agregado") and adds room for the icon. A width from the spacing scale would top out at 48 px, too narrow for a label.
+
+Rejected alternatives:
+
+- `table-layout: fixed`. Columns would ignore their content: an eleven-column strip on a phone would squeeze its counts into overlapping cells instead of scrolling (`teisoro-denomination-grid.md`, 2026-09-25 follow-up).
+- Candidate labels (`labelWidthFrom={['Removed', …]}`) drawn hidden in the label column to size it. It sizes the label column exactly, but that column would stay a content-sized one, so with totals it would share the spare width with the total column by content and the counts would move again.
+- A shared-width context or a `DenominationGrid` group. More API for the same result, when every card in a feed already has the same width and columns.
+- A column width per `columns` entry. Teisoro's columns are all alike; a width per column is a table API this primitive does not need.
+
+Evidence: `denomination-grid.test.tsx` ("DenominationGrid labelWidth": the class and `--sw-denomination-label-width: 10ch` on the table; none without it; tiles ignore it; the generated widths for the labels and count heads, and none for the total column; `0`, `-2`, `1.5` and `NaN` throw); `apps/gallery/e2e/denomination-grid.spec.ts` "DenominationGrid strips with one labelWidth line their columns up" on desktop-en, mobile-es and forced-colors, with the gallery's "Den checks, lined up" card (two strips with different labels, one row and two, different counts; two more with totals): every column head's left edge and width within half a pixel between the pair without totals and between the pair with totals; on a phone the total column takes no width and "Seen at the entrance" wraps onto two lines beside its glyph (one line on a desktop); no strip scrolls. Without `labelWidth` the gallery's other strips put the same columns up to 8 px apart.

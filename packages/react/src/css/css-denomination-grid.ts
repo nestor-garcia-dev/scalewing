@@ -122,6 +122,24 @@ ${scrollRegionRules('.sw-denomination-scroll')}
   width: var(--sw-space-1);
 }
 
+/*
+ * labelWidth: every column gets a specified width, the row labels the
+ * consumer's width in ch and each count column one token width, so the
+ * table no longer sizes a column by its words and counts. Without totals
+ * all columns are fixed and share any spare width in proportion to those
+ * widths; with totals the total column takes the spare width at the end.
+ * Either way two strips of the same width, columns and labelWidth put each
+ * count column in the same place. A word longer than the label width, or a
+ * count wider than its column, still widens that column.
+ */
+.sw-denomination-strip-aligned .sw-denomination-label {
+  width: var(--sw-denomination-label-width);
+}
+
+.sw-denomination-strip-aligned .sw-denomination-head {
+  width: var(--sw-space-8);
+}
+
 .sw-denomination-icon {
   display: inline-flex;
   flex: none;
@@ -240,6 +258,7 @@ ${scrollRegionRules('.sw-denomination-scroll')}
   .sw-denomination-total-inline { display: block; }
   .sw-denomination-label-body { flex-direction: column; align-items: flex-start; gap: var(--sw-space-1); }
   .sw-denomination-label-line { gap: var(--sw-space-1); }
+  .sw-denomination-strip-aligned .sw-denomination-head { width: var(--sw-space-5); }
   .sw-denomination-strip th,
   .sw-denomination-strip td { padding: var(--sw-space-1); }
   .sw-denomination-strip .sw-denomination-label { padding-inline-start: calc(var(--sw-space-1) * 2); }
@@ -263,6 +282,7 @@ export function denominationGridClassCatalog(): string[] {
     'sw-denomination-scroll',
     ...badgeTones.map((tone) => `sw-denomination-row-${tone}`),
     'sw-denomination-strip',
+    'sw-denomination-strip-aligned',
     'sw-denomination-head',
     'sw-denomination-corner',
     'sw-denomination-row',

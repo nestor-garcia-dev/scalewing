@@ -45,6 +45,7 @@ export function DenominationGridSection() {
       usage={`<DenominationGrid
   label="Tag movement by size"
   columns={[{ key: 'xs', label: 'XS' }, { key: 's', label: 'S' }]}
+  labelWidth={12}
   rows={[
     { id: 'in', label: 'Tagged', tone: 'success', cells: [12, 0], total: '+124 g' },
     { id: 'net', label: 'Net', cells: [12, -3], signed: true, total: '+96 g' },
@@ -116,6 +117,85 @@ export function DenominationGridSection() {
                 },
               ]}
             />
+          </Stack>
+        </Card>
+        <Card padding={4}>
+          <Stack gap={3}>
+            <Text color="muted" variant="label">
+              Den checks, lined up
+            </Text>
+            <DenominationGrid
+              columns={tagColumns}
+              label="Den check at dawn"
+              labelWidth={12}
+              rows={[
+                {
+                  id: 'returned',
+                  label: 'Returned',
+                  tone: 'success',
+                  icon: <ArrowGlyph direction="in" />,
+                  cells: [4, 2, 0, 1, 0, 0],
+                },
+              ]}
+            />
+            <DenominationGrid
+              columns={tagColumns}
+              label="Den check at dusk"
+              labelWidth={12}
+              rows={[
+                {
+                  id: 'left',
+                  label: 'Left',
+                  tone: 'danger',
+                  icon: <ArrowGlyph direction="out" />,
+                  cells: [12, 0, 0, 0, 3, 0],
+                },
+                {
+                  id: 'seen',
+                  label: 'Seen at the entrance',
+                  icon: <ArrowGlyph direction="sum" />,
+                  cells: [0, 0, 7, 0, 0, 1],
+                },
+              ]}
+            />
+            <DenominationGrid
+              columns={tagColumns}
+              label="Tag weight at dawn"
+              labelWidth={12}
+              rows={[
+                {
+                  id: 'returned',
+                  label: 'Returned',
+                  tone: 'success',
+                  icon: <ArrowGlyph direction="in" />,
+                  cells: [4, 2, 0, 1, 0, 0],
+                  total: '56 g',
+                },
+              ]}
+              totalLabel="Total weight"
+            />
+            <DenominationGrid
+              columns={tagColumns}
+              label="Tag weight at dusk"
+              labelWidth={12}
+              rows={[
+                {
+                  id: 'left',
+                  label: 'Left',
+                  tone: 'danger',
+                  icon: <ArrowGlyph direction="out" />,
+                  cells: [12, 0, 0, 0, 3, 0],
+                  total: '84 g',
+                },
+              ]}
+              totalLabel="Total weight"
+            />
+            <Text color="muted" variant="caption">
+              labelWidth gives the row labels a width in characters, so strips
+              of the same width and columns line their columns up whatever their
+              labels and counts; a longer label wraps beside its glyph. Strips
+              with totals line up with each other.
+            </Text>
           </Stack>
         </Card>
         <Card padding={4}>

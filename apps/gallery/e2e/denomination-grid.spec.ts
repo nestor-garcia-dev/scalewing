@@ -249,3 +249,81 @@ test('a DenominationGrid row keeps its glyph beside its words at every width', a
     .getByRole('table', { name: 'Den watch by tag size' })
     .screenshot({ path: testInfo.outputPath('denomination-label-line.png') });
 });
+
+test('DenominationGrid strips with one labelWidth line their columns up', async ({
+  page,
+}, testInfo) => {
+  await page.goto('/#denomination-grid');
+  if (testInfo.project.name === 'forced-colors')
+    await page.emulateMedia({ forcedColors: 'active' });
+  const section = page.locator('#denomination-grid');
+  const isPhone = testInfo.project.name === 'mobile-es';
+
+  /** Each column head's left edge and width, label corner first. */
+  const columnsOf = (name: string) =>
+    section.getByRole('table', { name }).evaluate((table) =>
+      [...table.querySelectorAll('thead > tr > *')].map((cell) => {
+        const box = cell.getBoundingClientRect();
+        return { left: box.left, width: box.width };
+      }),
+    );
+  const expectAligned = (
+    first: { left: number; width: number }[],
+    second: { left: number; width: number }[],
+  ) => {
+    expect(second).toHaveLength(first.length);
+    first.forEach((column, index) => {
+      expect(
+        Math.abs(column.left - second[index]!.left),
+        `column ${index}`,
+      ).toBeLessThanOrEqual(0.5);
+      expect(
+        Math.abs(column.width - second[index]!.width),
+        `column ${index}`,
+      ).toBeLessThanOrEqual(0.5);
+    });
+  };
+
+  // Teisoro DRW-27: the "$1" column sat at x 522, 515 and 483 on three
+  // activity cards, each sized by its own row labels and counts.
+  const dawn = await columnsOf('Den check at dawn');
+  const dusk = await columnsOf('Den check at dusk');
+  expectAligned(dawn, dusk);
+  // With totals, the total column takes the spare width at the end.
+  const weightDawn = await columnsOf('Tag weight at dawn');
+  const weightDusk = await columnsOf('Tag weight at dusk');
+  expectAligned(weightDawn, weightDusk);
+  if (isPhone) {
+    // The phone total column still takes no width.
+    expect(weightDawn.at(-1)!.width).toBeLessThanOrEqual(1);
+  }
+
+  // On a phone, with no spare width to share, a label longer than the width
+  // wraps beside its glyph instead of widening its column. On a desktop the
+  // label column shares the spare width, so the label fits on one line.
+  const seen = section
+    .getByRole('table', { name: 'Den check at dusk' })
+    .getByRole('rowheader', { name: /Seen at the entrance/ });
+  const lines = await seen.evaluate((header) => {
+    const range = document.createRange();
+    range.selectNodeContents(
+      header.querySelector('.sw-denomination-label-text')!,
+    );
+    return new Set([...range.getClientRects()].map((r) => Math.round(r.top)))
+      .size;
+  });
+  expect(lines).toBe(isPhone ? 2 : 1);
+
+  // Every strip still fits its card: nothing scrolls sideways.
+  for (const name of ['Den check at dawn', 'Tag weight at dusk']) {
+    const region = section.getByRole('group', { name });
+    expect(
+      await region.evaluate((node) => node.scrollWidth <= node.clientWidth),
+      name,
+    ).toBe(true);
+  }
+  await section
+    .getByRole('table', { name: 'Den check at dawn' })
+    .locator('xpath=ancestor::*[contains(@class, "sw-card")][1]')
+    .screenshot({ path: testInfo.outputPath('denomination-label-width.png') });
+});

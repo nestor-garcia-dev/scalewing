@@ -1,3 +1,5 @@
+import { type CSSProperties } from 'react';
+
 import { cx } from '../../class-names.js';
 import { denominationCellView } from '../../denomination-cells.js';
 import { ScrollRegion } from '../ScrollRegion.js';
@@ -7,7 +9,7 @@ import { type DenominationGridProps } from './types.js';
 type StripProps = Required<
   Pick<DenominationGridProps, 'label' | 'columns' | 'rows' | 'zeroLabel'>
 > &
-  Pick<DenominationGridProps, 'totalLabel'>;
+  Pick<DenominationGridProps, 'totalLabel' | 'labelWidth'>;
 
 /**
  * The total column's header: a visually hidden `th` when the consumer names
@@ -24,18 +26,33 @@ function TotalHead({ totalLabel }: Pick<StripProps, 'totalLabel'>) {
   );
 }
 
+/** The row-label column's width, in characters of the label type. */
+function labelWidthStyle(labelWidth: number): CSSProperties {
+  return {
+    '--sw-denomination-label-width': `${labelWidth}ch`,
+  } as CSSProperties;
+}
+
 export function DenominationStrip({
   label,
   columns,
   rows,
   zeroLabel,
   totalLabel,
+  labelWidth,
 }: StripProps) {
   const hasTotals = rows.some((row) => row.total !== undefined);
+  const aligned = labelWidth !== undefined;
 
   return (
     <ScrollRegion aria-label={label} className="sw-denomination-scroll">
-      <table className="sw-denomination-grid sw-denomination-strip">
+      <table
+        className={cx(
+          'sw-denomination-grid sw-denomination-strip',
+          aligned && 'sw-denomination-strip-aligned',
+        )}
+        style={aligned ? labelWidthStyle(labelWidth) : undefined}
+      >
         <caption className="sw-sr-only">{label}</caption>
         <thead>
           <tr>

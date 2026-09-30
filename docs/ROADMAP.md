@@ -29,6 +29,8 @@ sections of `services-*.md`), one surface per commit on
   accent ring (NSF-34, ENT-29, DRW-30, new `teisoro-focus-target.md`).
 - `DenominationGrid` keeps a row's glyph beside its label on a phone
   (DRW-28, `teisoro-denomination-grid.md` follow-up).
+- `DenominationGrid` `labelWidth`, so strips in a feed line up their
+  count columns (DRW-27, `teisoro-denomination-grid.md` follow-up).
 
 Next: pull request, review and merge, then release `@scalewing/react`
 and Teisoro pins it.
