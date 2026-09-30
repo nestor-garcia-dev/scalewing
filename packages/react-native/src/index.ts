@@ -13,6 +13,10 @@ export {
 } from './components/Button.js';
 export { Card, type CardProps, type CardVariant } from './components/Card.js';
 export { Field, type FieldProps } from './components/Field.js';
+export {
+  FloatingAction,
+  type FloatingActionProps,
+} from './components/FloatingAction.js';
 export { Inline, type InlineProps } from './components/Inline.js';
 export { Stack, type StackProps } from './components/Stack.js';
 export { type Align, type Justify } from './alignment.js';
