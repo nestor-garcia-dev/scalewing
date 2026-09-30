@@ -40,7 +40,7 @@ export function DenominationGridSection() {
   return (
     <Section
       id="denomination-grid"
-      purpose="DenominationGrid shows counts per unit across a fixed set of columns: the strip layout is a captioned table with a toned row label, muted zeros, signed deltas, and an optional total; the tiles layout stacks label, count, and a consumer-formatted subtotal per column. A lone tiles row without an icon or total whose label repeats the grid's is named only by the grid; any other row names its own region. Icons are consumer slots."
+      purpose="DenominationGrid shows counts per unit across a fixed set of columns: the strip layout is a captioned table with a toned row label, muted zeros, signed deltas, and an optional total; the tiles layout stacks label, count, and a consumer-formatted subtotal per column. A lone tiles row without an icon or total whose label repeats the grid's is named only by the grid; any other row names its own region. Icons are consumer slots; a row's glyph stays on its label's line, and a long label wraps its words beside the glyph."
       title="DenominationGrid"
       usage={`<DenominationGrid
   label="Tag movement by size"
@@ -86,6 +86,33 @@ export function DenominationGridSection() {
                   cells: [9, 4, -2, 9, 2, 0],
                   signed: true,
                   total: '+268 g',
+                },
+              ]}
+            />
+          </Stack>
+        </Card>
+        <Card padding={4}>
+          <Stack gap={2}>
+            <Text color="muted" variant="label">
+              Den watch
+            </Text>
+            <DenominationGrid
+              columns={tagColumns}
+              label="Den watch by tag size"
+              rows={[
+                {
+                  id: 'returned',
+                  label: 'Returned to the den at dusk',
+                  tone: 'success',
+                  icon: <ArrowGlyph direction="in" />,
+                  cells: [4, 2, 0, 1, 0, 0],
+                },
+                {
+                  id: 'left',
+                  label: 'Left',
+                  tone: 'danger',
+                  icon: <ArrowGlyph direction="out" />,
+                  cells: [1, 0, 0, 0, 0, 0],
                 },
               ]}
             />

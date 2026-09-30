@@ -90,3 +90,22 @@ Rejected alternatives:
 - Rendering every row without a region. Several rows need their own names ("Expected", "Counted") to tell them apart.
 
 Evidence: `denomination-grid.test.tsx` ("names a lone plain row only by the grid, not by a second region": with the grid's label, no `region` role, no `aria-label`, tiles still render; "keeps a lone plain row's own name when it differs from the grid's": a region named "Expected" inside the "Drawer count" group), with the existing lone-row-with-total and several-rows tests still finding their regions; `apps/gallery/e2e/denomination-grid.spec.ts` on desktop-en, mobile-es and forced-colors: the gallery's lone plain "Tags in the field kit" (its row now labelled with the grid's words, Teisoro's pattern) has no region and none in its ARIA snapshot, while "Tags fitted today" (a lone row with a total) and "Kit audit" (several rows) keep theirs.
+
+## Follow-up request (2026-09-30, Teisoro F-007-S05 task 1375): a row's glyph stays beside its label
+
+Status: implemented on `claude/services-leftovers` for Teisoro F-007-S05 task 1375; pull request pending review.
+Source: Teisoro UX final check `services-drawer-cash-and-audits.md`, finding DRW-28 (polish, the part left for Scalewing). `services-day/adds-cash-from-the-vault-after-a-failed-attempt/es-390/05-the-cash-added.part-3.png`: on the activity cards at 390 px, the "Faltante" and "Agregado" row labels put their ⊖ / ⊕ glyph on its own line above the word.
+
+Teisoro need: the activity cards' bill strips (`apps/teisoro-web/src/app/services-day/ActivityCard.tsx`, `FlowStrips`, one `DenominationGrid` with an icon per row) read "⊖ Faltante" on one line on a phone, as they do on a desktop. Teisoro already keeps its own badge and name on one line (no-break spaces); the row label is Scalewing's markup.
+
+Existing surface this might already be: none. Below `md` the strip's `.sw-denomination-label-body` was `flex-direction: column`, so the glyph, the words and the phone total each took their own line by design, and from `md` up it was a wrapping flex row, so a squeezed column could still drop the words under the glyph. No prop changes that.
+
+Behavior (no API change): the row's glyph and words sit in a new `.sw-denomination-label-line` (a flex row that does not wrap, gap spacing step 2, step 1 below `md`), in both the strip and the tiles layouts (one shared `RowLabelLine`). Its narrowest width is the glyph, the gap and the longest word, so a long label wraps its words beside the glyph, never under it. Below `md` the strip's label body still stacks, now the line over the phone total, so the total keeps its own line under the label. A row without an icon is unchanged apart from the wrapper; the row header's accessible name is unchanged.
+
+Rejected alternatives:
+
+- `white-space: nowrap` on the label. It would keep the glyph beside the words, but a long label would widen the pinned label column and push every count sideways on a phone; wrapping beside the glyph keeps the column narrow.
+- Removing the column layout below `md` and letting the body wrap. The phone total, which must sit under the label, would share the wrap with the words, and a squeezed column would still drop the words under the glyph.
+- A prop to choose the layout. There is no case where the glyph should sit over its words.
+
+Evidence: `denomination-grid.test.tsx` ("DenominationGrid row label line": the strip's body is the line (glyph then words) then the phone total; a tiles row's line sits before its total; the line's rule has no `flex-wrap`, and below `md` the body stacks while the line keeps a row with a step 1 gap); `apps/gallery/e2e/denomination-grid.spec.ts` "a DenominationGrid row keeps its glyph beside its words at every width" on desktop-en, mobile-es and forced-colors: in "Tag movement by size" each row's words start after its glyph on the glyph's line, and on a phone the total sits under them; in the new "Den watch" strip, "Returned to the den at dusk" wraps onto two lines on a phone with every line starting after the glyph.

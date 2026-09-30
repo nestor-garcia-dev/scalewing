@@ -193,3 +193,59 @@ test('a wide DenominationGrid strip scrolls inside its container and never widen
     path: testInfo.outputPath('denomination-grid-wide.png'),
   });
 });
+
+test('a DenominationGrid row keeps its glyph beside its words at every width', async ({
+  page,
+}, testInfo) => {
+  await page.goto('/#denomination-grid');
+  if (testInfo.project.name === 'forced-colors')
+    await page.emulateMedia({ forcedColors: 'active' });
+  const section = page.locator('#denomination-grid');
+  const isPhone = testInfo.project.name === 'mobile-es';
+
+  /** The glyph's box and the box of the words' first line, in one row header. */
+  const layoutOf = (table: string, name: RegExp) =>
+    section
+      .getByRole('table', { name: table })
+      .getByRole('rowheader', { name })
+      .evaluate((header) => {
+        const glyph = header
+          .querySelector('.sw-denomination-icon')!
+          .getBoundingClientRect();
+        const text = header.querySelector('.sw-denomination-label-text')!;
+        const range = document.createRange();
+        range.selectNodeContents(text);
+        const lines = [...range.getClientRects()];
+        const first = lines[0]!;
+        const inline = header.querySelector('.sw-denomination-total-inline');
+        return {
+          glyph: { left: glyph.left, right: glyph.right, top: glyph.top },
+          first: { left: first.left, top: first.top, bottom: first.bottom },
+          textLeft: Math.min(...lines.map((line) => line.left)),
+          lineCount: new Set(lines.map((line) => Math.round(line.top))).size,
+          inlineTop: inline?.getBoundingClientRect().top ?? null,
+          textBottom: text.getBoundingClientRect().bottom,
+        };
+      });
+
+  // Teisoro DRW-28: at 390 the glyph sat on its own line over the word.
+  for (const name of [/Tagged/, /Released/, /Net/]) {
+    const row = await layoutOf('Tag movement by size', name);
+    expect(row.first.left, String(name)).toBeGreaterThan(row.glyph.right);
+    expect(row.glyph.top, String(name)).toBeLessThan(row.first.bottom);
+    if (isPhone) {
+      // The phone total takes its own line under the glyph and words.
+      expect(row.inlineTop!, String(name)).toBeGreaterThanOrEqual(
+        row.textBottom - 0.5,
+      );
+    }
+  }
+
+  // A long label wraps its words beside the glyph, never under it.
+  const long = await layoutOf('Den watch by tag size', /Returned to the den/);
+  expect(long.textLeft).toBeGreaterThan(long.glyph.right);
+  if (isPhone) expect(long.lineCount).toBeGreaterThan(1);
+  await section
+    .getByRole('table', { name: 'Den watch by tag size' })
+    .screenshot({ path: testInfo.outputPath('denomination-label-line.png') });
+});

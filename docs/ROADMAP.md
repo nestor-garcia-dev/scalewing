@@ -27,6 +27,8 @@ sections of `services-*.md`), one surface per commit on
   final check, `teisoro-button.md` follow-up).
 - A programmatic focus target (`tabindex="-1"`) takes the canvas's
   accent ring (NSF-34, ENT-29, DRW-30, new `teisoro-focus-target.md`).
+- `DenominationGrid` keeps a row's glyph beside its label on a phone
+  (DRW-28, `teisoro-denomination-grid.md` follow-up).
 
 Next: pull request, review and merge, then release `@scalewing/react`
 and Teisoro pins it.
