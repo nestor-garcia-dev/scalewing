@@ -68,6 +68,14 @@ export function ListDemo() {
         <ListRow title="Humidity" value="68%" />
         <ListRow detail="Checked at dawn" title="Water" value="21 °C" />
       </ListGroup>
+      <ListGroup accessibilityLabel="Keeper">
+        <ListRow
+          accessory="none"
+          onPress={() => setOpened('End shift')}
+          title="End shift"
+          tone="danger"
+        />
+      </ListGroup>
     </Stack>
   );
 }

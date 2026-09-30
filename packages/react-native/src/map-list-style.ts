@@ -8,6 +8,9 @@ import { type ViewStyle } from 'react-native';
 /** What a row shows at its end side. */
 export type ListRowAccessory = 'chevron' | 'check' | 'none';
 
+/** `danger` marks a row that ends something, such as signing out. */
+export type ListRowTone = 'default' | 'danger';
+
 export type ListRowState = {
   disabled: boolean;
   pressed: boolean;
@@ -79,3 +82,10 @@ export function mapListChevronStyle(theme: Theme): ViewStyle {
 }
 
 export const listCheckColor: SemanticColorKey = 'accent';
+
+/** The title's colour: the text colour, or `danger` for a danger row. */
+export function listRowTitleColor(
+  tone: ListRowTone = 'default',
+): SemanticColorKey {
+  return tone === 'danger' ? 'danger' : 'text';
+}

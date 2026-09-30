@@ -3,6 +3,7 @@ import { describe, expect, it } from 'vitest';
 
 import {
   listRowAccessory,
+  listRowTitleColor,
   mapListChevronStyle,
   mapListGroupStyle,
   mapListRowStyle,
@@ -31,6 +32,14 @@ describe('listRowAccessory', () => {
         selected: false,
       }),
     ).toBe('none');
+  });
+});
+
+describe('listRowTitleColor', () => {
+  it('uses the text colour unless the row is a danger row', () => {
+    expect(listRowTitleColor()).toBe('text');
+    expect(listRowTitleColor('default')).toBe('text');
+    expect(listRowTitleColor('danger')).toBe('danger');
   });
 });
 
