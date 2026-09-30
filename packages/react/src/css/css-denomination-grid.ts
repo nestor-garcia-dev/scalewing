@@ -123,31 +123,21 @@ ${scrollRegionRules('.sw-denomination-scroll')}
 }
 
 /*
- * labelWidth lines strips up from grid to grid. The table is only as wide
- * as its columns (the spare width stays empty after the last column, so a
- * row's total sits right after its counts). Each count column is one token
- * width and cannot shrink below it (an empty block of that width in its
- * head); the row-label column prefers the consumer's width in ch and is the
- * one column that gives way in a narrow container, wrapping its words
- * beside the glyph down to its longest word. Past that the strip scrolls.
+ * labelWidth: every column gets a specified width, the row labels the
+ * consumer's width in ch and each count column one token width, so the
+ * table no longer sizes a column by its words and counts. Without totals
+ * all columns are fixed and share any spare width in proportion to those
+ * widths; with totals the total column takes the spare width at the end.
+ * Either way two strips of the same width, columns and labelWidth put each
+ * count column in the same place. A word longer than the label width, or a
+ * count wider than its column, still widens that column.
  */
-.sw-denomination-strip-aligned {
-  --sw-denomination-column-width: var(--sw-space-8);
-  width: auto;
-}
-
 .sw-denomination-strip-aligned .sw-denomination-label {
   width: var(--sw-denomination-label-width);
 }
 
 .sw-denomination-strip-aligned .sw-denomination-head {
-  width: var(--sw-denomination-column-width);
-}
-
-.sw-denomination-strip-aligned .sw-denomination-head::before {
-  content: '';
-  display: block;
-  width: var(--sw-denomination-column-width);
+  width: var(--sw-space-8);
 }
 
 .sw-denomination-icon {
@@ -268,7 +258,7 @@ ${scrollRegionRules('.sw-denomination-scroll')}
   .sw-denomination-total-inline { display: block; }
   .sw-denomination-label-body { flex-direction: column; align-items: flex-start; gap: var(--sw-space-1); }
   .sw-denomination-strip .sw-denomination-label-line { gap: var(--sw-space-1); }
-  .sw-denomination-strip-aligned { --sw-denomination-column-width: var(--sw-space-5); }
+  .sw-denomination-strip-aligned .sw-denomination-head { width: var(--sw-space-5); }
   .sw-denomination-strip th,
   .sw-denomination-strip td { padding: var(--sw-space-1); }
   .sw-denomination-strip .sw-denomination-label { padding-inline-start: calc(var(--sw-space-1) * 2); }

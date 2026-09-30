@@ -190,26 +190,11 @@ export function DenominationGridSection() {
               ]}
               totalLabel="Total weight"
             />
-            <DenominationGrid
-              columns={hourColumns}
-              label="Den visits by hour"
-              labelWidth={12}
-              rows={[
-                {
-                  id: 'fox',
-                  label: 'Red fox',
-                  icon: <ArrowGlyph direction="in" />,
-                  cells: [2, 1, 0, 0, 0, 0, 0, 0, 1, 3, 4],
-                },
-              ]}
-            />
             <Text color="muted" variant="caption">
-              labelWidth gives the row labels a width in characters and each
-              count column one token width, and the strip is only as wide as its
-              columns, so a total sits right after its counts. Strips with the
-              same columns line up whatever their labels and counts; in a
-              narrower card the label column gives way, wrapping beside its
-              glyph, and a strip too wide for its card scrolls.
+              labelWidth gives the row labels a width in characters, so strips
+              of the same width and columns line their columns up whatever their
+              labels and counts; a longer label wraps beside its glyph. Strips
+              with totals line up with each other.
             </Text>
           </Stack>
         </Card>
