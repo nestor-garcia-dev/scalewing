@@ -31,6 +31,8 @@ sections of `services-*.md`), one surface per commit on
   (DRW-28, `teisoro-denomination-grid.md` follow-up).
 - `DenominationGrid` `labelWidth`, so strips in a feed line up their
   count columns (DRW-27, `teisoro-denomination-grid.md` follow-up).
+- `Field` `invalid`: the invalid state without a message of its own
+  (DRW-18, `teisoro-field-validation.md` follow-up).
 
 Next: pull request, review and merge, then release `@scalewing/react`
 and Teisoro pins it.

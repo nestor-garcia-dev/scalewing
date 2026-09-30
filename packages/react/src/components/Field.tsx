@@ -31,6 +31,13 @@ export type FieldProps = {
   size?: FieldSize;
   description?: string;
   error?: string;
+  /**
+   * Marks the control invalid (`aria-invalid` and the danger border) without
+   * a message of its own, for a field whose error is shown elsewhere, such
+   * as one message under a group of fields. Point the control's
+   * `aria-describedby` at that message. `error` implies it.
+   */
+  invalid?: boolean;
   required?: boolean;
   /** Short text inside the control frame before the value, such as a currency sign. Not part of the value. */
   prefix?: string;
@@ -46,6 +53,7 @@ export function Field({
   size = 'md',
   description,
   error,
+  invalid = false,
   required = false,
   prefix,
   suffix,
@@ -57,12 +65,13 @@ export function Field({
   const prefixId = useId();
   const suffixId = useId();
   const message = error || description;
+  const marksInvalid = Boolean(error) || invalid;
   const adorned = Boolean(prefix || suffix);
-  const needsControl = Boolean(message || required || adorned);
+  const needsControl = Boolean(message || marksInvalid || required || adorned);
   const className = [
     'sw-field',
     size === 'xs' && 'sw-field-xs',
-    error && 'sw-field-invalid',
+    marksInvalid && 'sw-field-invalid',
   ]
     .filter(Boolean)
     .join(' ');
@@ -118,7 +127,7 @@ export function Field({
   const control = cloneElement(children, {
     id: children.props.id || controlId,
     'aria-describedby': describedBy || undefined,
-    'aria-invalid': error ? true : children.props['aria-invalid'],
+    'aria-invalid': marksInvalid ? true : children.props['aria-invalid'],
     'aria-labelledby': adornment.labelledBy,
     required: required || children.props.required,
   });

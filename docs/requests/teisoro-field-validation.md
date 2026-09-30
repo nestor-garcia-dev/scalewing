@@ -41,3 +41,27 @@ Rejected alternatives:
 Consumer note: a product that relied on `Field`'s alert to announce a refused submit gets a polite announcement instead, and should also move focus to the first invalid control. A test that found the error by the hint's id should find it by its text. Teisoro's CHK-3 and DRW-6 fixes do that (`FormShell`, `create()`, `add()`).
 
 Evidence: `field-error-region.test.tsx` (for `Field`, `Checkbox`, `RadioGroup` and `DateField`: the region exists, empty and `aria-live="polite"`, before the error and is not in `aria-describedby`; the error's text is swapped into the same element, which the control then lists with `aria-invalid="true"`; no `alert`; the region empties again); `field.test.tsx` (the error replaces the hint on screen in the region that existed before; the hint's id returns after); `checkbox.test.tsx` (the checkbox's description includes its error, no `alert`); `css/stylesheet.test.ts` (the empty-region rules, `RadioGroup`'s `aria-invalid` selector); `apps/gallery/e2e/field.spec.ts` and `checkbox.spec.ts` on desktop-en, mobile-es and forced-colors: the invalid input and the invalid checkbox have their error as the accessible description, `aria-invalid="true"`, and the section has no `alert`; the input's polite region exists empty before "Validate sighting", holds the error after it, and empties again without moving the button below (the empty region takes no room); the checkbox's region stays, empty and polite, once it is ticked.
+
+## Follow-up request (2026-09-30, Teisoro F-007-S05 task 1375): an invalid field without its own message
+
+Status: implemented on `claude/services-leftovers` for Teisoro F-007-S05 task 1375; pull request pending review.
+Source: Teisoro UX final check `services-drawer-cash-and-audits.md`, finding DRW-18 (minor, WCAG 3.3.1), the part left for Scalewing: "The count fields themselves get no red border; the caption sits in the total box under them" (`admin/06-…dialog.png`, `closed-refusal/01-a-count-of-zero-refused.dialog.png`).
+
+Teisoro need: when a drawer dialog's count adds up to nothing, "Enter at least one bill or coin." is one message for the whole group, shown under the grid, and every count field is in error. Teisoro's `DenominationEntryGrid` (`apps/teisoro-web/src/app/drawer-forms/DenominationEntryGrid.tsx`) marks the group `data-invalid` so focus lands on its first field, but each `Field` shows the danger border and sets `aria-invalid` only when it renders its own `error` message; ten copies of the sentence would be noise.
+
+Existing surface this might already be: `Field` `error`, which always renders its message; and the child's own `aria-invalid`, which `Field` passes through but which draws no border (the border comes from `sw-field-invalid`, set only by `error`). Teisoro owns no CSS.
+
+Proposed and implemented API (optional, no default change): `invalid?: boolean` on `Field`, named after the state it sets (`aria-invalid`), as `required` sets `required`. With it:
+
+- the control gets `aria-invalid="true"` and the field `sw-field-invalid`, so the same danger border as `error` (on the frame of a `prefix`/`suffix` field too, and `Mark` in forced colors);
+- no message: the field's polite error region stays empty, its `description` stays on screen and keeps describing the control, and the consumer's own `aria-describedby` is kept, so it can point at the group's message;
+- `error` implies it (`invalid={false}` never clears an error's state); like `error`, it needs one native control child, or `Field` throws a `TypeError`.
+
+Rejected alternatives:
+
+- Letting the child's `aria-invalid` draw the border. It would work without API, but `Field` owns its control's validation state (`error` overrides the child's `aria-invalid`), and a prop beside `error` and `required` is the discoverable, typed way; the child's attribute still passes through as before.
+- `error=""` or `error={true}` to mean "invalid without a message". An empty string is no error everywhere in Scalewing (`Select`, `SegmentedControl`), and a boolean would make `error` two types.
+- A group-level error on `Grid` or a new `FieldGroup`. Teisoro's group already renders its message and focus rule; what was missing is the per-field state, and a group component is a larger surface for one prop's worth of need.
+- Repeating the group's message under every field. Ten identical messages on a phone, each announced.
+
+Evidence: `field.test.tsx` ("marks a control invalid without a message of its own": `aria-invalid`, the class, an empty region and the consumer's `aria-describedby` kept; "keeps its hint while invalid, and clears the state when invalid goes"; "lets error win over invalid, and invalid mark an adorned frame"; "rejects invalid on a child that is not one native control"); `apps/gallery/e2e/field.spec.ts` "Field invalid marks a control without a message of its own" on desktop-en, mobile-es and forced-colors, with the gallery's new "Nest count" group (Eggs and Chicks, one message under the group): after "Check nest count" both fields have `aria-invalid`, the group's message as their accessible description, a changed border (the danger token outside forced colors) and an empty region of their own; the message shows once and there is no alert; a count clears both states and the border.
