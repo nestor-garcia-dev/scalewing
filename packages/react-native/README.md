@@ -64,7 +64,9 @@ an optional muted `detail` line and trailing `value`, and an optional
 `leading` slot for a consumer mark or Lucide glyph. With `onPress` it is a
 button with a chevron (`accessory="none"` hides it for a row that acts in
 place) and fills with `subtle` while pressed. `selected` makes it a choice
-that shows a check while true and announces its selected state. Without
+that shows a check while true and announces its selected state.
+`tone="danger"` draws the title in the danger colour for a row that ends
+something, such as Sign out; any confirm stays the consumer's. Without
 `onPress` it is one read-only text element with no chevron. Its accessible
 name is the title, detail, and value unless `accessibilityLabel` replaces
 it.

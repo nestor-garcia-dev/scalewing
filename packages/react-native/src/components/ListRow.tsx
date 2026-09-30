@@ -4,9 +4,11 @@ import { Pressable, View } from 'react-native';
 import {
   listCheckColor,
   listRowAccessory,
+  listRowTitleColor,
   mapListChevronStyle,
   mapListRowStyle,
   type ListRowAccessory,
+  type ListRowTone,
 } from '../map-list-style.js';
 import { useTheme } from '../theme/ThemeProvider.js';
 import { Text } from './Text.js';
@@ -27,6 +29,11 @@ export type ListRowProps = {
   selected?: boolean;
   testID?: string;
   title: string;
+  /**
+   * `danger` draws the title in the danger colour, for a row that ends
+   * something, such as Sign out. Any confirm stays the consumer's.
+   */
+  tone?: ListRowTone;
   /** A muted value on the end side, before the accessory. */
   value?: string;
 };
@@ -59,7 +66,7 @@ function Accessory({ kind }: { kind: ListRowAccessory }) {
 }
 
 function RowContent(props: ListRowProps) {
-  const { detail, leading, onPress, selected, title, value } = props;
+  const { detail, leading, onPress, selected, title, tone, value } = props;
   const accessory = listRowAccessory({
     accessory: props.accessory,
     pressable: onPress !== undefined,
@@ -70,7 +77,9 @@ function RowContent(props: ListRowProps) {
     <>
       {leading}
       <View style={{ flex: 1, minWidth: 0 }}>
-        <Text variant="label">{title}</Text>
+        <Text color={listRowTitleColor(tone)} variant="label">
+          {title}
+        </Text>
         {detail ? (
           <Text color="muted" variant="caption">
             {detail}

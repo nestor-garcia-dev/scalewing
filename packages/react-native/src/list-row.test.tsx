@@ -1,3 +1,4 @@
+import { lightTheme } from '@scalewing/tokens';
 import { act, create, type ReactTestInstance } from 'react-test-renderer';
 import { beforeAll, describe, expect, it, vi } from 'vitest';
 
@@ -105,6 +106,32 @@ describe('ListRow', () => {
       { accessory: 'none', onPress: () => undefined, title: 'Refresh' },
     ]);
     expect(chevrons(row(root, 'Refresh'))).toHaveLength(0);
+  });
+
+  it('draws a danger row title in the danger colour', () => {
+    const root = render([
+      {
+        accessory: 'none',
+        onPress: () => undefined,
+        title: 'End shift',
+        tone: 'danger',
+      },
+      { onPress: () => undefined, title: 'Wetland' },
+    ]);
+    // The drawn title's colour, from its flattened style array.
+    const titleColor = (name: string): unknown =>
+      [
+        row(root, name).find(
+          (child) => child.type === 'Text' && child.props.children === name,
+        ).props.style,
+      ]
+        .flat(Infinity)
+        .reduce<Record<string, unknown>>(
+          (merged, part) => ({ ...merged, ...(part || {}) }),
+          {},
+        ).color;
+    expect(titleColor('End shift')).toBe(lightTheme.colors.danger);
+    expect(titleColor('Wetland')).toBe(lightTheme.colors.text);
   });
 
   it('is one read-only text element without onPress', () => {
