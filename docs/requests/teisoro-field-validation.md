@@ -44,7 +44,7 @@ Evidence: `field-error-region.test.tsx` (for `Field`, `Checkbox`, `RadioGroup` a
 
 ## Follow-up request (2026-09-30, Teisoro F-007-S05 task 1375): an invalid field without its own message
 
-Status: implemented on `claude/services-leftovers` for Teisoro F-007-S05 task 1375; pull request pending review.
+Status: merged in #83 (2026-09-30) and released in `@scalewing/react` 1.16.0; Teisoro adopts it next.
 Source: Teisoro UX final check `services-drawer-cash-and-audits.md`, finding DRW-18 (minor, WCAG 3.3.1), the part left for Scalewing: "The count fields themselves get no red border; the caption sits in the total box under them" (`admin/06-…dialog.png`, `closed-refusal/01-a-count-of-zero-refused.dialog.png`).
 
 Teisoro need: when a drawer dialog's count adds up to nothing, "Enter at least one bill or coin." is one message for the whole group, shown under the grid, and every count field is in error. Teisoro's `DenominationEntryGrid` (`apps/teisoro-web/src/app/drawer-forms/DenominationEntryGrid.tsx`) marks the group `data-invalid` so focus lands on its first field, but each `Field` shows the danger border and sets `aria-invalid` only when it renders its own `error` message; ten copies of the sentence would be noise.

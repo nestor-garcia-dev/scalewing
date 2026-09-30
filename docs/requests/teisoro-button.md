@@ -56,7 +56,7 @@ Evidence: `button.test.tsx` ("pressed toggle in forced colors": the forced block
 
 ## Follow-up request (2026-09-30, Teisoro F-007-S05 task 1375): a glyph's gap from its label
 
-Status: implemented on `claude/services-leftovers` for Teisoro F-007-S05 task 1375; pull request pending review.
+Status: merged in #83 (2026-09-30) and released in `@scalewing/react` 1.16.0; Teisoro adopts it next.
 Source: Teisoro UX final check `services-nsf.md`, "Seen and not filed" (app-wide, older than the Services changes): every button with a glyph sets it about 2 px from its label ("Record payment", "Log activity", "Write off", "Buscar"; `logs-a-call-with-a-follow-up-and-lists-it-on-the-record/en-1280/02-the-activity-logged.part-1.png`). `.sw-button` had no `gap` in any release.
 
 Teisoro need: `<Button><Glyph icon={Plus} />{copy.record}</Button>` (for example `NsfListPage.tsx`, `NsfRecordPage.tsx`) reads as one glyph and one label, a consistent space apart. Other Teisoro buttons wrap the two in `<Inline as="span" gap={2} align="center">` (24 of them) or `gap={1}` (the back links), so the product has three spacings for one pattern.
