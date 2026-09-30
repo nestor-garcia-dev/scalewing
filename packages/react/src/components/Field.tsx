@@ -35,7 +35,9 @@ export type FieldProps = {
    * Marks the control invalid (`aria-invalid` and the danger border) without
    * a message of its own, for a field whose error is shown elsewhere, such
    * as one message under a group of fields. Point the control's
-   * `aria-describedby` at that message. `error` implies it.
+   * `aria-describedby` at that message. `error` implies it. Passing
+   * `invalid` or `error` at all, even `false` or `undefined`, requires one
+   * native control child from the first render.
    */
   invalid?: boolean;
   required?: boolean;
@@ -45,19 +47,30 @@ export type FieldProps = {
   suffix?: string;
 };
 
-export function Field({
-  children,
-  gap = 1,
-  label,
-  labelVisuallyHidden = false,
-  size = 'md',
-  description,
-  error,
-  invalid = false,
-  required = false,
-  prefix,
-  suffix,
-}: FieldProps) {
+/**
+ * A validated field: `error` or `invalid` was passed, even while it is
+ * `undefined` or `false`. Such a field needs one native control from its
+ * first render, so a form learns it on the happy path instead of on its
+ * first failed submit.
+ */
+function validates(props: FieldProps): boolean {
+  return 'error' in props || 'invalid' in props;
+}
+
+export function Field(props: FieldProps) {
+  const {
+    children,
+    gap = 1,
+    label,
+    labelVisuallyHidden = false,
+    size = 'md',
+    description,
+    error,
+    invalid = false,
+    required = false,
+    prefix,
+    suffix,
+  } = props;
   const controlId = useId();
   const descriptionId = useId();
   const errorId = useId();
@@ -67,7 +80,9 @@ export function Field({
   const message = error || description;
   const marksInvalid = Boolean(error) || invalid;
   const adorned = Boolean(prefix || suffix);
-  const needsControl = Boolean(message || marksInvalid || required || adorned);
+  const needsControl = Boolean(
+    message || validates(props) || required || adorned,
+  );
   const className = [
     'sw-field',
     size === 'xs' && 'sw-field-xs',
