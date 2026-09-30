@@ -37,8 +37,8 @@ Next: Teisoro pins 1.16.0.
 
 FutMas F-019-S06: `FloatingAction` (`futmas-floating-action.md`,
 2026-09-30), so a form's one action floats as a capsule above the keyboard
-under FutMas's form rule. Next: release `@scalewing/react-native` 1.13.0 and
-FutMas pins it.
+under FutMas's form rule. Merged in #85 and released as
+`@scalewing/react-native` 1.13.0. Next: FutMas pins it.
 
 FutMas F-019-S04: `ListRow` `tone="danger"`
 (`futmas-list-row-danger-tone.md`, 2026-09-29), so Sign out is a red row

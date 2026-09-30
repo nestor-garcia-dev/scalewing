@@ -1,5 +1,13 @@
 # @scalewing/react-native
 
+## 1.13.0
+
+### Minor Changes
+
+- 84febff: `FloatingAction` is a screen's one action as a lifted accent capsule over a
+  fade from clear to the page colour, for the consumer to place at the bottom
+  of a screen above the keyboard. No new dependency.
+
 ## 1.12.0
 
 ### Minor Changes
