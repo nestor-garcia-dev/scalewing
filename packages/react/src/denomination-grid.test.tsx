@@ -342,7 +342,13 @@ describe('DenominationGrid row label line', () => {
       '.sw-denomination-label-body { flex-direction: column;',
     );
     expect(phone).toContain(
-      '.sw-denomination-label-line { gap: var(--sw-space-1); }',
+      '.sw-denomination-strip .sw-denomination-label-line { gap: var(--sw-space-1); }',
+    );
+    // Only the strip's pinned label column narrows its gap; a tiles row's
+    // label keeps 8 px at every width, as before (review of PR #83).
+    expect(phone).not.toMatch(/\n\s*\.sw-denomination-label-line \{/);
+    expect(phone).not.toContain(
+      '.sw-denomination-tiles .sw-denomination-label-line',
     );
     expect(phone).not.toMatch(/\.sw-denomination-label-line \{[^}]*column/);
   });

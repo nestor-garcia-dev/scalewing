@@ -311,6 +311,7 @@ export function DenominationGridSection() {
                 id: 'counted',
                 label: 'Counted',
                 tone: 'danger',
+                icon: <ArrowGlyph direction="sum" />,
                 cells: [40, 24, 0, 12, 6, 2],
                 total: 'One S tag short',
               },

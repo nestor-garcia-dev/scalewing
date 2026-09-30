@@ -257,7 +257,7 @@ ${scrollRegionRules('.sw-denomination-scroll')}
   .sw-denomination-total-value { ${visuallyHiddenDeclarations} }
   .sw-denomination-total-inline { display: block; }
   .sw-denomination-label-body { flex-direction: column; align-items: flex-start; gap: var(--sw-space-1); }
-  .sw-denomination-label-line { gap: var(--sw-space-1); }
+  .sw-denomination-strip .sw-denomination-label-line { gap: var(--sw-space-1); }
   .sw-denomination-strip-aligned .sw-denomination-head { width: var(--sw-space-5); }
   .sw-denomination-strip th,
   .sw-denomination-strip td { padding: var(--sw-space-1); }

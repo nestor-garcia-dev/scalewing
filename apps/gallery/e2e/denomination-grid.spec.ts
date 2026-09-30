@@ -241,6 +241,36 @@ test('a DenominationGrid row keeps its glyph beside its words at every width', a
     }
   }
 
+  // A tiles row's glyph keeps its 8 px gap at every width; only the
+  // strip's pinned label column narrows it on a phone (review of PR #83).
+  const tilesGap = await section
+    .getByRole('region', { name: 'Counted' })
+    .locator('.sw-denomination-label-line')
+    .evaluate((line) => {
+      const glyph = line
+        .querySelector('.sw-denomination-icon')!
+        .getBoundingClientRect();
+      const text = line
+        .querySelector('.sw-denomination-label-text')!
+        .getBoundingClientRect();
+      return text.left - glyph.right;
+    });
+  expect(tilesGap).toBeCloseTo(8, 0);
+  const stripGap = await section
+    .getByRole('table', { name: 'Tag movement by size' })
+    .getByRole('rowheader', { name: /Tagged/ })
+    .locator('.sw-denomination-label-line')
+    .evaluate((line) => {
+      const glyph = line
+        .querySelector('.sw-denomination-icon')!
+        .getBoundingClientRect();
+      const text = line
+        .querySelector('.sw-denomination-label-text')!
+        .getBoundingClientRect();
+      return text.left - glyph.right;
+    });
+  expect(stripGap).toBeCloseTo(isPhone ? 4 : 8, 0);
+
   // A long label wraps its words beside the glyph, never under it.
   const long = await layoutOf('Den watch by tag size', /Returned to the den/);
   expect(long.textLeft).toBeGreaterThan(long.glyph.right);
