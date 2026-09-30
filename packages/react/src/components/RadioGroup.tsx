@@ -1,20 +1,14 @@
 'use client';
 
-import { useId, type ReactNode } from 'react';
+import { useId } from 'react';
 
 import { FieldErrorRegion } from './FieldErrorRegion.js';
+import {
+  RadioGroupOptionLabel,
+  type RadioGroupOption,
+} from './radio-group/RadioGroupOptionLabel.js';
 
-export type RadioGroupOption = {
-  value: string;
-  label: string;
-  disabled?: boolean;
-  /**
-   * A decorative glyph between the radio and the label, such as a person or
-   * a building for the kind of check. It is `aria-hidden` and drawn in the
-   * text color: the option's accessible name stays its `label` text.
-   */
-  icon?: ReactNode;
-};
+export type { RadioGroupOption };
 
 export type RadioGroupProps = {
   legend: string;
@@ -70,34 +64,16 @@ export function RadioGroup({
       ) : null}
       <span className="sw-radio-group-options">
         {options.map((option) => (
-          <label className="sw-radio-group-option" key={option.value}>
-            <span className="sw-radio-group-control">
-              <input
-                checked={value === option.value}
-                className="sw-radio-group-input"
-                disabled={option.disabled}
-                name={name}
-                onChange={(event) => {
-                  if (
-                    !disabled &&
-                    !option.disabled &&
-                    event.currentTarget.checked
-                  )
-                    onChange(option.value);
-                }}
-                required={required}
-                type="radio"
-                value={option.value}
-              />
-              <span aria-hidden="true" className="sw-radio-group-mark" />
-            </span>
-            {option.icon ? (
-              <span aria-hidden="true" className="sw-radio-group-icon">
-                {option.icon}
-              </span>
-            ) : null}
-            <span className="sw-radio-group-text">{option.label}</span>
-          </label>
+          <RadioGroupOptionLabel
+            checked={value === option.value}
+            key={option.value}
+            name={name}
+            onSelect={() => {
+              if (!disabled && !option.disabled) onChange(option.value);
+            }}
+            option={option}
+            required={required}
+          />
         ))}
       </span>
       <FieldErrorRegion

@@ -17,6 +17,12 @@ release workflow completed successfully.
 
 ## Next action
 
+Teisoro F-007-S05 task 1365: a `RadioGroup` option `description`
+(`teisoro-radio-group.md`, 2026-09-29 follow-up), so each company's
+history sits on its own option's row in check cashing. Next: pull
+request, review and merge, then release `@scalewing/react` and Teisoro
+pins it.
+
 Teisoro F-007-S05 task 1355: `Select` `width="full"` (`teisoro-select.md`,
 2026-09-29 follow-up), so a filter fills a phone row beside full-width
 cards. Merged in #77 with the code-review fixes (an Inline row, long
