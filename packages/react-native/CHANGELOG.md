@@ -1,5 +1,13 @@
 # @scalewing/react-native
 
+## 1.12.0
+
+### Minor Changes
+
+- 0e80385: `ListRow` takes `tone="danger"`, which draws the title in the danger colour
+  for a row that ends something, such as Sign out. The default tone is
+  unchanged. No new dependency.
+
 ## 1.11.0
 
 ### Minor Changes

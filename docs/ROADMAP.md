@@ -19,8 +19,8 @@ release workflow completed successfully.
 
 FutMas F-019-S04: `ListRow` `tone="danger"`
 (`futmas-list-row-danger-tone.md`, 2026-09-29), so Sign out is a red row
-as in iOS Settings under FutMas's one-button rule. Next: release
-`@scalewing/react-native` 1.12.0 and FutMas pins it.
+as in iOS Settings under FutMas's one-button rule. Merged in #81 and
+released as `@scalewing/react-native` 1.12.0. Next: FutMas pins it.
 
 Teisoro F-007-S05 task 1365: a `RadioGroup` option `description`
 (`teisoro-radio-group.md`, 2026-09-29 follow-up), so each company's
