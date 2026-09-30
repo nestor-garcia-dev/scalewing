@@ -40,6 +40,10 @@ export const disabledControlForcedColors = `border-color: GrayText;
   color: GrayText;
   -webkit-text-fill-color: GrayText;`;
 
+/** A script-only focus target in the canvas, at zero specificity. */
+export const focusTargetSelector =
+  ":where([data-theme] [tabindex='-1']:focus-visible)";
+
 export function cssDocumentCanvas(): string {
   return `html,
 body {
@@ -81,6 +85,20 @@ body {
 }
 
 [data-theme] a:focus-visible {
+  outline: var(--sw-focus-ring-width) solid var(--sw-color-accent);
+  outline-offset: var(--sw-focus-ring-offset);
+}
+
+/*
+ * A programmatic focus target (tabindex="-1": a notice, a card or a heading
+ * that a script focuses after a save) takes the accent ring past the ring
+ * offset, as links and native controls do, instead of the browser's outline.
+ * It shows when the browser would show its own (:focus-visible), so a target
+ * focused after a mouse press stays quiet. :where() keeps the rule at zero
+ * specificity: it still beats the user-agent outline, and every component's
+ * own ring (a roving tabindex="-1" item's included) wins over it.
+ */
+${focusTargetSelector} {
   outline: var(--sw-focus-ring-width) solid var(--sw-color-accent);
   outline-offset: var(--sw-focus-ring-offset);
 }

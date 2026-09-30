@@ -25,6 +25,8 @@ sections of `services-*.md`), one surface per commit on
   follow-up).
 - `Button` sets a glyph one token gap from its label (`services-nsf.md`
   final check, `teisoro-button.md` follow-up).
+- A programmatic focus target (`tabindex="-1"`) takes the canvas's
+  accent ring (NSF-34, ENT-29, DRW-30, new `teisoro-focus-target.md`).
 
 Next: pull request, review and merge, then release `@scalewing/react`
 and Teisoro pins it.

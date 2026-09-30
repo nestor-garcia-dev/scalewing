@@ -34,7 +34,7 @@ React Native has no CSS classes. The same step is `paddingTop={4}`.
 
 ## Theming
 
-Light and dark palettes are first-class themes. Web applies them with `data-theme`, optional `data-palette`, CSS variables, and a generated document canvas (background, type, links, native text controls). Native applies them through React context and a full-screen canvas `View`. Products may pick a named palette (`ThemeProvider palette` or `import '@scalewing/react/palette/<id>.css'`), overlay brand colors through `createTheme` (`colors` may be flat or `{ light, dark }`), and let users choose light, dark, or system via `colorScheme`. They do not fork the class sheet. Card defaults to `glass` (opaque white on light).
+Light and dark palettes are first-class themes. Web applies them with `data-theme`, optional `data-palette`, CSS variables, and a generated document canvas (background, type, links, native text controls, and the focus ring of a programmatic focus target). Native applies them through React context and a full-screen canvas `View`. Products may pick a named palette (`ThemeProvider palette` or `import '@scalewing/react/palette/<id>.css'`), overlay brand colors through `createTheme` (`colors` may be flat or `{ light, dark }`), and let users choose light, dark, or system via `colorScheme`. They do not fork the class sheet. Card defaults to `glass` (opaque white on light).
 
 ## Icons
 
