@@ -152,27 +152,27 @@ A `Button` that toggles something passes `aria-pressed`. The pressed button gets
 />
 ```
 
-An option's optional `description` (a `ReactNode`) is secondary text for that option alone, such as its history. It is a muted caption after the label, at the row's inline end, while the two fit on one line; when they do not, and always below the `md` breakpoint, it wraps to a second line that starts under the label text, not under the radio. The label keeps the first line. An option with a description fills the group's width. The description is the radio's accessible description (`aria-describedby` on that option's input), while its name stays the `label` text, and a press on it chooses the option as the label does. A disabled option fades its description with the rest of the option. It may hold phrasing content such as a small `Badge`, but nothing interactive, because it sits inside the option's `<label>`. The group's own `description` still describes the whole group.
+An option's optional `description` (a `ReactNode`) is secondary text for that option alone, such as its history. It is a muted caption after the label, at the row's inline end, while the two fit on one line; when they do not, and always below the `md` breakpoint, it wraps to a second line that starts under the label text, not under the radio. The label keeps the first line. An option with a description fills the group's width. The description is the radio's accessible description (`aria-describedby` on that option's input), while its name stays the `label` text, and a press on it chooses the option as the label does. A disabled option fades its description with the rest of the option. It may hold phrasing content such as a small `Badge`, but nothing interactive, because it sits inside the option's `<label>`. A description taller than the label, such as a default-size `Badge`, grows the row downward; the label stays on the radio's line. `undefined`, `null`, `false`, `true` and `''` are no description. Any other node is one, including `0` and a component that renders nothing, so pass `undefined` when there is nothing to say. The group's own `description` still describes the whole group.
 
 ```tsx
 <RadioGroup
-  legend="Company"
-  onChange={setCompany}
+  legend="Sighting source"
+  onChange={setSource}
   options={[
     {
-      value: 'acme',
-      label: 'Acme Freight · Company',
-      icon: <Building2 />,
+      value: 'observer',
+      label: 'Field observer',
+      icon: <User />,
       description: <Badge size="sm">Most recent</Badge>,
     },
     {
-      value: 'rivera',
-      label: 'Ana Rivera · Personal',
-      icon: <User />,
-      description: '2 checks · last Sep 13, 2026',
+      value: 'camera',
+      label: 'Camera trap',
+      icon: <Camera />,
+      description: '2 sightings · last Sep 13, 2026',
     },
   ]}
-  value={company}
+  value={source}
 />
 ```
 

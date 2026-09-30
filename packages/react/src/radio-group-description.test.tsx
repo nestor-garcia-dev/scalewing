@@ -11,33 +11,33 @@ import { forEveryTheme } from './every-theme.test-support.js';
 
 afterEach(() => cleanup());
 
-const companies = [
+const sources = [
   {
-    value: 'acme',
-    label: 'Acme Freight · Company',
-    icon: <svg data-testid="building" viewBox="0 0 16 16" />,
+    value: 'observer',
+    label: 'Field observer',
+    icon: <svg data-testid="person" viewBox="0 0 16 16" />,
     description: <Badge size="sm">Most recent</Badge>,
   },
   {
-    value: 'rivera',
-    label: 'Ana Rivera · Personal',
-    description: '2 checks · last Sep 13, 2026',
+    value: 'camera',
+    label: 'Camera trap',
+    description: '2 sightings · last Sep 13, 2026',
   },
   {
-    value: 'harbor',
-    label: 'Harbor Supply · Company',
-    description: 'Closed account',
+    value: 'acoustic',
+    label: 'Acoustic monitor',
+    description: 'Offline since Aug 2, 2026',
     disabled: true,
   },
-  { value: 'other', label: 'Another company' },
+  { value: 'other', label: 'Another source' },
 ];
 
-function renderCompanies(onChange = vi.fn()) {
+function renderSources(onChange = vi.fn()) {
   render(
     <RadioGroup
-      legend="Company"
+      legend="Sighting source"
       onChange={onChange}
-      options={companies}
+      options={sources}
       value=""
     />,
   );
@@ -60,25 +60,25 @@ function over(fill: string, ground: string): string {
 
 describe('RadioGroup option descriptions', () => {
   it('describes each radio by its own description and keeps its name the label', () => {
-    renderCompanies();
-    // Teisoro F-007-S05 task 1365: each company's history belongs to its row.
-    const acme = screen.getByRole('radio', {
-      name: 'Acme Freight · Company',
+    renderSources();
+    // Teisoro F-007-S05 task 1365: each option's history belongs to its row.
+    const observer = screen.getByRole('radio', {
+      name: 'Field observer',
       description: 'Most recent',
     });
-    const rivera = screen.getByRole('radio', {
-      name: 'Ana Rivera · Personal',
-      description: '2 checks · last Sep 13, 2026',
+    const camera = screen.getByRole('radio', {
+      name: 'Camera trap',
+      description: '2 sightings · last Sep 13, 2026',
     });
-    expect(acme.getAttribute('aria-describedby')).not.toBe(
-      rivera.getAttribute('aria-describedby'),
+    expect(observer.getAttribute('aria-describedby')).not.toBe(
+      camera.getAttribute('aria-describedby'),
     );
     // The description is a separate relation, never part of the name.
     expect(
-      screen.queryByRole('radio', { name: /Most recent|2 checks/ }),
+      screen.queryByRole('radio', { name: /Most recent|2 sightings/ }),
     ).toBeNull();
     const description = document.getElementById(
-      acme.getAttribute('aria-describedby') ?? '',
+      observer.getAttribute('aria-describedby') ?? '',
     )!;
     expect(description.className).toBe('sw-radio-group-option-description');
     expect(description.querySelector('.sw-badge')?.textContent).toBe(
@@ -87,9 +87,9 @@ describe('RadioGroup option descriptions', () => {
   });
 
   it('puts the label and the description in one body after the glyph', () => {
-    renderCompanies();
+    renderSources();
     const option = screen
-      .getByRole('radio', { name: 'Acme Freight · Company' })
+      .getByRole('radio', { name: 'Field observer' })
       .closest('label')!;
     expect(Array.from(option.children).map((child) => child.className)).toEqual(
       ['sw-radio-group-control', 'sw-radio-group-icon', 'sw-radio-group-body'],
@@ -102,8 +102,8 @@ describe('RadioGroup option descriptions', () => {
   });
 
   it('leaves an option without a description as it was', () => {
-    renderCompanies();
-    const radio = screen.getByRole('radio', { name: 'Another company' });
+    renderSources();
+    const radio = screen.getByRole('radio', { name: 'Another source' });
     expect(radio.hasAttribute('aria-describedby')).toBe(false);
     expect(radio.hasAttribute('aria-labelledby')).toBe(false);
     const option = radio.closest('label')!;
@@ -114,20 +114,62 @@ describe('RadioGroup option descriptions', () => {
   });
 
   it('chooses the option on a press on its description, but not a disabled one', async () => {
-    const onChange = renderCompanies();
-    await userEvent.click(screen.getByText('2 checks · last Sep 13, 2026'));
-    expect(onChange).toHaveBeenCalledExactlyOnceWith('rivera');
+    const onChange = renderSources();
+    await userEvent.click(screen.getByText('2 sightings · last Sep 13, 2026'));
+    expect(onChange).toHaveBeenCalledExactlyOnceWith('camera');
     await userEvent.click(screen.getByText('Most recent'));
-    expect(onChange).toHaveBeenLastCalledWith('acme');
-    await userEvent.click(screen.getByText('Closed account'));
+    expect(onChange).toHaveBeenLastCalledWith('observer');
+    await userEvent.click(screen.getByText('Offline since Aug 2, 2026'));
     expect(onChange).toHaveBeenCalledTimes(2);
     // The disabled option's description is inside the faded option.
     expect(
       screen
-        .getByRole('radio', { name: 'Harbor Supply · Company' })
+        .getByRole('radio', { name: 'Acoustic monitor' })
         .closest('label')
-        ?.contains(screen.getByText('Closed account')),
+        ?.contains(screen.getByText('Offline since Aug 2, 2026')),
     ).toBe(true);
+  });
+
+  it('counts 0 as a description, as React renders it', () => {
+    render(
+      <RadioGroup
+        legend="Sighting source"
+        onChange={vi.fn()}
+        options={[{ value: 'camera', label: 'Camera trap', description: 0 }]}
+        value=""
+      />,
+    );
+    const radio = screen.getByRole('radio', {
+      name: 'Camera trap',
+      description: '0',
+    });
+    expect(
+      radio.closest('label')?.querySelector('.sw-radio-group-body'),
+    ).not.toBeNull();
+  });
+
+  it.each([
+    ['false', false],
+    ['true', true],
+    ["''", ''],
+    ['null', null],
+  ])('treats %s as no description', (_name, description) => {
+    render(
+      <RadioGroup
+        legend="Sighting source"
+        onChange={vi.fn()}
+        options={[{ value: 'camera', label: 'Camera trap', description }]}
+        value=""
+      />,
+    );
+    const radio = screen.getByRole('radio', { name: 'Camera trap' });
+    expect(radio.hasAttribute('aria-describedby')).toBe(false);
+    expect(radio.hasAttribute('aria-labelledby')).toBe(false);
+    expect(
+      Array.from(radio.closest('label')!.children).map(
+        (child) => child.className,
+      ),
+    ).toEqual(['sw-radio-group-control', 'sw-radio-group-text']);
   });
 
   it('generates a wrapping body with the description muted at the inline end', () => {
@@ -136,7 +178,7 @@ describe('RadioGroup option descriptions', () => {
       '.sw-radio-group-option:has(> .sw-radio-group-body) {\n  align-items: flex-start;\n  box-sizing: border-box;',
     );
     expect(css).toContain(
-      '.sw-radio-group-body {\n  align-items: baseline;\n  column-gap: var(--sw-space-3);\n  display: flex;\n  flex: 1 1 0;\n  flex-wrap: wrap;',
+      '.sw-radio-group-body {\n  align-items: flex-start;\n  column-gap: var(--sw-space-3);\n  display: flex;\n  flex: 1 1 0;\n  flex-wrap: wrap;',
     );
     // The label grows, so the description sits at the end while both fit
     // and starts its own line under the label when they do not.
@@ -146,6 +188,10 @@ describe('RadioGroup option descriptions', () => {
     expect(css).toContain(
       '.sw-radio-group-option-description {\n  color: var(--sw-color-muted);\n  flex: 0 1 auto;',
     );
+    // A caption line is centred on the label's line box, and a taller
+    // description grows the row downward instead of moving the label.
+    expect(css).toContain('  margin-block-start: calc((20px - 18px) / 2);');
+    expect(css).not.toContain('align-items: baseline');
     expect(css).toContain(
       '@media not all and (min-width: 48rem) {\n  .sw-radio-group-option-description { flex-basis: 100%; }\n}',
     );

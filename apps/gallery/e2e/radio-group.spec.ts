@@ -132,6 +132,15 @@ function expectSameRow(
   }
 }
 
+/** The label text stays on the radio's line, whatever the description's height. */
+function expectLabelOnRadioLine({
+  mark,
+  text,
+}: Awaited<ReturnType<typeof optionBoxes>>) {
+  const centre = (box: Box) => box.y + box.height / 2;
+  expect(Math.abs(centre(text) - centre(mark))).toBeLessThan(2);
+}
+
 /** The description is a second line that starts under the label text. */
 function expectSecondLine(
   { mark, text, described }: Awaited<ReturnType<typeof optionBoxes>>,
@@ -182,12 +191,18 @@ test('RadioGroup option descriptions sit on their own option, describe its radio
 
   const cameraRow = await optionBoxes(camera);
   const observerRow = await optionBoxes(observer);
-  if (phone) {
-    expectSecondLine(cameraRow);
-    expectSecondLine(observerRow);
-  } else {
-    expectSameRow(cameraRow);
-    expectSameRow(observerRow);
+  // A default-size (md) Badge is taller than the label's line.
+  const drone = group.getByRole('radio', { name: 'Drone survey', exact: true });
+  await expect(drone).toHaveAccessibleDescription('Trial');
+  const droneRow = await optionBoxes(drone);
+  await expect(droneRow.description.locator('.sw-badge')).toHaveClass(
+    /sw-badge-md/,
+  );
+  expect(droneRow.described.height).toBeGreaterThan(droneRow.text.height);
+  for (const row of [cameraRow, observerRow, droneRow]) {
+    if (phone) expectSecondLine(row);
+    else expectSameRow(row);
+    expectLabelOnRadioLine(row);
   }
 
   // Muted, and readable on the page.
@@ -221,8 +236,14 @@ test('RadioGroup option descriptions sit on their own option, describe its radio
 
   // A narrow column: the description does not fit and wraps under the text.
   const den = section.getByRole('group', { name: 'Den survey source' });
-  expectSecondLine(
-    await optionBoxes(den.getByRole('radio', { name: 'Camera trap' })),
+  const denCamera = await optionBoxes(
+    den.getByRole('radio', { name: 'Camera trap' }),
+  );
+  expectSecondLine(denCamera);
+  expectLabelOnRadioLine(denCamera);
+  // "Drone survey" and its short badge still fit the column on one row.
+  expectLabelOnRadioLine(
+    await optionBoxes(den.getByRole('radio', { name: 'Drone survey' })),
   );
 
   // Right to left: at the left end, or on a second line under the text.
@@ -237,6 +258,7 @@ test('RadioGroup option descriptions sit on their own option, describe its radio
   const arabicRow = await optionBoxes(arabicCamera);
   if (phone) expectSecondLine(arabicRow, true);
   else expectSameRow(arabicRow, true);
+  expectLabelOnRadioLine(arabicRow);
   await arabicRow.description.click();
   await expect(arabicCamera).toBeChecked();
 

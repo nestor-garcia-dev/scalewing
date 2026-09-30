@@ -155,6 +155,10 @@ ${optionDescriptionRules()}
  * under the label text, when they do not. The label keeps the row first.
  * Below md the description always takes its own line. The radio and glyph
  * sit on the label's line, which starts where a one-line option centers it.
+ * Items align to the line's start, not a shared baseline, so a description
+ * taller than the label (a default-size Badge) grows the row downward and
+ * never pushes the label off the radio's line; a caption line is centred
+ * on the label's line box.
  */
 function optionDescriptionRules(): string {
   return `.sw-radio-group-option:has(> .sw-radio-group-body) {
@@ -169,7 +173,7 @@ function optionDescriptionRules(): string {
 }
 
 .sw-radio-group-body {
-  align-items: baseline;
+  align-items: flex-start;
   column-gap: var(--sw-space-3);
   display: flex;
   flex: 1 1 0;
@@ -187,6 +191,7 @@ function optionDescriptionRules(): string {
   font-size: ${caption.fontSize}px;
   font-weight: ${caption.fontWeight};
   line-height: ${caption.lineHeight}px;
+  margin-block-start: calc((${label.lineHeight}px - ${caption.lineHeight}px) / 2);
   min-width: 0;
 }
 

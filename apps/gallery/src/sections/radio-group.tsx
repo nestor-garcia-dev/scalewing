@@ -27,6 +27,9 @@ const observerGlyph = (
 const cameraGlyph = (
   <Glyph path="M2 5.5h3L6.5 3.5h3L11 5.5h3v7H2v-7ZM8 11a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z" />
 );
+const droneGlyph = (
+  <Glyph path="M6 8a2 2 0 1 0 4 0 2 2 0 0 0-4 0ZM2 4h4m4 0h4M4 4v3m8-3v3" />
+);
 const microphoneGlyph = (
   <Glyph path="M8 10a2 2 0 0 0 2-2V4a2 2 0 1 0-4 0v4a2 2 0 0 0 2 2Zm-4-2a4 4 0 0 0 8 0M8 12v2" />
 );
@@ -44,6 +47,14 @@ const sourceOptions = [
     label: 'Camera trap',
     icon: cameraGlyph,
     description: '2 sightings · last Sep 13, 2026',
+  },
+  {
+    value: 'drone',
+    label: 'Drone survey',
+    icon: droneGlyph,
+    // A default-size Badge is taller than the label: the row grows
+    // downward and the label stays on the radio's line.
+    description: <Badge>Trial</Badge>,
   },
   {
     value: 'acoustic',

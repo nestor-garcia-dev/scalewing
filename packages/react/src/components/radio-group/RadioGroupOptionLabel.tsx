@@ -17,6 +17,9 @@ export type RadioGroupOption = {
    * description (`aria-describedby`), never part of its name, and a press on
    * it chooses the option. It may hold phrasing content such as a `Badge`,
    * but nothing interactive: it sits inside the option's `<label>`.
+   * `undefined`, `null`, `false`, `true` and `''` are no description; any
+   * other node, `0` or a component that renders nothing included, is one,
+   * so pass `undefined` when there is nothing to say.
    */
   description?: ReactNode;
 };
@@ -28,6 +31,16 @@ type RadioGroupOptionLabelProps = {
   required: boolean;
   onSelect: () => void;
 };
+
+/** Whether React renders something for a description: not nothing, a boolean or ''. */
+function hasDescription(description: ReactNode): boolean {
+  return (
+    description !== undefined &&
+    description !== null &&
+    typeof description !== 'boolean' &&
+    description !== ''
+  );
+}
 
 /**
  * One option of a RadioGroup: the native radio and its mark, the optional
@@ -45,7 +58,7 @@ export function RadioGroupOptionLabel({
   const id = useId();
   const textId = `${id}-text`;
   const descriptionId = `${id}-description`;
-  const described = Boolean(option.description);
+  const described = hasDescription(option.description);
   const text = (
     <span className="sw-radio-group-text" id={described ? textId : undefined}>
       {option.label}
