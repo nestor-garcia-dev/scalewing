@@ -152,6 +152,30 @@ A `Button` that toggles something passes `aria-pressed`. The pressed button gets
 />
 ```
 
+An option's optional `description` (a `ReactNode`) is secondary text for that option alone, such as its history. It is a muted caption after the label, at the row's inline end, while the two fit on one line; when they do not, and always below the `md` breakpoint, it wraps to a second line that starts under the label text, not under the radio. The label keeps the first line. An option with a description fills the group's width. The description is the radio's accessible description (`aria-describedby` on that option's input), while its name stays the `label` text, and a press on it chooses the option as the label does. A disabled option fades its description with the rest of the option. It may hold phrasing content such as a small `Badge`, but nothing interactive, because it sits inside the option's `<label>`. The group's own `description` still describes the whole group.
+
+```tsx
+<RadioGroup
+  legend="Company"
+  onChange={setCompany}
+  options={[
+    {
+      value: 'acme',
+      label: 'Acme Freight · Company',
+      icon: <Building2 />,
+      description: <Badge size="sm">Most recent</Badge>,
+    },
+    {
+      value: 'rivera',
+      label: 'Ana Rivera · Personal',
+      icon: <User />,
+      description: '2 checks · last Sep 13, 2026',
+    },
+  ]}
+  value={company}
+/>
+```
+
 `SegmentedControl` is one exclusive choice shown as a track of segments (`role="radiogroup"`), named by `aria-label` or `aria-labelledby`, with a controlled `value` and `onChange`; `variant="filled"` gives every segment the same width and fills the selection with the accent, and `disabled` keeps the choice visible but inert. `error` puts a message under the track (`sw-field-error`), links it to the group by `aria-describedby` and sets `aria-invalid` and a danger outline on the group (`Mark` in forced colors); as `Field`'s it is announced politely from a live region that is always there, never as an alert, and an empty string is no error. `required` sets `aria-required` on the group; since the control has no label of its own, the element that labels it shows the mark. The track sits in a `.sw-segmented-field` wrapper that holds the message and takes the track's place in the layout, so a `ref` still reaches the `radiogroup`. `error` is for a control in a `Stack` or block layout, where the track keeps its width and the message wraps under it. While it shows a message the field is at least 24ch wide, capped at its container, so a short compact track does not squeeze the message into a column. In an `Inline` the field therefore grows and the rest of the row moves, while the track keeps its labels' width.
 
 ```tsx

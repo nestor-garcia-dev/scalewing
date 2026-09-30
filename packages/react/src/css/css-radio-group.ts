@@ -1,5 +1,7 @@
 import { typographyVariants } from '@scalewing/tokens';
 
+import { breakpointQuery } from './breakpoints.js';
+
 const label = typographyVariants.label;
 const caption = typographyVariants.caption;
 
@@ -120,6 +122,8 @@ export function cssRadioGroupClasses(): string {
   min-width: 0;
 }
 
+${optionDescriptionRules()}
+
 .sw-radio-group-description,
 .sw-radio-group-error {
   font-family: var(--sw-font-sans);
@@ -144,6 +148,53 @@ export function cssRadioGroupClasses(): string {
 }`;
 }
 
+/**
+ * An option with a description fills the group's width. Its label and
+ * description share a wrapping body: the label grows, so the description sits
+ * at the row's inline end while both fit, and wraps to its own line, starting
+ * under the label text, when they do not. The label keeps the row first.
+ * Below md the description always takes its own line. The radio and glyph
+ * sit on the label's line, which starts where a one-line option centers it.
+ */
+function optionDescriptionRules(): string {
+  return `.sw-radio-group-option:has(> .sw-radio-group-body) {
+  align-items: flex-start;
+  box-sizing: border-box;
+  padding-block-start: calc((var(--sw-control-md-min-height) - var(--sw-space-5)) / 2);
+  width: 100%;
+}
+
+.sw-radio-group-option:has(> .sw-radio-group-body) > .sw-radio-group-icon {
+  min-height: var(--sw-space-5);
+}
+
+.sw-radio-group-body {
+  align-items: baseline;
+  column-gap: var(--sw-space-3);
+  display: flex;
+  flex: 1 1 0;
+  flex-wrap: wrap;
+  min-width: 0;
+  padding-block-start: calc((var(--sw-space-5) - ${label.lineHeight}px) / 2);
+}
+
+.sw-radio-group-body > .sw-radio-group-text { flex: 1 1 auto; }
+
+.sw-radio-group-option-description {
+  color: var(--sw-color-muted);
+  flex: 0 1 auto;
+  font-family: var(--sw-font-sans);
+  font-size: ${caption.fontSize}px;
+  font-weight: ${caption.fontWeight};
+  line-height: ${caption.lineHeight}px;
+  min-width: 0;
+}
+
+@media ${breakpointQuery('below', 'md')} {
+  .sw-radio-group-option-description { flex-basis: 100%; }
+}`;
+}
+
 export function radioGroupClassCatalog(): string[] {
   return [
     'sw-radio-group',
@@ -155,6 +206,8 @@ export function radioGroupClassCatalog(): string[] {
     'sw-radio-group-mark',
     'sw-radio-group-icon',
     'sw-radio-group-text',
+    'sw-radio-group-body',
+    'sw-radio-group-option-description',
     'sw-radio-group-description',
     'sw-radio-group-error',
   ];
