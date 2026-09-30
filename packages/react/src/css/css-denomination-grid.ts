@@ -80,6 +80,17 @@ ${scrollRegionRules('.sw-denomination-scroll')}
 }
 
 /*
+ * A row label's glyph and words are one line: the line does not wrap, so its
+ * narrowest width is the glyph, the gap and the longest word, and a long
+ * label wraps its words beside the glyph instead of dropping them under it.
+ */
+.sw-denomination-label-line {
+  align-items: center;
+  display: flex;
+  gap: var(--sw-space-2);
+}
+
+/*
  * The row labels and the header corner above them stay in view while a wide
  * strip scrolls under them, so each column head stays over its counts.
  */
@@ -228,6 +239,7 @@ ${scrollRegionRules('.sw-denomination-scroll')}
   .sw-denomination-total-value { ${visuallyHiddenDeclarations} }
   .sw-denomination-total-inline { display: block; }
   .sw-denomination-label-body { flex-direction: column; align-items: flex-start; gap: var(--sw-space-1); }
+  .sw-denomination-strip .sw-denomination-label-line { gap: var(--sw-space-1); }
   .sw-denomination-strip th,
   .sw-denomination-strip td { padding: var(--sw-space-1); }
   .sw-denomination-strip .sw-denomination-label { padding-inline-start: calc(var(--sw-space-1) * 2); }
@@ -257,6 +269,7 @@ export function denominationGridClassCatalog(): string[] {
     'sw-denomination-row-signed',
     'sw-denomination-label',
     'sw-denomination-label-body',
+    'sw-denomination-label-line',
     'sw-denomination-label-text',
     'sw-denomination-icon',
     'sw-denomination-cell',

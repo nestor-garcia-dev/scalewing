@@ -1,6 +1,7 @@
 import { cx } from '../../class-names.js';
 import { denominationCellView } from '../../denomination-cells.js';
 import { ScrollRegion } from '../ScrollRegion.js';
+import { RowLabelLine } from './RowLabelLine.js';
 import { type DenominationGridProps } from './types.js';
 
 type StripProps = Required<
@@ -59,14 +60,7 @@ export function DenominationStrip({
             >
               <th className="sw-denomination-label" scope="row">
                 <span className="sw-denomination-label-body">
-                  {row.icon ? (
-                    <span aria-hidden="true" className="sw-denomination-icon">
-                      {row.icon}
-                    </span>
-                  ) : null}
-                  <span className="sw-denomination-label-text">
-                    {row.label}
-                  </span>
+                  <RowLabelLine row={row} />
                   {row.total !== undefined ? (
                     <span
                       aria-hidden="true"

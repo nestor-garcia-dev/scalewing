@@ -31,6 +31,15 @@ export type FieldProps = {
   size?: FieldSize;
   description?: string;
   error?: string;
+  /**
+   * Marks the control invalid (`aria-invalid` and the danger border) without
+   * a message of its own, for a field whose error is shown elsewhere, such
+   * as one message under a group of fields. Point the control's
+   * `aria-describedby` at that message. `error` implies it. Passing
+   * `invalid`, even `false` but not `undefined`, requires one native control
+   * child from the first render.
+   */
+  invalid?: boolean;
   required?: boolean;
   /** Short text inside the control frame before the value, such as a currency sign. Not part of the value. */
   prefix?: string;
@@ -38,18 +47,32 @@ export type FieldProps = {
   suffix?: string;
 };
 
-export function Field({
-  children,
-  gap = 1,
-  label,
-  labelVisuallyHidden = false,
-  size = 'md',
-  description,
-  error,
-  required = false,
-  prefix,
-  suffix,
-}: FieldProps) {
+/**
+ * `invalid` was passed, even as `false`, but not as `undefined` (a wrapper
+ * forwarding an optional prop passes nothing): such a field needs one native
+ * control from its first render, so a form learns it on the happy path
+ * instead of on its first failed submit. `error` keeps its older rule (it
+ * requires the control only while it holds a message), so a composed
+ * child beside `error={undefined}` still renders.
+ */
+function passesInvalid(props: FieldProps): boolean {
+  return props.invalid !== undefined;
+}
+
+export function Field(props: FieldProps) {
+  const {
+    children,
+    gap = 1,
+    label,
+    labelVisuallyHidden = false,
+    size = 'md',
+    description,
+    error,
+    invalid = false,
+    required = false,
+    prefix,
+    suffix,
+  } = props;
   const controlId = useId();
   const descriptionId = useId();
   const errorId = useId();
@@ -57,12 +80,15 @@ export function Field({
   const prefixId = useId();
   const suffixId = useId();
   const message = error || description;
+  const marksInvalid = Boolean(error) || invalid;
   const adorned = Boolean(prefix || suffix);
-  const needsControl = Boolean(message || required || adorned);
+  const needsControl = Boolean(
+    message || marksInvalid || passesInvalid(props) || required || adorned,
+  );
   const className = [
     'sw-field',
     size === 'xs' && 'sw-field-xs',
-    error && 'sw-field-invalid',
+    marksInvalid && 'sw-field-invalid',
   ]
     .filter(Boolean)
     .join(' ');
@@ -118,7 +144,7 @@ export function Field({
   const control = cloneElement(children, {
     id: children.props.id || controlId,
     'aria-describedby': describedBy || undefined,
-    'aria-invalid': error ? true : children.props['aria-invalid'],
+    'aria-invalid': marksInvalid ? true : children.props['aria-invalid'],
     'aria-labelledby': adornment.labelledBy,
     required: required || children.props.required,
   });

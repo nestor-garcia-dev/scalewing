@@ -190,3 +190,52 @@ test('a disabled Field looks locked and keeps its value readable', async ({
   await locked.scrollIntoViewIfNeeded();
   await section.screenshot({ path: testInfo.outputPath('field-disabled.png') });
 });
+
+test('Field invalid marks a control without a message of its own', async ({
+  page,
+}, testInfo) => {
+  await page.goto('/#field');
+  const forced = testInfo.project.name === 'forced-colors';
+  if (forced) await page.emulateMedia({ forcedColors: 'active' });
+  const section = page.locator('#field');
+  const group = section.getByRole('group', { name: 'Nest count' });
+  const eggs = group.getByRole('textbox', { name: 'Eggs' });
+  const chicks = group.getByRole('textbox', { name: 'Chicks' });
+  const borderOf = (input: typeof eggs) =>
+    input.evaluate((element) => getComputedStyle(element).borderTopColor);
+  const normal = await borderOf(eggs);
+  await expect(eggs).not.toHaveAttribute('aria-invalid', 'true');
+
+  // Teisoro DRW-18: a count that adds up to nothing showed its one message
+  // under the group, and the count fields got no red border.
+  await section.getByRole('button', { name: 'Check nest count' }).click();
+  const invalidBorder = await borderOf(eggs);
+  for (const input of [eggs, chicks]) {
+    await expect(input).toHaveAttribute('aria-invalid', 'true');
+    await expect(input).toHaveAccessibleDescription(
+      'Count at least one egg or chick.',
+    );
+    const border = await borderOf(input);
+    expect(border).not.toBe(normal);
+    if (!forced) expect(border).toBe(await tokenColor(page, 'danger'));
+    // No message of its own: its polite region stays empty.
+    await expect(
+      input
+        .locator('xpath=ancestor::*[contains(@class, "sw-field")][1]')
+        .locator('.sw-field-error'),
+    ).toHaveText('');
+  }
+  // The group's one message, not one per field.
+  await expect(
+    section.getByText('Count at least one egg or chick.'),
+  ).toHaveCount(1);
+  await expect(section.getByRole('alert')).toHaveCount(0);
+  await group.screenshot({ path: testInfo.outputPath('field-invalid.png') });
+
+  await eggs.fill('3');
+  await expect(eggs).not.toHaveAttribute('aria-invalid', 'true');
+  await expect(chicks).not.toHaveAttribute('aria-invalid', 'true');
+  // The danger border goes with the state.
+  await expect.poll(() => borderOf(chicks)).not.toBe(invalidBorder);
+  if (!forced) await expect.poll(() => borderOf(chicks)).toBe(normal);
+});

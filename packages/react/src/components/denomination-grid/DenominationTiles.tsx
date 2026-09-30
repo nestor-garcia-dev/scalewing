@@ -1,5 +1,6 @@
 import { cx } from '../../class-names.js';
 import { denominationCellView } from '../../denomination-cells.js';
+import { RowLabelLine } from './RowLabelLine.js';
 import {
   type DenominationGridProps,
   type DenominationGridRow,
@@ -60,12 +61,7 @@ export function DenominationTiles({
           >
             {labelled ? (
               <span className="sw-denomination-label">
-                {row.icon ? (
-                  <span aria-hidden="true" className="sw-denomination-icon">
-                    {row.icon}
-                  </span>
-                ) : null}
-                <span className="sw-denomination-label-text">{row.label}</span>
+                <RowLabelLine row={row} />
                 {row.total !== undefined ? (
                   <span className="sw-denomination-total">{row.total}</span>
                 ) : null}

@@ -90,3 +90,40 @@ Rejected alternatives:
 - Rendering every row without a region. Several rows need their own names ("Expected", "Counted") to tell them apart.
 
 Evidence: `denomination-grid.test.tsx` ("names a lone plain row only by the grid, not by a second region": with the grid's label, no `region` role, no `aria-label`, tiles still render; "keeps a lone plain row's own name when it differs from the grid's": a region named "Expected" inside the "Drawer count" group), with the existing lone-row-with-total and several-rows tests still finding their regions; `apps/gallery/e2e/denomination-grid.spec.ts` on desktop-en, mobile-es and forced-colors: the gallery's lone plain "Tags in the field kit" (its row now labelled with the grid's words, Teisoro's pattern) has no region and none in its ARIA snapshot, while "Tags fitted today" (a lone row with a total) and "Kit audit" (several rows) keep theirs.
+
+## Follow-up request (2026-09-30, Teisoro F-007-S05 task 1375): a row's glyph stays beside its label
+
+Status: implemented on `claude/services-leftovers` for Teisoro F-007-S05 task 1375; pull request pending review.
+Source: Teisoro UX final check `services-drawer-cash-and-audits.md`, finding DRW-28 (polish, the part left for Scalewing). `services-day/adds-cash-from-the-vault-after-a-failed-attempt/es-390/05-the-cash-added.part-3.png`: on the activity cards at 390 px, the "Faltante" and "Agregado" row labels put their ⊖ / ⊕ glyph on its own line above the word.
+
+Teisoro need: the activity cards' bill strips (`apps/teisoro-web/src/app/services-day/ActivityCard.tsx`, `FlowStrips`, one `DenominationGrid` with an icon per row) read "⊖ Faltante" on one line on a phone, as they do on a desktop. Teisoro already keeps its own badge and name on one line (no-break spaces); the row label is Scalewing's markup.
+
+Existing surface this might already be: none. Below `md` the strip's `.sw-denomination-label-body` was `flex-direction: column`, so the glyph, the words and the phone total each took their own line by design, and from `md` up it was a wrapping flex row, so a squeezed column could still drop the words under the glyph. No prop changes that.
+
+Behavior (no API change): the row's glyph and words sit in a new `.sw-denomination-label-line` (a flex row that does not wrap, gap spacing step 2, step 1 below `md`), in both the strip and the tiles layouts (one shared `RowLabelLine`). Only the strip's pinned label column narrows the gap to step 1 below `md`; a tiles row keeps step 2 at every width, as it did before (the first version narrowed both, which the code review of PR #83 caught: Teisoro's transfer dialog tiles would have dropped to 4 px on a phone). Its narrowest width is the glyph, the gap and the longest word, so a long label wraps its words beside the glyph, never under it. Below `md` the strip's label body still stacks, now the line over the phone total, so the total keeps its own line under the label. A row without an icon is unchanged apart from the wrapper; the row header's accessible name is unchanged.
+
+Rejected alternatives:
+
+- `white-space: nowrap` on the label. It would keep the glyph beside the words, but a long label would widen the pinned label column and push every count sideways on a phone; wrapping beside the glyph keeps the column narrow.
+- Removing the column layout below `md` and letting the body wrap. The phone total, which must sit under the label, would share the wrap with the words, and a squeezed column would still drop the words under the glyph.
+- A prop to choose the layout. There is no case where the glyph should sit over its words.
+
+Evidence: `denomination-grid.test.tsx` ("DenominationGrid row label line": the strip's body is the line (glyph then words) then the phone total; a tiles row's line sits before its total; the line's rule has no `flex-wrap`, and below `md` the body stacks while the line keeps a row with a step 1 gap); `apps/gallery/e2e/denomination-grid.spec.ts` "a DenominationGrid row keeps its glyph beside its words at every width" on desktop-en, mobile-es and forced-colors: in "Tag movement by size" each row's words start after its glyph on the glyph's line, and on a phone the total sits under them; the glyph-to-words gap is 8 px in the "Kit audit" tiles row "Counted" at every width and in the strip 8 px on a desktop and 4 px on a phone; in the new "Den watch" strip, "Returned to the den at dusk" wraps onto two lines on a phone with every line starting after the glyph.
+
+## Follow-up request (2026-09-30, Teisoro F-007-S05 task 1375): count columns that line up from grid to grid — withdrawn from this release
+
+Status: withdrawn from PR #83 on 2026-09-30 by the coordinator after two review rounds; not built. Teisoro keeps DRW-27 open as polish.
+Source: Teisoro UX final check `services-drawer-cash-and-audits.md`, finding DRW-27 (polish). `admin/09-the-adjustment-recorded.part-3.png`: the "$1" header sits at about x 522, 515 and 483 on three activity cards (`audit/06-…part-3.png` about x 468), the same at 390 px. The review asked for a `labelWidth`.
+
+Teisoro need: the Services day's activity feed (`apps/teisoro-web/src/app/services-day/ActivityCard.tsx`, `FlowStrips`: one strip per card, the same six bill columns, row labels such as "Received", "Removed", "Agregado") puts each bill column under the one on the card above.
+
+Why the strips misalign: the strip is an auto-layout table at `width: 100%`, so the browser sizes the label column by its words and shares spare width among the count columns in proportion to their widest content, so each card places "$1" differently. `columns` has no width, and Teisoro owns no CSS.
+
+What was tried, and what was learned (for a later design to start from):
+
+1. **`labelWidth?: number` in `ch` plus a token width on every count head, table still `width: 100%`** (e5dc41a). In a roomy card every column is a specified width, the spare width is shared in proportion, and strips line up. But a specified width in an auto-layout table is only a preference: in a card narrower than the label width plus the count columns (about 496 px on a desktop, 304 px below `md`, at 12ch and six columns) Chromium shrinks every column toward its min-content, so the strips misalign again (1–4 px at 450 px, 8 px at a 280 px phone card), and an eleven-column phone strip ignores it. With totals, the total column (left without a width) took all the spare width, so at 1280 px the total sat about 700 px from its counts.
+2. **`width: auto` on the table, a hard floor on each count column (an empty `::before` block of the token width), only the label column giving way** (f2c6f77). The total then sits by its counts and narrow phone cards line up. But the floor (64 px per column with padding on a desktop) forces a six-column strip to scroll in any `md`+ card under about 500 px (a 450 px card: 496 and 484 px wide, "$100" hidden, still 12 px apart), where the plain strip fits. And `width: auto` ends each strip after its last column, so with totals of different widths the cards' row separators end at different places: ragged right edges.
+
+Constraints a later design must meet: the plain strip's behavior (fits a phone card, an eleven-column strip scrolls with its label pinned, the phone total takes no width) must not change; a row's total stays next to its counts; the columns must not force scrolling where the plain strip fits; and the separators should span the card. Directions not yet tried: equal count columns sized from the container (for example a CSS grid with `subgrid` rows, which would change the table's semantics, or a container-query width per column), or leaving alignment to a feed that renders its cards' strips as one table.
+
+Rejected along the way: `table-layout: fixed` (an eleven-column phone strip would squeeze its counts into overlapping cells instead of scrolling); hidden candidate labels sizing the label column (it stays content-sized, so with totals the counts still move); a fixed-width total column (totals are consumer strings of any length); a filler cell taking the spare width (an extra cell in every row of a data table).

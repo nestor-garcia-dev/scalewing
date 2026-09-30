@@ -39,8 +39,13 @@ const tonedToasts: ReadonlyArray<{
   },
 ];
 
+/** Longer than a phone is wide, so the toast wraps inside the page gutter. */
+const longMessage =
+  'Field notes from the northern wetland transect were shared with the survey team.';
+
 export function ToastSection() {
   const [toned, setToned] = useState<ToastTone | null>(null);
+  const [longOpen, setLongOpen] = useState(false);
   const [open, setOpen] = useState(false);
   const [travelOpen, setTravelOpen] = useState(false);
   const [anchor, setAnchor] = useState<Element | null>(null);
@@ -51,7 +56,7 @@ export function ToastSection() {
   return (
     <Section
       id="toast"
-      purpose="Toast is an ephemeral confirmation on the top layer. It auto-dismisses and does not trap focus. With anchor and target it blooms from a press, travels to a destination, lingers, then vanishes. tone success, warning, or danger tints the border and the consumer's icon; danger is announced as an alert, the others as a status. Warning and danger stay 6000 ms unless timeoutMs says otherwise."
+      purpose="Toast is an ephemeral confirmation on the top layer. It auto-dismisses and does not trap focus. It is as wide as its message, up to the page's gutter on each side, so a long message wraps instead of running to a phone's edges. With anchor and target it blooms from a press, travels to a destination, lingers, then vanishes. tone success, warning, or danger tints the border and the consumer's icon; danger is announced as an alert, the others as a status. Warning and danger stay 6000 ms unless timeoutMs says otherwise."
       title="Toast"
       usage={`<Toast
   open={open}
@@ -105,6 +110,18 @@ export function ToastSection() {
             <Text>{item.message}</Text>
           </Toast>
         ))}
+        <Button onPress={() => setLongOpen(true)} size="sm" variant="secondary">
+          Share field notes
+        </Button>
+        <Toast
+          icon={<ToneGlyph tone="success" />}
+          onOpenChange={setLongOpen}
+          open={longOpen}
+          timeoutMs={4000}
+          tone="success"
+        >
+          <Text>{longMessage}</Text>
+        </Toast>
         <Inline align="center" gap={4}>
           <Button
             ref={nestRef}

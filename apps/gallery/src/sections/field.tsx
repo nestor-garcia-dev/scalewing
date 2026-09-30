@@ -1,8 +1,62 @@
-import { Button, Field, Stack, Text } from '@scalewing/react';
-import { useState } from 'react';
+import { Button, Field, Inline, Stack, Text } from '@scalewing/react';
+import { useId, useState } from 'react';
 
 import { Section } from '../layout/Section.js';
 import { sampleHabitats } from '../sample-copy.js';
+
+/**
+ * Two counts checked as one group: when they add up to nothing, each field
+ * is marked invalid and the group's one message sits under them.
+ */
+function NestCounts() {
+  const [eggs, setEggs] = useState('');
+  const [chicks, setChicks] = useState('');
+  const [checked, setChecked] = useState(false);
+  const headingId = useId();
+  const messageId = useId();
+  const total = (Number(eggs) || 0) + (Number(chicks) || 0);
+  const invalid = checked && total === 0;
+  return (
+    <Stack gap={2}>
+      <Stack aria-labelledby={headingId} gap={2} role="group">
+        <Text as="span" color="muted" id={headingId} variant="label">
+          Nest count
+        </Text>
+        <Inline gap={3}>
+          <Field invalid={invalid} label="Eggs">
+            <input
+              aria-describedby={invalid ? messageId : undefined}
+              inputMode="numeric"
+              name="eggs"
+              onChange={(event) => setEggs(event.currentTarget.value)}
+              value={eggs}
+            />
+          </Field>
+          <Field invalid={invalid} label="Chicks">
+            <input
+              aria-describedby={invalid ? messageId : undefined}
+              inputMode="numeric"
+              name="chicks"
+              onChange={(event) => setChicks(event.currentTarget.value)}
+              value={chicks}
+            />
+          </Field>
+        </Inline>
+        <Text
+          aria-live="polite"
+          color="danger"
+          id={messageId}
+          variant="caption"
+        >
+          {invalid ? 'Count at least one egg or chick.' : ''}
+        </Text>
+      </Stack>
+      <Button onPress={() => setChecked(true)} variant="secondary">
+        Check nest count
+      </Button>
+    </Stack>
+  );
+}
 
 export function FieldSection() {
   const [sightingName, setSightingName] = useState('');
@@ -13,12 +67,16 @@ export function FieldSection() {
   return (
     <Section
       id="field"
-      purpose="Field labels native controls and associates optional hints, required state, and validation errors. An error is described on its control, marks it invalid, and is announced politely from a live region that is always there; it is never an alert, so several errors at once do not interrupt, and the form moves focus to the first invalid field. Validation stays with the consumer. size xs compacts the control; the canvas paints its native surface. prefix and suffix put short text such as a unit inside an input's frame; it is not part of the value and joins the accessible name, or the description when the input names itself with aria-label. A press anywhere on the frame focuses the input. A disabled control keeps its value in the text color on the quiet subtle fill with a dashed border, so a locked value stays readable and looks locked."
+      purpose="Field labels native controls and associates optional hints, required state, and validation errors. An error is described on its control, marks it invalid, and is announced politely from a live region that is always there; it is never an alert, so several errors at once do not interrupt, and the form moves focus to the first invalid field. Validation stays with the consumer. size xs compacts the control; the canvas paints its native surface. prefix and suffix put short text such as a unit inside an input's frame; it is not part of the value and joins the accessible name, or the description when the input names itself with aria-label. A press anywhere on the frame focuses the input. A disabled control keeps its value in the text color on the quiet subtle fill with a dashed border, so a locked value stays readable and looks locked. invalid marks a control invalid without a message of its own, for fields whose one error is shown under their group."
       title="Field"
       usage={`<Field label="Habitat">
   <select>
     <option>Forest</option>
   </select>
+</Field>
+
+<Field invalid={noNests} label="Eggs">
+  <input aria-describedby="nest-error" />
 </Field>`}
     >
       <Stack gap={3}>
@@ -37,6 +95,7 @@ export function FieldSection() {
         <Button onPress={() => setValidated(true)} variant="secondary">
           Validate sighting
         </Button>
+        <NestCounts />
         <Field label="Species name">
           <input defaultValue="Red fox" name="species-name" />
         </Field>

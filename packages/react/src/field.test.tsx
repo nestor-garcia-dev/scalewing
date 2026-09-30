@@ -161,6 +161,130 @@ describe('Field', () => {
     expect(screen.queryByRole('alert')).toBeNull();
   });
 
+  it('marks a control invalid without a message of its own', () => {
+    render(
+      <>
+        <Field invalid label="$1 bills">
+          <input aria-describedby="count-error" />
+        </Field>
+        <p id="count-error">Enter at least one bill or coin.</p>
+      </>,
+    );
+    const input = screen.getByRole('textbox', { name: '$1 bills' });
+    // Teisoro DRW-18: the group's message sits under the grid, and its
+    // count fields had no invalid state of their own.
+    expect(input.getAttribute('aria-invalid')).toBe('true');
+    expect(input.closest('.sw-field')?.className).toContain('sw-field-invalid');
+    // No message of its own: the empty polite region only, and the
+    // consumer's description of the group's message kept.
+    const region = input.closest('.sw-field')!.querySelector('.sw-field-error');
+    expect(region?.textContent).toBe('');
+    expect(input.getAttribute('aria-describedby')).toBe('count-error');
+  });
+
+  it('keeps its hint while invalid, and clears the state when invalid goes', () => {
+    const { rerender } = render(
+      <Field description="Loose bills" invalid label="$5 bills">
+        <input />
+      </Field>,
+    );
+    const input = screen.getByRole('textbox', { name: '$5 bills' });
+    expect(input.getAttribute('aria-invalid')).toBe('true');
+    // Without an error the hint stays on screen and describes the control.
+    const hint = screen.getByText('Loose bills');
+    expect(input.getAttribute('aria-describedby')).toBe(hint.id);
+    rerender(
+      <Field description="Loose bills" label="$5 bills">
+        <input />
+      </Field>,
+    );
+    expect(input.getAttribute('aria-invalid')).toBeNull();
+    expect(input.closest('.sw-field')?.className).not.toContain(
+      'sw-field-invalid',
+    );
+  });
+
+  it('lets error win over invalid, and invalid mark an adorned frame', () => {
+    render(
+      <>
+        <Field error="Enter a count" invalid={false} label="Coins">
+          <input />
+        </Field>
+        <Field invalid label="Fee" prefix="$">
+          <input />
+        </Field>
+      </>,
+    );
+    const coins = screen.getByRole('textbox', { name: 'Coins' });
+    expect(coins.getAttribute('aria-invalid')).toBe('true');
+    const fee = screen.getByRole('textbox', { name: /Fee/ });
+    expect(fee.getAttribute('aria-invalid')).toBe('true');
+    expect(fee.closest('.sw-field')?.className).toContain('sw-field-invalid');
+  });
+
+  it('rejects invalid on a child that is not one native control', () => {
+    expect(() =>
+      render(
+        <Field invalid label="Code">
+          <span>not a control</span>
+        </Field>,
+      ),
+    ).toThrow(TypeError);
+  });
+
+  it('rejects a validated non-native child on its first, valid render', () => {
+    // Review of PR #83: a form whose fields turn invalid only on a failed
+    // submit would otherwise crash then, not while it is written.
+    expect(() =>
+      render(
+        <Field invalid={false} label="Code">
+          <span>not a control</span>
+        </Field>,
+      ),
+    ).toThrow(TypeError);
+    cleanup();
+    // Without it a composed child is still a plain labelled field.
+    render(
+      <Field label="Code">
+        <span>composed control</span>
+      </Field>,
+    );
+    expect(screen.getByText('composed control')).toBeTruthy();
+  });
+
+  it('treats invalid={undefined} as not passed, for a wrapper forwarding it', () => {
+    function Wrapper({ invalid }: { invalid?: boolean }) {
+      return (
+        <Field invalid={invalid} label="Code">
+          <span>composed control</span>
+        </Field>
+      );
+    }
+    render(<Wrapper />);
+    expect(screen.getByText('composed control')).toBeTruthy();
+    cleanup();
+    expect(() => render(<Wrapper invalid={false} />)).toThrow(TypeError);
+  });
+
+  it('keeps rendering a composed child beside error={undefined}, as before', () => {
+    // error keeps its existing rule: a composed child needs replacing only
+    // once the error holds a message (a minor release breaks no consumer).
+    render(
+      <Field error={undefined} label="Code">
+        <span>composed control</span>
+      </Field>,
+    );
+    expect(screen.getByText('composed control')).toBeTruthy();
+    cleanup();
+    expect(() =>
+      render(
+        <Field error="Enter a code" label="Code">
+          <span>composed control</span>
+        </Field>,
+      ),
+    ).toThrow(TypeError);
+  });
+
   it('rejects a non-native or multiple validation children', () => {
     expect(() =>
       render(

@@ -70,6 +70,15 @@ function sizeRules(): string {
     .join('\n');
 }
 
+/*
+ * The button's own children are its flex items, so a glyph and its label
+ * sit one token gap apart. An icon-only button has one item, and a consumer
+ * that wraps its glyph and label in one element (an Inline span) has one
+ * item too, so neither gets a second gap. A visually hidden name is
+ * absolutely positioned, out of the flex flow, so it adds none either.
+ */
+export const buttonContentGap = 'var(--sw-space-2)';
+
 export function cssButtonClasses(): string {
   return `.sw-button {
   appearance: none;
@@ -83,6 +92,7 @@ export function cssButtonClasses(): string {
   font-family: var(--sw-font-sans);
   font-size: ${label.fontSize}px;
   font-weight: ${label.fontWeight};
+  gap: ${buttonContentGap};
   justify-content: center;
   letter-spacing: ${label.letterSpacing}px;
   line-height: ${label.lineHeight}px;

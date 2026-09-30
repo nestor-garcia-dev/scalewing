@@ -134,3 +134,48 @@ test('a pressed toggle Button keeps its label readable in forced colors', async 
       path: testInfo.outputPath('button-pressed-forced-colors.png'),
     });
 });
+
+test('a Button sets its glyph one token gap from its label, once', async ({
+  page,
+}, testInfo) => {
+  await page.goto('/#button');
+  if (testInfo.project.name === 'forced-colors')
+    await page.emulateMedia({ forcedColors: 'active' });
+  const group = page
+    .locator('#button')
+    .getByRole('group', { name: 'Glyph buttons' });
+  await group.scrollIntoViewIfNeeded();
+
+  /** The space between a button's glyph and the first letter of its label. */
+  const glyphToLabel = (name: string) =>
+    group.getByRole('button', { name, exact: true }).evaluate((button) => {
+      const glyph = button.querySelector('svg')!.getBoundingClientRect();
+      const walker = document.createTreeWalker(button, NodeFilter.SHOW_TEXT);
+      let text = walker.nextNode();
+      while (text && !text.textContent?.trim()) text = walker.nextNode();
+      const range = document.createRange();
+      range.selectNodeContents(text!);
+      return range.getBoundingClientRect().left - glyph.right;
+    });
+
+  // Teisoro (services-nsf.md, final check): the glyph sat about 2 px from
+  // its label on every button. Spacing step 2 is 8 px.
+  for (const size of ['xs', 'sm', 'md']) {
+    expect(await glyphToLabel(`Log sighting ${size}`), size).toBeCloseTo(8, 0);
+  }
+  // A glyph and label already wrapped in one Inline span: one gap, not two.
+  expect(await glyphToLabel('Field log')).toBeCloseTo(8, 0);
+
+  // An icon-only button keeps its glyph centred: its visually hidden name
+  // is out of the flex flow, so it adds no gap.
+  const iconOnly = group.getByRole('button', {
+    name: 'Back to the field log',
+  });
+  const [start, end] = await iconOnly.evaluate((button) => {
+    const box = button.getBoundingClientRect();
+    const glyph = button.querySelector('svg')!.getBoundingClientRect();
+    return [glyph.left - box.left, box.right - glyph.right];
+  });
+  expect(Math.abs(start - end)).toBeLessThanOrEqual(0.5);
+  await group.screenshot({ path: testInfo.outputPath('button-glyphs.png') });
+});

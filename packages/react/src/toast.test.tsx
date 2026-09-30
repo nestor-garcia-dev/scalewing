@@ -11,6 +11,7 @@ import {
 
 import { Text } from './components/Text.js';
 import { Toast } from './components/Toast.js';
+import { cssToastClasses } from './css/css-toast.js';
 import { ThemeProvider } from './theme/ThemeProvider.js';
 
 const originalShowPopover = HTMLElement.prototype.showPopover;
@@ -199,6 +200,20 @@ describe('Toast', () => {
     expect(screen.queryByRole('status', { hidden: true })).toBeNull();
     // Without an icon the children are not wrapped.
     expect(alert.querySelector('.sw-toast-row')).toBeNull();
+  });
+
+  it('keeps the page gutter on each side and wraps a long message', () => {
+    const css = cssToastClasses();
+    const toast = css.slice(css.indexOf('.sw-toast {'));
+    const rule = toast.slice(0, toast.indexOf('}'));
+    // Teisoro DRW-29: at 390 px the toast ran from x 1 to x 388.
+    expect(rule).toContain(
+      'max-width: calc(100% - var(--sw-space-4) - var(--sw-space-4));',
+    );
+    expect(rule).toContain('overflow-wrap: break-word;');
+    // Still as wide as its message up to that cap, and centred.
+    expect(rule).toContain('width: max-content;');
+    expect(rule).toContain('translate: -50% 0;');
   });
 
   it('keeps a neutral toast as it was: a status, no tone class', () => {

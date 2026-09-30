@@ -2,6 +2,7 @@ import { cleanup, render, screen, within } from '@testing-library/react';
 import { afterEach, describe, expect, it } from 'vitest';
 
 import { DenominationGrid } from './components/DenominationGrid.js';
+import { cssDenominationGridClasses } from './css/css-denomination-grid.js';
 import { denominationCellView } from './denomination-cells.js';
 
 const columns = [
@@ -281,6 +282,75 @@ describe('DenominationGrid tiles', () => {
     expect(within(counted).getByText('Short $10').className).toBe(
       'sw-denomination-total',
     );
+  });
+});
+
+describe('DenominationGrid row label line', () => {
+  const row = {
+    id: 'short',
+    label: 'Audit shortage',
+    tone: 'danger' as const,
+    icon: <svg aria-hidden="true" data-testid="glyph" />,
+    cells: [1, 0, 0],
+    total: '-$1',
+  };
+
+  it('keeps the strip row glyph and words in one line, the total after it', () => {
+    render(<DenominationGrid columns={columns} label="Drawer" rows={[row]} />);
+    const header = screen.getByRole('rowheader');
+    const body = header.firstElementChild!;
+    expect(body.className).toBe('sw-denomination-label-body');
+    const line = body.firstElementChild!;
+    expect(line.className).toBe('sw-denomination-label-line');
+    expect([...line.children].map((child) => child.className)).toEqual([
+      'sw-denomination-icon',
+      'sw-denomination-label-text',
+    ]);
+    expect(line.firstElementChild?.getAttribute('aria-hidden')).toBe('true');
+    expect(body.lastElementChild?.className).toBe(
+      'sw-denomination-total-inline',
+    );
+  });
+
+  it('keeps a tiles row glyph and words in one line too', () => {
+    render(
+      <DenominationGrid
+        columns={columns}
+        label="Drawer"
+        layout="tiles"
+        rows={[row]}
+      />,
+    );
+    const line = screen.getByTestId('glyph').parentElement!.parentElement!;
+    expect(line.className).toBe('sw-denomination-label-line');
+    expect(line.parentElement?.className).toBe('sw-denomination-label');
+    expect(line.nextElementSibling?.className).toBe('sw-denomination-total');
+  });
+
+  it('never wraps the line, so its words wrap beside the glyph', () => {
+    const css = cssDenominationGridClasses();
+    const start = css.indexOf('.sw-denomination-label-line {');
+    const rule = css.slice(start, css.indexOf('}', start));
+    expect(rule).toContain('display: flex;');
+    expect(rule).not.toContain('flex-wrap');
+    // Teisoro DRW-28: below md the body stacks the line over the phone
+    // total; the line itself stays a row, with a narrower gap.
+    const phone = css.slice(
+      css.indexOf('@media not all and (min-width: 48rem)'),
+    );
+    expect(phone).toContain(
+      '.sw-denomination-label-body { flex-direction: column;',
+    );
+    expect(phone).toContain(
+      '.sw-denomination-strip .sw-denomination-label-line { gap: var(--sw-space-1); }',
+    );
+    // Only the strip's pinned label column narrows its gap; a tiles row's
+    // label keeps 8 px at every width, as before (review of PR #83).
+    expect(phone).not.toMatch(/\n\s*\.sw-denomination-label-line \{/);
+    expect(phone).not.toContain(
+      '.sw-denomination-tiles .sw-denomination-label-line',
+    );
+    expect(phone).not.toMatch(/\.sw-denomination-label-line \{[^}]*column/);
   });
 });
 

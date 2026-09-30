@@ -17,6 +17,15 @@ function toneRules(): string {
     .join('\n');
 }
 
+/*
+ * The toast keeps the page's side gutter (spacing step 4 on each side): a
+ * long message wraps inside it instead of running to the screen's edges.
+ * 100% of the top layer's containing block leaves out a classic scrollbar;
+ * 100vw would not.
+ */
+export const toastMaxWidth =
+  'calc(100% - var(--sw-space-4) - var(--sw-space-4))';
+
 export function cssToastClasses(): string {
   return `.sw-toast {
   background: var(--sw-glass-fill);
@@ -31,7 +40,9 @@ export function cssToastClasses(): string {
   bottom: var(--sw-space-6);
   left: 50%;
   margin: 0;
+  max-width: ${toastMaxWidth};
   overflow: visible;
+  overflow-wrap: break-word;
   pointer-events: none;
   position: fixed;
   translate: -50% 0;

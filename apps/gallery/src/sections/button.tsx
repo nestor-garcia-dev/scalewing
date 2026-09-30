@@ -7,6 +7,7 @@ import {
 } from '@scalewing/tokens';
 import { useState } from 'react';
 
+import { Glyph } from '../glyph.js';
 import { Section } from '../layout/Section.js';
 import { sampleHabitats } from '../sample-copy.js';
 
@@ -19,6 +20,10 @@ function buttonName(
   return `${variant} ${size} ${state}`;
 }
 
+/** A plus sign and a left arrow, standing in for the consumer's Lucide glyphs. */
+const plusPath = 'M8 3v10M3 8h10';
+const backPath = 'M13 8H3m4-4L3 8l4 4';
+
 export function ButtonSection() {
   const [lastPress, setLastPress] = useState('None yet');
   const [habitat, setHabitat] = useState<string>(sampleHabitats[0].value);
@@ -27,10 +32,15 @@ export function ButtonSection() {
   return (
     <Section
       id="button"
-      purpose="Button is a real button element. Use it for press actions. Primary, secondary, and tertiary are the three action tiers; secondary is outlined until a palette fills it (switch to signal to see all three filled). Ghost is text only; danger is destructive. Disabled blocks onPress. Default type is button; forms may pass submit. A toggle button passes aria-pressed: the pressed one gets an accent ring."
+      purpose="Button is a real button element. Use it for press actions. Primary, secondary, and tertiary are the three action tiers; secondary is outlined until a palette fills it (switch to signal to see all three filled). Ghost is text only; danger is destructive. Disabled blocks onPress. Default type is button; forms may pass submit. A toggle button passes aria-pressed: the pressed one gets an accent ring. A glyph and its label, passed as the button's own children, sit one token gap (spacing step 2) apart."
       title="Button"
       usage={`<Button variant="primary" size="md" onPress={() => undefined}>
   Save
+</Button>
+
+<Button onPress={() => undefined}>
+  <Plus aria-hidden />
+  Log sighting
 </Button>`}
     >
       <Stack gap={4}>
@@ -78,6 +88,45 @@ export function ButtonSection() {
             reset md enabled
           </Button>
         </Inline>
+        <Stack gap={2}>
+          <Text variant="label">With a glyph</Text>
+          <Inline aria-label="Glyph buttons" gap={2} role="group" wrap>
+            {buttonSizes.map((size) => (
+              <Button
+                key={size}
+                onPress={() => setLastPress(`log sighting ${size}`)}
+                size={size}
+                variant={size === 'md' ? 'primary' : 'secondary'}
+              >
+                <Glyph path={plusPath} />
+                {`Log sighting ${size}`}
+              </Button>
+            ))}
+            <Button
+              onPress={() => setLastPress('field log wrapped')}
+              variant="ghost"
+            >
+              <Inline align="center" as="span" gap={2}>
+                <Glyph path={backPath} />
+                Field log
+              </Inline>
+            </Button>
+            <Button
+              onPress={() => setLastPress('back icon only')}
+              variant="ghost"
+            >
+              <span className="sw-sr-only">Back to the field log</span>
+              <Glyph path={backPath} />
+            </Button>
+          </Inline>
+          <Text color="muted" variant="caption">
+            The button's own children sit one token gap apart, so a glyph never
+            touches its label. A glyph and label already wrapped in one Inline
+            span (Field log) are a single child and get no second gap, and an
+            icon-only button with a visually hidden name keeps its glyph
+            centred.
+          </Text>
+        </Stack>
         <Stack gap={2}>
           <Text variant="label">Toggle buttons</Text>
           <Inline aria-label="Preferred habitat" gap={2} role="group" wrap>
