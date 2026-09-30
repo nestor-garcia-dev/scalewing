@@ -288,72 +288,134 @@ test('DenominationGrid strips with one labelWidth line their columns up', async 
     await page.emulateMedia({ forcedColors: 'active' });
   const section = page.locator('#denomination-grid');
   const isPhone = testInfo.project.name === 'mobile-es';
+  const table = (name: string) => section.getByRole('table', { name });
+  const card = table('Den check at dawn').locator(
+    'xpath=ancestor::*[contains(@class, "sw-card")][1]',
+  );
 
   /** Each column head's left edge and width, label corner first. */
   const columnsOf = (name: string) =>
-    section.getByRole('table', { name }).evaluate((table) =>
-      [...table.querySelectorAll('thead > tr > *')].map((cell) => {
+    table(name).evaluate((node) =>
+      [...node.querySelectorAll('thead > tr > *')].map((cell) => {
         const box = cell.getBoundingClientRect();
         return { left: box.left, width: box.width };
       }),
     );
-  const expectAligned = (
-    first: { left: number; width: number }[],
-    second: { left: number; width: number }[],
-  ) => {
-    expect(second).toHaveLength(first.length);
-    first.forEach((column, index) => {
+  const expectAligned = async (first: string, second: string, at: string) => {
+    const [a, b] = [await columnsOf(first), await columnsOf(second)];
+    expect(b).toHaveLength(a.length);
+    a.forEach((column, index) => {
+      const where = `${at}: ${second} column ${index}`;
+      expect(Math.abs(column.left - b[index]!.left), where).toBeLessThanOrEqual(
+        0.5,
+      );
       expect(
-        Math.abs(column.left - second[index]!.left),
-        `column ${index}`,
-      ).toBeLessThanOrEqual(0.5);
-      expect(
-        Math.abs(column.width - second[index]!.width),
-        `column ${index}`,
+        Math.abs(column.width - b[index]!.width),
+        where,
       ).toBeLessThanOrEqual(0.5);
     });
   };
+  const scrolls = (name: string) =>
+    section
+      .getByRole('group', { name })
+      .evaluate((node) => node.scrollWidth > node.clientWidth);
 
   // Teisoro DRW-27: the "$1" column sat at x 522, 515 and 483 on three
   // activity cards, each sized by its own row labels and counts.
-  const dawn = await columnsOf('Den check at dawn');
-  const dusk = await columnsOf('Den check at dusk');
-  expectAligned(dawn, dusk);
-  // With totals, the total column takes the spare width at the end.
-  const weightDawn = await columnsOf('Tag weight at dawn');
-  const weightDusk = await columnsOf('Tag weight at dusk');
-  expectAligned(weightDawn, weightDusk);
-  if (isPhone) {
-    // The phone total column still takes no width.
-    expect(weightDawn.at(-1)!.width).toBeLessThanOrEqual(1);
-  }
+  await expectAligned('Den check at dawn', 'Den check at dusk', 'card');
+  await expectAligned('Tag weight at dawn', 'Tag weight at dusk', 'card');
 
-  // On a phone, with no spare width to share, a label longer than the width
-  // wraps beside its glyph instead of widening its column. On a desktop the
-  // label column shares the spare width, so the label fits on one line.
-  const seen = section
-    .getByRole('table', { name: 'Den check at dusk' })
-    .getByRole('rowheader', { name: /Seen at the entrance/ });
-  const lines = await seen.evaluate((header) => {
-    const range = document.createRange();
-    range.selectNodeContents(
-      header.querySelector('.sw-denomination-label-text')!,
-    );
-    return new Set([...range.getClientRects()].map((r) => Math.round(r.top)))
-      .size;
-  });
-  expect(lines).toBe(isPhone ? 2 : 1);
-
-  // Every strip still fits its card: nothing scrolls sideways.
-  for (const name of ['Den check at dawn', 'Tag weight at dusk']) {
-    const region = section.getByRole('group', { name });
+  // The total sits right after its counts: the spare width stays empty
+  // after the strip, not between a row's counts and its total (review of
+  // PR #83: the total had been 700 px from its counts at 1280).
+  for (const name of ['Tag weight at dawn', 'Tag weight at dusk']) {
+    const layout = await table(name).evaluate((node) => {
+      const heads = node.querySelectorAll('thead th.sw-denomination-head');
+      const lastCount = heads[heads.length - 1]!.getBoundingClientRect();
+      const total = node
+        .querySelector('tbody td.sw-denomination-total')!
+        .getBoundingClientRect();
+      return {
+        gap: total.left - lastCount.right,
+        tableRight: node.getBoundingClientRect().right,
+        totalRight: total.right,
+        totalWidth: total.width,
+      };
+    });
+    expect(Math.abs(layout.gap), name).toBeLessThanOrEqual(0.5);
     expect(
-      await region.evaluate((node) => node.scrollWidth <= node.clientWidth),
+      Math.abs(layout.tableRight - layout.totalRight),
       name,
-    ).toBe(true);
+    ).toBeLessThanOrEqual(0.5);
+    if (isPhone) expect(layout.totalWidth, name).toBeLessThanOrEqual(1);
   }
-  await section
-    .getByRole('table', { name: 'Den check at dawn' })
-    .locator('xpath=ancestor::*[contains(@class, "sw-card")][1]')
-    .screenshot({ path: testInfo.outputPath('denomination-label-width.png') });
+
+  // A label longer than the width wraps beside its glyph, not wider.
+  const lines = await table('Den check at dusk')
+    .getByRole('rowheader', { name: /Seen at the entrance/ })
+    .evaluate((header) => {
+      const range = document.createRange();
+      range.selectNodeContents(
+        header.querySelector('.sw-denomination-label-text')!,
+      );
+      return new Set(
+        [...range.getClientRects()].map((rect) => Math.round(rect.top)),
+      ).size;
+    });
+  expect(lines).toBeGreaterThan(1);
+  for (const name of ['Den check at dawn', 'Tag weight at dusk'])
+    expect(await scrolls(name), name).toBe(false);
+
+  // In a narrower card the count columns keep their width and the label
+  // column gives way, the same in every strip, while each label's longest
+  // word still fits: 500 px on a desktop, 300 px on a phone. On a phone the
+  // totals take no width, so the strips with totals line up too.
+  const narrow = isPhone ? 300 : 500;
+  const roomy = await columnsOf('Den check at dawn');
+  await card.evaluate((node, width) => {
+    (node as HTMLElement).style.width = `${width}px`;
+  }, narrow);
+  await expectAligned('Den check at dawn', 'Den check at dusk', `${narrow}`);
+  const tight = await columnsOf('Den check at dawn');
+  expect(tight[0]!.width).toBeLessThan(roomy[0]!.width - 1);
+  tight.slice(1).forEach((column, index) => {
+    expect(
+      Math.abs(column.width - roomy[index + 1]!.width),
+    ).toBeLessThanOrEqual(0.5);
+  });
+  if (isPhone)
+    await expectAligned(
+      'Tag weight at dawn',
+      'Tag weight at dusk',
+      `${narrow}`,
+    );
+  for (const name of ['Den check at dawn', 'Den check at dusk'])
+    expect(await scrolls(name), name).toBe(false);
+
+  // An eleven-column strip wider than a phone still scrolls inside its
+  // card with its label pinned; the page never scrolls sideways.
+  await card.evaluate((node) => {
+    (node as HTMLElement).style.width = '';
+  });
+  const visits = section.getByRole('group', { name: 'Den visits by hour' });
+  expect(await scrolls('Den visits by hour')).toBe(isPhone);
+  if (isPhone) {
+    const label = table('Den visits by hour').getByRole('rowheader');
+    const before = await label.boundingBox();
+    await visits.evaluate((node) => {
+      node.scrollLeft = node.scrollWidth;
+    });
+    const after = await label.boundingBox();
+    expect(Math.abs(after!.x - before!.x)).toBeLessThanOrEqual(0.5);
+  }
+  const [visitsBox, cardBox] = [
+    await visits.boundingBox(),
+    await card.boundingBox(),
+  ];
+  expect(visitsBox!.x + visitsBox!.width).toBeLessThanOrEqual(
+    cardBox!.x + cardBox!.width + 0.5,
+  );
+  await card.screenshot({
+    path: testInfo.outputPath('denomination-label-width.png'),
+  });
 });

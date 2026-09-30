@@ -397,36 +397,82 @@ describe('DenominationGrid labelWidth', () => {
     expect(group.querySelector('.sw-denomination-strip-aligned')).toBeNull();
   });
 
-  it('sets a width on the labels and every count column', () => {
+  it('keeps each count column one token width and lets only the label give', () => {
     const css = cssDenominationGridClasses();
-    expect(css).toContain(
-      '.sw-denomination-strip-aligned .sw-denomination-label {\n  width: var(--sw-denomination-label-width);\n}',
+    const rule = (selector: string) => {
+      const start = css.indexOf(`${selector} {`);
+      return css.slice(start, css.indexOf('}', start));
+    };
+    // As wide as its columns: the spare width stays empty after the last
+    // column, so a total sits right after its counts (review of PR #83).
+    expect(rule('.sw-denomination-strip-aligned')).toContain('width: auto;');
+    expect(rule('.sw-denomination-strip-aligned')).toContain(
+      '--sw-denomination-column-width: var(--sw-space-8);',
     );
-    expect(css).toContain(
-      '.sw-denomination-strip-aligned .sw-denomination-head {\n  width: var(--sw-space-8);\n}',
+    expect(
+      rule('.sw-denomination-strip-aligned .sw-denomination-label'),
+    ).toContain('width: var(--sw-denomination-label-width);');
+    expect(
+      rule('.sw-denomination-strip-aligned .sw-denomination-head'),
+    ).toContain('width: var(--sw-denomination-column-width);');
+    // A block of the column width in each head: the column cannot shrink
+    // below it in a narrow container, so the label column is the one that
+    // gives.
+    const floor = rule(
+      '.sw-denomination-strip-aligned .sw-denomination-head::before',
     );
+    expect(floor).toContain("content: '';");
+    expect(floor).toContain('display: block;');
+    expect(floor).toContain('width: var(--sw-denomination-column-width);');
+    expect(
+      css.slice(
+        css.indexOf('.sw-denomination-strip-aligned .sw-denomination-label {'),
+      ),
+    ).not.toMatch(/^[^}]*min-width/);
     const phone = css.slice(
       css.indexOf('@media not all and (min-width: 48rem)'),
     );
     expect(phone).toContain(
-      '.sw-denomination-strip-aligned .sw-denomination-head { width: var(--sw-space-5); }',
+      '.sw-denomination-strip-aligned { --sw-denomination-column-width: var(--sw-space-5); }',
     );
-    // The total column keeps no width, so it takes the spare width.
+    // The total column keeps no width of its own: it is as wide as its total.
     expect(css).not.toMatch(/strip-aligned [^{]*total[^{]*\{/);
   });
 
-  it.each([0, -2, 1.5, Number.NaN])('rejects a labelWidth of %s', (width) => {
-    expect(() =>
-      render(
+  it('accepts a labelWidth from 1 to 40', () => {
+    for (const width of [1, 40]) {
+      const { unmount } = render(
         <DenominationGrid
           columns={columns}
           label="Drawer"
           labelWidth={width}
           rows={rows}
         />,
-      ),
-    ).toThrow(RangeError);
+      );
+      expect(
+        screen
+          .getByRole('table', { name: 'Drawer' })
+          .style.getPropertyValue('--sw-denomination-label-width'),
+      ).toBe(`${width}ch`);
+      unmount();
+    }
   });
+
+  it.each([0, -2, 1.5, 41, Number.NaN, Infinity])(
+    'rejects a labelWidth of %s',
+    (width) => {
+      expect(() =>
+        render(
+          <DenominationGrid
+            columns={columns}
+            label="Drawer"
+            labelWidth={width}
+            rows={rows}
+          />,
+        ),
+      ).toThrow(RangeError);
+    },
+  );
 });
 
 describe('DenominationGrid validation', () => {

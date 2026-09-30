@@ -35,10 +35,17 @@ export type DenominationGridProps = {
   totalLabel?: string;
   /**
    * The strip's row-label column width, in characters of the label type
-   * (`ch`), such as the longest label the consumer can show plus its icon.
-   * Strips with the same width, columns and `labelWidth` line their columns
-   * up from grid to grid; a longer label wraps beside its icon. A positive
-   * integer. Only the strip has that column.
+   * (`ch`), such as the longest label the consumer can show plus its icon:
+   * an integer from 1 to 40. Each count column then keeps one token width
+   * and the strip is only as wide as its columns, so a total sits right
+   * after its counts. Strips with the same columns and `labelWidth` line up
+   * when their containers fit every column at its width; in a narrower
+   * container the label column gives way, wrapping its words beside the
+   * icon, and they still line up while no total shows (totals take no
+   * width below `md`) and each label's longest word fits. A visible total
+   * in a container too narrow, a strip that must scroll, a word longer
+   * than `labelWidth` or a count wider than its column can shift them.
+   * Only the strip has that column.
    */
   labelWidth?: number;
 };

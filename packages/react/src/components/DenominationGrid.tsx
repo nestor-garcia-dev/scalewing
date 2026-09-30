@@ -11,6 +11,9 @@ export type {
   DenominationGridTone,
 } from './denomination-grid/types.js';
 
+/** The widest row-label column, in ch: a label longer than this wraps. */
+const maxLabelWidth = 40;
+
 export function DenominationGrid({
   label,
   columns,
@@ -27,9 +30,15 @@ export function DenominationGrid({
     throw new RangeError('totalLabel must not be empty');
   if (
     labelWidth !== undefined &&
-    !(Number.isInteger(labelWidth) && labelWidth > 0)
+    !(
+      Number.isInteger(labelWidth) &&
+      labelWidth > 0 &&
+      labelWidth <= maxLabelWidth
+    )
   )
-    throw new RangeError('labelWidth must be a positive integer');
+    throw new RangeError(
+      `labelWidth must be an integer from 1 to ${maxLabelWidth}`,
+    );
 
   if (layout === 'tiles')
     return (
