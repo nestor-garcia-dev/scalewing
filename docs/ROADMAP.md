@@ -17,6 +17,16 @@ release workflow completed successfully.
 
 ## Next action
 
+Teisoro F-007-S05 task 1375 leftovers (the "Final check (2026-09-29 …)"
+sections of `services-*.md`), one surface per commit on
+`claude/services-leftovers`:
+
+- `Toast` keeps the page gutter on a phone (DRW-29, `teisoro-toast.md`
+  follow-up).
+
+Next: pull request, review and merge, then release `@scalewing/react`
+and Teisoro pins it.
+
 FutMas F-019-S04: `ListRow` `tone="danger"`
 (`futmas-list-row-danger-tone.md`, 2026-09-29), so Sign out is a red row
 as in iOS Settings under FutMas's one-button rule. Merged in #81 and
