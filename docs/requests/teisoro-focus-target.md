@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: implemented on `claude/services-leftovers` for Teisoro F-007-S05 task 1375; pull request pending review.
+Status: merged in #83 (2026-09-30) and released in `@scalewing/react` 1.16.0; Teisoro adopts it next.
 Renderer: react
 Surface: the document canvas's focus ring for a programmatic focus target (an element with `tabindex="-1"`). No new component, class or prop.
 Source: Teisoro UX final check `services-nsf.md`, finding NSF-34 (polish, the part left for Scalewing), shared with ENT-29 (`services-entries.md`) and DRW-30 (`services-drawer-cash-and-audits.md`).

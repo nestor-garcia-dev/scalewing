@@ -31,7 +31,7 @@ Teisoro use: `apps/teisoro-web/src/app/ServicesDrawerSupport.tsx` (the drawer ad
 
 ## Follow-up request (2026-09-30, Teisoro F-007-S05 task 1375): the page gutter on a phone
 
-Status: implemented on `claude/services-leftovers` for Teisoro F-007-S05 task 1375; pull request pending review.
+Status: merged in #83 (2026-09-30) and released in `@scalewing/react` 1.16.0; Teisoro adopts it next.
 Source: Teisoro UX final check `services-drawer-cash-and-audits.md`, finding DRW-29 (polish, owner Scalewing). `es-390/05-the-cash-added.part-2.png`: the green border of "Se agregaron $40.00 al cajón desde la bóveda." runs from about x 1 to x 388 on a 390 px screen.
 
 Teisoro need: every Services toast (`apps/teisoro-web/src/app/ServicesDrawerSupport.tsx` and the other drawer results) keeps the 16 px side gutter its page has on a phone. Teisoro owns no CSS, so it cannot cap the width itself.

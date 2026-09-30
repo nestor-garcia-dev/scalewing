@@ -18,8 +18,9 @@ release workflow completed successfully.
 ## Next action
 
 Teisoro F-007-S05 task 1375 leftovers (the "Final check (2026-09-29 …)"
-sections of `services-*.md`), one surface per commit on
-`claude/services-leftovers`:
+sections of `services-*.md`), one surface per commit, merged in #83
+after three review rounds and released as `@scalewing/react` 1.16.0
+(`DenominationGrid` `labelWidth`, DRW-27, was withdrawn):
 
 - `Toast` keeps the page gutter on a phone (DRW-29, `teisoro-toast.md`
   follow-up).
@@ -32,8 +33,7 @@ sections of `services-*.md`), one surface per commit on
 - `Field` `invalid`: the invalid state without a message of its own
   (DRW-18, `teisoro-field-validation.md` follow-up).
 
-Next: pull request, review and merge, then release `@scalewing/react`
-and Teisoro pins it.
+Next: Teisoro pins 1.16.0.
 
 FutMas F-019-S04: `ListRow` `tone="danger"`
 (`futmas-list-row-danger-tone.md`, 2026-09-29), so Sign out is a red row

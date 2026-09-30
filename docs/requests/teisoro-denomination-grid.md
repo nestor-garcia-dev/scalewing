@@ -93,7 +93,7 @@ Evidence: `denomination-grid.test.tsx` ("names a lone plain row only by the grid
 
 ## Follow-up request (2026-09-30, Teisoro F-007-S05 task 1375): a row's glyph stays beside its label
 
-Status: implemented on `claude/services-leftovers` for Teisoro F-007-S05 task 1375; pull request pending review.
+Status: merged in #83 (2026-09-30) and released in `@scalewing/react` 1.16.0; Teisoro adopts it next.
 Source: Teisoro UX final check `services-drawer-cash-and-audits.md`, finding DRW-28 (polish, the part left for Scalewing). `services-day/adds-cash-from-the-vault-after-a-failed-attempt/es-390/05-the-cash-added.part-3.png`: on the activity cards at 390 px, the "Faltante" and "Agregado" row labels put their ⊖ / ⊕ glyph on its own line above the word.
 
 Teisoro need: the activity cards' bill strips (`apps/teisoro-web/src/app/services-day/ActivityCard.tsx`, `FlowStrips`, one `DenominationGrid` with an icon per row) read "⊖ Faltante" on one line on a phone, as they do on a desktop. Teisoro already keeps its own badge and name on one line (no-break spaces); the row label is Scalewing's markup.
