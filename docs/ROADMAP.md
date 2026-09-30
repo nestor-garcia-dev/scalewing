@@ -29,8 +29,6 @@ sections of `services-*.md`), one surface per commit on
   accent ring (NSF-34, ENT-29, DRW-30, new `teisoro-focus-target.md`).
 - `DenominationGrid` keeps a row's glyph beside its label on a phone
   (DRW-28, `teisoro-denomination-grid.md` follow-up).
-- `DenominationGrid` `labelWidth`, so strips in a feed line up their
-  count columns (DRW-27, `teisoro-denomination-grid.md` follow-up).
 - `Field` `invalid`: the invalid state without a message of its own
   (DRW-18, `teisoro-field-validation.md` follow-up).
 

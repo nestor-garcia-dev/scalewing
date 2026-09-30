@@ -33,12 +33,4 @@ export type DenominationGridProps = {
    * hidden column header), such as "Total". Only the strip has that column.
    */
   totalLabel?: string;
-  /**
-   * The strip's row-label column width, in characters of the label type
-   * (`ch`), such as the longest label the consumer can show plus its icon.
-   * Strips with the same width, columns and `labelWidth` line their columns
-   * up from grid to grid; a longer label wraps beside its icon. A positive
-   * integer. Only the strip has that column.
-   */
-  labelWidth?: number;
 };
