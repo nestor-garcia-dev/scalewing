@@ -71,7 +71,9 @@ Behavior (no API change): `.sw-button` gains `gap: var(--sw-space-2)` (8 px). Th
 - a visually hidden name (`sw-sr-only`, as in `CalendarButton`) is absolutely positioned, out of the flex flow, so it adds no gap and the glyph stays centred;
 - an element hidden below a breakpoint (`Box hideBelow="md"`, Teisoro's "Services reports") is `display: none` there, so the icon-only phone button has no gap either.
 
-Migration: nothing breaks. A button whose children are several elements meant to read as one phrase (`Save <strong>draft</strong>`) now shows 8 px between them instead of a word space; keep such a phrase in one element.
+Migration: nothing breaks. A button whose children are several elements meant to read as one phrase (`Save <strong>draft</strong> now`) was already broken: each child is its own flex item, and the space at the edges of an anonymous flex item's text collapses, so the words touched at 0 px. They are now 8 px apart instead. Put such a phrase in one element (`<span>Save <strong>draft</strong> now</span>`), where its word spaces are kept.
+
+Correction (2026-09-30, code review of PR #83): the first version of this note said such a phrase used to show a word space between its parts; it did not, as above.
 
 Rejected alternatives:
 

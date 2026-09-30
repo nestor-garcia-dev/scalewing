@@ -140,7 +140,7 @@ A disabled native text control (`<input>`, `<select>` or `<textarea>` on the can
 </Stack>
 ```
 
-A `Button`'s own children are laid out in a row one token gap apart (spacing step 2, 8 px), so a glyph passed beside the label never touches it. Pass the glyph and the label as direct children. An icon-only button has one child and is unchanged, and a visually hidden name (`sw-sr-only`) is out of the flow, so it adds no gap. A label already wrapped in one element with its own gap, such as `<Inline as="span" gap={2}>`, is a single child and gets no second gap; it can drop the wrapper. Keep words that must read as one phrase in one text run or one element, since separate elements are also a gap apart.
+A `Button`'s own children are laid out in a row one token gap apart (spacing step 2, 8 px), so a glyph passed beside the label never touches it. Pass the glyph and the label as direct children. An icon-only button has one child and is unchanged, and a visually hidden name (`sw-sr-only`) is out of the flow, so it adds no gap. A label already wrapped in one element with its own gap, such as `<Inline as="span" gap={2}>`, is a single child and gets no second gap; it can drop the wrapper. A phrase split across elements, such as `Save <strong>draft</strong> now`, is several flex items: the spaces at their edges collapse, so its parts touched before and are a gap apart now. Put such a phrase in one element (`<span>Save <strong>draft</strong> now</span>`), where its word spaces are kept.
 
 ```tsx
 <Button onPress={logSighting}>
