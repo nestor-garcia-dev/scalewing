@@ -31,7 +31,7 @@ Evidence: `radio-group.test.tsx` ("RadioGroup option icons": the radio's name is
 
 ## Follow-up request (2026-09-29, Teisoro F-007-S05 task 1365): a description per option
 
-Status: implemented on `claude/radio-option-description` for Teisoro F-007-S05 task 1365; pull request pending review.
+Status: merged in #79 (2026-09-29) and released in `@scalewing/react` 1.15.0; Teisoro pins it in F-007-S05 task 1365.
 Source: Teisoro's check cashing. The customer picks the company whose check they are cashing from a `RadioGroup`; each option reads "{company} · {type}" with a building or person glyph. Each company has a history, such as "Most recent" or "2 checks · last Sep 13, 2026". Today Teisoro can only put it in the group's `description`, under the whole group, where it reads as belonging to the last option. The owner approved showing each option's own history on its row.
 
 Teisoro use: the check-cashing company choice (`apps/teisoro-web/src/app/check-cashing/ChecksSection.tsx`): each company's history as its option's description, "Most recent" as a small `Badge`.
