@@ -68,10 +68,10 @@ Evidence: `field.test.tsx` ("marks a control invalid without a message of its ow
 
 ### Revision after the code review of PR #83 (2026-09-30)
 
-Failing early: the first version threw its `TypeError` for a non-native child only once `invalid` turned true, so a form that validates a group would render fine while valid and crash on its first failed submit. `Field` now checks whether `invalid` was passed at all (the prop is present, even as `invalid={false}`) and requires one native control from the first render. `invalid` is new, so no working consumer passes it yet.
+Failing early: the first version threw its `TypeError` for a non-native child only once `invalid` turned true, so a form that validates a group would render fine while valid and crash on its first failed submit. `Field` now checks whether `invalid` was passed (even as `invalid={false}`, but not as `invalid={undefined}`, so a wrapper that forwards an optional `invalid` does not throw) and requires one native control from the first render. `invalid` is new, so no working consumer passes it yet.
 
 `error` keeps its existing rule: it requires the native control only while it holds a message, so `error={undefined}` beside a composed child still renders. (A first revision applied the early failure to `error` too; the coordinator's review of it rejected that, because it would throw in working consumer code, which a minor release cannot do.)
 
-Evidence: `field.test.tsx` "rejects a validated non-native child on its first, valid render" (`invalid={false}` beside a `span` throws; the same child without it renders) and "keeps rendering a composed child beside error={undefined}, as before" (it renders; with a message it throws, as it always did).
+Evidence: `field.test.tsx` "rejects a validated non-native child on its first, valid render" (`invalid={false}` beside a `span` throws; the same child without it renders), "treats invalid={undefined} as not passed, for a wrapper forwarding it" and "keeps rendering a composed child beside error={undefined}, as before" (it renders; with a message it throws, as it always did).
 
 Parity: `invalid` exists on `Field` only. `DateField`, `Select`, `SegmentedControl`, `RadioGroup` and `Checkbox` have `error` but no `invalid`; each can gain the same prop, with the same meaning (`aria-invalid` and its danger outline without a message), when a consumer asks for it. Not built now: Teisoro's group error is a grid of `Field`s.

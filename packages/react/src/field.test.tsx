@@ -252,6 +252,20 @@ describe('Field', () => {
     expect(screen.getByText('composed control')).toBeTruthy();
   });
 
+  it('treats invalid={undefined} as not passed, for a wrapper forwarding it', () => {
+    function Wrapper({ invalid }: { invalid?: boolean }) {
+      return (
+        <Field invalid={invalid} label="Code">
+          <span>composed control</span>
+        </Field>
+      );
+    }
+    render(<Wrapper />);
+    expect(screen.getByText('composed control')).toBeTruthy();
+    cleanup();
+    expect(() => render(<Wrapper invalid={false} />)).toThrow(TypeError);
+  });
+
   it('keeps rendering a composed child beside error={undefined}, as before', () => {
     // error keeps its existing rule: a composed child needs replacing only
     // once the error holds a message (a minor release breaks no consumer).
