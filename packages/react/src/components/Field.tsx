@@ -36,8 +36,8 @@ export type FieldProps = {
    * a message of its own, for a field whose error is shown elsewhere, such
    * as one message under a group of fields. Point the control's
    * `aria-describedby` at that message. `error` implies it. Passing
-   * `invalid` or `error` at all, even `false` or `undefined`, requires one
-   * native control child from the first render.
+   * `invalid` at all, even `false`, requires one native control child from
+   * the first render.
    */
   invalid?: boolean;
   required?: boolean;
@@ -48,13 +48,14 @@ export type FieldProps = {
 };
 
 /**
- * A validated field: `error` or `invalid` was passed, even while it is
- * `undefined` or `false`. Such a field needs one native control from its
- * first render, so a form learns it on the happy path instead of on its
- * first failed submit.
+ * `invalid` was passed, even as `false`: such a field needs one native
+ * control from its first render, so a form learns it on the happy path
+ * instead of on its first failed submit. `error` keeps its older rule (it
+ * requires the control only while it holds a message), so a composed
+ * child beside `error={undefined}` still renders.
  */
-function validates(props: FieldProps): boolean {
-  return 'error' in props || 'invalid' in props;
+function passesInvalid(props: FieldProps): boolean {
+  return 'invalid' in props;
 }
 
 export function Field(props: FieldProps) {
@@ -81,7 +82,7 @@ export function Field(props: FieldProps) {
   const marksInvalid = Boolean(error) || invalid;
   const adorned = Boolean(prefix || suffix);
   const needsControl = Boolean(
-    message || validates(props) || required || adorned,
+    message || marksInvalid || passesInvalid(props) || required || adorned,
   );
   const className = [
     'sw-field',

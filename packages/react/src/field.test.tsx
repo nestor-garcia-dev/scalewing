@@ -235,24 +235,40 @@ describe('Field', () => {
   it('rejects a validated non-native child on its first, valid render', () => {
     // Review of PR #83: a form whose fields turn invalid only on a failed
     // submit would otherwise crash then, not while it is written.
-    for (const field of [
-      <Field invalid={false} key="invalid" label="Code">
-        <span>not a control</span>
-      </Field>,
-      <Field error={undefined} key="error" label="Code">
-        <span>not a control</span>
-      </Field>,
-    ]) {
-      expect(() => render(field)).toThrow(TypeError);
-      cleanup();
-    }
-    // Without either prop a composed child is still a plain labelled field.
+    expect(() =>
+      render(
+        <Field invalid={false} label="Code">
+          <span>not a control</span>
+        </Field>,
+      ),
+    ).toThrow(TypeError);
+    cleanup();
+    // Without it a composed child is still a plain labelled field.
     render(
       <Field label="Code">
         <span>composed control</span>
       </Field>,
     );
     expect(screen.getByText('composed control')).toBeTruthy();
+  });
+
+  it('keeps rendering a composed child beside error={undefined}, as before', () => {
+    // error keeps its existing rule: a composed child needs replacing only
+    // once the error holds a message (a minor release breaks no consumer).
+    render(
+      <Field error={undefined} label="Code">
+        <span>composed control</span>
+      </Field>,
+    );
+    expect(screen.getByText('composed control')).toBeTruthy();
+    cleanup();
+    expect(() =>
+      render(
+        <Field error="Enter a code" label="Code">
+          <span>composed control</span>
+        </Field>,
+      ),
+    ).toThrow(TypeError);
   });
 
   it('rejects a non-native or multiple validation children', () => {
