@@ -7,7 +7,10 @@ import {
 } from './types.js';
 
 type TilesProps = Required<
-  Pick<DenominationGridProps, 'label' | 'columns' | 'rows' | 'zeroLabel'>
+  Pick<
+    DenominationGridProps,
+    'label' | 'columns' | 'rows' | 'zeroLabel' | 'rowRole'
+  >
 > &
   Pick<DenominationGridProps, 'subtotal'>;
 
@@ -20,10 +23,11 @@ function showsRowLabel(rowCount: number, row: DenominationGridRow): boolean {
 }
 
 /**
- * A row is a region named by its label, except a lone row without its label
- * line whose label repeats the grid's: that region would only say the
- * group's name a second time (Teisoro SDAY-31). A lone row with its own
- * words keeps them, since nothing else on screen says them.
+ * A row is named by its label (a region, or a group at `rowRole="group"`),
+ * except a lone row without its label line whose label repeats the grid's:
+ * that name would only say the group's name a second time (Teisoro
+ * SDAY-31). A lone row with its own words keeps them, since nothing else on
+ * screen says them.
  */
 function namesRow(
   rowCount: number,
@@ -37,6 +41,7 @@ export function DenominationTiles({
   label,
   columns,
   rows,
+  rowRole,
   subtotal,
   zeroLabel,
 }: TilesProps) {
@@ -48,16 +53,18 @@ export function DenominationTiles({
     >
       {rows.map((row) => {
         const labelled = showsRowLabel(rows.length, row);
+        const named = namesRow(rows.length, row, label);
+        // A named section is a region; role="group" keeps the name without
+        // the landmark. An unnamed row stays a generic section either way.
         return (
           <section
-            aria-label={
-              namesRow(rows.length, row, label) ? row.label : undefined
-            }
+            aria-label={named ? row.label : undefined}
             className={cx(
               'sw-denomination-row',
               `sw-denomination-row-${row.tone ?? 'neutral'}`,
             )}
             key={row.id}
+            role={named && rowRole === 'group' ? 'group' : undefined}
           >
             {labelled ? (
               <span className="sw-denomination-label">

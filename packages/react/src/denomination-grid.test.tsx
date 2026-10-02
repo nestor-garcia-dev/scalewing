@@ -306,6 +306,104 @@ describe('DenominationGrid tiles', () => {
   });
 });
 
+describe('DenominationGrid rowRole', () => {
+  const rows = [
+    { id: 'expected', label: 'Expected', cells: [1, 2, 3] },
+    { id: 'counted', label: 'Counted', cells: [1, 2, 2] },
+  ];
+
+  it('makes each named tiles row a region by default', () => {
+    render(
+      <DenominationGrid
+        columns={columns}
+        label="Drawer"
+        layout="tiles"
+        rows={rows}
+      />,
+    );
+    expect(screen.getAllByRole('region').map((row) => row.ariaLabel)).toEqual([
+      'Expected',
+      'Counted',
+    ]);
+    expect(
+      screen.getByRole('region', { name: 'Counted' }).getAttribute('role'),
+    ).toBeNull();
+  });
+
+  it('keeps each row named but out of the landmarks at rowRole="group"', () => {
+    render(
+      <DenominationGrid
+        columns={columns}
+        label="Drawer"
+        layout="tiles"
+        rowRole="group"
+        rows={rows}
+      />,
+    );
+    expect(screen.queryByRole('region')).toBeNull();
+    const grid = screen.getByRole('group', { name: 'Drawer' });
+    const expected = within(grid).getByRole('group', { name: 'Expected' });
+    expect(expected.tagName).toBe('SECTION');
+    expect(expected.className).toContain('sw-denomination-row');
+    expect(within(expected).getAllByRole('listitem')).toHaveLength(3);
+    expect(within(grid).getByRole('group', { name: 'Counted' })).toBeTruthy();
+  });
+
+  it('leaves a lone plain row unnamed and without a role at rowRole="group"', () => {
+    const { container } = render(
+      <DenominationGrid
+        columns={columns}
+        label="Drawer count"
+        layout="tiles"
+        rowRole="group"
+        rows={[{ id: 'only', label: 'Drawer count', cells: [1, 0, 2] }]}
+      />,
+    );
+    const row = container.querySelector('section')!;
+    expect(row.getAttribute('role')).toBeNull();
+    expect(row.getAttribute('aria-label')).toBeNull();
+    expect(screen.getAllByRole('group')).toHaveLength(1);
+  });
+
+  it('ignores rowRole in the strip, whose rows are table rows', () => {
+    render(
+      <DenominationGrid
+        columns={columns}
+        label="Cash flow"
+        rowRole="group"
+        rows={rows}
+      />,
+    );
+    const table = screen.getByRole('table', { name: 'Cash flow' });
+    expect(within(table).getByRole('row', { name: /Counted/ })).toBeTruthy();
+    expect(within(table).queryByRole('group')).toBeNull();
+  });
+
+  it('rejects an unknown rowRole', () => {
+    expect(() =>
+      render(
+        <DenominationGrid
+          columns={columns}
+          label="Drawer"
+          layout="tiles"
+          rowRole={'landmark' as 'region'}
+          rows={rows}
+        />,
+      ),
+    ).toThrow(RangeError); // The strip ignores a valid rowRole but still rejects an unknown one.
+    expect(() =>
+      render(
+        <DenominationGrid
+          columns={columns}
+          label="Drawer"
+          rowRole={'landmark' as 'region'}
+          rows={rows}
+        />,
+      ),
+    ).toThrow(RangeError);
+  });
+});
+
 describe('DenominationGrid row label line', () => {
   const row = {
     id: 'short',

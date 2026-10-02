@@ -160,6 +160,7 @@ export type {
   DenominationGridLayout,
   DenominationGridProps,
   DenominationGridRow,
+  DenominationGridRowRole,
   DenominationGridTone,
 } from './components/DenominationGrid.js';
 

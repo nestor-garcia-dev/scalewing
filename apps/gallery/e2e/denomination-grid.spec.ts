@@ -84,6 +84,17 @@ test('DenominationGrid renders the strip table with tones and moves totals under
     .getByRole('region', { name: 'Fitted' });
   await expect(fitted.getByText('53 g', { exact: true })).toBeVisible();
   await expect(fitted.getByText('Fitted', { exact: true })).toBeVisible();
+  // rowRole="group": each row keeps its name but is not a landmark, so a
+  // page of order cards does not list a region per row (Teisoro CHG-4).
+  const nestBoxes = section.getByRole('group', { name: 'Nest box check' });
+  await expect(nestBoxes.getByRole('region')).toHaveCount(0);
+  expect(await nestBoxes.ariaSnapshot()).not.toContain('region');
+  await expect(
+    nestBoxes.getByRole('group', { name: 'Occupied' }).getByRole('listitem'),
+  ).toHaveCount(6);
+  await expect(
+    nestBoxes.getByRole('group', { name: 'Fitted' }).getByText('Fitted'),
+  ).toBeVisible();
   await section.screenshot({
     path: testInfo.outputPath('denomination-grid.png'),
   });

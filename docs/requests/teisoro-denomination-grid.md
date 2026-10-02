@@ -144,3 +144,24 @@ Rejected alternatives:
 - `Intl.NumberFormat` with `signDisplay`. Its minus is locale-dependent (a hyphen-minus in `en-US`), which is the glyph being replaced, and it would bring grouping into a primitive that leaves grouping to the consumer.
 
 Evidence: `denomination-grid.test.tsx` ("writes a negative count with the typographic minus, signed or not", and the strip's Net row reading `−1`); `apps/gallery/e2e/denomination-grid.spec.ts` on desktop-en, mobile-es and forced-colors: "Tag movement by size" Net reads `−2` and "Kit check by size" Difference reads `−1`, with no hyphen. The gallery's own negative totals now use the same sign ("−99 g", "−8 g").
+
+## Follow-up request (2026-10-02, Teisoro F-007 task 1550): a tiles row that is not a landmark
+
+Status: implemented on `claude/vault-review-surfaces` for Teisoro F-007 task 1550; pull request pending review.
+Source: Teisoro UX review `vault-change-orders.md`, finding CHG-4 (major; the part left for Scalewing). Create 01 `.aria.yml`: each change order holds `group "Order #… · Requested · Bills"` › `region "Bills"` › `list`, so the page lists a landmark named "Bills", "Coin boxes" or "Paid from the vault" per order, 15 regions in one frame. Every named tiles row is a `section aria-label`, a region. The review asks for the region role to be opt-in.
+
+Teisoro need: the change-order cards (`apps/teisoro-web/src/app/change-orders/parts.tsx`, `ChangeTiles`) keep each tiles row named ("Bills", "Coin boxes") inside the order's group, without adding a landmark per row per order.
+
+Proposed API: `rowRole?: 'region' | 'group'` on `DenominationGrid`, default `'region'`; exported type `DenominationGridRowRole`.
+
+Behavior and failure boundary: at `rowRole="group"` every row that is named today keeps the same `aria-label` and gets `role="group"`, so it is announced with its name but is not a landmark; at the default, or with the prop left out, every row is the region it is today. A lone plain row whose label repeats the grid's (SDAY-31) stays unnamed and without a role at either setting. The strip layout has no row containers (its rows are table rows) and ignores the prop. Any other value throws a `RangeError`, as a blank `totalLabel` does. No visual change.
+
+Not done: making `group` the default, which is what "opt-in" literally asks. A consumer that finds a row with `getByRole('region', { name })`, or whose users navigate by landmarks, would change behavior in a minor release. `rowRole="group"` gives Teisoro the result now; flipping the default belongs in the next major release of `@scalewing/react`.
+
+Rejected alternatives:
+
+- Dropping the name from every row (a generic `section`). Several rows need their names to be told apart ("Expected", "Counted"), as the SDAY-31 follow-up found.
+- A list of rows (`ul` › `li`) in place of the sections. Each row already holds a list of tiles; a list of lists reads worse than named groups, and the row's name would move to its label line.
+- `rowLandmarks?: boolean`. A boolean says what the row is not; naming the role says what it is and leaves room for another value.
+
+Evidence: `denomination-grid.test.tsx` ("DenominationGrid rowRole": regions by default; at `group` no region, each row a named `SECTION` group inside the grid's group, its tiles intact; a lone plain row unnamed and without a role; the strip unchanged; an unknown value throws); `apps/gallery/e2e/denomination-grid.spec.ts` on desktop-en, mobile-es and forced-colors: the new "Nest box check" tiles (`rowRole="group"`) have no region in the DOM or the ARIA snapshot and groups named "Fitted" and "Occupied" with six tiles each, while "Kit audit" and "Tags fitted today" keep their regions.

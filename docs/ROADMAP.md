@@ -25,6 +25,9 @@ review (the `vault-*.md` reports), one surface per commit on
   minus (AUD-18, `teisoro-denomination-grid.md` follow-up).
 - `Dialog` `titleLevel`: the title can be an `h2`, so a dialog's
   sections are `h3` (CHG-13, new `teisoro-dialog-title-level.md`).
+- `DenominationGrid` `rowRole="group"`: a tiles row named without a
+  landmark (CHG-4, `teisoro-denomination-grid.md` follow-up; the
+  default stays `region` until a major release).
 
 Next: pull request, review and merge, then release `@scalewing/react`
 and Teisoro pins it.
