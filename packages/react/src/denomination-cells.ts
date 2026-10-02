@@ -5,10 +5,15 @@ export type DenominationCellView = {
   text: string;
 };
 
+/** The typographic minus (U+2212), not the hyphen-minus a number prints. */
+const minusSign = '\u2212';
+
 /**
  * Classifies one count for display. A null or zero count renders the zero
  * label; a signed row prefixes positive counts with "+" so movement reads as
- * a delta. Formatting stays plain digits: the consumer owns locale grouping.
+ * a delta, and every negative count takes the typographic minus "−", the
+ * sign a consumer's formatted money uses, never a hyphen. Formatting stays
+ * plain digits: the consumer owns locale grouping.
  */
 export function denominationCellView(
   count: number | null,
@@ -16,7 +21,8 @@ export function denominationCellView(
   zeroLabel: string,
 ): DenominationCellView {
   if (count === null || count === 0) return { state: 'zero', text: zeroLabel };
-  if (count < 0) return { state: 'negative', text: String(count) };
+  if (count < 0)
+    return { state: 'negative', text: `${minusSign}${Math.abs(count)}` };
   return { state: 'positive', text: signed ? `+${count}` : String(count) };
 }
 

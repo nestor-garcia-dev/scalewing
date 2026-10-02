@@ -33,8 +33,29 @@ describe('denominationCellView', () => {
     });
     expect(denominationCellView(-3, true, '—')).toEqual({
       state: 'negative',
-      text: '-3',
+      text: '\u22123',
     });
+  });
+
+  it('writes a negative count with the typographic minus, signed or not', () => {
+    expect(denominationCellView(-1, true, '—').text).toBe('−1');
+    expect(denominationCellView(-12, false, '—').text).toBe('−12');
+  });
+
+  it('renders a negative count with the typographic minus in an unsigned tiles row', () => {
+    const { container } = render(
+      <DenominationGrid
+        columns={columns}
+        label="Drawer"
+        layout="tiles"
+        rows={[
+          { id: 'expected', label: 'Expected', cells: [1, 2, 3] },
+          { id: 'difference', label: 'Difference', cells: [0, -2, 1] },
+        ]}
+      />,
+    );
+    const negative = container.querySelector('.sw-denomination-cell-negative');
+    expect(negative?.textContent).toBe('−2');
   });
 });
 
@@ -93,7 +114,7 @@ describe('DenominationGrid strip', () => {
       within(net)
         .getAllByRole('cell')
         .map((cell) => cell.textContent),
-    ).toEqual(['+2', '-1', '—', '-$3']);
+    ).toEqual(['+2', '−1', '—', '-$3']);
     expect(within(net).getByRole('rowheader').textContent).toBe('Net-$3');
     expect(
       within(net).getByRole('rowheader').firstElementChild?.className,

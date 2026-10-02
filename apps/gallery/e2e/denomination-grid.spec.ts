@@ -15,7 +15,12 @@ test('DenominationGrid renders the strip table with tones and moves totals under
   ).toHaveAttribute('scope', 'col');
   const net = strip.getByRole('row', { name: /Net/ });
   await expect(net.getByRole('cell').first()).toHaveText('+9');
-  await expect(net.getByRole('cell').nth(2)).toHaveText('-2');
+  // A negative count takes the typographic minus, never a hyphen (AUD-18).
+  await expect(net.getByRole('cell').nth(2)).toHaveText('\u22122');
+  const difference = section
+    .getByRole('table', { name: 'Kit check by size' })
+    .getByRole('row', { name: /Difference/ });
+  await expect(difference.getByRole('cell').nth(1)).toHaveText('\u22121');
   await expect(net.getByRole('cell').nth(5)).toHaveText('—');
   const isPhone = testInfo.project.name === 'mobile-es';
   const totalCell = net.locator('td.sw-denomination-total');

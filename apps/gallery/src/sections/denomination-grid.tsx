@@ -77,7 +77,7 @@ export function DenominationGridSection() {
                   tone: 'danger',
                   icon: <ArrowGlyph direction="out" />,
                   cells: [3, 0, 2, 0, 0, 1],
-                  total: '-99 g',
+                  total: '−99 g',
                 },
                 {
                   id: 'net',
@@ -172,7 +172,7 @@ export function DenominationGridSection() {
                     tone: 'danger',
                     cells: [0, -1, 0, 0, 0, 0],
                     signed: true,
-                    total: '-8 g',
+                    total: '−8 g',
                   },
                 ]}
               />
@@ -240,7 +240,8 @@ export function DenominationGridSection() {
         </Card>
         <Text color="muted" variant="caption">
           Zero and null counts render the zero label at quiet opacity. A signed
-          row prefixes positive counts and tones them by sign. Totals are
+          row prefixes positive counts and tones them by sign; a negative count
+          takes the typographic minus (−2), not a hyphen. Totals are
           consumer-formatted strings; totalLabel names their column for a screen
           reader. On a phone the strip shows each total under its row label and
           keeps the total cell in the table, visually hidden. A strip wider than

@@ -127,3 +127,20 @@ What was tried, and what was learned (for a later design to start from):
 Constraints a later design must meet: the plain strip's behavior (fits a phone card, an eleven-column strip scrolls with its label pinned, the phone total takes no width) must not change; a row's total stays next to its counts; the columns must not force scrolling where the plain strip fits; and the separators should span the card. Directions not yet tried: equal count columns sized from the container (for example a CSS grid with `subgrid` rows, which would change the table's semantics, or a container-query width per column), or leaving alignment to a feed that renders its cards' strips as one table.
 
 Rejected along the way: `table-layout: fixed` (an eleven-column phone strip would squeeze its counts into overlapping cells instead of scrolling); hidden candidate labels sizing the label column (it stays content-sized, so with totals the counts still move); a fixed-width total column (totals are consumer strings of any length); a filler cell taking the spare width (an extra cell in every row of a data table).
+
+## Follow-up request (2026-10-02, Teisoro F-007 task 1550): a negative count takes the typographic minus
+
+Status: implemented on `claude/vault-review-surfaces` for Teisoro F-007 task 1550; pull request pending review.
+Source: Teisoro UX review `vault-audits-and-tasks.md`, finding AUD-18 (polish). Details 01: the audit's "Difference" row reads "-1" while the page's money reads "−$20.00". `denomination-cells.ts` wrote a negative count with `String(count)`, a hyphen-minus.
+
+Teisoro need: the vault audit details (`apps/teisoro-web/src/app/vault-page/AuditCard.tsx`) show a short bill as "−1", the same sign as the money beside it.
+
+Behavior (no API change): every negative count renders as U+2212 MINUS SIGN followed by its magnitude ("−1"), in a signed row and in an unsigned one, in both layouts. Positive counts in a signed row keep "+"; zero and null keep the zero label; the count is still plain digits (the consumer owns grouping). Totals and subtotals stay consumer strings: a consumer that formats its own negative totals chooses its own sign.
+
+Rejected alternatives:
+
+- Only in a signed row, as the review suggested. A negative count has a sign whether or not the row is signed, and a hyphen is never the right glyph for it; one rule is simpler to document.
+- A `formatCount` prop. The grid would hand number formatting to every consumer to fix one glyph; the minus is not a locale choice in the languages Scalewing's consumers ship (en, es).
+- `Intl.NumberFormat` with `signDisplay`. Its minus is locale-dependent (a hyphen-minus in `en-US`), which is the glyph being replaced, and it would bring grouping into a primitive that leaves grouping to the consumer.
+
+Evidence: `denomination-grid.test.tsx` ("writes a negative count with the typographic minus, signed or not", and the strip's Net row reading `−1`); `apps/gallery/e2e/denomination-grid.spec.ts` on desktop-en, mobile-es and forced-colors: "Tag movement by size" Net reads `−2` and "Kit check by size" Difference reads `−1`, with no hyphen. The gallery's own negative totals now use the same sign ("−99 g", "−8 g").

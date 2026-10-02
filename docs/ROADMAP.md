@@ -17,6 +17,16 @@ release workflow completed successfully.
 
 ## Next action
 
+Teisoro F-007 task 1550: the design-system findings of the Vault UX
+review (the `vault-*.md` reports), one surface per commit on
+`claude/vault-review-surfaces`:
+
+- `DenominationGrid` writes a negative count with the typographic
+  minus (AUD-18, `teisoro-denomination-grid.md` follow-up).
+
+Next: pull request, review and merge, then release `@scalewing/react`
+and Teisoro pins it.
+
 FutMas F-019-S05: `ListGroup` `variant="plain"` and `Accordion` `flush`
 (`futmas-plain-list-group.md`, 2026-10-02), so choices inside an open
 picker are rows, not a card in a card. Merged in #87 and released as
