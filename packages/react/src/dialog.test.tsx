@@ -4,6 +4,7 @@ import {
   fireEvent,
   render,
   screen,
+  within,
 } from '@testing-library/react';
 import {
   useState,
@@ -113,6 +114,39 @@ describe('Dialog', () => {
 
     fireEvent.click(screen.getByRole('button', { name: 'Close' }));
     expect(closed.current).toBe(true);
+  });
+
+  it('titles the dialog with an h3 by default and an h2 at titleLevel 2, in the same style', () => {
+    render(
+      <ThemeProvider colorScheme="light">
+        <Dialog onClose={() => {}} open title="Confirm">
+          <Text>Release the heron?</Text>
+        </Dialog>
+        <Dialog onClose={() => {}} open title="Count the nest" titleLevel={2}>
+          <Text as="h3" variant="label">
+            Eggs
+          </Text>
+        </Dialog>
+      </ThemeProvider>,
+    );
+
+    const confirm = screen.getByRole('dialog', { name: 'Confirm' });
+    const confirmTitle = within(confirm).getByRole('heading', {
+      name: 'Confirm',
+    });
+    expect(confirmTitle.tagName).toBe('H3');
+    expect(confirm.getAttribute('aria-labelledby')).toBe(confirmTitle.id);
+
+    const count = screen.getByRole('dialog', { name: 'Count the nest' });
+    const countTitle = within(count).getByRole('heading', { level: 2 });
+    expect(countTitle.textContent).toBe('Count the nest');
+    expect(confirmTitle.className).toContain('sw-text-title');
+    expect(countTitle.className).toBe(confirmTitle.className);
+    expect(count.getAttribute('aria-labelledby')).toBe(countTitle.id);
+    // The dialog's own section is a level below its title, not its peer.
+    expect(within(count).getByRole('heading', { level: 3 }).textContent).toBe(
+      'Eggs',
+    );
   });
 
   it('widens to the large size only when asked', () => {

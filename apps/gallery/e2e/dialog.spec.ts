@@ -49,6 +49,52 @@ test('Dialog keeps the reading width by default and widens at size lg', async ({
   await expect(wide).toBeHidden();
 });
 
+test('Dialog titles with an h3 by default and an h2 at titleLevel 2, in the same style', async ({
+  page,
+}) => {
+  await page.goto('/#dialog');
+  const section = page.locator('#dialog');
+
+  await section.getByRole('button', { name: 'Open dialog' }).click();
+  const reading = page.getByRole('dialog', { name: 'How we rank' });
+  const readingTitle = reading.getByRole('heading', { name: 'How we rank' });
+  await expect(readingTitle).toHaveJSProperty('tagName', 'H3');
+  const readingFont = await readingTitle.evaluate((node) => {
+    const style = getComputedStyle(node);
+    return [
+      style.fontFamily,
+      style.fontSize,
+      style.fontWeight,
+      style.letterSpacing,
+      style.lineHeight,
+    ];
+  });
+  await reading.getByRole('button', { name: 'Close' }).click();
+
+  await section.getByRole('button', { name: 'Open wide dialog' }).click();
+  const wide = page.getByRole('dialog', { name: 'Log a transect' });
+  const wideTitle = wide.getByRole('heading', { level: 2 });
+  await expect(wideTitle).toHaveText('Log a transect');
+  // The dialog's section label is one level under its title (Teisoro CHG-13).
+  await expect(wide.getByRole('heading', { level: 3 })).toHaveText(
+    'Sightings per habitat',
+  );
+  expect(
+    await wideTitle.evaluate((node) => {
+      const style = getComputedStyle(node);
+      return [
+        style.fontFamily,
+        style.fontSize,
+        style.fontWeight,
+        style.letterSpacing,
+        style.lineHeight,
+      ];
+    }),
+  ).toEqual(readingFont);
+  await wide.getByRole('button', { name: 'Cancel' }).click();
+  await expect(wide).toBeHidden();
+});
+
 test('Dialog asks onClose on Escape and stays open while the consumer is busy', async ({
   page,
 }) => {

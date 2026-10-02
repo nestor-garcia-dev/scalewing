@@ -23,6 +23,8 @@ review (the `vault-*.md` reports), one surface per commit on
 
 - `DenominationGrid` writes a negative count with the typographic
   minus (AUD-18, `teisoro-denomination-grid.md` follow-up).
+- `Dialog` `titleLevel`: the title can be an `h2`, so a dialog's
+  sections are `h3` (CHG-13, new `teisoro-dialog-title-level.md`).
 
 Next: pull request, review and merge, then release `@scalewing/react`
 and Teisoro pins it.

@@ -72,6 +72,7 @@ export {
   Dialog,
   type DialogProps,
   type DialogSize,
+  type DialogTitleLevel,
 } from './components/Dialog.js';
 export {
   StatTile,
