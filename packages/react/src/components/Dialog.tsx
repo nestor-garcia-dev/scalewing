@@ -14,6 +14,12 @@ import { Text } from './Text.js';
  */
 export type DialogSize = 'md' | 'lg';
 
+/**
+ * The heading level of the dialog's title. It changes only the element (and
+ * so the outline a screen reader reads), never the title's look.
+ */
+export type DialogTitleLevel = 2 | 3;
+
 export type DialogProps = Omit<
   DialogHTMLAttributes<HTMLDialogElement>,
   'onClose' | 'open' | 'title' | 'children'
@@ -32,6 +38,13 @@ export type DialogProps = Omit<
   onClose: () => void;
   size?: DialogSize;
   title: string;
+  /**
+   * The title's heading level, 3 (an `h3`) by default. Pass 2 when the
+   * dialog's own sections are `h3` headings, so they read as parts of the
+   * dialog rather than as its peers. The title's style does not change.
+   * Any value other than 2 (from an untyped caller) renders an `h3`.
+   */
+  titleLevel?: DialogTitleLevel;
   children: ReactNode;
 };
 
@@ -46,6 +59,7 @@ export function Dialog({
   open,
   size = 'md',
   title,
+  titleLevel = 3,
   ...rest
 }: DialogProps) {
   const titleId = useId();
@@ -72,7 +86,7 @@ export function Dialog({
       {...handlers}
     >
       <Stack gap={4}>
-        <Text id={titleId} variant="title">
+        <Text as={titleLevel === 2 ? 'h2' : 'h3'} id={titleId} variant="title">
           {title}
         </Text>
         {children}

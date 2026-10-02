@@ -17,6 +17,26 @@ release workflow completed successfully.
 
 ## Next action
 
+Teisoro F-007 task 1550: the design-system findings of the Vault UX
+review (the `vault-*.md` reports), one surface per commit on
+`claude/vault-review-surfaces`:
+
+- `DenominationGrid` writes a negative count with the typographic
+  minus (AUD-18, `teisoro-denomination-grid.md` follow-up).
+- `Dialog` `titleLevel`: the title can be an `h2`, so a dialog's
+  sections are `h3` (CHG-13, new `teisoro-dialog-title-level.md`).
+- `DenominationGrid` `rowRole="group"`: a tiles row named without a
+  landmark (CHG-4, `teisoro-denomination-grid.md` follow-up; the
+  default stays `region` until a major release).
+- `DenominationGrid` row `cellTones`: one tile toned in place (MOV-10,
+  `teisoro-denomination-grid.md` follow-up, the 2026-09-25 "tone per
+  tile" request without its `note`).
+- A wide `Table` shades the edge with more columns past it (VLT-1,
+  HIS-3, `teisoro-table.md` follow-up).
+
+Next: pull request, review and merge, then release `@scalewing/react`
+and Teisoro pins it.
+
 FutMas F-019-S05: `ListGroup` `variant="plain"` and `Accordion` `flush`
 (`futmas-plain-list-group.md`, 2026-10-02), so choices inside an open
 picker are rows, not a card in a card. Merged in #87 and released as

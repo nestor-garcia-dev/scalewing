@@ -33,8 +33,29 @@ describe('denominationCellView', () => {
     });
     expect(denominationCellView(-3, true, '—')).toEqual({
       state: 'negative',
-      text: '-3',
+      text: '\u22123',
     });
+  });
+
+  it('writes a negative count with the typographic minus, signed or not', () => {
+    expect(denominationCellView(-1, true, '—').text).toBe('−1');
+    expect(denominationCellView(-12, false, '—').text).toBe('−12');
+  });
+
+  it('renders a negative count with the typographic minus in an unsigned tiles row', () => {
+    const { container } = render(
+      <DenominationGrid
+        columns={columns}
+        label="Drawer"
+        layout="tiles"
+        rows={[
+          { id: 'expected', label: 'Expected', cells: [1, 2, 3] },
+          { id: 'difference', label: 'Difference', cells: [0, -2, 1] },
+        ]}
+      />,
+    );
+    const negative = container.querySelector('.sw-denomination-cell-negative');
+    expect(negative?.textContent).toBe('−2');
   });
 });
 
@@ -93,7 +114,7 @@ describe('DenominationGrid strip', () => {
       within(net)
         .getAllByRole('cell')
         .map((cell) => cell.textContent),
-    ).toEqual(['+2', '-1', '—', '-$3']);
+    ).toEqual(['+2', '−1', '—', '-$3']);
     expect(within(net).getByRole('rowheader').textContent).toBe('Net-$3');
     expect(
       within(net).getByRole('rowheader').firstElementChild?.className,
@@ -282,6 +303,205 @@ describe('DenominationGrid tiles', () => {
     expect(within(counted).getByText('Short $10').className).toBe(
       'sw-denomination-total',
     );
+  });
+});
+
+describe('DenominationGrid cellTones', () => {
+  it('tones one tile in place, its count and its border, and leaves the rest', () => {
+    render(
+      <DenominationGrid
+        columns={columns}
+        label="In the vault"
+        layout="tiles"
+        rows={[
+          {
+            id: 'vault',
+            label: 'In the vault',
+            cells: [12, 0, 40],
+            cellTones: [null, 'warning', 'danger'],
+          },
+        ]}
+      />,
+    );
+    const tiles = screen.getAllByRole('listitem');
+    expect(tiles.map((tile) => tile.className)).toEqual([
+      'sw-denomination-tile',
+      'sw-denomination-tile sw-denomination-cell-toned sw-denomination-cell-tone-warning',
+      'sw-denomination-tile sw-denomination-cell-toned sw-denomination-cell-tone-danger',
+    ]);
+    // The toned tile stays in its row, in its column's order.
+    expect(tiles[2]!.textContent).toBe('$1040');
+  });
+
+  it('tones a strip cell over its signed color, and neutral or null adds nothing', () => {
+    render(
+      <DenominationGrid
+        columns={columns}
+        label="Cash flow"
+        rows={[
+          {
+            id: 'net',
+            label: 'Net',
+            cells: [2, -1, 0],
+            signed: true,
+            cellTones: ['neutral', 'accent', null],
+          },
+        ]}
+      />,
+    );
+    const cells = within(screen.getByRole('row', { name: /Net/ })).getAllByRole(
+      'cell',
+    );
+    expect(cells.map((cell) => cell.className)).toEqual([
+      'sw-denomination-cell sw-denomination-cell-positive',
+      'sw-denomination-cell sw-denomination-cell-negative sw-denomination-cell-toned sw-denomination-cell-tone-accent',
+      'sw-denomination-cell sw-denomination-cell-zero',
+    ]);
+  });
+
+  it('rejects cellTones of the wrong length or with an unknown tone', () => {
+    const grid = (cellTones: readonly (string | null)[]) => (
+      <DenominationGrid
+        columns={columns}
+        label="Drawer"
+        layout="tiles"
+        rows={[
+          {
+            id: 'a',
+            label: 'A',
+            cells: [1, 2, 3],
+            cellTones: cellTones as readonly ('danger' | null)[],
+          },
+        ]}
+      />
+    );
+    expect(() => render(grid(['danger', null]))).toThrow(RangeError);
+    expect(() => render(grid([null, 'red', null]))).toThrow(RangeError);
+    // eslint-disable-next-line no-sparse-arrays -- a sparse array from JS
+    expect(() => render(grid([, 'danger', null]))).toThrow(RangeError);
+    expect(() =>
+      render(grid(null as unknown as readonly (string | null)[])),
+    ).toThrow(RangeError);
+  });
+
+  it('generates a tone per cell from the Badge tones, over zero and signed colors', () => {
+    const css = cssDenominationGridClasses();
+    expect(css).toContain(
+      '.sw-denomination-cell-tone-danger { --sw-denomination-cell-tone: var(--sw-color-danger); }',
+    );
+    expect(css).not.toContain('sw-denomination-cell-tone-neutral');
+    // A toned zero stays GrayText in forced colors, not a count's CanvasText.
+    expect(css).toContain(
+      '.sw-denomination-grid .sw-denomination-cell-toned .sw-denomination-cell-zero { color: GrayText; }',
+    );
+    expect(css)
+      .toContain(`.sw-denomination-grid .sw-denomination-cell.sw-denomination-cell-toned,
+.sw-denomination-grid .sw-denomination-cell-toned .sw-denomination-cell {
+  color: var(--sw-denomination-cell-tone);
+  opacity: 1;
+}`);
+    expect(css).toContain(`.sw-denomination-tile.sw-denomination-cell-toned {
+  border-color: var(--sw-denomination-cell-tone);
+  box-shadow: inset 0 0 0 1px var(--sw-denomination-cell-tone);
+}`);
+  });
+});
+
+describe('DenominationGrid rowRole', () => {
+  const rows = [
+    { id: 'expected', label: 'Expected', cells: [1, 2, 3] },
+    { id: 'counted', label: 'Counted', cells: [1, 2, 2] },
+  ];
+
+  it('makes each named tiles row a region by default', () => {
+    render(
+      <DenominationGrid
+        columns={columns}
+        label="Drawer"
+        layout="tiles"
+        rows={rows}
+      />,
+    );
+    expect(screen.getAllByRole('region').map((row) => row.ariaLabel)).toEqual([
+      'Expected',
+      'Counted',
+    ]);
+    expect(
+      screen.getByRole('region', { name: 'Counted' }).getAttribute('role'),
+    ).toBeNull();
+  });
+
+  it('keeps each row named but out of the landmarks at rowRole="group"', () => {
+    render(
+      <DenominationGrid
+        columns={columns}
+        label="Drawer"
+        layout="tiles"
+        rowRole="group"
+        rows={rows}
+      />,
+    );
+    expect(screen.queryByRole('region')).toBeNull();
+    const grid = screen.getByRole('group', { name: 'Drawer' });
+    const expected = within(grid).getByRole('group', { name: 'Expected' });
+    expect(expected.tagName).toBe('SECTION');
+    expect(expected.className).toContain('sw-denomination-row');
+    expect(within(expected).getAllByRole('listitem')).toHaveLength(3);
+    expect(within(grid).getByRole('group', { name: 'Counted' })).toBeTruthy();
+  });
+
+  it('leaves a lone plain row unnamed and without a role at rowRole="group"', () => {
+    const { container } = render(
+      <DenominationGrid
+        columns={columns}
+        label="Drawer count"
+        layout="tiles"
+        rowRole="group"
+        rows={[{ id: 'only', label: 'Drawer count', cells: [1, 0, 2] }]}
+      />,
+    );
+    const row = container.querySelector('section')!;
+    expect(row.getAttribute('role')).toBeNull();
+    expect(row.getAttribute('aria-label')).toBeNull();
+    expect(screen.getAllByRole('group')).toHaveLength(1);
+  });
+
+  it('ignores rowRole in the strip, whose rows are table rows', () => {
+    render(
+      <DenominationGrid
+        columns={columns}
+        label="Cash flow"
+        rowRole="group"
+        rows={rows}
+      />,
+    );
+    const table = screen.getByRole('table', { name: 'Cash flow' });
+    expect(within(table).getByRole('row', { name: /Counted/ })).toBeTruthy();
+    expect(within(table).queryByRole('group')).toBeNull();
+  });
+
+  it('rejects an unknown rowRole', () => {
+    expect(() =>
+      render(
+        <DenominationGrid
+          columns={columns}
+          label="Drawer"
+          layout="tiles"
+          rowRole={'landmark' as 'region'}
+          rows={rows}
+        />,
+      ),
+    ).toThrow(RangeError); // The strip ignores a valid rowRole but still rejects an unknown one.
+    expect(() =>
+      render(
+        <DenominationGrid
+          columns={columns}
+          label="Drawer"
+          rowRole={'landmark' as 'region'}
+          rows={rows}
+        />,
+      ),
+    ).toThrow(RangeError);
   });
 });
 

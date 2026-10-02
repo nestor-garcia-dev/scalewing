@@ -23,6 +23,7 @@ import { filterChipsClassCatalog } from './css-filter-chips.js';
 import { gridClassCatalog } from './css-grid.js';
 import { gridSpanClassCatalog } from './css-grid-span.js';
 import { denominationGridClassCatalog } from './css-denomination-grid.js';
+import { scrollRegionClassCatalog } from './css-scroll-region.js';
 import { fieldClassCatalog } from './css-field.js';
 import { boxBorderClassCatalog } from './css-box-border.js';
 import { cssComponentClasses } from './css-components.js';
@@ -63,6 +64,7 @@ export function utilityClassCatalog(): string[] {
     ...dataClassCatalog(),
     ...segmentedClassCatalog(),
     ...tableClassCatalog(),
+    ...scrollRegionClassCatalog(),
     ...chartClassCatalog(),
     ...chromeClassCatalog(),
     ...dialogClassCatalog(),

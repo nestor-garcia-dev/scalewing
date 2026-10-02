@@ -14,7 +14,7 @@ Scalewing owns the reusable layout, tone and zero rules, generated classes, test
 
 ## Follow-up request (2026-09-25, Teisoro F-002-S19 task 1060): a tone per tile
 
-Status: requested; not started.
+Status: implemented as `cellTones` on `claude/vault-review-surfaces` for Teisoro F-007 task 1550 (see "a tone per count, in place" below); pull request pending review. The `note` part is not built.
 
 `tone` is a row property. Two vault surfaces need it on one cell: Remove Cash marks the denominations the vault is short of (Teisoro now moves them to a second, danger-toned "Not enough" row instead of marking the tile in place), and the change-orders inventory marks each bill or coin tile as needing an order or stocked (Teisoro now uses cards with badges instead of toned tiles).
 
@@ -127,3 +127,60 @@ What was tried, and what was learned (for a later design to start from):
 Constraints a later design must meet: the plain strip's behavior (fits a phone card, an eleven-column strip scrolls with its label pinned, the phone total takes no width) must not change; a row's total stays next to its counts; the columns must not force scrolling where the plain strip fits; and the separators should span the card. Directions not yet tried: equal count columns sized from the container (for example a CSS grid with `subgrid` rows, which would change the table's semantics, or a container-query width per column), or leaving alignment to a feed that renders its cards' strips as one table.
 
 Rejected along the way: `table-layout: fixed` (an eleven-column phone strip would squeeze its counts into overlapping cells instead of scrolling); hidden candidate labels sizing the label column (it stays content-sized, so with totals the counts still move); a fixed-width total column (totals are consumer strings of any length); a filler cell taking the spare width (an extra cell in every row of a data table).
+
+## Follow-up request (2026-10-02, Teisoro F-007 task 1550): a negative count takes the typographic minus
+
+Status: implemented on `claude/vault-review-surfaces` for Teisoro F-007 task 1550; pull request pending review.
+Source: Teisoro UX review `vault-audits-and-tasks.md`, finding AUD-18 (polish). Details 01: the audit's "Difference" row reads "-1" while the page's money reads "−$20.00". `denomination-cells.ts` wrote a negative count with `String(count)`, a hyphen-minus.
+
+Teisoro need: the vault audit details (`apps/teisoro-web/src/app/vault-page/AuditCard.tsx`) show a short bill as "−1", the same sign as the money beside it.
+
+Behavior (no API change): every negative count renders as U+2212 MINUS SIGN followed by its magnitude ("−1"), in a signed row and in an unsigned one, in both layouts. Positive counts in a signed row keep "+"; zero and null keep the zero label; the count is still plain digits (the consumer owns grouping). Totals and subtotals stay consumer strings: a consumer that formats its own negative totals chooses its own sign.
+
+Rejected alternatives:
+
+- Only in a signed row, as the review suggested. A negative count has a sign whether or not the row is signed, and a hyphen is never the right glyph for it; one rule is simpler to document.
+- A `formatCount` prop. The grid would hand number formatting to every consumer to fix one glyph; the minus is not a locale choice in the languages Scalewing's consumers ship (en, es).
+- `Intl.NumberFormat` with `signDisplay`. Its minus is locale-dependent (a hyphen-minus in `en-US`), which is the glyph being replaced, and it would bring grouping into a primitive that leaves grouping to the consumer.
+
+Evidence: `denomination-grid.test.tsx` ("writes a negative count with the typographic minus, signed or not", and the strip's Net row reading `−1`); `apps/gallery/e2e/denomination-grid.spec.ts` on desktop-en, mobile-es and forced-colors: "Tag movement by size" Net reads `−2` and "Kit check by size" Difference reads `−1`, with no hyphen. The gallery's own negative totals now use the same sign ("−99 g", "−8 g").
+
+## Follow-up request (2026-10-02, Teisoro F-007 task 1550): a tiles row that is not a landmark
+
+Status: implemented on `claude/vault-review-surfaces` for Teisoro F-007 task 1550; pull request pending review.
+Source: Teisoro UX review `vault-change-orders.md`, finding CHG-4 (major; the part left for Scalewing). Create 01 `.aria.yml`: each change order holds `group "Order #… · Requested · Bills"` › `region "Bills"` › `list`, so the page lists a landmark named "Bills", "Coin boxes" or "Paid from the vault" per order, 15 regions in one frame. Every named tiles row is a `section aria-label`, a region. The review asks for the region role to be opt-in.
+
+Teisoro need: the change-order cards (`apps/teisoro-web/src/app/change-orders/parts.tsx`, `ChangeTiles`) keep each tiles row named ("Bills", "Coin boxes") inside the order's group, without adding a landmark per row per order.
+
+Proposed API: `rowRole?: 'region' | 'group'` on `DenominationGrid`, default `'region'`; exported type `DenominationGridRowRole`.
+
+Behavior and failure boundary: at `rowRole="group"` every row that is named today keeps the same `aria-label` and gets `role="group"`, so it is announced with its name but is not a landmark; at the default, or with the prop left out, every row is the region it is today. A lone plain row whose label repeats the grid's (SDAY-31) stays unnamed and without a role at either setting. The strip layout has no row containers (its rows are table rows) and ignores the prop. Any other value throws a `RangeError`, as a blank `totalLabel` does. No visual change.
+
+Not done: making `group` the default, which is what "opt-in" literally asks. A consumer that finds a row with `getByRole('region', { name })`, or whose users navigate by landmarks, would change behavior in a minor release. `rowRole="group"` gives Teisoro the result now; flipping the default belongs in the next major release of `@scalewing/react`.
+
+Rejected alternatives:
+
+- Dropping the name from every row (a generic `section`). Several rows need their names to be told apart ("Expected", "Counted"), as the SDAY-31 follow-up found.
+- A list of rows (`ul` › `li`) in place of the sections. Each row already holds a list of tiles; a list of lists reads worse than named groups, and the row's name would move to its label line.
+- `rowLandmarks?: boolean`. A boolean says what the row is not; naming the role says what it is and leaves room for another value.
+
+Evidence: `denomination-grid.test.tsx` ("DenominationGrid rowRole": regions by default; at `group` no region, each row a named `SECTION` group inside the grid's group, its tiles intact; a lone plain row unnamed and without a role; the strip unchanged; an unknown value throws); `apps/gallery/e2e/denomination-grid.spec.ts` on desktop-en, mobile-es and forced-colors: the new "Nest box check" tiles (`rowRole="group"`) have no region in the DOM or the ARIA snapshot and groups named "Fitted" and "Occupied" with six tiles each, while "Kit audit" and "Tags fitted today" keep their regions.
+
+## Follow-up request (2026-10-02, Teisoro F-007 task 1550): a tone per count, in place
+
+Status: implemented on `claude/vault-review-surfaces` for Teisoro F-007 task 1550; pull request pending review.
+Source: Teisoro UX review `vault-moving-cash.md`, finding MOV-10 (minor; the part left for Scalewing), which picks up the 2026-09-25 "a tone per tile" request above. Short 02: typing 41 in the $100 field moves the $100 tile out of its row into a full-width danger-toned "Not enough" row (Teisoro's `TileGroup` in `app/vault-page/parts.tsx` renders a second `DenominationGrid`, because "Scalewing tones a whole row, not a single tile"), and the fields being typed in move down about 135 px.
+
+Teisoro need: the vault holdings tiles in Remove Cash, the audit and the money-truck dialogs keep every tile in its row and turn the short one red in place; the field's own "Only 40 available" says why. The change-orders inventory can tone a tile that needs an order the same way.
+
+Proposed API: `cellTones?: readonly (DenominationGridTone | null)[]` on a row, one entry per column (`null` for none), parallel to `cells`.
+
+Behavior and failure boundary: presentation only, in both layouts. A toned count is set in its tone, over a signed row's sign color and a zero's quiet opacity (a short bill the vault holds none of reads as a red "—" at full opacity). In the tiles layout the tile's border takes the tone too, one hairline thicker through an inset shadow, so no tile moves or resizes. `neutral` or `null` leaves a count as it is. A row's `tone` is unchanged and still colors only its label. Generated classes `sw-denomination-cell-toned` and `sw-denomination-cell-tone-{accent,success,danger,warning}` (in their own `css-denomination-cell-tones.ts`) set `--sw-denomination-cell-tone`; forced colors draw the system colors, and a toned zero keeps the zero's `GrayText` there. A `cellTones` that is not an array, has the wrong length, has a hole, or holds a tone outside the Badge tones throws a `RangeError`, as mismatched `cells` do. The tone never carries meaning alone: the consumer's words beside the grid (the field's caption, a note) say why.
+
+Rejected alternatives:
+
+- A cell as `{ value, tone?, note? }` besides a number, as the 2026-09-25 request proposed. It widens the exported `cells` type, so a consumer that reads `row.cells` as numbers would stop compiling in a minor release; a parallel optional array is additive. The `note` (a string under the count) is left out: MOV-10's fix puts the words in the count field's caption, and a note would be a second place for them.
+- `toneOf(column)` on the grid. It tones a column in every row, and a short tile is one row's cell.
+- A filled tint. The tone on the count and the border is enough, keeps every text's contrast on the surface, and adds no token.
+
+Evidence: `denomination-grid.test.tsx` ("DenominationGrid cellTones": a tiles row's toned tiles in their order with the marker and tone classes; a strip cell toned over a signed negative, `neutral` and `null` adding nothing; the wrong length and an unknown tone throw; the generated rules); `css/stylesheet.test.ts` (the classes in the catalog); `apps/gallery/e2e/denomination-grid.spec.ts` "a DenominationGrid cell tone marks one tile in place" on desktop-en, mobile-es and forced-colors: in "Tags left in the kit" the danger M tile and the warning L tile keep their row and width (all six on one row on a desktop, three per row on a phone), the M tile's zero count is at full opacity, and outside forced colors the M tile's border, inset shadow and count compute to the danger color while the L tile's border is neither danger nor the plain border; in the "Kit check by size" strip the Counted row's toned S cell computes to the danger color and its untoned XS cell does not.

@@ -26,6 +26,8 @@ describe('generated CSS', () => {
         'sw-denomination-row-danger',
         'sw-denomination-cell-zero',
         'sw-denomination-tile',
+        'sw-denomination-cell-toned',
+        'sw-denomination-cell-tone-warning',
       ]),
     );
     expect(css).toContain(

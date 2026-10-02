@@ -8,6 +8,7 @@ export type {
   DenominationGridLayout,
   DenominationGridProps,
   DenominationGridRow,
+  DenominationGridRowRole,
   DenominationGridTone,
 } from './denomination-grid/types.js';
 
@@ -19,17 +20,21 @@ export function DenominationGrid({
   subtotal,
   zeroLabel = '—',
   totalLabel,
+  rowRole = 'region',
 }: DenominationGridProps) {
   assertDenominationGrid(label, columns, rows);
   if (!zeroLabel) throw new RangeError('zeroLabel must not be empty');
   if (totalLabel !== undefined && !totalLabel.trim())
     throw new RangeError('totalLabel must not be empty');
+  if (rowRole !== 'region' && rowRole !== 'group')
+    throw new RangeError("rowRole must be 'region' or 'group'");
 
   if (layout === 'tiles')
     return (
       <DenominationTiles
         columns={columns}
         label={label}
+        rowRole={rowRole}
         rows={rows}
         subtotal={subtotal}
         zeroLabel={zeroLabel}

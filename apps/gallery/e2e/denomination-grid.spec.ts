@@ -15,7 +15,12 @@ test('DenominationGrid renders the strip table with tones and moves totals under
   ).toHaveAttribute('scope', 'col');
   const net = strip.getByRole('row', { name: /Net/ });
   await expect(net.getByRole('cell').first()).toHaveText('+9');
-  await expect(net.getByRole('cell').nth(2)).toHaveText('-2');
+  // A negative count takes the typographic minus, never a hyphen (AUD-18).
+  await expect(net.getByRole('cell').nth(2)).toHaveText('\u22122');
+  const difference = section
+    .getByRole('table', { name: 'Kit check by size' })
+    .getByRole('row', { name: /Difference/ });
+  await expect(difference.getByRole('cell').nth(1)).toHaveText('\u22121');
   await expect(net.getByRole('cell').nth(5)).toHaveText('—');
   const isPhone = testInfo.project.name === 'mobile-es';
   const totalCell = net.locator('td.sw-denomination-total');
@@ -79,6 +84,17 @@ test('DenominationGrid renders the strip table with tones and moves totals under
     .getByRole('region', { name: 'Fitted' });
   await expect(fitted.getByText('53 g', { exact: true })).toBeVisible();
   await expect(fitted.getByText('Fitted', { exact: true })).toBeVisible();
+  // rowRole="group": each row keeps its name but is not a landmark, so a
+  // page of order cards does not list a region per row (Teisoro CHG-4).
+  const nestBoxes = section.getByRole('group', { name: 'Nest box check' });
+  await expect(nestBoxes.getByRole('region')).toHaveCount(0);
+  expect(await nestBoxes.ariaSnapshot()).not.toContain('region');
+  await expect(
+    nestBoxes.getByRole('group', { name: 'Occupied' }).getByRole('listitem'),
+  ).toHaveCount(6);
+  await expect(
+    nestBoxes.getByRole('group', { name: 'Fitted' }).getByText('Fitted'),
+  ).toBeVisible();
   await section.screenshot({
     path: testInfo.outputPath('denomination-grid.png'),
   });
@@ -278,4 +294,131 @@ test('a DenominationGrid row keeps its glyph beside its words at every width', a
   await section
     .getByRole('table', { name: 'Den watch by tag size' })
     .screenshot({ path: testInfo.outputPath('denomination-label-line.png') });
+});
+
+test('a DenominationGrid cell tone marks one tile in place', async ({
+  page,
+}, testInfo) => {
+  await page.goto('/#denomination-grid');
+  const tiles = page
+    .locator('#denomination-grid')
+    .getByRole('group', { name: 'Tags left in the kit' })
+    .getByRole('listitem');
+  await expect(tiles).toHaveCount(6);
+  const drawn = await tiles.evaluateAll((items) =>
+    items.map((item) => {
+      const box = item.getBoundingClientRect();
+      const count = item.querySelector('.sw-denomination-cell')!;
+      return {
+        top: Math.round(box.top),
+        width: Math.round(box.width),
+        border: getComputedStyle(item).borderTopColor,
+        shadow: getComputedStyle(item).boxShadow,
+        count: getComputedStyle(count).color,
+        opacity: getComputedStyle(count).opacity,
+      };
+    }),
+  );
+  const isPhone = testInfo.project.name === 'mobile-es';
+  // MOV-10: the toned tile keeps its row and its width; nothing moves.
+  const [plain, , short, low] = drawn as [
+    (typeof drawn)[number],
+    (typeof drawn)[number],
+    (typeof drawn)[number],
+    (typeof drawn)[number],
+  ];
+  expect(short.width).toBe(plain.width);
+  if (isPhone) {
+    // Three tiles per row below md: M is the last tile of the first row.
+    expect(short.top).toBe(plain.top);
+    expect(low.top).toBeGreaterThan(plain.top);
+  } else {
+    expect(new Set(drawn.map((tile) => tile.top)).size).toBe(1);
+  }
+  // A zero count is still toned at full opacity, not the quiet zero.
+  expect(short.opacity).toBe('1');
+  // Forced colors replace the tone with system colors; the words carry it.
+  if (testInfo.project.name === 'forced-colors') return;
+  // The probe sits beside the tiles, so it takes exactly the grid's theme.
+  const danger = await tiles.first().evaluate((item) => {
+    const probe = document.createElement('span');
+    probe.style.color = 'var(--sw-color-danger)';
+    item.parentElement!.append(probe);
+    const color = getComputedStyle(probe).color;
+    probe.remove();
+    return color;
+  });
+  expect(short.border).toBe(danger);
+  expect(short.count).toBe(danger);
+  expect(short.shadow).toContain(danger);
+  expect(plain.border).not.toBe(danger);
+  expect(low.border).not.toBe(plain.border);
+  expect(low.border).not.toBe(danger);
+  // A strip cell takes its tone too: the counted S in "Kit check by size".
+  const counted = page
+    .locator('#denomination-grid')
+    .getByRole('table', { name: 'Kit check by size' })
+    .getByRole('row', { name: /Counted/ });
+  expect(
+    await counted
+      .getByRole('cell')
+      .nth(1)
+      .evaluate((cell) => getComputedStyle(cell).color),
+  ).toBe(danger);
+  expect(
+    await counted
+      .getByRole('cell')
+      .nth(0)
+      .evaluate((cell) => getComputedStyle(cell).color),
+  ).not.toBe(danger);
+  await page
+    .locator('#denomination-grid')
+    .getByRole('group', { name: 'Tags left in the kit' })
+    .screenshot({ path: testInfo.outputPath('denomination-cell-tones.png') });
+});
+
+test('a scrolled DenominationGrid strip casts its start shade from the pinned labels', async ({
+  page,
+}, testInfo) => {
+  // At phone width the eleven-column strip overflows in every project, so
+  // forced colors are checked while it scrolls too.
+  await page.setViewportSize({ width: 390, height: 844 });
+  if (testInfo.project.name === 'forced-colors') {
+    await page.emulateMedia({ forcedColors: 'active' });
+  }
+  await page.goto('/#denomination-grid');
+  const region = page
+    .locator('#denomination-grid')
+    .getByRole('group', { name: 'Sightings by hour' });
+  await region.scrollIntoViewIfNeeded();
+  expect(
+    await region.evaluate(
+      (element) => element.scrollWidth - element.clientWidth > 1,
+    ),
+  ).toBe(true);
+  await expect(region).toHaveClass(/sw-scroll-more-end/);
+  const label = region.locator('th.sw-denomination-label').first();
+  const shade = () =>
+    label.evaluate((cell) => {
+      const after = getComputedStyle(cell, '::after');
+      return {
+        content: after.content,
+        display: after.display,
+        image: after.backgroundImage,
+      };
+    });
+  expect((await shade()).content).toBe('none');
+  await region.evaluate((element) => {
+    element.scrollLeft = 60;
+  });
+  await expect(region).toHaveClass(/sw-scroll-more-start/);
+  const drawn = await shade();
+  if (testInfo.project.name === 'forced-colors') {
+    expect(drawn.display).toBe('none');
+  } else {
+    expect(drawn.image).toContain('linear-gradient');
+  }
+  await region.screenshot({
+    path: testInfo.outputPath('denomination-strip-scrolled.png'),
+  });
 });

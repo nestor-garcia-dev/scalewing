@@ -43,7 +43,7 @@ export function DialogSection() {
   return (
     <Section
       id="dialog"
-      purpose="Dialog is a modal on the native top layer. It leaves document flow, dims the canvas, and asks onClose on Escape or backdrop press; open decides whether it closes, so a dialog that is saving can stay open. Card cannot do that. size md is the reading width for a message or a short form; size lg holds a row of six fields or a data grid without folding it, and both keep the viewport gutter on a phone."
+      purpose="Dialog is a modal on the native top layer. It leaves document flow, dims the canvas, and asks onClose on Escape or backdrop press; open decides whether it closes, so a dialog that is saving can stay open. Card cannot do that. size md is the reading width for a message or a short form; size lg holds a row of six fields or a data grid without folding it, and both keep the viewport gutter on a phone. The title is an h3; titleLevel={2} makes it an h2 in the same style, so the dialog's own section labels can be h3 headings under it."
       title="Dialog"
       usage={`<Dialog open={open} onClose={() => setOpen(false)} title="How we rank">
   <Text>Habitat loss is subtracted.</Text>
@@ -51,7 +51,9 @@ export function DialogSection() {
 </Dialog>
 
 // While saving, onClose is still asked; keeping open true holds the dialog.
-<Dialog open={open} onClose={() => { if (!saving) close(); }} size="lg" title="Log a transect">
+// titleLevel={2}: the title is an h2, so the dialog's sections are h3.
+<Dialog open={open} onClose={() => { if (!saving) close(); }} size="lg" title="Log a transect" titleLevel={2}>
+  <Text as="h3" variant="label">Sightings per habitat</Text>
   <Grid columns={6} columnsBelow={{ md: 2 }} gap={3}>
     <Field label="Forest"><input inputMode="numeric" /></Field>
     …
@@ -100,10 +102,14 @@ export function DialogSection() {
           open={wideOpen}
           size="lg"
           title="Log a transect"
+          titleLevel={2}
         >
           <Text color="muted">
             Enter the sightings per habitat along the transect. Six fields stay
             on one row at the large size.
+          </Text>
+          <Text as="h3" color="muted" variant="label">
+            Sightings per habitat
           </Text>
           <Grid columns={6} columnsBelow={{ md: 2 }} gap={3}>
             {transectHabitats.map((habitat) => (

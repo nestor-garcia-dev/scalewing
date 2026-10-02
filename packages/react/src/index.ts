@@ -72,6 +72,7 @@ export {
   Dialog,
   type DialogProps,
   type DialogSize,
+  type DialogTitleLevel,
 } from './components/Dialog.js';
 export {
   StatTile,
@@ -159,6 +160,7 @@ export type {
   DenominationGridLayout,
   DenominationGridProps,
   DenominationGridRow,
+  DenominationGridRowRole,
   DenominationGridTone,
 } from './components/DenominationGrid.js';
 
