@@ -18,8 +18,7 @@ release workflow completed successfully.
 ## Next action
 
 Teisoro F-007 task 1550: the design-system findings of the Vault UX
-review (the `vault-*.md` reports), one surface per commit on
-`claude/vault-review-surfaces`:
+review (the `vault-*.md` reports), one surface per commit:
 
 - `DenominationGrid` writes a negative count with the typographic
   minus (AUD-18, `teisoro-denomination-grid.md` follow-up).
@@ -34,8 +33,8 @@ review (the `vault-*.md` reports), one surface per commit on
 - A wide `Table` shades the edge with more columns past it (VLT-1,
   HIS-3, `teisoro-table.md` follow-up).
 
-Next: pull request, review and merge, then release `@scalewing/react`
-and Teisoro pins it.
+Merged in #89 and released as `@scalewing/react` 1.17.0. Next: Teisoro
+pins 1.17.0 and adopts the new props.
 
 FutMas F-019-S05: `ListGroup` `variant="plain"` and `Accordion` `flush`
 (`futmas-plain-list-group.md`, 2026-10-02), so choices inside an open
