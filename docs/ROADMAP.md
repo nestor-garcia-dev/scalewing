@@ -17,6 +17,11 @@ release workflow completed successfully.
 
 ## Next action
 
+FutMas F-019-S05: `ListGroup` `variant="plain"` and `Accordion` `flush`
+(`futmas-plain-list-group.md`, 2026-10-02), so choices inside an open
+picker are rows, not a card in a card. Next: release
+`@scalewing/react-native` 1.14.0 and FutMas pins it.
+
 Teisoro F-007-S05 task 1375 leftovers (the "Final check (2026-09-29 …)"
 sections of `services-*.md`), one surface per commit, merged in #83
 after three review rounds and released as `@scalewing/react` 1.16.0

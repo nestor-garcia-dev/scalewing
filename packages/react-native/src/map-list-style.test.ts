@@ -50,6 +50,13 @@ describe('list styles', () => {
       borderColor: lightTheme.colors.border,
       borderRadius: lightTheme.radius.lg,
     });
+    expect(mapListGroupStyle(lightTheme, 'panel')).toEqual(
+      mapListGroupStyle(lightTheme),
+    );
+  });
+
+  it('draws no panel for a plain group', () => {
+    expect(mapListGroupStyle(lightTheme, 'plain')).toEqual({});
   });
 
   it('fills a pressed row with subtle and dims a disabled one', () => {

@@ -32,8 +32,19 @@ export function listRowAccessory(options: {
   return options.accessory ?? 'chevron';
 }
 
-/** One bordered panel holds the rows, like the select lists. */
-export function mapListGroupStyle(theme: Theme): ViewStyle {
+/** A group's look: its own panel, or plain rows inside another surface. */
+export type ListGroupVariant = 'panel' | 'plain';
+
+/**
+ * One bordered panel holds the rows, like the select lists. A plain group
+ * draws no panel of its own, for rows inside a surface that already has
+ * one, such as an open accordion.
+ */
+export function mapListGroupStyle(
+  theme: Theme,
+  variant: ListGroupVariant = 'panel',
+): ViewStyle {
+  if (variant === 'plain') return {};
   return {
     backgroundColor: theme.colors.surface,
     borderColor: theme.colors.border,

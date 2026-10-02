@@ -17,12 +17,15 @@ beforeAll(() => {
   globalThis.IS_REACT_ACT_ENVIRONMENT = true;
 });
 
-function render(rows: ListRowProps[]) {
+function render(
+  rows: ListRowProps[],
+  variant?: React.ComponentProps<typeof ListGroup>['variant'],
+) {
   let renderer!: ReturnType<typeof create>;
   act(() => {
     renderer = create(
       <ThemeProvider colorScheme="light">
-        <ListGroup accessibilityLabel="Habitats">
+        <ListGroup accessibilityLabel="Habitats" variant={variant}>
           {rows.map((row) => (
             <ListRow key={row.title} {...row} />
           ))}
@@ -74,6 +77,26 @@ describe('ListGroup', () => {
         child.props.style?.height === 1,
     );
     expect(separators).toHaveLength(2);
+    expect(group.props.style.borderWidth).toBe(1);
+  });
+
+  it('draws plain rows with a hairline above each, and no panel', () => {
+    const root = render(
+      [{ title: 'Wetland' }, { title: 'Forest' }, { title: 'Desert' }],
+      'plain',
+    );
+    const group = root.find(
+      (node) =>
+        node.type === 'View' && node.props.accessibilityLabel === 'Habitats',
+    );
+    const separators = group.children.filter(
+      (child) =>
+        typeof child !== 'string' &&
+        child.type === 'View' &&
+        child.props.style?.height === 1,
+    );
+    expect(separators).toHaveLength(3);
+    expect(group.props.style).toEqual({});
   });
 });
 

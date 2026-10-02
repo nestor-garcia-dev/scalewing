@@ -14,6 +14,8 @@ import { Text } from './Text.js';
 export type AccordionProps = {
   accessibilityLabel: string;
   children: ReactNode;
+  /** Content runs to the edges, for a plain `ListGroup` of choices. */
+  flush?: boolean;
   leading?: ReactNode;
   metadata?: ReactNode;
   onOpenChange: (open: boolean) => void;
@@ -28,6 +30,7 @@ export type AccordionProps = {
 export function Accordion({
   accessibilityLabel,
   children,
+  flush = false,
   leading,
   metadata,
   onOpenChange,
@@ -97,7 +100,7 @@ export function Accordion({
         ) : null}
       </Box>
       {open ? (
-        <Box paddingX={1} paddingBottom={1}>
+        <Box {...(flush ? {} : { paddingBottom: 1, paddingX: 1 })}>
           {children}
         </Box>
       ) : null}
