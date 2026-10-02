@@ -19,8 +19,8 @@ release workflow completed successfully.
 
 FutMas F-019-S05: `ListGroup` `variant="plain"` and `Accordion` `flush`
 (`futmas-plain-list-group.md`, 2026-10-02), so choices inside an open
-picker are rows, not a card in a card. Next: release
-`@scalewing/react-native` 1.14.0 and FutMas pins it.
+picker are rows, not a card in a card. Merged in #87 and released as
+`@scalewing/react-native` 1.14.0. Next: FutMas pins it.
 
 Teisoro F-007-S05 task 1375 leftovers (the "Final check (2026-09-29 …)"
 sections of `services-*.md`), one surface per commit, merged in #83
