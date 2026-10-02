@@ -1,5 +1,18 @@
 # @scalewing/react
 
+## 1.17.0
+
+### Minor Changes
+
+- 7bb0397: `DenominationGrid` row `cellTones` (`docs/requests/teisoro-denomination-grid.md`, 2026-10-02 follow-up, Teisoro F-007 task 1550, MOV-10): `cellTones?: readonly (DenominationGridTone | null)[]`, one entry per column, tones a single count in place. The count is set in the tone (over a signed row's color and a zero's quiet opacity), and in the tiles layout the tile's border takes the tone too, without moving or resizing the tile. `neutral` or `null` leaves a count as it is; a row's `tone` is unchanged. The wrong length or an unknown tone throws a `RangeError`. New generated classes `sw-denomination-cell-toned` and `sw-denomination-cell-tone-{accent,success,danger,warning}`. No new dependencies.
+- 051e0ec: `DenominationGrid` `rowRole` (`docs/requests/teisoro-denomination-grid.md`, 2026-10-02 follow-up, Teisoro F-007 task 1550, CHG-4): `rowRole?: 'region' | 'group'`, default `'region'`. At `'group'` each named tiles row keeps its `aria-label` but is a `group`, not a landmark region, so a page with many grids does not list a region per row. The default keeps today's regions; the strip ignores the prop; an unknown value throws a `RangeError`. New exported type `DenominationGridRowRole`. No new dependencies.
+- b810ce3: `Dialog` `titleLevel` (`docs/requests/teisoro-dialog-title-level.md`, Teisoro F-007 task 1550, CHG-13): `titleLevel?: 2 | 3`, default `3`, sets the heading level of the dialog's title. `titleLevel={2}` renders it as an `h2` in the same title style, so a dialog's own section labels can be `h3` headings that read as its parts rather than its peers. The default keeps the `h3` every existing dialog has. New exported type `DialogTitleLevel`. No new dependencies.
+- 0a49a53: A wide `Table` (and `DenominationGrid` strip) shows that it scrolls (`docs/requests/teisoro-table.md`, 2026-10-02 follow-up, Teisoro F-007 task 1550, VLT-1 and HIS-3). While its content is scrolled out past an inline edge, the scroll region adds `sw-scroll-more-start` and/or `sw-scroll-more-end` and that edge draws a soft inset shade (the text color at 28%, spacing steps 6 and 5), mirrored right to left, under the content so nothing moves. A table that fits is unchanged: no class, no shadow. The region measures on mount, on scroll and on resize; before mount and on the server it reports no overflow. In forced colors the system scrollbar is the cue. New generated classes `sw-scroll-more-start` and `sw-scroll-more-end`; no prop changes and no new dependencies.
+
+### Patch Changes
+
+- 1648c50: `DenominationGrid` writes a negative count with the typographic minus "−" (U+2212), not a hyphen-minus (`docs/requests/teisoro-denomination-grid.md`, 2026-10-02 follow-up, Teisoro F-007 task 1550, AUD-18). It applies to every negative count, in signed and unsigned rows and in both layouts, so a count matches the sign of the consumer's formatted money. The cell's text is the only change: a test that matched `-1` in a cell now matches `−1`. No API change and no new dependencies.
+
 ## 1.16.0
 
 ### Minor Changes

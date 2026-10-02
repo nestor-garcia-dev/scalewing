@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: implemented on `claude/vault-review-surfaces` for Teisoro F-007 task 1550; pull request pending review.
+Status: Merged in #89 (2026-10-02) and released in `@scalewing/react` 1.17.0; Teisoro pins it in F-007 task 1550.
 Source: Teisoro UX review `vault-change-orders.md`, finding CHG-13 (minor, WCAG 1.3.1; the part left for Scalewing). Create 02–04 `.aria.yml`: `heading "Create change order" [level=3]`, then `heading "Requesting from the bank" [level=3]` and `heading "Payment" [level=3]`; deposit 01–04 and targets 01 the same. `Dialog` renders its `title` with `Text variant="title"`, an `h3`, so a dialog's own section headings are either its title's peers (`h3`) or skip to `h4` under a title that is not the top of the dialog's outline. The same problem was found in the drawer dialogs (DRW-2).
 Renderer: react
 Missing surface: `Dialog` `titleLevel` prop (`2 | 3`).

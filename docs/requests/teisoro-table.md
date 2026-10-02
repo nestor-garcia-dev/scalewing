@@ -56,7 +56,7 @@ Evidence: `table-selected-row.test.ts`:
 
 ## Follow-up request (2026-10-02, Teisoro F-007 task 1550): a wide table shows that it scrolls
 
-Status: implemented on `claude/vault-review-surfaces` for Teisoro F-007 task 1550; pull request pending review. The `stackBelow` request above is still not started; Teisoro's review asks Teisoro to render the phone layout itself (VLT-1, HIS-3).
+Status: Merged in #89 (2026-10-02) and released in `@scalewing/react` 1.17.0; Teisoro pins it in F-007 task 1550. The `stackBelow` request above is still not started; Teisoro's review asks Teisoro to render the phone layout itself (VLT-1, HIS-3).
 Source: Teisoro UX reviews `vault-page-and-access.md`, finding VLT-1 (major; the Scalewing part), and `vault-history.md`, finding HIS-3 (major; its "let the scroll region show a fade at its right edge"). Admin 02 at 390 px: the audit history shows "Fecha", "Saldo esperado" and "Tu conteo", the variance, status and Resolve are off the right edge, and nothing says the table scrolls; the history's 10- and 8-column tables the same. `Table`'s `ScrollRegion` scrolls sideways with no edge shadow, fade or scrollbar cue, and a phone's overlay scrollbar hides until touched.
 
 Teisoro need: any `Table` (and `DenominationGrid` strip) wider than its card shows, at a glance, that more columns are past its edge.

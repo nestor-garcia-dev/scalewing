@@ -14,7 +14,7 @@ Scalewing owns the reusable layout, tone and zero rules, generated classes, test
 
 ## Follow-up request (2026-09-25, Teisoro F-002-S19 task 1060): a tone per tile
 
-Status: implemented as `cellTones` on `claude/vault-review-surfaces` for Teisoro F-007 task 1550 (see "a tone per count, in place" below); pull request pending review. The `note` part is not built.
+Status: implemented as `cellTones` (see "a tone per count, in place" below), merged in #89 (2026-10-02) and released in `@scalewing/react` 1.17.0. The `note` part is not built.
 
 `tone` is a row property. Two vault surfaces need it on one cell: Remove Cash marks the denominations the vault is short of (Teisoro now moves them to a second, danger-toned "Not enough" row instead of marking the tile in place), and the change-orders inventory marks each bill or coin tile as needing an order or stocked (Teisoro now uses cards with badges instead of toned tiles).
 
@@ -130,7 +130,7 @@ Rejected along the way: `table-layout: fixed` (an eleven-column phone strip woul
 
 ## Follow-up request (2026-10-02, Teisoro F-007 task 1550): a negative count takes the typographic minus
 
-Status: implemented on `claude/vault-review-surfaces` for Teisoro F-007 task 1550; pull request pending review.
+Status: Merged in #89 (2026-10-02) and released in `@scalewing/react` 1.17.0; Teisoro pins it in F-007 task 1550.
 Source: Teisoro UX review `vault-audits-and-tasks.md`, finding AUD-18 (polish). Details 01: the audit's "Difference" row reads "-1" while the page's money reads "−$20.00". `denomination-cells.ts` wrote a negative count with `String(count)`, a hyphen-minus.
 
 Teisoro need: the vault audit details (`apps/teisoro-web/src/app/vault-page/AuditCard.tsx`) show a short bill as "−1", the same sign as the money beside it.
@@ -147,7 +147,7 @@ Evidence: `denomination-grid.test.tsx` ("writes a negative count with the typogr
 
 ## Follow-up request (2026-10-02, Teisoro F-007 task 1550): a tiles row that is not a landmark
 
-Status: implemented on `claude/vault-review-surfaces` for Teisoro F-007 task 1550; pull request pending review.
+Status: Merged in #89 (2026-10-02) and released in `@scalewing/react` 1.17.0; Teisoro pins it in F-007 task 1550.
 Source: Teisoro UX review `vault-change-orders.md`, finding CHG-4 (major; the part left for Scalewing). Create 01 `.aria.yml`: each change order holds `group "Order #… · Requested · Bills"` › `region "Bills"` › `list`, so the page lists a landmark named "Bills", "Coin boxes" or "Paid from the vault" per order, 15 regions in one frame. Every named tiles row is a `section aria-label`, a region. The review asks for the region role to be opt-in.
 
 Teisoro need: the change-order cards (`apps/teisoro-web/src/app/change-orders/parts.tsx`, `ChangeTiles`) keep each tiles row named ("Bills", "Coin boxes") inside the order's group, without adding a landmark per row per order.
@@ -168,7 +168,7 @@ Evidence: `denomination-grid.test.tsx` ("DenominationGrid rowRole": regions by d
 
 ## Follow-up request (2026-10-02, Teisoro F-007 task 1550): a tone per count, in place
 
-Status: implemented on `claude/vault-review-surfaces` for Teisoro F-007 task 1550; pull request pending review.
+Status: Merged in #89 (2026-10-02) and released in `@scalewing/react` 1.17.0; Teisoro pins it in F-007 task 1550.
 Source: Teisoro UX review `vault-moving-cash.md`, finding MOV-10 (minor; the part left for Scalewing), which picks up the 2026-09-25 "a tone per tile" request above. Short 02: typing 41 in the $100 field moves the $100 tile out of its row into a full-width danger-toned "Not enough" row (Teisoro's `TileGroup` in `app/vault-page/parts.tsx` renders a second `DenominationGrid`, because "Scalewing tones a whole row, not a single tile"), and the fields being typed in move down about 135 px.
 
 Teisoro need: the vault holdings tiles in Remove Cash, the audit and the money-truck dialogs keep every tile in its row and turn the short one red in place; the field's own "Only 40 available" says why. The change-orders inventory can tone a tile that needs an order the same way.
