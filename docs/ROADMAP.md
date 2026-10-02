@@ -28,6 +28,9 @@ review (the `vault-*.md` reports), one surface per commit on
 - `DenominationGrid` `rowRole="group"`: a tiles row named without a
   landmark (CHG-4, `teisoro-denomination-grid.md` follow-up; the
   default stays `region` until a major release).
+- `DenominationGrid` row `cellTones`: one tile toned in place (MOV-10,
+  `teisoro-denomination-grid.md` follow-up, the 2026-09-25 "tone per
+  tile" request without its `note`).
 
 Next: pull request, review and merge, then release `@scalewing/react`
 and Teisoro pins it.

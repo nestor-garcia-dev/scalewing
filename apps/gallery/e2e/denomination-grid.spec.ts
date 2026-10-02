@@ -295,3 +295,84 @@ test('a DenominationGrid row keeps its glyph beside its words at every width', a
     .getByRole('table', { name: 'Den watch by tag size' })
     .screenshot({ path: testInfo.outputPath('denomination-label-line.png') });
 });
+
+test('a DenominationGrid cell tone marks one tile in place', async ({
+  page,
+}, testInfo) => {
+  await page.goto('/#denomination-grid');
+  const tiles = page
+    .locator('#denomination-grid')
+    .getByRole('group', { name: 'Tags left in the kit' })
+    .getByRole('listitem');
+  await expect(tiles).toHaveCount(6);
+  const drawn = await tiles.evaluateAll((items) =>
+    items.map((item) => {
+      const box = item.getBoundingClientRect();
+      const count = item.querySelector('.sw-denomination-cell')!;
+      return {
+        top: Math.round(box.top),
+        width: Math.round(box.width),
+        border: getComputedStyle(item).borderTopColor,
+        shadow: getComputedStyle(item).boxShadow,
+        count: getComputedStyle(count).color,
+        opacity: getComputedStyle(count).opacity,
+      };
+    }),
+  );
+  const isPhone = testInfo.project.name === 'mobile-es';
+  // MOV-10: the toned tile keeps its row and its width; nothing moves.
+  const [plain, , short, low] = drawn as [
+    (typeof drawn)[number],
+    (typeof drawn)[number],
+    (typeof drawn)[number],
+    (typeof drawn)[number],
+  ];
+  expect(short.width).toBe(plain.width);
+  if (isPhone) {
+    // Three tiles per row below md: M is the last tile of the first row.
+    expect(short.top).toBe(plain.top);
+    expect(low.top).toBeGreaterThan(plain.top);
+  } else {
+    expect(new Set(drawn.map((tile) => tile.top)).size).toBe(1);
+  }
+  // A zero count is still toned at full opacity, not the quiet zero.
+  expect(short.opacity).toBe('1');
+  // Forced colors replace the tone with system colors; the words carry it.
+  if (testInfo.project.name === 'forced-colors') return;
+  // The probe sits beside the tiles, so it takes exactly the grid's theme.
+  const danger = await tiles.first().evaluate((item) => {
+    const probe = document.createElement('span');
+    probe.style.color = 'var(--sw-color-danger)';
+    item.parentElement!.append(probe);
+    const color = getComputedStyle(probe).color;
+    probe.remove();
+    return color;
+  });
+  expect(short.border).toBe(danger);
+  expect(short.count).toBe(danger);
+  expect(short.shadow).toContain(danger);
+  expect(plain.border).not.toBe(danger);
+  expect(low.border).not.toBe(plain.border);
+  expect(low.border).not.toBe(danger);
+  // A strip cell takes its tone too: the counted S in "Kit check by size".
+  const counted = page
+    .locator('#denomination-grid')
+    .getByRole('table', { name: 'Kit check by size' })
+    .getByRole('row', { name: /Counted/ });
+  expect(
+    await counted
+      .getByRole('cell')
+      .nth(1)
+      .evaluate((cell) => getComputedStyle(cell).color),
+  ).toBe(danger);
+  expect(
+    await counted
+      .getByRole('cell')
+      .nth(0)
+      .evaluate((cell) => getComputedStyle(cell).color),
+  ).not.toBe(danger);
+  await page
+    .locator('#denomination-grid')
+    .getByRole('group', { name: 'Tags left in the kit' })
+    .screenshot({ path: testInfo.outputPath('denomination-cell-tones.png') });
+});

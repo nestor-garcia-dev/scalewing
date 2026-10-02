@@ -1,4 +1,5 @@
 import { cx } from '../../class-names.js';
+import { denominationCellToneClassNames } from '../../css/css-denomination-cell-tones.js';
 import { denominationCellView } from '../../denomination-cells.js';
 import { ScrollRegion } from '../ScrollRegion.js';
 import { RowLabelLine } from './RowLabelLine.js';
@@ -79,7 +80,11 @@ export function DenominationStrip({
                 );
                 return (
                   <td
-                    className={`sw-denomination-cell sw-denomination-cell-${view.state}`}
+                    className={cx(
+                      'sw-denomination-cell',
+                      `sw-denomination-cell-${view.state}`,
+                      ...denominationCellToneClassNames(row.cellTones?.[index]),
+                    )}
                     key={column.key}
                   >
                     {view.text}

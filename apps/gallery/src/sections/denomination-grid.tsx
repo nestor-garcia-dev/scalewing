@@ -40,7 +40,7 @@ export function DenominationGridSection() {
   return (
     <Section
       id="denomination-grid"
-      purpose="DenominationGrid shows counts per unit across a fixed set of columns: the strip layout is a captioned table with a toned row label, muted zeros, signed deltas, and an optional total; the tiles layout stacks label, count, and a consumer-formatted subtotal per column. A lone tiles row without an icon or total whose label repeats the grid's is named only by the grid; any other row names its own region, or its own group with rowRole set to group, so a page of grids keeps its landmark list short. Icons are consumer slots; a row's glyph stays on its label's line, and a long label wraps its words beside the glyph."
+      purpose="DenominationGrid shows counts per unit across a fixed set of columns: the strip layout is a captioned table with a toned row label, muted zeros, signed deltas, and an optional total; the tiles layout stacks label, count, and a consumer-formatted subtotal per column. A lone tiles row without an icon or total whose label repeats the grid's is named only by the grid; any other row names its own region, or its own group with rowRole set to group, so a page of grids keeps its landmark list short. A row's cellTones tone single counts in place (the count and, in tiles, its tile's border); the words beside the grid say why. Icons are consumer slots; a row's glyph stays on its label's line, and a long label wraps its words beside the glyph."
       title="DenominationGrid"
       usage={`<DenominationGrid
   label="Tag movement by size"
@@ -164,6 +164,7 @@ export function DenominationGridSection() {
                     id: 'counted',
                     label: 'Counted',
                     cells: [40, 24, 0, 12, 6, 2],
+                    cellTones: [null, 'danger', null, null, null, null],
                     total: '1,012 g',
                   },
                   {
@@ -237,6 +238,26 @@ export function DenominationGridSection() {
               },
             ]}
           />
+        </Card>
+        <Card padding={4}>
+          <Stack gap={2}>
+            <DenominationGrid
+              columns={tagColumns}
+              label="Tags left in the kit"
+              layout="tiles"
+              rows={[
+                {
+                  id: 'left',
+                  label: 'Tags left in the kit',
+                  cells: [40, 25, 0, 3, 6, 2],
+                  cellTones: [null, null, 'danger', 'warning', null, null],
+                },
+              ]}
+            />
+            <Text color="muted" variant="caption">
+              No M tags left; only 3 L tags.
+            </Text>
+          </Stack>
         </Card>
         <Card padding={4}>
           <DenominationGrid

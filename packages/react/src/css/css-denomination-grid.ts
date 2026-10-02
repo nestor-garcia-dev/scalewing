@@ -2,6 +2,10 @@ import { typographyVariants } from '@scalewing/tokens';
 
 import { breakpointQuery } from './breakpoints.js';
 import { badgeTones } from './css-data.js';
+import {
+  cssDenominationCellToneClasses,
+  denominationCellToneClassCatalog,
+} from './css-denomination-cell-tones.js';
 import { scrollRegionRules } from './css-scroll-region.js';
 import { visuallyHiddenDeclarations } from './css-utilities.js';
 import { zIndex } from './stacking.js';
@@ -246,6 +250,8 @@ ${scrollRegionRules('.sw-denomination-scroll')}
   .sw-denomination-tile-list { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
 
+${cssDenominationCellToneClasses()}
+
 @media (forced-colors: active) {
   .sw-denomination-label { border-inline-start-color: CanvasText; color: CanvasText; }
   .sw-denomination-strip .sw-denomination-label::before { background: CanvasText; forced-color-adjust: none; }
@@ -284,5 +290,6 @@ export function denominationGridClassCatalog(): string[] {
     'sw-denomination-tile-list',
     'sw-denomination-tile',
     'sw-denomination-subtotal',
+    ...denominationCellToneClassCatalog(),
   ];
 }

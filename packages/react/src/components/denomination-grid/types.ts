@@ -25,6 +25,13 @@ export type DenominationGridRow = {
   tone?: DenominationGridTone;
   signed?: boolean;
   total?: string;
+  /**
+   * A tone per count, one entry per column (null for none), for a single
+   * count that needs attention, such as a bill the vault is short of. The
+   * count is set in the tone and, in the tiles layout, its tile's border
+   * too, in place. The tone never says why alone: put that in words.
+   */
+  cellTones?: readonly (DenominationGridTone | null)[];
 };
 
 export type DenominationGridProps = {

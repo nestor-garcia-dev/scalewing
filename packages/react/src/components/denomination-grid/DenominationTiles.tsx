@@ -1,4 +1,5 @@
 import { cx } from '../../class-names.js';
+import { denominationCellToneClassNames } from '../../css/css-denomination-cell-tones.js';
 import { denominationCellView } from '../../denomination-cells.js';
 import { RowLabelLine } from './RowLabelLine.js';
 import {
@@ -87,7 +88,13 @@ export function DenominationTiles({
                     ? subtotal(cell, column)
                     : null;
                 return (
-                  <li className="sw-denomination-tile" key={column.key}>
+                  <li
+                    className={cx(
+                      'sw-denomination-tile',
+                      ...denominationCellToneClassNames(row.cellTones?.[index]),
+                    )}
+                    key={column.key}
+                  >
                     <span className="sw-denomination-head">{column.label}</span>
                     <span
                       className={`sw-denomination-cell sw-denomination-cell-${view.state}`}

@@ -306,6 +306,107 @@ describe('DenominationGrid tiles', () => {
   });
 });
 
+describe('DenominationGrid cellTones', () => {
+  it('tones one tile in place, its count and its border, and leaves the rest', () => {
+    render(
+      <DenominationGrid
+        columns={columns}
+        label="In the vault"
+        layout="tiles"
+        rows={[
+          {
+            id: 'vault',
+            label: 'In the vault',
+            cells: [12, 0, 40],
+            cellTones: [null, 'warning', 'danger'],
+          },
+        ]}
+      />,
+    );
+    const tiles = screen.getAllByRole('listitem');
+    expect(tiles.map((tile) => tile.className)).toEqual([
+      'sw-denomination-tile',
+      'sw-denomination-tile sw-denomination-cell-toned sw-denomination-cell-tone-warning',
+      'sw-denomination-tile sw-denomination-cell-toned sw-denomination-cell-tone-danger',
+    ]);
+    // The toned tile stays in its row, in its column's order.
+    expect(tiles[2]!.textContent).toBe('$1040');
+  });
+
+  it('tones a strip cell over its signed color, and neutral or null adds nothing', () => {
+    render(
+      <DenominationGrid
+        columns={columns}
+        label="Cash flow"
+        rows={[
+          {
+            id: 'net',
+            label: 'Net',
+            cells: [2, -1, 0],
+            signed: true,
+            cellTones: ['neutral', 'accent', null],
+          },
+        ]}
+      />,
+    );
+    const cells = within(screen.getByRole('row', { name: /Net/ })).getAllByRole(
+      'cell',
+    );
+    expect(cells.map((cell) => cell.className)).toEqual([
+      'sw-denomination-cell sw-denomination-cell-positive',
+      'sw-denomination-cell sw-denomination-cell-negative sw-denomination-cell-toned sw-denomination-cell-tone-accent',
+      'sw-denomination-cell sw-denomination-cell-zero',
+    ]);
+  });
+
+  it('rejects cellTones of the wrong length or with an unknown tone', () => {
+    const grid = (cellTones: readonly (string | null)[]) => (
+      <DenominationGrid
+        columns={columns}
+        label="Drawer"
+        layout="tiles"
+        rows={[
+          {
+            id: 'a',
+            label: 'A',
+            cells: [1, 2, 3],
+            cellTones: cellTones as readonly ('danger' | null)[],
+          },
+        ]}
+      />
+    );
+    expect(() => render(grid(['danger', null]))).toThrow(RangeError);
+    expect(() => render(grid([null, 'red', null]))).toThrow(RangeError);
+    // eslint-disable-next-line no-sparse-arrays -- a sparse array from JS
+    expect(() => render(grid([, 'danger', null]))).toThrow(RangeError);
+    expect(() =>
+      render(grid(null as unknown as readonly (string | null)[])),
+    ).toThrow(RangeError);
+  });
+
+  it('generates a tone per cell from the Badge tones, over zero and signed colors', () => {
+    const css = cssDenominationGridClasses();
+    expect(css).toContain(
+      '.sw-denomination-cell-tone-danger { --sw-denomination-cell-tone: var(--sw-color-danger); }',
+    );
+    expect(css).not.toContain('sw-denomination-cell-tone-neutral');
+    // A toned zero stays GrayText in forced colors, not a count's CanvasText.
+    expect(css).toContain(
+      '.sw-denomination-grid .sw-denomination-cell-toned .sw-denomination-cell-zero { color: GrayText; }',
+    );
+    expect(css)
+      .toContain(`.sw-denomination-grid .sw-denomination-cell.sw-denomination-cell-toned,
+.sw-denomination-grid .sw-denomination-cell-toned .sw-denomination-cell {
+  color: var(--sw-denomination-cell-tone);
+  opacity: 1;
+}`);
+    expect(css).toContain(`.sw-denomination-tile.sw-denomination-cell-toned {
+  border-color: var(--sw-denomination-cell-tone);
+  box-shadow: inset 0 0 0 1px var(--sw-denomination-cell-tone);
+}`);
+  });
+});
+
 describe('DenominationGrid rowRole', () => {
   const rows = [
     { id: 'expected', label: 'Expected', cells: [1, 2, 3] },

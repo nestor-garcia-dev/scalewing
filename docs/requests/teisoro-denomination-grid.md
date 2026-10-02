@@ -14,7 +14,7 @@ Scalewing owns the reusable layout, tone and zero rules, generated classes, test
 
 ## Follow-up request (2026-09-25, Teisoro F-002-S19 task 1060): a tone per tile
 
-Status: requested; not started.
+Status: implemented as `cellTones` on `claude/vault-review-surfaces` for Teisoro F-007 task 1550 (see "a tone per count, in place" below); pull request pending review. The `note` part is not built.
 
 `tone` is a row property. Two vault surfaces need it on one cell: Remove Cash marks the denominations the vault is short of (Teisoro now moves them to a second, danger-toned "Not enough" row instead of marking the tile in place), and the change-orders inventory marks each bill or coin tile as needing an order or stocked (Teisoro now uses cards with badges instead of toned tiles).
 
@@ -165,3 +165,22 @@ Rejected alternatives:
 - `rowLandmarks?: boolean`. A boolean says what the row is not; naming the role says what it is and leaves room for another value.
 
 Evidence: `denomination-grid.test.tsx` ("DenominationGrid rowRole": regions by default; at `group` no region, each row a named `SECTION` group inside the grid's group, its tiles intact; a lone plain row unnamed and without a role; the strip unchanged; an unknown value throws); `apps/gallery/e2e/denomination-grid.spec.ts` on desktop-en, mobile-es and forced-colors: the new "Nest box check" tiles (`rowRole="group"`) have no region in the DOM or the ARIA snapshot and groups named "Fitted" and "Occupied" with six tiles each, while "Kit audit" and "Tags fitted today" keep their regions.
+
+## Follow-up request (2026-10-02, Teisoro F-007 task 1550): a tone per count, in place
+
+Status: implemented on `claude/vault-review-surfaces` for Teisoro F-007 task 1550; pull request pending review.
+Source: Teisoro UX review `vault-moving-cash.md`, finding MOV-10 (minor; the part left for Scalewing), which picks up the 2026-09-25 "a tone per tile" request above. Short 02: typing 41 in the $100 field moves the $100 tile out of its row into a full-width danger-toned "Not enough" row (Teisoro's `TileGroup` in `app/vault-page/parts.tsx` renders a second `DenominationGrid`, because "Scalewing tones a whole row, not a single tile"), and the fields being typed in move down about 135 px.
+
+Teisoro need: the vault holdings tiles in Remove Cash, the audit and the money-truck dialogs keep every tile in its row and turn the short one red in place; the field's own "Only 40 available" says why. The change-orders inventory can tone a tile that needs an order the same way.
+
+Proposed API: `cellTones?: readonly (DenominationGridTone | null)[]` on a row, one entry per column (`null` for none), parallel to `cells`.
+
+Behavior and failure boundary: presentation only, in both layouts. A toned count is set in its tone, over a signed row's sign color and a zero's quiet opacity (a short bill the vault holds none of reads as a red "—" at full opacity). In the tiles layout the tile's border takes the tone too, one hairline thicker through an inset shadow, so no tile moves or resizes. `neutral` or `null` leaves a count as it is. A row's `tone` is unchanged and still colors only its label. Generated classes `sw-denomination-cell-toned` and `sw-denomination-cell-tone-{accent,success,danger,warning}` (in their own `css-denomination-cell-tones.ts`) set `--sw-denomination-cell-tone`; forced colors draw the system colors, and a toned zero keeps the zero's `GrayText` there. A `cellTones` that is not an array, has the wrong length, has a hole, or holds a tone outside the Badge tones throws a `RangeError`, as mismatched `cells` do. The tone never carries meaning alone: the consumer's words beside the grid (the field's caption, a note) say why.
+
+Rejected alternatives:
+
+- A cell as `{ value, tone?, note? }` besides a number, as the 2026-09-25 request proposed. It widens the exported `cells` type, so a consumer that reads `row.cells` as numbers would stop compiling in a minor release; a parallel optional array is additive. The `note` (a string under the count) is left out: MOV-10's fix puts the words in the count field's caption, and a note would be a second place for them.
+- `toneOf(column)` on the grid. It tones a column in every row, and a short tile is one row's cell.
+- A filled tint. The tone on the count and the border is enough, keeps every text's contrast on the surface, and adds no token.
+
+Evidence: `denomination-grid.test.tsx` ("DenominationGrid cellTones": a tiles row's toned tiles in their order with the marker and tone classes; a strip cell toned over a signed negative, `neutral` and `null` adding nothing; the wrong length and an unknown tone throw; the generated rules); `css/stylesheet.test.ts` (the classes in the catalog); `apps/gallery/e2e/denomination-grid.spec.ts` "a DenominationGrid cell tone marks one tile in place" on desktop-en, mobile-es and forced-colors: in "Tags left in the kit" the danger M tile and the warning L tile keep their row and width (all six on one row on a desktop, three per row on a phone), the M tile's zero count is at full opacity, and outside forced colors the M tile's border, inset shadow and count compute to the danger color while the L tile's border is neither danger nor the plain border; in the "Kit check by size" strip the Counted row's toned S cell computes to the danger color and its untoned XS cell does not.
