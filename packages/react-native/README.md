@@ -9,7 +9,9 @@ muted caption line below the title, and `truncateTitle` keeps the title on
 one line with a tail ellipsis instead of wrapping. With `onTitlePress`, the
 title is a separate action (named by `titleAccessibilityLabel`, or the title
 followed by the subtitle) and only the trailing control toggles. Otherwise the entire header toggles. Collapsed
-content unmounts and is absent from the accessibility tree.
+content unmounts and is absent from the accessibility tree. `flush` drops the
+content's side and bottom padding so a plain `ListGroup` of choices runs to
+the accordion's edges.
 
 ```ts
 import { Button, Card, Field, SegmentedControl, Stack, TabBar, Text, ThemeProvider } from '@scalewing/react-native';
@@ -59,7 +61,9 @@ list, an item's optional `detail` is a muted line under its label and part of
 its accessible name; chips omit it.
 
 `ListGroup` is one bordered panel of `ListRow`s with a hairline between each
-pair; an optional `accessibilityLabel` names it. A `ListRow` has a `title`,
+pair; an optional `accessibilityLabel` names it. `variant="plain"` draws no
+panel and puts a hairline above the first row too, for rows inside a surface
+that already has one, such as a `flush` accordion. A `ListRow` has a `title`,
 an optional muted `detail` line and trailing `value`, and an optional
 `leading` slot for a consumer mark or Lucide glyph. With `onPress` it is a
 button with a chevron (`accessory="none"` hides it for a row that acts in

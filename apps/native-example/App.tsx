@@ -7,6 +7,8 @@ import {
   Field,
   FloatingAction,
   Inline,
+  ListGroup,
+  ListRow,
   MultiSelect,
   Progress,
   SingleSelect,
@@ -85,6 +87,7 @@ export default function App() {
   const [releaseDate, setReleaseDate] = useState('');
   const [enclosure, setEnclosure] = useState('paddock');
   const [tourLength, setTourLength] = useState('short');
+  const [habitat, setHabitat] = useState<'oak' | 'birch'>('oak');
   const [groupOpen, setGroupOpen] = useState(true);
   const [titlePresses, setTitlePresses] = useState(0);
 
@@ -277,9 +280,20 @@ export default function App() {
               open={groupOpen}
               onOpenChange={setGroupOpen}
               metadata={<Text variant="data">2</Text>}
+              flush
             >
-              <Text>Oak grove</Text>
-              <Text>Birch forest</Text>
+              <ListGroup variant="plain">
+                <ListRow
+                  title="Oak grove"
+                  selected={habitat === 'oak'}
+                  onPress={() => setHabitat('oak')}
+                />
+                <ListRow
+                  title="Birch forest"
+                  selected={habitat === 'birch'}
+                  onPress={() => setHabitat('birch')}
+                />
+              </ListGroup>
             </Accordion>
             <Text color="muted">Title presses {titlePresses}.</Text>
             <Card padding={4} variant="filled">

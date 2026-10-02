@@ -68,6 +68,7 @@ export {
   type SingleSelectVariant,
 } from './components/SingleSelect.js';
 export { ListGroup, type ListGroupProps } from './components/ListGroup.js';
+export { type ListGroupVariant } from './map-list-style.js';
 export { ListRow, type ListRowProps } from './components/ListRow.js';
 export { type ListRowTone } from './map-list-style.js';
 export { Progress, type ProgressProps } from './components/Progress.js';

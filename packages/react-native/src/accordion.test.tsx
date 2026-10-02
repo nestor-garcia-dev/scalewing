@@ -175,4 +175,27 @@ describe('Accordion', () => {
       ),
     ).toHaveLength(1);
   });
+
+  it('pads its content unless flush', () => {
+    // The host view that holds the content, and its flattened style.
+    function bodyStyle(flush: boolean) {
+      let result!: ReturnType<typeof renderAccordion>;
+      act(() => {
+        result = renderAccordion({ flush, open: true });
+      });
+      const content = result.renderer.root.find(
+        (node) =>
+          node.type === 'Text' && node.props.children === 'Match details',
+      );
+      // Walk up from the text to the nearest View: the Box that pads it.
+      let body = content.parent;
+      while (body && body.type !== 'View') body = body.parent;
+      return Object.assign({}, ...[body?.props.style].flat(Infinity));
+    }
+    const padded = bodyStyle(false);
+    expect(padded.paddingHorizontal ?? padded.paddingLeft).toBeGreaterThan(0);
+    const flush = bodyStyle(true);
+    expect(flush.paddingHorizontal ?? flush.paddingLeft ?? 0).toBe(0);
+    expect(flush.paddingBottom ?? 0).toBe(0);
+  });
 });
