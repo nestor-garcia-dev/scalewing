@@ -19,6 +19,7 @@ import {
   sampleCensusRows,
   sampleCollarRows,
   sampleCollarRowsArabic,
+  sampleSurveyRows,
   sampleWatchRows,
 } from '../sample-copy.js';
 
@@ -31,7 +32,7 @@ export function TableSection() {
   return (
     <Section
       id="table"
-      purpose="Table aligns data in rows. stickyHeader keeps column labels visible. numeric cells use tabular numerals and end alignment. truncate clips overflowing cell copy. density compact densifies cells. selected marks the current row with an accent bar at its start that takes no space and no fill, so no column moves and no text loses contrast when a row is picked; the bar follows the writing direction and forced colors keep it."
+      purpose="Table aligns data in rows. stickyHeader keeps column labels visible. numeric cells use tabular numerals and end alignment. truncate clips overflowing cell copy. density compact densifies cells. selected marks the current row with an accent bar at its start that takes no space and no fill, so no column moves and no text loses contrast when a row is picked; the bar follows the writing direction and forced colors keep it. A table wider than its container scrolls sideways inside its own region, and each edge with content past it draws a shade until it is scrolled to that end."
       title="Table"
       usage={`<Table aria-label="Census" density="compact">
   <TableBody>
@@ -182,10 +183,51 @@ export function TableSection() {
             })}
           </TableBody>
         </Table>
+        <Table aria-label="Survey log">
+          <TableHeader>
+            <TableRow>
+              <TableCell as="th">Date</TableCell>
+              <TableCell as="th">Site</TableCell>
+              <TableCell as="th">Observer</TableCell>
+              <TableCell as="th">Species</TableCell>
+              <TableCell as="th">Habitat</TableCell>
+              <TableCell as="th">Weather</TableCell>
+              <TableCell as="th">Wind</TableCell>
+              <TableCell as="th" numeric>
+                Count
+              </TableCell>
+              <TableCell as="th">Status</TableCell>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {sampleSurveyRows.map((row) => (
+              <TableRow key={row.date}>
+                <TableCell>{row.date}</TableCell>
+                <TableCell>{row.site}</TableCell>
+                <TableCell>{row.observer}</TableCell>
+                <TableCell>{row.species}</TableCell>
+                <TableCell>{row.habitat}</TableCell>
+                <TableCell>{row.weather}</TableCell>
+                <TableCell>{row.wind}</TableCell>
+                <TableCell numeric>{row.count}</TableCell>
+                <TableCell>
+                  <Badge
+                    size="sm"
+                    tone={row.status === 'Verified' ? 'success' : 'warning'}
+                  >
+                    {row.status}
+                  </Badge>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
         <Text variant="caption" color="muted">
           Pass stickyHeader false when the header should scroll away. density
           compact and selected are for ranked lists. Why chips are Badge sm, not
-          a second chip control.
+          a second chip control. A table wider than its column scrolls inside
+          its own region, and the edge with more columns past it is shaded, so a
+          phone shows that the table goes on.
         </Text>
       </Stack>
     </Section>

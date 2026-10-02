@@ -217,3 +217,131 @@ test('in a right-to-left table the bar sits at the right edge, clear of a checkb
     path: testInfo.outputPath('table-rtl-selected.png'),
   });
 });
+
+test('a wide Table shades the edge with more columns past it, on a phone too', async ({
+  page,
+}, testInfo) => {
+  const isForced = testInfo.project.name === 'forced-colors';
+  // Forced colors are checked at phone width, where the table overflows.
+  if (isForced) {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.emulateMedia({ forcedColors: 'active' });
+  }
+  await page.goto('/#table');
+  const region = page
+    .locator('#table')
+    .getByRole('group', { name: 'Survey log' });
+  await region.scrollIntoViewIfNeeded();
+  const metrics = () =>
+    region.evaluate((element) => ({
+      overflows: element.scrollWidth - element.clientWidth > 1,
+      className: element.className,
+      shadow: getComputedStyle(element).boxShadow,
+    }));
+  const isPhone = testInfo.project.name === 'mobile-es';
+  const atStart = await metrics();
+  testInfo.annotations.push({
+    type: 'overflow',
+    description: String(atStart.overflows),
+  });
+  // VLT-1 / HIS-3: at 390 px nine columns do not fit, so the end is shaded.
+  if (isPhone || isForced) expect(atStart.overflows).toBe(true);
+  if (!atStart.overflows) {
+    // Nothing past either edge: no cue, and no shadow.
+    expect(atStart.className).toBe('sw-table-wrap');
+    expect(atStart.shadow).toBe('none');
+    return;
+  }
+  await expect(region).toHaveClass('sw-table-wrap sw-scroll-more-end');
+  if (isForced) {
+    // Forced colors draw no shade; the system scrollbar is the cue.
+    expect(
+      await region.evaluate((element) => getComputedStyle(element).boxShadow),
+    ).toBe('none');
+  } else {
+    // Read after the class lands: the region measures after its first paint.
+    const shadow = await region.evaluate(
+      (element) => getComputedStyle(element).boxShadow,
+    );
+    expect(shadow).toContain('inset');
+    // The shade sits on the right edge: a negative horizontal offset.
+    expect(shadow).toContain(' -32px 0px 24px -24px inset');
+    expect(shadow).not.toContain(' 32px 0px 24px -24px inset');
+  }
+  await region.screenshot({
+    path: testInfo.outputPath('table-scroll-start.png'),
+  });
+
+  await region.evaluate((element) => {
+    element.scrollLeft = 40;
+  });
+  await expect(region).toHaveClass(
+    'sw-table-wrap sw-scroll-more-start sw-scroll-more-end',
+  );
+  await region.evaluate((element) => {
+    element.scrollLeft = element.scrollWidth;
+  });
+  await expect(region).toHaveClass('sw-table-wrap sw-scroll-more-start');
+  if (!isForced) {
+    // Scrolled to the end, only the left edge is shaded.
+    const atEnd = await region.evaluate(
+      (element) => getComputedStyle(element).boxShadow,
+    );
+    expect(atEnd).toContain(' 32px 0px 24px -24px inset');
+    expect(atEnd).not.toContain(' -32px 0px 24px -24px inset');
+  }
+  await region.screenshot({
+    path: testInfo.outputPath('table-scroll-end.png'),
+  });
+  // The table scrolls inside its region; the region stays within the screen.
+  const box = await region.boundingBox();
+  expect((box?.x ?? 0) + (box?.width ?? 0)).toBeLessThanOrEqual(
+    page.viewportSize()!.width,
+  );
+});
+
+test('a wide right-to-left Table shades its start on the right and its end on the left', async ({
+  page,
+}, testInfo) => {
+  test.skip(
+    testInfo.project.name !== 'mobile-es',
+    'The survey log only overflows at phone width.',
+  );
+  await page.goto('/#table');
+  const region = page
+    .locator('#table')
+    .getByRole('group', { name: 'Survey log' });
+  await region.scrollIntoViewIfNeeded();
+  // Turn the region right to left; a scroll event makes it measure again.
+  await region.evaluate((element) => {
+    element.setAttribute('dir', 'rtl');
+    element.scrollLeft = 0;
+    element.dispatchEvent(new Event('scroll'));
+  });
+  await expect(region).toHaveClass('sw-table-wrap sw-scroll-more-end');
+  // The region really is right to left: it scrolls toward negative values.
+  await region.evaluate((element) => {
+    element.scrollLeft = -40;
+  });
+  expect(await region.evaluate((element) => element.scrollLeft)).toBeLessThan(
+    0,
+  );
+  await expect(region).toHaveClass(
+    'sw-table-wrap sw-scroll-more-start sw-scroll-more-end',
+  );
+  await region.evaluate((element) => {
+    element.scrollLeft = 0;
+  });
+  await expect(region).toHaveClass('sw-table-wrap sw-scroll-more-end');
+  const shadow = () =>
+    region.evaluate((element) => getComputedStyle(element).boxShadow);
+  // The end of a right-to-left table is its left edge: a positive offset.
+  expect(await shadow()).toContain(' 32px 0px 24px -24px inset');
+  expect(await shadow()).not.toContain(' -32px 0px 24px -24px inset');
+  await region.evaluate((element) => {
+    element.scrollLeft = -element.scrollWidth;
+  });
+  await expect(region).toHaveClass('sw-table-wrap sw-scroll-more-start');
+  expect(await shadow()).toContain(' -32px 0px 24px -24px inset');
+  expect(await shadow()).not.toContain(' 32px 0px 24px -24px inset');
+});

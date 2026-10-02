@@ -6,7 +6,10 @@ import {
   cssDenominationCellToneClasses,
   denominationCellToneClassCatalog,
 } from './css-denomination-cell-tones.js';
-import { scrollRegionRules } from './css-scroll-region.js';
+import {
+  pinnedStartShadeRules,
+  scrollRegionRules,
+} from './css-scroll-region.js';
 import { visuallyHiddenDeclarations } from './css-utilities.js';
 import { zIndex } from './stacking.js';
 
@@ -35,6 +38,11 @@ export function cssDenominationGridClasses(): string {
 ${toneRules()}
 
 ${scrollRegionRules('.sw-denomination-scroll')}
+
+${pinnedStartShadeRules('.sw-denomination-scroll', [
+  '.sw-denomination-strip .sw-denomination-label',
+  '.sw-denomination-strip thead .sw-denomination-corner:first-child',
+])}
 
 .sw-denomination-strip {
   border-collapse: collapse;

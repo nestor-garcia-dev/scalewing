@@ -31,6 +31,8 @@ review (the `vault-*.md` reports), one surface per commit on
 - `DenominationGrid` row `cellTones`: one tile toned in place (MOV-10,
   `teisoro-denomination-grid.md` follow-up, the 2026-09-25 "tone per
   tile" request without its `note`).
+- A wide `Table` shades the edge with more columns past it (VLT-1,
+  HIS-3, `teisoro-table.md` follow-up).
 
 Next: pull request, review and merge, then release `@scalewing/react`
 and Teisoro pins it.

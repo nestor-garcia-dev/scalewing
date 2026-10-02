@@ -15,6 +15,31 @@ export const sampleCensusRows = [
   { species: 'Green sea turtle', habitat: 'Ocean', sightings: 21, delta: 2 },
 ] as const;
 
+export const sampleSurveyRows = [
+  {
+    date: 'Sep 1, 2026',
+    site: 'North marsh',
+    observer: 'Field team A',
+    species: 'Grey heron',
+    habitat: 'Wetland',
+    weather: 'Overcast',
+    wind: 'Light breeze',
+    count: 14,
+    status: 'Verified',
+  },
+  {
+    date: 'Sep 2, 2026',
+    site: 'Pine ridge',
+    observer: 'Field team B',
+    species: 'Red squirrel',
+    habitat: 'Conifer forest',
+    weather: 'Sunny',
+    wind: 'Calm',
+    count: 6,
+    status: 'Pending',
+  },
+] as const;
+
 export const sampleWatchRows = [
   {
     slot: 'Common',

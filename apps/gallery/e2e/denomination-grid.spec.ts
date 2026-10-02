@@ -376,3 +376,49 @@ test('a DenominationGrid cell tone marks one tile in place', async ({
     .getByRole('group', { name: 'Tags left in the kit' })
     .screenshot({ path: testInfo.outputPath('denomination-cell-tones.png') });
 });
+
+test('a scrolled DenominationGrid strip casts its start shade from the pinned labels', async ({
+  page,
+}, testInfo) => {
+  // At phone width the eleven-column strip overflows in every project, so
+  // forced colors are checked while it scrolls too.
+  await page.setViewportSize({ width: 390, height: 844 });
+  if (testInfo.project.name === 'forced-colors') {
+    await page.emulateMedia({ forcedColors: 'active' });
+  }
+  await page.goto('/#denomination-grid');
+  const region = page
+    .locator('#denomination-grid')
+    .getByRole('group', { name: 'Sightings by hour' });
+  await region.scrollIntoViewIfNeeded();
+  expect(
+    await region.evaluate(
+      (element) => element.scrollWidth - element.clientWidth > 1,
+    ),
+  ).toBe(true);
+  await expect(region).toHaveClass(/sw-scroll-more-end/);
+  const label = region.locator('th.sw-denomination-label').first();
+  const shade = () =>
+    label.evaluate((cell) => {
+      const after = getComputedStyle(cell, '::after');
+      return {
+        content: after.content,
+        display: after.display,
+        image: after.backgroundImage,
+      };
+    });
+  expect((await shade()).content).toBe('none');
+  await region.evaluate((element) => {
+    element.scrollLeft = 60;
+  });
+  await expect(region).toHaveClass(/sw-scroll-more-start/);
+  const drawn = await shade();
+  if (testInfo.project.name === 'forced-colors') {
+    expect(drawn.display).toBe('none');
+  } else {
+    expect(drawn.image).toContain('linear-gradient');
+  }
+  await region.screenshot({
+    path: testInfo.outputPath('denomination-strip-scrolled.png'),
+  });
+});
