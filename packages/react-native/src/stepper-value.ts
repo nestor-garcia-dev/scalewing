@@ -40,3 +40,25 @@ export function stepDown(value: number, bounds: StepperBounds): number {
 export function stepUp(value: number, bounds: StepperBounds): number {
   return clamp(value + bounds.step, bounds);
 }
+
+/** Where one press in each direction lands, or null where it is stopped. */
+export type StepperMoves = {
+  down: number | null;
+  up: number | null;
+};
+
+/**
+ * The values the minus and plus would move to. A bound stops its direction,
+ * and a disabled stepper stops both.
+ */
+export function stepperMoves(
+  value: number,
+  bounds: StepperBounds,
+  disabled: boolean,
+): StepperMoves {
+  return {
+    down:
+      !disabled && canStepDown(value, bounds) ? stepDown(value, bounds) : null,
+    up: !disabled && canStepUp(value, bounds) ? stepUp(value, bounds) : null,
+  };
+}

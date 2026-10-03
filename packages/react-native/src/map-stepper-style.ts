@@ -9,9 +9,15 @@ export function stepperButtonSize(theme: Theme): number {
   return theme.control.sm.minHeight;
 }
 
-/** Extra touch area so each button answers like a 44-point control. */
-export function stepperButtonHitSlop(theme: Theme): Insets {
-  const slop = (theme.control.md.minHeight - stepperButtonSize(theme)) / 2;
+/**
+ * Extra touch area so a round button of `size` (the Stepper's by default)
+ * answers like a 44-point control.
+ */
+export function stepperButtonHitSlop(
+  theme: Theme,
+  size = stepperButtonSize(theme),
+): Insets {
+  const slop = (theme.control.md.minHeight - size) / 2;
   return { bottom: slop, left: slop, right: slop, top: slop };
 }
 

@@ -75,6 +75,14 @@ something, such as Sign out; any confirm stays the consumer's. Without
 name is the title, detail, and value unless `accessibilityLabel` replaces
 it.
 
+`StepperRow` is a `ListGroup` row that counts something: a `ListRow`'s
+`title`, optional `detail` and `leading` slot, and a compact round minus and
+plus around the count on the end side, with `Stepper`'s `value`, `min`,
+`max`, `step`, `onChange`, `decrementLabel`, `incrementLabel`, and
+`disabled`. The title and detail are one adjustable element that reports the
+count (`<testID>-value`); the buttons (`-decrement`, `-increment`) stay
+separate 44-point targets and are disabled at their bounds.
+
 `FloatingAction` is a screen's one action as a lifted accent capsule in
 thumb reach, over a fade from clear to the page colour so content scrolling
 under it fades out. It places nothing itself: the consumer puts it at the
