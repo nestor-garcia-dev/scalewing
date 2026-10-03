@@ -12,7 +12,11 @@ export {
   type ButtonVariant,
 } from './components/Button.js';
 export { Card, type CardProps, type CardVariant } from './components/Card.js';
-export { Field, type FieldProps } from './components/Field.js';
+export {
+  Field,
+  type FieldProps,
+  type FieldVariant,
+} from './components/Field.js';
 export {
   FloatingAction,
   type FloatingActionProps,

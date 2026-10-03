@@ -34,7 +34,12 @@ apart from pressable rows.
 There is no CSS class API. `padding={4}` is spacing step 4, the same step as
 `sw-padding-4` on web. Native `Field` renders a controlled `TextInput` with a
 visible label and optional hint or error; it accepts standard text-input props
-except styling and controlled semantics owned by the component. `colorScheme`
+except styling and controlled semantics owned by the component. `variant="search"`
+is a filled search capsule: the `label` is not drawn but stays the input's
+accessible name, a consumer `leading` glyph (a Lucide magnifier) sits at the
+start, the return key defaults to `search`, and while there is text a clear
+button named by the required `clearLabel` calls `onChangeText('')`
+(`<testID>-clear`). `colorScheme`
 is `"light"`, `"dark"`, or `"system"`. Named palettes include both schemes;
 `colors` may be `{ light, dark }`.
 
