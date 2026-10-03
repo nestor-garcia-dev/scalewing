@@ -128,3 +128,161 @@ test('Dialog asks onClose on Escape and stays open while the consumer is busy', 
   await page.clock.runFor(1500);
   await expect(wide).toBeHidden();
 });
+
+test('Dialog is a bottom sheet on a phone and centered from md up, with a close button ending its title row', async ({
+  page,
+}, testInfo) => {
+  const isPhone = testInfo.project.name === 'mobile-es';
+  const forced = testInfo.project.name === 'forced-colors';
+  // As with forcedColors, the project's reducedMotion option alone does not
+  // reach the page's media queries, so emulate both here.
+  await page.emulateMedia({
+    forcedColors: forced ? 'active' : 'none',
+    reducedMotion: 'reduce',
+  });
+  await page.goto('/#dialog');
+  expect(
+    await page.evaluate(
+      () => matchMedia('(prefers-reduced-motion: reduce)').matches,
+    ),
+  ).toBe(true);
+  const viewport = page.viewportSize();
+  expect(viewport).toBeTruthy();
+  if (!viewport) return;
+  const trigger = page
+    .locator('#dialog')
+    .getByRole('button', { name: 'Review night count' });
+  await trigger.click();
+  const sheet = page.getByRole('dialog', { name: 'Review the night count' });
+  await expect(sheet).toBeVisible();
+  const title = sheet.getByRole('heading', { name: 'Review the night count' });
+  await expect(title).toHaveJSProperty('tagName', 'H3');
+  const close = sheet.getByRole('button', { name: 'Close' });
+  // The first control in the dialog takes the focus on open.
+  await expect(close).toBeFocused();
+
+  const box = await sheet.boundingBox();
+  expect(box).toBeTruthy();
+  if (!box) return;
+  const shape = await sheet.evaluate((element) => {
+    const style = getComputedStyle(element);
+    return {
+      topLeft: style.borderTopLeftRadius,
+      bottomLeft: style.borderBottomLeftRadius,
+      bottomRight: style.borderBottomRightRadius,
+      paddingBottom: style.paddingBottom,
+      animation: style.animationName,
+      lgRadius: getComputedStyle(element)
+        .getPropertyValue('--sw-radius-lg')
+        .trim(),
+    };
+  });
+  expect(shape.topLeft).toBe(shape.lgRadius);
+  if (isPhone) {
+    // Docked to the bottom edge at the full width, a space-8 strip of
+    // backdrop at least above it, bottom corners square.
+    expect(Math.abs(box.x)).toBeLessThan(1);
+    expect(Math.abs(box.width - viewport.width)).toBeLessThan(1);
+    expect(Math.abs(box.y + box.height - viewport.height)).toBeLessThan(1);
+    expect(box.y).toBeGreaterThanOrEqual(48 - 1);
+    expect(shape.bottomLeft).toBe('0px');
+    expect(shape.bottomRight).toBe('0px');
+    expect(shape.paddingBottom).toBe('24px');
+    // Reduced motion: no slide.
+    expect(shape.animation).toBe('none');
+  } else {
+    // The centered dialog at the reading width, every corner rounded.
+    const left = box.x;
+    const right = viewport.width - (box.x + box.width);
+    expect(Math.abs(left - right)).toBeLessThan(2);
+    expect(box.y + box.height).toBeLessThan(viewport.height - 1);
+    expect(shape.bottomLeft).toBe(shape.lgRadius);
+  }
+
+  // The close button ends the title row: centered on the title's line, its
+  // glyph's end on the padding edge, a 44 px target on a touch screen.
+  const closeBox = await close.boundingBox();
+  const titleBox = await title.boundingBox();
+  const glyph = close.locator('.sw-dialog-close-glyph');
+  const glyphBox = await glyph.boundingBox();
+  expect(closeBox && titleBox && glyphBox).toBeTruthy();
+  if (!closeBox || !titleBox || !glyphBox) return;
+  expect(
+    Math.abs(
+      closeBox.y + closeBox.height / 2 - (titleBox.y + titleBox.height / 2),
+    ),
+  ).toBeLessThan(1);
+  expect(closeBox.x).toBeGreaterThan(titleBox.x + titleBox.width - 1);
+  const contentEnd = await sheet.evaluate((element) => {
+    const rect = element.getBoundingClientRect();
+    return (
+      rect.right -
+      parseFloat(getComputedStyle(element).paddingRight) -
+      parseFloat(getComputedStyle(element).borderRightWidth)
+    );
+  });
+  expect(Math.abs(glyphBox.x + glyphBox.width - contentEnd)).toBeLessThan(1);
+  expect(glyphBox.width).toBe(16);
+  expect(closeBox.width).toBeGreaterThanOrEqual(isPhone ? 44 : 32);
+  expect(
+    await glyph.evaluate((element) => {
+      const stroke = getComputedStyle(element, '::before');
+      return [stroke.borderTopStyle, stroke.borderTopWidth];
+    }),
+  ).toEqual(['solid', '2px']);
+  await page.screenshot({ path: testInfo.outputPath('dialog-sheet.png') });
+
+  await close.click();
+  await expect(sheet).toBeHidden();
+  await expect(trigger).toBeFocused();
+
+  // Escape still asks to close a sheet.
+  await trigger.click();
+  await expect(sheet).toBeVisible();
+  await page.keyboard.press('Escape');
+  await expect(sheet).toBeHidden();
+});
+
+test('Dialog keeps its markup without a closeLabel', async ({ page }) => {
+  await page.goto('/#dialog');
+  await page
+    .locator('#dialog')
+    .getByRole('button', { name: 'Open dialog' })
+    .click();
+  const reading = page.getByRole('dialog', { name: 'How we rank' });
+  await expect(reading).toBeVisible();
+  await expect(reading.locator('.sw-dialog-header')).toHaveCount(0);
+  await expect(reading.getByRole('button')).toHaveCount(1);
+  await expect(reading.getByRole('button', { name: 'Close' })).toHaveClass(
+    /sw-button-primary/,
+  );
+});
+
+test('Dialog slides a sheet up on a phone with the motion tokens, unless reduced motion is asked for', async ({
+  page,
+}, testInfo) => {
+  test.skip(
+    testInfo.project.name !== 'mobile-es',
+    'The sheet only exists below md.',
+  );
+  await page.emulateMedia({ reducedMotion: 'no-preference' });
+  await page.goto('/#dialog');
+  await page
+    .locator('#dialog')
+    .getByRole('button', { name: 'Review night count' })
+    .click();
+  const sheet = page.getByRole('dialog', { name: 'Review the night count' });
+  const motion = await sheet.evaluate((element) => {
+    const style = getComputedStyle(element);
+    return [style.animationName, style.animationDuration];
+  });
+  expect(motion).toEqual(['sw-dialog-sheet-in', '0.18s']);
+  await sheet.evaluate((element) =>
+    Promise.all(element.getAnimations().map((animation) => animation.finished)),
+  );
+  const box = await sheet.boundingBox();
+  const viewport = page.viewportSize();
+  expect(box && viewport).toBeTruthy();
+  if (!box || !viewport) return;
+  expect(Math.abs(box.y + box.height - viewport.height)).toBeLessThan(1);
+});

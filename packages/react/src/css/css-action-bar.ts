@@ -64,14 +64,21 @@ export function cssActionBarClasses(): string {
   padding-right: max(var(--sw-space-4), env(safe-area-inset-right, 0px));
 }
 
+/* A Badge and a short line sit on one row a small gap apart; a line that
+   does not fit beside the badge wraps under it. */
 .sw-action-bar-status {
+  align-items: center;
   color: var(--sw-color-muted);
+  column-gap: var(--sw-space-2);
+  display: flex;
   flex: 1 1 auto;
+  flex-wrap: wrap;
   font-family: var(--sw-font-sans);
   font-size: ${caption.fontSize}px;
   line-height: ${caption.lineHeight}px;
   margin: 0;
   min-width: 0;
+  row-gap: var(--sw-space-1);
 }
 
 /* With no status the live region stays in the page, so a first status is

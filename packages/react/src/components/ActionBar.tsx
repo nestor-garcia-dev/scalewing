@@ -11,10 +11,15 @@ export type ActionBarProps = Omit<
   /** The actions, usually two or three `Button`s. */
   children: ReactNode;
   /**
-   * One short line about the work, such as when it was last saved. It is a
-   * polite live region, so a new status is announced without moving focus.
+   * One short line about the work, such as when it was last saved, or a
+   * `Badge` and then a short line ("Ready" and what is ready). It is a
+   * polite live region, so a new status is announced without moving focus;
+   * nothing (`undefined`, `null`, `false`) leaves it empty and taking no
+   * room. Its direct children sit on one row a small gap apart and wrap
+   * under one another when the row is full, so put a phrase that mixes text
+   * and elements in one `span` to keep it wrapping as a sentence.
    */
-  status?: string;
+  status?: ReactNode;
   /** Sticky only below this breakpoint; from it up the bar sits in page flow. */
   stickyBelow?: Breakpoint;
 };
@@ -42,9 +47,9 @@ export const ActionBar = forwardRef<HTMLDivElement, ActionBarProps>(
       >
         {/* Always rendered, empty or not: a live region must already be in
             the page when its text changes for that change to be announced. */}
-        <p className="sw-action-bar-status" role="status">
+        <div className="sw-action-bar-status" role="status">
           {status}
-        </p>
+        </div>
         <div className="sw-action-bar-actions">{children}</div>
       </div>
     );

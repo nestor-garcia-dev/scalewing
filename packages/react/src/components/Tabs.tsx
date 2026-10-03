@@ -22,6 +22,25 @@ export type TabsProps = TabsLabel & {
   items: readonly TabItem[];
   value: string;
   onChange: (id: string) => void;
+  /**
+   * Keep the strip at the top of the viewport, under the top safe area,
+   * while a long panel scrolls under it. Off by default. The stuck strip is
+   * a full-bleed band of the page canvas, not a glass card: the canvas
+   * color, a little see-through over the glass blur, with its hairline
+   * underneath; solid under Reduce Transparency and in forced colors. It
+   * shares the sticky `AppHeader`'s layer, so a page uses one or the other
+   * at the top edge.
+   *
+   * A sticky element only sticks within its parent. Make the strip a direct
+   * child of the long page container that also holds the panels, not of a
+   * padded `Box` round the strip alone; an ancestor whose `overflow` is not
+   * `visible` becomes the box it sticks to. Put the page's side gutter on
+   * the title and the panels rather than on that container: each tab
+   * already has the md control's inline padding (16 px, spacing step 4), so
+   * the first label lines up with a `space-4` page gutter when the strip
+   * runs edge to edge.
+   */
+  sticky?: boolean;
 };
 
 export function tabId(tabsId: string, id: string): string {
@@ -35,9 +54,17 @@ export function tabPanelId(tabsId: string, id: string): string {
 /**
  * A tab strip with `tablist` semantics for the sections of one page. Arrow
  * keys, Home and End move the focus and select at once; the strip scrolls
- * sideways when it overflows. Pair each item with a `TabPanel`.
+ * sideways when it overflows. Pair each item with a `TabPanel`. `sticky`
+ * keeps it at the top of the viewport over a long panel.
  */
-export function Tabs({ id, items, onChange, value, ...labelProps }: TabsProps) {
+export function Tabs({
+  id,
+  items,
+  onChange,
+  sticky = false,
+  value,
+  ...labelProps
+}: TabsProps) {
   const tabs = useRef(new Map<string, HTMLButtonElement>());
 
   function select(next: TabItem | undefined) {
@@ -73,7 +100,7 @@ export function Tabs({ id, items, onChange, value, ...labelProps }: TabsProps) {
 
   return (
     <div
-      className="sw-tabs"
+      className={cx('sw-tabs', sticky && 'sw-tabs-sticky')}
       onKeyDown={onKeyDown}
       role="tablist"
       {...labelProps}

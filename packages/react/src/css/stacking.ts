@@ -10,8 +10,9 @@
  *    its popup can only paint as high as the surface does; lifting the surface
  *    over the ActionBar keeps an open list tappable where the bar would cover
  *    it, and over the next surface in the flow.
- * 4. `topChrome`: the sticky AppHeader, over a lifted surface that scrolls up
- *    under it (the header is the page's way back, and a popup opens downward).
+ * 4. `topChrome`: the sticky AppHeader or sticky Tabs strip, over a lifted
+ *    surface that scrolls up under it (the header is the page's way back, the
+ *    strip its way between sections, and a popup opens downward).
  * 5. `popup`: a popup outside any lifted surface (Select list, ActionMenu
  *    list, Tooltip, the DateField and CalendarButton calendar) over
  *    everything in the page.

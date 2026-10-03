@@ -1,6 +1,7 @@
 import {
   Accordion,
   ActionBar,
+  Badge,
   Button,
   Card,
   Select,
@@ -36,7 +37,7 @@ export function ActionBarSection() {
   return (
     <Section
       id="action-bar"
-      purpose="ActionBar keeps a long page's actions on a glass bar stuck to the bottom of the viewport, with one short status line. Put it last in the content it acts on: it stays stuck while that content scrolls by and rests at the end. stickyBelow md keeps it in page flow on wider screens. It clears the bottom safe area. Its status line is a polite live region, so a new status is announced. An open popup, such as a Select list in an Accordion, paints over the bar."
+      purpose="ActionBar keeps a long page's actions on a glass bar stuck to the bottom of the viewport, with one short status: a line, or a Badge and a line on one row that wraps under the badge when it is full. Put it last in the content it acts on: it stays stuck while that content scrolls by and rests at the end. stickyBelow md keeps it in page flow on wider screens. It clears the bottom safe area. Its status line is a polite live region, so a new status is announced. An open popup, such as a Select list in an Accordion, paints over the bar."
       title="ActionBar"
       usage={`<Stack gap={4}>
   {longForm}
@@ -46,7 +47,10 @@ export function ActionBarSection() {
   </ActionBar>
 </Stack>
 
-<ActionBar stickyBelow="md" status={saved ? 'Saved' : undefined}>…</ActionBar>`}
+<ActionBar
+  stickyBelow="md"
+  status={saved ? <><Badge tone="accent">Saved</Badge><span>6 bat passes</span></> : undefined}
+>…</ActionBar>`}
     >
       <Stack gap={5}>
         <Stack data-testid="action-bar-survey" gap={3}>
@@ -78,11 +82,16 @@ export function ActionBarSection() {
             aria-label="Survey actions"
             role="region"
             status={
-              submitted
-                ? 'Sightings submitted'
-                : savedAt
-                  ? `Survey saved at ${savedAt}`
-                  : 'Not saved yet'
+              submitted ? (
+                <>
+                  <Badge tone="success">Submitted</Badge>
+                  <span>11 stops · 14 sightings</span>
+                </>
+              ) : savedAt ? (
+                `Survey saved at ${savedAt}`
+              ) : (
+                'Not saved yet'
+              )
             }
           >
             <Button variant="secondary" onPress={() => setSavedAt('5:00 PM')}>
@@ -94,14 +103,24 @@ export function ActionBarSection() {
         <Stack data-testid="action-bar-below-md" gap={3}>
           <Text variant="caption" color="muted">
             stickyBelow md: stuck on a phone, in page flow from md up. No status
-            until the count is saved.
+            until the count is saved; then a Badge and a line, which wraps under
+            the badge when it does not fit beside it.
           </Text>
           <Card padding={4} variant="outlined">
             <Text>Night count · Bat detector at the pond</Text>
           </Card>
           <ActionBar
             stickyBelow="md"
-            status={countSaved ? 'Night count saved' : undefined}
+            status={
+              countSaved ? (
+                <>
+                  <Badge tone="accent">Saved</Badge>
+                  <span>
+                    Night count · 6 bat passes at the pond, 2 species heard
+                  </span>
+                </>
+              ) : undefined
+            }
           >
             <Button onPress={() => setCountSaved(true)} variant="secondary">
               Save count
