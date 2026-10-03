@@ -105,6 +105,14 @@
   max-width: 12rem;
 }
 
+/* A phone-tall page that scrolls on its own, so a sticky demo sticks to its
+   top rather than under the gallery header. */
+.gallery-page-frame {
+  max-height: calc(var(--sw-space-8) * 8);
+  overflow: auto;
+  overscroll-behavior: contain;
+}
+
 @media (min-width: 64rem) {
   .gallery-body {
     display: grid;

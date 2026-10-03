@@ -43,6 +43,18 @@ describe('stacking order', () => {
       expect(zIndexOf(popup)).toBeGreaterThan(appHeader);
   });
 
+  it('puts the sticky Tabs strip on the AppHeader layer, over a lifted surface and under popups', () => {
+    const strip = zIndexOf('.sw-tabs-sticky');
+    expect(strip).toBe(stackingOrder.topChrome);
+    expect(strip).toBe(zIndexOf('.sw-app-header-sticky'));
+    expect(strip).toBeGreaterThan(
+      zIndexOf(
+        '.sw-accordion:has(.sw-select-list, .sw-action-menu-list, .sw-tooltip:not([hidden]), .sw-date-field-calendar)',
+      ),
+    );
+    expect(strip).toBeLessThan(zIndexOf('.sw-select-list'));
+  });
+
   it('lifts the ActionBar only as far as bottom chrome at every breakpoint', () => {
     const sticky = [
       ...css.matchAll(/\.sw-action-bar-sticky[\w-]* \{[^}]*z-index: (\d+);/g),

@@ -17,6 +17,19 @@ release workflow completed successfully.
 
 ## Next action
 
+fantasy-football companion redesign (section tabs, a long trade builder
+with a verdict in its ActionBar, phone review dialogs): additive
+`@scalewing/react` surfaces, one per commit on
+`claude/trade-desk-surfaces`:
+
+- `Tabs` `sticky`: the section strip stays at the top of the viewport
+  over a long panel, a band of the canvas (new
+  `fantasy-football-tabs-sticky.md`).
+
+Next: open the pull request, get the Bar Raiser review and the owner's
+review, merge, then release `@scalewing/react` (minor) and bump the
+companion's pin from 1.17.0 after a linked check at 390 px.
+
 Teisoro F-007 task 1550: the design-system findings of the Vault UX
 review (the `vault-*.md` reports), one surface per commit:
 

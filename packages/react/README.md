@@ -218,6 +218,29 @@ An option's optional `description` (a `ReactNode`) is secondary text for that op
 />
 ```
 
+`Tabs` is the strip for the sections of one page (`role="tablist"`, one `role="tab"` button per item; arrow keys, Home and End move and select), and `TabPanel` is each section's content, hidden while another tab is current. `sticky` (default `false`) keeps the strip at the top of the viewport, under `env(safe-area-inset-top)`, while a long panel scrolls under it, on the same layer as a sticky `AppHeader` (so a page uses one or the other at the top edge). The stuck strip is a full-bleed band of the page canvas, not a glass card: the canvas color at nine parts in ten over the glass blur, with the strip's hairline under it, solid canvas under Reduce Transparency and in forced colors. A sticky element only sticks within its parent: make the strip a direct child of the long page container that also holds the panels, not of a padded `Box` round the strip alone, and keep `overflow` visible on its ancestors. Put the page's side gutter on the title and the panels instead: each tab's inline padding is the md control's 16 px (spacing step 4), so the first label lines up with a `space-4` gutter when the strip runs edge to edge.
+
+```tsx
+<Stack gap={3}>
+  <Box paddingX={4}>
+    <Text variant="title">Wetland reserve</Text>
+  </Box>
+  <Tabs
+    aria-label="Reserve log"
+    id="reserve"
+    items={groups}
+    onChange={setGroup}
+    sticky
+    value={group}
+  />
+  <Box paddingX={4}>
+    <TabPanel id="birds" tabsId="reserve" value={group}>
+      {birdLog}
+    </TabPanel>
+  </Box>
+</Stack>
+```
+
 `Table` aligns data in rows inside its own keyboard-reachable scroll region, named after the table. While the table is wider than the region, each inline edge with columns scrolled out past it draws a soft inset shade (`sw-scroll-more-start`, `sw-scroll-more-end`, mirrored right to left), so a phone, whose scrollbars stay hidden, still shows that the table goes on; a table that fits draws none, and in forced colors the system scrollbar is the cue. `TableCell` takes `numeric` (tabular numerals, end aligned), `align` and `truncate`; `density="compact"` densifies cells. `TableRow selected` sets `aria-selected` and marks the row with a 4 px accent bar at its inline start (3:1 or more against the surface and the page), the right edge in a right-to-left table. The bar is drawn inside the first cell's padding and takes no layout space, so no column moves when a row is picked, and the row takes no fill, so text, muted and accent text keep their contrast; forced colors keep the bar in the system highlight.
 
 `Spinner` shows indeterminate loading in small, medium, or large sizes. Supply localized `label` for the one announced status in a loading region. Use `decorative` on additional indicators beside that status so screen readers do not hear the same message repeatedly. Reduced motion leaves a static accented ring.

@@ -1,6 +1,41 @@
 import { typographyVariants } from '@scalewing/tokens';
 
+import { zIndex } from './stacking.js';
+
 const label = typographyVariants.label;
+
+/*
+ * The stuck strip is a full-bleed band of the page canvas, not a glass card:
+ * nine parts canvas color to one part see-through, with the glass blur
+ * behind it, so a panel scrolling under it shows as a faint smear, never as
+ * words beside the labels. At nine parts the muted labels keep at least
+ * 4.1:1, and the accent label 3.6:1, in every palette even over a solid
+ * block of the text, accent or danger color; over the canvas and ordinary
+ * type, which the blur spreads, they keep their canvas contrast. The first
+ * tab's own inline padding (the md control's, spacing step 4) lines its
+ * label up with a space-4 page gutter, so the strip adds no padding of its
+ * own. It rides the AppHeader's layer.
+ */
+export const stuckCanvasShare = 0.9;
+
+function stickyRules(): string {
+  return `.sw-tabs-sticky {
+  background: color-mix(in srgb, var(--sw-color-background) ${stuckCanvasShare * 100}%, transparent);
+  backdrop-filter: blur(var(--sw-glass-blur)) saturate(var(--sw-glass-saturate));
+  -webkit-backdrop-filter: blur(var(--sw-glass-blur)) saturate(var(--sw-glass-saturate));
+  position: sticky;
+  top: env(safe-area-inset-top, 0px);
+  ${zIndex('topChrome')}
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .sw-tabs-sticky {
+    background: var(--sw-color-background);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+}`;
+}
 
 /** The tab strip: a scrollable row of tabs with an accent underline under the current one. */
 export function cssTabsClasses(): string {
@@ -57,11 +92,20 @@ export function cssTabsClasses(): string {
   outline-offset: var(--sw-focus-ring-offset);
 }
 
+${stickyRules()}
+
 @media (forced-colors: active) {
   .sw-tab-selected { border-bottom-color: Highlight; color: Highlight; }
+  .sw-tabs-sticky { background: Canvas; backdrop-filter: none; -webkit-backdrop-filter: none; }
 }`;
 }
 
 export function tabsClassCatalog(): string[] {
-  return ['sw-tabs', 'sw-tab', 'sw-tab-selected', 'sw-tab-panel'];
+  return [
+    'sw-tabs',
+    'sw-tabs-sticky',
+    'sw-tab',
+    'sw-tab-selected',
+    'sw-tab-panel',
+  ];
 }
