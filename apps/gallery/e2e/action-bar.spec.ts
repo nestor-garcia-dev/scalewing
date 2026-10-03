@@ -33,6 +33,22 @@ test('ActionBar sticks to the viewport bottom while its content scrolls by', asy
   await bar.getByRole('button', { name: 'Save survey' }).click();
   await expect(status).toHaveText('Survey saved at 5:00 PM');
   await expect(status).toBeVisible();
+  // A Badge and a short line share the status row, a space-2 gap apart.
+  await bar.getByRole('button', { name: 'Submit sightings' }).click();
+  const submitted = status.locator('.sw-badge');
+  const line = status.getByText('11 stops · 14 sightings');
+  await expect(submitted).toHaveText('Submitted');
+  expect(await status.evaluate((element) => element.tagName)).toBe('DIV');
+  const badgeBox = await submitted.boundingBox();
+  const lineBox = await line.boundingBox();
+  expect(badgeBox && lineBox).toBeTruthy();
+  if (!badgeBox || !lineBox) return;
+  expect(
+    Math.abs(
+      badgeBox.y + badgeBox.height / 2 - (lineBox.y + lineBox.height / 2),
+    ),
+  ).toBeLessThan(1);
+  expect(lineBox.x - (badgeBox.x + badgeBox.width)).toBeCloseTo(8, 0);
 
   const belowMd = section
     .getByTestId('action-bar-below-md')
@@ -49,8 +65,27 @@ test('ActionBar sticks to the viewport bottom while its content scrolls by', asy
   const empty = await nightStatus.boundingBox();
   expect(empty?.height).toBeLessThanOrEqual(1);
   await belowMd.getByRole('button', { name: 'Save count' }).click();
-  await expect(nightStatus).toHaveText('Night count saved');
+  await expect(nightStatus).toContainText('Night count · 6 bat passes');
   await expect(nightStatus).toBeVisible();
+  // On a phone the line does not fit beside the badge and wraps under it;
+  // nothing runs past the bar.
+  const savedBadge = await nightStatus.locator('.sw-badge').boundingBox();
+  const nightLine = await nightStatus.locator('span').last().boundingBox();
+  expect(savedBadge && nightLine).toBeTruthy();
+  if (!savedBadge || !nightLine) return;
+  if (testInfo.project.name === 'mobile-es') {
+    expect(nightLine.y).toBeGreaterThanOrEqual(
+      savedBadge.y + savedBadge.height,
+    );
+    expect(Math.abs(nightLine.x - savedBadge.x)).toBeLessThan(1);
+  } else {
+    expect(nightLine.x).toBeGreaterThan(savedBadge.x + savedBadge.width);
+  }
+  expect(
+    await nightStatus.evaluate(
+      (element) => element.scrollWidth <= element.clientWidth,
+    ),
+  ).toBe(true);
 
   await survey.evaluate((element) => element.scrollIntoView({ block: 'end' }));
   const lastCard = await survey.locator('.sw-card').last().boundingBox();

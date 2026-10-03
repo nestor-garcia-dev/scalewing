@@ -3,6 +3,7 @@ import { createRef } from 'react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import { ActionBar } from './components/ActionBar.js';
+import { Badge } from './components/Badge.js';
 import { Button } from './components/Button.js';
 import { generateStylesheet, utilityClassCatalog } from './css/stylesheet.js';
 import { ThemeProvider } from './theme/ThemeProvider.js';
@@ -35,7 +36,7 @@ describe('ActionBar', () => {
     expect(bar.className).toBe('sw-action-bar sw-action-bar-sticky survey-bar');
     const status = screen.getByRole('status');
     expect(status.textContent).toBe('Survey saved at 5:00 PM');
-    expect(status.tagName).toBe('P');
+    expect(status.tagName).toBe('DIV');
     expect(status.className).toBe('sw-action-bar-status');
     expect(bar.firstElementChild).toBe(status);
     const actions = bar.lastElementChild;
@@ -72,6 +73,62 @@ describe('ActionBar', () => {
     );
     expect(screen.getByRole('status')).toBe(status);
     expect(status.textContent).toBe('Draft saved at 5:05 PM');
+  });
+
+  it('takes a Badge and a short line as its status in the same live region', () => {
+    const { rerender } = render(
+      <ActionBar status="Not submitted yet">
+        <Button onPress={() => undefined}>Submit sightings</Button>
+      </ActionBar>,
+    );
+    const status = screen.getByRole('status');
+    expect(status.textContent).toBe('Not submitted yet');
+
+    rerender(
+      <ActionBar
+        status={
+          <>
+            <Badge tone="success">Ready to submit</Badge>
+            <span>
+              14 sightings · <strong>3</strong> habitats
+            </span>
+          </>
+        }
+      >
+        <Button onPress={() => undefined}>Submit sightings</Button>
+      </ActionBar>,
+    );
+    // The same node takes the new status, so it is announced; a div holds
+    // the badge and the line validly, where the old paragraph could not
+    // hold a block.
+    expect(screen.getByRole('status')).toBe(status);
+    expect(status.tagName).toBe('DIV');
+    expect(status.className).toBe('sw-action-bar-status');
+    expect(status.children).toHaveLength(2);
+    expect(status.firstElementChild?.className).toContain('sw-badge-success');
+    expect(status.textContent).toBe('Ready to submit14 sightings · 3 habitats');
+
+    for (const nothing of [undefined, null, false]) {
+      rerender(
+        <ActionBar status={nothing}>
+          <Button onPress={() => undefined}>Submit sightings</Button>
+        </ActionBar>,
+      );
+      expect(screen.getByRole('status')).toBe(status);
+      expect(status.childNodes).toHaveLength(0);
+    }
+  });
+
+  it('lays a status badge and its line on one wrapping row a small gap apart', () => {
+    const css = generateStylesheet();
+    const start = css.indexOf('.sw-action-bar-status {');
+    const rule = css.slice(start, css.indexOf('}', start));
+    expect(rule).toContain('display: flex;');
+    expect(rule).toContain('flex-wrap: wrap;');
+    expect(rule).toContain('align-items: center;');
+    expect(rule).toContain('column-gap: var(--sw-space-2);');
+    expect(rule).toContain('row-gap: var(--sw-space-1);');
+    expect(rule).toContain('min-width: 0;');
   });
 
   it('generates a glass bar that clears the safe area when stuck', () => {

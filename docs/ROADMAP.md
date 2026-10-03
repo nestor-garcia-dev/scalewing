@@ -25,6 +25,9 @@ with a verdict in its ActionBar, phone review dialogs): additive
 - `Tabs` `sticky`: the section strip stays at the top of the viewport
   over a long panel, a band of the canvas (new
   `fantasy-football-tabs-sticky.md`).
+- `ActionBar` `status` takes a node: a `Badge` and a short line on one
+  wrapping row in a `div` live region (new
+  `fantasy-football-action-bar-status.md`).
 
 Next: open the pull request, get the Bar Raiser review and the owner's
 review, merge, then release `@scalewing/react` (minor) and bump the
