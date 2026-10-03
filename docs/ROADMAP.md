@@ -28,6 +28,9 @@ with a verdict in its ActionBar, phone review dialogs): additive
 - `ActionBar` `status` takes a node: a `Badge` and a short line on one
   wrapping row in a `div` live region (new
   `fantasy-football-action-bar-status.md`).
+- `Dialog` `sheetBelow` and `closeLabel`: a bottom sheet below `md` and
+  an icon-only close button ending the title row (new
+  `fantasy-football-dialog-sheet.md`).
 
 Next: open the pull request, get the Bar Raiser review and the owner's
 review, merge, then release `@scalewing/react` (minor) and bump the
