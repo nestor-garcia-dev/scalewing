@@ -17,6 +17,12 @@ release workflow completed successfully.
 
 ## Next action
 
+FutMas score entry (canvas board W3): `StepperRow`
+(`futmas-stepper-row.md`) and `Field` `variant="search"`
+(`futmas-search-field.md`), so a goal-scorer sheet lists a roster as
+counted rows under a search box. Next: review and merge, release
+`@scalewing/react-native` (minor), and FutMas pins it.
+
 fantasy-football companion redesign (section tabs, a long trade builder
 with a verdict in its ActionBar, phone review dialogs): additive
 `@scalewing/react` surfaces, one per commit on

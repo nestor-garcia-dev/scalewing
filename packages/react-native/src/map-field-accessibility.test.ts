@@ -26,4 +26,13 @@ describe('mapFieldAccessibility', () => {
       accessibilityHint: 'Team name is required.',
     });
   });
+
+  it('gives a search field the search role and leaves other fields alone', () => {
+    expect(
+      mapFieldAccessibility({ disabled: false, label: 'Find', search: true }),
+    ).toMatchObject({ accessibilityRole: 'search' });
+    expect(
+      mapFieldAccessibility({ disabled: false, label: 'Team name' }),
+    ).not.toHaveProperty('accessibilityRole');
+  });
 });

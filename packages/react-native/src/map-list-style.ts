@@ -80,6 +80,11 @@ export function mapListRowStyle(theme: Theme, state: ListRowState): ViewStyle {
   };
 }
 
+/** The title and detail take the width the end-side parts leave. */
+export function mapListRowLabelStyle(): ViewStyle {
+  return { flex: 1, minWidth: 0 };
+}
+
 /** A right-pointing chevron drawn from two borders, like the Accordion's. */
 export function mapListChevronStyle(theme: Theme): ViewStyle {
   return {

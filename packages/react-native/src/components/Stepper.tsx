@@ -1,21 +1,16 @@
-import { Pressable, View } from 'react-native';
+import { View } from 'react-native';
 
 import {
   mapStepperButtonStyle,
-  mapStepperGlyphStyle,
   mapStepperTrackStyle,
   mapStepperValueStyle,
   stepperButtonHitSlop,
 } from '../map-stepper-style.js';
-import {
-  assertStepperBounds,
-  canStepDown,
-  canStepUp,
-  stepDown,
-  stepUp,
-} from '../stepper-value.js';
+import { mapStepperAdjustable } from '../stepper-adjustable.js';
+import { assertStepperBounds, stepperMoves } from '../stepper-value.js';
 import { useTheme } from '../theme/ThemeProvider.js';
 import { LabeledControl } from './LabeledControl.js';
+import { StepperButton } from './StepperButton.js';
 import { Text } from './Text.js';
 
 export type StepperProps = {
@@ -61,14 +56,14 @@ export function Stepper({
   assertStepperBounds(bounds);
 
   const theme = useTheme();
-  const mayDecrease = !disabled && canStepDown(value, bounds);
-  const mayIncrease = !disabled && canStepUp(value, bounds);
+  const moves = stepperMoves(value, bounds, disabled);
   const decrease = () => {
-    if (mayDecrease) onChange(stepDown(value, bounds));
+    if (moves.down !== null) onChange(moves.down);
   };
   const increase = () => {
-    if (mayIncrease) onChange(stepUp(value, bounds));
+    if (moves.up !== null) onChange(moves.up);
   };
+  const hitSlop = stepperButtonHitSlop(theme);
 
   return (
     <LabeledControl error={error} hint={hint} label={label}>
@@ -78,53 +73,42 @@ export function Stepper({
           invalid: Boolean(error),
         })}
       >
-        <Pressable
-          accessibilityLabel={decrementLabel}
-          accessibilityRole="button"
-          accessibilityState={{ disabled: !mayDecrease }}
-          disabled={!mayDecrease}
-          hitSlop={stepperButtonHitSlop(theme)}
+        <StepperButton
+          direction="decrement"
+          enabled={moves.down !== null}
+          hitSlop={hitSlop}
+          label={decrementLabel}
           onPress={decrease}
-          style={mapStepperButtonStyle(theme, mayDecrease)}
+          style={mapStepperButtonStyle(theme, moves.down !== null)}
           testID={testID ? `${testID}-decrement` : undefined}
-        >
-          <View style={mapStepperGlyphStyle(theme, 'horizontal')} />
-        </Pressable>
+        />
         <View
-          accessibilityActions={[
-            { label: incrementLabel, name: 'increment' },
-            { label: decrementLabel, name: 'decrement' },
-          ]}
-          accessibilityHint={error ?? hint}
-          accessibilityLabel={label}
-          accessibilityRole="adjustable"
-          accessibilityState={{ disabled }}
-          // The text keeps iOS from announcing the value as a percentage of
-          // the range ("14%" for 1 of 1 to 8).
-          accessibilityValue={{ max, min, now: value, text: String(value) }}
-          accessible
-          onAccessibilityAction={(event) => {
-            if (event.nativeEvent.actionName === 'increment') increase();
-            if (event.nativeEvent.actionName === 'decrement') decrease();
-          }}
+          {...mapStepperAdjustable({
+            decrementLabel,
+            disabled,
+            hint: error ?? hint,
+            incrementLabel,
+            label,
+            max,
+            min,
+            onDecrement: decrease,
+            onIncrement: increase,
+            value,
+          })}
           style={mapStepperValueStyle()}
           testID={testID ? `${testID}-value` : undefined}
         >
           <Text variant="title">{String(value)}</Text>
         </View>
-        <Pressable
-          accessibilityLabel={incrementLabel}
-          accessibilityRole="button"
-          accessibilityState={{ disabled: !mayIncrease }}
-          disabled={!mayIncrease}
-          hitSlop={stepperButtonHitSlop(theme)}
+        <StepperButton
+          direction="increment"
+          enabled={moves.up !== null}
+          hitSlop={hitSlop}
+          label={incrementLabel}
           onPress={increase}
-          style={mapStepperButtonStyle(theme, mayIncrease)}
+          style={mapStepperButtonStyle(theme, moves.up !== null)}
           testID={testID ? `${testID}-increment` : undefined}
-        >
-          <View style={mapStepperGlyphStyle(theme, 'horizontal')} />
-          <View style={mapStepperGlyphStyle(theme, 'vertical')} />
-        </Pressable>
+        />
       </View>
     </LabeledControl>
   );

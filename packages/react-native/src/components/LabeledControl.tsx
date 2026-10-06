@@ -7,6 +7,8 @@ export type LabeledControlProps = {
   children: ReactNode;
   error?: string;
   hint?: string;
+  /** Skips drawing the label; the control still takes it as its name. */
+  hideLabel?: boolean;
   label: string;
 };
 
@@ -14,6 +16,7 @@ export type LabeledControlProps = {
 export function LabeledControl({
   children,
   error,
+  hideLabel = false,
   hint,
   label,
 }: LabeledControlProps) {
@@ -21,7 +24,7 @@ export function LabeledControl({
 
   return (
     <Stack gap={1}>
-      <Text variant="label">{label}</Text>
+      {hideLabel ? null : <Text variant="label">{label}</Text>}
       {children}
       {supportingText ? (
         <Text

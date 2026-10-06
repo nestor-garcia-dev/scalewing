@@ -11,6 +11,7 @@ import {
   type ListRowTone,
 } from '../map-list-style.js';
 import { useTheme } from '../theme/ThemeProvider.js';
+import { ListRowLabel } from './ListRowLabel.js';
 import { Text } from './Text.js';
 
 export type ListRowProps = {
@@ -76,16 +77,11 @@ function RowContent(props: ListRowProps) {
   return (
     <>
       {leading}
-      <View style={{ flex: 1, minWidth: 0 }}>
-        <Text color={listRowTitleColor(tone)} variant="label">
-          {title}
-        </Text>
-        {detail ? (
-          <Text color="muted" variant="caption">
-            {detail}
-          </Text>
-        ) : null}
-      </View>
+      <ListRowLabel
+        detail={detail}
+        title={title}
+        titleColor={listRowTitleColor(tone)}
+      />
       {value ? <Text color="muted">{value}</Text> : null}
       <Accessory kind={accessory} />
     </>

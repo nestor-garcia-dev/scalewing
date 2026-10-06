@@ -14,8 +14,10 @@ import {
   canStepDown,
   canStepUp,
   stepDown,
+  stepperMoves,
   stepUp,
 } from './stepper-value.js';
+import { mapStepperAdjustable } from './stepper-adjustable.js';
 import { ThemeProvider } from './theme/ThemeProvider.js';
 
 vi.mock('react-native', () => ({
@@ -190,6 +192,56 @@ describe('stepper value', () => {
     expect(() =>
       assertStepperBounds({ max: Number.NaN, min: 0, step: 1 }),
     ).toThrow('Stepper min, max, and step must be finite numbers.');
+  });
+});
+
+describe('stepperMoves', () => {
+  const bounds = { max: 10, min: 0, step: 4 };
+
+  it('lands each direction inside the bounds', () => {
+    expect(stepperMoves(8, bounds, false)).toEqual({ down: 4, up: 10 });
+  });
+
+  it('stops a direction at its bound and both when disabled', () => {
+    expect(stepperMoves(0, bounds, false)).toEqual({ down: null, up: 4 });
+    expect(stepperMoves(10, bounds, false)).toEqual({ down: 6, up: null });
+    expect(stepperMoves(5, bounds, true)).toEqual({ down: null, up: null });
+  });
+});
+
+describe('mapStepperAdjustable', () => {
+  it('names the actions with the button labels and routes them', () => {
+    const onDecrement = vi.fn();
+    const onIncrement = vi.fn();
+    const props = mapStepperAdjustable({
+      decrementLabel: 'Fewer',
+      disabled: false,
+      hint: 'Up to ten.',
+      incrementLabel: 'More',
+      label: 'Eggs',
+      max: 10,
+      min: 0,
+      onDecrement,
+      onIncrement,
+      value: 3,
+    });
+
+    expect(props).toMatchObject({
+      accessibilityActions: [
+        { label: 'More', name: 'increment' },
+        { label: 'Fewer', name: 'decrement' },
+      ],
+      accessibilityHint: 'Up to ten.',
+      accessibilityLabel: 'Eggs',
+      accessibilityRole: 'adjustable',
+      accessibilityValue: { max: 10, min: 0, now: 3, text: '3' },
+      accessible: true,
+    });
+    props.onAccessibilityAction?.({
+      nativeEvent: { actionName: 'decrement' },
+    } as never);
+    expect(onDecrement).toHaveBeenCalledTimes(1);
+    expect(onIncrement).not.toHaveBeenCalled();
   });
 });
 

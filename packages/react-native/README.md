@@ -34,7 +34,12 @@ apart from pressable rows.
 There is no CSS class API. `padding={4}` is spacing step 4, the same step as
 `sw-padding-4` on web. Native `Field` renders a controlled `TextInput` with a
 visible label and optional hint or error; it accepts standard text-input props
-except styling and controlled semantics owned by the component. `colorScheme`
+except styling and controlled semantics owned by the component. `variant="search"`
+is a filled search capsule: the `label` is not drawn but stays the input's
+accessible name, a consumer `leading` glyph (a Lucide magnifier) sits at the
+start, the return key defaults to `search`, and while there is text a clear
+button named by the required `clearLabel` calls `onChangeText('')`
+(`<testID>-clear`). `colorScheme`
 is `"light"`, `"dark"`, or `"system"`. Named palettes include both schemes;
 `colors` may be `{ light, dark }`.
 
@@ -74,6 +79,14 @@ something, such as Sign out; any confirm stays the consumer's. Without
 `onPress` it is one read-only text element with no chevron. Its accessible
 name is the title, detail, and value unless `accessibilityLabel` replaces
 it.
+
+`StepperRow` is a `ListGroup` row that counts something: a `ListRow`'s
+`title`, optional `detail` and `leading` slot, and a compact round minus and
+plus around the count on the end side, with `Stepper`'s `value`, `min`,
+`max`, `step`, `onChange`, `decrementLabel`, `incrementLabel`, and
+`disabled`. The title and detail are one adjustable element that reports the
+count (`<testID>-value`); the buttons (`-decrement`, `-increment`) stay
+separate 44-point targets and are disabled at their bounds.
 
 `FloatingAction` is a screen's one action as a lifted accent capsule in
 thumb reach, over a fade from clear to the page colour so content scrolling

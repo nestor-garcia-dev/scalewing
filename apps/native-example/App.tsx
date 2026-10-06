@@ -32,6 +32,7 @@ import { SafeAreaView, ScrollView, View } from 'react-native';
 
 import { ActionRowDemo } from './ActionRowDemo';
 import { ListDemo } from './ListDemo';
+import { TallyDemo } from './TallyDemo';
 
 const demoPalettes = ['indigo', 'cerulean', 'sunburst'] as const;
 
@@ -197,6 +198,7 @@ export default function App() {
             </Inline>
             <ActionRowDemo />
             <ListDemo />
+            <TallyDemo />
             <Progress
               label="Nests checked"
               max={8}
