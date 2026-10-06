@@ -1,5 +1,20 @@
 # @scalewing/react-native
 
+## 1.15.0
+
+### Minor Changes
+
+- 3e39c14: `Field` takes `variant="search"` (new type `FieldVariant`,
+  `'outlined' | 'search'`, default `outlined`): a filled capsule with no
+  visible label, a consumer `leading` glyph, the search return key and
+  accessibility role, and a clear button named by the required `clearLabel`
+  while there is text. Existing fields are unchanged. No new dependency.
+- 3e39c14: New `StepperRow`: a `ListGroup` row with a title, an optional detail and
+  leading slot, and a compact minus, count, and plus on its end side. The
+  title and detail are one adjustable element; `testID` names the
+  `-decrement`, `-value`, and `-increment` parts as on `Stepper`. No new
+  dependency.
+
 ## 1.14.0
 
 ### Minor Changes
