@@ -176,20 +176,27 @@ describe('Tooltip', () => {
     }
     const view = render(<Toggle disabled />);
     const trigger = screen.getByRole('button', { name: 'More' });
+    const enabledThenDisabled = () => {
+      view.rerender(<Toggle disabled={false} />);
+      expect(screen.getByRole('button', { name: 'More' })).toBe(trigger);
+      expect(screen.getByText('Supplemental help')).toHaveProperty(
+        'hidden',
+        true,
+      );
+      view.rerender(<Toggle disabled />);
+    };
+
     await user.hover(trigger);
     await user.unhover(trigger);
+    expect(screen.queryByRole('tooltip', { hidden: true })).toBeNull();
+    enabledThenDisabled();
+
     fireEvent.pointerDown(trigger, { pointerType: 'touch' });
     fireEvent.pointerDown(screen.getByRole('button', { name: 'Outside' }), {
       pointerType: 'touch',
     });
     expect(screen.queryByRole('tooltip', { hidden: true })).toBeNull();
-
-    view.rerender(<Toggle disabled={false} />);
-    expect(screen.getByRole('button', { name: 'More' })).toBe(trigger);
-    expect(screen.getByText('Supplemental help')).toHaveProperty(
-      'hidden',
-      true,
-    );
+    enabledThenDisabled();
   });
 
   it('lets Escape on a focused disabled trigger reach the page, and shows on it once enabled', async () => {

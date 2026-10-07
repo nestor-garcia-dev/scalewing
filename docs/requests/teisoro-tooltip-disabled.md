@@ -11,18 +11,18 @@ Teisoro use: every navigation destination is `<Tooltip content={label} disabled=
 Proposed API: `disabled?: boolean` on `Tooltip`, default `false`. No new classes or exported types.
 
 ```tsx
-<Tooltip
-  content="Where each species lives"
-  disabled={helpShown}
-  trigger={
-    <Button aria-label="Habitat map" onPress={openMap}>
-      {icon}
-    </Button>
-  }
-/>;
-{
-  helpShown ? <Text variant="caption">Where each species lives</Text> : null;
-}
+<>
+  <Tooltip
+    content="Where each species lives"
+    disabled={helpShown}
+    trigger={
+      <Button aria-label="Habitat map" onPress={openMap}>
+        {icon}
+      </Button>
+    }
+  />
+  {helpShown ? <Text variant="caption">Where each species lives</Text> : null}
+</>
 ```
 
 Behavior and failure boundary:
