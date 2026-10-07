@@ -9,6 +9,14 @@ import {
   type ReactElement,
 } from 'react';
 
+import {
+  tooltipTriggerAria,
+  type TooltipRelationship,
+  type TooltipTriggerAria,
+} from './tooltip-trigger-aria.js';
+
+export type { TooltipRelationship };
+
 export type TooltipProps = {
   content: string;
   /**
@@ -21,10 +29,28 @@ export type TooltipProps = {
    * render and the first client render.
    */
   disabled?: boolean;
-  trigger: ReactElement<{ 'aria-describedby'?: string }>;
+  /**
+   * `'description'` (default) adds supplementary help to a trigger that has
+   * its own name, through `aria-describedby`. `'label'` makes `content` the
+   * trigger's accessible name, through `aria-labelledby`, for an icon-only
+   * control: the text is read once, as its name. The tooltip stays in the
+   * DOM, hidden, so it names the trigger while it is not shown. While
+   * `disabled` there is no tooltip to name it, so the trigger then needs its
+   * own name: visible text, or an `aria-label` (which the tooltip overrides
+   * while enabled). The trigger's own `aria-labelledby` and `aria-describedby`
+   * are kept. It must match between the server render and the first client
+   * render.
+   */
+  relationship?: TooltipRelationship;
+  trigger: ReactElement<TooltipTriggerAria>;
 };
 
-export function Tooltip({ content, disabled = false, trigger }: TooltipProps) {
+export function Tooltip({
+  content,
+  disabled = false,
+  relationship = 'description',
+  trigger,
+}: TooltipProps) {
   if (!content.trim()) throw new RangeError('content must not be empty');
 
   // `open` follows focus, hover and touch even while disabled; `shown` is
@@ -33,10 +59,11 @@ export function Tooltip({ content, disabled = false, trigger }: TooltipProps) {
   const shown = open && !disabled;
   const id = useId();
   const wrapperRef = useRef<HTMLSpanElement>(null);
-  const describedBy =
-    [trigger.props['aria-describedby'], disabled ? undefined : id]
-      .filter(Boolean)
-      .join(' ') || undefined;
+  const triggerAria = tooltipTriggerAria(
+    trigger.props,
+    disabled ? undefined : id,
+    relationship,
+  );
 
   useEffect(() => {
     if (!open) return;
@@ -78,7 +105,7 @@ export function Tooltip({ content, disabled = false, trigger }: TooltipProps) {
       }}
       ref={wrapperRef}
     >
-      {cloneElement(trigger, { 'aria-describedby': describedBy })}
+      {cloneElement(trigger, triggerAria)}
       {disabled ? null : (
         <span className="sw-tooltip" hidden={!shown} id={id} role="tooltip">
           {content}

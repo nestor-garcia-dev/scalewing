@@ -42,13 +42,14 @@ Next: open the pull request, get the Bar Raiser review and the owner's
 review, merge, then release `@scalewing/react` (minor) and bump the
 companion's pin from 1.17.0 after a linked check at 390 px.
 
-Teisoro workspace navigation: `Tooltip` `disabled` (new
-`teisoro-tooltip-disabled.md`), so a destination that is a glyph below
-`md` and a labelled button from `md` up keeps one button, and its focus,
-across the breakpoint. Branch `claude/tooltip-disabled`. Next: open the
-pull request, get the Bar Raiser review and the owner's review, merge,
-release `@scalewing/react` (minor), and Teisoro pins it with its
-navigation fix.
+Teisoro workspace navigation: `Tooltip` `disabled` shipped in
+`@scalewing/react` 1.19.0. Follow-up: `Tooltip` `relationship="label"`
+(new `teisoro-tooltip-labels.md`), so an icon-only destination is named
+by its tooltip and read once, instead of "Vault, button, Vault". Branch
+`claude/tooltip-labels`. Next: open the pull request, get the Bar
+Raiser review and the owner's review, merge, release `@scalewing/react`
+(minor), and Teisoro drops the destination's `aria-label` and pins it
+after its `disabled` pin (Teisoro PR #43) merges.
 
 Teisoro F-007 task 1550: the design-system findings of the Vault UX
 review (the `vault-*.md` reports), one surface per commit:

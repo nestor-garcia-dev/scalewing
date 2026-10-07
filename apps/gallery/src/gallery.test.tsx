@@ -94,10 +94,14 @@ describe('gallery', () => {
     const reset = screen.getByRole('button', { name: 'reset md enabled' });
     expect(reset).toHaveProperty('type', 'reset');
 
-    for (const button of screen.getAllByRole('button')) {
+    const buttons = screen.getAllByRole('button');
+    for (const button of buttons)
       expect(['BUTTON', 'SUMMARY']).toContain(button.tagName);
-      expect(button.textContent?.trim().length).toBeGreaterThan(0);
-    }
+    // Every button has an accessible name, from its text, an aria-label or
+    // an aria-labelledby (an icon-only button named by its tooltip).
+    expect(screen.getAllByRole('button', { name: /\S/ })).toHaveLength(
+      buttons.length,
+    );
 
     for (const link of screen.getAllByRole('link')) {
       expect(link.tagName).toBe('A');

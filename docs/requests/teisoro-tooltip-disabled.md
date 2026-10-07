@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: implemented on branch `claude/tooltip-disabled` for the next `@scalewing/react` minor; pending review, release, and Teisoro's pin bump (it is on `@scalewing/react` 1.17.0).
+Status: released in `@scalewing/react` 1.19.0; Teisoro's pin bump is Teisoro PR #43. Follow-up: `teisoro-tooltip-labels.md` (the tooltip as the destination's name).
 Source: Teisoro's workspace navigation (`apps/teisoro-web/src/app/WorkspaceShell.tsx`), found in the review of Teisoro PR #39.
 Renderer: react
 Missing surface: `disabled?: boolean` on `Tooltip`, which turns the tooltip off, not its trigger: the trigger stays mounted, enabled and focusable.

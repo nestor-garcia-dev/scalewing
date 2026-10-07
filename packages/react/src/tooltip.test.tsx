@@ -227,6 +227,162 @@ describe('Tooltip', () => {
     document.removeEventListener('keydown', record);
   });
 
+  describe('relationship="label"', () => {
+    it('names an icon-only trigger once, while the tooltip is hidden', () => {
+      render(
+        <div>
+          <p id="hint">Opens the range map</p>
+          <Tooltip
+            content="Habitat map"
+            relationship="label"
+            trigger={<button aria-describedby="hint">⌖</button>}
+          />
+        </div>,
+      );
+      const tooltip = screen.getByRole('tooltip', { hidden: true });
+      expect(tooltip).toHaveProperty('hidden', true);
+      // Named by the hidden tooltip, described only by its own hint, so the
+      // name is not read again as a description.
+      const trigger = screen.getByRole('button', {
+        description: 'Opens the range map',
+        name: 'Habitat map',
+      });
+      expect(trigger.getAttribute('aria-labelledby')).toBe(tooltip.id);
+      expect(trigger.getAttribute('aria-describedby')).toBe('hint');
+    });
+
+    it('wins over the trigger’s aria-label and keeps its own aria-labelledby', () => {
+      render(
+        <div>
+          <h2 id="reserve">Wetland reserve</h2>
+          <Tooltip
+            content="Habitat map"
+            relationship="label"
+            trigger={<button aria-label="Map">⌖</button>}
+          />
+          <Tooltip
+            content="Species list"
+            relationship="label"
+            trigger={<button aria-labelledby="reserve">≡</button>}
+          />
+        </div>,
+      );
+      expect(screen.getByRole('button', { name: 'Habitat map' })).toBeTruthy();
+      const list = screen.getByRole('button', {
+        name: 'Wetland reserve Species list',
+      });
+      expect(list.hasAttribute('aria-describedby')).toBe(false);
+    });
+
+    it('opens on hover, focus and touch and hides on Escape, as a description does', async () => {
+      const user = userEvent.setup();
+      render(
+        <div>
+          <Tooltip
+            content="Habitat map"
+            relationship="label"
+            trigger={<button>⌖</button>}
+          />
+          <button>Outside</button>
+        </div>,
+      );
+      const trigger = screen.getByRole('button', { name: 'Habitat map' });
+      const tooltip = screen.getByRole('tooltip', { hidden: true });
+      await user.hover(trigger);
+      expect(tooltip).toHaveProperty('hidden', false);
+      await user.unhover(trigger);
+      expect(tooltip).toHaveProperty('hidden', true);
+      await user.tab();
+      expect(tooltip).toHaveProperty('hidden', false);
+      await user.keyboard('{Escape}');
+      expect(tooltip).toHaveProperty('hidden', true);
+      expect(document.activeElement).toBe(trigger);
+      // Hidden again, it still names the trigger.
+      expect(screen.getByRole('button', { name: 'Habitat map' })).toBe(trigger);
+      await user.tab();
+      fireEvent.pointerDown(trigger, { pointerType: 'touch' });
+      expect(tooltip).toHaveProperty('hidden', false);
+      fireEvent.pointerDown(screen.getByRole('button', { name: 'Outside' }), {
+        pointerType: 'touch',
+      });
+      expect(tooltip).toHaveProperty('hidden', true);
+    });
+
+    it('when disabled, leaves no reference to a missing tooltip and the trigger’s own name stands', () => {
+      render(
+        <div>
+          <h2 id="reserve">Wetland reserve</h2>
+          <Tooltip
+            content="Habitat map"
+            disabled
+            relationship="label"
+            trigger={<button aria-label="Map">⌖</button>}
+          />
+          <Tooltip
+            content="Species list"
+            disabled
+            relationship="label"
+            trigger={<button>Species list</button>}
+          />
+          <Tooltip
+            content="Sightings"
+            disabled
+            relationship="label"
+            trigger={<button aria-labelledby="reserve">≡</button>}
+          />
+        </div>,
+      );
+      expect(screen.queryByRole('tooltip', { hidden: true })).toBeNull();
+      const map = screen.getByRole('button', { name: 'Map' });
+      const list = screen.getByRole('button', { name: 'Species list' });
+      const sightings = screen.getByRole('button', { name: 'Wetland reserve' });
+      for (const trigger of [map, list])
+        expect(trigger.hasAttribute('aria-labelledby')).toBe(false);
+      expect(sightings.getAttribute('aria-labelledby')).toBe('reserve');
+      for (const trigger of [map, list, sightings])
+        expect(trigger.hasAttribute('aria-describedby')).toBe(false);
+    });
+
+    it('keeps the same focused trigger across disabled, named by the tooltip only while enabled', async () => {
+      const user = userEvent.setup();
+      // A destination that shows its label from a breakpoint up: the label
+      // names it there, and the tooltip names the glyph below it.
+      function Destination({ wide }: { wide: boolean }) {
+        return (
+          <Tooltip
+            content="Habitat map"
+            disabled={wide}
+            relationship="label"
+            trigger={
+              <button>
+                <span aria-hidden="true">⌖</span>
+                {wide ? 'Habitat map' : null}
+              </button>
+            }
+          />
+        );
+      }
+      const view = render(<Destination wide={false} />);
+      const trigger = screen.getByRole('button', { name: 'Habitat map' });
+      await user.tab();
+      const tooltip = screen.getByRole('tooltip');
+      expect(trigger.getAttribute('aria-labelledby')).toBe(tooltip.id);
+
+      view.rerender(<Destination wide />);
+      expect(screen.getByRole('button', { name: 'Habitat map' })).toBe(trigger);
+      expect(document.activeElement).toBe(trigger);
+      expect(trigger.hasAttribute('aria-labelledby')).toBe(false);
+      expect(screen.queryByRole('tooltip', { hidden: true })).toBeNull();
+
+      view.rerender(<Destination wide={false} />);
+      expect(screen.getByRole('button', { name: 'Habitat map' })).toBe(trigger);
+      expect(document.activeElement).toBe(trigger);
+      const again = screen.getByRole('tooltip');
+      expect(trigger.getAttribute('aria-labelledby')).toBe(again.id);
+      expect(trigger.hasAttribute('aria-describedby')).toBe(false);
+    });
+  });
+
   it('rejects empty help text', () => {
     expect(() =>
       render(<Tooltip content="  " trigger={<button>More</button>} />),
