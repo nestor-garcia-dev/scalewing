@@ -11,18 +11,29 @@ import {
 
 export type TooltipProps = {
   content: string;
+  /**
+   * Turns the tooltip off without unmounting its trigger: no tooltip, no
+   * description and no Escape handling, while the trigger keeps its element
+   * (and its focus). Focus and hover are still followed, so the tooltip shows
+   * as soon as it is enabled again on a trigger that has them.
+   */
+  disabled?: boolean;
   trigger: ReactElement<{ 'aria-describedby'?: string }>;
 };
 
-export function Tooltip({ content, trigger }: TooltipProps) {
+export function Tooltip({ content, disabled = false, trigger }: TooltipProps) {
   if (!content.trim()) throw new RangeError('content must not be empty');
 
+  // `open` follows focus, hover and touch even while disabled; `shown` is
+  // what the page gets.
   const [open, setOpen] = useState(false);
+  const shown = open && !disabled;
   const id = useId();
   const wrapperRef = useRef<HTMLSpanElement>(null);
-  const describedBy = [trigger.props['aria-describedby'], id]
-    .filter(Boolean)
-    .join(' ');
+  const describedBy =
+    [trigger.props['aria-describedby'], disabled ? undefined : id]
+      .filter(Boolean)
+      .join(' ') || undefined;
 
   useEffect(() => {
     if (!open) return;
@@ -47,7 +58,7 @@ export function Tooltip({ content, trigger }: TooltipProps) {
       onKeyDownCapture={(event) => {
         // Escape hides a visible tooltip and nothing else, so a surrounding
         // Dialog does not also close. A hidden tooltip leaves Escape alone.
-        if (event.key !== 'Escape' || !open) return;
+        if (event.key !== 'Escape' || !shown) return;
         event.preventDefault();
         setOpen(false);
       }}
@@ -65,9 +76,11 @@ export function Tooltip({ content, trigger }: TooltipProps) {
       ref={wrapperRef}
     >
       {cloneElement(trigger, { 'aria-describedby': describedBy })}
-      <span className="sw-tooltip" hidden={!open} id={id} role="tooltip">
-        {content}
-      </span>
+      {disabled ? null : (
+        <span className="sw-tooltip" hidden={!shown} id={id} role="tooltip">
+          {content}
+        </span>
+      )}
     </span>
   );
 }
