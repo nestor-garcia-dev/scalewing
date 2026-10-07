@@ -50,11 +50,15 @@ test('Tooltip disabled keeps the trigger mounted without a tooltip or descriptio
   if (!before) throw new Error('The map button is missing');
 
   await map.focus();
-  await expect(section.getByRole('tooltip')).toHaveText('Habitat map');
-  await expect(map).toHaveAccessibleDescription('Habitat map');
+  await expect(section.getByRole('tooltip')).toHaveText(
+    'Where each species lives',
+  );
+  await expect(map).toHaveAccessibleDescription('Where each species lives');
 
-  await section.getByRole('switch', { name: "Show the map's name" }).check();
-  await expect(map).toHaveText('Habitat map');
+  await section.getByRole('switch', { name: "Show the map's help" }).check();
+  await expect(
+    section.getByText('Where each species lives', { exact: true }),
+  ).toBeVisible();
   await expect(map).not.toHaveAttribute('aria-describedby');
   await expect(map).toHaveAccessibleDescription('');
   await map.focus();

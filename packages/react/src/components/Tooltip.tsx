@@ -12,10 +12,13 @@ import {
 export type TooltipProps = {
   content: string;
   /**
-   * Turns the tooltip off without unmounting its trigger: no tooltip, no
-   * description and no Escape handling, while the trigger keeps its element
-   * (and its focus). Focus and hover are still followed, so the tooltip shows
-   * as soon as it is enabled again on a trigger that has them.
+   * Turns the tooltip off, not its trigger: no tooltip, no description and no
+   * Escape handling, while the trigger stays mounted, enabled and focusable
+   * (and keeps its focus). Focus, hover and touch are still followed, so the
+   * tooltip shows as soon as it is enabled again on a trigger that still has
+   * focus, the pointer or an open touch toggle; Escape pressed while disabled
+   * reaches the page and does not stop that. It must match between the server
+   * render and the first client render.
    */
   disabled?: boolean;
   trigger: ReactElement<{ 'aria-describedby'?: string }>;

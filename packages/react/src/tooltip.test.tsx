@@ -160,6 +160,66 @@ describe('Tooltip', () => {
     expect(trigger.getAttribute('aria-describedby')).toBe(again.id);
   });
 
+  it('stays hidden when enabled after a hover or touch opened and closed it while disabled', async () => {
+    const user = userEvent.setup();
+    function Toggle({ disabled }: { disabled: boolean }) {
+      return (
+        <div>
+          <Tooltip
+            content="Supplemental help"
+            disabled={disabled}
+            trigger={<button>More</button>}
+          />
+          <button>Outside</button>
+        </div>
+      );
+    }
+    const view = render(<Toggle disabled />);
+    const trigger = screen.getByRole('button', { name: 'More' });
+    await user.hover(trigger);
+    await user.unhover(trigger);
+    fireEvent.pointerDown(trigger, { pointerType: 'touch' });
+    fireEvent.pointerDown(screen.getByRole('button', { name: 'Outside' }), {
+      pointerType: 'touch',
+    });
+    expect(screen.queryByRole('tooltip', { hidden: true })).toBeNull();
+
+    view.rerender(<Toggle disabled={false} />);
+    expect(screen.getByRole('button', { name: 'More' })).toBe(trigger);
+    expect(screen.getByText('Supplemental help')).toHaveProperty(
+      'hidden',
+      true,
+    );
+  });
+
+  it('lets Escape on a focused disabled trigger reach the page, and shows on it once enabled', async () => {
+    const user = userEvent.setup();
+    const escapes: boolean[] = [];
+    function record(event: KeyboardEvent) {
+      if (event.key === 'Escape') escapes.push(event.defaultPrevented);
+    }
+    document.addEventListener('keydown', record);
+    function Toggle({ disabled }: { disabled: boolean }) {
+      return (
+        <Tooltip
+          content="Supplemental help"
+          disabled={disabled}
+          trigger={<button>More</button>}
+        />
+      );
+    }
+    const view = render(<Toggle disabled />);
+    await user.tab();
+    await user.keyboard('{Escape}');
+    expect(escapes).toEqual([false]);
+    view.rerender(<Toggle disabled={false} />);
+    expect(screen.getByText('Supplemental help')).toHaveProperty(
+      'hidden',
+      false,
+    );
+    document.removeEventListener('keydown', record);
+  });
+
   it('rejects empty help text', () => {
     expect(() =>
       render(<Tooltip content="  " trigger={<button>More</button>} />),
