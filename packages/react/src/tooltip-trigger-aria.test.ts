@@ -17,6 +17,21 @@ describe('tooltipTriggerAria', () => {
     ).toEqual({ 'aria-describedby': 'hint tip', 'aria-labelledby': 'heading' });
   });
 
+  it('leaves the trigger’s own aria-labelledby as it was by default, even empty', () => {
+    expect(
+      tooltipTriggerAria({ 'aria-labelledby': '' }, 'tip', 'description'),
+    ).toEqual({ 'aria-describedby': 'tip', 'aria-labelledby': '' });
+    expect(
+      tooltipTriggerAria({ 'aria-labelledby': '' }, undefined, 'description'),
+    ).toEqual({ 'aria-describedby': undefined, 'aria-labelledby': '' });
+  });
+
+  it('leaves the trigger’s own aria-describedby as it was when labelling', () => {
+    expect(
+      tooltipTriggerAria({ 'aria-describedby': '' }, 'tip', 'label'),
+    ).toEqual({ 'aria-describedby': '', 'aria-labelledby': 'tip' });
+  });
+
   it('labels the trigger instead of describing it, after its own label', () => {
     expect(tooltipTriggerAria({}, 'tip', 'label')).toEqual({
       'aria-describedby': undefined,

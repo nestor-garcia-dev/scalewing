@@ -30,8 +30,11 @@ export {
   type ProgressProps,
   type ProgressTone,
 } from './components/Progress.js';
-export { Tooltip, type TooltipProps } from './components/Tooltip.js';
-export type { TooltipRelationship } from './components/tooltip-trigger-aria.js';
+export {
+  Tooltip,
+  type TooltipProps,
+  type TooltipRelationship,
+} from './components/Tooltip.js';
 export {
   RadioGroup,
   type RadioGroupOption,

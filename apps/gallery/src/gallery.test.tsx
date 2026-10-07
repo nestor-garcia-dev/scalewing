@@ -13,23 +13,6 @@ import { catalog, catalogGroups } from './catalog.js';
 import { themeStorageKey } from './theme-preference.js';
 import { paletteStorageKey } from './palette-preference.js';
 
-/**
- * The words that name a button: those its `aria-labelledby` points at (an
- * icon-only button named by its tooltip), its `aria-label`, or its text.
- */
-function namingText(button: HTMLElement): string {
-  const labelledBy = button.getAttribute('aria-labelledby');
-  const referenced = labelledBy
-    ? labelledBy
-        .split(/\s+/)
-        .map((id) => document.getElementById(id)?.textContent ?? '')
-        .join(' ')
-    : '';
-  return [referenced, button.getAttribute('aria-label'), button.textContent]
-    .join(' ')
-    .trim();
-}
-
 describe('gallery', () => {
   beforeEach(() => {
     window.localStorage.clear();
@@ -111,10 +94,14 @@ describe('gallery', () => {
     const reset = screen.getByRole('button', { name: 'reset md enabled' });
     expect(reset).toHaveProperty('type', 'reset');
 
-    for (const button of screen.getAllByRole('button')) {
+    const buttons = screen.getAllByRole('button');
+    for (const button of buttons)
       expect(['BUTTON', 'SUMMARY']).toContain(button.tagName);
-      expect(namingText(button).length).toBeGreaterThan(0);
-    }
+    // Every button has an accessible name, from its text, an aria-label or
+    // an aria-labelledby (an icon-only button named by its tooltip).
+    expect(screen.getAllByRole('button', { name: /\S/ })).toHaveLength(
+      buttons.length,
+    );
 
     for (const link of screen.getAllByRole('link')) {
       expect(link.tagName).toBe('A');

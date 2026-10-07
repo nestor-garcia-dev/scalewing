@@ -15,6 +15,8 @@ import {
   type TooltipTriggerAria,
 } from './tooltip-trigger-aria.js';
 
+export type { TooltipRelationship };
+
 export type TooltipProps = {
   content: string;
   /**
