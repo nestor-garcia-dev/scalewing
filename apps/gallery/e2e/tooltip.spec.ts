@@ -39,3 +39,32 @@ test('Tooltip supports hover, focus, Escape, blur, and touch without replacing t
   await expect(firstTooltip).toBeHidden();
   await expect(section.getByRole('tooltip')).toHaveCount(1);
 });
+
+test('Tooltip disabled keeps the trigger mounted without a tooltip or description', async ({
+  page,
+}) => {
+  await page.goto('/#tooltip');
+  const section = page.locator('#tooltip');
+  const map = section.getByRole('button', { name: 'Habitat map' });
+  const before = await map.elementHandle();
+  if (!before) throw new Error('The map button is missing');
+
+  await map.focus();
+  await expect(section.getByRole('tooltip')).toHaveText(
+    'Where each species lives',
+  );
+  await expect(map).toHaveAccessibleDescription('Where each species lives');
+
+  await section.getByRole('switch', { name: "Show the map's help" }).check();
+  await expect(
+    section.getByText('Where each species lives', { exact: true }),
+  ).toBeVisible();
+  await expect(map).not.toHaveAttribute('aria-describedby');
+  await expect(map).toHaveAccessibleDescription('');
+  await map.focus();
+  await map.hover();
+  await expect(section.getByRole('tooltip')).toHaveCount(0);
+  await expect(section.locator('.sw-tooltip')).toHaveCount(2);
+  // The same button, not a new one, so a focused trigger would keep its focus.
+  expect(await before.evaluate((element) => element.isConnected)).toBe(true);
+});
