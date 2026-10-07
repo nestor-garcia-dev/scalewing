@@ -13,6 +13,23 @@ import { catalog, catalogGroups } from './catalog.js';
 import { themeStorageKey } from './theme-preference.js';
 import { paletteStorageKey } from './palette-preference.js';
 
+/**
+ * The words that name a button: those its `aria-labelledby` points at (an
+ * icon-only button named by its tooltip), its `aria-label`, or its text.
+ */
+function namingText(button: HTMLElement): string {
+  const labelledBy = button.getAttribute('aria-labelledby');
+  const referenced = labelledBy
+    ? labelledBy
+        .split(/\s+/)
+        .map((id) => document.getElementById(id)?.textContent ?? '')
+        .join(' ')
+    : '';
+  return [referenced, button.getAttribute('aria-label'), button.textContent]
+    .join(' ')
+    .trim();
+}
+
 describe('gallery', () => {
   beforeEach(() => {
     window.localStorage.clear();
@@ -96,7 +113,7 @@ describe('gallery', () => {
 
     for (const button of screen.getAllByRole('button')) {
       expect(['BUTTON', 'SUMMARY']).toContain(button.tagName);
-      expect(button.textContent?.trim().length).toBeGreaterThan(0);
+      expect(namingText(button).length).toBeGreaterThan(0);
     }
 
     for (const link of screen.getAllByRole('link')) {
