@@ -40,17 +40,22 @@ test('Tooltip supports hover, focus, Escape, blur, and touch without replacing t
   await page.keyboard.press('Shift+Tab');
   await page.keyboard.press('Tab');
   await expect(trigger).toBeFocused();
-  await expect(tooltip).toBeVisible();
-  const tooltipId = await tooltip.getAttribute('id');
+  // The button's own help, by name: on a phone the help of the button after
+  // it can still be closing from the taps above.
+  const help = section.getByRole('tooltip', {
+    name: /^Sighting records include/,
+  });
+  await expect(help).toBeVisible();
+  const tooltipId = await help.getAttribute('id');
   expect(tooltipId).toBeTruthy();
   await expect(trigger).toHaveAttribute('aria-describedby', tooltipId ?? '');
   await section.screenshot({ path: testInfo.outputPath('tooltip-focus.png') });
   await trigger.press('Escape');
-  await expect(tooltip).toHaveCount(0);
+  await expect(help).toBeHidden();
   await expect(trigger).toBeFocused();
   await page.keyboard.press('Tab');
   await page.keyboard.press('Shift+Tab');
-  await expect(tooltip).toBeVisible();
+  await expect(help).toBeVisible();
   await page.keyboard.press('Tab');
   await expect(
     section.getByRole('button', { name: 'Habitat guide' }),

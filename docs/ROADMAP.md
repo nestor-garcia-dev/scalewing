@@ -66,10 +66,13 @@ left open, one surface per commit on `claude/teisoro-f006-s11-parts`:
 (SET-2, SET-14), `Tooltip` on a visible focus and inside the screen
 (SET-9), `Field` `changed` (COR-5), `DenominationGrid` `labelWidth` and a
 visible `totalLabel` (DRW-27, VLT-14, HIS-11), and the new `SectionNav`
-(ADM-1). Merged in #101 and released in `@scalewing/react` 1.22.0.
-Next: Teisoro pins it (task 1880). Teisoro's phone navigation (UX-16, with
-SET-3's labels) follows as a second release after its design pass
-(task 1885).
+(ADM-1). Merged in #101 and released in `@scalewing/react` 1.22.0;
+Teisoro pinned it (task 1880). Second part, task 1885 (UX-16 and SET-3),
+on `claude/teisoro-f006-s11-lg-breakpoint`: `hideBelow`/`hideFrom` `lg`
+(64rem), `breakpointQuery` exported, and 44 px `Nav` buttons on a coarse
+pointer, after Teisoro's design pass for the header was approved. Next:
+review and merge, release `@scalewing/react` (minor), and Teisoro pins it
+and changes its header.
 
 Teisoro F-007 task 1550: the design-system findings of the Vault UX
 review (the `vault-*.md` reports), one surface per commit:

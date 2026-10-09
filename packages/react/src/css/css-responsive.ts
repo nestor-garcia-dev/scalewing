@@ -1,16 +1,14 @@
 import {
-  type HideDirection,
+  breakpointDirections,
   breakpointQuery,
-  breakpoints,
   hideClass,
+  visibilityBreakpoints,
 } from './breakpoints.js';
 
-const directions: HideDirection[] = ['from', 'below'];
-
 export function cssResponsiveClasses(): string {
-  return breakpoints
+  return visibilityBreakpoints
     .flatMap((breakpoint) =>
-      directions.map(
+      breakpointDirections.map(
         (direction) =>
           `@media ${breakpointQuery(direction, breakpoint)} {
   .${hideClass(direction, breakpoint)} { display: none; }
@@ -21,7 +19,7 @@ export function cssResponsiveClasses(): string {
 }
 
 export function responsiveClassCatalog(): string[] {
-  return breakpoints.flatMap((breakpoint) =>
-    directions.map((direction) => hideClass(direction, breakpoint)),
+  return visibilityBreakpoints.flatMap((breakpoint) =>
+    breakpointDirections.map((direction) => hideClass(direction, breakpoint)),
   );
 }

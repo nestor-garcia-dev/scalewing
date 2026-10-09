@@ -1,6 +1,7 @@
 import { typographyVariants } from '@scalewing/tokens';
 
 import { zIndex } from './stacking.js';
+import { coarsePointerQuery, touchTarget } from './touch-target.js';
 
 const caption = typographyVariants.caption;
 const label = typographyVariants.label;
@@ -37,6 +38,18 @@ export function cssChromeClasses(): string {
 
 .sw-nav a[aria-current='page'] {
   color: var(--sw-color-text);
+}
+
+/*
+ * A button in a navigation is a destination: on a coarse pointer it grows to
+ * the 44 px touch target both ways, whatever its size, as a section link
+ * and a calendar button do. A label beside its glyph keeps its line.
+ */
+@media ${coarsePointerQuery} {
+  .sw-nav .sw-button {
+    min-height: ${touchTarget};
+    min-width: ${touchTarget};
+  }
 }
 
 .sw-field-xs :is(select, input, textarea) {

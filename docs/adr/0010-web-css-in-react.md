@@ -27,5 +27,5 @@ One shared values package is kept on purpose. Separate native and web token pack
 
 - The generated CSS is unchanged. All 17 generated files (`styles.css` and 16 palette files) were compared byte for byte before and after the move.
 - A web CSS change is a `@scalewing/react` release. A tokens release happens only when a shared value changes.
-- ADR 0003 said responsive class syntax needs a new ADR. The `sw-hide-from-md` and `sw-hide-below-md` classes are the only responsive classes, generated from the breakpoint token. Any further responsive classes need their own ADR.
+- ADR 0003 said responsive class syntax needs a new ADR. The `sw-hide-from-md` and `sw-hide-below-md` classes were the first responsive classes, generated from the breakpoint token. Amended 2026-10-09: the layout props (`Grid columnsBelow`, `ActionBar stickyBelow`, `Dialog`'s sheet, `SectionNav verticalFrom`) generate their classes from the one layout breakpoint, `md`; visibility alone also takes `lg` (64rem), for content that fits only from a laptop up (`sw-hide-*-lg`). A further breakpoint, or `lg` for layout, needs its own ADR.
 - Tokens tests cover values only. CSS and class-catalog tests live with the generators in `packages/react/src/css`.
