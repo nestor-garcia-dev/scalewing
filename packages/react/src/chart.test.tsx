@@ -1,7 +1,13 @@
+import { contrastRatio } from '@scalewing/tokens';
 import { cleanup, render, screen } from '@testing-library/react';
-import { afterEach, describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 
-import { BarChart } from './components/BarChart.js';
+import { BarChart, type BarChartTone } from './components/BarChart.js';
+import { generateStylesheet, utilityClassCatalog } from './css/stylesheet.js';
+import {
+  forEveryTheme,
+  glassOverBackground,
+} from './every-theme.test-support.js';
 import { ThemeProvider } from './theme/ThemeProvider.js';
 
 afterEach(() => {
@@ -119,5 +125,88 @@ describe('BarChart formatValue and diverging', () => {
       'margin-inline-start: calc(50% - var(--sw-bar-fill, 0) * 50%);',
     );
     expect(utilityClassCatalog()).toContain('sw-bar-chart-diverging');
+  });
+});
+
+describe('BarChart tone', () => {
+  it('colors a bar by its tone over its sign, and leaves an untoned bar as before', () => {
+    render(
+      <BarChart
+        aria-label="Feed variance"
+        diverging
+        items={[
+          { label: 'Mon', value: 3, tone: 'warning' },
+          { label: 'Tue', value: -2, tone: 'danger' },
+          { label: 'Wed', value: -1, tone: 'success' },
+          { label: 'Thu', value: 2, tone: 'accent' },
+          { label: 'Fri', value: 1 },
+          { label: 'Sat', value: -1 },
+        ]}
+      />,
+    );
+    const fill = (label: string) =>
+      (
+        screen.getByText(label).nextElementSibling
+          ?.firstElementChild as HTMLElement
+      ).className;
+    expect(fill('Mon')).toBe('sw-bar-chart-fill sw-bar-chart-fill-warning');
+    // A negative bar keeps its negative class, which shapes it in a diverging
+    // chart, and the tone's class sets its color.
+    expect(fill('Tue')).toBe(
+      'sw-bar-chart-fill sw-bar-chart-fill-negative sw-bar-chart-fill-danger',
+    );
+    expect(fill('Wed')).toBe(
+      'sw-bar-chart-fill sw-bar-chart-fill-negative sw-bar-chart-fill-success',
+    );
+    expect(fill('Thu')).toBe('sw-bar-chart-fill sw-bar-chart-fill-accent');
+    expect(fill('Fri')).toBe('sw-bar-chart-fill');
+    expect(fill('Sat')).toBe('sw-bar-chart-fill sw-bar-chart-fill-negative');
+  });
+
+  it('refuses an unknown tone', () => {
+    const consoleError = vi
+      .spyOn(console, 'error')
+      .mockImplementation(() => undefined);
+    try {
+      expect(() =>
+        render(
+          <BarChart
+            aria-label="Feed variance"
+            items={[{ label: 'Mon', value: 3, tone: 'info' as BarChartTone }]}
+          />,
+        ),
+      ).toThrow(RangeError);
+    } finally {
+      consoleError.mockRestore();
+    }
+  });
+
+  it('generates each tone after the negative fill, in the catalog', () => {
+    const css = generateStylesheet();
+    const negative = css.indexOf(
+      '.sw-bar-chart-fill-negative {\n  background: var(--sw-color-danger);\n}',
+    );
+    expect(negative).toBeGreaterThan(-1);
+    for (const tone of ['accent', 'success', 'warning', 'danger'] as const) {
+      const rule = `.sw-bar-chart-fill-${tone} { background: var(--sw-color-${tone}); }`;
+      expect(css.indexOf(rule)).toBeGreaterThan(negative);
+      expect(utilityClassCatalog()).toContain(`sw-bar-chart-fill-${tone}`);
+    }
+    expect(css).toContain(
+      '@media (forced-colors: active) {\n  .sw-bar-chart-fill { background: CanvasText; }',
+    );
+  });
+
+  it('keeps every tone at 3:1 against the track in every palette and scheme', () => {
+    // The track is the glass fill over the page; a fill is a graphic that
+    // must stand apart from it (WCAG 1.4.11).
+    forEveryTheme((colors, label, theme) => {
+      const track = glassOverBackground(theme);
+      for (const tone of ['accent', 'success', 'warning', 'danger'] as const)
+        expect(
+          contrastRatio(colors[tone], track),
+          `${label} ${tone}`,
+        ).toBeGreaterThanOrEqual(3);
+    });
   });
 });

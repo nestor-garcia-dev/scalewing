@@ -6,12 +6,36 @@ import {
 import { forwardRef, type CSSProperties, type HTMLAttributes } from 'react';
 
 import { cx } from '../class-names.js';
+import { type BarChartTone, barChartTones } from '../css/css-chart.js';
+
+export type { BarChartTone };
 
 export type BarChartItem = {
   label: string;
   value: number;
   valueLabel?: string;
+  /**
+   * Colors the bar by what it means, in place of its sign's default (the
+   * accent, or danger for a negative value): such as `'warning'` for an
+   * overage and `'danger'` for a shortage. The color is a cue beside the
+   * value and its label, never the only sign of the meaning. An unknown tone
+   * throws a `RangeError`.
+   */
+  tone?: BarChartTone;
 };
+
+/** The fill's classes: the sign's (which also shapes a diverging bar) and the tone's. */
+function barChartFillClassName(item: BarChartItem): string {
+  if (item.tone !== undefined && !barChartTones.includes(item.tone))
+    throw new RangeError(
+      `BarChart item tone must be one of ${barChartTones.join(', ')}; received ${String(item.tone)}`,
+    );
+  return cx(
+    'sw-bar-chart-fill',
+    item.value < 0 && 'sw-bar-chart-fill-negative',
+    item.tone && `sw-bar-chart-fill-${item.tone}`,
+  );
+}
 
 export type BarChartProps = Omit<HTMLAttributes<HTMLDivElement>, 'children'> & {
   'aria-label': string;
@@ -72,10 +96,7 @@ export const BarChart = forwardRef<HTMLDivElement, BarChartProps>(
                 <span className="sw-bar-chart-label">{item.label}</span>
                 <span className="sw-bar-chart-track">
                   <span
-                    className={cx(
-                      'sw-bar-chart-fill',
-                      item.value < 0 && 'sw-bar-chart-fill-negative',
-                    )}
+                    className={barChartFillClassName(item)}
                     style={
                       {
                         '--sw-bar-fill': ratio,

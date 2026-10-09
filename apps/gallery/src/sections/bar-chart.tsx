@@ -1,7 +1,11 @@
-import { BarChart, Stack, Text } from '@scalewing/react';
+import { BarChart, type BarChartItem, Stack, Text } from '@scalewing/react';
 
 import { Section } from '../layout/Section.js';
-import { sampleSightingChanges, sampleTraitFactors } from '../sample-copy.js';
+import {
+  sampleFeedVariance,
+  sampleSightingChanges,
+  sampleTraitFactors,
+} from '../sample-copy.js';
 
 /** A count with its sign, a typographic minus for fewer. */
 function signedCount(value: number): string {
@@ -9,11 +13,22 @@ function signedCount(value: number): string {
   return `${sign}${Math.abs(value)}`;
 }
 
+/** A signed count of kilograms. */
+function signedKilograms(value: number): string {
+  return `${signedCount(value)} kg`;
+}
+
+/** Over the plan is a warning and short of it is danger. */
+const feedVariance: BarChartItem[] = sampleFeedVariance.map((item) => ({
+  ...item,
+  tone: item.value > 0 ? 'warning' : 'danger',
+}));
+
 export function BarChartSection() {
   return (
     <Section
       id="bar-chart"
-      purpose="BarChart is a labeled horizontal magnitude chart. Accent fill is positive contribution; danger fill is negative. max keeps several charts on one scale. formatValue writes the axis and every value without its own label, such as a unit or a currency. diverging puts zero in the middle of each track, so a negative value's bar grows toward the start and a positive one's toward the end on the same scale, and the axis reads from minus max to max."
+      purpose="BarChart is a labeled horizontal magnitude chart. Accent fill is positive contribution; danger fill is negative. max keeps several charts on one scale. formatValue writes the axis and every value without its own label, such as a unit or a currency. diverging puts zero in the middle of each track, so a negative value's bar grows toward the start and a positive one's toward the end on the same scale, and the axis reads from minus max to max. An item's tone (accent, success, warning or danger) colors its bar by what it means in place of its sign's default, such as an overage in warning and a shortage in danger; the value and its side of zero still say it."
       title="BarChart"
       usage={`<BarChart
   aria-label="Trait contributions"
@@ -29,6 +44,15 @@ export function BarChartSection() {
   diverging
   formatValue={(value) => \`\${value > 0 ? '+' : value < 0 ? '−' : ''}\${Math.abs(value)}\`}
   items={[{ label: 'Red fox', value: 6 }, { label: 'Curlew', value: -4 }]}
+/>
+
+<BarChart
+  aria-label="Feed against plan"
+  diverging
+  items={[
+    { label: 'Otter pool', value: 3, tone: 'warning' },
+    { label: 'Owl barn', value: -4, tone: 'danger' },
+  ]}
 />`}
     >
       <Stack gap={3}>
@@ -50,6 +74,16 @@ export function BarChartSection() {
         <Text variant="caption" color="muted">
           diverging: sightings this season against last, by species. Fewer
           sightings run left of zero, more run right.
+        </Text>
+        <BarChart
+          aria-label="Feed against plan"
+          diverging
+          formatValue={signedKilograms}
+          items={feedVariance}
+        />
+        <Text variant="caption" color="muted">
+          tone: feed put out against the plan, by enclosure. Over the plan runs
+          right in warning, short of it runs left in danger.
         </Text>
       </Stack>
     </Section>
