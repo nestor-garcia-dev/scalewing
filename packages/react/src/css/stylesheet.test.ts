@@ -41,12 +41,14 @@ describe('generated CSS', () => {
     expect(css).not.toContain(
       '.sw-denomination-strip .sw-denomination-total { display: none; }',
     );
-    expect(css).toContain(
-      '.sw-denomination-total-value { position: absolute; width: 1px;',
+    // The total's value and the column's name are hidden below md only.
+    expect(css).toMatch(
+      /@media not all and \(min-width: 48rem\) \{[^@]*\.sw-denomination-total-value,\n {2}\.sw-denomination-total-label \{ position: absolute; width: 1px;/,
     );
     expect(catalog).toEqual(
       expect.arrayContaining([
         'sw-denomination-total-head',
+        'sw-denomination-total-label',
         'sw-denomination-total-value',
       ]),
     );

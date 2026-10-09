@@ -3,6 +3,10 @@ import { typographyVariants } from '@scalewing/tokens';
 import { breakpointQuery } from './breakpoints.js';
 import { badgeTones } from './css-data.js';
 import {
+  cssDenominationAlignedClasses,
+  denominationAlignedClassCatalog,
+} from './css-denomination-aligned.js';
+import {
   cssDenominationCellToneClasses,
   denominationCellToneClassCatalog,
 } from './css-denomination-cell-tones.js';
@@ -248,7 +252,8 @@ ${pinnedStartShadeRules('.sw-denomination-scroll', [
 @media ${breakpointQuery('below', 'md')} {
   .sw-denomination-strip .sw-denomination-total,
   .sw-denomination-strip .sw-denomination-total-head { padding: 0; position: relative; }
-  .sw-denomination-total-value { ${visuallyHiddenDeclarations} }
+  .sw-denomination-total-value,
+  .sw-denomination-total-label { ${visuallyHiddenDeclarations} }
   .sw-denomination-total-inline { display: block; }
   .sw-denomination-label-body { flex-direction: column; align-items: flex-start; gap: var(--sw-space-1); }
   .sw-denomination-strip .sw-denomination-label-line { gap: var(--sw-space-1); }
@@ -259,6 +264,8 @@ ${pinnedStartShadeRules('.sw-denomination-scroll', [
 }
 
 ${cssDenominationCellToneClasses()}
+
+${cssDenominationAlignedClasses()}
 
 @media (forced-colors: active) {
   .sw-denomination-label { border-inline-start-color: CanvasText; color: CanvasText; }
@@ -293,11 +300,13 @@ export function denominationGridClassCatalog(): string[] {
     'sw-denomination-total',
     'sw-denomination-total-inline',
     'sw-denomination-total-head',
+    'sw-denomination-total-label',
     'sw-denomination-total-value',
     'sw-denomination-tiles',
     'sw-denomination-tile-list',
     'sw-denomination-tile',
     'sw-denomination-subtotal',
     ...denominationCellToneClassCatalog(),
+    ...denominationAlignedClassCatalog(),
   ];
 }

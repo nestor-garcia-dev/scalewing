@@ -2,6 +2,7 @@ import { Card, DenominationGrid, Stack, Text } from '@scalewing/react';
 
 import { Glyph } from '../glyph.js';
 import { Section } from '../layout/Section.js';
+import { DenominationFeed } from './denomination-feed.js';
 
 const tagColumns = [
   { key: 'xs', label: 'XS' },
@@ -40,7 +41,7 @@ export function DenominationGridSection() {
   return (
     <Section
       id="denomination-grid"
-      purpose="DenominationGrid shows counts per unit across a fixed set of columns: the strip layout is a captioned table with a toned row label, muted zeros, signed deltas, and an optional total; the tiles layout stacks label, count, and a consumer-formatted subtotal per column. A lone tiles row without an icon or total whose label repeats the grid's is named only by the grid; any other row names its own region, or its own group with rowRole set to group, so a page of grids keeps its landmark list short. A row's cellTones tone single counts in place (the count and, in tiles, its tile's border); the words beside the grid say why. Icons are consumer slots; a row's glyph stays on its label's line, and a long label wraps its words beside the glyph."
+      purpose="DenominationGrid shows counts per unit across a fixed set of columns: the strip layout is a captioned table with a toned row label, muted zeros, signed deltas, and an optional total; the tiles layout stacks label, count, and a consumer-formatted subtotal per column. A lone tiles row without an icon or total whose label repeats the grid's is named only by the grid; any other row names its own region, or its own group with rowRole set to group, so a page of grids keeps its landmark list short. A row's cellTones tone single counts in place (the count and, in tiles, its tile's border); the words beside the grid say why. Icons are consumer slots; a row's glyph stays on its label's line, and a long label wraps its words beside the glyph. labelWidth lines a strip's columns up with every other strip of the same columns in a container of the same width, such as the cards of a feed: the labels take that width and the counts share the rest equally."
       title="DenominationGrid"
       usage={`<DenominationGrid
   label="Tag movement by size"
@@ -53,6 +54,7 @@ export function DenominationGridSection() {
 />`}
     >
       <Stack gap={4}>
+        <DenominationFeed />
         <Card padding={4}>
           <Stack gap={2}>
             <Text color="muted" variant="label">
@@ -283,12 +285,13 @@ export function DenominationGridSection() {
           Zero and null counts render the zero label at quiet opacity. A signed
           row prefixes positive counts and tones them by sign; a negative count
           takes the typographic minus (−2), not a hyphen. Totals are
-          consumer-formatted strings; totalLabel names their column for a screen
-          reader. On a phone the strip shows each total under its row label and
-          keeps the total cell in the table, visually hidden. A strip wider than
-          its container scrolls sideways inside it with the row labels pinned;
-          the page never scrolls sideways. Each named tiles row is a region by
-          default; rowRole="group" keeps its name without making it a landmark.
+          consumer-formatted strings; totalLabel names their column, over the
+          totals from md up and for a screen reader. On a phone the strip shows
+          each total under its row label and keeps the total cell in the table,
+          visually hidden. A strip wider than its container scrolls sideways
+          inside it with the row labels pinned; the page never scrolls sideways.
+          Each named tiles row is a region by default; rowRole="group" keeps its
+          name without making it a landmark.
         </Text>
       </Stack>
     </Section>

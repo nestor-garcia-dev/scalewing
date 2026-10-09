@@ -122,7 +122,7 @@ describe('DenominationGrid strip', () => {
     expect(table.querySelector('.sw-denomination-icon')).not.toBeNull();
   });
 
-  it('names the total column with a visually hidden header when totalLabel is given', () => {
+  it('names the total column with a header, visible from md, when totalLabel is given', () => {
     render(
       <DenominationGrid
         columns={columns}
@@ -144,8 +144,13 @@ describe('DenominationGrid strip', () => {
     ]);
     const totalHead = heads[3]!;
     expect(totalHead.getAttribute('scope')).toBe('col');
-    expect(totalHead.className).toBe('sw-denomination-total-head');
-    expect(totalHead.firstElementChild?.className).toBe('sw-sr-only');
+    expect(totalHead.className).toBe(
+      'sw-denomination-head sw-denomination-total-head',
+    );
+    // Hidden below md only (see the stylesheet test), not for every width.
+    expect(totalHead.firstElementChild?.className).toBe(
+      'sw-denomination-total-label',
+    );
     // The total cell keeps its text in the table at every width; below md
     // only its inner copy is visually hidden (see the stylesheet test).
     const total = within(

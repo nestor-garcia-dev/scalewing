@@ -171,6 +171,7 @@ export type {
   DenominationGridRow,
   DenominationGridRowRole,
   DenominationGridTone,
+  DenominationLabelWidth,
 } from './components/DenominationGrid.js';
 
 export { FilterChips } from './components/FilterChips.js';

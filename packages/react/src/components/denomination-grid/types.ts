@@ -1,6 +1,9 @@
 import { type ReactNode } from 'react';
 
 import { type BadgeTone } from '../../css/css-data.js';
+import { type DenominationLabelWidth } from '../../css/css-denomination-aligned.js';
+
+export type { DenominationLabelWidth };
 
 export type DenominationGridTone = BadgeTone;
 
@@ -42,8 +45,9 @@ export type DenominationGridProps = {
   subtotal?: (count: number, column: DenominationGridColumn) => string;
   zeroLabel?: string;
   /**
-   * Names the strip's total column for assistive technology (a visually
-   * hidden column header), such as "Total". Only the strip has that column.
+   * Names the strip's total column, such as "Total": a column header over
+   * the totals from md up, visually hidden below md, where each total sits
+   * under its row's label. Only the strip has that column.
    */
   totalLabel?: string;
   /**
@@ -53,4 +57,14 @@ export type DenominationGridProps = {
    * landmark list. Only the tiles layout has row containers.
    */
   rowRole?: DenominationGridRowRole;
+  /**
+   * Lines the strip's columns up with every other strip of the same columns
+   * in a container of the same width, such as the cards of a feed: the row
+   * labels take this width (`xs` to `xl`, 4 to 16 rem, the `Table` column
+   * sizes; pick the narrowest that holds the longest label's longest word)
+   * and the count columns share the rest equally, whatever the counts are.
+   * Without it each strip sizes its columns by its own content. Only the
+   * strip has a label column.
+   */
+  labelWidth?: DenominationLabelWidth;
 };

@@ -184,3 +184,34 @@ Rejected alternatives:
 - A filled tint. The tone on the count and the border is enough, keeps every text's contrast on the surface, and adds no token.
 
 Evidence: `denomination-grid.test.tsx` ("DenominationGrid cellTones": a tiles row's toned tiles in their order with the marker and tone classes; a strip cell toned over a signed negative, `neutral` and `null` adding nothing; the wrong length and an unknown tone throw; the generated rules); `css/stylesheet.test.ts` (the classes in the catalog); `apps/gallery/e2e/denomination-grid.spec.ts` "a DenominationGrid cell tone marks one tile in place" on desktop-en, mobile-es and forced-colors: in "Tags left in the kit" the danger M tile and the warning L tile keep their row and width (all six on one row on a desktop, three per row on a phone), the M tile's zero count is at full opacity, and outside forced colors the M tile's border, inset shadow and count compute to the danger color while the L tile's border is neither danger nor the plain border; in the "Kit check by size" strip the Counted row's toned S cell computes to the danger color and its untoned XS cell does not.
+
+## Follow-up request (2026-10-08, Teisoro F-006-S11 task 1875): strips that line up from card to card, again
+
+Status: implemented on `claude/teisoro-f006-s11-parts` for Teisoro F-006-S11 task 1875; pull request pending review. It picks up the withdrawn `labelWidth` above (DRW-27) with a design that meets the constraints recorded there.
+Source: Teisoro UX reviews `services-drawer-cash-and-audits.md`, finding DRW-27 (polish), and `vault-page-and-access.md`, finding VLT-14 (polish; the part left to Scalewing). The Services day's activity feed and the vault page's movement cards each draw one strip per card with the same bill columns; the "$1" column sits at about x 522, 515 and 483 on three activity cards and at x 409 and 441 on two vault cards, because an auto-layout table sizes its columns by each strip's own labels and counts.
+
+Teisoro need: in each feed, every bill column sits under the one on the card above, at 1280 and 390 px, in both languages.
+
+Proposed API: `labelWidth?: DenominationLabelWidth` (`'xs' | 'sm' | 'md' | 'lg' | 'xl'`, 4 to 16 rem, the `Table` column sizes) on `DenominationGrid`, for the strip.
+
+Behavior and failure boundary: "equal count columns sized from the container", the direction the withdrawn attempts left open. The strip's scroll region becomes an inline-size container (`sw-denomination-scroll-aligned`), and the table (`sw-denomination-strip-aligned` plus `sw-denomination-label-<size>`, which sets `--sw-denomination-label-width`) carries the column count and whether a total column exists as inline custom properties (`--sw-denomination-columns`, `--sw-denomination-total`, as `BarChart` carries `--sw-bar-fill`). Every cell is `box-sizing: border-box`; the row labels and the corner take the label width; every count head and cell, and the total head and cells from md up, take `(100cqi − label width) ÷ (columns + total)`. Every column is sized and the widths add up to the region's width, so the table has no spare width to share by content: two strips with the same columns in regions of the same width have the same column edges whatever their labels and counts. Below md the total column takes no share and no width (`--sw-denomination-total-shown: 0`), as the phone total sits under the row label. A count wider than its share widens its column (an auto table never squeezes content), so only that strip misaligns, and it scrolls as a plain strip would; the labels stay pinned. The plain strip is unchanged without the prop. The tiles layout ignores it. An unknown width throws a `RangeError`.
+
+How it meets the constraints recorded for the withdrawn attempts:
+
+- The plain strip is unchanged (opt-in).
+- A row's total stays next to its counts: the total column is one share wide, not the spare width.
+- It does not force scrolling where the plain strip fits: the counts' share comes from the container, not a floor, so a six-column strip at 8 rem fits a 390 px phone card; the label width is the consumer's (pick the narrowest that holds the longest label's longest word).
+- The separators span the card: the table is still the region's full width.
+
+Rejected alternatives: `table-layout: fixed` (an eleven-column phone strip would overlap instead of scrolling; here an over-wide count widens its column); a `labelWidth` number in `ch` (an arbitrary value, and the label font's `ch` is not the counts'); a feed-level table (the cards are separate landmarks and lists in both consumers).
+
+Evidence: `denomination-aligned.test.tsx` (a plain strip has no class or style; an aligned one has the classes and the column count, a total share only with a total; the tiles layout ignores it; an unknown width throws; the generated container, widths, share and the phone's collapse); `apps/gallery/e2e/denomination-grid.spec.ts` "DenominationGrid labelWidth lines the columns up from card to card" on desktop-en, mobile-es and forced-colors: the gallery's three "Tag activity today" cards ("Tagged", "Released back" with a three-digit count, "Found" and "Lost") have the same column-head edges to a tenth of a pixel, an 8 rem label column, and no sideways scroll at 390 px.
+
+## Follow-up request (2026-10-08, Teisoro F-006-S11 task 1875): the total column's name on screen
+
+Status: implemented on `claude/teisoro-f006-s11-parts` for Teisoro F-006-S11 task 1875; pull request pending review.
+Source: Teisoro UX review `vault-history.md`, finding HIS-11 (polish; the part left to Scalewing). The vault history's summary grid passes `totalLabel="Total"`, so a screen reader reads each total under "Total", but the strip puts the label in a `sw-sr-only` span: at 1280 px no word stands over "$40.00 … $50.00".
+
+Behavior (no API change): with `totalLabel`, the total column's `th` carries `sw-denomination-head` (the column heads' caption style, end-aligned) and its label is a `sw-denomination-total-label` span, shown from md up over the totals, its end on theirs. Below md the span is visually hidden with the other phone total rules, since each total sits under its row's label and the column takes no width; it stays in the table for a screen reader. Without `totalLabel` the empty corner is unchanged.
+
+Evidence: `denomination-grid.test.tsx` (the header's classes and the span); `css/stylesheet.test.ts` (hidden below md only); `apps/gallery/e2e/denomination-grid.spec.ts` "DenominationGrid renders the strip table…": at 1280 px "Total weight" is visible and its end is within a pixel of the totals' end; at 390 px its span is under a pixel wide.
