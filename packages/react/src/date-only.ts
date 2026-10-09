@@ -107,3 +107,30 @@ export function todayDateOnly(now: Date = new Date()): string {
     day: now.getDate(),
   });
 }
+
+/** A span of calendar days, both ends included. */
+export type DateOnlyRange = { start: string; end: string };
+
+/** Validates a range: two valid dates, the start not after the end. */
+export function assertDateRange(range: DateOnlyRange | undefined) {
+  if (range === undefined) return;
+  assertDateOnly('range.start', range.start);
+  assertDateOnly('range.end', range.end);
+  if (range.start > range.end)
+    throw new RangeError('range.start must not be after range.end');
+}
+
+/**
+ * Where a day sits in a range: its start, its end, both (a one-day range),
+ * inside it, or out.
+ */
+export function dayInRange(
+  value: string,
+  range: DateOnlyRange | undefined,
+): 'only' | 'start' | 'end' | 'inside' | null {
+  if (!range || value < range.start || value > range.end) return null;
+  if (range.start === range.end) return 'only';
+  if (value === range.start) return 'start';
+  if (value === range.end) return 'end';
+  return 'inside';
+}

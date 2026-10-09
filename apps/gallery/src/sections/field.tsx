@@ -2,6 +2,7 @@ import { Button, Field, Inline, Stack, Text } from '@scalewing/react';
 import { useId, useState } from 'react';
 
 import { Section } from '../layout/Section.js';
+import { SurveyCorrection } from './field-changed.js';
 import { sampleHabitats } from '../sample-copy.js';
 
 /**
@@ -67,7 +68,7 @@ export function FieldSection() {
   return (
     <Section
       id="field"
-      purpose="Field labels native controls and associates optional hints, required state, and validation errors. An error is described on its control, marks it invalid, and is announced politely from a live region that is always there; it is never an alert, so several errors at once do not interrupt, and the form moves focus to the first invalid field. Validation stays with the consumer. size xs compacts the control; the canvas paints its native surface. prefix and suffix put short text such as a unit inside an input's frame; it is not part of the value and joins the accessible name, or the description when the input names itself with aria-label. A press anywhere on the frame focuses the input. A disabled control keeps its value in the text color on the quiet subtle fill with a dashed border, so a locked value stays readable and looks locked. invalid marks a control invalid without a message of its own, for fields whose one error is shown under their group."
+      purpose="Field labels native controls and associates optional hints, required state, and validation errors. An error is described on its control, marks it invalid, and is announced politely from a live region that is always there; it is never an alert, so several errors at once do not interrupt, and the form moves focus to the first invalid field. Validation stays with the consumer. size xs compacts the control; the canvas paints its native surface. prefix and suffix put short text such as a unit inside an input's frame; it is not part of the value and joins the accessible name, or the description when the input names itself with aria-label. A press anywhere on the frame focuses the input. A disabled control keeps its value in the text color on the quiet subtle fill with a dashed border, so a locked value stays readable and looks locked. invalid marks a control invalid without a message of its own, for fields whose one error is shown under their group. changed marks a value changed from a saved one, as in a correction: the accent border, a hairline thicker without moving anything, on the control or its frame; say what it was in the description. invalid and error win over it."
       title="Field"
       usage={`<Field label="Habitat">
   <select>
@@ -96,6 +97,7 @@ export function FieldSection() {
           Validate sighting
         </Button>
         <NestCounts />
+        <SurveyCorrection />
         <Field label="Species name">
           <input defaultValue="Red fox" name="species-name" />
         </Field>

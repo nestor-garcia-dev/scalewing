@@ -1,0 +1,5 @@
+---
+'@scalewing/react': minor
+---
+
+`TableCell` `sort` and `onSort` (`docs/requests/teisoro-table.md`, 2026-10-08 follow-up, Teisoro F-006-S11, RPT-13): a header cell (`as="th"`) with `sort?: 'ascending' | 'descending' | 'none'` and `onSort?: () => void` is its column's sort control. Its children become a `button` in the header's own text style (caption, semibold, muted; the sorted column's name in the text color) with a stroked chevron after them: up when `ascending`, down when `descending`, a quieter pair when `none`. In a `numeric` or `align="end"` column the chevron goes before the name, so the name lines up with the figures. The cell carries `aria-sort` only while it is the sorted column. The button has the accent focus ring and a 44 px target on a coarse pointer. `sort` on a data cell, or one of the two without the other, throws a `TypeError`; an unknown `sort` throws a `RangeError`. New exported type `TableSort`; new generated classes `sw-table-sort`, `sw-table-sort-glyph`, `sw-table-sort-{ascending,descending,none}`. No new tokens and no new dependencies.

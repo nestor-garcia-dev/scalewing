@@ -8,7 +8,12 @@ import {
 } from '../calendar-button-labels.js';
 import { calendarTriggerName } from '../calendar-labels.js';
 import { assertWeekStart, type WeekStart } from '../calendar-month.js';
-import { assertDateBounds, assertDateOnly } from '../date-only.js';
+import {
+  assertDateBounds,
+  assertDateOnly,
+  assertDateRange,
+  type DateOnlyRange,
+} from '../date-only.js';
 import { Button, type ButtonSize, type ButtonVariant } from './Button.js';
 import { CalendarDialog } from './date-field/CalendarDialog.js';
 import { DateFieldGlyph } from './date-field/DateFieldGlyph.js';
@@ -16,6 +21,9 @@ import { useCalendarPopup } from './date-field/use-calendar-popup.js';
 import { useLangLocale } from './date-field/use-lang-locale.js';
 
 export type { CalendarButtonLabels };
+
+/** A span of calendar days `YYYY-MM-DD`, both ends included. */
+export type CalendarButtonRange = DateOnlyRange;
 
 export type CalendarButtonProps = {
   /**
@@ -32,6 +40,13 @@ export type CalendarButtonProps = {
   value: string;
   /** Receives the chosen `YYYY-MM-DD`, never converted through UTC. */
   onChange: (value: string) => void;
+  /**
+   * The span the page shows around `value`, such as a week or a month:
+   * the open calendar tints its days, from `start` to `end`, so a picker
+   * for a period shows the whole period. `value` stays the selected day.
+   * The tint is not announced; the page's own label names the period.
+   */
+  range?: CalendarButtonRange;
   min?: string;
   max?: string;
   /**
@@ -81,6 +96,7 @@ export const CalendarButton = forwardRef<
     label,
     value,
     onChange,
+    range,
     min,
     max,
     today,
@@ -97,6 +113,7 @@ export const CalendarButton = forwardRef<
   assertLabel(label);
   assertDateOnly('value', value);
   assertDateBounds(value, min, max);
+  assertDateRange(range);
   assertWeekStart(weekStartsOn);
   const words = resolveCalendarButtonLabels(labels);
 
@@ -152,6 +169,7 @@ export const CalendarButton = forwardRef<
             locale={resolvedLocale}
             max={max}
             min={min}
+            range={range}
             required
             value={value}
             weekStartsOn={weekStartsOn}

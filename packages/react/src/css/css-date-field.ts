@@ -237,16 +237,51 @@ function calendarRules(): string {
   background: color-mix(in srgb, var(--sw-color-muted) 16%, transparent);
 }
 
+/*
+ * A range's days are one band in each week row: square-cornered, the accent
+ * at 16 % over the calendar's glass, rounded at the range's start and end.
+ * accentSubtle is mixed against the surface, not the glass, and fades to
+ * nothing where the accent is near AA, so the band would vanish in most
+ * dark palettes. Every number on the band is in the text colour, which
+ * keeps 4.5:1 on it in every palette (muted and accent do not); a
+ * neighbouring month's day and today are marked by the band and today's
+ * accent ring (3:1 or more on the band). The selected day sits on top.
+ */
+.sw-date-field-day-in-range {
+  background: color-mix(in srgb, var(--sw-color-accent) 16%, transparent);
+  border-radius: 0;
+  color: var(--sw-color-text);
+}
+
+.sw-date-field-day-range-start {
+  border-end-start-radius: var(--sw-radius-pill);
+  border-start-start-radius: var(--sw-radius-pill);
+}
+
+.sw-date-field-day-range-end {
+  border-end-end-radius: var(--sw-radius-pill);
+  border-start-end-radius: var(--sw-radius-pill);
+}
+
 .sw-date-field-day[aria-current='date'] {
   border-color: var(--sw-color-accent);
   color: var(--sw-color-accent);
   font-weight: ${label.fontWeight};
 }
 
+.sw-date-field-day-in-range[aria-current='date'] {
+  color: var(--sw-color-text);
+}
+
+.sw-date-field-day-in-range:hover:not([aria-disabled='true']) {
+  background: color-mix(in srgb, var(--sw-color-accent) 24%, transparent);
+}
+
 .sw-date-field-day[aria-selected='true'],
 .sw-date-field-day[aria-selected='true']:hover {
   background: var(--sw-color-accent);
   border-color: var(--sw-color-accent);
+  border-radius: var(--sw-radius-pill);
   color: var(--sw-color-onAccent);
   font-weight: ${label.fontWeight};
 }
@@ -288,7 +323,15 @@ function adaptiveRules(): string {
   }
   .sw-date-field-calendar { border-color: CanvasText; }
   .sw-date-field-day[aria-current='date'] { border-color: CanvasText; }
-  .sw-date-field-day[aria-selected='true'] {
+  .sw-date-field-day-in-range,
+  .sw-date-field-day-in-range:hover:not([aria-disabled='true']),
+  .sw-date-field-day-in-range[aria-current='date'] {
+    background: Mark;
+    color: MarkText;
+    forced-color-adjust: none;
+  }
+  .sw-date-field-day[aria-selected='true'],
+  .sw-date-field-day[aria-selected='true']:hover {
     background: Highlight;
     color: HighlightText;
     forced-color-adjust: none;
@@ -322,6 +365,9 @@ export function dateFieldClassCatalog(): string[] {
     'sw-date-field-grid',
     'sw-date-field-day',
     'sw-date-field-day-outside',
+    'sw-date-field-day-in-range',
+    'sw-date-field-day-range-start',
+    'sw-date-field-day-range-end',
     'sw-date-field-footer',
   ];
 }

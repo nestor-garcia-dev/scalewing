@@ -238,3 +238,81 @@ describe('sticky Tabs', () => {
     );
   });
 });
+
+/** Gives a box the scroll metrics a browser would measure. */
+function setScrollMetrics(
+  box: HTMLElement,
+  metrics: { scrollLeft: number; scrollWidth: number; clientWidth: number },
+) {
+  for (const [key, value] of Object.entries(metrics))
+    Object.defineProperty(box, key, { configurable: true, value });
+}
+
+describe('Tabs overflow shade', () => {
+  function renderStrip(sticky = false) {
+    render(
+      <Tabs
+        aria-label="Habitats"
+        id="habitats"
+        items={habitats}
+        onChange={() => {}}
+        sticky={sticky}
+        value="forest"
+      />,
+    );
+    return screen.getByRole('tablist', { name: 'Habitats' });
+  }
+
+  it('adds no shade to a strip whose labels fit', () => {
+    expect(renderStrip().className).toBe('sw-tabs');
+  });
+
+  it('marks each edge with labels past it as the strip scrolls, sticky or not', () => {
+    for (const sticky of [false, true]) {
+      const strip = renderStrip(sticky);
+      const base = sticky ? 'sw-tabs sw-tabs-sticky' : 'sw-tabs';
+      setScrollMetrics(strip, {
+        scrollLeft: 0,
+        scrollWidth: 600,
+        clientWidth: 358,
+      });
+      fireEvent.scroll(strip);
+      expect(strip.className).toBe(`${base} sw-scroll-more-end`);
+
+      setScrollMetrics(strip, {
+        scrollLeft: 120,
+        scrollWidth: 600,
+        clientWidth: 358,
+      });
+      fireEvent.scroll(strip);
+      expect(strip.className).toBe(
+        `${base} sw-scroll-more-start sw-scroll-more-end`,
+      );
+
+      setScrollMetrics(strip, {
+        scrollLeft: 242,
+        scrollWidth: 600,
+        clientWidth: 358,
+      });
+      fireEvent.scroll(strip);
+      expect(strip.className).toBe(`${base} sw-scroll-more-start`);
+      cleanup();
+    }
+  });
+
+  it('generates the scroll region shade on the strip, mirrored right to left', () => {
+    const css = generateStylesheet();
+    expect(css).toContain('.sw-tabs.sw-scroll-more-start { box-shadow: inset');
+    expect(css).toContain('.sw-tabs.sw-scroll-more-end { box-shadow: inset');
+    expect(css).toContain(
+      '.sw-tabs.sw-scroll-more-start:dir(rtl) { box-shadow: inset calc(-1',
+    );
+    expect(css).toContain(
+      '.sw-tabs.sw-scroll-more-start.sw-scroll-more-end { box-shadow:',
+    );
+    // The classes are the scroll region's, already in the catalog.
+    expect(utilityClassCatalog()).toEqual(
+      expect.arrayContaining(['sw-scroll-more-start', 'sw-scroll-more-end']),
+    );
+  });
+});

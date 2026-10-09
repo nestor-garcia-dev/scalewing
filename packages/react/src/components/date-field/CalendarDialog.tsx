@@ -17,6 +17,7 @@ import {
   clampDateOnly,
   daysInMonth,
   formatDateOnly,
+  type DateOnlyRange,
   isOutsideDateRange,
   parseDateOnly,
 } from '../../date-only.js';
@@ -37,6 +38,8 @@ export type CalendarDialogProps = {
   /** `true` returns focus to the calendar button. */
   onClose: (restoreFocus: boolean) => void;
   onSelect: (value: string) => void;
+  /** Days to tint as a span; the selection stays `value`. */
+  range?: DateOnlyRange;
   required: boolean;
   today: string;
   value: string;
@@ -91,6 +94,7 @@ export function CalendarDialog({
   min,
   onClose,
   onSelect,
+  range,
   required,
   today,
   value,
@@ -173,6 +177,7 @@ export function CalendarDialog({
           setFocusDate(next);
         }}
         onSelect={onSelect}
+        range={range}
         selected={value}
         titleId={titleId}
         today={today}

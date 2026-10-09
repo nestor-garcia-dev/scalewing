@@ -47,9 +47,32 @@ test('DenominationGrid renders the strip table with tones and moves totals under
     expect(drawn.width).toBeLessThanOrEqual(1);
     expect(drawn.cellWidth).toBeLessThanOrEqual(1);
     expect(drawn.clip).toBe('rect(0px, 0px, 0px, 0px)');
+    // The column's name is hidden with the column.
+    const totalHead = strip.getByRole('columnheader', { name: 'Total weight' });
+    expect(
+      await totalHead.evaluate(
+        (cell) => cell.firstElementChild!.getBoundingClientRect().width,
+      ),
+    ).toBeLessThanOrEqual(1);
   } else {
     await expect(totalCell).toBeVisible();
     await expect(inlineTotal).toBeHidden();
+    // The column's name shows over the totals, its end on theirs (HIS-11).
+    const label = strip.locator('.sw-denomination-total-label');
+    await expect(label).toBeVisible();
+    await expect(label).toHaveText('Total weight');
+    const ends = await strip.evaluate((table) => {
+      const end = (element: Element) => {
+        const range = document.createRange();
+        range.selectNodeContents(element);
+        return range.getBoundingClientRect().right;
+      };
+      return {
+        head: end(table.querySelector('.sw-denomination-total-label')!),
+        total: end(table.querySelector('.sw-denomination-total-value')!),
+      };
+    });
+    expect(Math.abs(ends.head - ends.total)).toBeLessThanOrEqual(1);
   }
   const stripBounds = await strip.boundingBox();
   const sectionBounds = await section.boundingBox();
@@ -421,4 +444,46 @@ test('a scrolled DenominationGrid strip casts its start shade from the pinned la
   await region.screenshot({
     path: testInfo.outputPath('denomination-strip-scrolled.png'),
   });
+});
+
+test('DenominationGrid labelWidth lines the columns up from card to card', async ({
+  page,
+}, testInfo) => {
+  if (testInfo.project.name === 'forced-colors')
+    await page.emulateMedia({ forcedColors: 'active' });
+  await page.goto('/#denomination-grid');
+  const feed = page.getByRole('list', { name: 'Tag activity today' });
+  await feed.scrollIntoViewIfNeeded();
+  const strips = feed.getByRole('table');
+  await expect(strips).toHaveCount(3);
+  // Each column head's start, per strip.
+  const heads = await strips.evaluateAll((tables) =>
+    tables.map((table) =>
+      [...table.querySelectorAll('thead th')].map(
+        (cell) => Math.round(cell.getBoundingClientRect().left * 10) / 10,
+      ),
+    ),
+  );
+  for (const strip of heads.slice(1)) expect(strip).toEqual(heads[0]);
+  // The labels' column is 8 rem wide in every card.
+  const rootFont = await page.evaluate(() =>
+    parseFloat(getComputedStyle(document.documentElement).fontSize),
+  );
+  const labels = await strips.evaluateAll((tables) =>
+    tables.map((table) =>
+      Math.round(
+        table.querySelector('tbody th')!.getBoundingClientRect().width,
+      ),
+    ),
+  );
+  expect(new Set(labels)).toEqual(new Set([Math.round(8 * rootFont)]));
+  // Nothing scrolls: the strips fit their cards on a phone too.
+  const overflow = await strips.evaluateAll((tables) =>
+    tables.map((table) => {
+      const region = table.parentElement!;
+      return region.scrollWidth - region.clientWidth;
+    }),
+  );
+  for (const extra of overflow) expect(extra).toBeLessThanOrEqual(1);
+  await feed.screenshot({ path: testInfo.outputPath('feed.png') });
 });

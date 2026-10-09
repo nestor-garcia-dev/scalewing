@@ -239,3 +239,53 @@ test('Field invalid marks a control without a message of its own', async ({
   await expect.poll(() => borderOf(chicks)).not.toBe(invalidBorder);
   if (!forced) await expect.poll(() => borderOf(chicks)).toBe(normal);
 });
+
+test('Field changed marks a corrected value with the accent border, and says what it was', async ({
+  page,
+}, testInfo) => {
+  const forced = testInfo.project.name === 'forced-colors';
+  if (forced) await page.emulateMedia({ forcedColors: 'active' });
+  await page.goto('/#field');
+  const adults = page.getByRole('textbox', { name: 'Adult herons' });
+  const weight = page.getByRole('textbox', { name: 'Feed weight g' });
+  await adults.scrollIntoViewIfNeeded();
+  const border = (element: HTMLElement) => {
+    const style = getComputedStyle(element);
+    return { color: style.borderTopColor, shadow: style.boxShadow };
+  };
+  const frame = page.locator('.sw-field-adorned').filter({ has: weight });
+  const before = await adults.evaluate(border);
+  const boxBefore = await adults.boundingBox();
+  await expect(page.getByText('No value changed.')).toBeVisible();
+
+  await adults.fill('26');
+  await adults.blur();
+  await expect(adults).toHaveAccessibleDescription('Was 25');
+  await expect(page.getByText('1 value changed · not saved yet')).toBeVisible();
+  const after = await adults.evaluate(border);
+  expect(after.color).not.toBe(before.color);
+  if (!forced) expect(after.shadow).toMatch(/inset/);
+  // Nothing moves: the border's extra width is a shadow inside it.
+  expect(await adults.boundingBox()).toEqual(boxBefore);
+  expect(await adults.getAttribute('aria-invalid')).toBeNull();
+
+  // An adorned field marks its frame.
+  const frameBefore = await frame.evaluate(border);
+  await weight.fill('500.00');
+  await weight.blur();
+  await expect(weight).toHaveAccessibleDescription(/Was 480.00 g/);
+  expect((await frame.evaluate(border)).color).not.toBe(frameBefore.color);
+  await expect(
+    page.getByText('2 values changed · not saved yet'),
+  ).toBeVisible();
+  await page
+    .locator('.sw-field')
+    .filter({ has: adults })
+    .locator('..')
+    .screenshot({ path: testInfo.outputPath('field-changed.png') });
+
+  // Back to the saved value, the mark goes.
+  await adults.fill('25');
+  await adults.blur();
+  expect((await adults.evaluate(border)).color).toBe(before.color);
+});

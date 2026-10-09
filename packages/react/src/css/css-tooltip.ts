@@ -19,11 +19,14 @@ export function cssTooltipClasses(): string {
   font-family: var(--sw-font-sans);
   font-size: ${caption.fontSize}px;
   line-height: ${caption.lineHeight}px;
-  inset-block-start: calc(100% + var(--sw-space-1));
-  inset-inline-start: 0;
-  max-width: min(18rem, calc(100vw - 2 * var(--sw-space-3)));
+  /* The popover layer's inset: 0 would ignore the placed left in right-to-left. */
+  inset: auto;
+  margin: 0;
+  /* On the top layer 100% is the viewport without a classic scrollbar. */
+  max-width: min(18rem, calc(100% - 2 * var(--sw-space-2)));
+  overflow: visible;
   padding: var(--sw-space-2);
-  position: absolute;
+  position: fixed;
   width: max-content;
   ${zIndex('popup')}
 }

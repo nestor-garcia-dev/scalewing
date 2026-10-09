@@ -1,3 +1,4 @@
+import { denominationLabelWidths } from '../css/css-denomination-aligned.js';
 import { DenominationStrip } from './denomination-grid/DenominationStrip.js';
 import { DenominationTiles } from './denomination-grid/DenominationTiles.js';
 import { type DenominationGridProps } from './denomination-grid/types.js';
@@ -10,6 +11,7 @@ export type {
   DenominationGridRow,
   DenominationGridRowRole,
   DenominationGridTone,
+  DenominationLabelWidth,
 } from './denomination-grid/types.js';
 
 export function DenominationGrid({
@@ -21,6 +23,7 @@ export function DenominationGrid({
   zeroLabel = '—',
   totalLabel,
   rowRole = 'region',
+  labelWidth,
 }: DenominationGridProps) {
   assertDenominationGrid(label, columns, rows);
   if (!zeroLabel) throw new RangeError('zeroLabel must not be empty');
@@ -28,6 +31,8 @@ export function DenominationGrid({
     throw new RangeError('totalLabel must not be empty');
   if (rowRole !== 'region' && rowRole !== 'group')
     throw new RangeError("rowRole must be 'region' or 'group'");
+  if (labelWidth !== undefined && !denominationLabelWidths.includes(labelWidth))
+    throw new RangeError(`Unknown labelWidth: ${String(labelWidth)}`);
 
   if (layout === 'tiles')
     return (
@@ -45,6 +50,7 @@ export function DenominationGrid({
     <DenominationStrip
       columns={columns}
       label={label}
+      labelWidth={labelWidth}
       rows={rows}
       totalLabel={totalLabel}
       zeroLabel={zeroLabel}

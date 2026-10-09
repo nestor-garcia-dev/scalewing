@@ -18,6 +18,7 @@ export {
   CalendarButton,
   type CalendarButtonLabels,
   type CalendarButtonProps,
+  type CalendarButtonRange,
 } from './components/CalendarButton.js';
 export { Checkbox, type CheckboxProps } from './components/Checkbox.js';
 export {
@@ -102,6 +103,11 @@ export { Split } from './components/Split.js';
 export type { SplitProps } from './components/Split.js';
 export { Nav, type NavProps } from './components/Nav.js';
 export {
+  SectionNav,
+  type SectionNavItem,
+  type SectionNavProps,
+} from './components/SectionNav.js';
+export {
   SegmentedControl,
   type SegmentedControlProps,
   type SegmentedControlVariant,
@@ -128,10 +134,14 @@ export {
   TableRow,
   type TableBodyProps,
   type TableCellProps,
+  type TableColumnWidth,
   type TableDensity,
   type TableHeaderProps,
+  type TableLayout,
   type TableProps,
   type TableRowProps,
+  type TableSort,
+  type TableVerticalAlign,
 } from './components/Table.js';
 export {
   Text,
@@ -166,6 +176,7 @@ export type {
   DenominationGridRow,
   DenominationGridRowRole,
   DenominationGridTone,
+  DenominationLabelWidth,
 } from './components/DenominationGrid.js';
 
 export { FilterChips } from './components/FilterChips.js';

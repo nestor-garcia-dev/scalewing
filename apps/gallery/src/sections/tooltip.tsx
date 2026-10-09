@@ -1,4 +1,12 @@
-import { Button, Inline, Stack, Switch, Text, Tooltip } from '@scalewing/react';
+import {
+  Badge,
+  Button,
+  Inline,
+  Stack,
+  Switch,
+  Text,
+  Tooltip,
+} from '@scalewing/react';
 import { useState } from 'react';
 
 import { Glyph } from '../glyph.js';
@@ -56,7 +64,7 @@ export function TooltipSection() {
   return (
     <Section
       id="tooltip"
-      purpose="Tooltip adds supplementary help to an already named trigger. Hover, focus, or touch exposes the text; required instructions stay visible. Disabled turns the tooltip off, not its trigger, which stays mounted and keeps its focus, for help that is shown as text at some widths. Relationship label makes the tooltip the name of an icon-only trigger instead of its description, so the name is read once; while disabled, the trigger needs its own visible name or aria-label."
+      purpose="Tooltip adds supplementary help to an already named trigger. Hover or a keyboard focus exposes the text, not the focus a click or a tap gives; a tap toggles it on a trigger that does nothing else, such as a badge, while a tap on a button just presses it. The bubble opens under its trigger (over it near the bottom of the screen) and keeps inside the screen. Required instructions stay visible. Disabled turns the tooltip off, not its trigger, which stays mounted and keeps its focus, for help that is shown as text at some widths. Relationship label makes the tooltip the name of an icon-only trigger instead of its description, so the name is read once; while disabled, the trigger needs its own visible name or aria-label."
       title="Tooltip"
       usage={`<Tooltip
   content="Sighting records include the observation time"
@@ -125,6 +133,14 @@ export function TooltipSection() {
               Where each species lives
             </Text>
           ) : null}
+          <Tooltip
+            content="Protected species may only be counted from the hides, never approached"
+            trigger={
+              <Badge tabIndex={0} tone="warning">
+                Protected
+              </Badge>
+            }
+          />
         </Inline>
         <Switch
           checked={helpShown}

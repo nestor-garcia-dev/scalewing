@@ -70,21 +70,128 @@ describe('Tooltip', () => {
     document.removeEventListener('keydown', record);
   });
 
-  it('toggles on touch and dismisses from outside', () => {
+  it('toggles on a tap on a trigger that does nothing else, and dismisses from outside', () => {
     render(
       <div>
-        <Tooltip content="Supplemental help" trigger={<button>More</button>} />
+        <Tooltip
+          content="Supplemental help"
+          trigger={
+            <span data-testid="badge" tabIndex={0}>
+              View only
+            </span>
+          }
+        />
         <button>Outside</button>
       </div>,
     );
-    const trigger = screen.getByRole('button', { name: 'More' });
+    const trigger = screen.getByTestId('badge');
     const tooltip = screen.getByText('Supplemental help');
     fireEvent.pointerDown(trigger, { pointerType: 'touch' });
     expect(tooltip).toHaveProperty('hidden', false);
+    fireEvent.pointerDown(trigger, { pointerType: 'touch' });
+    expect(tooltip).toHaveProperty('hidden', true);
+    fireEvent.pointerDown(trigger, { pointerType: 'touch' });
     fireEvent.pointerDown(screen.getByRole('button', { name: 'Outside' }), {
       pointerType: 'touch',
     });
     expect(tooltip).toHaveProperty('hidden', true);
+  });
+
+  it('does not open on a tap on a control, which does what it does', () => {
+    const onClick = vi.fn();
+    render(
+      <Tooltip
+        content="Supplemental help"
+        trigger={
+          <button onClick={onClick}>
+            <span data-testid="glyph">⌖</span>
+          </button>
+        }
+      />,
+    );
+    const tooltip = screen.getByText('Supplemental help');
+    // A tap on the button, or on its glyph, leaves the help closed.
+    fireEvent.pointerDown(screen.getByRole('button'), { pointerType: 'touch' });
+    expect(tooltip).toHaveProperty('hidden', true);
+    fireEvent.pointerDown(screen.getByTestId('glyph'), {
+      pointerType: 'touch',
+    });
+    expect(tooltip).toHaveProperty('hidden', true);
+    fireEvent.click(screen.getByRole('button'));
+    expect(onClick).toHaveBeenCalledOnce();
+  });
+
+  it('counts every kind of control as acting on a tap', () => {
+    const triggers = [
+      <span key="combobox" role="combobox" tabIndex={0} />,
+      <span key="slider" role="slider" tabIndex={0} />,
+      <span key="spinbutton" role="spinbutton" tabIndex={0} />,
+      <span key="textbox" role="textbox" tabIndex={0} />,
+      <span key="menuitemcheckbox" role="menuitemcheckbox" tabIndex={0} />,
+      <span key="treeitem" role="treeitem" tabIndex={0} />,
+      <label key="label">
+        <span data-testid="inside">Name</span>
+      </label>,
+      <video controls key="video" />,
+    ];
+    for (const trigger of triggers) {
+      const { container, unmount } = render(
+        <Tooltip content="Supplemental help" trigger={trigger} />,
+      );
+      const target =
+        container.querySelector('[data-testid="inside"]') ??
+        container.querySelector('[role], label, video')!;
+      fireEvent.pointerDown(target, { pointerType: 'touch' });
+      expect(
+        screen.getByText('Supplemental help'),
+        String(trigger.key),
+      ).toHaveProperty('hidden', true);
+      unmount();
+    }
+  });
+
+  it('opens on a visible focus only, not on the focus a click or a tap gives', () => {
+    const matches = HTMLElement.prototype.matches;
+    let visible = false;
+    HTMLElement.prototype.matches = function (selector: string) {
+      if (selector === ':focus-visible') return visible;
+      return matches.call(this, selector);
+    };
+    try {
+      render(
+        <Tooltip content="Supplemental help" trigger={<button>More</button>} />,
+      );
+      const trigger = screen.getByRole('button', { name: 'More' });
+      const tooltip = screen.getByText('Supplemental help');
+      fireEvent.focus(trigger);
+      expect(tooltip).toHaveProperty('hidden', true);
+      fireEvent.blur(trigger);
+      visible = true;
+      fireEvent.focus(trigger);
+      expect(tooltip).toHaveProperty('hidden', false);
+    } finally {
+      HTMLElement.prototype.matches = matches;
+    }
+  });
+
+  it('counts a focus as visible where the browser has no :focus-visible', () => {
+    const matches = HTMLElement.prototype.matches;
+    HTMLElement.prototype.matches = function (selector: string) {
+      if (selector === ':focus-visible') throw new SyntaxError(selector);
+      return matches.call(this, selector);
+    };
+    try {
+      render(
+        <Tooltip content="Supplemental help" trigger={<button>More</button>} />,
+      );
+      fireEvent.focus(screen.getByRole('button', { name: 'More' }));
+      expect(screen.getByText('Supplemental help')).toHaveProperty(
+        'hidden',
+        false,
+      );
+    } finally {
+      HTMLElement.prototype.matches = matches;
+    }
   });
 
   it('when disabled, neither describes the trigger nor opens, and leaves Escape alone', async () => {
@@ -274,7 +381,7 @@ describe('Tooltip', () => {
       expect(list.hasAttribute('aria-describedby')).toBe(false);
     });
 
-    it('opens on hover, focus and touch and hides on Escape, as a description does', async () => {
+    it('opens on hover and focus, not on a tap, and hides on Escape, as a description does', async () => {
       const user = userEvent.setup();
       render(
         <div>
@@ -300,11 +407,8 @@ describe('Tooltip', () => {
       // Hidden again, it still names the trigger.
       expect(screen.getByRole('button', { name: 'Habitat map' })).toBe(trigger);
       await user.tab();
+      // A tap on the control presses it and leaves the name hidden.
       fireEvent.pointerDown(trigger, { pointerType: 'touch' });
-      expect(tooltip).toHaveProperty('hidden', false);
-      fireEvent.pointerDown(screen.getByRole('button', { name: 'Outside' }), {
-        pointerType: 'touch',
-      });
       expect(tooltip).toHaveProperty('hidden', true);
     });
 

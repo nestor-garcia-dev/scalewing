@@ -260,3 +260,50 @@ test('ActionMenu with align end stays over the card its trigger ends', async ({
   await expect(menu).toBeHidden();
   await expect(trigger).toBeFocused();
 });
+
+test('ActionMenu header shows the station above the commands, outside the arrow keys', async ({
+  page,
+}, testInfo) => {
+  await page.goto('/#action-menu');
+  const trigger = page.getByRole('button', {
+    name: 'Estación Laguna Azul · Aves acuáticas',
+  });
+  await trigger.focus();
+  await page.keyboard.press('Enter');
+  const menu = page.getByRole('menu', {
+    name: 'Estación Laguna Azul · Aves acuáticas',
+  });
+  await expect(menu).toBeVisible();
+  const header = page.locator('.sw-action-menu-header');
+  await expect(header).toContainText('Estación Laguna Azul');
+  await expect(header).toContainText('42 avistamientos');
+  // The menu is described by the header, which is above every command.
+  await expect(menu).toHaveAttribute(
+    'aria-describedby',
+    (await header.getAttribute('id'))!,
+  );
+  const headerBox = await header.boundingBox();
+  const firstBox = await menu.getByRole('menuitem').first().boundingBox();
+  expect(headerBox!.y + headerBox!.height).toBeLessThanOrEqual(firstBox!.y);
+  // The first command has focus, and the arrow keys stay on the commands.
+  const english = menu.getByRole('menuitem', { name: 'English' });
+  await expect(english).toBeFocused();
+  await page.keyboard.press('ArrowUp');
+  await expect(
+    menu.getByRole('menuitem', { name: 'Cambiar de estación' }),
+  ).toBeFocused();
+  await page.keyboard.press('ArrowDown');
+  await expect(english).toBeFocused();
+  // English is marked as English on the Spanish row.
+  await expect(english.locator('[lang="en"]')).toHaveText('English');
+  // The popover holding both stays inside the screen.
+  const popover = page.locator('.sw-action-menu-list');
+  const box = await popover.boundingBox();
+  const width = await page.evaluate(() => document.documentElement.clientWidth);
+  expect(box!.x).toBeGreaterThanOrEqual(0);
+  expect(box!.x + box!.width).toBeLessThanOrEqual(width);
+  await popover.screenshot({ path: testInfo.outputPath('menu-header.png') });
+  await page.keyboard.press('Escape');
+  await expect(menu).toBeHidden();
+  await expect(trigger).toBeFocused();
+});

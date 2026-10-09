@@ -9,6 +9,8 @@ import {
   type ReactElement,
 } from 'react';
 
+import { focusIsVisible, tapActs } from './tooltip/tooltip-open.js';
+import { useTooltipPlacement } from './tooltip/use-tooltip-placement.js';
 import {
   tooltipTriggerAria,
   type TooltipRelationship,
@@ -59,6 +61,8 @@ export function Tooltip({
   const shown = open && !disabled;
   const id = useId();
   const wrapperRef = useRef<HTMLSpanElement>(null);
+  const tooltipRef = useRef<HTMLSpanElement>(null);
+  useTooltipPlacement(shown, tooltipRef, wrapperRef);
   const triggerAria = tooltipTriggerAria(
     trigger.props,
     disabled ? undefined : id,
@@ -84,7 +88,12 @@ export function Tooltip({
       onBlurCapture={(event) => {
         if (!event.currentTarget.contains(event.relatedTarget)) setOpen(false);
       }}
-      onFocusCapture={() => setOpen(true)}
+      onFocusCapture={(event) => {
+        // A click or a tap focuses the trigger too; only a visible focus
+        // (the keyboard) opens the tooltip, so a clicked control does not
+        // keep its help shown until the focus moves.
+        if (focusIsVisible(event.target)) setOpen(true);
+      }}
       onKeyDownCapture={(event) => {
         // Escape hides a visible tooltip and nothing else, so a surrounding
         // Dialog does not also close. A hidden tooltip leaves Escape alone.
@@ -101,13 +110,23 @@ export function Tooltip({
           setOpen(false);
       }}
       onPointerDownCapture={(event) => {
-        if (event.pointerType === 'touch') setOpen((current) => !current);
+        if (event.pointerType !== 'touch') return;
+        // A tap on a control does what the control does; only a trigger
+        // that does nothing else on a tap toggles its help.
+        if (tapActs(event.target, event.currentTarget)) setOpen(false);
+        else setOpen((current) => !current);
       }}
       ref={wrapperRef}
     >
       {cloneElement(trigger, triggerAria)}
       {disabled ? null : (
-        <span className="sw-tooltip" hidden={!shown} id={id} role="tooltip">
+        <span
+          className="sw-tooltip"
+          hidden={!shown}
+          id={id}
+          ref={tooltipRef}
+          role="tooltip"
+        >
           {content}
         </span>
       )}

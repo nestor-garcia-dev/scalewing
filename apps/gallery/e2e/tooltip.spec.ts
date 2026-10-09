@@ -11,9 +11,14 @@ test('Tooltip supports hover, focus, Escape, blur, and touch without replacing t
   await expect(tooltip).toHaveCount(0);
 
   if (testInfo.project.name === 'mobile-es') {
+    // A tap presses the button and leaves its help closed.
     await trigger.tap();
-    await expect(tooltip).toBeVisible();
     await expect(section.getByText('Actions pressed: 1.')).toBeVisible();
+    await expect(tooltip).toHaveCount(0);
+    // A tap on a badge, which does nothing else, toggles its help.
+    const badge = section.getByText('Protected', { exact: true });
+    await badge.tap();
+    await expect(tooltip).toHaveText(/may only be counted from the hides/);
     await section.getByRole('heading', { name: 'Tooltip' }).tap();
     await expect(tooltip).toHaveCount(0);
   } else {
@@ -21,9 +26,20 @@ test('Tooltip supports hover, focus, Escape, blur, and touch without replacing t
     await expect(tooltip).toBeVisible();
     await page.mouse.move(0, 0);
     await expect(tooltip).toHaveCount(0);
+    // A click focuses the button but does not open its help; the hover
+    // that came with it closes when the pointer leaves.
+    await trigger.click();
+    await page.mouse.move(0, 0);
+    await expect(trigger).toBeFocused();
+    await expect(tooltip).toHaveCount(0);
   }
 
+  // A keyboard focus opens it.
+  await section.getByRole('heading', { name: 'Tooltip' }).click();
   await trigger.focus();
+  await page.keyboard.press('Shift+Tab');
+  await page.keyboard.press('Tab');
+  await expect(trigger).toBeFocused();
   await expect(tooltip).toBeVisible();
   const tooltipId = await tooltip.getAttribute('id');
   expect(tooltipId).toBeTruthy();
@@ -32,10 +48,13 @@ test('Tooltip supports hover, focus, Escape, blur, and touch without replacing t
   await trigger.press('Escape');
   await expect(tooltip).toHaveCount(0);
   await expect(trigger).toBeFocused();
-  await trigger.evaluate((element: HTMLElement) => element.blur());
-  await trigger.focus();
+  await page.keyboard.press('Tab');
+  await page.keyboard.press('Shift+Tab');
   await expect(tooltip).toBeVisible();
-  await section.getByRole('button', { name: 'Habitat guide' }).focus();
+  await page.keyboard.press('Tab');
+  await expect(
+    section.getByRole('button', { name: 'Habitat guide' }),
+  ).toBeFocused();
   await expect(firstTooltip).toBeHidden();
   await expect(section.getByRole('tooltip')).toHaveCount(1);
 });
@@ -64,8 +83,8 @@ test('Tooltip disabled keeps the trigger mounted without a tooltip or descriptio
   await map.focus();
   await map.hover();
   await expect(section.getByRole('tooltip')).toHaveCount(0);
-  // The sighting, habitat guide, range map and field notes tooltips.
-  await expect(section.locator('.sw-tooltip')).toHaveCount(4);
+  // The sighting, habitat guide, badge, range map and field notes tooltips.
+  await expect(section.locator('.sw-tooltip')).toHaveCount(5);
   // The same button, not a new one, so a focused trigger would keep its focus.
   expect(await before.evaluate((element) => element.isConnected)).toBe(true);
 });
@@ -115,9 +134,10 @@ test('Tooltip relationship label names an icon-only trigger once, and its own na
   });
 
   if (testInfo.project.name === 'mobile-es') {
+    // A tap opens the destination and leaves its name closed.
     await map.tap();
-    await expect(section.getByRole('tooltip')).toHaveText('Range map');
     await expect(section.getByText('Opened: Range map.')).toBeVisible();
+    await expect(section.getByRole('tooltip')).toHaveCount(0);
     await section.getByRole('heading', { name: 'Tooltip' }).tap();
   } else {
     await map.hover();
@@ -126,7 +146,10 @@ test('Tooltip relationship label names an icon-only trigger once, and its own na
   }
   await expect(section.getByRole('tooltip')).toHaveCount(0);
 
+  // A keyboard focus shows the name.
   await map.focus();
+  await page.keyboard.press('Shift+Tab');
+  await page.keyboard.press('Tab');
   const tooltip = section.getByRole('tooltip');
   await expect(tooltip).toHaveText('Range map');
   await expect(tooltip).toHaveAttribute('id', tooltipId ?? '');
@@ -164,4 +187,35 @@ test('Tooltip relationship label names an icon-only trigger once, and its own na
   await expect(map).toHaveAttribute('aria-labelledby', /.+/);
   await expect(map).toHaveAccessibleName('Range map');
   expect(await before.evaluate((element) => element.isConnected)).toBe(true);
+});
+
+test('Tooltip keeps its bubble inside the screen beside a trigger at the edge', async ({
+  page,
+}, testInfo) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/#tooltip');
+  const section = page.locator('#tooltip');
+  const badge = section.getByText('Protected', { exact: true });
+  await badge.scrollIntoViewIfNeeded();
+  // Move the badge to the screen's right edge, as a header's last control.
+  await badge.evaluate((element) => {
+    const anchor = element.closest('.sw-tooltip-anchor') as HTMLElement;
+    anchor.style.position = 'fixed';
+    anchor.style.right = '8px';
+    anchor.style.top = '120px';
+  });
+  await badge.focus();
+  const tooltip = section.getByRole('tooltip');
+  await expect(tooltip).toBeVisible();
+  const box = await tooltip.boundingBox();
+  const width = await page.evaluate(() => document.documentElement.clientWidth);
+  expect(box!.x).toBeGreaterThanOrEqual(8);
+  expect(box!.x + box!.width).toBeLessThanOrEqual(width - 8 + 0.5);
+  // Under the badge, a small gap away.
+  const anchorBox = await badge.boundingBox();
+  expect(box!.y).toBeGreaterThanOrEqual(anchorBox!.y + anchorBox!.height);
+  await page.screenshot({
+    path: testInfo.outputPath('tooltip-edge.png'),
+    clip: { x: 0, y: 80, width: 390, height: 200 },
+  });
 });

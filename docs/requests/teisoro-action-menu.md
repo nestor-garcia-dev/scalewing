@@ -122,3 +122,35 @@ Rejected alternatives:
 - Keeping a gap from, or flipping away from, any other trigger the menu would cover (the review's gap suggestion). A menu is a popup over the page: it covers what is below it by design, is drawn on top, and closes on a press outside, so a press on the covered trigger closes the menu rather than acting on the wrong row. Searching the page for other triggers to avoid would make the placement depend on unrelated content.
 
 Evidence: `anchored-position.test.ts` (`align: 'end'` preferred where the start fits, falling back to the start, mirrored in right-to-left); `action-menu.test.tsx` "lines up with the trigger end with align end, where the start would fit" (the review's 1280 px geometry: left 1140 with `align="end"`, 1161 by default); `apps/gallery/e2e/action-menu.spec.ts` "ActionMenu with align end stays over the card its trigger ends" on desktop-en, mobile-es and forced-colors, with the gallery's two cards in a row ("Actions for Red fox"): the menu's end is at the trigger's end, inside the card, a gap below the trigger, and Escape returns focus.
+
+## Follow-up request (2026-10-08, Teisoro F-006-S11 task 1875): a header for who is signed in
+
+Status: implemented on `claude/teisoro-f006-s11-parts` for Teisoro F-006-S11 task 1875; pull request pending review.
+Source: Teisoro UX review `admin-settings.md`, finding SET-2 (major; the Scalewing part). Below 768 px the workspace's account controls fold into an `ActionMenu` whose items are the language and Sign out. The person's name, role and that the session is view only exist only in the menu's accessible name: a sighted person cannot see them in the open menu. Teisoro now shows the first name on the trigger (F-007 task 1625) and asked for a header slot for the rest.
+
+Teisoro need: the phone's account menu shows "Alex Rivera", "Administrator" and, when it applies, the view-only line, above Language and Sign out, without making them commands.
+
+Proposed API: `header?: ReactNode` on `ActionMenu`.
+
+Behavior and failure boundary: with a header the popover (`sw-action-menu-list`, positioned and dismissed as before, and the element the trigger's `aria-controls` names) holds a `div.sw-action-menu-header` and then the `role="menu"` element (`sw-action-menu-items`), which keeps the label and the commands. The header is a flex column (each child a line), caption size, muted, with the commands' inline padding so its words line up with theirs, and a hairline under it. It is outside the menu element, so it is not a menu child, is skipped by the arrow keys, Home and End, and takes no focus; the menu is described by it (`aria-describedby`), so a screen reader reads it on open. Phrasing content only, nothing focusable (documented). Without a header (`undefined`, `null` or `false`) the markup is exactly as before, so existing tests that read the menu as the popover still pass.
+
+Rejected alternatives:
+
+- A disabled first item. It would be in the arrow-key order and announced as a command that is unavailable.
+- `role="presentation"` content inside the menu. A menu owns menu items, groups and separators; loose text in it is not reliably read.
+- A `description` string. The person's name and role are two lines and a view-only line may follow; a node lets the consumer use `Text` for each.
+
+Evidence: `action-menu-header.test.tsx` (unchanged markup without a header; with one, the header before the menu in the popover, the menu described by it, the arrow keys only on the commands, `aria-controls` on the popover; `null`, `false` and an empty string; the generated rules); `apps/gallery/e2e/action-menu.spec.ts` "ActionMenu header shows the station above the commands, outside the arrow keys" on desktop-en, mobile-es and forced-colors: the Spanish station menu shows "Estación Laguna Azul" and its census line above "English", the menu's `aria-describedby` is the header, ArrowUp and ArrowDown stay on the two commands, and the popover stays inside the screen.
+
+## Follow-up request (2026-10-08, Teisoro F-006-S11 task 1875): a command in another language
+
+Status: implemented on `claude/teisoro-f006-s11-parts` for Teisoro F-006-S11 task 1875; pull request pending review.
+Source: Teisoro UX review `admin-settings.md`, finding SET-14 (polish; the Scalewing part). The phone account menu's language command is "English" on a Spanish page and "Español" on an English one; `ActionMenuItem.label` is a string, so Teisoro cannot mark its language (WCAG 3.1.2), as it does for the header's `SegmentedControl` items with a `lang` span.
+
+Proposed API: `lang?: string` on `ActionMenuItem`.
+
+Behavior: the label's span carries `lang`; the command (`menuitem`) does not, so its name is read in the label's language and nothing else changes. Without it the markup is unchanged.
+
+Rejected alternatives: a `label: ReactNode` (the label is the command's text and its name, and a string keeps it plain), or `lang` on the `menuitem` (it would also cover the icon's and any future description's language).
+
+Evidence: `action-menu-header.test.tsx` ("ActionMenuItem lang": the English command's label span is `lang="en"`, the other command and the `menuitem` itself carry none); the gallery spec above checks `[lang="en"]` on "English".

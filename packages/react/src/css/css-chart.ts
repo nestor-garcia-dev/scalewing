@@ -3,6 +3,48 @@ import { typographyVariants } from '@scalewing/tokens';
 const caption = typographyVariants.caption;
 const data = typographyVariants.data;
 
+/*
+ * A diverging chart puts zero in the middle of each track, marked by a
+ * hairline: a positive bar starts there and grows toward the inline end, a
+ * negative one ends there and grows toward the start, each at most half the
+ * track. The fill keeps its share of the scale (`--sw-bar-fill`), so a
+ * bar is half as long as in the magnitude layout, on the same scale. The
+ * end at zero is square, so the bars meet the hairline.
+ */
+function divergingRules(): string {
+  return `.sw-bar-chart-diverging .sw-bar-chart-track {
+  position: relative;
+}
+
+.sw-bar-chart-diverging .sw-bar-chart-track::before {
+  background: var(--sw-color-border);
+  content: '';
+  inset-block: 0;
+  inset-inline-start: 50%;
+  position: absolute;
+  width: 1px;
+}
+
+.sw-bar-chart-diverging .sw-bar-chart-fill {
+  border-end-start-radius: 0;
+  border-start-start-radius: 0;
+  margin-inline-start: 50%;
+  width: calc(var(--sw-bar-fill, 0) * 50%);
+}
+
+.sw-bar-chart-diverging .sw-bar-chart-fill-negative {
+  border-end-end-radius: 0;
+  border-end-start-radius: inherit;
+  border-start-end-radius: 0;
+  border-start-start-radius: inherit;
+  margin-inline-start: calc(50% - var(--sw-bar-fill, 0) * 50%);
+}
+
+@media (forced-colors: active) {
+  .sw-bar-chart-diverging .sw-bar-chart-track::before { background: CanvasText; }
+}`;
+}
+
 export function cssChartClasses(): string {
   return `.sw-bar-chart {
   display: grid;
@@ -82,7 +124,9 @@ export function cssChartClasses(): string {
 .sw-bar-chart-axis-track {
   display: flex;
   justify-content: space-between;
-}`;
+}
+
+${divergingRules()}`;
 }
 
 export function chartClassCatalog(): string[] {
@@ -97,5 +141,6 @@ export function chartClassCatalog(): string[] {
     'sw-bar-chart-fill-negative',
     'sw-bar-chart-value',
     'sw-bar-chart-axis-track',
+    'sw-bar-chart-diverging',
   ];
 }

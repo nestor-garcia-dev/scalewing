@@ -74,3 +74,47 @@ Rejected alternatives:
 - A `scrollCue` prop. There is no case where a table that scrolls should hide that it does.
 
 Evidence: `scroll-region.test.tsx` (`scrollOverflow`: fits within a pixel, start, middle and end, RTL; Table: no cue when it fits, `sw-scroll-more-end` then both then `sw-scroll-more-start` as it scrolls, a resize measures again; the generated rules, RTL mirrored and the both-edges rule last); the existing wrapper test in `data.test.tsx` (a table that fits keeps exactly `sw-table-wrap`); `scroll-region.test.tsx` also checks the region and its table are both observed for resizes, and the strip's pinned shade rules; `apps/gallery/e2e/table.spec.ts` "a wide Table shades the edge with more columns past it, on a phone too" on desktop-en, mobile-es and forced-colors: the gallery's nine-column "Survey log" fits at 1280 px with no class and no shadow; in forced colors at 390 px it overflows with `sw-scroll-more-end` and no shadow; at 390 px it overflows with `sw-scroll-more-end` and a right-edge inset shadow, both classes at 40 px in, `sw-scroll-more-start` and a left-edge shadow at the end, and the region stays within the screen; "a wide right-to-left Table …" on mobile-es: with the region turned right to left, the end shade is on the left and, scrolled to the end, the start shade on the right; `apps/gallery/e2e/denomination-grid.spec.ts` "a scrolled DenominationGrid strip casts its start shade from the pinned labels": at 390 px in every project the eleven-column "Sightings by hour" strip, scrolled 60 px, draws the gradient past its pinned labels, and in forced colors the gradient is `display: none`.
+
+## Follow-up request (2026-10-08, Teisoro F-006-S11 task 1875): a sortable column header
+
+Status: implemented on `claude/teisoro-f006-s11-parts` for Teisoro F-006-S11 task 1875; pull request pending review.
+Source: Teisoro UX review `admin-reports.md`, finding RPT-13 (minor; the Scalewing part). The Services variance audit sorts by date, expected, counted, drop and variance. Teisoro first made each header a ghost `Button`, which read as a link in the accent color with no sort direction; F-007 task 1620 then set a ghost `Button` in the caption style with Lucide arrows (`ArrowUp`, `ArrowDown`, a muted `ArrowUpDown`) and `aria-sort` on the cell. That is a product-owned control for a table part every sortable table needs.
+
+Teisoro need: the variance audit's five sortable headers read as headers, show which column is sorted and which way, and are one control with the right semantics.
+
+Proposed API: on `TableCell as="th"`, `sort?: TableSort` (`'ascending' | 'descending' | 'none'`) with `onSort?: () => void`. The consumer keeps the sorting and the rows' order; the cell only shows and announces it.
+
+Behavior and failure boundary: the cell's children become a `button type="button"` (`sw-table-sort`) that inherits the header's text style (caption size, weight 600, letter spacing, the muted color; the text color on hover and on the sorted column), with no fill and no underline, so it reads as the column's name. A private CSS glyph follows the name (`sw-table-sort-glyph`, the stroked chevron of Accordion and Select): up for `ascending`, down for `descending`, a smaller pair at the quiet opacity for `none`. In a `numeric` or `align="end"` cell the glyph goes before the name (`row-reverse`), so the name's end lines up with the figures. The cell has `aria-sort` set to the direction while it is sorted and no `aria-sort` at `none`, as the APG sortable table does (one sorted header). The button has the accent focus ring, a step of padding for it taken back by a negative margin, and grows to 44 px on a coarse pointer. A `sort` on a data cell, `sort` without `onSort` or the reverse throws a `TypeError`, an unknown `sort` a `RangeError`; a data cell's types refuse `sort`.
+
+Rejected alternatives:
+
+- `aria-sort` alone, the consumer drawing the glyph. That is what Teisoro does today, with a product icon family inside a borrowed ghost button.
+- A `sortable` table taking the columns and sorting the rows. Sorting is the consumer's (dates, money, locale order, server sorting); the primitive only needs the header part.
+- A Lucide arrow in the package. Scalewing ships no icon family (ADR 0008); the chevron is private control chrome, as in Accordion and Select.
+
+Evidence: `table-sort.test.tsx` (a header button named by its text, `aria-sort` only on the sorted column, the glyph classes per direction, `onSort` called; the refusals; the generated rules and catalog); `apps/gallery/e2e/table-sort.spec.ts` on desktop-en, mobile-es and forced-colors: the gallery's "Sorted census" starts by sightings descending, the Habitat header is plain, the buttons keep the header's font size and weight with no fill or underline, the numeric header's chevron sits before its name and the name's end lines up with the figures within a pixel, a press sorts by species ascending and Enter turns it round, and the button is 44 px tall on the coarse pointer.
+
+## Follow-up request (2026-10-08, Teisoro F-006-S11 task 1875): column widths that hold, and top alignment
+
+Status: implemented on `claude/teisoro-f006-s11-parts` for Teisoro F-006-S11 task 1875; pull request pending review.
+Source: Teisoro UX reviews `vault-change-orders.md`, finding CHG-15 (minor; the part left to Scalewing: "a narrow date column in the debt history"), and `vault-history.md`, finding HIS-12 (polish; "fixed column widths and top alignment"). The bank debt history's Date column takes about 390 px of a 1280 px card for "Sep 25, 2026", because an auto table shares spare width among its columns. The vault history's movement and audit tables move their columns when a filter hides a row (Description shifts left between two frames), and an audit row's cells sit centred against a three-line status. `Table` sets no column widths and no vertical alignment, and Teisoro writes no CSS.
+
+Teisoro need: the debt history's date column only as wide as its dates; the history tables' columns the same whatever rows the filter leaves; every cell of a tall row starting on its first line.
+
+Proposed API: `Table layout?: 'auto' | 'fixed'`, `Table verticalAlign?: 'middle' | 'top'`, and `TableCell width?: 'min' | 'xs' | 'sm' | 'md' | 'lg' | 'xl'`.
+
+Behavior and failure boundary:
+
+- `layout="fixed"` adds `sw-table-fixed` (`table-layout: fixed`): the browser sizes the columns from the header row's widths alone and never measures the rows, so no column moves when the rows change. A column without a width shares what is left equally, and when every column has one the spare width is shared in proportion to them; when the widths fill the container the table scrolls in its region and such a column gets no room, so a table that can be narrower than its widths sizes every column (the JSDoc and the gallery say so).
+- `width` adds `sw-table-col-<size>`. The sizes are rem widths, so a header in caption type and a cell in body type agree: `xs` 4 (a count or short code), `sm` 6 (a short date or an amount), `md` 8 (a date with its year), `lg` 12 (a date and a time), `xl` 16 (a name or a short phrase); the cell's padding is outside them. `min` is the one-percent idiom with `white-space: nowrap`: in an auto table the column takes the least room its content allows and the cell keeps one line, so it goes on every cell of the column; a fixed table never measures content, so there it is no width (`.sw-table-fixed .sw-table-col-min { width: auto }`, after the auto rule it ties).
+- `verticalAlign="top"` adds `sw-table-top`, which sets `vertical-align: top` on the table's own cells (it outranks the default `middle`).
+- An unknown layout, alignment or width throws a `RangeError`. `TableCell` no longer accepts the deprecated HTML `width` attribute, which was never styled; the prop takes its name.
+
+Rejected alternatives:
+
+- Arbitrary widths (`width="12ch"`, a number). Those are arbitrary-value classes or inline styles; a short scale covers a data table's columns.
+- `ch` widths. A `ch` set on a caption-size header is narrower than the same `ch` in the body type under it.
+- Column widths on `Table` (`columns={[…]}`) or `<col>` elements. Widths belong with the column's header cell, where the consumer already names the column, and a `colgroup` would be a second place to keep in order.
+- `table-layout: fixed` by default. An auto table that fits its content is what most tables want; fixed is for a table whose rows change under a reader's eyes.
+
+Evidence: `table-layout.test.tsx` (defaults unchanged; each class; the refusals; no `width` attribute; the generated rules, the fixed table's `min` after the auto one); `apps/gallery/e2e/table-layout.spec.ts` on desktop-en, mobile-es and forced-colors: the gallery's fixed "Field log" (every column sized) keeps every header's left edge and width when "Verified entries only" hides a row; at 390 px each column is its rem width plus its padding and the table scrolls, at 1280 px the spare width is shared in proportion; and a tall row's cells share one first-line top; the "Feeding log" `min` date column is its text plus its padding, on one line.
