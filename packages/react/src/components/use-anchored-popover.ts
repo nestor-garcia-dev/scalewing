@@ -23,7 +23,8 @@ function layoutViewport(): { width: number; height: number } {
   };
 }
 
-function placePopover(
+/** Places a fixed (or top-layer) `node` beside `anchor`, inside the viewport. */
+export function placePopover(
   node: HTMLElement,
   anchor: HTMLElement,
   { align = 'start', flipInline = false }: AnchoredPopoverPlacement,
