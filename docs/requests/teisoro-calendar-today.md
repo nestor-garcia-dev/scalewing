@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: in review on `feat/react-calendar-today` (2026-10-08).
+Status: merged in #99 (2026-10-08) and released in `@scalewing/react` 1.21.0; Teisoro passes its store day on branch `claude/scalewing-calendar-today`.
 Renderer: react
 Missing surface: `today` prop on `DateField` and `CalendarButton` (a `YYYY-MM-DD` date, default the device's local date).
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: the calendar's today is private to the dialog (`useCalendarPopup` reads `todayDateOnly()`, the device clock). A consumer cannot move the `aria-current="date"` ring, the empty field's starting day, or what **Today** picks.
