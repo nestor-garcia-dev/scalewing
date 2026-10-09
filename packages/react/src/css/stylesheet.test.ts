@@ -555,6 +555,21 @@ describe('generated CSS', () => {
         '@media (pointer: coarse) {\n  .sw-button.sw-calendar-button',
       ),
     ).toBeGreaterThan(css.indexOf('.sw-button-md.sw-calendar-button'));
+    // InfoTip's glyph button is the same square icon button.
+    expect(catalog).toContain('sw-info-tip');
+    expect(css).toContain(
+      '.sw-button.sw-info-tip {\n  flex: none;\n  padding-inline: 0;\n}',
+    );
+    for (const size of ['xs', 'sm', 'md'])
+      expect(css).toContain(
+        `.sw-button-${size}.sw-info-tip { min-width: var(--sw-control-${size}-min-height); }`,
+      );
+    expect(css).toContain(
+      '@media (pointer: coarse) {\n  .sw-button.sw-info-tip {\n    min-height: var(--sw-control-md-min-height);\n    min-width: var(--sw-control-md-min-height);',
+    );
+    expect(
+      css.indexOf('@media (pointer: coarse) {\n  .sw-button.sw-info-tip'),
+    ).toBeGreaterThan(css.indexOf('.sw-button-md.sw-info-tip'));
     expect(catalog).toContain('sw-dialog');
     expect(catalog).toContain('sw-dialog-lg');
     expect(css).toContain('.sw-accordion');

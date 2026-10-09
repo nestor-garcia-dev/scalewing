@@ -20,6 +20,7 @@ import { cssTextClasses } from './css-text.js';
 import { cssSpinnerClasses } from './css-spinner.js';
 import { cssProgressClasses } from './css-progress.js';
 import { cssTooltipClasses } from './css-tooltip.js';
+import { cssInfoTipClasses } from './css-info-tip.js';
 import { cssSeparatorClasses } from './css-separator.js';
 import { cssStatTileClasses } from './css-stat-tile.js';
 import { cssTabsClasses } from './css-tabs.js';
@@ -145,6 +146,8 @@ ${cssSpinnerClasses()}
 ${cssProgressClasses()}
 
 ${cssTooltipClasses()}
+
+${cssInfoTipClasses()}
 
 ${cssSeparatorClasses()}
 

@@ -8,6 +8,7 @@ import { RadioGroupSection } from './sections/radio-group.js';
 import { SpinnerSection } from './sections/spinner.js';
 import { ProgressSection } from './sections/progress.js';
 import { TooltipSection } from './sections/tooltip.js';
+import { InfoTipSection } from './sections/info-tip.js';
 import { SeparatorSection } from './sections/separator.js';
 import { ResponsiveVisibilitySection } from './sections/responsive-visibility.js';
 import { FilterChipsSection } from './sections/filter-chips.js';
@@ -160,6 +161,12 @@ export const catalog = [
     label: 'Tooltip',
     group: 'controls',
     Section: TooltipSection,
+  },
+  {
+    id: 'info-tip',
+    label: 'InfoTip',
+    group: 'controls',
+    Section: InfoTipSection,
   },
   {
     id: 'radio-group',

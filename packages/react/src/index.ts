@@ -36,6 +36,7 @@ export {
   type TooltipProps,
   type TooltipRelationship,
 } from './components/Tooltip.js';
+export { InfoTip, type InfoTipProps } from './components/InfoTip.js';
 export {
   RadioGroup,
   type RadioGroupOption,

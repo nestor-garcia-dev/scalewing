@@ -81,6 +81,13 @@ overage in warning and a shortage in danger (`teisoro-bar-chart.md`
 follow-up). Next: review and merge, release `@scalewing/react` (minor),
 and Teisoro pins it.
 
+Teisoro F-006-S11, PR #65 review (blocking): `InfoTip`, a toggletip, so
+an ⓘ beside a figure opens its tip on a tap, which a `Tooltip` on a
+`Button` never does since 1.22.0 (`teisoro-tooltip.md`, 2026-10-09
+follow-up). Branch `teisoro/f006-s11-info-tip`. Next: the coordinator's
+independent review, merge, release `@scalewing/react` (minor), and
+Teisoro replaces its no-op `Button` trigger with `InfoTip`.
+
 Teisoro F-007 task 1550: the design-system findings of the Vault UX
 review (the `vault-*.md` reports), one surface per commit:
 
