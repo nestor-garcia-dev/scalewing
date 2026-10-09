@@ -385,6 +385,12 @@ describe('DateField typed entry', () => {
         />,
       ),
     ).toThrow(RangeError);
+    for (const today of ['', '2024-3-19', '2024-02-30'])
+      expect(() =>
+        render(
+          <DateField label="Date" onChange={onChange} today={today} value="" />,
+        ),
+      ).toThrow(new RangeError('today must be a valid YYYY-MM-DD date'));
   });
 });
 
@@ -693,6 +699,57 @@ describe('DateField calendar', () => {
     expect(
       screen.getByRole('button', { name: 'Clear' }).hasAttribute('disabled'),
     ).toBe(true);
+  });
+
+  it("marks, opens on, and picks a given today instead of the device's", async () => {
+    // The device reads 2024-03-20; the business is still on 2024-03-19,
+    // its last allowed day.
+    const user = userEvent.setup();
+    const spy = vi.fn();
+    render(<ControlledField max="2024-03-19" spy={spy} today="2024-03-19" />);
+    await user.click(calendarButton());
+    const given = screen.getByRole('gridcell', {
+      name: 'Tuesday, March 19, 2024',
+    });
+    expect(given.getAttribute('aria-current')).toBe('date');
+    expect(given).toBe(document.activeElement);
+    const device = screen.getByRole('gridcell', {
+      name: 'Wednesday, March 20, 2024',
+    });
+    expect(device.getAttribute('aria-current')).toBeNull();
+    expect(device.getAttribute('aria-disabled')).toBe('true');
+    const pick = screen.getByRole('button', { name: 'Today' });
+    expect(pick.hasAttribute('disabled')).toBe(false);
+    await user.click(pick);
+    expect(spy).toHaveBeenCalledExactlyOnceWith('2024-03-19');
+  });
+
+  it('opens an empty field on a given today with no bounds', async () => {
+    // The device reads 2024-03-20; nothing clamps the starting day.
+    const user = userEvent.setup();
+    render(<ControlledField today="2024-03-12" />);
+    await user.click(calendarButton());
+    expect(focusedDate()).toBe('2024-03-12');
+  });
+
+  it('disables Today for a given today outside the bounds', async () => {
+    const user = userEvent.setup();
+    render(<ControlledField max="2024-03-19" today="2024-03-25" />);
+    await user.click(calendarButton());
+    expect(
+      screen.getByRole('button', { name: 'Today' }).hasAttribute('disabled'),
+    ).toBe(true);
+    expect(focusedDate()).toBe('2024-03-19');
+  });
+
+  it('spans the year list around a given today', async () => {
+    const user = userEvent.setup();
+    render(<ControlledField initial="2024-03-10" today="2100-01-01" />);
+    await user.click(calendarButton());
+    await user.click(screen.getByRole('combobox', { name: 'Year' }));
+    // Twenty years past the given today, not past the device's 2024.
+    expect(screen.getByRole('option', { name: '2120' })).toBeTruthy();
+    expect(screen.queryByRole('option', { name: '2121' })).toBeNull();
   });
 
   it('offers no Clear when required and no Today outside the bounds', async () => {

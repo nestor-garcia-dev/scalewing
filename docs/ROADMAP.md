@@ -51,6 +51,12 @@ Raiser review and the owner's review, merge, release `@scalewing/react`
 (minor), and Teisoro drops the destination's `aria-label` and pins it
 after its `disabled` pin (Teisoro PR #43) merges.
 
+Teisoro store-day calendars: `DateField` and `CalendarButton` `today`
+(new `teisoro-calendar-today.md`), so a calendar rings and picks the
+store's day instead of the device's. Branch `feat/react-calendar-today`.
+Next: review and merge, release `@scalewing/react` (minor), and Teisoro
+passes its store day wherever a calendar's `max` is that day.
+
 Teisoro F-007 task 1550: the design-system findings of the Vault UX
 review (the `vault-*.md` reports), one surface per commit:
 

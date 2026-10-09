@@ -197,3 +197,38 @@ test('CalendarButton keeps a square target, 44 px on a coarse pointer', async ({
     expect(border).not.toBe('rgba(0, 0, 0, 0)');
   else expect(border).toBe('rgba(0, 0, 0, 0)');
 });
+
+test("CalendarButton marks and picks a given today, not the device's", async ({
+  page,
+}) => {
+  // 08:00 UTC on Sep 30 is still 10 PM on Sep 29 at the Honolulu station;
+  // the device reads Sep 30 in every project's zone.
+  await page.clock.setFixedTime(new Date('2026-09-30T08:00:00Z'));
+  await page.goto('/#calendar-button');
+  const section = page.locator('#calendar-button');
+  const button = section.getByRole('button', {
+    name: 'Choose reef day, Sunday, September 27, 2026',
+  });
+  await button.click();
+  const calendar = page.getByRole('dialog', { name: 'Choose reef day' });
+  const stationDay = calendar.getByRole('gridcell', {
+    name: 'Tuesday, September 29, 2026',
+  });
+  await expect(stationDay).toHaveAttribute('aria-current', 'date');
+  const deviceDay = calendar.getByRole('gridcell', {
+    name: 'Wednesday, September 30, 2026',
+  });
+  await expect(deviceDay).not.toHaveAttribute('aria-current', /.*/);
+  await expect(deviceDay).toHaveAttribute('aria-disabled', 'true');
+
+  await calendar.getByRole('button', { name: 'Today' }).click();
+  await expect(calendar).toBeHidden();
+  await expect(
+    section.getByText('Serialized reef day: 2026-09-29.'),
+  ).toBeVisible();
+  await expect(
+    section.getByRole('button', {
+      name: 'Choose reef day, Tuesday, September 29, 2026',
+    }),
+  ).toBeFocused();
+});

@@ -239,6 +239,27 @@ describe('CalendarButton', () => {
     expect(trigger()).toBe(document.activeElement);
   });
 
+  it("marks and picks a given today instead of the device's", async () => {
+    // The device reads 2026-09-28; the business is still on 2026-09-27, its
+    // last allowed day, as a store's day lags a device in a later zone.
+    const user = userEvent.setup();
+    const spy = vi.fn();
+    render(<ControlledButton max="2026-09-27" spy={spy} today="2026-09-27" />);
+    await user.click(trigger());
+    const given = within(dialog()).getByRole('gridcell', {
+      name: 'Sunday, September 27, 2026',
+    });
+    expect(given.getAttribute('aria-current')).toBe('date');
+    const device = within(dialog()).getByRole('gridcell', {
+      name: 'Monday, September 28, 2026',
+    });
+    expect(device.getAttribute('aria-current')).toBeNull();
+    expect(device.getAttribute('aria-disabled')).toBe('true');
+    await user.click(screen.getByRole('button', { name: 'Today' }));
+    expect(spy).toHaveBeenCalledExactlyOnceWith('2026-09-27');
+    expect(trigger()).toBe(document.activeElement);
+  });
+
   it('closes without a change on Escape, on a press outside, and on a second press', async () => {
     const user = userEvent.setup();
     const spy = vi.fn();
@@ -334,6 +355,8 @@ describe('CalendarButton', () => {
       [{ value: '2026-02-30' }, 'value must be a valid YYYY-MM-DD date'],
       [{ min: '2026-9-1' }, 'min must be a valid YYYY-MM-DD date'],
       [{ max: 'soon' }, 'max must be a valid YYYY-MM-DD date'],
+      [{ today: '' }, 'today must be a valid YYYY-MM-DD date'],
+      [{ today: '2026-9-27' }, 'today must be a valid YYYY-MM-DD date'],
       [{ min: '2026-12-31', max: '2026-01-01' }, 'min must not be after max'],
       [{ weekStartsOn: 2 as never }, 'weekStartsOn must be 0 or 1'],
       [{ locale: 'en_US' }, 'locale must be a BCP 47 language tag'],

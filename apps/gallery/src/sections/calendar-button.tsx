@@ -2,6 +2,7 @@ import { Button, CalendarButton, Inline, Stack, Text } from '@scalewing/react';
 import { useState } from 'react';
 
 import { Section } from '../layout/Section.js';
+import { stationToday } from '../station-day.js';
 
 const spanishLabels = {
   previousMonth: 'Mes anterior',
@@ -38,6 +39,7 @@ type DayHeaderProps = {
   onChange: (value: string) => void;
   min?: string;
   max?: string;
+  today?: string;
   labels?: typeof spanishLabels;
   weekStartsOn?: 0 | 1;
 };
@@ -52,6 +54,7 @@ function DayHeader({
   onChange,
   min,
   max,
+  today,
   labels,
   weekStartsOn,
 }: DayHeaderProps) {
@@ -75,6 +78,7 @@ function DayHeader({
         max={max}
         min={min}
         onChange={onChange}
+        today={today}
         value={value}
         weekStartsOn={weekStartsOn}
       />
@@ -94,11 +98,13 @@ export function CalendarButtonSection() {
   const [surveyDay, setSurveyDay] = useState('2026-09-22');
   const [censusDay, setCensusDay] = useState('2026-09-22');
   const [releaseDay, setReleaseDay] = useState('2026-10-05');
+  const [stationDay] = useState(() => stationToday());
+  const [reefDay, setReefDay] = useState(() => shiftDay(stationDay, -2));
 
   return (
     <Section
       id="calendar-button"
-      purpose="CalendarButton is an icon-only button that opens the DateField calendar for a date the page already shows, such as a day heading with its own previous and next steps. Its name is the label plus the spoken date; picking a day calls onChange with YYYY-MM-DD and returns focus to the button. It keeps a 44 px target on touch screens at every size."
+      purpose="CalendarButton is an icon-only button that opens the DateField calendar for a date the page already shows, such as a day heading with its own previous and next steps. Its name is the label plus the spoken date; picking a day calls onChange with YYYY-MM-DD and returns focus to the button. It keeps a 44 px target on touch screens at every size. today sets the day the calendar marks and picks as today, such as a business's own day in its time zone; it defaults to the device's."
       title="CalendarButton"
       usage={`<Inline gap={1}>
   <Button aria-label="Previous day" variant="ghost" onPress={previous}>‹</Button>
@@ -109,6 +115,7 @@ export function CalendarButtonSection() {
     onChange={setSurveyDay}
     min="2026-09-01"
     max="2026-09-30"
+    today={stationDay}
   />
   <Button aria-label="Next day" variant="ghost" onPress={next}>›</Button>
 </Inline>`}
@@ -142,6 +149,23 @@ export function CalendarButtonSection() {
           />
           <Text color="muted" variant="caption">
             Español, semana desde el lunes. Día del censo: {censusDay}.
+          </Text>
+        </Stack>
+        <Stack gap={1}>
+          <DayHeader
+            locale="en-US"
+            max={stationDay}
+            nextLabel="Next reef day"
+            onChange={setReefDay}
+            pickLabel="Choose reef day"
+            previousLabel="Previous reef day"
+            today={stationDay}
+            value={reefDay}
+          />
+          <Text color="muted" variant="caption">
+            The reef station keeps Honolulu time. Its day, {stationDay}, is the
+            calendar&apos;s today and its last day, not this device&apos;s.
+            Serialized reef day: {reefDay}.
           </Text>
         </Stack>
         <Inline gap={2}>

@@ -2,6 +2,7 @@ import { DateField, Field, Grid, Stack, Text } from '@scalewing/react';
 import { useState } from 'react';
 
 import { Section } from '../layout/Section.js';
+import { stationToday } from '../station-day.js';
 
 const spanishLabels = {
   chooseDate: 'Elegir fecha',
@@ -23,11 +24,13 @@ export function DateFieldSection() {
   const [reviewDate, setReviewDate] = useState('2024-02-29');
   const [spanishDate, setSpanishDate] = useState('2024-11-03');
   const [surveyStart, setSurveyStart] = useState('2024-04-02');
+  const [stationDay] = useState(() => stationToday());
+  const [reefLogDate, setReefLogDate] = useState('');
 
   return (
     <Section
       id="date-field"
-      purpose="DateField keeps a date-only value. Type the date in the locale's order, or open the calendar: arrows move by day and week, PageUp and PageDown by month, Shift with them by year, and the month and year selectors jump decades. Callbacks receive YYYY-MM-DD or an empty value. Month and weekday names come from Intl; the control's own words come from labels. Its label row matches Field's, so a date beside a text field lines up."
+      purpose="DateField keeps a date-only value. Type the date in the locale's order, or open the calendar: arrows move by day and week, PageUp and PageDown by month, Shift with them by year, and the month and year selectors jump decades. Callbacks receive YYYY-MM-DD or an empty value. Month and weekday names come from Intl; the control's own words come from labels. Its label row matches Field's, so a date beside a text field lines up. today sets the day the calendar marks, opens on when empty, and picks as today, such as a business's own day in its time zone; it defaults to the device's."
       title="DateField"
       usage={`<DateField
   label="Sighting date"
@@ -95,6 +98,20 @@ export function DateFieldSection() {
             weekStartsOn={1}
           />
         </Grid>
+        <Grid columns={2} columnsBelow={{ md: 1 }} gap={4}>
+          <DateField
+            description="Today is the reef station's day, not this device's"
+            label="Reef log date"
+            max={stationDay}
+            onChange={setReefLogDate}
+            today={stationDay}
+            value={reefLogDate}
+          />
+          <Text color="muted" variant="caption">
+            The reef station keeps Honolulu time. Its day, {stationDay}, is the
+            calendar&apos;s today and its last day.
+          </Text>
+        </Grid>
         <Stack gap={1}>
           <Text color="muted" variant="caption">
             Serialized sighting date: {sightingDate || 'empty'}.
@@ -110,6 +127,9 @@ export function DateFieldSection() {
           </Text>
           <Text color="muted" variant="caption">
             Serialized Spanish date: {spanishDate || 'empty'}.
+          </Text>
+          <Text color="muted" variant="caption">
+            Serialized reef log date: {reefLogDate || 'empty'}.
           </Text>
         </Stack>
       </Stack>

@@ -28,6 +28,13 @@ export type DateFieldProps = {
   onChange: (value: string) => void;
   min?: string;
   max?: string;
+  /**
+   * The calendar's today `YYYY-MM-DD`: the day it marks as today, opens on
+   * when the field is empty, and picks with **Today**. Defaults to the
+   * device's local date; pass the business's day when it keeps its own
+   * time zone.
+   */
+  today?: string;
   disabled?: boolean;
   required?: boolean;
   description?: string;
@@ -49,6 +56,7 @@ export function DateField({
   onChange,
   min,
   max,
+  today,
   disabled = false,
   required = false,
   description,
@@ -81,6 +89,7 @@ export function DateField({
     value,
     disabled,
     onChange,
+    today,
     beforeSelect: entry.reset,
   });
 

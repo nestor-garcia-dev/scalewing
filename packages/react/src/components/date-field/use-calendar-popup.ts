@@ -1,11 +1,16 @@
 import { useId, useRef, useState, type RefObject } from 'react';
 
-import { todayDateOnly } from '../../date-only.js';
+import { assertDateOnly, todayDateOnly } from '../../date-only.js';
 
 export type CalendarPopupOptions = {
   value: string;
   disabled: boolean;
   onChange: (value: string) => void;
+  /**
+   * The calendar's today (`YYYY-MM-DD`); the device's local date when left
+   * out. An empty or malformed date throws a RangeError.
+   */
+  today?: string;
   /** Runs before a chosen date closes the calendar, such as a text reset. */
   beforeSelect?: () => void;
 };
@@ -42,8 +47,10 @@ export function useCalendarPopup({
   value,
   disabled,
   onChange,
+  today,
   beforeSelect,
 }: CalendarPopupOptions): CalendarPopup {
+  if (today !== undefined) assertDateOnly('today', today);
   const buttonRef = useRef<HTMLButtonElement>(null);
   const [open, setOpen] = useState(false);
   // Disabling closes the calendar for good, not just while disabled.
@@ -75,7 +82,7 @@ export function useCalendarPopup({
       id,
       onClose: close,
       onSelect: select,
-      today: todayDateOnly(),
+      today: today ?? todayDateOnly(),
     },
   };
 }
