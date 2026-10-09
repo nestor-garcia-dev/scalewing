@@ -187,7 +187,7 @@ Evidence: `denomination-grid.test.tsx` ("DenominationGrid cellTones": a tiles ro
 
 ## Follow-up request (2026-10-08, Teisoro F-006-S11 task 1875): strips that line up from card to card, again
 
-Status: implemented on `claude/teisoro-f006-s11-parts` for Teisoro F-006-S11 task 1875; pull request pending review. It picks up the withdrawn `labelWidth` above (DRW-27) with a design that meets the constraints recorded there.
+Status: merged in #101 (2026-10-09) and released in `@scalewing/react` 1.22.0 for Teisoro F-006-S11 task 1875; Teisoro pins and adopts it in task 1880. It picks up the withdrawn `labelWidth` above (DRW-27) with a design that meets the constraints recorded there.
 Source: Teisoro UX reviews `services-drawer-cash-and-audits.md`, finding DRW-27 (polish), and `vault-page-and-access.md`, finding VLT-14 (polish; the part left to Scalewing). The Services day's activity feed and the vault page's movement cards each draw one strip per card with the same bill columns; the "$1" column sits at about x 522, 515 and 483 on three activity cards and at x 409 and 441 on two vault cards, because an auto-layout table sizes its columns by each strip's own labels and counts.
 
 Teisoro need: in each feed, every bill column sits under the one on the card above, at 1280 and 390 px, in both languages.
@@ -209,7 +209,7 @@ Evidence: `denomination-aligned.test.tsx` (a plain strip has no class or style; 
 
 ## Follow-up request (2026-10-08, Teisoro F-006-S11 task 1875): the total column's name on screen
 
-Status: implemented on `claude/teisoro-f006-s11-parts` for Teisoro F-006-S11 task 1875; pull request pending review.
+Status: merged in #101 (2026-10-09) and released in `@scalewing/react` 1.22.0 for Teisoro F-006-S11 task 1875; Teisoro pins and adopts it in task 1880.
 Source: Teisoro UX review `vault-history.md`, finding HIS-11 (polish; the part left to Scalewing). The vault history's summary grid passes `totalLabel="Total"`, so a screen reader reads each total under "Total", but the strip puts the label in a `sw-sr-only` span: at 1280 px no word stands over "$40.00 … $50.00".
 
 Behavior (no API change): with `totalLabel`, the total column's `th` carries `sw-denomination-head` (the column heads' caption style, end-aligned) and its label is a `sw-denomination-total-label` span, shown from md up over the totals, its end on theirs. Below md the span is visually hidden with the other phone total rules, since each total sits under its row's label and the column takes no width; it stays in the table for a screen reader. Without `totalLabel` the empty corner is unchanged.

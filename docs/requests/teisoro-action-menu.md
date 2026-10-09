@@ -125,7 +125,7 @@ Evidence: `anchored-position.test.ts` (`align: 'end'` preferred where the start 
 
 ## Follow-up request (2026-10-08, Teisoro F-006-S11 task 1875): a header for who is signed in
 
-Status: implemented on `claude/teisoro-f006-s11-parts` for Teisoro F-006-S11 task 1875; pull request pending review.
+Status: merged in #101 (2026-10-09) and released in `@scalewing/react` 1.22.0 for Teisoro F-006-S11 task 1875; Teisoro pins and adopts it in task 1880.
 Source: Teisoro UX review `admin-settings.md`, finding SET-2 (major; the Scalewing part). Below 768 px the workspace's account controls fold into an `ActionMenu` whose items are the language and Sign out. The person's name, role and that the session is view only exist only in the menu's accessible name: a sighted person cannot see them in the open menu. Teisoro now shows the first name on the trigger (F-007 task 1625) and asked for a header slot for the rest.
 
 Teisoro need: the phone's account menu shows "Alex Rivera", "Administrator" and, when it applies, the view-only line, above Language and Sign out, without making them commands.
@@ -144,7 +144,7 @@ Evidence: `action-menu-header.test.tsx` (unchanged markup without a header; with
 
 ## Follow-up request (2026-10-08, Teisoro F-006-S11 task 1875): a command in another language
 
-Status: implemented on `claude/teisoro-f006-s11-parts` for Teisoro F-006-S11 task 1875; pull request pending review.
+Status: merged in #101 (2026-10-09) and released in `@scalewing/react` 1.22.0 for Teisoro F-006-S11 task 1875; Teisoro pins and adopts it in task 1880.
 Source: Teisoro UX review `admin-settings.md`, finding SET-14 (polish; the Scalewing part). The phone account menu's language command is "English" on a Spanish page and "Español" on an English one; `ActionMenuItem.label` is a string, so Teisoro cannot mark its language (WCAG 3.1.2), as it does for the header's `SegmentedControl` items with a `lang` span.
 
 Proposed API: `lang?: string` on `ActionMenuItem`.

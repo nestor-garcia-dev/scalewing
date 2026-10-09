@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: implemented on `claude/teisoro-f006-s11-parts` for Teisoro F-006-S11 task 1875; pull request pending review.
+Status: merged in #101 (2026-10-09) and released in `@scalewing/react` 1.22.0 for Teisoro F-006-S11 task 1875; Teisoro pins and adopts it in task 1880.
 Renderer: react
 Missing surface: `BarChart` `formatValue` (the axis and the values in the consumer's unit) and `diverging` (zero in the middle, negative bars to the start).
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: the chart draws its own axis with `formatBarChartValue(scaleMax)`, so a chart of dollars reads "0" to "0.3" with no unit, and every bar grows from the start, so a shortage and an overage of the same size look alike but for their color.

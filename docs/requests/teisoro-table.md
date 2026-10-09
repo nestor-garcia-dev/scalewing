@@ -77,7 +77,7 @@ Evidence: `scroll-region.test.tsx` (`scrollOverflow`: fits within a pixel, start
 
 ## Follow-up request (2026-10-08, Teisoro F-006-S11 task 1875): a sortable column header
 
-Status: implemented on `claude/teisoro-f006-s11-parts` for Teisoro F-006-S11 task 1875; pull request pending review.
+Status: merged in #101 (2026-10-09) and released in `@scalewing/react` 1.22.0 for Teisoro F-006-S11 task 1875; Teisoro pins and adopts it in task 1880.
 Source: Teisoro UX review `admin-reports.md`, finding RPT-13 (minor; the Scalewing part). The Services variance audit sorts by date, expected, counted, drop and variance. Teisoro first made each header a ghost `Button`, which read as a link in the accent color with no sort direction; F-007 task 1620 then set a ghost `Button` in the caption style with Lucide arrows (`ArrowUp`, `ArrowDown`, a muted `ArrowUpDown`) and `aria-sort` on the cell. That is a product-owned control for a table part every sortable table needs.
 
 Teisoro need: the variance audit's five sortable headers read as headers, show which column is sorted and which way, and are one control with the right semantics.
@@ -96,7 +96,7 @@ Evidence: `table-sort.test.tsx` (a header button named by its text, `aria-sort` 
 
 ## Follow-up request (2026-10-08, Teisoro F-006-S11 task 1875): column widths that hold, and top alignment
 
-Status: implemented on `claude/teisoro-f006-s11-parts` for Teisoro F-006-S11 task 1875; pull request pending review.
+Status: merged in #101 (2026-10-09) and released in `@scalewing/react` 1.22.0 for Teisoro F-006-S11 task 1875; Teisoro pins and adopts it in task 1880.
 Source: Teisoro UX reviews `vault-change-orders.md`, finding CHG-15 (minor; the part left to Scalewing: "a narrow date column in the debt history"), and `vault-history.md`, finding HIS-12 (polish; "fixed column widths and top alignment"). The bank debt history's Date column takes about 390 px of a 1280 px card for "Sep 25, 2026", because an auto table shares spare width among its columns. The vault history's movement and audit tables move their columns when a filter hides a row (Description shifts left between two frames), and an audit row's cells sit centred against a three-line status. `Table` sets no column widths and no vertical alignment, and Teisoro writes no CSS.
 
 Teisoro need: the debt history's date column only as wide as its dates; the history tables' columns the same whatever rows the filter leaves; every cell of a tall row starting on its first line.
