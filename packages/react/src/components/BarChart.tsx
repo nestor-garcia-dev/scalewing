@@ -9,6 +9,7 @@ import { cx } from '../class-names.js';
 import { type BarChartTone, barChartTones } from '../css/css-chart.js';
 
 export type { BarChartTone };
+export { barChartTones };
 
 export type BarChartItem = {
   label: string;

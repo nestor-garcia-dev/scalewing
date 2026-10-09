@@ -32,7 +32,7 @@ Source: Teisoro's storyboard re-review of F-006-S11 (task 1890). The Services va
 
 Teisoro need: in `VariancePanel.tsx`, each day's bar in the tone of its badge: `tone: dollars > 0 ? 'warning' : 'danger'`.
 
-Proposed and implemented API: `tone?: BarChartTone` on `BarChartItem`, where `BarChartTone` is `'accent' | 'success' | 'warning' | 'danger'` (exported from the package index). Generated classes `sw-bar-chart-fill-accent`, `sw-bar-chart-fill-success`, `sw-bar-chart-fill-warning` and `sw-bar-chart-fill-danger`.
+Proposed and implemented API: `tone?: BarChartTone` on `BarChartItem`, where `BarChartTone` is `'accent' | 'success' | 'warning' | 'danger'` (exported from the package index, with the list `barChartTones`, as `badgeTones` and `statTileTones` are). Generated classes `sw-bar-chart-fill-accent`, `sw-bar-chart-fill-success`, `sw-bar-chart-fill-warning` and `sw-bar-chart-fill-danger`.
 
 Behavior and failure boundary:
 

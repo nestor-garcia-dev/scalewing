@@ -2,7 +2,8 @@ import { typographyVariants } from '@scalewing/tokens';
 
 const body = typographyVariants.body;
 
-const typedInputs = [
+/** The native controls that take typed text: the canvas's text controls. */
+export const typedInputs = [
   "input[type='text']",
   "input[type='email']",
   "input[type='number']",
@@ -42,13 +43,16 @@ export const disabledControlForcedColors = `border-color: GrayText;
 
 /**
  * A select's chevron: two muted triangles drawn as background layers, so a
- * rule that adds a layer (a changed field's tint) lists them with it.
+ * rule that adds a layer (a changed field's tint) lists them with it. Their
+ * distance from the end is `--sw-select-chevron-inset`, which the select
+ * rule sets per size (space 4, and space 3 in an `xs` field), so every rule
+ * that lists the layers places them for the size it is in.
  */
 export const selectChevronLayers = {
   image: `linear-gradient(45deg, transparent 50%, var(--sw-color-muted) 50%),
     linear-gradient(135deg, var(--sw-color-muted) 50%, transparent 50%)`,
-  position: `calc(100% - var(--sw-space-4)) calc(50% - 1px),
-    calc(100% - calc(var(--sw-space-4) - var(--sw-space-1))) calc(50% - 1px)`,
+  position: `calc(100% - var(--sw-select-chevron-inset)) calc(50% - 1px),
+    calc(100% - calc(var(--sw-select-chevron-inset) - var(--sw-space-1))) calc(50% - 1px)`,
   size: `var(--sw-space-1) var(--sw-space-1),
     var(--sw-space-1) var(--sw-space-1)`,
 } as const;
@@ -124,6 +128,7 @@ ${focusTargetSelector} {
 
 [data-theme] select {
   ${controlSurface}
+  --sw-select-chevron-inset: var(--sw-space-4);
   appearance: none;
   background-image:
     ${selectChevronLayers.image};

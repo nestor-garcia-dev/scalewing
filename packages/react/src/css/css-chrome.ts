@@ -60,10 +60,9 @@ export function cssChromeClasses(): string {
   padding-inline: var(--sw-control-xs-padding-inline);
 }
 
+/* The chevron's layers place themselves from this inset (selectChevronLayers). */
 .sw-field-xs select {
-  background-position:
-    calc(100% - var(--sw-space-3)) calc(50% - 1px),
-    calc(100% - calc(var(--sw-space-3) - var(--sw-space-1))) calc(50% - 1px);
+  --sw-select-chevron-inset: var(--sw-space-3);
   height: calc(var(--sw-control-xs-min-height) - 1px - 1px);
   min-height: 0;
   padding-inline-end: calc(

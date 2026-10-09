@@ -2,7 +2,11 @@ import { contrastRatio } from '@scalewing/tokens';
 import { cleanup, render, screen } from '@testing-library/react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
-import { BarChart, type BarChartTone } from './components/BarChart.js';
+import {
+  BarChart,
+  type BarChartTone,
+  barChartTones,
+} from './components/BarChart.js';
 import { generateStylesheet, utilityClassCatalog } from './css/stylesheet.js';
 import {
   forEveryTheme,
@@ -187,7 +191,7 @@ describe('BarChart tone', () => {
       '.sw-bar-chart-fill-negative {\n  background: var(--sw-color-danger);\n}',
     );
     expect(negative).toBeGreaterThan(-1);
-    for (const tone of ['accent', 'success', 'warning', 'danger'] as const) {
+    for (const tone of barChartTones) {
       const rule = `.sw-bar-chart-fill-${tone} { background: var(--sw-color-${tone}); }`;
       expect(css.indexOf(rule)).toBeGreaterThan(negative);
       expect(utilityClassCatalog()).toContain(`sw-bar-chart-fill-${tone}`);
@@ -197,12 +201,22 @@ describe('BarChart tone', () => {
     );
   });
 
+  it('exports the tones from the package index', async () => {
+    const index = await import('./index.js');
+    expect(index.barChartTones).toEqual([
+      'accent',
+      'success',
+      'warning',
+      'danger',
+    ]);
+  });
+
   it('keeps every tone at 3:1 against the track in every palette and scheme', () => {
     // The track is the glass fill over the page; a fill is a graphic that
     // must stand apart from it (WCAG 1.4.11).
     forEveryTheme((colors, label, theme) => {
       const track = glassOverBackground(theme);
-      for (const tone of ['accent', 'success', 'warning', 'danger'] as const)
+      for (const tone of barChartTones)
         expect(
           contrastRatio(colors[tone], track),
           `${label} ${tone}`,

@@ -55,6 +55,7 @@ export {
   type BarChartItem,
   type BarChartProps,
   type BarChartTone,
+  barChartTones,
 } from './components/BarChart.js';
 export {
   Button,
