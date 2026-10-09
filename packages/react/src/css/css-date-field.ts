@@ -330,7 +330,8 @@ function adaptiveRules(): string {
     color: MarkText;
     forced-color-adjust: none;
   }
-  .sw-date-field-day[aria-selected='true'] {
+  .sw-date-field-day[aria-selected='true'],
+  .sw-date-field-day[aria-selected='true']:hover {
     background: Highlight;
     color: HighlightText;
     forced-color-adjust: none;

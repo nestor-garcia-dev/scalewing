@@ -212,6 +212,11 @@ describe('CalendarButton range', () => {
     expect(css).toContain(
       "  .sw-date-field-day-in-range,\n  .sw-date-field-day-in-range:hover:not([aria-disabled='true']),\n  .sw-date-field-day-in-range[aria-current='date'] {\n    background: Mark;\n    color: MarkText;",
     );
+    // A hovered selected day keeps the system highlight in forced colors,
+    // over the band's hover.
+    expect(css).toContain(
+      "  .sw-date-field-day[aria-selected='true'],\n  .sw-date-field-day[aria-selected='true']:hover {\n    background: Highlight;",
+    );
     expect(utilityClassCatalog()).toEqual(
       expect.arrayContaining([
         'sw-date-field-day-in-range',
