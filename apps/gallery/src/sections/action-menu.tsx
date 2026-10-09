@@ -19,11 +19,20 @@ export function ActionMenuSection() {
   return (
     <Section
       id="action-menu"
-      purpose="ActionMenu holds independent commands. Select chooses a value; ActionMenu does not. The caller supplies localized names, icons, and callbacks. Focus returns to the trigger before a command runs, so a dialog opened from the menu hands focus back to it on close. The menu opens a small gap below its trigger (above it near the bottom of the screen), keeps clear of the screen edges, and lines up with the trigger's end when the trigger ends a row. align end lines it up with the trigger's end even where the start would fit, so a menu from the end of a card stays over that card. On a touch screen the trigger is at least 44 px square and each command 44 px tall. A long command wraps inside the screen."
+      purpose="ActionMenu holds independent commands. Select chooses a value; ActionMenu does not. The caller supplies localized names, icons, and callbacks. Focus returns to the trigger before a command runs, so a dialog opened from the menu hands focus back to it on close. The menu opens a small gap below its trigger (above it near the bottom of the screen), keeps clear of the screen edges, and lines up with the trigger's end when the trigger ends a row. align end lines it up with the trigger's end even where the start would fit, so a menu from the end of a card stays over that card. On a touch screen the trigger is at least 44 px square and each command 44 px tall. A long command wraps inside the screen. header puts a non-interactive block above the commands, such as who is signed in: muted, set off by a hairline, outside the arrow keys, and read as the menu's description when it opens. An item's lang marks a label in another language, such as English on a Spanish page."
       title="ActionMenu"
       usage={`<ActionMenu
   label="Sighting actions"
   items={[{ id: 'share', label: 'Share sighting', onSelect: share }]}
+/>
+
+<ActionMenu
+  label="Ana Ortiz · Guardabosques"
+  header={<><Text as="strong" variant="label">Ana Ortiz</Text><Text as="span" variant="caption" color="muted">Guardabosques</Text></>}
+  items={[
+    { id: 'language', label: 'English', lang: 'en', onSelect: toEnglish },
+    { id: 'sign-out', label: 'Cerrar sesión', onSelect: signOut },
+  ]}
 />`}
     >
       <Stack gap={3}>
@@ -69,6 +78,34 @@ export function ActionMenuSection() {
           <ActionMenu disabled items={[]} label="Unavailable menu" />
         </Inline>
         <Inline gap={3} lang="es">
+          <ActionMenu
+            align="end"
+            header={
+              <>
+                <Text as="strong" variant="label">
+                  Ana Ortiz
+                </Text>
+                <Text as="span" variant="caption" color="muted">
+                  Guardabosques · Solo lectura: ves cada registro, sin cambios.
+                </Text>
+              </>
+            }
+            items={[
+              {
+                id: 'language',
+                label: 'English',
+                lang: 'en',
+                onSelect: () => setLastAction('English'),
+              },
+              {
+                id: 'sign-out',
+                label: 'Cerrar sesión',
+                onSelect: () => setLastAction('Cerrar sesión'),
+              },
+            ]}
+            label="Ana Ortiz · Guardabosques"
+            trigger="Ana"
+          />
           <ActionMenu
             items={[
               {

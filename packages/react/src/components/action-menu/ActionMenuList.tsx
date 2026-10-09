@@ -1,9 +1,11 @@
 'use client';
 
 import {
+  useId,
   useLayoutEffect,
   useRef,
   type KeyboardEvent,
+  type ReactNode,
   type RefObject,
 } from 'react';
 
@@ -15,6 +17,7 @@ import type { ActionMenuItem } from '../ActionMenu.js';
 type ActionMenuListProps = {
   id: string;
   align: InlineAlign;
+  header?: ReactNode;
   label: string;
   items: readonly ActionMenuItem[];
   focusIndex: number;
@@ -34,6 +37,7 @@ type ActionMenuListProps = {
 export function ActionMenuList({
   id,
   align,
+  header,
   label,
   items,
   focusIndex,
@@ -55,13 +59,16 @@ export function ActionMenuList({
     commands?.[focusIndex]?.focus();
   }, [focusIndex]);
 
-  return (
+  const headerId = useId();
+  const hasHeader = header !== undefined && header !== null && header !== false;
+  const menu = (
     <div
+      aria-describedby={hasHeader ? headerId : undefined}
       aria-label={label}
-      className="sw-action-menu-list"
-      id={id}
+      className={hasHeader ? 'sw-action-menu-items' : 'sw-action-menu-list'}
+      id={hasHeader ? undefined : id}
       onKeyDown={onKeyDown}
-      ref={menuRef}
+      ref={hasHeader ? undefined : menuRef}
       role="menu"
     >
       {items.map((item, index) => (
@@ -85,9 +92,22 @@ export function ActionMenuList({
           type="button"
         >
           {item.icon ? <span aria-hidden="true">{item.icon}</span> : null}
-          <span>{item.label}</span>
+          <span lang={item.lang}>{item.label}</span>
         </button>
       ))}
+    </div>
+  );
+
+  if (!hasHeader) return menu;
+
+  // The header is not a menu item: it sits above the menu in the same
+  // popover, outside the arrow-key order, and describes the menu.
+  return (
+    <div className="sw-action-menu-list" id={id} ref={menuRef}>
+      <div className="sw-action-menu-header" id={headerId}>
+        {header}
+      </div>
+      {menu}
     </div>
   );
 }

@@ -3,6 +3,7 @@ import { typographyVariants } from '@scalewing/tokens';
 import { zIndex } from './stacking.js';
 import { coarsePointerQuery, touchTarget } from './touch-target.js';
 
+const caption = typographyVariants.caption;
 const label = typographyVariants.label;
 
 export function cssActionMenuClasses(): string {
@@ -59,6 +60,27 @@ export function cssActionMenuClasses(): string {
   ${zIndex('popup')}
 }
 
+/* Each child of the header is a line of its own: a name, then a role. */
+.sw-action-menu-header {
+  border-bottom: 1px solid var(--sw-color-border);
+  color: var(--sw-color-muted);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sw-space-1);
+  font-family: var(--sw-font-sans);
+  font-size: ${caption.fontSize}px;
+  letter-spacing: ${caption.letterSpacing}px;
+  line-height: ${caption.lineHeight}px;
+  margin-bottom: var(--sw-space-1);
+  /* The commands' inline padding, so the header's words line up with theirs. */
+  padding: var(--sw-space-1) var(--sw-control-xs-padding-inline) var(--sw-space-2);
+}
+
+/* With a header, the commands are the menu inside the popover. */
+.sw-action-menu-items {
+  display: block;
+}
+
 .sw-action-menu-item {
   align-items: center;
   appearance: none;
@@ -113,6 +135,8 @@ export function actionMenuClassCatalog(): string[] {
     'sw-action-menu',
     'sw-action-menu-trigger',
     'sw-action-menu-list',
+    'sw-action-menu-header',
+    'sw-action-menu-items',
     'sw-action-menu-item',
     'sw-action-menu-item-danger',
   ];

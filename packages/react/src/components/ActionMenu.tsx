@@ -17,6 +17,11 @@ export type ActionMenuAlign = InlineAlign;
 export type ActionMenuItem = {
   id: string;
   label: string;
+  /**
+   * The BCP 47 language of `label` when it is not the page's, such as
+   * "English" on a Spanish page, so it is read in its own language.
+   */
+  lang?: string;
   onSelect: () => void;
   icon?: ReactNode;
   disabled?: boolean;
@@ -26,6 +31,13 @@ export type ActionMenuItem = {
 export type ActionMenuProps = {
   label: string;
   items: readonly ActionMenuItem[];
+  /**
+   * A non-interactive block above the commands, such as who is signed in:
+   * muted, set off by a hairline, outside the arrow-key order, and the
+   * menu's description (`aria-describedby`), so it is read as the menu
+   * opens. Text and other phrasing content, nothing focusable.
+   */
+  header?: ReactNode;
   trigger?: ReactNode;
   disabled?: boolean;
   /**
@@ -52,6 +64,7 @@ function nextEnabled(
 export function ActionMenu({
   label,
   items,
+  header,
   trigger,
   disabled = false,
   align = 'start',
@@ -144,6 +157,7 @@ export function ActionMenu({
         <ActionMenuList
           align={align}
           focusIndex={focusIndex}
+          header={header}
           id={menuId}
           items={items}
           label={label}
