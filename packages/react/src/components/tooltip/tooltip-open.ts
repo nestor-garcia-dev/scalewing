@@ -4,22 +4,38 @@
  * also open the tooltip, which would stay over the result (or, after a
  * link, over the next page).
  */
+const actingRoles = [
+  'button',
+  'checkbox',
+  'combobox',
+  'link',
+  'menuitem',
+  'menuitemcheckbox',
+  'menuitemradio',
+  'option',
+  'radio',
+  'searchbox',
+  'slider',
+  'spinbutton',
+  'switch',
+  'tab',
+  'textbox',
+  'treeitem',
+];
+
 const actingTrigger = [
   'a[href]',
+  'area[href]',
+  'audio[controls]',
   'button',
   'input',
+  'label',
   'select',
-  'textarea',
   'summary',
+  'textarea',
+  'video[controls]',
   '[contenteditable="true"]',
-  '[role="button"]',
-  '[role="link"]',
-  '[role="checkbox"]',
-  '[role="menuitem"]',
-  '[role="option"]',
-  '[role="radio"]',
-  '[role="switch"]',
-  '[role="tab"]',
+  ...actingRoles.map((role) => `[role="${role}"]`),
 ].join(', ');
 
 /** Whether a tap at `target` lands on a control inside the tooltip's anchor. */

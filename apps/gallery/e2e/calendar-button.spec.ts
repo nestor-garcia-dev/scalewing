@@ -276,6 +276,16 @@ test('CalendarButton tints the week it shows and keeps the value selected', asyn
       (element) => getComputedStyle(element).borderStartEndRadius,
     ),
   ).not.toBe('0px');
+  // October's days on the band take the band's text color, not muted, so
+  // they keep AA on the tint; August's days off the band stay muted.
+  const color = (element: HTMLElement) => getComputedStyle(element).color;
+  expect(await end.evaluate(color)).toBe(await middle.evaluate(color));
+  if (!forced)
+    expect(
+      await calendar
+        .getByRole('gridcell', { name: 'Monday, August 31, 2026' })
+        .evaluate(color),
+    ).not.toBe(await end.evaluate(color));
   await calendar.screenshot({ path: testInfo.outputPath('range.png') });
 
   // Picking a day of another week moves the period to that week.

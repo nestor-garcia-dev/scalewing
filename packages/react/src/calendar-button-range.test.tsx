@@ -1,3 +1,4 @@
+import { contrastRatio, createTheme, paletteIds } from '@scalewing/tokens';
 import { cleanup, render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
@@ -19,17 +20,17 @@ afterEach(() => {
 describe('dayInRange', () => {
   const week = { start: '2026-09-27', end: '2026-10-03' };
 
-  it('places a day at the start, the end, inside or out', () => {
+  it('places a day at the start, the end, both, inside or out', () => {
     expect(dayInRange('2026-09-27', week)).toBe('start');
     expect(dayInRange('2026-09-30', week)).toBe('inside');
     expect(dayInRange('2026-10-03', week)).toBe('end');
     expect(dayInRange('2026-09-26', week)).toBeNull();
     expect(dayInRange('2026-10-04', week)).toBeNull();
     expect(dayInRange('2026-09-30', undefined)).toBeNull();
-    // A one-day range is its own start.
+    // A one-day range is both its start and its end.
     expect(
       dayInRange('2026-10-03', { start: '2026-10-03', end: '2026-10-03' }),
-    ).toBe('start');
+    ).toBe('only');
   });
 
   it('refuses a malformed end or a start after the end', () => {
@@ -86,6 +87,48 @@ describe('CalendarButton range', () => {
     ).toHaveLength(7);
   });
 
+  it('rounds both ends of a one-day range', async () => {
+    const user = userEvent.setup();
+    render(
+      <CalendarButton
+        label="Choose a day"
+        onChange={() => undefined}
+        range={{ start: '2026-10-02', end: '2026-10-02' }}
+        value="2026-10-03"
+      />,
+    );
+    await user.click(screen.getByRole('button', { name: /^Choose a day, / }));
+    expect(
+      within(screen.getByRole('dialog', { name: 'Choose a day' })).getByRole(
+        'gridcell',
+        { name: 'Friday, October 2, 2026' },
+      ).className,
+    ).toBe(
+      'sw-date-field-day sw-date-field-day-in-range sw-date-field-day-range-start sw-date-field-day-range-end',
+    );
+  });
+
+  it('keeps day numbers at AA on the band in every palette and scheme', () => {
+    // The band is accentSubtle: today's accent number keeps AA on it (the
+    // token's own rule), and a neighbouring month's day on it takes the
+    // text colour, because muted can fall below AA there.
+    for (const palette of paletteIds) {
+      for (const colorScheme of ['light', 'dark'] as const) {
+        const { colors } = createTheme({ colorScheme, palette });
+        expect(
+          contrastRatio(colors.text, colors.accentSubtle),
+          `${palette}/${colorScheme} text`,
+        ).toBeGreaterThanOrEqual(4.5);
+        if (contrastRatio(colors.accent, colors.surface) >= 4.5) {
+          expect(
+            contrastRatio(colors.accent, colors.accentSubtle),
+            `${palette}/${colorScheme} today`,
+          ).toBeGreaterThanOrEqual(4.5);
+        }
+      }
+    }
+  });
+
   it('refuses a range whose start is after its end', () => {
     const consoleError = vi
       .spyOn(console, 'error')
@@ -109,7 +152,10 @@ describe('CalendarButton range', () => {
   it('generates the band, its rounded ends, a pill selection and forced colors', () => {
     const css = generateStylesheet();
     expect(css).toContain(
-      '.sw-date-field-day-in-range {\n  background: color-mix(in srgb, var(--sw-color-accent) 16%, transparent);\n  border-radius: 0;\n}',
+      '.sw-date-field-day-in-range {\n  background: var(--sw-color-accentSubtle);\n  border-radius: 0;\n}',
+    );
+    expect(css).toContain(
+      '.sw-date-field-day-in-range.sw-date-field-day-outside {\n  color: var(--sw-color-text);\n}',
     );
     expect(css).toContain(
       '.sw-date-field-day-range-start {\n  border-end-start-radius: var(--sw-radius-pill);',
@@ -121,7 +167,7 @@ describe('CalendarButton range', () => {
       /\.sw-date-field-day\[aria-selected='true'\]:hover \{[^}]*border-radius: var\(--sw-radius-pill\);/,
     );
     expect(css).toContain(
-      '  .sw-date-field-day-in-range {\n    background: Mark;\n    color: MarkText;',
+      "  .sw-date-field-day-in-range,\n  .sw-date-field-day-in-range.sw-date-field-day-outside,\n  .sw-date-field-day-in-range[aria-current='date'] {\n    background: Mark;\n    color: MarkText;",
     );
     expect(utilityClassCatalog()).toEqual(
       expect.arrayContaining([

@@ -39,8 +39,8 @@ function rangeClassNames(
 ): (string | false)[] {
   return [
     place !== null && 'sw-date-field-day-in-range',
-    place === 'start' && 'sw-date-field-day-range-start',
-    place === 'end' && 'sw-date-field-day-range-end',
+    (place === 'start' || place === 'only') && 'sw-date-field-day-range-start',
+    (place === 'end' || place === 'only') && 'sw-date-field-day-range-end',
   ];
 }
 

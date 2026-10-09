@@ -7,7 +7,7 @@ Follow the root `AGENTS.md`. On conflict, the root wins.
 1. This app is the Scalewing documentation gallery and pre-publish QA surface. It is not a source of tokens.
 2. Import `@scalewing/react/styles.css` once at the entry. Do not copy Scalewing CSS into `src`.
 3. Consume public exports from `@scalewing/react` and `@scalewing/tokens` only. Do not import package `src` internals.
-4. Compose from ThemeProvider, Box, Stack, Inline, Split, Card, Accordion, Dialog, Toast, Text, Button, CalendarButton, Field, DateField, Select, Badge, SegmentedControl, Table, BarChart, AppHeader, ActionBar, and Nav. Named palettes come from `@scalewing/tokens` and `ThemeProvider palette`. Do not add public primitives for site chrome.
+4. Compose from ThemeProvider, Box, Stack, Inline, Split, Card, Accordion, Dialog, Toast, Text, Button, CalendarButton, Field, DateField, Select, Badge, SegmentedControl, Table, BarChart, AppHeader, ActionBar, Nav, and SectionNav. Named palettes come from `@scalewing/tokens` and `ThemeProvider palette`. Do not add public primitives for site chrome.
 5. `gallery.css` may own sticky/responsive documentation layout and code-block presentation. It must use Scalewing CSS variables. It must not restyle showcased components or redefine the canvas, links, inputs, colors, typography, radii, shadows, or glass.
 6. Show only primitives that already exist. Do not invent hex, font sizes, or spacing in JSX.
 7. Do not add product domain screens, Storybook, MDX, or another visual system.

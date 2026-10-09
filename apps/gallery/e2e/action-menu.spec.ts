@@ -261,20 +261,22 @@ test('ActionMenu with align end stays over the card its trigger ends', async ({
   await expect(trigger).toBeFocused();
 });
 
-test('ActionMenu header shows who is signed in above the commands, outside the arrow keys', async ({
+test('ActionMenu header shows the station above the commands, outside the arrow keys', async ({
   page,
 }, testInfo) => {
   await page.goto('/#action-menu');
   const trigger = page.getByRole('button', {
-    name: 'Ana Ortiz · Guardabosques',
+    name: 'Estación Laguna Azul · Aves acuáticas',
   });
   await trigger.focus();
   await page.keyboard.press('Enter');
-  const menu = page.getByRole('menu', { name: 'Ana Ortiz · Guardabosques' });
+  const menu = page.getByRole('menu', {
+    name: 'Estación Laguna Azul · Aves acuáticas',
+  });
   await expect(menu).toBeVisible();
   const header = page.locator('.sw-action-menu-header');
-  await expect(header).toContainText('Ana Ortiz');
-  await expect(header).toContainText('Solo lectura');
+  await expect(header).toContainText('Estación Laguna Azul');
+  await expect(header).toContainText('42 avistamientos');
   // The menu is described by the header, which is above every command.
   await expect(menu).toHaveAttribute(
     'aria-describedby',
@@ -288,7 +290,7 @@ test('ActionMenu header shows who is signed in above the commands, outside the a
   await expect(english).toBeFocused();
   await page.keyboard.press('ArrowUp');
   await expect(
-    menu.getByRole('menuitem', { name: 'Cerrar sesión' }),
+    menu.getByRole('menuitem', { name: 'Cambiar de estación' }),
   ).toBeFocused();
   await page.keyboard.press('ArrowDown');
   await expect(english).toBeFocused();

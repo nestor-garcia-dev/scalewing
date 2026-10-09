@@ -238,13 +238,19 @@ function calendarRules(): string {
 }
 
 /*
- * A range's days are one band in each week row: square-cornered, the accent
- * at low strength, rounded at the range's start and end. The selected day
- * and today's ring sit on top of it.
+ * A range's days are one band in each week row: square-cornered, the
+ * accentSubtle tint (accent text keeps AA on it in every palette), rounded
+ * at the range's start and end. A neighbouring month's day on the band
+ * takes the text colour, because muted falls below AA on the tint. The
+ * selected day and today's ring sit on top of it.
  */
 .sw-date-field-day-in-range {
-  background: color-mix(in srgb, var(--sw-color-accent) 16%, transparent);
+  background: var(--sw-color-accentSubtle);
   border-radius: 0;
+}
+
+.sw-date-field-day-in-range.sw-date-field-day-outside {
+  color: var(--sw-color-text);
 }
 
 .sw-date-field-day-range-start {
@@ -309,7 +315,9 @@ function adaptiveRules(): string {
   }
   .sw-date-field-calendar { border-color: CanvasText; }
   .sw-date-field-day[aria-current='date'] { border-color: CanvasText; }
-  .sw-date-field-day-in-range {
+  .sw-date-field-day-in-range,
+  .sw-date-field-day-in-range.sw-date-field-day-outside,
+  .sw-date-field-day-in-range[aria-current='date'] {
     background: Mark;
     color: MarkText;
     forced-color-adjust: none;

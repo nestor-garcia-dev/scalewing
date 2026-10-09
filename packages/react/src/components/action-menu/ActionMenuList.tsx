@@ -60,7 +60,13 @@ export function ActionMenuList({
   }, [focusIndex]);
 
   const headerId = useId();
-  const hasHeader = header !== undefined && header !== null && header !== false;
+  // An empty header (nothing, false or '') is no header, so the menu is never
+  // described by an empty element.
+  const hasHeader =
+    header !== undefined &&
+    header !== null &&
+    header !== false &&
+    header !== '';
   const menu = (
     <div
       aria-describedby={hasHeader ? headerId : undefined}

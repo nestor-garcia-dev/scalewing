@@ -140,7 +140,7 @@ Rejected alternatives:
 - `role="presentation"` content inside the menu. A menu owns menu items, groups and separators; loose text in it is not reliably read.
 - A `description` string. The person's name and role are two lines and a view-only line may follow; a node lets the consumer use `Text` for each.
 
-Evidence: `action-menu-header.test.tsx` (unchanged markup without a header; with one, the header before the menu in the popover, the menu described by it, the arrow keys only on the commands, `aria-controls` on the popover; `null` and `false`; the generated rules); `apps/gallery/e2e/action-menu.spec.ts` "ActionMenu header shows who is signed in above the commands, outside the arrow keys" on desktop-en, mobile-es and forced-colors: the Spanish account menu shows "Ana Ortiz" and the view-only line above "English", the menu's `aria-describedby` is the header, ArrowUp and ArrowDown stay on the two commands, and the popover stays inside the screen.
+Evidence: `action-menu-header.test.tsx` (unchanged markup without a header; with one, the header before the menu in the popover, the menu described by it, the arrow keys only on the commands, `aria-controls` on the popover; `null`, `false` and an empty string; the generated rules); `apps/gallery/e2e/action-menu.spec.ts` "ActionMenu header shows the station above the commands, outside the arrow keys" on desktop-en, mobile-es and forced-colors: the Spanish station menu shows "Estación Laguna Azul" and its census line above "English", the menu's `aria-describedby` is the header, ArrowUp and ArrowDown stay on the two commands, and the popover stays inside the screen.
 
 ## Follow-up request (2026-10-08, Teisoro F-006-S11 task 1875): a command in another language
 

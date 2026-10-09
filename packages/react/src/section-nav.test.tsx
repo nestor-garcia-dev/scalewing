@@ -1,4 +1,10 @@
 import { cleanup, fireEvent, render, screen } from '@testing-library/react';
+import {
+  Children,
+  isValidElement,
+  type ReactElement,
+  type ReactNode,
+} from 'react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import { SectionNav, type SectionNavItem } from './components/SectionNav.js';
@@ -70,6 +76,31 @@ describe('SectionNav', () => {
     );
   });
 
+  it('attaches no handler without onNavigate, so a server component can render it', () => {
+    // A server component cannot pass an event handler to the client, so the
+    // links carry onClick only when the consumer gives onNavigate.
+    const handlers = (node: ReactNode): unknown[] =>
+      Children.toArray(node).flatMap((child) => {
+        if (!isValidElement(child)) return [];
+        const { children, onClick } = (
+          child as ReactElement<{ children?: ReactNode; onClick?: unknown }>
+        ).props;
+        return [...(onClick ? [onClick] : []), ...handlers(children)];
+      });
+    expect(
+      handlers(SectionNav({ 'aria-label': 'Admin sections', items: sections })),
+    ).toEqual([]);
+    expect(
+      handlers(
+        SectionNav({
+          'aria-label': 'Admin sections',
+          items: sections,
+          onNavigate: () => undefined,
+        }),
+      ),
+    ).toHaveLength(2);
+  });
+
   it('renders a decorative icon and the vertical class', () => {
     render(
       <SectionNav
@@ -88,7 +119,7 @@ describe('SectionNav', () => {
     expect(icon?.getAttribute('aria-hidden')).toBe('true');
   });
 
-  it('refuses empty or duplicate ids and empty labels', () => {
+  it('refuses empty or duplicate ids, empty labels and an unknown breakpoint', () => {
     const consoleError = vi
       .spyOn(console, 'error')
       .mockImplementation(() => undefined);
@@ -104,6 +135,16 @@ describe('SectionNav', () => {
         expect(() =>
           render(<SectionNav aria-label="Sections" items={items} />),
         ).toThrow(RangeError);
+      expect(() =>
+        render(
+          <SectionNav
+            aria-label="Sections"
+            items={sections}
+            // @ts-expect-error an unknown breakpoint from untyped code
+            verticalFrom="xl"
+          />,
+        ),
+      ).toThrow('SectionNav verticalFrom must be one of md');
     } finally {
       consoleError.mockRestore();
     }

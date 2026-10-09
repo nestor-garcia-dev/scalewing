@@ -12,6 +12,17 @@ test('SectionNav marks the current section, a row on a phone and a side list fro
   const rangers = nav.getByRole('link', { name: 'Rangers' });
   await expect(counts).toHaveAttribute('aria-current', 'page');
   await expect(rangers).not.toHaveAttribute('aria-current');
+  // Each link's decorative glyph sits before its label, hidden from the
+  // link's name.
+  const glyph = counts.locator('.sw-section-nav-icon');
+  await expect(glyph).toHaveAttribute('aria-hidden', 'true');
+  const glyphBox = await glyph.boundingBox();
+  const labelStart = await counts.evaluate((link) => {
+    const range = document.createRange();
+    range.selectNodeContents(link.lastChild!);
+    return range.getBoundingClientRect().left;
+  });
+  expect(glyphBox!.x + glyphBox!.width).toBeLessThanOrEqual(labelStart);
 
   // Quiet: no underline, no fill; the current one in another color.
   const look = (element: HTMLElement) => {

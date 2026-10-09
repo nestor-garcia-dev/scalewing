@@ -121,6 +121,35 @@ describe('Tooltip', () => {
     expect(onClick).toHaveBeenCalledOnce();
   });
 
+  it('counts every kind of control as acting on a tap', () => {
+    const triggers = [
+      <span key="combobox" role="combobox" tabIndex={0} />,
+      <span key="slider" role="slider" tabIndex={0} />,
+      <span key="spinbutton" role="spinbutton" tabIndex={0} />,
+      <span key="textbox" role="textbox" tabIndex={0} />,
+      <span key="menuitemcheckbox" role="menuitemcheckbox" tabIndex={0} />,
+      <span key="treeitem" role="treeitem" tabIndex={0} />,
+      <label key="label">
+        <span data-testid="inside">Name</span>
+      </label>,
+      <video controls key="video" />,
+    ];
+    for (const trigger of triggers) {
+      const { container, unmount } = render(
+        <Tooltip content="Supplemental help" trigger={trigger} />,
+      );
+      const target =
+        container.querySelector('[data-testid="inside"]') ??
+        container.querySelector('[role], label, video')!;
+      fireEvent.pointerDown(target, { pointerType: 'touch' });
+      expect(
+        screen.getByText('Supplemental help'),
+        String(trigger.key),
+      ).toHaveProperty('hidden', true);
+      unmount();
+    }
+  });
+
   it('opens on a visible focus only, not on the focus a click or a tap gives', () => {
     const matches = HTMLElement.prototype.matches;
     let visible = false;

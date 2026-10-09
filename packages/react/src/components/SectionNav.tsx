@@ -1,7 +1,7 @@
 import { type MouseEvent, type ReactNode } from 'react';
 
 import { cx } from '../class-names.js';
-import { type Breakpoint } from '../css/breakpoints.js';
+import { type Breakpoint, breakpoints } from '../css/breakpoints.js';
 import { sectionNavVerticalClass } from '../css/css-section-nav.js';
 
 export type SectionNavItem = {
@@ -62,6 +62,13 @@ function assertItems(items: readonly SectionNavItem[]) {
     throw new RangeError('SectionNav items need unique ids');
 }
 
+function assertBreakpoint(verticalFrom: Breakpoint | undefined) {
+  if (verticalFrom !== undefined && !breakpoints.includes(verticalFrom))
+    throw new RangeError(
+      `SectionNav verticalFrom must be one of ${breakpoints.join(', ')}`,
+    );
+}
+
 /**
  * A page's secondary navigation between the sections of one area, such as
  * an admin portal's pages: a labelled `nav` of links, quieter than the
@@ -75,6 +82,7 @@ export function SectionNav({
   ...label
 }: SectionNavProps) {
   assertItems(items);
+  assertBreakpoint(verticalFrom);
   return (
     <nav
       className={cx(
@@ -90,11 +98,17 @@ export function SectionNav({
               aria-current={ariaCurrent(item.current)}
               className="sw-section-nav-link"
               href={item.href}
-              onClick={(event) => {
-                if (!onNavigate || !plainPress(event)) return;
-                event.preventDefault();
-                onNavigate(item);
-              }}
+              // Only a given onNavigate attaches a handler, so the links
+              // render from a server component without one.
+              onClick={
+                onNavigate
+                  ? (event) => {
+                      if (!plainPress(event)) return;
+                      event.preventDefault();
+                      onNavigate(item);
+                    }
+                  : undefined
+              }
             >
               {item.icon ? (
                 <span aria-hidden="true" className="sw-section-nav-icon">

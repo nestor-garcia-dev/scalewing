@@ -74,10 +74,14 @@ describe('ActionMenu header', () => {
     ).toBe(popover.id);
   });
 
-  it('treats null and false as no header', () => {
+  it('treats null, false and an empty string as no header', () => {
     expect(openMenu(null).className).toBe('sw-action-menu-list');
     cleanup();
     expect(openMenu(false).className).toBe('sw-action-menu-list');
+    cleanup();
+    const menu = openMenu('');
+    expect(menu.className).toBe('sw-action-menu-list');
+    expect(menu.hasAttribute('aria-describedby')).toBe(false);
   });
 
   it('generates a muted header set off by a hairline', () => {

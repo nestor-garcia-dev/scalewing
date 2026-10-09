@@ -1,12 +1,29 @@
 import { Card, Grid, SectionNav, Stack, Text } from '@scalewing/react';
 import { useState } from 'react';
 
+import { Glyph } from '../glyph.js';
 import { Section } from '../layout/Section.js';
 
 const reserveSections = [
-  { id: 'counts', label: 'Counts', note: 'Wader counts at high tide.' },
-  { id: 'rangers', label: 'Rangers', note: 'Who walks which transect.' },
-  { id: 'hides', label: 'Hides', note: 'Opening times of the four hides.' },
+  {
+    id: 'counts',
+    label: 'Counts',
+    note: 'Wader counts at high tide.',
+    glyph: 'M3 13V9 M7 13V5 M11 13V7',
+  },
+  {
+    id: 'rangers',
+    label: 'Rangers',
+    note: 'Who walks which transect.',
+    glyph:
+      'M8 7a2.5 2.5 0 1 0 0-5a2.5 2.5 0 0 0 0 5z M3 14c0-3 2.2-5 5-5s5 2 5 5',
+  },
+  {
+    id: 'hides',
+    label: 'Hides',
+    note: 'Opening times of the four hides.',
+    glyph: 'M2 8l6-5 6 5 M4 7v7h8V7',
+  },
 ] as const;
 
 type ReserveSection = (typeof reserveSections)[number]['id'];
@@ -18,6 +35,8 @@ export function SectionNavSection() {
     id: item.id,
     label: item.label,
     href: `#section-nav/${item.id}`,
+    // A decorative glyph before the label; the label names the link.
+    icon: <Glyph path={item.glyph} />,
     // A detail page inside a section keeps the section current.
     current:
       item.id === section
@@ -31,13 +50,13 @@ export function SectionNavSection() {
   return (
     <Section
       id="section-nav"
-      purpose="SectionNav is the navigation between the sections of one area, such as a portal's pages: a labelled nav of links, quieter than the workspace's own navigation. The current item carries aria-current (page, or location on a page inside it) and is marked by an accent underline in a row, or, from verticalFrom up, by a bar at its start in a side list beside the content. onNavigate takes a plain press for a client router and leaves a press with a modifier key to the browser. A coarse pointer gets 44 px targets. Use Tabs for panels on one page and Nav for a workspace's destinations."
+      purpose="SectionNav is the navigation between the sections of one area, such as a portal's pages: a labelled nav of links, quieter than the workspace's own navigation. The current item carries aria-current (page, or location on a page inside it) and is marked by an accent underline in a row, or, from verticalFrom up, by a bar at its start in a side list beside the content. onNavigate takes a plain press for a client router and leaves a press with a modifier key to the browser. An item's optional icon is a decorative glyph before its label. A coarse pointer gets 44 px targets. Use Tabs for panels on one page and Nav for a workspace's destinations."
       title="SectionNav"
       usage={`<SectionNav
   aria-label="Reserve office"
   verticalFrom="md"
   items={[
-    { id: 'counts', label: 'Counts', href: '/office/counts', current: 'page' },
+    { id: 'counts', label: 'Counts', href: '/office/counts', current: 'page', icon: <ChartGlyph /> },
     { id: 'rangers', label: 'Rangers', href: '/office/rangers' },
   ]}
   onNavigate={(item) => navigate(item.href)}
