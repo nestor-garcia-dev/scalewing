@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: implemented on `claude/teisoro-f006-s11-parts` for Teisoro F-006-S11 task 1875; pull request pending review.
+Status: merged in #101 (2026-10-09) and released in `@scalewing/react` 1.22.0 for Teisoro F-006-S11 task 1875; Teisoro pins and adopts it in task 1880.
 Renderer: react
 Missing surface: `SectionNav`, a section (secondary) navigation: links between the pages of one area with `aria-current`, quieter than the workspace's navigation, that can become a side list on wide screens.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: `Nav` is a label-size cluster of `Box as="a"` links in the canvas's accent link color, with no current-item mark beyond the text color and no side-list form; `Tabs` is a `tablist` for panels on one page and `SegmentedControl` a `radiogroup` for an exclusive choice, both the wrong semantics for links to other pages.

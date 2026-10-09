@@ -26,7 +26,7 @@ Teisoro use: `apps/teisoro-web/src/app/vault-page/MovementsCard.tsx`. Design: Te
 
 ## Follow-up request (2026-10-08, Teisoro F-006-S11 task 1875): open on a visible focus, keep inside the screen
 
-Status: implemented on `claude/teisoro-f006-s11-parts` for Teisoro F-006-S11 task 1875; pull request pending review.
+Status: merged in #101 (2026-10-09) and released in `@scalewing/react` 1.22.0 for Teisoro F-006-S11 task 1875; Teisoro pins and adopts it in task 1880.
 Source: Teisoro UX review `admin-settings.md`, finding SET-9 (minor; the Scalewing part, F-007 task 1625 and the final check task 1640). Below 768 px the workspace's destinations are glyph buttons named by `Tooltip relationship="label"`. Two problems are Scalewing's: the tooltip opens on any focus (`onFocusCapture`), so a clicked or tapped glyph keeps its name shown on the next page until the focus moves, and a tap toggles it too; and the bubble is placed at the anchor's start edge with `position: absolute`, so a trigger near the screen's right edge pushes it off the screen.
 
 Teisoro need: a tooltip that a pointer press never leaves open, and a bubble that stays on screen for a trigger at the end of a header.

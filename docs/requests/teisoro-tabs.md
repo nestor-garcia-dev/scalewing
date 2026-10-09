@@ -14,7 +14,7 @@ Scalewing owns the classes, tests, gallery evidence and changeset. Teisoro owns 
 
 ## Follow-up request (2026-10-08, Teisoro F-006-S11 task 1875): a strip that overflows shows it
 
-Status: implemented on `claude/teisoro-f006-s11-parts` for Teisoro F-006-S11 task 1875; pull request pending review.
+Status: merged in #101 (2026-10-09) and released in `@scalewing/react` 1.22.0 for Teisoro F-006-S11 task 1875; Teisoro pins and adopts it in task 1880.
 Source: Teisoro UX review `admin-reports.md`, finding RPT-11 (minor; the Scalewing part). At 390 px the Services reports' four tabs ("Variance audit", "Provider reconciliation", "Cash flow", "Shift audits") run past the screen's edge with nothing to say the strip scrolls: its scrollbar is hidden, and unlike a wide `Table` since 1.17.0 it draws no edge shade. Teisoro shows a full-width "Report" `Select` below `md` instead of the tabs until the strip says it goes on.
 
 Teisoro need: the Services reports keep their tabs at every width, and a phone sees that more reports are past the edge.

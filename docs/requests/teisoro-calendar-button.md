@@ -71,7 +71,7 @@ Scalewing owns the reusable visual and interaction behavior, typed public API, g
 
 ## Follow-up request (2026-10-08, Teisoro F-006-S11 task 1875): the period a page shows
 
-Status: implemented on `claude/teisoro-f006-s11-parts` for Teisoro F-006-S11 task 1875; pull request pending review.
+Status: merged in #101 (2026-10-09) and released in `@scalewing/react` 1.22.0 for Teisoro F-006-S11 task 1875; Teisoro pins and adopts it in task 1880.
 Source: Teisoro UX review `admin-reports.md`, finding RPT-17 (polish; left to Scalewing entirely). The closeout and Services reports, and the vault history, pick a day, a week, a month or a year with the shared `PeriodToolbar`, whose `CalendarButton` takes the period's first day as `value`. Open on the week Sep 27 – Oct 3, 2026, the calendar fills only "27"; a month reads as its first day. Picking any day works, but the calendar does not show which days the report covers.
 
 Teisoro need: the open calendar shows the report's whole period, and picking a day still moves the report to that day's period.

@@ -78,7 +78,7 @@ Parity: `invalid` exists on `Field` only. `DateField`, `Select`, `SegmentedContr
 
 ## Follow-up request (2026-10-08, Teisoro F-006-S11 task 1875): a changed value
 
-Status: implemented on `claude/teisoro-f006-s11-parts` for Teisoro F-006-S11 task 1875; pull request pending review.
+Status: merged in #101 (2026-10-09) and released in `@scalewing/react` 1.22.0 for Teisoro F-006-S11 task 1875; Teisoro pins and adopts it in task 1880.
 Source: Teisoro UX review `admin-correction.md`, finding COR-5 (minor; the Scalewing part). In an admin's correction of a finalized register closeout, a changed field looks like every other once the focus leaves it. F-007 task 1635 shows "Was 25" under each changed field and counts the changes on the action bar; the review also asked for "Scalewing's accent border or a dot" on the field, which `Field` cannot draw (it has `invalid`, the danger border, only).
 
 Teisoro need: the correction's changed fields (the POS amounts, the card totals) marked at a glance, beside their "Was …" words.
