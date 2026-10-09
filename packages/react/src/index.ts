@@ -159,7 +159,7 @@ export { utilityClassCatalog } from './css/stylesheet.js';
 export type { VisibilityProps } from './visibility-classes.js';
 export type {
   Breakpoint,
-  HideDirection,
+  BreakpointDirection,
   VisibilityBreakpoint,
 } from './css/breakpoints.js';
 export { breakpointQuery } from './css/breakpoints.js';

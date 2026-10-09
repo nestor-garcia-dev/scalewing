@@ -13,7 +13,7 @@ function assertBreakpoint(
   prop: string,
   breakpoint: VisibilityBreakpoint | undefined,
 ) {
-  if (breakpoint !== undefined && !visibilityBreakpoints.includes(breakpoint))
+  if (breakpoint && !visibilityBreakpoints.includes(breakpoint))
     throw new RangeError(
       `${prop} must be one of ${visibilityBreakpoints.join(', ')}`,
     );

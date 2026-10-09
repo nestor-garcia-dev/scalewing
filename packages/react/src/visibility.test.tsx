@@ -90,6 +90,17 @@ describe('breakpointQuery', () => {
     );
     expect(breakpointQuery('from', 'md')).toBe('(min-width: 48rem)');
   });
+
+  it('refuses a direction or a breakpoint it does not know', () => {
+    // @ts-expect-error an unknown direction from untyped code
+    expect(() => breakpointQuery('above', 'md')).toThrow(
+      'direction must be one of from, below',
+    );
+    // @ts-expect-error an unknown breakpoint from untyped code
+    expect(() => breakpointQuery('below', 'xl')).toThrow(
+      'breakpoint must be one of md, lg',
+    );
+  });
 });
 
 describe('Nav buttons on a coarse pointer', () => {

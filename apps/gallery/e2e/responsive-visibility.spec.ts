@@ -40,9 +40,14 @@ test('Box hides a label below the lg breakpoint, leaving the named glyph', async
   const wetlands = habitats.getByRole('button', { name: 'Wetlands' });
   const label = wetlands.getByText('Wetlands');
   const { width } = page.viewportSize() ?? { width: 0 };
+  const note = page.getByText(/^Below lg: each habitat is its glyph/);
   await page.setViewportSize({ width: 1023, height: 900 });
   await expect(wetlands).toBeVisible();
   await expect(label).toBeHidden();
+  await expect(note).toBeVisible();
+  // The glyph is named by its tooltip, switched on by script that follows
+  // breakpointQuery.
+  await expect(wetlands).toHaveAttribute('aria-labelledby', /.+/);
   // A destination is a 44 px target on a coarse pointer (the phone
   // project), whatever its size.
   const box = await wetlands.boundingBox();
@@ -54,6 +59,8 @@ test('Box hides a label below the lg breakpoint, leaving the named glyph', async
   await wetlands.screenshot({ path: testInfo.outputPath('glyph.png') });
   await page.setViewportSize({ width: 1024, height: 900 });
   await expect(label).toBeVisible();
+  await expect(note).toBeHidden();
+  await expect(wetlands).not.toHaveAttribute('aria-labelledby');
   await expect(wetlands).toHaveAccessibleName('Wetlands');
   await wetlands.click();
   await expect(page.getByText('Opened: Wetlands.')).toBeVisible();

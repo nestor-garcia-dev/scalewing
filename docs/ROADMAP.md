@@ -70,10 +70,9 @@ visible `totalLabel` (DRW-27, VLT-14, HIS-11), and the new `SectionNav`
 Teisoro pinned it (task 1880). Second part, task 1885 (UX-16 and SET-3),
 on `claude/teisoro-f006-s11-lg-breakpoint`: `hideBelow`/`hideFrom` `lg`
 (64rem), `breakpointQuery` exported, and 44 px `Nav` buttons on a coarse
-pointer. Next: review and merge, release `@scalewing/react` (minor), and
-Teisoro pins it. Teisoro's phone navigation (UX-16, with
-SET-3's labels) follows as a second release after its design pass
-(task 1885).
+pointer, after Teisoro's design pass for the header was approved. Next:
+review and merge, release `@scalewing/react` (minor), and Teisoro pins it
+and changes its header.
 
 Teisoro F-007 task 1550: the design-system findings of the Vault UX
 review (the `vault-*.md` reports), one surface per commit:

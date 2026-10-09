@@ -1,5 +1,14 @@
-import { Box, Button, Card, Nav, Stack, Text } from '@scalewing/react';
-import { useState } from 'react';
+import {
+  Box,
+  Button,
+  Card,
+  Nav,
+  Stack,
+  Text,
+  Tooltip,
+  breakpointQuery,
+} from '@scalewing/react';
+import { useState, useSyncExternalStore } from 'react';
 
 import { Glyph } from '../glyph.js';
 import { Section } from '../layout/Section.js';
@@ -13,20 +22,53 @@ const habitats = [
   { name: 'Coast', path: 'M2 12c3-3 5 0 7-2s3-4 5-4 M2 14h12' },
 ];
 
+const belowLg = breakpointQuery('below', 'lg');
+
+/** The query `hideBelow="lg"` uses, or none where there is no matchMedia. */
+function belowLgList(): MediaQueryList | null {
+  return typeof window.matchMedia === 'function'
+    ? window.matchMedia(belowLg)
+    : null;
+}
+
+/** Whether the screen is below lg, by the query `hideBelow="lg"` uses. */
+function useBelowLg(): boolean {
+  return useSyncExternalStore(
+    (onChange) => {
+      const list = belowLgList();
+      list?.addEventListener('change', onChange);
+      return () => list?.removeEventListener('change', onChange);
+    },
+    () => belowLgList()?.matches ?? false,
+    () => false,
+  );
+}
+
 export function ResponsiveVisibilitySection() {
   const [habitat, setHabitat] = useState('none');
+  const glyphsOnly = useBelowLg();
   return (
     <Section
       id="responsive-visibility"
-      purpose="Box hideBelow and hideFrom show one region on wide screens and another on narrow screens. md (48rem) separates a phone from a wider screen; lg (64rem) is for content that fits only from a laptop up, such as a row of labelled destinations that a tablet shows as glyphs (give each glyph-only control its name, for example with Tooltip relationship label). A button in a Nav is a 44 px target on a coarse pointer at any size. breakpointQuery gives the same query to script, for matchMedia. Split collapses a single pane; it cannot swap regions. Hidden regions leave the accessibility tree."
+      purpose="Box hideBelow and hideFrom show one region on wide screens and another on narrow screens. md (48rem) separates a phone from a wider screen; lg (64rem) is for content that fits only from a laptop up, such as a row of labelled destinations that a tablet shows as glyphs. Name each glyph-only control, here with Tooltip relationship label, switched on by script that follows breakpointQuery, the very query the hide class uses. A Button in a Nav is a 44 px target on a coarse pointer at any size. Split collapses a single pane; it cannot swap regions. Hidden regions leave the accessibility tree."
       title="Responsive visibility"
       usage={`<Box hideBelow="md">Wide layout</Box>
 <Box hideFrom="md">Narrow layout</Box>
 
-<Button aria-label="Wetlands" onPress={openWetlands} variant="ghost">
-  <WavesIcon aria-hidden />
-  <Box as="span" hideBelow="lg">Wetlands</Box>
-</Button>`}
+const glyphsOnly = useMediaQuery(breakpointQuery('below', 'lg'));
+<Nav aria-label="Habitats">
+  <Tooltip
+    content="Wetlands"
+    disabled={!glyphsOnly}
+    relationship="label"
+    trigger={
+      <Button onPress={openWetlands} size="sm" variant="ghost">
+        <WavesIcon aria-hidden />
+        <Box as="span" hideBelow="lg">Wetlands</Box>
+      </Button>
+    }
+  />
+</Nav>`}
     >
       <Card padding={4}>
         <Stack gap={3}>
@@ -38,22 +80,34 @@ export function ResponsiveVisibilitySection() {
           </Box>
           <Nav aria-label="Habitats">
             {habitats.map(({ name, path }) => (
-              <Button
-                aria-label={name}
+              <Tooltip
+                content={name}
+                disabled={!glyphsOnly}
                 key={name}
-                onPress={() => setHabitat(name)}
-                size="sm"
-                variant="ghost"
-              >
-                <Glyph path={path} />
-                <Box as="span" hideBelow="lg">
-                  {name}
-                </Box>
-              </Button>
+                relationship="label"
+                trigger={
+                  <Button
+                    onPress={() => setHabitat(name)}
+                    size="sm"
+                    variant="ghost"
+                  >
+                    <Glyph path={path} />
+                    <Box as="span" hideBelow="lg">
+                      {name}
+                    </Box>
+                  </Button>
+                }
+              />
             ))}
           </Nav>
+          <Box hideFrom="lg">
+            <Text color="muted" variant="caption">
+              Below lg: each habitat is its glyph; hover or a keyboard focus
+              shows its name.
+            </Text>
+          </Box>
           <Text color="muted" variant="caption">
-            Opened: {habitat}. The labels show from lg (64rem) up.
+            Opened: {habitat}.
           </Text>
         </Stack>
       </Card>

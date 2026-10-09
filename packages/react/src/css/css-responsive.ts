@@ -1,11 +1,11 @@
 import {
-  type HideDirection,
+  type BreakpointDirection,
   breakpointQuery,
   hideClass,
   visibilityBreakpoints,
 } from './breakpoints.js';
 
-const directions: HideDirection[] = ['from', 'below'];
+const directions: BreakpointDirection[] = ['from', 'below'];
 
 export function cssResponsiveClasses(): string {
   return visibilityBreakpoints

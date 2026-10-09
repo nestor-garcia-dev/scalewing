@@ -24,10 +24,13 @@ export const visibilityBreakpoints = Object.keys(
   visibilityBreakpointScale,
 ) as VisibilityBreakpoint[];
 
-export type HideDirection = 'from' | 'below';
+/** Which side of a breakpoint: `from` it and wider, or `below` it. */
+export type BreakpointDirection = 'from' | 'below';
+
+const directions: readonly BreakpointDirection[] = ['from', 'below'];
 
 export function hideClass(
-  direction: HideDirection,
+  direction: BreakpointDirection,
   breakpoint: VisibilityBreakpoint,
 ): string {
   return `sw-hide-${direction}-${breakpoint}`;
@@ -40,9 +43,15 @@ export function hideClass(
  * only while its label is hidden).
  */
 export function breakpointQuery(
-  direction: HideDirection,
+  direction: BreakpointDirection,
   breakpoint: VisibilityBreakpoint,
 ): string {
+  if (!directions.includes(direction))
+    throw new RangeError(`direction must be one of ${directions.join(', ')}`);
+  if (!visibilityBreakpoints.includes(breakpoint))
+    throw new RangeError(
+      `breakpoint must be one of ${visibilityBreakpoints.join(', ')}`,
+    );
   const minWidth = `(min-width: ${visibilityBreakpointScale[breakpoint]}rem)`;
 
   return direction === 'from' ? minWidth : `not all and ${minWidth}`;
