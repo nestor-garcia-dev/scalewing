@@ -1,5 +1,6 @@
 import { typographyVariants } from '@scalewing/tokens';
 
+import { scrollShadeRules } from './css-scroll-region.js';
 import { zIndex } from './stacking.js';
 
 const label = typographyVariants.label;
@@ -37,7 +38,12 @@ function stickyRules(): string {
 }`;
 }
 
-/** The tab strip: a scrollable row of tabs with an accent underline under the current one. */
+/**
+ * The tab strip: a scrollable row of tabs with an accent underline under the
+ * current one. While labels are scrolled out past an inline edge, that edge
+ * draws the scroll region's shade (its scrollbar is hidden), so a phone shows
+ * that the strip goes on.
+ */
 export function cssTabsClasses(): string {
   return `.sw-tabs {
   border-bottom: 1px solid var(--sw-color-border);
@@ -91,6 +97,8 @@ export function cssTabsClasses(): string {
   outline: var(--sw-focus-ring-width) solid var(--sw-color-accent);
   outline-offset: var(--sw-focus-ring-offset);
 }
+
+${scrollShadeRules('.sw-tabs')}
 
 ${stickyRules()}
 

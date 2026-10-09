@@ -1,3 +1,5 @@
+'use client';
+
 import {
   type HTMLAttributes,
   type KeyboardEvent,
@@ -6,6 +8,7 @@ import {
 } from 'react';
 
 import { cx } from '../class-names.js';
+import { useScrollOverflow } from './use-scroll-overflow.js';
 
 export type TabItem = {
   id: string;
@@ -54,7 +57,9 @@ export function tabPanelId(tabsId: string, id: string): string {
 /**
  * A tab strip with `tablist` semantics for the sections of one page. Arrow
  * keys, Home and End move the focus and select at once; the strip scrolls
- * sideways when it overflows. Pair each item with a `TabPanel`. `sticky`
+ * sideways when it overflows, and an edge with labels past it draws a shade
+ * (`sw-scroll-more-start`, `sw-scroll-more-end`), as a wide `Table` does.
+ * Pair each item with a `TabPanel`. `sticky`
  * keeps it at the top of the viewport over a long panel.
  */
 export function Tabs({
@@ -66,6 +71,8 @@ export function Tabs({
   ...labelProps
 }: TabsProps) {
   const tabs = useRef(new Map<string, HTMLButtonElement>());
+  const strip = useRef<HTMLDivElement>(null);
+  const overflow = useScrollOverflow(strip);
 
   function select(next: TabItem | undefined) {
     if (!next || next.id === value) {
@@ -100,8 +107,14 @@ export function Tabs({
 
   return (
     <div
-      className={cx('sw-tabs', sticky && 'sw-tabs-sticky')}
+      className={cx(
+        'sw-tabs',
+        sticky && 'sw-tabs-sticky',
+        overflow.start && 'sw-scroll-more-start',
+        overflow.end && 'sw-scroll-more-end',
+      )}
       onKeyDown={onKeyDown}
+      ref={strip}
       role="tablist"
       {...labelProps}
     >

@@ -17,8 +17,14 @@ function edgeShade(side: Side): string {
   return `inset ${offset} 0 var(--sw-space-5) calc(-1 * var(--sw-space-5)) ${shadeColor}`;
 }
 
-/** The start edge is the left in a left-to-right box and the right in RTL. */
-function edgeShadeRules(selector: string): string {
+/**
+ * The shade each inline edge of `selector` draws while `useScrollOverflow`
+ * marks it (`sw-scroll-more-start`, `sw-scroll-more-end`). The start edge is
+ * the left in a left-to-right box and the right in RTL. A box that scrolls
+ * itself (a `Tabs` strip) takes these alone; a scroll region takes them
+ * through `scrollRegionRules`.
+ */
+export function scrollShadeRules(selector: string): string {
   const more = (edge: 'start' | 'end') => `${selector}.sw-scroll-more-${edge}`;
   const both = `${more('start')}.sw-scroll-more-end`;
   return [
@@ -53,7 +59,7 @@ ${selector}:focus-visible {
   outline-offset: calc(-1 * var(--sw-focus-ring-width));
 }
 
-${edgeShadeRules(selector)}`;
+${scrollShadeRules(selector)}`;
 }
 
 export function scrollRegionClassCatalog(): string[] {

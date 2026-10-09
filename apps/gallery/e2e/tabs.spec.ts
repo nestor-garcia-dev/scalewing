@@ -53,6 +53,39 @@ test('Tabs select with the pointer and the keyboard, show one panel and scroll o
   await section.screenshot({ path: testInfo.outputPath('tabs.png') });
 });
 
+test('A Tabs strip whose labels overflow shades the edge with more tabs past it', async ({
+  page,
+}, testInfo) => {
+  const forced = testInfo.project.name === 'forced-colors';
+  if (forced) await page.emulateMedia({ forcedColors: 'active' });
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/#tabs');
+  const list = page.locator('#tabs').getByRole('tablist', { name: 'Habitats' });
+  await list.scrollIntoViewIfNeeded();
+  const shadow = () =>
+    list.evaluate((element) => getComputedStyle(element).boxShadow);
+
+  // At the start the labels go on past the end edge only.
+  await expect(list).toHaveClass(/sw-scroll-more-end/);
+  await expect(list).not.toHaveClass(/sw-scroll-more-start/);
+  if (forced) expect(await shadow()).toBe('none');
+  else expect(await shadow()).toMatch(/inset$/);
+
+  // Scrolled to its end, only the start edge is shaded.
+  await list.evaluate((element) => {
+    element.scrollLeft = element.scrollWidth;
+  });
+  await expect(list).toHaveClass(/sw-scroll-more-start/);
+  await expect(list).not.toHaveClass(/sw-scroll-more-end/);
+  if (!forced) expect(await shadow()).toMatch(/inset$/);
+
+  // A strip that fits draws nothing.
+  await page.setViewportSize({ width: 1280, height: 900 });
+  await expect(list).not.toHaveClass(/sw-scroll-more/);
+  expect(await shadow()).toBe('none');
+  await list.screenshot({ path: testInfo.outputPath('tabs-fits.png') });
+});
+
 test('A sticky Tabs strip stays at the top of its page while the panel scrolls under it, its first label on the space-4 gutter', async ({
   page,
 }, testInfo) => {
