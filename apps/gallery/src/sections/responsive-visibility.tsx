@@ -55,6 +55,7 @@ export function ResponsiveVisibilitySection() {
       usage={`<Box hideBelow="md">Wide layout</Box>
 <Box hideFrom="md">Narrow layout</Box>
 
+// your app's matchMedia hook, on the very query hideBelow="lg" uses
 const glyphsOnly = useMediaQuery(breakpointQuery('below', 'lg'));
 <Nav aria-label="Habitats">
   <Tooltip

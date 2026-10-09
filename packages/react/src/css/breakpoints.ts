@@ -27,7 +27,10 @@ export const visibilityBreakpoints = Object.keys(
 /** Which side of a breakpoint: `from` it and wider, or `below` it. */
 export type BreakpointDirection = 'from' | 'below';
 
-const directions: readonly BreakpointDirection[] = ['from', 'below'];
+export const breakpointDirections: readonly BreakpointDirection[] = [
+  'from',
+  'below',
+];
 
 export function hideClass(
   direction: BreakpointDirection,
@@ -46,8 +49,10 @@ export function breakpointQuery(
   direction: BreakpointDirection,
   breakpoint: VisibilityBreakpoint,
 ): string {
-  if (!directions.includes(direction))
-    throw new RangeError(`direction must be one of ${directions.join(', ')}`);
+  if (!breakpointDirections.includes(direction))
+    throw new RangeError(
+      `direction must be one of ${breakpointDirections.join(', ')}`,
+    );
   if (!visibilityBreakpoints.includes(breakpoint))
     throw new RangeError(
       `breakpoint must be one of ${visibilityBreakpoints.join(', ')}`,
