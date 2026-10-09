@@ -72,7 +72,14 @@ on `claude/teisoro-f006-s11-lg-breakpoint`: `hideBelow`/`hideFrom` `lg`
 (64rem), `breakpointQuery` exported, and 44 px `Nav` buttons on a coarse
 pointer, after Teisoro's design pass for the header was approved. Merged
 in #103 and released in `@scalewing/react` 1.23.0. Next: Teisoro pins it
-and changes its header.
+and changes its header. Third part, task 1890 (the storyboard
+re-review), on `teisoro/f006-s11-review-findings`: `Field` `changed`
+tints the fill with 12 % of the accent so a changed field reads apart from
+the focused one (`teisoro-field-validation.md` follow-up), and a
+`BarChart` item's `tone` colors its bar by meaning, such as a diverging
+overage in warning and a shortage in danger (`teisoro-bar-chart.md`
+follow-up). Next: review and merge, release `@scalewing/react` (minor),
+and Teisoro pins it.
 
 Teisoro F-007 task 1550: the design-system findings of the Vault UX
 review (the `vault-*.md` reports), one surface per commit:
