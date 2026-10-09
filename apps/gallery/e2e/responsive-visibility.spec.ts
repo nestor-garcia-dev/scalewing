@@ -31,3 +31,31 @@ test('Box hides the wide or narrow region at the md breakpoint', async ({
   }
   await page.setViewportSize({ width, height: 900 });
 });
+
+test('Box hides a label below the lg breakpoint, leaving the named glyph', async ({
+  page,
+}, testInfo) => {
+  await page.goto('/#responsive-visibility');
+  const habitats = page.getByRole('navigation', { name: 'Habitats' });
+  const wetlands = habitats.getByRole('button', { name: 'Wetlands' });
+  const label = wetlands.getByText('Wetlands');
+  const { width } = page.viewportSize() ?? { width: 0 };
+  await page.setViewportSize({ width: 1023, height: 900 });
+  await expect(wetlands).toBeVisible();
+  await expect(label).toBeHidden();
+  // A destination is a 44 px target on a coarse pointer (the phone
+  // project), whatever its size.
+  const box = await wetlands.boundingBox();
+  const coarse = await page.evaluate(
+    () => window.matchMedia('(pointer: coarse)').matches,
+  );
+  expect(coarse).toBe(testInfo.project.name === 'mobile-es');
+  expect(Math.min(box!.width, box!.height) >= 44).toBe(coarse);
+  await wetlands.screenshot({ path: testInfo.outputPath('glyph.png') });
+  await page.setViewportSize({ width: 1024, height: 900 });
+  await expect(label).toBeVisible();
+  await expect(wetlands).toHaveAccessibleName('Wetlands');
+  await wetlands.click();
+  await expect(page.getByText('Opened: Wetlands.')).toBeVisible();
+  await page.setViewportSize({ width, height: 900 });
+});

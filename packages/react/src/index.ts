@@ -157,7 +157,12 @@ export {
 
 export { utilityClassCatalog } from './css/stylesheet.js';
 export type { VisibilityProps } from './visibility-classes.js';
-export type { Breakpoint } from './css/breakpoints.js';
+export type {
+  Breakpoint,
+  HideDirection,
+  VisibilityBreakpoint,
+} from './css/breakpoints.js';
+export { breakpointQuery } from './css/breakpoints.js';
 export { Separator } from './components/Separator.js';
 export type {
   SeparatorOrientation,
