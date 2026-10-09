@@ -2,6 +2,10 @@ import { typographyVariants } from '@scalewing/tokens';
 
 import { scrollRegionRules } from './css-scroll-region.js';
 import {
+  cssTableLayoutClasses,
+  tableLayoutClassCatalog,
+} from './css-table-layout.js';
+import {
   cssTableSortClasses,
   tableSortClassCatalog,
 } from './css-table-sort.js';
@@ -91,6 +95,8 @@ export function cssTableClasses(): string {
   padding: var(--sw-space-1) var(--sw-space-2);
 }
 
+${cssTableLayoutClasses()}
+
 ${cssTableSortClasses()}
 
 ${selectedRowRules()}`;
@@ -106,6 +112,7 @@ export function tableClassCatalog(): string[] {
     'sw-table-sticky',
     'sw-table-compact',
     'sw-table-row-selected',
+    ...tableLayoutClassCatalog(),
     ...tableSortClassCatalog(),
   ];
 }

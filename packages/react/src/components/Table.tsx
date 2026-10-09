@@ -1,18 +1,44 @@
-import {
-  forwardRef,
-  type HTMLAttributes,
-  type TdHTMLAttributes,
-  type ThHTMLAttributes,
-} from 'react';
+import { forwardRef, type HTMLAttributes } from 'react';
 
 import { cx } from '../class-names.js';
 import { ScrollRegion } from './ScrollRegion.js';
+import {
+  assertTableLayout,
+  assertTableVerticalAlign,
+  type TableLayout,
+  type TableVerticalAlign,
+} from './table/table-layout.js';
+
+export {
+  TableCell,
+  type TableCellProps,
+  type TableColumnWidth,
+  type TableSort,
+} from './table/TableCell.js';
+export type { TableLayout, TableVerticalAlign };
 
 export type TableDensity = 'comfortable' | 'compact';
 
 export type TableProps = HTMLAttributes<HTMLTableElement> & {
   density?: TableDensity;
   stickyHeader?: boolean;
+  /**
+   * `auto` (default) sizes each column by its content. `fixed` sizes the
+   * columns from the header row's `width`s alone (`table-layout: fixed`),
+   * so no column moves when the rows change, such as when a filter hides
+   * one. Columns without a width share what is left equally; when every
+   * column has one, spare width is shared in proportion to them. When the
+   * widths add up to more than the container, the table scrolls in its
+   * region and a column without a width gets no room at all, so on a table
+   * that can be narrower than its widths give every column one.
+   */
+  layout?: TableLayout;
+  /**
+   * Where a cell's content sits in a row taller than it: `middle` (default)
+   * or `top`, for rows where one cell runs to several lines and the others
+   * should start on its first line.
+   */
+  verticalAlign?: TableVerticalAlign;
 };
 
 /** A wide table scrolls inside its own `ScrollRegion`, named after the table. */
@@ -21,11 +47,15 @@ export const Table = forwardRef<HTMLTableElement, TableProps>(function Table(
     children,
     className,
     density = 'comfortable',
+    layout = 'auto',
     stickyHeader = true,
+    verticalAlign = 'middle',
     ...rest
   },
   ref,
 ) {
+  assertTableLayout(layout);
+  assertTableVerticalAlign(verticalAlign);
   return (
     <ScrollRegion
       aria-label={rest['aria-label']}
@@ -37,7 +67,9 @@ export const Table = forwardRef<HTMLTableElement, TableProps>(function Table(
         className={cx(
           'sw-table',
           density === 'compact' && 'sw-table-compact',
+          layout === 'fixed' && 'sw-table-fixed',
           stickyHeader && 'sw-table-sticky',
+          verticalAlign === 'top' && 'sw-table-top',
           className,
         )}
         {...rest}
@@ -78,103 +110,6 @@ export const TableRow = forwardRef<HTMLTableRowElement, TableRowProps>(
         className={cx(selected && 'sw-table-row-selected', className)}
         {...rest}
       />
-    );
-  },
-);
-
-type TableCellAlign = 'start' | 'end';
-
-/**
- * A sortable column's state: sorted `ascending` or `descending`, or `none`
- * (sortable, not the column the table is sorted by).
- */
-export type TableSort = 'ascending' | 'descending' | 'none';
-
-type TableHeaderSort = {
-  /**
-   * Makes a header cell (`as="th"`) a sort control: its children become a
-   * button in the header's own text style, with a sort glyph after them (an
-   * up chevron when `ascending`, a down chevron when `descending`, a muted
-   * pair when `none`), and the cell carries `aria-sort` while it is the
-   * sorted column. Pass it with `onSort`, on `th` cells only.
-   */
-  sort?: TableSort;
-  /** Called when the header's sort button is pressed; the consumer sorts. */
-  onSort?: () => void;
-};
-
-export type TableCellProps = (
-  | (TdHTMLAttributes<HTMLTableCellElement> & {
-      as?: 'td';
-      sort?: never;
-      onSort?: never;
-    })
-  | (ThHTMLAttributes<HTMLTableCellElement> & { as: 'th' } & TableHeaderSort)
-) & {
-  align?: TableCellAlign;
-  numeric?: boolean;
-  truncate?: boolean;
-};
-
-const tableSorts: readonly TableSort[] = ['ascending', 'descending', 'none'];
-
-/** `sort` and `onSort` come together, on a header cell, with a known value. */
-function assertSort(
-  as: 'td' | 'th',
-  sort: TableSort | undefined,
-  onSort: (() => void) | undefined,
-) {
-  if (sort === undefined && onSort === undefined) return;
-  if (as !== 'th')
-    throw new TypeError('TableCell sort is for a header cell (as="th")');
-  if (sort === undefined || typeof onSort !== 'function')
-    throw new TypeError('TableCell sort and onSort are passed together');
-  if (!tableSorts.includes(sort))
-    throw new RangeError(`Unknown TableCell sort: ${String(sort)}`);
-}
-
-export const TableCell = forwardRef<HTMLTableCellElement, TableCellProps>(
-  function TableCell(
-    {
-      align = 'start',
-      as = 'td',
-      children,
-      className,
-      numeric = false,
-      onSort,
-      sort,
-      truncate = false,
-      ...rest
-    },
-    ref,
-  ) {
-    assertSort(as, sort, onSort);
-    const Component = as;
-    const alignmentClass = numeric
-      ? 'sw-table-numeric'
-      : align === 'end'
-        ? 'sw-table-end'
-        : undefined;
-
-    return (
-      <Component
-        ref={ref}
-        aria-sort={sort === undefined || sort === 'none' ? undefined : sort}
-        className={cx(alignmentClass, truncate && 'sw-table-clip', className)}
-        {...rest}
-      >
-        {sort !== undefined && onSort ? (
-          <button className="sw-table-sort" onClick={onSort} type="button">
-            {children}
-            <span
-              aria-hidden="true"
-              className={cx('sw-table-sort-glyph', `sw-table-sort-${sort}`)}
-            />
-          </button>
-        ) : (
-          children
-        )}
-      </Component>
     );
   },
 );

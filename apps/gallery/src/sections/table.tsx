@@ -15,6 +15,7 @@ import {
 import { useState } from 'react';
 
 import { Section } from '../layout/Section.js';
+import { TableLayoutExamples } from './table-layout.js';
 import { SortedCensus } from './table-sorted.js';
 import {
   sampleCensusRows,
@@ -33,9 +34,13 @@ export function TableSection() {
   return (
     <Section
       id="table"
-      purpose="Table aligns data in rows. stickyHeader keeps column labels visible. numeric cells use tabular numerals and end alignment. truncate clips overflowing cell copy. density compact densifies cells. selected marks the current row with an accent bar at its start that takes no space and no fill, so no column moves and no text loses contrast when a row is picked; the bar follows the writing direction and forced colors keep it. A table wider than its container scrolls sideways inside its own region, and each edge with content past it draws a shade until it is scrolled to that end. A header cell with sort and onSort is the column's sort control: its name becomes a button in the header's own style with a chevron (up ascending, down descending, a quiet pair on a column it is not sorted by), and the sorted header carries aria-sort; in a numeric column the chevron goes before the name, so the name lines up with the figures."
+      purpose="Table aligns data in rows. stickyHeader keeps column labels visible. numeric cells use tabular numerals and end alignment. truncate clips overflowing cell copy. density compact densifies cells. selected marks the current row with an accent bar at its start that takes no space and no fill, so no column moves and no text loses contrast when a row is picked; the bar follows the writing direction and forced colors keep it. A table wider than its container scrolls sideways inside its own region, and each edge with content past it draws a shade until it is scrolled to that end. A header cell with sort and onSort is the column's sort control: its name becomes a button in the header's own style with a chevron (up ascending, down descending, a quiet pair on a column it is not sorted by), and the sorted header carries aria-sort; in a numeric column the chevron goes before the name, so the name lines up with the figures. layout fixed sizes the columns from the header row's widths alone (a column without one shares what is left, and gets none when the widths fill the container, so a table that scrolls on a phone sizes every column), so a filter that hides a row moves no column; width xs to xl on a header cell are 4, 6, 8, 12 and 16 rem, and width min (on every cell of an auto table's column) keeps the column as narrow as its content on one line. verticalAlign top starts every cell of a tall row on its first line."
       title="Table"
-      usage={`<TableCell as="th" numeric sort="descending" onSort={() => sortBy('sightings')}>
+      usage={`<Table aria-label="Field log" layout="fixed" verticalAlign="top">
+  …<TableCell as="th" width="lg">When</TableCell>…
+</Table>
+
+<TableCell as="th" numeric sort="descending" onSort={() => sortBy('sightings')}>
   Sightings
 </TableCell>
 
@@ -228,6 +233,7 @@ export function TableSection() {
           </TableBody>
         </Table>
         <SortedCensus />
+        <TableLayoutExamples />
         <Text variant="caption" color="muted">
           Pass stickyHeader false when the header should scroll away. density
           compact and selected are for ranked lists. Why chips are Badge sm, not

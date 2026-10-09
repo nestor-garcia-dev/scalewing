@@ -128,11 +128,14 @@ export {
   TableRow,
   type TableBodyProps,
   type TableCellProps,
+  type TableColumnWidth,
   type TableDensity,
   type TableHeaderProps,
+  type TableLayout,
   type TableProps,
   type TableRowProps,
   type TableSort,
+  type TableVerticalAlign,
 } from './components/Table.js';
 export {
   Text,
