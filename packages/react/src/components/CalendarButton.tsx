@@ -34,6 +34,12 @@ export type CalendarButtonProps = {
   onChange: (value: string) => void;
   min?: string;
   max?: string;
+  /**
+   * The calendar's today `YYYY-MM-DD`: the day it marks as today and picks
+   * with **Today**. Defaults to the device's local date; pass the business's
+   * day when it keeps its own time zone.
+   */
+  today?: string;
   disabled?: boolean;
   /** The `<button>` element's id. */
   id?: string;
@@ -77,6 +83,7 @@ export const CalendarButton = forwardRef<
     onChange,
     min,
     max,
+    today,
     disabled = false,
     id,
     locale,
@@ -97,6 +104,7 @@ export const CalendarButton = forwardRef<
     value,
     disabled,
     onChange,
+    today,
   });
   const resolvedLocale = useLangLocale(locale, buttonRef);
   const labelId = useId();

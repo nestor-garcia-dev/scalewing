@@ -262,3 +262,32 @@ test('a DateField beside a Field lines up its label and control', async ({
     path: testInfo.outputPath('date-field-beside-field.png'),
   });
 });
+
+test("DateField opens on, marks and picks a given today, not the device's", async ({
+  page,
+}) => {
+  // 08:00 UTC on Sep 30 is still 10 PM on Sep 29 at the Honolulu station;
+  // the device reads Sep 30 in every project's zone.
+  await page.clock.setFixedTime(new Date('2026-09-30T08:00:00Z'));
+  await page.goto('/#date-field');
+  const section = page.locator('#date-field');
+  const reef = field(section, 'Reef log date');
+  await reef.getByRole('button', { name: 'Choose date' }).click();
+  const calendar = page.getByRole('dialog', { name: 'Reef log date' });
+  const stationDay = calendar.getByRole('gridcell', {
+    name: 'Tuesday, September 29, 2026',
+  });
+  await expect(stationDay).toBeFocused();
+  await expect(stationDay).toHaveAttribute('aria-current', 'date');
+  const deviceDay = calendar.getByRole('gridcell', {
+    name: 'Wednesday, September 30, 2026',
+  });
+  await expect(deviceDay).not.toHaveAttribute('aria-current', /.*/);
+  await expect(deviceDay).toHaveAttribute('aria-disabled', 'true');
+
+  await calendar.getByRole('button', { name: 'Today' }).click();
+  await expect(calendar).toBeHidden();
+  await expect(
+    section.getByText('Serialized reef log date: 2026-09-29.'),
+  ).toBeVisible();
+});
