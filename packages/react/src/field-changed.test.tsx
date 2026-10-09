@@ -1,8 +1,15 @@
+import { contrastRatio } from '@scalewing/tokens';
 import { cleanup, render, screen } from '@testing-library/react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import { Field } from './components/Field.js';
+import { changedTintStrength } from './css/css-field-changed.js';
 import { generateStylesheet, utilityClassCatalog } from './css/stylesheet.js';
+import {
+  forEveryTheme,
+  glassOverBackground,
+  tintOver,
+} from './every-theme.test-support.js';
 
 afterEach(() => cleanup());
 
@@ -92,14 +99,72 @@ describe('Field changed', () => {
     }
   });
 
-  it('generates the accent border, thicker without moving, and forced colors', () => {
+  it('generates the accent border, thicker without moving, a tint over the fill, and forced colors', () => {
     const css = generateStylesheet();
+    const tint =
+      'linear-gradient(color-mix(in srgb, var(--sw-color-accent) 12%, transparent), color-mix(in srgb, var(--sw-color-accent) 12%, transparent))';
     expect(css).toContain(
       '[data-theme] .sw-field-changed > :is(input, select, textarea),\n.sw-field-changed .sw-field-adorned {\n  border-color: var(--sw-color-accent);\n  box-shadow: inset 0 0 0 1px var(--sw-color-accent);\n}',
     );
+    // The tint is a background image over the control's own fill, and not
+    // while a placeholder shows.
+    expect(css).toContain(
+      `[data-theme] .sw-field-changed > :is(input, textarea):not(:placeholder-shown),\n.sw-field-changed .sw-field-adorned:not(:has(> input:placeholder-shown)) {\n  background-image: ${tint};\n}`,
+    );
+    // A select keeps its chevron above the tint.
+    expect(css).toContain(
+      `[data-theme] .sw-field-changed > select {\n  background-image:\n    linear-gradient(45deg, transparent 50%, var(--sw-color-muted) 50%),\n    linear-gradient(135deg, var(--sw-color-muted) 50%, transparent 50%),\n    ${tint};\n  background-position:\n    calc(100% - var(--sw-space-4)) calc(50% - 1px),\n    calc(100% - calc(var(--sw-space-4) - var(--sw-space-1))) calc(50% - 1px),\n    0 0;`,
+    );
+    expect(css).toContain(
+      '.sw-field-changed :is(.sw-field-prefix, .sw-field-suffix) {\n  color: var(--sw-color-text);\n}',
+    );
+    // Focus never tints: a text control's focus rules draw a ring only.
+    const focusRules = [
+      ...css.matchAll(
+        /[^{}]*(?:select:focus|sw-field-adorned:focus)[^{}]*\{[^}]*\}/g,
+      ),
+    ].map(([rule]) => rule);
+    expect(focusRules.length).toBeGreaterThanOrEqual(3);
+    for (const rule of focusRules) expect(rule).not.toMatch(/background/);
     expect(css).toContain(
       '.sw-field-changed .sw-field-adorned { border-color: Highlight; box-shadow: inset 0 0 0 1px Highlight; }',
     );
+    expect(css).toContain(
+      '.sw-field-changed .sw-field-adorned:not(:has(> input:placeholder-shown)) { background-image: none; }',
+    );
+    expect(css).toContain(
+      '[data-theme] .sw-field-changed > select { background-image: linear-gradient(45deg, transparent 50%, var(--sw-color-muted) 50%),\n    linear-gradient(135deg, var(--sw-color-muted) 50%, transparent 50%); }',
+    );
     expect(utilityClassCatalog()).toContain('sw-field-changed');
+  });
+
+  it('keeps the value at 4.5:1 on the tint in every palette and scheme', () => {
+    // The control is the glass fill over the page (the subtle fill when
+    // disabled), and the tint is the accent at 12 % over that. The value,
+    // and an adorned frame's prefix and suffix, are in the text color; a
+    // select's muted chevron is a graphic and needs 3:1.
+    forEveryTheme((colors, label, theme) => {
+      const fill = glassOverBackground(theme);
+      const tint = tintOver(colors.accent, changedTintStrength, fill);
+      expect(
+        contrastRatio(colors.text, tint),
+        `${label} value`,
+      ).toBeGreaterThanOrEqual(4.5);
+      expect(
+        contrastRatio(
+          colors.text,
+          tintOver(colors.accent, changedTintStrength, colors.subtle),
+        ),
+        `${label} disabled value`,
+      ).toBeGreaterThanOrEqual(4.5);
+      expect(
+        contrastRatio(colors.muted, tint),
+        `${label} chevron`,
+      ).toBeGreaterThanOrEqual(3);
+      // The tint shows against the plain fill.
+      expect(contrastRatio(tint, fill), `${label} tint`).toBeGreaterThanOrEqual(
+        1.1,
+      );
+    });
   });
 });

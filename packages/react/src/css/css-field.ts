@@ -5,6 +5,7 @@ import {
   disabledControlForcedColors,
   disabledControlSurface,
 } from './css-document.js';
+import { cssFieldChangedClasses } from './css-field-changed.js';
 
 const caption = typographyVariants.caption;
 
@@ -88,24 +89,13 @@ export function cssFieldClasses(): string {
   border-color: var(--sw-color-danger);
 }
 
-/*
- * A changed value: the accent border, a hairline thicker through an inset
- * shadow so nothing moves, on the control or on an adorned frame (whose
- * input draws no border of its own).
- */
-[data-theme] .sw-field-changed > :is(input, select, textarea),
-.sw-field-changed .sw-field-adorned {
-  border-color: var(--sw-color-accent);
-  box-shadow: inset 0 0 0 1px var(--sw-color-accent);
-}
-
 ${adornmentRules()}
+
+${cssFieldChangedClasses()}
 
 @media (forced-colors: active) {
   [data-theme] .sw-field-invalid :is(input, select, textarea),
   .sw-field-invalid .sw-field-adorned { border-color: Mark; }
-  [data-theme] .sw-field-changed > :is(input, select, textarea),
-  .sw-field-changed .sw-field-adorned { border-color: Highlight; box-shadow: inset 0 0 0 1px Highlight; }
   .sw-field-prefix, .sw-field-suffix { color: CanvasText; }
   .sw-field-adorned:has(> input:disabled) {
     ${disabledControlForcedColors}

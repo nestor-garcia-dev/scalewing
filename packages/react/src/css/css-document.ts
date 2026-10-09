@@ -40,6 +40,19 @@ export const disabledControlForcedColors = `border-color: GrayText;
   color: GrayText;
   -webkit-text-fill-color: GrayText;`;
 
+/**
+ * A select's chevron: two muted triangles drawn as background layers, so a
+ * rule that adds a layer (a changed field's tint) lists them with it.
+ */
+export const selectChevronLayers = {
+  image: `linear-gradient(45deg, transparent 50%, var(--sw-color-muted) 50%),
+    linear-gradient(135deg, var(--sw-color-muted) 50%, transparent 50%)`,
+  position: `calc(100% - var(--sw-space-4)) calc(50% - 1px),
+    calc(100% - calc(var(--sw-space-4) - var(--sw-space-1))) calc(50% - 1px)`,
+  size: `var(--sw-space-1) var(--sw-space-1),
+    var(--sw-space-1) var(--sw-space-1)`,
+} as const;
+
 /** A script-only focus target in the canvas, at zero specificity. */
 export const focusTargetSelector =
   ":where([data-theme] [tabindex='-1']:focus-visible)";
@@ -113,14 +126,11 @@ ${focusTargetSelector} {
   ${controlSurface}
   appearance: none;
   background-image:
-    linear-gradient(45deg, transparent 50%, var(--sw-color-muted) 50%),
-    linear-gradient(135deg, var(--sw-color-muted) 50%, transparent 50%);
+    ${selectChevronLayers.image};
   background-position:
-    calc(100% - var(--sw-space-4)) calc(50% - 1px),
-    calc(100% - calc(var(--sw-space-4) - var(--sw-space-1))) calc(50% - 1px);
+    ${selectChevronLayers.position};
   background-repeat: no-repeat;
-  background-size: var(--sw-space-1) var(--sw-space-1),
-    var(--sw-space-1) var(--sw-space-1);
+  background-size: ${selectChevronLayers.size};
   box-sizing: content-box;
   height: calc(var(--sw-control-md-min-height) - 1px - 1px);
   min-height: 0;

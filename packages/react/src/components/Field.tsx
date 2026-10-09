@@ -43,7 +43,10 @@ export type FieldProps = {
   /**
    * Marks a value the person changed from a saved one, such as a field in a
    * correction: the control's border (or an adorned frame's) in the accent
-   * color, thicker than the plain hairline. It is a cue, not the record:
+   * color, thicker than the plain hairline, and its fill tinted with 12 % of
+   * the accent, so a changed field reads apart from the focused one (focus
+   * draws a ring and never tints). The value keeps 4.5:1 on the tint; while
+   * a placeholder shows, the fill stays plain. It is a cue, not the record:
    * say what it was in `description` ("Was 25"). `invalid` and `error`
    * win. Like `invalid`, passing it, even `false` but not `undefined`,
    * requires one native control child from the first render.

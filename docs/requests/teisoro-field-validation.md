@@ -94,3 +94,31 @@ Rejected alternatives:
 - A tinted fill. The control's fill is the canvas's glass; a tint would change the value's contrast.
 
 Evidence: `field-changed.test.tsx` (the class and the description; an adorned field; `invalid` and `error` win; the native-control rule; the generated rules); `apps/gallery/e2e/field.spec.ts` "Field changed marks a corrected value with the accent border, and says what it was" on desktop-en, mobile-es and forced-colors: typing 26 over the saved 25 changes the border color, adds the inset shadow, keeps the box, describes the field "Was 25" and counts "1 value changed"; the adorned weight's frame changes color too; typing 25 again removes the mark.
+
+## Follow-up request (2026-10-09, Teisoro F-006-S11 task 1890): a changed value that does not read as focus
+
+Status: implemented on `teisoro/f006-s11-review-findings` for Teisoro F-006-S11 task 1890; awaiting review, merge and a `@scalewing/react` minor release.
+Source: Teisoro's storyboard re-review of F-006-S11 (task 1890). `sw-field-changed` drew the accent border a hairline thicker, and the focus ring is the same accent, doubled; once the person tabs to the next field, two fields are outlined in the accent, and "changed" reads as "where I am".
+
+Teisoro need: the correction's changed fields marked so they read apart from the focused one at a glance, still beside their "Was …" words.
+
+Decision: keep the accent border and its inset hairline, and tint the control's fill with the accent at 12 %. Focus draws a ring and never tints, so the two marks differ in kind, not only in weight. This reverses the earlier rejection of a tinted fill ("a tint would change the value's contrast"): the contrast is now tested in every palette and scheme instead of avoided.
+
+API: none new. `changed` on `Field` keeps its name, its class (`sw-field-changed`) and its rules (`invalid` and `error` win; passing it needs a native control from the first render); only its look changes.
+
+Behavior and failure boundary:
+
+- The tint is a background image, `linear-gradient(color-mix(in srgb, var(--sw-color-accent) 12%, transparent), …)`, over the control's own background color, which stays (the glass fill, or the subtle fill of a disabled control). It is on the native control (`[data-theme] .sw-field-changed > :is(input, textarea)`) or on an adorned frame (`.sw-field-changed .sw-field-adorned`), whose input is transparent, so it shows once. A select lists its chevron's two layers above the tint (`selectChevronLayers`, now shared with the canvas's select rule).
+- While a placeholder shows (`:placeholder-shown`), there is no value to mark and the fill stays plain, so the muted placeholder keeps its 4.5:1. An adorned frame's prefix and suffix take the text color on the tint, since muted falls to 3.55:1 there.
+- The value, in the text color, keeps 6.74:1 or more on the tint over the glass fill (lowest: mocha dark) and 8.16:1 or more over the subtle fill (sunburst dark); a select's muted chevron, a graphic, keeps 3.55:1 (ink dark); the tint stands apart from the plain fill at 1.15:1 or more (synthwave dark). The accent border stays the primary mark.
+- Forced colors drop the tint and the shadow (the rules say so; Chromium also drops a gradient image there) and keep the `Highlight` border.
+- No ARIA change.
+
+Rejected alternatives:
+
+- A tint with no border. The border is where the eye already looks, and forced colors drop backgrounds.
+- A different border color for "changed" (success, or muted). Success says "saved" and muted is weaker than the plain hairline's purpose; the accent is the system's one "this is yours" color.
+- Tinting under focus too, or changing the focus ring. The ring is the canvas's one focus mark for every control.
+- 16 % as on `CalendarButton`'s range band. A whole control is a larger area than a day cell; 12 % is clearly visible and leaves the muted chevron more room.
+
+Evidence: `field-changed.test.tsx` ("generates the accent border, thicker without moving, a tint over the fill, and forced colors": the tint rule, the select's layers, the prefix and suffix color, no background in a text control's focus rules, the forced-colors resets; "keeps the value at 4.5:1 on the tint in every palette and scheme"); `calendar-button-range.test.tsx` now shares the compositing helpers in `every-theme.test-support.ts`; `apps/gallery/e2e/field.spec.ts` "Field changed marks a corrected value with the accent border and a tint focus never draws, and says what it was" on desktop-en, mobile-es and forced-colors: the changed "Adult herons" keeps its fill color and gains the tint image, the focused unchanged "Feed weight" frame beside it has its ring and no tint (screenshot `field-changed-beside-focus.png`), a changed field keeps its tint while focused, the adorned frame tints once (its input has no image), the new "Colony habitat" select keeps its chevron above the tint, and the mark goes when the saved value returns; in forced colors no tint image is computed.

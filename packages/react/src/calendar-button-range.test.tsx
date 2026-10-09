@@ -1,9 +1,4 @@
-import {
-  contrastRatio,
-  createTheme,
-  paletteIds,
-  parseHexColor,
-} from '@scalewing/tokens';
+import { contrastRatio } from '@scalewing/tokens';
 import { cleanup, render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
@@ -11,6 +6,11 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { CalendarButton } from './components/CalendarButton.js';
 import { generateStylesheet, utilityClassCatalog } from './css/stylesheet.js';
 import { assertDateRange, dayInRange } from './date-only.js';
+import {
+  forEveryTheme,
+  glassOverBackground,
+  tintOver,
+} from './every-theme.test-support.js';
 
 beforeEach(() => {
   vi.useFakeTimers({ toFake: ['Date'] });
@@ -117,44 +117,25 @@ describe('CalendarButton range', () => {
     // The calendar is the glass fill over the page: the band is the accent
     // at 16 % over that (24 % under the pointer). Every number on it is in
     // the text colour; today's accent ring needs 3:1 against it.
-    const channels = (color: string) => {
-      const rgba = /^rgba\((\d+), (\d+), (\d+), ([\d.]+)\)$/.exec(color);
-      if (rgba) return { rgb: rgba.slice(1, 4).map(Number), alpha: +rgba[4] };
-      return { rgb: parseHexColor(color), alpha: 1 };
-    };
-    const over = (top: number[], alpha: number, bottom: number[]) =>
-      top.map((value, index) => value * alpha + bottom[index]! * (1 - alpha));
-    const hex = (rgb: number[]) =>
-      `#${rgb.map((value) => Math.round(value).toString(16).padStart(2, '0')).join('')}`;
-    for (const palette of paletteIds) {
-      for (const colorScheme of ['light', 'dark'] as const) {
-        const { colors, glass } = createTheme({ colorScheme, palette });
-        const fill = channels(glass.fill);
-        const backdrop = over(
-          fill.rgb,
-          fill.alpha,
-          parseHexColor(colors.background),
-        );
-        const accent = parseHexColor(colors.accent);
-        const where = `${palette}/${colorScheme}`;
-        for (const strength of [0.16, 0.24]) {
-          const band = hex(over(accent, strength, backdrop));
-          expect(
-            contrastRatio(colors.text, band),
-            `${where} text at ${strength}`,
-          ).toBeGreaterThanOrEqual(4.5);
-          expect(
-            contrastRatio(colors.accent, band),
-            `${where} today's ring at ${strength}`,
-          ).toBeGreaterThanOrEqual(3);
-          // The band stands apart from the calendar behind it.
-          expect(
-            contrastRatio(band, hex(backdrop)),
-            `${where} band at ${strength}`,
-          ).toBeGreaterThanOrEqual(1.2);
-        }
+    forEveryTheme((colors, where, theme) => {
+      const backdrop = glassOverBackground(theme);
+      for (const strength of [0.16, 0.24]) {
+        const band = tintOver(colors.accent, strength, backdrop);
+        expect(
+          contrastRatio(colors.text, band),
+          `${where} text at ${strength}`,
+        ).toBeGreaterThanOrEqual(4.5);
+        expect(
+          contrastRatio(colors.accent, band),
+          `${where} today's ring at ${strength}`,
+        ).toBeGreaterThanOrEqual(3);
+        // The band stands apart from the calendar behind it.
+        expect(
+          contrastRatio(band, backdrop),
+          `${where} band at ${strength}`,
+        ).toBeGreaterThanOrEqual(1.2);
       }
-    }
+    });
   });
 
   it('refuses a range whose start is after its end', () => {
