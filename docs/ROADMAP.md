@@ -57,6 +57,20 @@ store's day instead of the device's. Branch `feat/react-calendar-today`.
 Next: review and merge, release `@scalewing/react` (minor), and Teisoro
 passes its store day wherever a calendar's `max` is that day.
 
+Teisoro F-006-S11 task 1875: the Scalewing parts Teisoro's F-007 reviews
+left open, one surface per commit on `claude/teisoro-f006-s11-parts`:
+`Tabs` overflow shade (RPT-11), `TableCell` `sort` (RPT-13), `Table`
+`layout`/`verticalAlign` and `TableCell` `width` (CHG-15, HIS-12),
+`BarChart` `formatValue` and `diverging` (RPT-14), `CalendarButton`
+`range` (RPT-17), `ActionMenu` `header` and `ActionMenuItem` `lang`
+(SET-2, SET-14), `Tooltip` on a visible focus and inside the screen
+(SET-9), `Field` `changed` (COR-5), `DenominationGrid` `labelWidth` and a
+visible `totalLabel` (DRW-27, VLT-14, HIS-11), and the new `SectionNav`
+(ADM-1). Next: review and merge, release `@scalewing/react` (minor), and
+Teisoro pins it (task 1880). Teisoro's phone navigation (UX-16, with
+SET-3's labels) follows as a second release after its design pass
+(task 1885).
+
 Teisoro F-007 task 1550: the design-system findings of the Vault UX
 review (the `vault-*.md` reports), one surface per commit:
 
