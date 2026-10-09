@@ -1,4 +1,9 @@
-import { contrastRatio, createTheme, paletteIds } from '@scalewing/tokens';
+import {
+  contrastRatio,
+  createTheme,
+  paletteIds,
+  parseHexColor,
+} from '@scalewing/tokens';
 import { cleanup, render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
@@ -108,22 +113,45 @@ describe('CalendarButton range', () => {
     );
   });
 
-  it('keeps day numbers at AA on the band in every palette and scheme', () => {
-    // The band is accentSubtle: today's accent number keeps AA on it (the
-    // token's own rule), and a neighbouring month's day on it takes the
-    // text colour, because muted can fall below AA there.
+  it('keeps the band visible and its numbers at AA in every palette and scheme', () => {
+    // The calendar is the glass fill over the page: the band is the accent
+    // at 16 % over that (24 % under the pointer). Every number on it is in
+    // the text colour; today's accent ring needs 3:1 against it.
+    const channels = (color: string) => {
+      const rgba = /^rgba\((\d+), (\d+), (\d+), ([\d.]+)\)$/.exec(color);
+      if (rgba) return { rgb: rgba.slice(1, 4).map(Number), alpha: +rgba[4] };
+      return { rgb: parseHexColor(color), alpha: 1 };
+    };
+    const over = (top: number[], alpha: number, bottom: number[]) =>
+      top.map((value, index) => value * alpha + bottom[index]! * (1 - alpha));
+    const hex = (rgb: number[]) =>
+      `#${rgb.map((value) => Math.round(value).toString(16).padStart(2, '0')).join('')}`;
     for (const palette of paletteIds) {
       for (const colorScheme of ['light', 'dark'] as const) {
-        const { colors } = createTheme({ colorScheme, palette });
-        expect(
-          contrastRatio(colors.text, colors.accentSubtle),
-          `${palette}/${colorScheme} text`,
-        ).toBeGreaterThanOrEqual(4.5);
-        if (contrastRatio(colors.accent, colors.surface) >= 4.5) {
+        const { colors, glass } = createTheme({ colorScheme, palette });
+        const fill = channels(glass.fill);
+        const backdrop = over(
+          fill.rgb,
+          fill.alpha,
+          parseHexColor(colors.background),
+        );
+        const accent = parseHexColor(colors.accent);
+        const where = `${palette}/${colorScheme}`;
+        for (const strength of [0.16, 0.24]) {
+          const band = hex(over(accent, strength, backdrop));
           expect(
-            contrastRatio(colors.accent, colors.accentSubtle),
-            `${palette}/${colorScheme} today`,
+            contrastRatio(colors.text, band),
+            `${where} text at ${strength}`,
           ).toBeGreaterThanOrEqual(4.5);
+          expect(
+            contrastRatio(colors.accent, band),
+            `${where} today's ring at ${strength}`,
+          ).toBeGreaterThanOrEqual(3);
+          // The band stands apart from the calendar behind it.
+          expect(
+            contrastRatio(band, hex(backdrop)),
+            `${where} band at ${strength}`,
+          ).toBeGreaterThanOrEqual(1.2);
         }
       }
     }
@@ -152,10 +180,25 @@ describe('CalendarButton range', () => {
   it('generates the band, its rounded ends, a pill selection and forced colors', () => {
     const css = generateStylesheet();
     expect(css).toContain(
-      '.sw-date-field-day-in-range {\n  background: var(--sw-color-accentSubtle);\n  border-radius: 0;\n}',
+      '.sw-date-field-day-in-range {\n  background: color-mix(in srgb, var(--sw-color-accent) 16%, transparent);\n  border-radius: 0;\n  color: var(--sw-color-text);\n}',
     );
-    expect(css).toContain(
-      '.sw-date-field-day-in-range.sw-date-field-day-outside {\n  color: var(--sw-color-text);\n}',
+    // Today on the band keeps the text colour inside its accent ring, after
+    // the today rule and before the selected one.
+    const todayOnBand = css.indexOf(
+      ".sw-date-field-day-in-range[aria-current='date'] {\n  color: var(--sw-color-text);\n}",
+    );
+    expect(todayOnBand).toBeGreaterThan(
+      css.indexOf(".sw-date-field-day[aria-current='date'] {"),
+    );
+    expect(todayOnBand).toBeLessThan(
+      css.indexOf(".sw-date-field-day[aria-selected='true'],"),
+    );
+    expect(
+      css.indexOf(
+        ".sw-date-field-day-in-range:hover:not([aria-disabled='true']) {\n  background: color-mix(in srgb, var(--sw-color-accent) 24%, transparent);",
+      ),
+    ).toBeGreaterThan(
+      css.indexOf(".sw-date-field-day:hover:not([aria-disabled='true'])"),
     );
     expect(css).toContain(
       '.sw-date-field-day-range-start {\n  border-end-start-radius: var(--sw-radius-pill);',
@@ -167,7 +210,7 @@ describe('CalendarButton range', () => {
       /\.sw-date-field-day\[aria-selected='true'\]:hover \{[^}]*border-radius: var\(--sw-radius-pill\);/,
     );
     expect(css).toContain(
-      "  .sw-date-field-day-in-range,\n  .sw-date-field-day-in-range.sw-date-field-day-outside,\n  .sw-date-field-day-in-range[aria-current='date'] {\n    background: Mark;\n    color: MarkText;",
+      "  .sw-date-field-day-in-range,\n  .sw-date-field-day-in-range:hover:not([aria-disabled='true']),\n  .sw-date-field-day-in-range[aria-current='date'] {\n    background: Mark;\n    color: MarkText;",
     );
     expect(utilityClassCatalog()).toEqual(
       expect.arrayContaining([

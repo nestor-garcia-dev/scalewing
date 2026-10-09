@@ -238,18 +238,18 @@ function calendarRules(): string {
 }
 
 /*
- * A range's days are one band in each week row: square-cornered, the
- * accentSubtle tint (accent text keeps AA on it in every palette), rounded
- * at the range's start and end. A neighbouring month's day on the band
- * takes the text colour, because muted falls below AA on the tint. The
- * selected day and today's ring sit on top of it.
+ * A range's days are one band in each week row: square-cornered, the accent
+ * at 16 % over the calendar's glass, rounded at the range's start and end.
+ * accentSubtle is mixed against the surface, not the glass, and fades to
+ * nothing where the accent is near AA, so the band would vanish in most
+ * dark palettes. Every number on the band is in the text colour, which
+ * keeps 4.5:1 on it in every palette (muted and accent do not); a
+ * neighbouring month's day and today are marked by the band and today's
+ * accent ring (3:1 or more on the band). The selected day sits on top.
  */
 .sw-date-field-day-in-range {
-  background: var(--sw-color-accentSubtle);
+  background: color-mix(in srgb, var(--sw-color-accent) 16%, transparent);
   border-radius: 0;
-}
-
-.sw-date-field-day-in-range.sw-date-field-day-outside {
   color: var(--sw-color-text);
 }
 
@@ -267,6 +267,14 @@ function calendarRules(): string {
   border-color: var(--sw-color-accent);
   color: var(--sw-color-accent);
   font-weight: ${label.fontWeight};
+}
+
+.sw-date-field-day-in-range[aria-current='date'] {
+  color: var(--sw-color-text);
+}
+
+.sw-date-field-day-in-range:hover:not([aria-disabled='true']) {
+  background: color-mix(in srgb, var(--sw-color-accent) 24%, transparent);
 }
 
 .sw-date-field-day[aria-selected='true'],
@@ -316,7 +324,7 @@ function adaptiveRules(): string {
   .sw-date-field-calendar { border-color: CanvasText; }
   .sw-date-field-day[aria-current='date'] { border-color: CanvasText; }
   .sw-date-field-day-in-range,
-  .sw-date-field-day-in-range.sw-date-field-day-outside,
+  .sw-date-field-day-in-range:hover:not([aria-disabled='true']),
   .sw-date-field-day-in-range[aria-current='date'] {
     background: Mark;
     color: MarkText;

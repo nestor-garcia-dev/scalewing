@@ -34,7 +34,7 @@ const actingTrigger = [
   'summary',
   'textarea',
   'video[controls]',
-  '[contenteditable="true"]',
+  '[contenteditable]:not([contenteditable="false"])',
   ...actingRoles.map((role) => `[role="${role}"]`),
 ].join(', ');
 
