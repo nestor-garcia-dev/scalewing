@@ -103,3 +103,10 @@ export const sampleTraitFactors = [
   { label: 'Climbing', value: 1 },
   { label: 'Habitat loss', value: -1.5 },
 ] as const;
+
+export const sampleSightingChanges = [
+  { label: 'Red fox', value: 6 },
+  { label: 'Curlew', value: -4 },
+  { label: 'Otter', value: 2 },
+  { label: 'Skylark', value: -9 },
+] as const;
