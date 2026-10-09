@@ -33,6 +33,7 @@ import { dataClassCatalog } from './css-data.js';
 import { segmentedClassCatalog } from './css-segmented.js';
 import { tableClassCatalog } from './css-table.js';
 import { chromeClassCatalog } from './css-chrome.js';
+import { sectionNavClassCatalog } from './css-section-nav.js';
 import { dialogClassCatalog } from './css-dialog.js';
 import { selectClassCatalog } from './css-select.js';
 import { splitClassCatalog } from './css-split.js';
@@ -67,6 +68,7 @@ export function utilityClassCatalog(): string[] {
     ...scrollRegionClassCatalog(),
     ...chartClassCatalog(),
     ...chromeClassCatalog(),
+    ...sectionNavClassCatalog(),
     ...dialogClassCatalog(),
     ...accordionClassCatalog(),
     ...selectClassCatalog(),

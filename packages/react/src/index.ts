@@ -103,6 +103,11 @@ export { Split } from './components/Split.js';
 export type { SplitProps } from './components/Split.js';
 export { Nav, type NavProps } from './components/Nav.js';
 export {
+  SectionNav,
+  type SectionNavItem,
+  type SectionNavProps,
+} from './components/SectionNav.js';
+export {
   SegmentedControl,
   type SegmentedControlProps,
   type SegmentedControlVariant,

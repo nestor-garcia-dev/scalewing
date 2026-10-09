@@ -30,6 +30,7 @@ import { GridSection } from './sections/grid.js';
 import { LayoutSection } from './sections/layout.js';
 import { LinkSection } from './sections/link.js';
 import { NavSection } from './sections/nav.js';
+import { SectionNavSection } from './sections/section-nav.js';
 import { PalettesSection } from './sections/palettes.js';
 import { SegmentedControlSection } from './sections/segmented-control.js';
 import { StatTileSection } from './sections/stat-tile.js';
@@ -212,6 +213,12 @@ export const catalog = [
     Section: AppHeaderSection,
   },
   { id: 'nav', label: 'Nav', group: 'chrome', Section: NavSection },
+  {
+    id: 'section-nav',
+    label: 'SectionNav',
+    group: 'chrome',
+    Section: SectionNavSection,
+  },
   { id: 'link', label: 'Link', group: 'chrome', Section: LinkSection },
 ] as const satisfies ReadonlyArray<CatalogItem>;
 

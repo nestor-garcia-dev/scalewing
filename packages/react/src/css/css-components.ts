@@ -7,6 +7,7 @@ import { cssChartClasses } from './css-chart.js';
 import { cssCheckboxClasses } from './css-checkbox.js';
 import { cssRadioGroupClasses } from './css-radio-group.js';
 import { cssChromeClasses } from './css-chrome.js';
+import { cssSectionNavClasses } from './css-section-nav.js';
 import { cssDataClasses } from './css-data.js';
 import { cssSegmentedClasses } from './css-segmented.js';
 import { cssTableClasses } from './css-table.js';
@@ -124,6 +125,8 @@ ${cssCalendarButtonClasses()}
 ${cssChartClasses()}
 
 ${cssChromeClasses()}
+
+${cssSectionNavClasses()}
 
 ${cssDialogClasses()}
 
