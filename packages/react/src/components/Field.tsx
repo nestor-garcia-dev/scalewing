@@ -40,6 +40,15 @@ export type FieldProps = {
    * child from the first render.
    */
   invalid?: boolean;
+  /**
+   * Marks a value the person changed from a saved one, such as a field in a
+   * correction: the control's border (or an adorned frame's) in the accent
+   * color, thicker than the plain hairline. It is a cue, not the record:
+   * say what it was in `description` ("Was 25"). `invalid` and `error`
+   * win. Like `invalid`, passing it, even `false` but not `undefined`,
+   * requires one native control child from the first render.
+   */
+  changed?: boolean;
   required?: boolean;
   /** Short text inside the control frame before the value, such as a currency sign. Not part of the value. */
   prefix?: string;
@@ -56,7 +65,7 @@ export type FieldProps = {
  * child beside `error={undefined}` still renders.
  */
 function passesInvalid(props: FieldProps): boolean {
-  return props.invalid !== undefined;
+  return props.invalid !== undefined || props.changed !== undefined;
 }
 
 export function Field(props: FieldProps) {
@@ -69,6 +78,7 @@ export function Field(props: FieldProps) {
     description,
     error,
     invalid = false,
+    changed = false,
     required = false,
     prefix,
     suffix,
@@ -89,6 +99,7 @@ export function Field(props: FieldProps) {
     'sw-field',
     size === 'xs' && 'sw-field-xs',
     marksInvalid && 'sw-field-invalid',
+    changed && !marksInvalid && 'sw-field-changed',
   ]
     .filter(Boolean)
     .join(' ');

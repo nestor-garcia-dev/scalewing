@@ -75,3 +75,22 @@ Failing early: the first version threw its `TypeError` for a non-native child on
 Evidence: `field.test.tsx` "rejects a validated non-native child on its first, valid render" (`invalid={false}` beside a `span` throws; the same child without it renders), "treats invalid={undefined} as not passed, for a wrapper forwarding it" and "keeps rendering a composed child beside error={undefined}, as before" (it renders; with a message it throws, as it always did).
 
 Parity: `invalid` exists on `Field` only. `DateField`, `Select`, `SegmentedControl`, `RadioGroup` and `Checkbox` have `error` but no `invalid`; each can gain the same prop, with the same meaning (`aria-invalid` and its danger outline without a message), when a consumer asks for it. Not built now: Teisoro's group error is a grid of `Field`s.
+
+## Follow-up request (2026-10-08, Teisoro F-006-S11 task 1875): a changed value
+
+Status: implemented on `claude/teisoro-f006-s11-parts` for Teisoro F-006-S11 task 1875; pull request pending review.
+Source: Teisoro UX review `admin-correction.md`, finding COR-5 (minor; the Scalewing part). In an admin's correction of a finalized register closeout, a changed field looks like every other once the focus leaves it. F-007 task 1635 shows "Was 25" under each changed field and counts the changes on the action bar; the review also asked for "Scalewing's accent border or a dot" on the field, which `Field` cannot draw (it has `invalid`, the danger border, only).
+
+Teisoro need: the correction's changed fields (the POS amounts, the card totals) marked at a glance, beside their "Was …" words.
+
+Proposed API: `changed?: boolean` on `Field`.
+
+Behavior and failure boundary: `sw-field-changed` on the field sets the native control's border (`[data-theme] .sw-field-changed > :is(input, select, textarea)`) or an adorned frame's (`.sw-field-changed .sw-field-adorned`) to the accent and adds `inset 0 0 0 1px` of it, so the border reads a hairline thicker without changing the control's size. A focused native control keeps the canvas's `box-shadow: none` and its focus ring. `invalid` and `error` win: the field then carries only `sw-field-invalid`. Forced colors draw `Highlight`. No ARIA state: "changed" is not an accessibility state, and the consumer's description says what the value was. Passing `changed` (even `false`, not `undefined`) requires a native control child from the first render, as `invalid` does.
+
+Rejected alternatives:
+
+- A dot beside the label. A second mark in another place; the border is where the eye already is, and the words are under it.
+- Reusing `invalid` with another tone. A changed value is not invalid, and `aria-invalid` would say it is.
+- A tinted fill. The control's fill is the canvas's glass; a tint would change the value's contrast.
+
+Evidence: `field-changed.test.tsx` (the class and the description; an adorned field; `invalid` and `error` win; the native-control rule; the generated rules); `apps/gallery/e2e/field.spec.ts` "Field changed marks a corrected value with the accent border, and says what it was" on desktop-en, mobile-es and forced-colors: typing 26 over the saved 25 changes the border color, adds the inset shadow, keeps the box, describes the field "Was 25" and counts "1 value changed"; the adorned weight's frame changes color too; typing 25 again removes the mark.
