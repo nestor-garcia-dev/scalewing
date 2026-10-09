@@ -548,9 +548,11 @@ describe('generated CSS', () => {
     );
     expect(css).toContain('--sw-control-md-min-height: 44px;');
     // At equal specificity the coarse-pointer target must follow the squares.
-    expect(css.indexOf('@media (pointer: coarse)')).toBeGreaterThan(
-      css.indexOf('.sw-button-md.sw-calendar-button'),
-    );
+    expect(
+      css.indexOf(
+        '@media (pointer: coarse) {\n  .sw-button.sw-calendar-button',
+      ),
+    ).toBeGreaterThan(css.indexOf('.sw-button-md.sw-calendar-button'));
     expect(catalog).toContain('sw-dialog');
     expect(catalog).toContain('sw-dialog-lg');
     expect(css).toContain('.sw-accordion');

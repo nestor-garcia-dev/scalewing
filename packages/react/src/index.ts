@@ -132,6 +132,7 @@ export {
   type TableHeaderProps,
   type TableProps,
   type TableRowProps,
+  type TableSort,
 } from './components/Table.js';
 export {
   Text,

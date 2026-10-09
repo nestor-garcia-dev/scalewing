@@ -84,27 +84,71 @@ export const TableRow = forwardRef<HTMLTableRowElement, TableRowProps>(
 
 type TableCellAlign = 'start' | 'end';
 
+/**
+ * A sortable column's state: sorted `ascending` or `descending`, or `none`
+ * (sortable, not the column the table is sorted by).
+ */
+export type TableSort = 'ascending' | 'descending' | 'none';
+
+type TableHeaderSort = {
+  /**
+   * Makes a header cell (`as="th"`) a sort control: its children become a
+   * button in the header's own text style, with a sort glyph after them (an
+   * up chevron when `ascending`, a down chevron when `descending`, a muted
+   * pair when `none`), and the cell carries `aria-sort` while it is the
+   * sorted column. Pass it with `onSort`, on `th` cells only.
+   */
+  sort?: TableSort;
+  /** Called when the header's sort button is pressed; the consumer sorts. */
+  onSort?: () => void;
+};
+
 export type TableCellProps = (
-  | (TdHTMLAttributes<HTMLTableCellElement> & { as?: 'td' })
-  | (ThHTMLAttributes<HTMLTableCellElement> & { as: 'th' })
+  | (TdHTMLAttributes<HTMLTableCellElement> & {
+      as?: 'td';
+      sort?: never;
+      onSort?: never;
+    })
+  | (ThHTMLAttributes<HTMLTableCellElement> & { as: 'th' } & TableHeaderSort)
 ) & {
   align?: TableCellAlign;
   numeric?: boolean;
   truncate?: boolean;
 };
 
+const tableSorts: readonly TableSort[] = ['ascending', 'descending', 'none'];
+
+/** `sort` and `onSort` come together, on a header cell, with a known value. */
+function assertSort(
+  as: 'td' | 'th',
+  sort: TableSort | undefined,
+  onSort: (() => void) | undefined,
+) {
+  if (sort === undefined && onSort === undefined) return;
+  if (as !== 'th')
+    throw new TypeError('TableCell sort is for a header cell (as="th")');
+  if (sort === undefined || typeof onSort !== 'function')
+    throw new TypeError('TableCell sort and onSort are passed together');
+  if (!tableSorts.includes(sort))
+    throw new RangeError(`Unknown TableCell sort: ${String(sort)}`);
+}
+
 export const TableCell = forwardRef<HTMLTableCellElement, TableCellProps>(
   function TableCell(
     {
       align = 'start',
       as = 'td',
+      children,
       className,
       numeric = false,
+      onSort,
+      sort,
       truncate = false,
       ...rest
     },
     ref,
   ) {
+    assertSort(as, sort, onSort);
     const Component = as;
     const alignmentClass = numeric
       ? 'sw-table-numeric'
@@ -115,9 +159,22 @@ export const TableCell = forwardRef<HTMLTableCellElement, TableCellProps>(
     return (
       <Component
         ref={ref}
+        aria-sort={sort === undefined || sort === 'none' ? undefined : sort}
         className={cx(alignmentClass, truncate && 'sw-table-clip', className)}
         {...rest}
-      />
+      >
+        {sort !== undefined && onSort ? (
+          <button className="sw-table-sort" onClick={onSort} type="button">
+            {children}
+            <span
+              aria-hidden="true"
+              className={cx('sw-table-sort-glyph', `sw-table-sort-${sort}`)}
+            />
+          </button>
+        ) : (
+          children
+        )}
+      </Component>
     );
   },
 );
