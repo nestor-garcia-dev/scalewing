@@ -18,6 +18,7 @@ export {
   CalendarButton,
   type CalendarButtonLabels,
   type CalendarButtonProps,
+  type CalendarButtonRange,
 } from './components/CalendarButton.js';
 export { Checkbox, type CheckboxProps } from './components/Checkbox.js';
 export {

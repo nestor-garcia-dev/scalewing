@@ -232,3 +232,59 @@ test("CalendarButton marks and picks a given today, not the device's", async ({
     }),
   ).toBeFocused();
 });
+
+test('CalendarButton tints the week it shows and keeps the value selected', async ({
+  page,
+}, testInfo) => {
+  const forced = testInfo.project.name === 'forced-colors';
+  if (forced) await page.emulateMedia({ forcedColors: 'active' });
+  await page.goto('/#calendar-button');
+  await page.getByRole('button', { name: /^Choose watch week, / }).click();
+  const calendar = page.getByRole('dialog', { name: 'Choose watch week' });
+  const inRange = calendar.locator('.sw-date-field-day-in-range');
+  await expect(inRange).toHaveCount(7);
+  const start = calendar.getByRole('gridcell', {
+    name: 'Sunday, September 27, 2026',
+  });
+  await expect(start).toHaveAttribute('aria-selected', 'true');
+  const middle = calendar.getByRole('gridcell', {
+    name: 'Wednesday, September 30, 2026',
+  });
+  const outside = calendar.getByRole('gridcell', {
+    name: 'Saturday, September 26, 2026',
+  });
+  const background = (element: HTMLElement) =>
+    getComputedStyle(element).backgroundColor;
+  // The week's days share a tint that the days outside it do not have.
+  expect(await middle.evaluate(background)).not.toBe(
+    await outside.evaluate(background),
+  );
+  // The band is one piece in its row: square inside, rounded at its ends.
+  expect(
+    await middle.evaluate((element) => getComputedStyle(element).borderRadius),
+  ).toBe('0px');
+  const end = calendar.getByRole('gridcell', {
+    name: 'Saturday, October 3, 2026',
+  });
+  expect(
+    await end.evaluate(
+      (element) => getComputedStyle(element).borderStartStartRadius,
+    ),
+  ).toBe('0px');
+  expect(
+    await end.evaluate(
+      (element) => getComputedStyle(element).borderStartEndRadius,
+    ),
+  ).not.toBe('0px');
+  await calendar.screenshot({ path: testInfo.outputPath('range.png') });
+
+  // Picking a day of another week moves the period to that week.
+  await calendar
+    .getByRole('gridcell', { name: 'Tuesday, September 15, 2026' })
+    .click();
+  await expect(
+    page.getByRole('heading', {
+      name: 'Watch week 2026-09-13 to 2026-09-19',
+    }),
+  ).toBeVisible();
+});

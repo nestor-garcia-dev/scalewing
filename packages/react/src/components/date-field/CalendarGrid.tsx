@@ -8,7 +8,11 @@ import {
   type CalendarMonth,
   type WeekStart,
 } from '../../calendar-month.js';
-import { isOutsideDateRange } from '../../date-only.js';
+import {
+  dayInRange,
+  isOutsideDateRange,
+  type DateOnlyRange,
+} from '../../date-only.js';
 
 export type CalendarGridProps = {
   focusDate: string;
@@ -21,11 +25,24 @@ export type CalendarGridProps = {
   /** A grid key chose a day: focus it. */
   onMoveFocus: (value: string) => void;
   onSelect: (value: string) => void;
+  /** Days to tint as a span, such as the period a page shows. */
+  range?: DateOnlyRange;
   selected: string;
   titleId: string;
   today: string;
   weekStartsOn: WeekStart;
 };
+
+/** A day's range classes: in the span, and its start or end. */
+function rangeClassNames(
+  place: ReturnType<typeof dayInRange>,
+): (string | false)[] {
+  return [
+    place !== null && 'sw-date-field-day-in-range',
+    place === 'start' && 'sw-date-field-day-range-start',
+    place === 'end' && 'sw-date-field-day-range-end',
+  ];
+}
 
 /**
  * The month as a WAI-ARIA grid with one roving tab stop. Days outside
@@ -41,6 +58,7 @@ export function CalendarGrid({
   onFocusDate,
   onMoveFocus,
   onSelect,
+  range,
   selected,
   titleId,
   today,
@@ -107,6 +125,7 @@ export function CalendarGrid({
                   className={cx(
                     'sw-date-field-day',
                     !cell.inMonth && 'sw-date-field-day-outside',
+                    ...rangeClassNames(dayInRange(cell.value, range)),
                   )}
                   data-date={cell.value}
                   key={cell.value}

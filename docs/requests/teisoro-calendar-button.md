@@ -68,3 +68,22 @@ Scalewing owns the reusable visual and interaction behavior, typed public API, g
 
 - Unit tests: `packages/react/src/calendar-button.test.tsx` (names in en-US, es-US and from `lang`; opening with a press, Enter, and Space; arrows then Enter choosing a day with focus returned; Space and a press on a day; Today; Escape, a press outside, and a second press closing without a change; `min`/`max` disabling days; disabled and becoming disabled while open; every invalid prop; Button size and variant classes; the forwarded ref and id; a value outside the bounds; a Japanese separator; unique ids and resolvable references), plus `calendarTriggerName` in `calendar-labels.test.ts` (en-US, es-US, ja), `resolveCalendarButtonLabels` in `calendar-button-labels.test.ts`, `assertWeekStart` in `calendar-month.test.ts`, and the generated square and coarse-pointer rules in `css/stylesheet.test.ts`.
 - Gallery: the `CalendarButton` section (`apps/gallery/src/sections/calendar-button.tsx`) shows an English survey-day heading bounded to September 2026 and a Spanish census-day heading with Monday weeks, each with ghost previous and next buttons, plus small, extra-small, and disabled buttons. `apps/gallery/e2e/calendar-button.spec.ts` runs on desktop-en, mobile-es (390 px, touch, coarse pointer), and forced-colors.
+
+## Follow-up request (2026-10-08, Teisoro F-006-S11 task 1875): the period a page shows
+
+Status: implemented on `claude/teisoro-f006-s11-parts` for Teisoro F-006-S11 task 1875; pull request pending review.
+Source: Teisoro UX review `admin-reports.md`, finding RPT-17 (polish; left to Scalewing entirely). The closeout and Services reports, and the vault history, pick a day, a week, a month or a year with the shared `PeriodToolbar`, whose `CalendarButton` takes the period's first day as `value`. Open on the week Sep 27 – Oct 3, 2026, the calendar fills only "27"; a month reads as its first day. Picking any day works, but the calendar does not show which days the report covers.
+
+Teisoro need: the open calendar shows the report's whole period, and picking a day still moves the report to that day's period.
+
+Proposed API: `range?: { start: string; end: string }` on `CalendarButton`; `value` keeps its meaning.
+
+Behavior and failure boundary: presentation only. Each day from `start` to `end` gets `sw-date-field-day-in-range` (the accent mixed at 16 % over the calendar, square corners), the first `sw-date-field-day-range-start` (rounded at its inline start) and the last `sw-date-field-day-range-end` (rounded at its inline end), so a week row reads as one band; days of a neighboring month shown in the grid are tinted when they are in the span. The selected day keeps its accent fill and is always a pill on top of the band (`border-radius` on the selected rule), and today's ring is unchanged. In forced colors the band is `Mark` / `MarkText` (forced-color-adjust none) under the selection's `Highlight`. The range is not announced: `aria-selected` stays the value alone, as the date picker pattern has one selection, and the consumer's heading or the button's label names the period. A malformed `start` or `end`, or a `start` after the `end`, throws a `RangeError`. The range need not contain `value` and need not sit inside `min`/`max`.
+
+Rejected alternatives:
+
+- `aria-selected` on every day of the range. The grid would announce a multi-selection that a press cannot make.
+- A range picker (choose a start and an end). The reports choose a period by its kind and any one day in it; the span is derived, not picked.
+- `range` on `DateField` too. No consumer needs it there yet; `CalendarDialog` takes it, so it can follow.
+
+Evidence: `calendar-button-range.test.tsx` (`dayInRange` start, inside, end, out, a one-day range; the refusals; a week tinted with its ends rounded and the value still the one selected day, seven tinted days including October's; the generated rules); `apps/gallery/e2e/calendar-button.spec.ts` "CalendarButton tints the week it shows and keeps the value selected" on desktop-en, mobile-es and forced-colors: the gallery's watch week tints seven days, Sunday the 27th stays selected, a middle day is tinted and square, the end is rounded only at its end, and picking the 15th moves the heading to the week of the 13th.
