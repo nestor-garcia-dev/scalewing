@@ -16,7 +16,7 @@ Verification on 2026-09-21: `pnpm check` passed format, lint, 30 token tests, 90
 
 ## Follow-up request (2026-10-09, Teisoro F-006-S11 task 1885): an `lg` breakpoint
 
-Status: implemented on `claude/teisoro-f006-s11-lg-breakpoint` for Teisoro F-006-S11 task 1885; pull request pending review.
+Status: merged in #103 (2026-10-09) and released in `@scalewing/react` 1.23.0 for Teisoro F-006-S11 task 1885; Teisoro pins and adopts it in that task.
 Source: Teisoro UX reviews `admin-settings.md` SET-3 (the header's eight destinations show their labels from `md`, in two lines in English and three in Spanish at 768) and `closeouts-close-a-register.md` UX-16 (the phone header's destinations are 32 px tall). Teisoro's design pass (`docs/design/remaining-routes/01-shell.md`, "The destinations at every width") was approved with changes by an independent reviewer: below 64rem each destination is its glyph, named by its `Tooltip` (`relationship="label"`), and from 64rem up it shows its label; on a coarse pointer every destination is a 44 px target at every width.
 
 Teisoro need: hide the destination's label below 64rem with Scalewing's CSS, and follow the same width in script for the tooltip. The navigation's touch targets are their own request, `teisoro-nav.md`.

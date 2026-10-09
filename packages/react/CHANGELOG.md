@@ -1,5 +1,12 @@
 # @scalewing/react
 
+## 1.23.0
+
+### Minor Changes
+
+- f51d196: A `Button` inside `Nav` is at least 44 × 44 px on a coarse pointer (`docs/requests/teisoro-nav.md`, Teisoro F-006-S11, UX-16), whatever its `size`, as `SectionNav` links, `CalendarButton` and the `ActionMenu` trigger already are; a fine pointer is unchanged. Only the minimum height and width grow, so a label beside its glyph keeps its line. No new classes, tokens or dependencies.
+- f51d196: `hideBelow` and `hideFrom` take `lg` (64rem) (`docs/requests/teisoro-responsive-visibility.md`, 2026-10-09 follow-up, Teisoro F-006-S11, SET-3 and UX-16), for content that fits only from a laptop up, such as a row of labelled destinations a tablet shows as glyphs. New generated classes `sw-hide-below-lg` and `sw-hide-from-lg`; new exported types `VisibilityBreakpoint` (`'md' | 'lg'`) and `BreakpointDirection` (`'from' | 'below'`). The layout props keep the one layout breakpoint, `md`. `breakpointQuery(direction, breakpoint)` is now exported: the media query a hide class uses, so an app's `matchMedia` follows the same width; an unknown direction or breakpoint throws a `RangeError`. An unknown `hideBelow` or `hideFrom` now throws a `RangeError` (it produced a class with no rule). No new tokens and no new dependencies.
+
 ## 1.22.0
 
 ### Minor Changes

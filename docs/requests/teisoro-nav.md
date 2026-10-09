@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: implemented on `claude/teisoro-f006-s11-lg-breakpoint` for Teisoro F-006-S11 task 1885; pull request pending review.
+Status: merged in #103 (2026-10-09) and released in `@scalewing/react` 1.23.0 for Teisoro F-006-S11 task 1885; Teisoro pins and adopts it in that task.
 Renderer: react
 Missing surface: a touch-sized target for a `Button` inside `Nav` on a coarse pointer.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: `Button`'s sizes are fixed (`sm` is 32 px tall at every pointer), and a product may not write its own media query or size rule; a larger `size` would also grow the button on a fine pointer, where the compact row is wanted.
