@@ -2,7 +2,8 @@ import { typographyVariants } from '@scalewing/tokens';
 
 const body = typographyVariants.body;
 
-const typedInputs = [
+/** The native controls that take typed text: the canvas's text controls. */
+export const typedInputs = [
   "input[type='text']",
   "input[type='email']",
   "input[type='number']",
@@ -39,6 +40,22 @@ export const disabledControlSurface = `background-color: var(--sw-color-subtle);
 export const disabledControlForcedColors = `border-color: GrayText;
   color: GrayText;
   -webkit-text-fill-color: GrayText;`;
+
+/**
+ * A select's chevron: two muted triangles drawn as background layers, so a
+ * rule that adds a layer (a changed field's tint) lists them with it. Their
+ * distance from the end is `--sw-select-chevron-inset`, which the select
+ * rule sets per size (space 4, and space 3 in an `xs` field), so every rule
+ * that lists the layers places them for the size it is in.
+ */
+export const selectChevronLayers = {
+  image: `linear-gradient(45deg, transparent 50%, var(--sw-color-muted) 50%),
+    linear-gradient(135deg, var(--sw-color-muted) 50%, transparent 50%)`,
+  position: `calc(100% - var(--sw-select-chevron-inset)) calc(50% - 1px),
+    calc(100% - calc(var(--sw-select-chevron-inset) - var(--sw-space-1))) calc(50% - 1px)`,
+  size: `var(--sw-space-1) var(--sw-space-1),
+    var(--sw-space-1) var(--sw-space-1)`,
+} as const;
 
 /** A script-only focus target in the canvas, at zero specificity. */
 export const focusTargetSelector =
@@ -111,16 +128,14 @@ ${focusTargetSelector} {
 
 [data-theme] select {
   ${controlSurface}
+  --sw-select-chevron-inset: var(--sw-space-4);
   appearance: none;
   background-image:
-    linear-gradient(45deg, transparent 50%, var(--sw-color-muted) 50%),
-    linear-gradient(135deg, var(--sw-color-muted) 50%, transparent 50%);
+    ${selectChevronLayers.image};
   background-position:
-    calc(100% - var(--sw-space-4)) calc(50% - 1px),
-    calc(100% - calc(var(--sw-space-4) - var(--sw-space-1))) calc(50% - 1px);
+    ${selectChevronLayers.position};
   background-repeat: no-repeat;
-  background-size: var(--sw-space-1) var(--sw-space-1),
-    var(--sw-space-1) var(--sw-space-1);
+  background-size: ${selectChevronLayers.size};
   box-sizing: content-box;
   height: calc(var(--sw-control-md-min-height) - 1px - 1px);
   min-height: 0;

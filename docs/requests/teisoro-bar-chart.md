@@ -24,3 +24,28 @@ Rejected alternatives:
 - A `formatAxis` separate from the values. One unit per chart; `valueLabel` already covers a bar whose value needs other words.
 
 Evidence: `chart.test.tsx` ("BarChart formatValue and diverging": the axis and an unlabelled value through `formatValue`, a `valueLabel` kept; the diverging class, the three ticks, each fill's share; the generated rules); `apps/gallery/e2e/bar-chart.spec.ts` on desktop-en, mobile-es and forced-colors: the gallery's "Change in sightings" axis reads "−9", "0", "+9"; the −9 bar runs from the track's start to its centre and the +6 bar from the centre two thirds of the half; the magnitude chart above still starts its negative bar at the track's start.
+
+## Follow-up request (2026-10-09, Teisoro F-006-S11 task 1890): a bar colored by meaning
+
+Status: implemented on `teisoro/f006-s11-review-findings` for Teisoro F-006-S11 task 1890; awaiting review, merge and a `@scalewing/react` minor release.
+Source: Teisoro's storyboard re-review of F-006-S11 (task 1890). The Services variance trend is diverging: an overage is a warning and a shortage is danger, as Teisoro's variance badges say, but a bar's fill is the accent, or danger only because the value is negative, so an overage reads as an ordinary accent bar.
+
+Teisoro need: in `VariancePanel.tsx`, each day's bar in the tone of its badge: `tone: dollars > 0 ? 'warning' : 'danger'`.
+
+Proposed and implemented API: `tone?: BarChartTone` on `BarChartItem`, where `BarChartTone` is `'accent' | 'success' | 'warning' | 'danger'` (exported from the package index, with the list `barChartTones`, as `badgeTones` and `statTileTones` are). Generated classes `sw-bar-chart-fill-accent`, `sw-bar-chart-fill-success`, `sw-bar-chart-fill-warning` and `sw-bar-chart-fill-danger`.
+
+Behavior and failure boundary:
+
+- A tone overrides the sign's default fill (the accent, or danger through `sw-bar-chart-fill-negative`). The negative class stays on a negative bar, since it also shapes a diverging bar (its end at zero), so a toned negative bar keeps its geometry and takes the tone's color: the tone rules follow the negative rule at the same specificity.
+- Without a tone the classes and the look are unchanged.
+- Every tone keeps 3:1 against the track (the glass fill over the page) in every palette and scheme: lowest accent 4.32:1 (synthwave dark), success 5.85:1, warning 5.43:1 (indigo light), danger 4.02:1 (mocha dark).
+- Forced colors: a token fill was painted as the canvas there, so every bar, toned or not, was invisible on its track. Every fill is now `CanvasText` in forced colors, after the tones; the value, its sign and its side of zero carry the meaning.
+- The color is a cue beside the value and the label, never the only sign of the meaning. An unknown tone throws a `RangeError` (it would produce a class with no rule).
+
+Rejected alternatives:
+
+- `positiveTone` and `negativeTone` on the chart. Shorter for Teisoro's one chart, but a chart whose bars mean different things regardless of sign (a target met or missed) needs the per-item tone anyway, and one item prop covers both.
+- Badge's tone list (with `neutral`). A neutral bar is the accent default; `neutral` would be a second name for no tone.
+- Distinct system colors per tone in forced colors. There are not enough system colors that read as fills, and `Highlight` already means selection.
+
+Evidence: `chart.test.tsx` ("BarChart tone": each tone's class over its sign's, an untoned bar unchanged, an unknown tone refused, the tone rules after the negative one and in the catalog, the forced-colors fill, and every tone at 3:1 against the track in every palette and scheme); `apps/gallery/e2e/bar-chart.spec.ts` "A BarChart item tone colors its bar by meaning" on desktop-en, mobile-es and forced-colors: the gallery's new "Feed against plan" diverging chart draws "Otter pool" (+3 kg) in the warning token right of zero and "Owl barn" (−4 kg) in the danger token left of it, the untoned "Change in sightings" chart keeps its danger negative bar, and in forced colors both fills are one system color unlike the track.

@@ -240,7 +240,7 @@ test('Field invalid marks a control without a message of its own', async ({
   if (!forced) await expect.poll(() => borderOf(chicks)).toBe(normal);
 });
 
-test('Field changed marks a corrected value with the accent border, and says what it was', async ({
+test('Field changed marks a corrected value with the accent border and a tint focus never draws, and says what it was', async ({
   page,
 }, testInfo) => {
   const forced = testInfo.project.name === 'forced-colors';
@@ -248,36 +248,83 @@ test('Field changed marks a corrected value with the accent border, and says wha
   await page.goto('/#field');
   const adults = page.getByRole('textbox', { name: 'Adult herons' });
   const weight = page.getByRole('textbox', { name: 'Feed weight g' });
+  const colony = page.getByRole('combobox', { name: 'Colony habitat' });
   await adults.scrollIntoViewIfNeeded();
-  const border = (element: HTMLElement) => {
+  const mark = (element: HTMLElement) => {
     const style = getComputedStyle(element);
-    return { color: style.borderTopColor, shadow: style.boxShadow };
+    return {
+      color: style.borderTopColor,
+      fill: style.backgroundColor,
+      image: style.backgroundImage,
+      outline: style.outlineStyle,
+      shadow: style.boxShadow,
+    };
   };
   const frame = page.locator('.sw-field-adorned').filter({ has: weight });
-  const before = await adults.evaluate(border);
+  const before = await adults.evaluate(mark);
   const boxBefore = await adults.boundingBox();
+  const colonyBefore = await colony.evaluate(mark);
   await expect(page.getByText('No value changed.')).toBeVisible();
+  expect(before.image).toBe('none');
 
   await adults.fill('26');
   await adults.blur();
   await expect(adults).toHaveAccessibleDescription('Was 25');
   await expect(page.getByText('1 value changed · not saved yet')).toBeVisible();
-  const after = await adults.evaluate(border);
+  const after = await adults.evaluate(mark);
   expect(after.color).not.toBe(before.color);
-  if (!forced) expect(after.shadow).toMatch(/inset/);
+  // The tint lies over the control's own fill, which stays; forced colors
+  // drop it and keep the system border.
+  expect(after.fill).toBe(before.fill);
+  if (forced) expect(after.image).toBe('none');
+  else {
+    expect(after.shadow).toMatch(/inset/);
+    expect(after.image).toMatch(/^linear-gradient\(/);
+  }
   // Nothing moves: the border's extra width is a shadow inside it.
   expect(await adults.boundingBox()).toEqual(boxBefore);
   expect(await adults.getAttribute('aria-invalid')).toBeNull();
 
-  // An adorned field marks its frame.
-  const frameBefore = await frame.evaluate(border);
+  // The focused field next to it, unchanged, has its ring and no tint: the
+  // two read apart.
+  await weight.focus();
+  const focusedFrame = await frame.evaluate(mark);
+  expect(focusedFrame.outline).toBe('solid');
+  expect(focusedFrame.image).toBe('none');
+  expect(focusedFrame.color).not.toBe(after.color);
+  await page
+    .locator('.sw-field')
+    .filter({ has: adults })
+    .locator('..')
+    .screenshot({
+      path: testInfo.outputPath('field-changed-beside-focus.png'),
+    });
+
+  // A changed field keeps its tint while focused.
+  await adults.focus();
+  expect((await adults.evaluate(mark)).image).toBe(after.image);
+
+  // An adorned field marks its frame, once: its input stays transparent.
   await weight.fill('500.00');
   await weight.blur();
   await expect(weight).toHaveAccessibleDescription(/Was 480.00 g/);
-  expect((await frame.evaluate(border)).color).not.toBe(frameBefore.color);
+  const frameAfter = await frame.evaluate(mark);
+  expect(frameAfter.color).not.toBe(focusedFrame.color);
+  if (!forced) expect(frameAfter.image).toBe(after.image);
+  expect((await weight.evaluate(mark)).image).toBe('none');
   await expect(
     page.getByText('2 values changed · not saved yet'),
   ).toBeVisible();
+
+  // A select keeps its chevron above the tint.
+  await colony.selectOption('ocean');
+  await expect(colony).toHaveAccessibleDescription('Was Forest');
+  const colonyAfter = await colony.evaluate(mark);
+  expect(colonyAfter.color).not.toBe(colonyBefore.color);
+  if (!forced) {
+    expect(colonyAfter.image.startsWith(colonyBefore.image)).toBe(true);
+    expect(colonyAfter.image.split('linear-gradient(')).toHaveLength(4);
+  }
   await page
     .locator('.sw-field')
     .filter({ has: adults })
@@ -287,5 +334,7 @@ test('Field changed marks a corrected value with the accent border, and says wha
   // Back to the saved value, the mark goes.
   await adults.fill('25');
   await adults.blur();
-  expect((await adults.evaluate(border)).color).toBe(before.color);
+  const restored = await adults.evaluate(mark);
+  expect(restored.color).toBe(before.color);
+  expect(restored.image).toBe('none');
 });

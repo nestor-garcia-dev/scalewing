@@ -3,6 +3,37 @@ import { typographyVariants } from '@scalewing/tokens';
 const caption = typographyVariants.caption;
 const data = typographyVariants.data;
 
+/**
+ * The meanings a bar's fill can take in place of its sign's default (the
+ * accent, or danger for a negative value), such as a diverging chart whose
+ * overage is a warning and whose shortage is danger.
+ */
+export const barChartTones = [
+  'accent',
+  'success',
+  'warning',
+  'danger',
+] as const;
+
+export type BarChartTone = (typeof barChartTones)[number];
+
+/*
+ * A tone's rule follows the negative fill's, at the same specificity, so a
+ * toned negative bar keeps its diverging geometry and takes the tone's
+ * color. Each tone keeps 3:1 against the track in every palette and scheme
+ * (`chart.test.tsx`). Forced colors would paint a token fill as the
+ * canvas, so every fill, toned or not, is drawn in the system text color
+ * after the tones: the value and its sign carry the meaning there.
+ */
+function toneRules(): string {
+  return barChartTones
+    .map(
+      (tone) =>
+        `.sw-bar-chart-fill-${tone} { background: var(--sw-color-${tone}); }`,
+    )
+    .join('\n');
+}
+
 /*
  * A diverging chart puts zero in the middle of each track, marked by a
  * hairline: a positive bar starts there and grows toward the inline end, a
@@ -101,6 +132,8 @@ export function cssChartClasses(): string {
   background: var(--sw-color-danger);
 }
 
+${toneRules()}
+
 .sw-bar-chart-value {
   color: var(--sw-color-text);
   font-family: var(--sw-font-sans);
@@ -126,7 +159,11 @@ export function cssChartClasses(): string {
   justify-content: space-between;
 }
 
-${divergingRules()}`;
+${divergingRules()}
+
+@media (forced-colors: active) {
+  .sw-bar-chart-fill { background: CanvasText; }
+}`;
 }
 
 export function chartClassCatalog(): string[] {
@@ -139,6 +176,7 @@ export function chartClassCatalog(): string[] {
     'sw-bar-chart-track',
     'sw-bar-chart-fill',
     'sw-bar-chart-fill-negative',
+    ...barChartTones.map((tone) => `sw-bar-chart-fill-${tone}`),
     'sw-bar-chart-value',
     'sw-bar-chart-axis-track',
     'sw-bar-chart-diverging',

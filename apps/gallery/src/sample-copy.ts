@@ -110,3 +110,11 @@ export const sampleSightingChanges = [
   { label: 'Otter', value: 2 },
   { label: 'Skylark', value: -9 },
 ] as const;
+
+/** Feed put out against the plan, in kilograms, by enclosure. */
+export const sampleFeedVariance = [
+  { label: 'Otter pool', value: 3 },
+  { label: 'Heron marsh', value: -2 },
+  { label: 'Lynx run', value: 1 },
+  { label: 'Owl barn', value: -4 },
+] as const;

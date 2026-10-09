@@ -1,21 +1,31 @@
 import { Field, Inline, Stack, Text } from '@scalewing/react';
 import { useState } from 'react';
 
-const saved = { adults: '25', weight: '480.00' } as const;
+import { sampleHabitats } from '../sample-copy.js';
+
+const saved = { adults: '25', weight: '480.00', habitat: 'forest' } as const;
+
+function habitatLabel(value: string): string {
+  return sampleHabitats.find((habitat) => habitat.value === value)?.label ?? '';
+}
 
 /**
  * A correction of a saved survey: each value changed from the saved one is
- * marked and says what it was, and the line under the fields counts them.
+ * marked (the accent border and a tinted fill, which focus never draws) and
+ * says what it was, and the line under the fields counts them.
  */
 export function SurveyCorrection() {
   const [adults, setAdults] = useState<string>(saved.adults);
   const [weight, setWeight] = useState<string>(saved.weight);
-  const changed = [adults !== saved.adults, weight !== saved.weight].filter(
-    Boolean,
-  ).length;
+  const [habitat, setHabitat] = useState<string>(saved.habitat);
+  const changed = [
+    adults !== saved.adults,
+    weight !== saved.weight,
+    habitat !== saved.habitat,
+  ].filter(Boolean).length;
   return (
     <Stack gap={2}>
-      <Inline gap={3}>
+      <Inline align="start" gap={3} wrap>
         <Field
           changed={adults !== saved.adults}
           description={
@@ -44,6 +54,27 @@ export function SurveyCorrection() {
             onChange={(event) => setWeight(event.currentTarget.value)}
             value={weight}
           />
+        </Field>
+        <Field
+          changed={habitat !== saved.habitat}
+          description={
+            habitat !== saved.habitat
+              ? `Was ${habitatLabel(saved.habitat)}`
+              : undefined
+          }
+          label="Colony habitat"
+        >
+          <select
+            name="colony-habitat"
+            onChange={(event) => setHabitat(event.currentTarget.value)}
+            value={habitat}
+          >
+            {sampleHabitats.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </select>
         </Field>
       </Inline>
       <Text color="muted" variant="caption">
