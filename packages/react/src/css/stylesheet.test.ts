@@ -25,6 +25,9 @@ describe('generated CSS', () => {
     );
     expect(css).toContain('grid-template-columns: subgrid;');
     expect(css).toContain(
+      'margin: 0;\n  min-width: 0;\n  overflow-wrap: anywhere;\n}',
+    );
+    expect(css).toContain(
       '.sw-description-term,\n.sw-description-detail {\n  align-items: flex-start;\n  display: flex;\n  flex-direction: column;',
     );
     expect(css).toContain(

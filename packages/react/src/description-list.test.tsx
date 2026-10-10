@@ -25,6 +25,11 @@ describe('DescriptionList', () => {
     const items = container.querySelectorAll('dl > div.sw-description-item');
     expect(items).toHaveLength(2);
     const [first, second] = Array.from(items);
+    // Exactly two cells per row, which the shared columns assume.
+    expect(Array.from(first.children).map((cell) => cell.tagName)).toEqual([
+      'DT',
+      'DD',
+    ]);
     expect(first.querySelector('dt.sw-description-term')?.textContent).toBe(
       'Wetland',
     );

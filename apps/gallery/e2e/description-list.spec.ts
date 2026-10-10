@@ -40,7 +40,7 @@ test('DescriptionList pairs terms in one column, divides rows and stacks on a ph
       expect(detailBoxes[index].x).toBeGreaterThan(term.x + term.width);
       expect(detailBoxes[index].y).toBe(term.y);
     }
-    // A caption term's first line is level with its caption detail's.
+    // The term's first line is level with its detail's first line.
     const firstLine = async (cell: typeof terms) =>
       (await cell.locator(':scope > *').first().boundingBox())!.y;
     for (const index of [0, 1, 2])

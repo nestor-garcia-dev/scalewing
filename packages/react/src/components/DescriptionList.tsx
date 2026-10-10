@@ -37,7 +37,12 @@ export type DescriptionItemProps = Omit<
    * child of the term, and of the detail, is its own line.
    */
   term: ReactNode;
-  /** What the term says: text, a link, or several lines. */
+  /**
+   * What the term says: text, a link, or several lines. Each child is its
+   * own line, as wide as its content; wrap words and a link that share a
+   * line in one element such as `Inline`, and give a child that should
+   * fill the detail (a `Progress`, a `Field`) its own full width.
+   */
   children: ReactNode;
 };
 

@@ -43,6 +43,7 @@ export function cssDescriptionListClasses(): string {
   flex-direction: column;
   margin: 0;
   min-width: 0;
+  overflow-wrap: anywhere;
 }
 
 @media ${breakpointQuery('below', 'md')} {
