@@ -10,9 +10,7 @@ test('DescriptionList pairs terms in one column, divides rows and stacks on a ph
       await page.evaluate(() => matchMedia('(forced-colors: active)').matches),
     ).toBe(true);
   }
-  const list = page.locator(
-    '#description-list dl[aria-label="Habitat survey"]',
-  );
+  const list = page.locator('#description-list dl');
   const terms = list.locator('dt');
   const details = list.locator('dd');
   await expect(terms).toHaveText(['Wetland', 'Old-growth forest', 'Dunes']);

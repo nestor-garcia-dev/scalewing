@@ -27,14 +27,14 @@ export function DescriptionListSection() {
       id="description-list"
       purpose="DescriptionList pairs terms with what each says, one per row: the term in a start column as wide as the widest term (up to 40%), the detail beside it, a hairline between rows, and every row aligned to its top. Below md a term sits over its detail. The terms and details are your own Text, so the list sets only the layout; each child of a term or a detail is its own line, so a detail may hold several."
       title="DescriptionList"
-      usage={`<DescriptionList aria-label="Habitat survey">
+      usage={`<DescriptionList>
   <DescriptionItem term={<Text variant="caption" color="muted">Wetland</Text>}>
     <Text variant="caption">12 herons</Text>
   </DescriptionItem>
 </DescriptionList>`}
     >
       <Card padding={4}>
-        <DescriptionList aria-label="Habitat survey">
+        <DescriptionList>
           {habitats.map((habitat) => (
             <DescriptionItem
               key={habitat.term}
