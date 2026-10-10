@@ -92,8 +92,8 @@ Teisoro F-006-S03 task 1900 (the owner's At a glance, 2026-10-10):
 `DescriptionList` and `DescriptionItem`, terms paired with what each
 says in two columns that stack below `md`, with a hairline between rows
 (`teisoro-description-list.md`). Branch `teisoro/f006-description-list`.
-Next: an independent review, merge, release `@scalewing/react` (minor),
-and Teisoro pins it for the review day page's At a glance.
+Reviewed and merged in #109; released in `@scalewing/react` 1.26.0.
+Next: Teisoro pins it for the review day page's At a glance.
 
 Teisoro F-007 task 1550: the design-system findings of the Vault UX
 review (the `vault-*.md` reports), one surface per commit:

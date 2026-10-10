@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: implemented on `teisoro/f006-description-list` (Teisoro F-006-S03 task 1900); pending independent review, release and Teisoro's pin.
+Status: released in `@scalewing/react` 1.26.0 (PR #109, Teisoro F-006-S03 task 1900); Teisoro pins it.
 Renderer: react
 Missing surface: `DescriptionList` and `DescriptionItem`, terms paired with what each says, one per row.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: Teisoro's review day page opens with "At a glance", one line per area of the day (Register closeouts, Services drawer, Printed totals, NSF checks, Check cashing deposits, Vault). The product owner approved a two-column list for it on 2026-10-10: the area's name on the left in muted text, its status on the right, a light divider between rows, every row aligned to its top, and on a phone the two stacked. `Grid` splits its columns evenly (`minmax(0, 1fr)` each), so a short name like "Vault" would leave half the card empty, and it has no row dividers; a `Table` is for data with column headers, not a name and its status; `Stack` with `Separator`s cannot line every status up in one column or stack on a phone. None of them is a `dl`, which is what a name and its value are.
