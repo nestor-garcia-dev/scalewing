@@ -1,0 +1,13 @@
+Scalewing request from Teisoro.
+
+Status: implemented on `teisoro/f006-description-list` (Teisoro F-006-S03 task 1900); pending independent review, release and Teisoro's pin.
+Renderer: react
+Missing surface: `DescriptionList` and `DescriptionItem`, terms paired with what each says, one per row.
+Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: Teisoro's review day page opens with "At a glance", one line per area of the day (Register closeouts, Services drawer, Printed totals, NSF checks, Check cashing deposits, Vault). The product owner approved a two-column list for it on 2026-10-10: the area's name on the left in muted text, its status on the right, a light divider between rows, every row aligned to its top, and on a phone the two stacked. `Grid` splits its columns evenly (`minmax(0, 1fr)` each), so a short name like "Vault" would leave half the card empty, and it has no row dividers; a `Table` is for data with column headers, not a name and its status; `Stack` with `Separator`s cannot line every status up in one column or stack on a phone. None of them is a `dl`, which is what a name and its value are.
+Existing surface this might already be: `Grid` (equal columns), `Table` (headed data), `Stack` + `Separator` (no columns).
+Workaround I almost used: `Grid columns={3}` with a one-column term and a two-column detail and a full-width `Separator` between rows, which loses the `dl` semantics and wastes a third of the card on the names.
+Teisoro use: the review day page's At a glance (`/admin/review/:date`), F-006-S03 task 1900, in English and Spanish at 1280 and 390.
+Proposed API: `DescriptionList` (a `dl`; its own HTML attributes, such as `aria-label`) holding `DescriptionItem`s, each with `term: ReactNode` (the `dt`) and `children: ReactNode` (the `dd`), grouped in a `div` per row. Generated `sw-description-list`, `sw-description-item`, `sw-description-term`, `sw-description-detail`. From `md` up the items share the list's two columns (`subgrid`): the term column as wide as the widest term, up to 40%, then the detail. A hairline (`--sw-color-border`; `CanvasText` in forced colors) between rows, the list flush at its top and bottom, each row aligned to its top. Below `md` each term sits over its detail. A term and a detail are columns of lines, so each child keeps its own line height and a caption term starts level with a caption detail.
+Behavior and failure boundary: presentation only; no interaction and no typography of its own (the consumer's `Text` sets it). The words and their order are the consumer's.
+
+Scalewing owns the layout, the classes, the tests, the gallery evidence and the changeset. Teisoro owns the area names, the statuses and their colours.

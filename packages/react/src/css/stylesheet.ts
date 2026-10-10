@@ -18,6 +18,7 @@ import { tooltipClassCatalog } from './css-tooltip.js';
 import { infoTipClassCatalog } from './css-info-tip.js';
 import { separatorClassCatalog } from './css-separator.js';
 import { statTileClassCatalog } from './css-stat-tile.js';
+import { descriptionListClassCatalog } from './css-description-list.js';
 import { tabsClassCatalog } from './css-tabs.js';
 import { responsiveClassCatalog } from './css-responsive.js';
 import { filterChipsClassCatalog } from './css-filter-chips.js';
@@ -86,6 +87,7 @@ export function utilityClassCatalog(): string[] {
     ...infoTipClassCatalog(),
     ...separatorClassCatalog(),
     ...statTileClassCatalog(),
+    ...descriptionListClassCatalog(),
     ...tabsClassCatalog(),
     ...filterChipsClassCatalog(),
     ...gridClassCatalog(),

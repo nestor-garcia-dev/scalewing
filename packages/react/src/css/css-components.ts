@@ -23,6 +23,7 @@ import { cssTooltipClasses } from './css-tooltip.js';
 import { cssInfoTipClasses } from './css-info-tip.js';
 import { cssSeparatorClasses } from './css-separator.js';
 import { cssStatTileClasses } from './css-stat-tile.js';
+import { cssDescriptionListClasses } from './css-description-list.js';
 import { cssTabsClasses } from './css-tabs.js';
 import { cssResponsiveClasses } from './css-responsive.js';
 import { cssFilterChipsClasses } from './css-filter-chips.js';
@@ -152,6 +153,8 @@ ${cssInfoTipClasses()}
 ${cssSeparatorClasses()}
 
 ${cssStatTileClasses()}
+
+${cssDescriptionListClasses()}
 
 ${cssTabsClasses()}
 

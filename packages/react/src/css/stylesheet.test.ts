@@ -11,6 +11,33 @@ describe('generated CSS', () => {
   const css = generateStylesheet();
   const catalog = utilityClassCatalog();
 
+  it('emits the description list: shared columns, hairlines between rows, stacked below md', () => {
+    expect(catalog).toEqual(
+      expect.arrayContaining([
+        'sw-description-list',
+        'sw-description-item',
+        'sw-description-term',
+        'sw-description-detail',
+      ]),
+    );
+    expect(css).toContain(
+      'grid-template-columns: fit-content(40%) minmax(0, 1fr);',
+    );
+    expect(css).toContain('grid-template-columns: subgrid;');
+    expect(css).toContain(
+      '.sw-description-term,\n.sw-description-detail {\n  align-items: flex-start;\n  display: flex;\n  flex-direction: column;',
+    );
+    expect(css).toContain(
+      '.sw-description-item + .sw-description-item {\n  border-top: 1px solid var(--sw-color-border);\n}',
+    );
+    expect(css).toContain(
+      '@media not all and (min-width: 48rem) {\n  .sw-description-list { grid-template-columns: minmax(0, 1fr); }\n}',
+    );
+    expect(css).toContain(
+      '.sw-description-item + .sw-description-item { border-top-color: CanvasText; }',
+    );
+  });
+
   it('emits spacing step 4 as a class, not 4px in the name', () => {
     expect(spacingClass('padding', 'top', 4)).toBe('sw-padding-top-4');
     expect(css).toContain('.sw-padding-top-4');
