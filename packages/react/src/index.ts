@@ -171,6 +171,14 @@ export type {
   SeparatorOrientation,
   SeparatorProps,
 } from './components/Separator.js';
+export {
+  DescriptionItem,
+  DescriptionList,
+} from './components/DescriptionList.js';
+export type {
+  DescriptionItemProps,
+  DescriptionListProps,
+} from './components/DescriptionList.js';
 
 export { Grid } from './components/Grid.js';
 export type { GridColumns, GridProps } from './components/Grid.js';
