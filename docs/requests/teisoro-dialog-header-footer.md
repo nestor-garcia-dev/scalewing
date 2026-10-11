@@ -1,0 +1,24 @@
+Scalewing request from Teisoro.
+
+Status: accepted 2026-10-11 for the `@scalewing/react` 1.28.0 release (Teisoro F-011-S03, release R2 "feedback", item 9; the redesign inventory's rows 22 and 23).
+Renderer: react
+Missing surface: `Dialog` `description`, `icon`, `footer` (pinned) with `summary`, `size="xl"`, and `role="alertdialog"`. An extension of `Dialog` (`fantasy-football-dialog.md`, `teisoro-dialog-size.md`, `teisoro-dialog-close.md`, `teisoro-dialog-title-level.md`), not a new component.
+Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: ten F-011 boards open a sheet over the day (DrawerAdd, DrawerDrop, DrawerAdjust, DrawerAudit, VoidOne, VoidBatchOne, LedgerFix2, BankDebtSettle, PosCorrect, CompanyLookup): a header with a grey tile, the title over a muted subtitle and a close button; a white body (a six-bill count grid, 1040 wide); and a footer bar pinned under a hairline with the moved figure ("Drawer **+$1,000.00** vault −$1,000.00"), Cancel and one named primary. SignInIdle is an alert dialog. `Dialog` has a title and close button only, no slot before the title or under it, no pinned footer (the actions scroll away with a long grid), widths of 32rem and 56rem only, and no way to say it is an alert dialog. A consumer cannot pin a footer or size the dialog without CSS.
+Existing surface this might already be: `Dialog` (`size`, `closeLabel`, `sheetBelow`, `titleLevel`); `ActionBar` `summary` (the same figure, on a page).
+Workaround I almost used: the actions as the last children (they scroll out of view under a long grid) and `size="lg"` (the six-bill grid folds).
+Teisoro use: the `CashSheet` composite (drawer tools and short tasks) and the idle sign-out warning.
+Proposed API (inventory): `description?` (subtitle), `icon?` (slot before the title), `footer?: ReactNode` (pinned; takes the row-12 summary layout), `size: 'xl'` (~1040px), `role="alertdialog"` passthrough.
+
+## Accepted API (2026-10-11)
+
+- `description?: string`: a muted caption line under the title; the dialog's accessible description (`aria-describedby`) unless the consumer passes its own `aria-describedby`.
+- `icon?: ReactNode`: a consumer glyph or tile (Teisoro's `GlyphTile`, release R3) before the title, `aria-hidden`. With an icon or a description the title row centers its parts: the icon, the title over the description, the close button. Without them the title markup is unchanged.
+- `footer?: ReactNode`: the actions, pinned to the dialog's bottom edge (sticky in its own scrollport) under a hairline on the solid surface, bleeding to its edges, at the end of the row; they wrap under the figure on a narrow sheet.
+- `summary?: ActionBarSummary`: ActionBar's labelled figure (`{ label, value, detail?, tone? }`, the same component and classes) at the start of the footer, in a polite `role="status"` region that is in the footer whenever the dialog has a footer or a summary.
+- `size?: 'md' | 'lg' | 'xl'` (`dialogSizes` exported): `xl` is 65rem (`--sw-dialog-max-xl`), less the viewport gutters; `sheetBelow` still wins below its breakpoint.
+- `role?: 'dialog' | 'alertdialog'` (`DialogRole`): `alertdialog` sets the role on the `<dialog>`; everything else (focus, close requests) is the same.
+- Failure boundary: an unknown `size` or `role`, a blank `description`, or an invalid `summary` (as ActionBar's) throws a `RangeError`. Before this change an unknown size from an untyped caller rendered `md`.
+- Differences from the boards (Teisoro D-2): the sheet's radius is `lg` 24 (board 18); the header is part of the scrolling body, without the board's hairline under it (the footer has one); the title is the `title` variant 20 (board 19), the description caption 13 (board 13); footer padding `space-3` × `space-5` (12 × 24; board 14 × 22); footer buttons are the `md` control 44 (board 52); the figure is the `heading` variant 28 (board 24). The dialog body is glass (white in light), the footer the solid surface.
+- Generated classes `sw-dialog-xl`, `sw-dialog-header-framed`, `sw-dialog-icon`, `sw-dialog-titles`, `sw-dialog-description`, `sw-dialog-footer`, `sw-dialog-footer-status`, `sw-dialog-footer-actions`; new custom property `--sw-dialog-max-xl`.
+
+Evidence: `dialog-frame.test.tsx` (header order and description, the consumer's `aria-describedby` wins, the footer's status and actions, alertdialog, a plain dialog unchanged, failures, the generated rules and their order); the existing `dialog.test.tsx` and `dialog-sheet.test.tsx` unchanged and passing; gallery "Dialog" ("Move herons to the lake" and "Pause the count"); `apps/gallery/e2e/dialog-frame.spec.ts` on desktop-en, mobile-es and forced-colors (the description, the xl width or the bottom sheet, the footer flush with the edges and pinned to the bottom while the content scrolls, the live figure, the alertdialog).
