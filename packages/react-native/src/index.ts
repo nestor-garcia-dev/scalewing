@@ -85,3 +85,15 @@ export {
   type WheelFieldItem,
   type WheelFieldProps,
 } from './components/WheelField.js';
+export {
+  Bracket,
+  type BracketProps,
+  type BracketRound,
+  type BracketRoundMatch,
+} from './components/Bracket.js';
+export {
+  BracketMatch,
+  type BracketMatchProps,
+  type BracketSide,
+} from './components/BracketMatch.js';
+export { type BracketSideOutcome } from './map-bracket-style.js';

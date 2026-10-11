@@ -31,6 +31,7 @@ import { useState } from 'react';
 import { SafeAreaView, ScrollView, View } from 'react-native';
 
 import { ActionRowDemo } from './ActionRowDemo';
+import { BracketDemo } from './BracketDemo';
 import { ListDemo } from './ListDemo';
 import { TallyDemo } from './TallyDemo';
 
@@ -199,6 +200,7 @@ export default function App() {
             <ActionRowDemo />
             <ListDemo />
             <TallyDemo />
+            <BracketDemo />
             <Progress
               label="Nests checked"
               max={8}
