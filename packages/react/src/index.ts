@@ -167,7 +167,12 @@ export {
 export { Inline, type InlineProps } from './components/Inline.js';
 export { Split } from './components/Split.js';
 export type { SplitProps } from './components/Split.js';
-export { Nav, type NavProps } from './components/Nav.js';
+export {
+  Nav,
+  navAppearances,
+  type NavAppearance,
+  type NavProps,
+} from './components/Nav.js';
 export {
   SectionNav,
   sectionNavAppearances,
