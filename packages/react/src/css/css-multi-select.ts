@@ -2,6 +2,7 @@ import { typographyVariants } from '@scalewing/tokens';
 
 import { chevronStroke } from './chevron.js';
 import { zIndex } from './stacking.js';
+import { quietFill } from './quiet-fill.js';
 
 const label = typographyVariants.label;
 const body = typographyVariants.body;
@@ -123,7 +124,7 @@ export function cssMultiSelectClasses(): string {
 }
 
 .sw-multi-select-option:hover {
-  background: color-mix(in srgb, var(--sw-color-muted) 16%, transparent);
+  background: ${quietFill};
 }
 
 .sw-multi-select-icon {

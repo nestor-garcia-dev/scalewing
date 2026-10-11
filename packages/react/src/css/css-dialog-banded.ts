@@ -1,6 +1,7 @@
 import { breakpointQuery, breakpoints } from './breakpoints.js';
 import { dialogSheetClass } from './css-dialog.js';
 import { zIndex } from './stacking.js';
+import { quietFill } from './quiet-fill.js';
 
 export const dialogAppearances = ['glass', 'banded'] as const;
 
@@ -79,7 +80,7 @@ ${banded} .sw-dialog-header {
 ${sheetBandRules()}
 
 ${banded} .sw-button.sw-dialog-close {
-  background: color-mix(in srgb, var(--sw-color-muted) 16%, transparent);
+  background: ${quietFill};
   border-radius: var(--sw-radius-pill);
   color: var(--sw-color-text);
   margin: 0;

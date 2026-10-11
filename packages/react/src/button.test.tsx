@@ -8,14 +8,17 @@ import {
 } from '@scalewing/tokens';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
-import { Button } from './components/Button.js';
+import { Button, type ButtonDisabledAppearance } from './components/Button.js';
 import { Inline } from './components/Inline.js';
 import {
   buttonContentGap,
+  buttonDisabledAppearances,
   cssButtonClasses,
   pressedRingGap,
   pressedRingWidth,
+  webButtonVariants,
 } from './css/css-button.js';
+import { generateStylesheet, utilityClassCatalog } from './css/stylesheet.js';
 import { visuallyHiddenDeclarations } from './css/css-utilities.js';
 import { ThemeProvider } from './theme/ThemeProvider.js';
 
@@ -194,5 +197,81 @@ describe('pressed toggle in forced colors', () => {
     expect(css).toContain(
       `outline-offset: calc(var(--sw-focus-ring-offset) + ${pressedRingWidth}px)`,
     );
+  });
+});
+
+describe('Button neutral variant and disabledAppearance', () => {
+  afterEach(() => cleanup());
+
+  it('keeps the default classes for every existing variant', () => {
+    render(
+      <Button onPress={() => undefined} variant="secondary">
+        Cancel
+      </Button>,
+    );
+    expect(screen.getByRole('button', { name: 'Cancel' }).className).toBe(
+      'sw-button sw-button-secondary sw-button-md',
+    );
+  });
+
+  it('draws a neutral button and a neutral disabled one, still disabled', () => {
+    const onPress = vi.fn();
+    render(
+      <>
+        <Button onPress={() => undefined} variant="neutral">
+          Cancel
+        </Button>
+        <Button disabled disabledAppearance="neutral" onPress={onPress}>
+          Record the audit
+        </Button>
+      </>,
+    );
+    expect(screen.getByRole('button', { name: 'Cancel' }).className).toBe(
+      'sw-button sw-button-neutral sw-button-md',
+    );
+    const record = screen.getByRole('button', {
+      name: 'Record the audit',
+    }) as HTMLButtonElement;
+    expect(record.className).toBe(
+      'sw-button sw-button-primary sw-button-md sw-button-disabled-neutral',
+    );
+    expect(record.disabled).toBe(true);
+    record.click();
+    expect(onPress).not.toHaveBeenCalled();
+  });
+
+  it('fails closed on an unknown disabledAppearance', () => {
+    expect(() =>
+      render(
+        <Button
+          disabledAppearance={'grey' as ButtonDisabledAppearance}
+          onPress={() => undefined}
+        >
+          Save
+        </Button>,
+      ),
+    ).toThrow(RangeError);
+  });
+
+  it('generates the neutral fill and the neutral disabled look', () => {
+    const css = generateStylesheet();
+    expect(utilityClassCatalog()).toEqual(
+      expect.arrayContaining([
+        'sw-button-neutral',
+        'sw-button-disabled-neutral',
+      ]),
+    );
+    expect(css).toContain(
+      '.sw-button-neutral { background: color-mix(in srgb, var(--sw-color-muted) 16%, transparent); border-color: transparent; color: var(--sw-color-text); }',
+    );
+    expect(css)
+      .toContain(`.sw-button-disabled-neutral:disabled:not(.sw-button-ghost) {
+  background: color-mix(in srgb, var(--sw-color-muted) 16%, transparent);
+  border-color: transparent;
+  color: color-mix(in srgb, var(--sw-color-muted) 48%, transparent);
+  opacity: 1;
+}`);
+    expect(webButtonVariants).toContain('neutral');
+    expect(buttonDisabledAppearances).toEqual(['faded', 'neutral']);
   });
 });

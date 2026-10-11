@@ -1,10 +1,12 @@
-import { Button, Inline, Stack, Text } from '@scalewing/react';
 import {
-  buttonSizes,
-  buttonVariants,
-  type ButtonSize,
+  Button,
   type ButtonVariant,
-} from '@scalewing/tokens';
+  Inline,
+  Stack,
+  Text,
+  webButtonVariants,
+} from '@scalewing/react';
+import { buttonSizes, type ButtonSize } from '@scalewing/tokens';
 import { useState } from 'react';
 
 import { Glyph } from '../glyph.js';
@@ -32,11 +34,14 @@ export function ButtonSection() {
   return (
     <Section
       id="button"
-      purpose="Button is a real button element. Use it for press actions. Primary, secondary, and tertiary are the three action tiers; secondary is outlined until a palette fills it (switch to signal to see all three filled). Ghost is text only; danger is destructive. Disabled blocks onPress. Default type is button; forms may pass submit. A toggle button passes aria-pressed: the pressed one gets an accent ring. A glyph and its label, passed as the button's own children, sit one token gap (spacing step 2) apart."
+      purpose="Button is a real button element. Use it for press actions. Primary, secondary, and tertiary are the three action tiers; secondary is outlined until a palette fills it (switch to signal to see all three filled). Ghost is text only; danger is destructive. Disabled blocks onPress. Default type is button; forms may pass submit. A toggle button passes aria-pressed: the pressed one gets an accent ring. A glyph and its label, passed as the button's own children, sit one token gap (spacing step 2) apart. neutral (web) is a quiet grey fill in the text color, for a Cancel beside the primary that should not draw the eye; disabledAppearance neutral draws a disabled button on that grey with muted words instead of fading its variant."
       title="Button"
       usage={`<Button variant="primary" size="md" onPress={() => undefined}>
   Save
 </Button>
+
+<Button variant="neutral" onPress={cancel}>Cancel</Button>
+<Button disabled disabledAppearance="neutral" onPress={save}>Save</Button>
 
 <Button onPress={() => undefined}>
   <Plus aria-hidden />
@@ -44,7 +49,7 @@ export function ButtonSection() {
 </Button>`}
     >
       <Stack gap={4}>
-        {buttonVariants.map((variant) => (
+        {webButtonVariants.map((variant) => (
           <Stack gap={2} key={variant}>
             <Text variant="label">{variant}</Text>
             <Inline gap={2} wrap>
@@ -72,6 +77,32 @@ export function ButtonSection() {
             </Inline>
           </Stack>
         ))}
+        <Stack gap={2}>
+          <Text variant="label">neutral, and disabledAppearance neutral</Text>
+          <Inline aria-label="Sheet actions" gap={2} role="group" wrap>
+            <Button
+              onPress={() => setLastPress('cancel neutral')}
+              variant="neutral"
+            >
+              Cancel the sighting
+            </Button>
+            <Button
+              disabled
+              disabledAppearance="neutral"
+              onPress={() => setLastPress('log neutral disabled')}
+            >
+              Log the sighting
+            </Button>
+            <Button
+              disabled
+              disabledAppearance="neutral"
+              onPress={() => setLastPress('recount neutral disabled')}
+              variant="secondary"
+            >
+              Recount the herd
+            </Button>
+          </Inline>
+        </Stack>
         <Inline gap={2} wrap>
           <Button
             onPress={() => setLastPress('submit md enabled')}

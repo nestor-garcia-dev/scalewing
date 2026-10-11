@@ -1,3 +1,5 @@
+import { quietFill } from './quiet-fill.js';
+
 export function cssSplitClasses(): string {
   return `.sw-split {
   align-items: stretch;
@@ -39,7 +41,7 @@ export function cssSplitClasses(): string {
 
 .sw-split-handle:hover,
 .sw-split-handle:focus-visible {
-  background: color-mix(in srgb, var(--sw-color-muted) 16%, transparent);
+  background: ${quietFill};
 }
 
 .sw-split-handle:focus-visible {

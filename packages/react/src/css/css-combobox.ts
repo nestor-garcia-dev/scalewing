@@ -1,6 +1,7 @@
 import { typographyVariants } from '@scalewing/tokens';
 
 import { zIndex } from './stacking.js';
+import { quietFill } from './quiet-fill.js';
 
 const caption = typographyVariants.caption;
 const label = typographyVariants.label;
@@ -84,7 +85,7 @@ export function cssComboboxClasses(): string {
 }
 
 .sw-combobox-option[aria-selected='true'] {
-  background: color-mix(in srgb, var(--sw-color-muted) 16%, transparent);
+  background: ${quietFill};
 }
 
 .sw-combobox-option[aria-disabled='true'] {
