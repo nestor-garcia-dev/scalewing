@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: accepted 2026-10-11 for the `@scalewing/react` 1.27.0 release (Teisoro F-011-S02, release R1 "guided-form core", item 1; the inventory's row 13). First requested by Teisoro F-002-S19 task 1060 (2026-09-25).
+Status: released in `@scalewing/react` 1.27.0 (PR #113; Teisoro F-011-S02, release R1 "guided-form core", item 1; the inventory's row 13). First requested by Teisoro F-002-S19 task 1060 (2026-09-25).
 Renderer: react
 Missing surface: `Stepper` for the web renderer (the react-native `Stepper` from futmas-stepper.md has no web counterpart).
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: Get Change on Teisoro's closeout day has eleven count rows (straps of $1, $5 and $10, coin rolls, and six bills given back), each − count +. Teisoro composes a ghost − `Button`, an extra-small `Field` and a ghost + `Button` per row, which gives three tab stops, no shared accessible group or bounds, and a field width that shifts with the row. The change-orders dialogs (create, fulfill, targets, make deposit) use plain numeric fields for the same kind of count. The F-011 redesign canvas puts the same "− count +" cell on 27 boards (EntryStep2, PosClose1, OpenDay1, VaultCount1 and every bill count), 44 px tall, with typed entry.

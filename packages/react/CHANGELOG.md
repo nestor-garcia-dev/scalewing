@@ -1,5 +1,38 @@
 # @scalewing/react
 
+## 1.27.0
+
+### Minor Changes
+
+- 495d542: `ActionBar` `summary` (with `ActionBarSummary` and `ActionBarSummaryTone`): a labelled figure first in the bar's polite status region (`docs/requests/teisoro-action-bar-summary.md`, Teisoro F-011 release R1).
+
+  - `summary: { label, value, detail?, tone?: 'default' | 'danger' | 'success' }`: the label and detail in muted label-size words, the value in the `heading` variant at tabular figures, on one baseline; `tone` colors the value only. Any `status` follows it in the same live region.
+  - A blank `label`, `value` or `detail`, or an unknown `tone`, throws a `RangeError`.
+  - New generated classes `sw-action-bar-summary`, `sw-action-bar-summary-label`, `sw-action-bar-summary-value`, `sw-action-bar-summary-detail`, `sw-action-bar-summary-danger` and `sw-action-bar-summary-success`. No new tokens or dependencies.
+
+- db1d77b: `DenominationGrid` count entry (`docs/requests/teisoro-denomination-grid-entry.md`, Teisoro F-011 release R1), with the new types `DenominationGridEntry` and `DenominationGridRowEmphasis`:
+
+  - `DenominationGridRow.entry` (`onChange(columnKey, value)`, `decrementLabel`, `incrementLabel`, `max?`, `errors?`, `placeholder?`) makes a strip row's `cells` editable, one full-width `Stepper` per column named by the row label and the column's label and caption. Entry counts are zero or more and unsigned, and every count's name is its own. A strip with an entry row centres its heads and read-only counts; a `cellTones` tone draws an entry count's border (`accent` is the `Stepper`'s changed look).
+  - `DenominationGridRow.caption` (a muted line under the label), `emphasis` (`'default' | 'quiet'`, the subtle fill) and `disabled` (faded, entry disabled, `aria-disabled`), both strip only.
+  - `DenominationGridColumn.caption`: a muted note after the column label, such as "× 100".
+  - Entry rows need the strip layout; bad caps, messages, button names, captions or emphasis throw a `RangeError`.
+  - `Stepper` is now `position: relative`, so its hidden label and empty error region never widen a scroll region's page.
+  - New generated classes `sw-denomination-entry`, `sw-denomination-strip-entry`, `sw-denomination-label-words`, `sw-denomination-label-caption`, `sw-denomination-head-caption`, `sw-denomination-row-quiet` and `sw-denomination-row-disabled`. No new tokens or dependencies.
+
+- 92357d4: `Steps` and `Step` (with `StepsProps`, `StepProps`, `StepStatus`, `StepHeadingLevel` and `StepsLabels`): a one-page vertical stepper (`docs/requests/teisoro-steps.md`, Teisoro F-011 release R1).
+
+  - `Steps`: an `ol` of steps numbered by their place, with `headingLevel` (2 by default) and `labels` (the status words assistive technology hears; English by default).
+  - `Step`: `status` (`'upcoming' | 'current' | 'done' | 'error' | 'skipped'`), `title`, `summary`, `onEdit` and `editLabel`, `skippedReason`, `headingLevel`, `children`. The current and error steps are open with their fields; a done step folds to a check, its title, a truncated summary and a ghost Edit named by its title; steps ahead and skipped ones are greyed. A line joins each marker to the next.
+  - The current step has `aria-current="step"`; focus moves to a step's heading when it becomes current from a folded state (the first such step in an update).
+  - New generated classes `sw-steps`, `sw-steps-item`, `sw-steps-item-<status>`, `sw-steps-header`, `sw-steps-marker`, `sw-steps-title`, `sw-steps-reason`, `sw-steps-summary`, `sw-steps-edit` and `sw-steps-body`, from tokens (the `xs` control height marker, the `title` and body type). No new tokens or dependencies.
+
+- 35934e1: `Stepper` (with `StepperProps` and `StepperWidth`): a whole-number count changed with − and + or typed, the web counterpart of the react-native `Stepper` (`docs/requests/teisoro-stepper.md`, Teisoro F-011 release R1).
+
+  - `label`, `labelVisuallyHidden`, `value` (`number | null`), `onChange`, `min` (default 0), `max` (open when left out), `step` (default 1), `decrementLabel`, `incrementLabel`, `error`, `changed`, `disabled`, `readOnly`, `valueText`, `placeholder`, `name`, `width` (`'fixed' | 'full'`), and a ref to the input.
+  - The count is a native text input with `role="spinbutton"` and the one tab stop (ArrowUp and ArrowDown step it, Home and End go to `min` and a finite `max`); the − and + buttons are named pointer targets outside the tab order that keep focus where it was, all three in a `group` named by the label. − stops at `min`, + at `max`; an empty box counts as `min`.
+  - Typed text other than digits (and a leading minus when `min` is below zero) is refused; a typed count is reported as typed, even outside the bounds, for the consumer's `error`.
+  - New generated classes `sw-stepper`, `sw-stepper-full`, `sw-stepper-track`, `sw-stepper-button`, `sw-stepper-input`, `sw-stepper-invalid`, `sw-stepper-changed` and `sw-stepper-readonly`, sized from the `md` control height and spacing step 6. No new tokens or dependencies.
+
 ## 1.26.0
 
 ### Minor Changes
