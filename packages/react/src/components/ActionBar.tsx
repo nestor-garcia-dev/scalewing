@@ -3,6 +3,16 @@ import { forwardRef, type HTMLAttributes, type ReactNode } from 'react';
 import { cx } from '../class-names.js';
 import { type Breakpoint } from '../css/breakpoints.js';
 import { actionBarStickyClass } from '../css/css-action-bar.js';
+import {
+  type ActionBarSummary,
+  ActionBarSummaryLine,
+  assertActionBarSummary,
+} from './action-bar/ActionBarSummary.js';
+
+export type {
+  ActionBarSummary,
+  ActionBarSummaryTone,
+} from './action-bar/ActionBarSummary.js';
 
 export type ActionBarProps = Omit<
   HTMLAttributes<HTMLDivElement>,
@@ -20,6 +30,12 @@ export type ActionBarProps = Omit<
    * and elements in one `span` to keep it wrapping as a sentence.
    */
   status?: ReactNode;
+  /**
+   * A labelled figure before the status, in the same polite live region:
+   * the label, the value large at tabular figures, and a detail, such as
+   * "Counted $33,790.00 short $4,000.00". `tone` colors the value.
+   */
+  summary?: ActionBarSummary;
   /** Sticky only below this breakpoint; from it up the bar sits in page flow. */
   stickyBelow?: Breakpoint;
 };
@@ -32,9 +48,10 @@ export type ActionBarProps = Omit<
  */
 export const ActionBar = forwardRef<HTMLDivElement, ActionBarProps>(
   function ActionBar(
-    { children, className, status, stickyBelow, ...rest },
+    { children, className, status, stickyBelow, summary, ...rest },
     ref,
   ) {
+    if (summary) assertActionBarSummary(summary);
     return (
       <div
         ref={ref}
@@ -48,6 +65,7 @@ export const ActionBar = forwardRef<HTMLDivElement, ActionBarProps>(
         {/* Always rendered, empty or not: a live region must already be in
             the page when its text changes for that change to be announced. */}
         <div className="sw-action-bar-status" role="status">
+          {summary ? <ActionBarSummaryLine summary={summary} /> : null}
           {status}
         </div>
         <div className="sw-action-bar-actions">{children}</div>

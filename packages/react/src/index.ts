@@ -4,7 +4,12 @@ export {
   type ActionMenuItem,
   type ActionMenuProps,
 } from './components/ActionMenu.js';
-export { ActionBar, type ActionBarProps } from './components/ActionBar.js';
+export {
+  ActionBar,
+  type ActionBarProps,
+  type ActionBarSummary,
+  type ActionBarSummaryTone,
+} from './components/ActionBar.js';
 export { Accordion } from './components/Accordion.js';
 export type { AccordionProps, AccordionSize } from './components/Accordion.js';
 export { Switch, type SwitchProps } from './components/Switch.js';

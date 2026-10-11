@@ -12,6 +12,7 @@ import { useState } from 'react';
 
 import { Section } from '../layout/Section.js';
 import { sampleHabitats } from '../sample-copy.js';
+import { ActionBarSummaryExample } from './action-bar-summary.js';
 
 const transectStops = [
   'Stop 1 · Reed bed edge · Grey heron',
@@ -37,7 +38,7 @@ export function ActionBarSection() {
   return (
     <Section
       id="action-bar"
-      purpose="ActionBar keeps a long page's actions on a glass bar stuck to the bottom of the viewport, with one short status: a line, or a Badge and a line on one row that wraps under the badge when it is full. Put it last in the content it acts on: it stays stuck while that content scrolls by and rests at the end. stickyBelow md keeps it in page flow on wider screens. It clears the bottom safe area. Its status line is a polite live region, so a new status is announced. An open popup, such as a Select list in an Accordion, paints over the bar."
+      purpose="ActionBar keeps a long page's actions on a glass bar stuck to the bottom of the viewport, with one short status: a line, or a Badge and a line on one row that wraps under the badge when it is full. Put it last in the content it acts on: it stays stuck while that content scrolls by and rests at the end. stickyBelow md keeps it in page flow on wider screens. It clears the bottom safe area. Its status line is a polite live region, so a new status is announced. An open popup, such as a Select list in an Accordion, paints over the bar. summary puts a labelled figure (label, a large tabular value, a detail) first in the status; its tone colors the value."
       title="ActionBar"
       usage={`<Stack gap={4}>
   {longForm}
@@ -50,7 +51,12 @@ export function ActionBarSection() {
 <ActionBar
   stickyBelow="md"
   status={saved ? <><Badge tone="accent">Saved</Badge><span>6 bat passes</span></> : undefined}
->…</ActionBar>`}
+>…</ActionBar>
+
+<ActionBar summary={{ label: 'Counted', value: '14 nests', detail: 'short 2', tone: 'danger' }}>
+  <Button variant="secondary" onPress={cancel}>Cancel</Button>
+  <Button disabled={!matches} onPress={save}>Save count</Button>
+</ActionBar>`}
     >
       <Stack gap={5}>
         <Stack data-testid="action-bar-survey" gap={3}>
@@ -100,6 +106,7 @@ export function ActionBarSection() {
             <Button onPress={() => setSubmitted(true)}>Submit sightings</Button>
           </ActionBar>
         </Stack>
+        <ActionBarSummaryExample />
         <Stack data-testid="action-bar-below-md" gap={3}>
           <Text variant="caption" color="muted">
             stickyBelow md: stuck on a phone, in page flow from md up. No status

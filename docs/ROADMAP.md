@@ -23,7 +23,8 @@ Teisoro F-011-S02, release R1 "guided-form core" (`@scalewing/react`
 (`teisoro-denomination-grid-entry.md`), `Steps` / `Step`
 (`teisoro-steps.md`), and `ActionBar` `summary`
 (`teisoro-action-bar-summary.md`). `Stepper` merged in #113 and the grid
-entry in #114; branch `teisoro/steps` carries the third. Next: review
+entry in #114, `Steps` in #115; branch `teisoro/action-bar-summary`
+carries the fourth. Next: review
 and merge each, then release `@scalewing/react` (minor) and Teisoro
 pins it for its guided forms.
 
