@@ -101,6 +101,8 @@ export {
 } from './components/Box.js';
 export {
   ButtonGroup,
+  buttonGroupAppearances,
+  type ButtonGroupAppearance,
   type ButtonGroupJustify,
   type ButtonGroupProps,
 } from './components/ButtonGroup.js';

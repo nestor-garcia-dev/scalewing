@@ -1,4 +1,8 @@
 import { breakpointQuery } from './breakpoints.js';
+import {
+  buttonGroupTrackClassCatalog,
+  cssButtonGroupTrackClasses,
+} from './css-button-group-track.js';
 import { joinedZIndex } from './stacking.js';
 
 /*
@@ -64,9 +68,11 @@ ${group} > .sw-button:focus-visible {
 @media ${breakpointQuery('below', 'md')} {
   ${group} { align-items: stretch; flex-direction: row; }
   ${group} > * { width: auto; }
-}`;
+}
+
+${cssButtonGroupTrackClasses()}`;
 }
 
 export function buttonGroupAttachedClassCatalog(): string[] {
-  return ['sw-button-group-attached'];
+  return ['sw-button-group-attached', ...buttonGroupTrackClassCatalog()];
 }

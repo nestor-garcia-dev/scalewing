@@ -1,7 +1,7 @@
 import { cleanup, render, screen } from '@testing-library/react';
 import { afterEach, describe, expect, it } from 'vitest';
 
-import { Button, ButtonGroup } from './index.js';
+import { Button, ButtonGroup, type ButtonGroupAppearance } from './index.js';
 import { breakpointQuery } from './css/breakpoints.js';
 import { generateStylesheet, utilityClassCatalog } from './css/stylesheet.js';
 
@@ -81,6 +81,69 @@ describe('ButtonGroup attached CSS', () => {
     // and the order guards a later change to the selector.
     expect(css.indexOf(`${group} > * { width: auto; }`)).toBeGreaterThan(
       css.indexOf('.sw-button-group > * { width: 100%; }'),
+    );
+  });
+});
+
+describe('ButtonGroup appearance track', () => {
+  it('marks an attached group as a track, buttons unchanged', () => {
+    render(
+      <ButtonGroup appearance="track" aria-label="Day" attached>
+        <Button onPress={() => undefined} variant="secondary">
+          Today
+        </Button>
+      </ButtonGroup>,
+    );
+    expect(screen.getByRole('group', { name: 'Day' }).className).toBe(
+      'sw-button-group sw-button-group-end sw-button-group-attached sw-button-group-track',
+    );
+    expect(screen.getByRole('button', { name: 'Today' }).className).toBe(
+      'sw-button sw-button-secondary sw-button-md',
+    );
+  });
+
+  it('fails closed on an unknown appearance or a track that is not attached', () => {
+    expect(() =>
+      render(
+        <ButtonGroup
+          appearance={'pill' as ButtonGroupAppearance}
+          aria-label="Day"
+          attached
+        />,
+      ),
+    ).toThrow(RangeError);
+    expect(() =>
+      render(<ButtonGroup appearance="track" aria-label="Day" />),
+    ).toThrow(RangeError);
+  });
+
+  it('generates the grey track, words-only buttons and the hairline divider after the tinted one', () => {
+    const css = generateStylesheet();
+    expect(utilityClassCatalog()).toContain('sw-button-group-track');
+    const track =
+      '.sw-button-group.sw-button-group-attached.sw-button-group-track';
+    expect(css).toMatch(
+      new RegExp(
+        `${track.replaceAll('.', '\\.')} \\{\\s*background: color-mix\\(in srgb, var\\(--sw-color-muted\\) 16%, transparent\\);`,
+      ),
+    );
+    expect(css).toContain(
+      `${track} > .sw-button {\n  background: transparent;\n  border-color: transparent;\n  color: var(--sw-color-text);\n}`,
+    );
+    const divider = `${track} > .sw-button + .sw-button {\n  border-inline-start-color: var(--sw-color-border);\n}`;
+    expect(css).toContain(divider);
+    expect(css.indexOf(divider)).toBeGreaterThan(
+      css.indexOf(
+        '.sw-button-group.sw-button-group-attached > .sw-button + .sw-button:not(.sw-button-secondary) {',
+      ),
+    );
+    expect(css).toContain(`${track} { outline: 1px solid CanvasText; }`);
+    // A disabled button fades in a track, a neutral disabled one too.
+    expect(css).toContain(
+      `${track} > .sw-button:disabled {\n  opacity: var(--sw-disabled-opacity);\n}`,
+    );
+    expect(css).toContain(
+      `${track} > .sw-button[aria-pressed='true'] { border-color: Highlight; }`,
     );
   });
 });

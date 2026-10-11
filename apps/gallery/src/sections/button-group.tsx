@@ -11,7 +11,7 @@ export function ButtonGroupSection() {
   return (
     <Section
       id="button-group"
-      purpose="ButtonGroup is the action row of a form or dialog. From the md breakpoint up the buttons sit on one line, at the end by default; on a phone they stack full width in source order, so put the primary action last. attached joins the buttons into one control, such as Previous, Today and Next: no gap, single dividers, square inner corners; it keeps its row on a phone."
+      purpose="ButtonGroup is the action row of a form or dialog. From the md breakpoint up the buttons sit on one line, at the end by default; on a phone they stack full width in source order, so put the primary action last. attached joins the buttons into one control, such as Previous, Today and Next: no gap, single dividers, square inner corners; it keeps its row on a phone. appearance track (attached only) sets the buttons as words on one quiet grey track with a hairline between them."
       title="ButtonGroup"
       usage={`<ButtonGroup>
   <Button variant="secondary" onPress={discard}>Discard</Button>
@@ -64,6 +64,33 @@ export function ButtonGroupSection() {
             aria-label="Next day"
             disabled
             onPress={() => setLastPress('Next day')}
+            variant="secondary"
+          >
+            <Glyph path="M6 3l5 5-5 5" />
+          </Button>
+        </ButtonGroup>
+        <Text variant="label">Attached on one grey track</Text>
+        <ButtonGroup appearance="track" aria-label="Survey week" attached>
+          <Button
+            aria-label="Previous week"
+            onPress={() => setLastPress('Previous week')}
+            size="sm"
+            variant="secondary"
+          >
+            <Glyph path="M10 3 5 8l5 5" />
+          </Button>
+          <Button
+            onPress={() => setLastPress('This week')}
+            size="sm"
+            variant="secondary"
+          >
+            This week
+          </Button>
+          <Button
+            aria-label="Next week"
+            disabled
+            onPress={() => setLastPress('Next week')}
+            size="sm"
             variant="secondary"
           >
             <Glyph path="M6 3l5 5-5 5" />
