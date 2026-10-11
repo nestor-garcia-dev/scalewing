@@ -10,6 +10,7 @@ import { useRef, useState } from 'react';
 
 import { Glyph } from '../glyph.js';
 import { Section } from '../layout/Section.js';
+import { ToastCardExample } from './toast-card.js';
 
 function ToneGlyph({ tone }: { tone: ToastTone }) {
   const path =
@@ -56,7 +57,7 @@ export function ToastSection() {
   return (
     <Section
       id="toast"
-      purpose="Toast is an ephemeral confirmation on the top layer. It auto-dismisses and does not trap focus. It is as wide as its message, up to the page's gutter on each side, so a long message wraps instead of running to a phone's edges. With anchor and target it blooms from a press, travels to a destination, lingers, then vanishes. tone success, warning, or danger tints the border and the consumer's icon; danger is announced as an alert, the others as a status. Warning and danger stay 6000 ms unless timeoutMs says otherwise."
+      purpose="Toast is an ephemeral confirmation on the top layer. It auto-dismisses and does not trap focus. It is as wide as its message, up to the page's gutter on each side, so a long message wraps instead of running to a phone's edges. With anchor and target it blooms from a press, travels to a destination, lingers, then vanishes. tone success, warning, or danger tints the border and the consumer's icon; danger is announced as an alert, the others as a status. Warning and danger stay 6000 ms unless timeoutMs says otherwise. placement top-end makes it a corner card: a bold title over the children as a muted detail, one action (which runs, then closes the toast) and showRemaining's line running down with the time left; the pointer or focus on it holds the time."
       title="Toast"
       usage={`<Toast
   open={open}
@@ -69,6 +70,20 @@ export function ToastSection() {
 
 <Toast open={saved} onOpenChange={setSaved} tone="success" icon={<Check />}>
   <Text>Survey saved.</Text>
+</Toast>
+
+<Toast
+  open={saved}
+  onOpenChange={setSaved}
+  placement="top-end"
+  title="Heron count saved"
+  action={{ label: 'Open', onPress: openCount }}
+  showRemaining
+  timeoutMs={10000}
+  tone="success"
+  icon={<Check />}
+>
+  12 herons · 2 nests
 </Toast>`}
     >
       <Stack gap={4}>
@@ -122,6 +137,7 @@ export function ToastSection() {
         >
           <Text>{longMessage}</Text>
         </Toast>
+        <ToastCardExample />
         <Inline align="center" gap={4}>
           <Button
             ref={nestRef}

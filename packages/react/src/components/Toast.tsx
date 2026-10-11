@@ -1,29 +1,38 @@
 'use client';
 
 import {
+  useCallback,
   useLayoutEffect,
-  useEffect,
   useRef,
   type AnimationEvent,
+  type CSSProperties,
   type HTMLAttributes,
   type ReactNode,
 } from 'react';
 
 import { cx } from '../class-names.js';
 import { toastTones, type ToastTone } from '../css/css-toast.js';
+import { toastPlacements, type ToastPlacement } from '../css/css-toast-card.js';
 import { spacingClassNames } from '../spacing-classes.js';
 import {
   applyTravelVars,
   clearTravelVars,
   travelTranslate,
 } from '../toast-travel.js';
+import {
+  assertToastContent,
+  ToastContent,
+  type ToastAction,
+} from './toast/ToastContent.js';
+import { useToastHold } from './toast/use-toast-hold.js';
+import { useToastTimer } from './toast/use-toast-timer.js';
 
-export { toastTones };
-export type { ToastTone };
+export { toastPlacements, toastTones };
+export type { ToastAction, ToastPlacement, ToastTone };
 
 export type ToastProps = Omit<
   HTMLAttributes<HTMLDivElement>,
-  'children' | 'popover'
+  'children' | 'popover' | 'title'
 > & {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -41,6 +50,20 @@ export type ToastProps = Omit<
   tone?: ToastTone;
   /** A consumer glyph before the message, hidden from assistive technology. */
   icon?: ReactNode;
+  /** A bold first line; the children become the muted detail under it. */
+  title?: string;
+  /**
+   * One press at the end of the toast, such as "Open". It runs `onPress`,
+   * then closes the toast. The toast takes the pointer while it has one.
+   */
+  action?: ToastAction;
+  /** A thin line under the message that runs down with the time left. */
+  showRemaining?: boolean;
+  /**
+   * `bottom` (default) centers it near the bottom edge; `top-end` puts it
+   * in the top corner at the end of the line, as a card.
+   */
+  placement?: ToastPlacement;
   children: ReactNode;
 };
 
@@ -58,21 +81,51 @@ function travels(anchor?: Element | null, target?: Element | null): boolean {
   return Boolean(anchor && target);
 }
 
+function reducedMotion(): boolean {
+  return (
+    typeof window !== 'undefined' &&
+    typeof window.matchMedia === 'function' &&
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  );
+}
+
 export function Toast({
+  action,
   anchor = null,
   children,
   className,
+  icon,
+  onBlur,
+  onFocus,
   onOpenChange,
+  onPointerEnter,
+  onPointerLeave,
   open,
+  placement = 'bottom',
+  showRemaining = false,
+  style,
   target = null,
   timeoutMs,
+  title,
   tone = 'neutral',
-  icon,
   ...rest
 }: ToastProps) {
+  assertToastContent(title, action);
+  if (!(toastPlacements as readonly unknown[]).includes(placement))
+    throw new RangeError(`Unknown Toast placement: ${String(placement)}`);
   const nodeRef = useRef<HTMLDivElement | null>(null);
   const dismissAfter = timeoutMs ?? defaultTimeout(tone);
   const moving = travels(anchor, target);
+  const interactive = !moving && (Boolean(action) || showRemaining);
+  const { handlers, paused, returnFocus } = useToastHold({
+    enabled: interactive,
+    onBlur,
+    onFocus,
+    onPointerEnter,
+    onPointerLeave,
+    open,
+  });
+  const close = useCallback(() => onOpenChange(false), [onOpenChange]);
 
   useLayoutEffect(() => {
     const node = nodeRef.current;
@@ -81,6 +134,7 @@ export function Toast({
     }
     if (!open) {
       if (node.matches(':popover-open')) {
+        returnFocus(node);
         node.hidePopover();
       }
       clearTravelVars(node);
@@ -104,25 +158,16 @@ export function Toast({
     if (!node.matches(':popover-open')) {
       node.showPopover();
     }
-  }, [anchor, moving, open, target]);
+  }, [anchor, moving, open, returnFocus, target]);
 
-  useEffect(() => {
-    if (!open) {
-      return;
-    }
-    const reducedMotion =
-      typeof window.matchMedia === 'function' &&
-      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (moving && !reducedMotion) {
-      return;
-    }
-    const timer = window.setTimeout(() => {
-      onOpenChange(false);
-    }, dismissAfter);
-    return () => {
-      window.clearTimeout(timer);
-    };
-  }, [dismissAfter, moving, open, onOpenChange]);
+  // A travelling toast closes when its animation ends, unless motion is
+  // reduced; every other toast closes on the timer, held while paused.
+  useToastTimer({
+    duration: dismissAfter,
+    onExpire: close,
+    paused,
+    running: open && (!moving || reducedMotion()),
+  });
 
   function onAnimationEnd(event: AnimationEvent<HTMLDivElement>) {
     if (event.target !== event.currentTarget || !moving) {
@@ -138,24 +183,40 @@ export function Toast({
       className={cx(
         'sw-toast',
         tone !== 'neutral' && `sw-toast-${tone}`,
+        !moving && placement !== 'bottom' && `sw-toast-${placement}`,
+        interactive && 'sw-toast-interactive',
+        paused && 'sw-toast-paused',
         moving && 'sw-toast-travel',
         ...spacingClassNames({ padding: 3 }),
         className,
       )}
       onAnimationEnd={onAnimationEnd}
+      {...handlers}
       popover="manual"
       role={tone === 'danger' ? 'alert' : 'status'}
+      style={
+        showRemaining
+          ? ({
+              ...style,
+              '--sw-toast-duration': `${dismissAfter}ms`,
+            } as CSSProperties)
+          : style
+      }
     >
-      {icon ? (
-        <div className="sw-toast-row">
-          <span aria-hidden="true" className="sw-toast-icon">
-            {icon}
-          </span>
-          <div className="sw-toast-body">{children}</div>
-        </div>
-      ) : (
-        children
-      )}
+      <ToastContent
+        action={action}
+        icon={icon}
+        onAction={() => {
+          action?.onPress();
+          close();
+        }}
+        title={title}
+      >
+        {children}
+      </ToastContent>
+      {showRemaining && open && !moving ? (
+        <span aria-hidden="true" className="sw-toast-remaining" />
+      ) : null}
     </div>
   );
 }

@@ -35,6 +35,7 @@ import { cssFieldClasses } from './css-field.js';
 import { cssStepperClasses } from './css-stepper.js';
 import { cssStepsClasses } from './css-steps.js';
 import { cssToastClasses } from './css-toast.js';
+import { cssToastCardClasses } from './css-toast-card.js';
 import { cssBoxBorderClasses } from './css-box-border.js';
 import { cssPopupHostRules } from './stacking.js';
 
@@ -179,6 +180,8 @@ ${cssStepsClasses()}
 ${cssSplitClasses()}
 
 ${cssToastClasses()}
+
+${cssToastCardClasses()}
 
 ${cssResponsiveClasses()}
 
