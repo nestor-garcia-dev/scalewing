@@ -30,6 +30,8 @@ import {
   DateField,
   Field,
   Stepper,
+  Steps,
+  Step,
   Select,
   Switch,
   Split,
@@ -53,7 +55,25 @@ Import the CSS once at the application entry. Do not copy it into your source tr
 
 `Box` `border` draws a hairline in the `border` color token: `border` (or `border={true}`) is solid, and `border="dashed"` is dashed (the generated `sw-border` and `sw-border-dashed` classes; a `style` you pass still wins), for a space to fill in by hand such as a blank on a printed form. It does not make the box look or act like an input. Every `Box`-based component takes it.
 
-`Box hideBelow="md"` hides a region under 48rem and `hideFrom="md"` hides it at 48rem and wider, so a product can swap a wide layout for a narrow one without its own stylesheet. They also take `lg` (64rem), for content that fits only from a laptop up, such as a row of labelled destinations that a tablet shows as glyphs (name each glyph-only control, for example with `Tooltip relationship="label"`); the layout props keep `md`. `breakpointQuery('below', 'lg')` returns the query a hide class uses (`not all and (min-width: 64rem)`), for an app whose script must follow the same width. An unknown breakpoint throws a `RangeError`. Hidden regions leave the accessibility tree; do not use this to protect data. `Box as="a"` is a layout link. Use `Button` for press actions. `Field` associates a native `<input>` or `<select>` with a label and token gap; native text controls inherit the generated document canvas. `Select` is a labeled listbox menu when the open list must match the canvas.
+`Box hideBelow="md"` hides a region under 48rem and `hideFrom="md"` hides it at 48rem and wider, so a product can swap a wide layout for a narrow one without its own stylesheet. They also take `lg` (64rem), for content that fits only from a laptop up, such as a row of labelled destinations that a tablet shows as glyphs (name each glyph-only control, for example with `Tooltip relationship="label"`); the layout props keep `md`. `breakpointQuery('below', 'lg')` returns the query a hide class uses (`not all and (min-width: 64rem)`), for an app whose script must follow the same width. An unknown breakpoint throws a `RangeError`. Hidden regions leave the accessibility tree; do not use this to protect data. `Box as="a"` is a layout link. Use `Button` for press actions. `Field` associates a native `<input>` or `<select>` with a label and token gap; native text controls inherit the generated document canvas. `Steps` is a one-page vertical stepper: an `ol` of `Step` panels in order, numbered by their place, a line joining each marker to the next (in the success color below a done step). A `Step` takes `status` (`'upcoming' | 'current' | 'done' | 'error' | 'skipped'`) and `title` (a heading at the list's `headingLevel`, 2 by default, or the step's own). The current step is open with its `children` and has `aria-current="step"`; an error step stays open with a "!" marker. A done step folds to one line: a check, the title, its `summary` (truncated) and, with `onEdit` and `editLabel`, a ghost small `Button` at the end named by its label and the title ("Edit The site"). A step ahead is greyed with its number in a ring; a skipped step is greyed with its `skippedReason` after the title (pass your own separator, such as "· not needed"). A folded step's heading ends in its status word for assistive technology (visually hidden; English by default, `labels` on `Steps` takes your words). When a step becomes current from a folded state (upcoming, done or skipped), focus moves to its heading, a programmatic focus target; if several do in one update, the first in the list takes it. A first render, a move between current and error, and a step that turns to error leave focus alone: after a refused submit, move focus to the first invalid field yourself, as with `Field`. An error step has no `aria-current`; its heading's status word says it needs attention. Scalewing holds no order rules: the consumer sets each step's status. Pass the `Step`s as direct children (a Fragment around several would share one number). A `Step` outside `Steps`, a Fragment child, a blank title or reason, an unknown status or heading level, `onEdit` without `editLabel`, or a blank status word throws a `RangeError`.
+
+```tsx
+<Steps aria-label="Heron survey">
+  <Step
+    status="done"
+    title="The site"
+    summary="North marsh"
+    editLabel="Edit"
+    onEdit={() => setCurrent(0)}
+  />
+  <Step status="current" title="The count">
+    {fields}
+  </Step>
+  <Step status="upcoming" title="Review" />
+</Steps>
+```
+
+`Select` is a labeled listbox menu when the open list must match the canvas.
 
 `Field` supports optional `description`, `error`, and `required` on one native input, select, or textarea child. It preserves an existing `aria-describedby` and appends a stable ID for the hint, or for the error, which replaces the hint on screen while it is supplied. `error` sets `aria-invalid` and token-owned invalid styling. The error sits in a polite live region (`aria-live="polite"`) that is always rendered, empty while there is no error, so an error that appears while the person types, or after a submit, is announced once, politely, when its text is swapped in; it is never `role="alert"`, so a submit that finds several errors does not fire several assertive alerts at once. Empty, the region takes no room in the layout. The consumer owns validation and localized messages, and after a refused submit it moves focus to the first invalid control (or to one form-level summary). `Checkbox`, `RadioGroup` and `DateField` expose their `error` the same way. `invalid` marks the control invalid the same way (`aria-invalid` and the danger border, `Mark` in forced colors) without a message of its own, for fields whose one error is shown elsewhere, such as a count that adds up to nothing under a group of count fields: point each control's `aria-describedby` at that message so it is read with the field. The field's own polite region stays empty and its `description` stays on screen; `error` implies `invalid`. Passing `invalid`, even `invalid={false}` but not `invalid={undefined}`, needs one native control child and throws a `TypeError` on the first render otherwise, so a form learns it while the fields are valid, not on its first failed submit. `error` keeps its rule: it needs the native control only while it holds a message. `invalid` is `Field`'s only: `DateField`, `Select` and the other controls with `error` do not have it yet.
 

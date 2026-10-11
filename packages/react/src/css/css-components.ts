@@ -32,6 +32,7 @@ import { cssGridSpanClasses } from './css-grid-span.js';
 import { cssDenominationGridClasses } from './css-denomination-grid.js';
 import { cssFieldClasses } from './css-field.js';
 import { cssStepperClasses } from './css-stepper.js';
+import { cssStepsClasses } from './css-steps.js';
 import { cssToastClasses } from './css-toast.js';
 import { cssBoxBorderClasses } from './css-box-border.js';
 import { cssPopupHostRules } from './stacking.js';
@@ -46,6 +47,7 @@ function reducedTransparencyRules(): string {
   .sw-card-glass,
   .sw-app-header,
   .sw-action-bar,
+  .sw-steps-item,
   .sw-badge-neutral,
   .sw-segmented,
   .sw-table-sticky thead th,
@@ -168,6 +170,8 @@ ${cssDenominationGridClasses()}
 ${cssFieldClasses()}
 
 ${cssStepperClasses()}
+
+${cssStepsClasses()}
 
 ${cssSplitClasses()}
 

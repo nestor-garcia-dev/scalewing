@@ -27,6 +27,7 @@ import { DialogSection } from './sections/dialog.js';
 import { ToastSection } from './sections/toast.js';
 import { FieldSection } from './sections/field.js';
 import { StepperSection } from './sections/stepper.js';
+import { StepsSection } from './sections/steps.js';
 import { FoundationsSection } from './sections/foundations.js';
 import { GridSection } from './sections/grid.js';
 import { LayoutSection } from './sections/layout.js';
@@ -126,6 +127,7 @@ export const catalog = [
     group: 'controls',
     Section: StepperSection,
   },
+  { id: 'steps', label: 'Steps', group: 'controls', Section: StepsSection },
   { id: 'select', label: 'Select', group: 'controls', Section: SelectSection },
   {
     id: 'action-menu',

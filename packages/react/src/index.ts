@@ -102,6 +102,15 @@ export { Toast, toastTones } from './components/Toast.js';
 export type { ToastProps, ToastTone } from './components/Toast.js';
 export { Field, type FieldProps, type FieldSize } from './components/Field.js';
 export {
+  Step,
+  type StepHeadingLevel,
+  type StepProps,
+  Steps,
+  type StepsLabels,
+  type StepsProps,
+  type StepStatus,
+} from './components/Steps.js';
+export {
   Stepper,
   type StepperProps,
   type StepperWidth,
