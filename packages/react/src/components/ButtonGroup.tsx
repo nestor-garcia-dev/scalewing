@@ -6,6 +6,14 @@ export type ButtonGroupJustify = 'start' | 'end' | 'between';
 export type ButtonGroupProps = BoxProps & {
   /** Where the row sits from the `md` breakpoint up; below it every button stacks full width in source order. */
   justify?: ButtonGroupJustify;
+  /**
+   * One joined control instead of a row of separate buttons, such as
+   * Previous, Today and Next: no gap, single dividers, square inner and
+   * rounded outer corners. It keeps its row on a phone and sizes to its
+   * buttons, so `justify` does not apply. Its children are `Button`s; name
+   * the group with `aria-label`.
+   */
+  attached?: boolean;
 };
 
 /**
@@ -16,13 +24,19 @@ export type ButtonGroupProps = BoxProps & {
  * so an `aria-label` names the row for assistive tech.
  */
 export function ButtonGroup({
+  attached = false,
   className,
   justify = 'end',
   ...rest
 }: ButtonGroupProps) {
   return (
     <Box
-      className={cx('sw-button-group', `sw-button-group-${justify}`, className)}
+      className={cx(
+        'sw-button-group',
+        `sw-button-group-${justify}`,
+        attached && 'sw-button-group-attached',
+        className,
+      )}
       role="group"
       {...rest}
     />

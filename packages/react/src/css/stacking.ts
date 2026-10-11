@@ -33,6 +33,21 @@ export const stackingOrder = {
 
 export type StackingLayer = keyof typeof stackingOrder;
 
+/*
+ * The order inside a joined control (an attached ButtonGroup), which is
+ * its own stacking context (`isolation: isolate`), so these never meet the
+ * page's layers: a pressed button's ring over its neighbours, and the
+ * focused button's ring over both.
+ */
+export const joinedControlOrder = {
+  pressed: 1,
+  focused: 2,
+} as const;
+
+export function joinedZIndex(layer: keyof typeof joinedControlOrder): string {
+  return `z-index: ${joinedControlOrder[layer]};`;
+}
+
 export function zIndex(layer: StackingLayer): string {
   return `z-index: ${stackingOrder[layer]};`;
 }

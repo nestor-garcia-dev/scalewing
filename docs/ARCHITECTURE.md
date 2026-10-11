@@ -26,7 +26,7 @@ import '@scalewing/react/styles.css';
 
 Consumers do not copy that CSS into application source. Bundlers pull it from `node_modules`.
 
-Every generated `z-index` is one layer of the stacking order in `packages/react/src/css/stacking.ts`, lowest first: sticky table cells, a sticky table footer, the sticky `ActionBar`, a glass surface holding an open popup, the sticky `AppHeader` or sticky `Tabs` strip, then popups. Dialog and Toast sit above all of them on the browser's top layer. A new layered surface takes a layer from that table rather than a number of its own.
+Every generated `z-index` is one layer of the stacking order in `packages/react/src/css/stacking.ts`, lowest first: sticky table cells, a sticky table footer, the sticky `ActionBar`, a glass surface holding an open popup, the sticky `AppHeader` or sticky `Tabs` strip, then popups. Dialog and Toast sit above all of them on the browser's top layer. A new layered surface takes a layer from that table rather than a number of its own. An attached `ButtonGroup` is its own stacking context with a local order (`joinedControlOrder`: a pressed button, then the focused one) that never meets the page's layers.
 
 `sw-padding-top-4` is spacing step `4` (16px in the default scale), not 4 pixels.
 
