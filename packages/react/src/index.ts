@@ -151,6 +151,8 @@ export type { SplitProps } from './components/Split.js';
 export { Nav, type NavProps } from './components/Nav.js';
 export {
   SectionNav,
+  sectionNavAppearances,
+  type SectionNavAppearance,
   type SectionNavItem,
   type SectionNavProps,
 } from './components/SectionNav.js';

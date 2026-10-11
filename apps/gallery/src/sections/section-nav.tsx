@@ -1,4 +1,4 @@
-import { Card, Grid, SectionNav, Stack, Text } from '@scalewing/react';
+import { Card, Grid, Inline, SectionNav, Stack, Text } from '@scalewing/react';
 import { useState } from 'react';
 
 import { Glyph } from '../glyph.js';
@@ -37,6 +37,10 @@ export function SectionNavSection() {
     href: `#section-nav/${item.id}`,
     // A decorative glyph before the label; the label names the link.
     icon: <Glyph path={item.glyph} />,
+    // Rangers has two walks to assign: a count, named in words.
+    ...(item.id === 'rangers'
+      ? { count: 2, countLabel: '2 walks to assign' }
+      : {}),
     // A detail page inside a section keeps the section current.
     current:
       item.id === section
@@ -50,7 +54,7 @@ export function SectionNavSection() {
   return (
     <Section
       id="section-nav"
-      purpose="SectionNav is the navigation between the sections of one area, such as a portal's pages: a labelled nav of links, quieter than the workspace's own navigation. The current item carries aria-current (page, or location on a page inside it) and is marked by an accent underline in a row, or, from verticalFrom up, by a bar at its start in a side list beside the content. onNavigate takes a plain press for a client router and leaves a press with a modifier key to the browser. An item's optional icon is a decorative glyph before its label. A coarse pointer gets 44 px targets. Use Tabs for panels on one page and Nav for a workspace's destinations."
+      purpose="SectionNav is the navigation between the sections of one area, such as a portal's pages: a labelled nav of links, quieter than the workspace's own navigation. The current item carries aria-current (page, or location on a page inside it) and is marked by an accent underline in a row, or, from verticalFrom up, by a bar at its start in a side list beside the content. onNavigate takes a plain press for a client router and leaves a press with a modifier key to the browser. An item's optional icon is a decorative glyph before its label. A coarse pointer gets 44 px targets. appearance filled is a quiet row of page buttons, the current one on a soft fill, for an area's sub-navigation beside its name; an item's count is a filled pill after its label, part of the link's name. Use Tabs for panels on one page and Nav for a workspace's destinations."
       title="SectionNav"
       usage={`<SectionNav
   aria-label="Reserve office"
@@ -62,37 +66,80 @@ export function SectionNavSection() {
   onNavigate={(item) => navigate(item.href)}
 />`}
     >
-      <Grid columns={4} columnsBelow={{ md: 1 }} gap={4}>
-        <SectionNav
-          aria-label="Reserve office"
-          items={items}
-          onNavigate={(item) => {
-            setSection(item.id as ReserveSection);
-            setDetail(false);
-          }}
-          verticalFrom="md"
-        />
-        <Card columnSpan={3} padding={4}>
-          <Stack gap={2}>
-            <Text as="h3" variant="title">
-              {detail ? `${current.label} · Today` : current.label}
-            </Text>
-            <Text>{current.note}</Text>
-            <Text color="muted" variant="caption">
-              <a
-                href={`#section-nav/${section}/today`}
-                onClick={(event) => {
-                  event.preventDefault();
-                  setDetail(true);
-                }}
-              >
-                Open today&apos;s page
-              </a>{' '}
-              (the section stays current).
-            </Text>
-          </Stack>
-        </Card>
-      </Grid>
+      <Stack gap={4}>
+        <Grid columns={4} columnsBelow={{ md: 1 }} gap={4}>
+          <SectionNav
+            aria-label="Reserve office"
+            items={items}
+            onNavigate={(item) => {
+              setSection(item.id as ReserveSection);
+              setDetail(false);
+            }}
+            verticalFrom="md"
+          />
+          <Card columnSpan={3} padding={4}>
+            <Stack gap={2}>
+              <Text as="h3" variant="title">
+                {detail ? `${current.label} · Today` : current.label}
+              </Text>
+              <Text>{current.note}</Text>
+              <Text color="muted" variant="caption">
+                <a
+                  href={`#section-nav/${section}/today`}
+                  onClick={(event) => {
+                    event.preventDefault();
+                    setDetail(true);
+                  }}
+                >
+                  Open today&apos;s page
+                </a>{' '}
+                (the section stays current).
+              </Text>
+            </Stack>
+          </Card>
+        </Grid>
+        <Text variant="label">
+          Filled, beside the area&apos;s name, with a count
+        </Text>
+        <Inline gap={4} justify="between" wrap>
+          <Text as="h3" variant="title">
+            Reserve
+          </Text>
+          <SectionNav
+            appearance="filled"
+            aria-label="Reserve pages"
+            items={[
+              {
+                id: 'today',
+                label: 'Today',
+                href: '#section-nav',
+                current: 'page',
+              },
+              { id: 'tasks', label: 'Tasks', href: '#section-nav', count: 3 },
+              { id: 'sightings', label: 'Sightings', href: '#section-nav' },
+              { id: 'reports', label: 'Reports', href: '#section-nav' },
+            ]}
+          />
+        </Inline>
+        <Text variant="label">Filled as a side list from md up</Text>
+        <Grid columns={4} columnsBelow={{ md: 1 }} gap={4}>
+          <SectionNav
+            appearance="filled"
+            aria-label="Reserve archive"
+            items={[
+              {
+                id: 'year',
+                label: 'This year',
+                href: '#section-nav',
+                current: 'page',
+              },
+              { id: 'last', label: 'Last year', href: '#section-nav' },
+              { id: 'older', label: 'Older', href: '#section-nav', count: 12 },
+            ]}
+            verticalFrom="md"
+          />
+        </Grid>
+      </Stack>
     </Section>
   );
 }

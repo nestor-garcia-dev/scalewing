@@ -5,6 +5,10 @@ import {
   breakpointQuery,
   breakpoints,
 } from './breakpoints.js';
+import {
+  cssSectionNavFilledClasses,
+  sectionNavFilledClassCatalog,
+} from './css-section-nav-filled.js';
 import { coarsePointerQuery, touchTarget } from './touch-target.js';
 
 const label = typographyVariants.label;
@@ -109,6 +113,8 @@ export function cssSectionNavClasses(): string {
 
 ${verticalRules()}
 
+${cssSectionNavFilledClasses()}
+
 @media ${coarsePointerQuery} {
   [data-theme] .sw-section-nav-link { min-height: ${touchTarget}; }
 }
@@ -126,5 +132,6 @@ export function sectionNavClassCatalog(): string[] {
     'sw-section-nav-link',
     'sw-section-nav-icon',
     ...breakpoints.map(sectionNavVerticalClass),
+    ...sectionNavFilledClassCatalog(),
   ];
 }

@@ -3,6 +3,13 @@ import { type MouseEvent, type ReactNode } from 'react';
 import { cx } from '../class-names.js';
 import { type Breakpoint, breakpoints } from '../css/breakpoints.js';
 import { sectionNavVerticalClass } from '../css/css-section-nav.js';
+import {
+  assertSectionNavAppearance,
+  type SectionNavAppearance,
+} from '../css/css-section-nav-filled.js';
+
+export type { SectionNavAppearance };
+export { sectionNavAppearances } from '../css/css-section-nav-filled.js';
 
 export type SectionNavItem = {
   id: string;
@@ -15,6 +22,20 @@ export type SectionNavItem = {
   current?: 'page' | 'location' | boolean;
   /** A decorative glyph before the label. */
   icon?: ReactNode;
+  /**
+   * How many things wait in the section, such as tasks to do: a filled pill
+   * after the label, read as part of the link's name ("Tasks 3"). A whole
+   * number; 0 (or none) shows no pill. There is no cap: a long number
+   * widens the link.
+   */
+  count?: number;
+  /**
+   * What the count means, in the consumer's words ("3 tasks to do"): read
+   * in the link's name in place of the bare number ("Tasks 3 tasks to
+   * do"; "Tasks 3 waiting" with "3 waiting"), the pill then hidden from
+   * assistive technology. Needs `count`.
+   */
+  countLabel?: string;
 };
 
 type SectionNavLabel =
@@ -35,6 +56,13 @@ export type SectionNavProps = SectionNavLabel & {
    * marked by a bar at its start) instead of a row (marked by an underline).
    */
   verticalFrom?: Breakpoint;
+  /**
+   * How the current item is marked: `underline` (default) under a hairline
+   * row, or a bar at its start in a side list; `filled`, a quiet row of
+   * page buttons whose current one takes a soft fill, for an area's
+   * sub-navigation beside its name.
+   */
+  appearance?: SectionNavAppearance;
 };
 
 function plainPress(event: MouseEvent<HTMLAnchorElement>): boolean {
@@ -60,6 +88,24 @@ function assertItems(items: readonly SectionNavItem[]) {
     throw new RangeError('SectionNav items need nonempty ids and labels');
   if (new Set(items.map((item) => item.id)).size !== items.length)
     throw new RangeError('SectionNav items need unique ids');
+  if (
+    items.some(
+      (item) =>
+        item.count !== undefined &&
+        (!Number.isInteger(item.count) || item.count < 0),
+    )
+  )
+    throw new RangeError('SectionNav item counts are whole numbers from 0');
+  if (
+    items.some(
+      (item) =>
+        item.countLabel !== undefined &&
+        (!item.countLabel.trim() || item.count === undefined),
+    )
+  )
+    throw new RangeError(
+      'SectionNav item countLabel is nonempty and comes with a count',
+    );
 }
 
 function assertBreakpoint(verticalFrom: Breakpoint | undefined) {
@@ -76,6 +122,7 @@ function assertBreakpoint(verticalFrom: Breakpoint | undefined) {
  * a side list. The current item carries `aria-current`.
  */
 export function SectionNav({
+  appearance = 'underline',
   items,
   onNavigate,
   verticalFrom,
@@ -83,11 +130,13 @@ export function SectionNav({
 }: SectionNavProps) {
   assertItems(items);
   assertBreakpoint(verticalFrom);
+  assertSectionNavAppearance(appearance);
   return (
     <nav
       className={cx(
         'sw-section-nav',
         verticalFrom && sectionNavVerticalClass(verticalFrom),
+        appearance === 'filled' && 'sw-section-nav-filled',
       )}
       {...label}
     >
@@ -116,6 +165,21 @@ export function SectionNav({
                 </span>
               ) : null}
               {item.label}
+              {item.count ? (
+                <>
+                  {item.countLabel ? (
+                    <span className="sw-sr-only">{` ${item.countLabel}`}</span>
+                  ) : (
+                    ' '
+                  )}
+                  <span
+                    aria-hidden={item.countLabel ? true : undefined}
+                    className="sw-section-nav-count"
+                  >
+                    {item.count}
+                  </span>
+                </>
+              ) : null}
             </a>
           </li>
         ))}
