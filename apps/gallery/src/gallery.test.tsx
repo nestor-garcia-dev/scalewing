@@ -22,7 +22,8 @@ describe('gallery', () => {
     cleanup();
   });
 
-  // Renders the whole catalog at once, which outgrew the default 5 s on CI.
+  // Renders the whole catalog at once, which outgrew the default 5 s on CI
+  // and then 20 s (about 21 s on the CI runner by 2026-10-11).
   it('renders every catalog section with landmarks and controls', () => {
     render(<App />);
 
@@ -160,7 +161,7 @@ describe('gallery', () => {
     ).toBeTruthy();
     expect(screen.getByRole('button', { name: 'Palette save' })).toBeTruthy();
     expect(screen.getByRole('button', { name: 'Overlay save' })).toBeTruthy();
-  }, 20_000);
+  }, 60_000);
 
   // Each of these renders the whole catalog too, so each gets the same room.
   it('persists an explicit theme preference', () => {
