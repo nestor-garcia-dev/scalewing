@@ -40,6 +40,7 @@ export {
 } from './components/Notice.js';
 export {
   Progress,
+  progressTones,
   type ProgressProps,
   type ProgressTone,
 } from './components/Progress.js';

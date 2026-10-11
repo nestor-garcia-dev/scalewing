@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test';
 
-test('Progress presents zero, partial, and complete measured values', async ({
+test('Progress presents zero, partial, and complete measured values, and its tones', async ({
   page,
 }, testInfo) => {
   await page.goto('/#progress');
@@ -42,5 +42,23 @@ test('Progress presents zero, partial, and complete measured values', async ({
     captioned.locator('xpath=..').locator('.sw-progress-count'),
   ).toHaveCount(0);
   await expect(section.getByText('2 / 4')).toHaveCount(1);
+  const warning = section.getByRole('progressbar', {
+    name: 'Daylight left for the count',
+  });
+  await expect(warning).toHaveAttribute('value', '102');
+  await expect(warning).toHaveCSS('animation-name', 'none');
+  await expect(warning.locator('xpath=..')).toHaveClass(/sw-progress-warning/);
+  if (testInfo.project.name !== 'forced-colors')
+    // Token wiring: the bar's color property resolves to the warning token
+    // (the painted ::-webkit-progress-value cannot be read computed).
+    expect(
+      await warning.evaluate((node) => {
+        const own = getComputedStyle(node.parentElement!);
+        return (
+          own.getPropertyValue('--sw-progress-color').trim() ===
+          own.getPropertyValue('--sw-color-warning').trim()
+        );
+      }),
+    ).toBe(true);
   await section.screenshot({ path: testInfo.outputPath('progress.png') });
 });

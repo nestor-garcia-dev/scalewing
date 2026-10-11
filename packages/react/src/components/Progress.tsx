@@ -2,7 +2,10 @@
 
 import { useId } from 'react';
 
-export type ProgressTone = 'accent' | 'success' | 'danger';
+import { type ProgressTone, progressTones } from '../css/css-progress.js';
+
+export { progressTones };
+export type { ProgressTone };
 
 export type ProgressProps = {
   label: string;
@@ -25,6 +28,8 @@ export function Progress({
     throw new RangeError('max must be a positive finite number');
   if (!Number.isFinite(value) || value < 0 || value > max)
     throw new RangeError('value must be finite and within 0..max');
+  if (!(progressTones as readonly unknown[]).includes(tone))
+    throw new RangeError(`Unknown Progress tone: ${String(tone)}`);
 
   const labelId = useId();
   return (

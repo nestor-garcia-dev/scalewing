@@ -1,5 +1,24 @@
 import { typographyVariants } from '@scalewing/tokens';
 
+export const progressTones = [
+  'accent',
+  'success',
+  'warning',
+  'danger',
+] as const;
+
+/** The bar's color: the accent, or success, warning (time running out) or danger. */
+export type ProgressTone = (typeof progressTones)[number];
+
+function toneRules(): string {
+  return progressTones
+    .map(
+      (tone) =>
+        `.sw-progress-${tone} { --sw-progress-color: var(--sw-color-${tone}); }`,
+    )
+    .join('\n');
+}
+
 const label = typographyVariants.label;
 const caption = typographyVariants.caption;
 
@@ -13,9 +32,7 @@ export function cssProgressClasses(): string {
   width: 100%;
 }
 
-.sw-progress-accent { --sw-progress-color: var(--sw-color-accent); }
-.sw-progress-success { --sw-progress-color: var(--sw-color-success); }
-.sw-progress-danger { --sw-progress-color: var(--sw-color-danger); }
+${toneRules()}
 
 .sw-progress-heading {
   align-items: baseline;
@@ -69,9 +86,7 @@ export function cssProgressClasses(): string {
 export function progressClassCatalog(): string[] {
   return [
     'sw-progress',
-    'sw-progress-accent',
-    'sw-progress-success',
-    'sw-progress-danger',
+    ...progressTones.map((tone) => `sw-progress-${tone}`),
     'sw-progress-heading',
     'sw-progress-label',
     'sw-progress-count',

@@ -1,7 +1,11 @@
 import { cleanup, render, screen } from '@testing-library/react';
 import { afterEach, describe, expect, it } from 'vitest';
 
-import { Progress } from './components/Progress.js';
+import { contrastRatio } from '@scalewing/tokens';
+
+import { Progress, type ProgressTone } from './components/Progress.js';
+import { generateStylesheet } from './css/stylesheet.js';
+import { forEveryTheme } from './every-theme.test-support.js';
 
 afterEach(() => cleanup());
 
@@ -73,6 +77,39 @@ describe('Progress', () => {
     );
     expect(() =>
       render(<Progress label="Done" max={4} value={Number.NaN} />),
+    ).toThrow(RangeError);
+  });
+
+  it('tones the bar warning, as time runs out', () => {
+    render(<Progress label="Time left" max={120} tone="warning" value={102} />);
+    const bar = screen.getByRole('progressbar', { name: 'Time left' });
+    expect(bar.parentElement?.className).toBe(
+      'sw-progress sw-progress-warning',
+    );
+    expect(generateStylesheet()).toContain(
+      '.sw-progress-warning { --sw-progress-color: var(--sw-color-warning); }',
+    );
+  });
+
+  it('keeps the warning fill apart from its track (3:1) in every palette', () => {
+    forEveryTheme((colors, label) => {
+      expect(
+        contrastRatio(colors.warning, colors.border),
+        label,
+      ).toBeGreaterThanOrEqual(3);
+    });
+  });
+
+  it('fails closed on an unknown tone', () => {
+    expect(() =>
+      render(
+        <Progress
+          label="Time left"
+          max={2}
+          tone={'info' as ProgressTone}
+          value={1}
+        />,
+      ),
     ).toThrow(RangeError);
   });
 });
