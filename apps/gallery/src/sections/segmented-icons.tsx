@@ -19,7 +19,7 @@ const surveys: ReadonlyArray<{ id: string; label: string; hue: GlyphTileHue }> =
     { id: 'savanna', label: 'Savanna', hue: 'orange' },
   ];
 
-const items = surveys.map((item) => ({
+export const surveyItems = surveys.map((item) => ({
   id: item.id,
   label: item.label,
   icon: (
@@ -40,7 +40,7 @@ export function SegmentedIconsExample() {
     <Stack gap={3}>
       <SegmentedControl
         aria-label="Survey"
-        items={items}
+        items={surveyItems}
         onChange={setSurvey}
         value={survey}
       />
@@ -48,14 +48,14 @@ export function SegmentedIconsExample() {
       <SegmentedControl
         aria-label="Closed survey"
         disabled
-        items={items}
+        items={surveyItems}
         value="savanna"
       />
       <Text variant="label">With an error</Text>
       <SegmentedControl
         aria-label="Survey to retake"
         error="Forest was surveyed this morning. Pick another."
-        items={items}
+        items={surveyItems}
         onChange={setRetake}
         value={retake}
       />

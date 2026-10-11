@@ -57,12 +57,13 @@ describe('SegmentedControl item icon', () => {
         'sw-segmented-item-icon',
       ]),
     );
-    const compact = '.sw-segmented-with-icons:not(.sw-segmented-filled)';
+    const compact =
+      '.sw-segmented-with-icons:not(.sw-segmented-filled, .sw-segmented-raised)';
     expect(css).toContain(
       `${compact} .sw-segmented-item {\n  font-size: 15px;`,
     );
     expect(css).toMatch(
-      /:not\(\.sw-segmented-filled\) \.sw-segmented-item \{[^}]*min-height: var\(--sw-control-md-min-height\);/,
+      /:not\(\.sw-segmented-filled, \.sw-segmented-raised\) \.sw-segmented-item \{[^}]*min-height: var\(--sw-control-md-min-height\);/,
     );
     // The track is the subtle fill and the selection is raised.
     expect(css).toContain(
@@ -76,7 +77,7 @@ describe('SegmentedControl item icon', () => {
   it('keeps the danger outline on an icon track, in forced colours too', () => {
     const css = generateStylesheet();
     const track = css.indexOf(
-      '.sw-segmented.sw-segmented-with-icons:not(.sw-segmented-filled) {',
+      '.sw-segmented.sw-segmented-with-icons:not(.sw-segmented-filled, .sw-segmented-raised) {',
     );
     const invalid = css.indexOf(
       ".sw-segmented.sw-segmented-with-icons[aria-invalid='true'] {\n  border-color: var(--sw-color-danger);",
@@ -84,7 +85,7 @@ describe('SegmentedControl item icon', () => {
     expect(track).toBeGreaterThan(-1);
     expect(invalid).toBeGreaterThan(track);
     expect(css).toMatch(
-      /@media \(forced-colors: active\) \{[^@]*\.sw-segmented\.sw-segmented-with-icons:not\(\.sw-segmented-filled\) \{ border-color: CanvasText; \}[^@]*outline: 2px solid Highlight;[^@]*\.sw-segmented\.sw-segmented-with-icons\[aria-invalid='true'\] \{ border-color: Mark; \}/,
+      /@media \(forced-colors: active\) \{[^@]*\.sw-segmented\.sw-segmented-with-icons:not\(\.sw-segmented-filled, \.sw-segmented-raised\) \{ border-color: CanvasText; \}[^@]*outline: 2px solid Highlight;[^@]*\.sw-segmented\.sw-segmented-with-icons\[aria-invalid='true'\] \{ border-color: Mark; \}/,
     );
   });
 

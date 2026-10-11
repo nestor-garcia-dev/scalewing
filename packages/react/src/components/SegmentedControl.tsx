@@ -3,6 +3,7 @@
 import { forwardRef, useId, type KeyboardEvent, type ReactNode } from 'react';
 
 import { cx } from '../class-names.js';
+import { segmentedRaisedClass } from '../css/css-segmented-raised.js';
 import { FieldErrorRegion } from './FieldErrorRegion.js';
 
 export type SegmentedItem = {
@@ -26,9 +27,12 @@ type SegmentedLabel =
  * `compact` is the quiet chip track for a section switch; `filled` gives every
  * segment the same width and paints the selected one in the accent, for a
  * choice that decides what a form does. It sizes to its container: the full
- * width in a Stack, the width of its widest label in an Inline.
+ * width in a Stack, the width of its widest label in an Inline. `raised` is
+ * a grey track whose selected segment is the surface raised by a small
+ * shadow, every segment at the md control height with its words in the
+ * text color, sized to its segments even in a Stack (unlike `compact`).
  */
-export type SegmentedControlVariant = 'compact' | 'filled';
+export type SegmentedControlVariant = 'compact' | 'filled' | 'raised';
 
 /**
  * A disabled control can never report a change, so it needs no `onChange`;
@@ -112,6 +116,7 @@ export const SegmentedControl = forwardRef<
         className={cx(
           'sw-segmented',
           variant === 'filled' && 'sw-segmented-filled',
+          variant === 'raised' && segmentedRaisedClass,
           withIcons && 'sw-segmented-with-icons',
           disabled && 'sw-segmented-disabled',
         )}
