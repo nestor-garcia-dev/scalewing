@@ -6,6 +6,10 @@ import {
   tableLayoutClassCatalog,
 } from './css-table-layout.js';
 import {
+  cssTableLedgerClasses,
+  tableLedgerClassCatalog,
+} from './css-table-ledger.js';
+import {
   cssTableSortClasses,
   tableSortClassCatalog,
 } from './css-table-sort.js';
@@ -99,6 +103,8 @@ ${cssTableLayoutClasses()}
 
 ${cssTableSortClasses()}
 
+${cssTableLedgerClasses()}
+
 ${selectedRowRules()}`;
 }
 
@@ -114,5 +120,6 @@ export function tableClassCatalog(): string[] {
     'sw-table-row-selected',
     ...tableLayoutClassCatalog(),
     ...tableSortClassCatalog(),
+    ...tableLedgerClassCatalog(),
   ];
 }

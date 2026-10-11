@@ -15,6 +15,13 @@ export {
   type TableColumnWidth,
   type TableSort,
 } from './table/TableCell.js';
+export {
+  TableRow,
+  type TableRowProps,
+  type TableRowVariant,
+} from './table/TableRow.js';
+export type { TableCellTone } from '../css/css-table-ledger.js';
+export { tableCellTones, tableRowVariants } from '../css/css-table-ledger.js';
 export type { TableLayout, TableVerticalAlign };
 
 export type TableDensity = 'comfortable' | 'compact';
@@ -39,6 +46,11 @@ export type TableProps = HTMLAttributes<HTMLTableElement> & {
    * should start on its first line.
    */
   verticalAlign?: TableVerticalAlign;
+  /**
+   * Draws a hairline between columns, at the inline start of every cell
+   * after a row's first, for a ledger read across as well as down.
+   */
+  columnRules?: boolean;
 };
 
 /** A wide table scrolls inside its own `ScrollRegion`, named after the table. */
@@ -46,6 +58,7 @@ export const Table = forwardRef<HTMLTableElement, TableProps>(function Table(
   {
     children,
     className,
+    columnRules = false,
     density = 'comfortable',
     layout = 'auto',
     stickyHeader = true,
@@ -70,6 +83,7 @@ export const Table = forwardRef<HTMLTableElement, TableProps>(function Table(
           layout === 'fixed' && 'sw-table-fixed',
           stickyHeader && 'sw-table-sticky',
           verticalAlign === 'top' && 'sw-table-top',
+          columnRules && 'sw-table-column-rules',
           className,
         )}
         {...rest}
@@ -94,22 +108,5 @@ export type TableBodyProps = HTMLAttributes<HTMLTableSectionElement>;
 export const TableBody = forwardRef<HTMLTableSectionElement, TableBodyProps>(
   function TableBody({ className, ...rest }, ref) {
     return <tbody ref={ref} className={className} {...rest} />;
-  },
-);
-
-export type TableRowProps = HTMLAttributes<HTMLTableRowElement> & {
-  selected?: boolean;
-};
-
-export const TableRow = forwardRef<HTMLTableRowElement, TableRowProps>(
-  function TableRow({ className, selected = false, ...rest }, ref) {
-    return (
-      <tr
-        ref={ref}
-        aria-selected={selected || undefined}
-        className={cx(selected && 'sw-table-row-selected', className)}
-        {...rest}
-      />
-    );
   },
 );
