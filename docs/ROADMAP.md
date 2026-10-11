@@ -22,9 +22,10 @@ Teisoro F-011-S02, release R1 "guided-form core" (`@scalewing/react`
 (`teisoro-stepper.md`), `DenominationGrid` entry rows
 (`teisoro-denomination-grid-entry.md`), `Steps` / `Step`
 (`teisoro-steps.md`), and `ActionBar` `summary`
-(`teisoro-action-bar-summary.md`). Branch `teisoro/web-stepper` carries
-the first. Next: review and merge each, then release `@scalewing/react`
-(minor) and Teisoro pins it for its guided forms.
+(`teisoro-action-bar-summary.md`). `Stepper` merged in #113; branch
+`teisoro/denomination-grid-entry` carries the second. Next: review
+and merge each, then release `@scalewing/react` (minor) and Teisoro
+pins it for its guided forms.
 
 FutMas score entry (canvas board W3): `StepperRow`
 (`futmas-stepper-row.md`) and `Field` `variant="search"`

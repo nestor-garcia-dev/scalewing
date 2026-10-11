@@ -2,10 +2,9 @@ import { type CSSProperties } from 'react';
 
 import { cx } from '../../class-names.js';
 import { denominationLabelWidthClass } from '../../css/css-denomination-aligned.js';
-import { denominationCellToneClassNames } from '../../css/css-denomination-cell-tones.js';
-import { denominationCellView } from '../../denomination-cells.js';
 import { ScrollRegion } from '../ScrollRegion.js';
-import { RowLabelLine } from './RowLabelLine.js';
+import { ColumnHeadText } from './ColumnHeadText.js';
+import { StripRow } from './StripRow.js';
 import { type DenominationGridProps } from './types.js';
 
 type StripProps = Required<
@@ -61,6 +60,7 @@ export function DenominationStrip({
         className={cx(
           'sw-denomination-grid sw-denomination-strip',
           labelWidth && 'sw-denomination-strip-aligned',
+          rows.some((row) => row.entry) && 'sw-denomination-strip-entry',
           labelWidth && denominationLabelWidthClass(labelWidth),
         )}
         style={aligned}
@@ -71,7 +71,7 @@ export function DenominationStrip({
             <td className="sw-denomination-corner" />
             {columns.map((column) => (
               <th className="sw-denomination-head" key={column.key} scope="col">
-                {column.label}
+                <ColumnHeadText column={column} />
               </th>
             ))}
             {hasTotals ? <TotalHead totalLabel={totalLabel} /> : null}
@@ -79,54 +79,13 @@ export function DenominationStrip({
         </thead>
         <tbody>
           {rows.map((row) => (
-            <tr
-              className={cx(
-                'sw-denomination-row',
-                `sw-denomination-row-${row.tone ?? 'neutral'}`,
-                row.signed && 'sw-denomination-row-signed',
-              )}
+            <StripRow
+              columns={columns}
+              hasTotals={hasTotals}
               key={row.id}
-            >
-              <th className="sw-denomination-label" scope="row">
-                <span className="sw-denomination-label-body">
-                  <RowLabelLine row={row} />
-                  {row.total !== undefined ? (
-                    <span
-                      aria-hidden="true"
-                      className="sw-denomination-total-inline"
-                    >
-                      {row.total}
-                    </span>
-                  ) : null}
-                </span>
-              </th>
-              {columns.map((column, index) => {
-                const view = denominationCellView(
-                  row.cells[index] ?? null,
-                  row.signed ?? false,
-                  zeroLabel,
-                );
-                return (
-                  <td
-                    className={cx(
-                      'sw-denomination-cell',
-                      `sw-denomination-cell-${view.state}`,
-                      ...denominationCellToneClassNames(row.cellTones?.[index]),
-                    )}
-                    key={column.key}
-                  >
-                    {view.text}
-                  </td>
-                );
-              })}
-              {hasTotals ? (
-                <td className="sw-denomination-total">
-                  <span className="sw-denomination-total-value">
-                    {row.total ?? ''}
-                  </span>
-                </td>
-              ) : null}
-            </tr>
+              row={row}
+              zeroLabel={zeroLabel}
+            />
           ))}
         </tbody>
       </table>
