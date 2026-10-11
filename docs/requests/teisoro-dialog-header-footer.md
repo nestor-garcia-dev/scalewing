@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: accepted 2026-10-11 for the `@scalewing/react` 1.28.0 release (Teisoro F-011-S03, release R2 "feedback", item 9; the redesign inventory's rows 22 and 23).
+Status: released in `@scalewing/react` 1.28.0 (PR #122; Teisoro F-011-S03, release R2 "feedback", item 9; the redesign inventory's rows 22 and 23).
 Renderer: react
 Missing surface: `Dialog` `description`, `icon`, `footer` (pinned) with `summary`, `size="xl"`, and `role="alertdialog"`. An extension of `Dialog` (`fantasy-football-dialog.md`, `teisoro-dialog-size.md`, `teisoro-dialog-close.md`, `teisoro-dialog-title-level.md`), not a new component.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: ten F-011 boards open a sheet over the day (DrawerAdd, DrawerDrop, DrawerAdjust, DrawerAudit, VoidOne, VoidBatchOne, LedgerFix2, BankDebtSettle, PosCorrect, CompanyLookup): a header with a grey tile, the title over a muted subtitle and a close button; a white body (a six-bill count grid, 1040 wide); and a footer bar pinned under a hairline with the moved figure ("Drawer **+$1,000.00** vault −$1,000.00"), Cancel and one named primary. SignInIdle is an alert dialog. `Dialog` has a title and close button only, no slot before the title or under it, no pinned footer (the actions scroll away with a long grid), widths of 32rem and 56rem only, and no way to say it is an alert dialog. A consumer cannot pin a footer or size the dialog without CSS.

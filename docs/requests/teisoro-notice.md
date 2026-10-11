@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: requested by Teisoro F-002-S19 task 1060 (2026-09-25); accepted 2026-10-11 for the `@scalewing/react` 1.28.0 release (Teisoro F-011-S03, release R2 "feedback", item 5; the redesign inventory's row 20). The pinned-notice follow-up below stays unbuilt.
+Status: requested by Teisoro F-002-S19 task 1060 (2026-09-25); released in `@scalewing/react` 1.28.0 (PR #118; Teisoro F-011-S03, release R2 "feedback", item 5; the redesign inventory's row 20). The pinned-notice follow-up below stays unbuilt.
 Renderer: react
 Missing surface: an inline notice (banner) with semantic tones, `info`, `success`, `warning` and `danger`.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: every Teisoro dialog shows refusals, "saved" statuses and the lost-answer message that points at Check again as a row with an icon and text, focused when it appears and announced as `alert` or `status`. Scalewing has `Toast` (ephemeral) and `Text color`, but nothing persistent with an icon, a tone and a live-region role. Teisoro keeps an app component, `NoticeRow`, which gained a `warning` tone in S19 for the lost answer.

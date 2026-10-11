@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: accepted 2026-10-11 for the `@scalewing/react` 1.28.0 release (Teisoro F-011-S03, release R2 "feedback"; Teisoro decision D-23).
+Status: released in `@scalewing/react` 1.28.0 (PR #124; Teisoro F-011-S03, release R2 "feedback"; Teisoro decision D-23).
 Renderer: react
 Missing surface: `DenominationGrid` `labelAppearance`: row labels in the text color at label weight with no tone stripe. An extension of `DenominationGrid` (`teisoro-denomination-grid.md`, `teisoro-denomination-grid-entry.md`), not a new component.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: on the F-011 canvas every count grid (27 entry boards, the read-only grids on AuditReview, ChangeOrders, VaultToday and the drawer sheets) labels its rows "Received", "Change", "Take", "Expected" in bold dark text with no colored edge. `DenominationGrid` always marks a row label with its tone (a stripe and the words in the tone, `neutral` muted), so a Teisoro grid cannot match the boards, and Teisoro owns no CSS. Release R1 kept the stripe (D-23) and deferred this option to R2.

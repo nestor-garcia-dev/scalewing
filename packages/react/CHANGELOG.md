@@ -1,5 +1,46 @@
 # @scalewing/react
 
+## 1.28.0
+
+### Minor Changes
+
+- 73e7cf1: `DenominationGrid` `labelAppearance` (with `DenominationLabelAppearance` and `denominationLabelAppearances`): `'tone'` (default, unchanged) or `'plain'`, row labels in the text color at label weight with no tone stripe, in both layouts; a row's tone still colors its total (`docs/requests/teisoro-denomination-grid-label.md`, Teisoro F-011 release R2). An unknown value throws a `RangeError`. New generated class `sw-denomination-labels-plain`. No new tokens or dependencies.
+- 6fc5c25: `Dialog` `description`, `icon`, `footer`, `summary`, `size="xl"` and `role` (with `DialogRole` and `dialogSizes`): a sheet's header and pinned footer (`docs/requests/teisoro-dialog-header-footer.md`, Teisoro F-011 release R2).
+
+  - `description`: a muted line under the title and the dialog's accessible description. `icon`: a consumer glyph or tile before the title, `aria-hidden`.
+  - `footer`: the actions, pinned to the dialog's bottom edge under a hairline while the content scrolls. `summary`: ActionBar's labelled figure at the footer's start, in a polite status region.
+  - `size="xl"`: 65rem (`--sw-dialog-max-xl`). `role="alertdialog"` for a warning that interrupts.
+  - An unknown `size` or `role`, a blank `description` or an invalid `summary` throws a `RangeError` (an unknown size used to render `md`). `role` is typed `'dialog' | 'alertdialog'` (any other role used to pass through to the element).
+  - New generated classes `sw-dialog-xl`, `sw-dialog-header-framed`, `sw-dialog-icon`, `sw-dialog-titles`, `sw-dialog-description`, `sw-dialog-footer`, `sw-dialog-footer-status` and `sw-dialog-footer-actions`. No new tokens or dependencies.
+
+- 792f7f5: `Notice` `variant="band"` (with `NoticeVariant` and `noticeVariants`): a full-width square strip of page chrome, such as an environment strip above the app header (`docs/requests/teisoro-environment-strip.md`, Teisoro F-011 release R2).
+
+  - Square, the container's full width, at least the `xs` control height, caption type, its words centered; the tone's fill and ink as for every notice.
+  - Its role defaults to `none` (no live region) unless `role` is given. Forced colors draw a rule under it.
+  - An unknown `variant` throws a `RangeError`.
+  - New generated class `sw-notice-band`. No new tokens or dependencies.
+
+- f543d5f: `Notice` (with `NoticeProps`, `NoticeTone`, `NoticeRole` and `noticeTones`): a tinted note in the page's flow (`docs/requests/teisoro-notice.md`, Teisoro F-011 release R2).
+
+  - `tone: 'info' | 'success' | 'warning' | 'danger'`, `title?` (a bold lead), `children` (the message), `action?` (one link or small `Button`), `icon?` (a consumer glyph, hidden from assistive technology), `role?: 'status' | 'alert' | 'none'` (danger is an alert, the others a status; `none` is no live region), a forwarded ref.
+  - A text message shares the title's row while it fits; a message of elements (a sentence and a `Checkbox` or `Field`) stacks under the title.
+  - The fill mixes the tone into the surface (the accent tint for info) and the words move the tone toward the text color, keeping 4.5:1 on the fill in every palette (see the request for the two palettes whose own danger is below that). Forced colors draw a border.
+  - An unknown `tone` or `role`, a blank `title`, or nothing to say throws a `RangeError`.
+  - New generated classes `sw-notice`, `sw-notice-info`, `sw-notice-success`, `sw-notice-warning`, `sw-notice-danger`, `sw-notice-icon`, `sw-notice-content`, `sw-notice-stacked`, `sw-notice-title`, `sw-notice-body` and `sw-notice-action`. No new tokens or dependencies.
+
+- 9e372e1: `Progress` `tone="warning"` (with `progressTones`): the bar in the semantic warning color, such as the time left before an idle sign-out (`docs/requests/teisoro-progress-warning.md`, Teisoro F-011 release R2). New generated class `sw-progress-warning`. An unknown `tone` now throws a `RangeError` instead of rendering an unstyled bar. No new tokens or dependencies.
+- 3d761ba: `Toast` `title`, `action`, `showRemaining` and `placement` (with `ToastAction`, `ToastPlacement` and `toastPlacements`): a corner card that confirms a save (`docs/requests/teisoro-toast-action.md`, Teisoro F-011 release R2).
+
+  - `title`: a bold first line; the children become a muted detail.
+  - `action: { label, onPress }`: a ghost small Button at the end; it runs `onPress`, then closes the toast.
+  - `showRemaining`: a thin `aria-hidden` line that runs down over the toast's duration.
+  - `placement: 'bottom' | 'top-end'` (default `bottom`, unchanged).
+  - A toast with an action or the line takes the pointer, and its time is held while the pointer or focus is on it. A plain toast is unchanged and stays click-through.
+  - A travelling toast (`anchor` and `target`) ignores `placement` and `showRemaining`. When the toast closes with focus inside, focus returns to where it came from.
+  - `title` is now the toast's bold first line and is no longer forwarded to the element as the HTML `title` attribute.
+  - A blank `title` or `action.label`, a missing `onPress`, or an unknown `placement` throws a `RangeError`.
+  - New generated classes `sw-toast-title`, `sw-toast-detail`, `sw-toast-action`, `sw-toast-interactive`, `sw-toast-top-end`, `sw-toast-remaining` and `sw-toast-paused`. No new tokens or dependencies.
+
 ## 1.27.0
 
 ### Minor Changes
