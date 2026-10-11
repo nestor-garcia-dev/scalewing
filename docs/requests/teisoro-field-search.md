@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: accepted 2026-10-11 for the `@scalewing/react` 1.31.0 release (Teisoro F-011-S06, release R5 "search", item 20; the redesign inventory's row 25). The web twin of the native search field (`futmas-search-field.md`); no code is shared (AGENTS.md rule on renderers).
+Status: released in `@scalewing/react` 1.31.0 (PR #139; Teisoro F-011-S06, release R5 "search", item 20; the redesign inventory's row 25). The web twin of the native search field (`futmas-search-field.md`); no code is shared (AGENTS.md rule on renderers).
 Renderer: react
 Missing surface: `Field` `variant="search"`: a search box with a leading glyph and a clear button.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: five boards (StepCheck1a, StepCheckSaved, NsfPay1, NsfPaySaved, NsfFromCheck) open the customer step with a name search: a glyph at the start, no label above (the input names itself), over a results table. The web `Field` draws a visible label above a plain control, adornments are text only (`prefix`, `suffix`), and nothing clears the text. Teisoro owns no CSS.

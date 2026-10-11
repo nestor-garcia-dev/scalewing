@@ -1,5 +1,18 @@
 # @scalewing/react
 
+## 1.31.0
+
+### Minor Changes
+
+- ae2d883: `Combobox` (with `ComboboxProps`, `ComboboxGroup`, `ComboboxOption`, `ComboboxBadge`, `ComboboxAction`, `ComboboxSize` and `comboboxSizes`): a text input with a list of suggestions, an ARIA 1.2 combobox with list autocomplete (`docs/requests/teisoro-combobox.md`, Teisoro F-011 release R5).
+
+  - `label`, `inputValue`, `onInputChange`, `groups` (`{ label?, options: { value, label, description?, badge?, disabled? }[] }[]`, filtered by the consumer), `onSelect`, `action?` (`{ label, onPress, badge? }`), `emptyText`, `note?`, `listLabel?`, `countText?` (`(count) => string`), and the Field props `labelVisuallyHidden`, `placeholder`, `description`, `error`, `required`, `disabled`, `size` (`md` | `xs`).
+  - Focus stays in the input; the arrow keys move `aria-activedescendant` and wrap; Enter or a press chooses; a disabled option is never chosen; Escape closes, then empties; Alt+ArrowUp, blur, Tab or a press outside closes; the pointer moves the active option; the active option is held by value across new results; input-method keys are ignored; an always-present polite live region announces the empty text and `countText`.
+  - The list is on the popup layer (`openPopups` gains `.sw-combobox-popup`), solid under reduced transparency, with forced-colours rules. Blank words, duplicate values, an unknown size or badge tone throw a `RangeError`.
+  - New classes `sw-combobox*`. No new tokens or dependencies.
+
+- c79024a: `Field` `variant="search"` (`fieldVariants`, `FieldVariant`), the web twin of the native search field (`docs/requests/teisoro-field-search.md`, Teisoro F-011 release R5): a hidden label that still names a `type="search"` input, a `leading` glyph slot, and, while the input holds text and is enabled and not read-only, a clear button named `clearLabel` that returns focus to the input and calls `onClear` (Escape too). The browser's own clear button is hidden; `enterKeyHint` defaults to `search`. Missing or blank `clearLabel`, missing `onClear`, `prefix`/`suffix`, a non-input or uncontrolled child, or the search props on an outlined field throw. New classes `sw-field-search-field`, `sw-field-search`, `sw-field-search-leading`, `sw-field-search-clear`, `sw-field-search-cross`. No new tokens or dependencies.
+
 ## 1.30.0
 
 ### Minor Changes
