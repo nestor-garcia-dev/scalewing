@@ -41,6 +41,7 @@ import { tableClassCatalog } from './css-table.js';
 import { chromeClassCatalog } from './css-chrome.js';
 import { sectionNavClassCatalog } from './css-section-nav.js';
 import { dialogClassCatalog } from './css-dialog.js';
+import { dialogBandedClassCatalog } from './css-dialog-banded.js';
 import { dialogFrameClassCatalog } from './css-dialog-frame.js';
 import { selectClassCatalog } from './css-select.js';
 import { multiSelectClassCatalog } from './css-multi-select.js';
@@ -81,6 +82,7 @@ export function utilityClassCatalog(): string[] {
     ...sectionNavClassCatalog(),
     ...dialogClassCatalog(),
     ...dialogFrameClassCatalog(),
+    ...dialogBandedClassCatalog(),
     ...accordionClassCatalog(),
     ...selectClassCatalog(),
     ...actionMenuClassCatalog(),

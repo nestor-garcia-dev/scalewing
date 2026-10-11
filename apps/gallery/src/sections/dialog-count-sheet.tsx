@@ -4,6 +4,7 @@ import {
   Stack,
   Text,
   type ActionBarSummaryTone,
+  type DialogAppearance,
 } from '@scalewing/react';
 import { useState } from 'react';
 
@@ -21,9 +22,18 @@ const colonies = [
 /**
  * A wide count sheet: an icon and a description in its header, its rows
  * scrolling under a pinned footer with the moved figure, Cancel and one
- * named primary.
+ * named primary. The banded one draws its header and footer as bands on
+ * the solid surface, its close button on a round fill.
  */
-export function CountSheet() {
+export function CountSheet({
+  appearance = 'glass',
+}: {
+  appearance?: DialogAppearance;
+}) {
+  const title =
+    appearance === 'banded'
+      ? 'Move herons to the pond'
+      : 'Move herons to the lake';
   const [open, setOpen] = useState(false);
   const [counted, setCounted] = useState(12);
   const close = () => setOpen(false);
@@ -32,9 +42,10 @@ export function CountSheet() {
   return (
     <>
       <Button onPress={() => setOpen(true)} variant="secondary">
-        Move herons to the lake
+        {title}
       </Button>
       <Dialog
+        appearance={appearance}
         closeLabel="Close"
         description="The same herons leave the river count."
         footer={
@@ -58,7 +69,7 @@ export function CountSheet() {
           detail: counted === 14 ? 'matches the river' : 'river says 14',
           tone,
         }}
-        title="Move herons to the lake"
+        title={title}
       >
         <Stack gap={2}>
           {colonies.map((colony) => (

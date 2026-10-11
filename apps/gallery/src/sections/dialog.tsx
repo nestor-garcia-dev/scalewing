@@ -45,7 +45,7 @@ export function DialogSection() {
   return (
     <Section
       id="dialog"
-      purpose="Dialog is a modal on the native top layer. It leaves document flow, dims the canvas, and asks onClose on Escape or backdrop press; open decides whether it closes, so a dialog that is saving can stay open. Card cannot do that. size md is the reading width for a message or a short form; size lg holds a row of six fields or a data grid without folding it, and both keep the viewport gutter on a phone. The title is an h3; titleLevel={2} makes it an h2 in the same style, so the dialog's own section labels can be h3 headings under it. sheetBelow md makes it a bottom sheet on a phone: docked to the bottom edge at full width, top corners rounded, a strip of backdrop above it, the home indicator cleared; from md up it is the centered dialog. closeLabel adds an icon-only close button at the end of the title row, named by that label, which asks onClose like Escape. icon and description make the title row a header: the consumer's tile, the title over a muted description. footer pins the actions to the bottom edge under a hairline while the content scrolls, with summary's labelled figure first in a polite status. size xl (65rem) holds a six-column count grid. role alertdialog is for a warning that interrupts."
+      purpose="Dialog is a modal on the native top layer. It leaves document flow, dims the canvas, and asks onClose on Escape or backdrop press; open decides whether it closes, so a dialog that is saving can stay open. Card cannot do that. size md is the reading width for a message or a short form; size lg holds a row of six fields or a data grid without folding it, and both keep the viewport gutter on a phone. The title is an h3; titleLevel={2} makes it an h2 in the same style, so the dialog's own section labels can be h3 headings under it. sheetBelow md makes it a bottom sheet on a phone: docked to the bottom edge at full width, top corners rounded, a strip of backdrop above it, the home indicator cleared; from md up it is the centered dialog. closeLabel adds an icon-only close button at the end of the title row, named by that label, which asks onClose like Escape. icon and description make the title row a header: the consumer's tile, the title over a muted description. footer pins the actions to the bottom edge under a hairline while the content scrolls, with summary's labelled figure first in a polite status. size xl (65rem) holds a six-column count grid. role alertdialog is for a warning that interrupts. appearance banded draws the dialog on the solid surface with its title row and footer as full-width bands over hairlines and the close button on a quiet round fill."
       title="Dialog"
       usage={`<Dialog open={open} onClose={() => setOpen(false)} title="How we rank">
   <Text>Habitat loss is subtracted.</Text>
@@ -104,6 +104,7 @@ export function DialogSection() {
           </Button>
           <ReviewSheet />
           <CountSheet />
+          <CountSheet appearance="banded" />
           <StillCountingAlert />
         </Inline>
         <Dialog

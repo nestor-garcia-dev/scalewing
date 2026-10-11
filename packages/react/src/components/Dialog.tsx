@@ -5,6 +5,11 @@ import { useId, type DialogHTMLAttributes, type ReactNode } from 'react';
 import { cx } from '../class-names.js';
 import { type Breakpoint } from '../css/breakpoints.js';
 import { dialogSheetClass } from '../css/css-dialog.js';
+import {
+  type DialogAppearance,
+  dialogAppearances,
+  dialogBandedClass,
+} from '../css/css-dialog-banded.js';
 import { spacingClassNames } from '../spacing-classes.js';
 import { useDialogCloseRequests } from './dialog-close-requests.js';
 import {
@@ -14,6 +19,8 @@ import {
 import { DialogFooter } from './dialog/DialogFooter.js';
 import { DialogTitle } from './dialog/DialogTitle.js';
 import { Stack } from './Stack.js';
+
+export { dialogAppearances, type DialogAppearance };
 
 export const dialogSizes = ['md', 'lg', 'xl'] as const;
 
@@ -95,6 +102,12 @@ export type DialogProps = Omit<
   summary?: ActionBarSummary;
   /** `alertdialog` for a warning that interrupts. Default `dialog`. */
   role?: DialogRole;
+  /**
+   * `banded` draws the dialog on the solid surface with its title row and
+   * footer as full-width bands over hairlines, and the close button on a
+   * quiet round fill; `glass` (the default) is one frosted panel.
+   */
+  appearance?: DialogAppearance;
   children: ReactNode;
 };
 
@@ -105,9 +118,12 @@ function assertDialogProps(
   role: DialogRole | undefined,
   description: string | undefined,
   summary: ActionBarSummary | undefined,
+  appearance: DialogAppearance,
 ): void {
   if (!(dialogSizes as readonly unknown[]).includes(size))
     throw new RangeError(`Unknown Dialog size: ${String(size)}`);
+  if (!(dialogAppearances as readonly unknown[]).includes(appearance))
+    throw new RangeError(`Unknown Dialog appearance: ${String(appearance)}`);
   if (role !== undefined && !dialogRoles.includes(role))
     throw new RangeError(`Unknown Dialog role: ${String(role)}`);
   if (
@@ -120,6 +136,7 @@ function assertDialogProps(
 
 export function Dialog({
   'aria-describedby': describedBy,
+  appearance = 'glass',
   children,
   className,
   closeLabel,
@@ -140,7 +157,7 @@ export function Dialog({
   titleLevel = 3,
   ...rest
 }: DialogProps) {
-  assertDialogProps(size, role, description, summary);
+  assertDialogProps(size, role, description, summary, appearance);
   const titleId = useId();
   const descriptionId = useId();
   const hasFooter = Boolean(footer) || Boolean(summary);
@@ -165,6 +182,7 @@ export function Dialog({
         'sw-dialog',
         size !== 'md' && `sw-dialog-${size}`,
         sheetBelow && dialogSheetClass(sheetBelow),
+        appearance === 'banded' && dialogBandedClass,
         ...spacingClassNames({ padding: 5 }),
         className,
       )}
@@ -173,6 +191,7 @@ export function Dialog({
     >
       <Stack gap={4}>
         <DialogTitle
+          banded={appearance === 'banded'}
           closeLabel={closeLabel}
           description={description}
           descriptionId={descriptionId}

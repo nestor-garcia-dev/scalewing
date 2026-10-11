@@ -13,6 +13,7 @@ import { cssSegmentedClasses } from './css-segmented.js';
 import { cssTableClasses } from './css-table.js';
 import { cssDateFieldClasses } from './css-date-field.js';
 import { cssDialogClasses } from './css-dialog.js';
+import { cssDialogBandedClasses } from './css-dialog-banded.js';
 import { cssDialogFrameClasses } from './css-dialog-frame.js';
 import { cssComboboxClasses } from './css-combobox.js';
 import { cssSelectClasses } from './css-select.js';
@@ -145,6 +146,8 @@ ${cssSectionNavClasses()}
 ${cssDialogClasses()}
 
 ${cssDialogFrameClasses()}
+
+${cssDialogBandedClasses()}
 
 ${cssAccordionClasses()}
 
