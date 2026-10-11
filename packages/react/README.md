@@ -240,6 +240,31 @@ A `Button` that toggles something passes `aria-pressed`. The pressed button gets
 
 `Dialog` is a modal `<dialog>` controlled by `open`. Escape, a backdrop press, a platform close request, and a `<form method="dialog">` submit (or a submitter with `formmethod="dialog"`) are each prevented and call `onClose`; none of them closes the dialog itself. A consumer `onKeyDown`, `onCancel`, `onSubmit` or `onPointerDown` that prevents the event vetoes that request. Escape in a search field that holds text clears the field first, and a descendant's own `cancel` (a dismissed file picker) is not a close request. Set `open` to false to close it, or keep it true (for example while a form is saving) and it stays shown. `onClose` is not called when `open` turns false, and it is required: a dialog that must not be dismissed passes a callback that keeps `open` true. The `title` is an `h3` in the title style by default; `titleLevel={2}` renders it as an `h2` in the same style, for a dialog whose own section labels are `h3` headings, so they read as parts of the dialog and not as its peers. The default stays `3` so existing dialogs keep their outline; any value other than `2` renders an `h3`. `sheetBelow="md"` makes the dialog a bottom sheet below `md`: docked to the bottom edge at the full viewport width, top corners rounded and bottom corners square, a `space-8` strip of backdrop above it, and bottom padding that clears `env(safe-area-inset-bottom)` (with `viewport-fit=cover`); it slides up on open unless reduced motion is asked for, and has no grabber, since there is no drag. From `md` up it is the centered dialog at its `size`. `closeLabel` (such as "Close") adds an icon-only ghost close button at the end of the title row, named by the label, which calls `onClose` like Escape; the title still names the dialog. The button is the dialog's first control, so the browser focuses it on open; give a field `autoFocus` to start there instead. Without `closeLabel` the dialog has no close button and its markup is unchanged.
 
+A sheet over a page takes a fuller frame. `icon` is a consumer glyph or tile before the title (hidden from assistive technology) and `description` a muted line under the title that also describes the dialog (unless you pass `aria-describedby`). `footer` holds the actions, pinned to the dialog's bottom edge under a hairline while the content scrolls, and `summary` (ActionBar's `{ label, value, detail?, tone? }`) puts a labelled figure at the footer's start in a polite live region. `size="xl"` (65rem) holds a six-column count grid with its labels and total. `role="alertdialog"` is for a warning that interrupts, such as an idle sign-out: give its safe action `autoFocus` (the browser otherwise focuses the first footer button), and point `aria-describedby` at the warning in its body when that is not the `description`. An unknown `size` or `role`, a blank `description` or an invalid `summary` throws a `RangeError`.
+
+```tsx
+<Dialog
+  open={open}
+  onClose={close}
+  size="xl"
+  closeLabel="Close"
+  icon={<ArrowRight />}
+  title="Move herons to the lake"
+  description="The same herons leave the river count."
+  summary={{ label: 'Lake', value: '+14', detail: 'river −14' }}
+  footer={
+    <>
+      <Button variant="secondary" onPress={close}>
+        Cancel
+      </Button>
+      <Button onPress={move}>Move 14 herons</Button>
+    </>
+  }
+>
+  {countGrid}
+</Dialog>
+```
+
 `Toast` is an auto-dismiss confirmation on the popover layer, controlled by `open` and `onOpenChange`; it does not trap focus and closes after `timeoutMs` (default 800, or 6000 for a `warning` or `danger` toast, which must be read). `anchor` and `target` send it from a press to a destination. `tone` (`neutral` by default, `success`, `warning`, `danger`) tints its border and an optional consumer `icon` (a Lucide glyph, hidden from assistive technology); the message keeps the text color, so its words carry the meaning. A `danger` toast is announced as `role="alert"`, the others as `role="status"`, so do not wrap the message in another live region. A toast still dismisses itself: an error the person must act on belongs in the page. A toast is as wide as its message, up to the page's gutter (spacing step 4) on each side, so on a phone a long message wraps inside the gutter instead of running to the screen's edges.
 
 A toast can also be a corner card that confirms a save: `placement="top-end"` puts it `space-4` from the viewport's top and end corner, `title` is a bold first line with the children as a muted detail under it (pass plain text, not a `Text`), `action` (`{ label, onPress }`) is one ghost small Button at the end that runs `onPress` and then closes the toast, and `showRemaining` adds a thin line that runs down with the time left. A toast with an action or the line takes the pointer, and its time (and the line) is held while the pointer is over it or focus is inside it; each opening starts with the whole time. Pass the time you want, such as `timeoutMs={10000}`, and close it yourself when it no longer applies (for example when the next sale starts). It is never modal and never takes focus; when it closes with focus inside (after its action), focus goes back to where it came from. Keyboard users reach the action in the Toast's place in the DOM, so render it right after the control that saves. A travelling toast ignores `placement` and `showRemaining`.

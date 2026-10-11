@@ -13,6 +13,7 @@ import { cssSegmentedClasses } from './css-segmented.js';
 import { cssTableClasses } from './css-table.js';
 import { cssDateFieldClasses } from './css-date-field.js';
 import { cssDialogClasses } from './css-dialog.js';
+import { cssDialogFrameClasses } from './css-dialog-frame.js';
 import { cssSelectClasses } from './css-select.js';
 import { cssSplitClasses } from './css-split.js';
 import { cssSwitchClasses } from './css-switch.js';
@@ -136,6 +137,8 @@ ${cssChromeClasses()}
 ${cssSectionNavClasses()}
 
 ${cssDialogClasses()}
+
+${cssDialogFrameClasses()}
 
 ${cssAccordionClasses()}
 

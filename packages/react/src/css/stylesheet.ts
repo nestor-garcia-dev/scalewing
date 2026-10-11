@@ -40,6 +40,7 @@ import { tableClassCatalog } from './css-table.js';
 import { chromeClassCatalog } from './css-chrome.js';
 import { sectionNavClassCatalog } from './css-section-nav.js';
 import { dialogClassCatalog } from './css-dialog.js';
+import { dialogFrameClassCatalog } from './css-dialog-frame.js';
 import { selectClassCatalog } from './css-select.js';
 import { splitClassCatalog } from './css-split.js';
 import { toastClassCatalog } from './css-toast.js';
@@ -76,6 +77,7 @@ export function utilityClassCatalog(): string[] {
     ...chromeClassCatalog(),
     ...sectionNavClassCatalog(),
     ...dialogClassCatalog(),
+    ...dialogFrameClassCatalog(),
     ...accordionClassCatalog(),
     ...selectClassCatalog(),
     ...actionMenuClassCatalog(),

@@ -7,14 +7,25 @@ import { type Breakpoint } from '../css/breakpoints.js';
 import { dialogSheetClass } from '../css/css-dialog.js';
 import { spacingClassNames } from '../spacing-classes.js';
 import { useDialogCloseRequests } from './dialog-close-requests.js';
+import {
+  type ActionBarSummary,
+  assertActionBarSummary,
+} from './action-bar/ActionBarSummary.js';
+import { DialogFooter } from './dialog/DialogFooter.js';
 import { DialogTitle } from './dialog/DialogTitle.js';
 import { Stack } from './Stack.js';
 
+export const dialogSizes = ['md', 'lg', 'xl'] as const;
+
 /**
  * `md` is the reading width (32rem) for a message or a short form; `lg`
- * (56rem) holds a row of six fields or a data grid without folding it.
+ * (56rem) holds a row of six fields or a data grid without folding it;
+ * `xl` (65rem) holds a grid of six count columns with its labels and total.
  */
-export type DialogSize = 'md' | 'lg';
+export type DialogSize = (typeof dialogSizes)[number];
+
+/** `alertdialog` for a dialog that interrupts to warn, such as an idle sign-out. */
+export type DialogRole = 'dialog' | 'alertdialog';
 
 /**
  * The heading level of the dialog's title. It changes only the element (and
@@ -24,7 +35,7 @@ export type DialogTitleLevel = 2 | 3;
 
 export type DialogProps = Omit<
   DialogHTMLAttributes<HTMLDialogElement>,
-  'onClose' | 'open' | 'title' | 'children'
+  'onClose' | 'open' | 'title' | 'children' | 'role'
 > & {
   /** Whether the dialog is shown. The element follows it and nothing else. */
   open: boolean;
@@ -65,13 +76,58 @@ export type DialogProps = Omit<
    * dialog has no close button and its markup is unchanged.
    */
   closeLabel?: string;
+  /**
+   * A muted line under the title that describes the dialog; it becomes the
+   * dialog's accessible description unless `aria-describedby` is given.
+   */
+  description?: string;
+  /** A consumer glyph or tile before the title, hidden from assistive technology. */
+  icon?: ReactNode;
+  /**
+   * The dialog's actions, pinned to its bottom edge under a hairline while
+   * the content scrolls: a secondary Cancel and one named primary.
+   */
+  footer?: ReactNode;
+  /**
+   * A labelled figure at the start of the footer, as ActionBar's, in a
+   * polite live region: "Drawer +$1,000.00 vault −$1,000.00".
+   */
+  summary?: ActionBarSummary;
+  /** `alertdialog` for a warning that interrupts. Default `dialog`. */
+  role?: DialogRole;
   children: ReactNode;
 };
 
+const dialogRoles: readonly DialogRole[] = ['dialog', 'alertdialog'];
+
+function assertDialogProps(
+  size: DialogSize,
+  role: DialogRole | undefined,
+  description: string | undefined,
+  summary: ActionBarSummary | undefined,
+): void {
+  if (!(dialogSizes as readonly unknown[]).includes(size))
+    throw new RangeError(`Unknown Dialog size: ${String(size)}`);
+  if (role !== undefined && !dialogRoles.includes(role))
+    throw new RangeError(`Unknown Dialog role: ${String(role)}`);
+  if (
+    description !== undefined &&
+    (typeof description !== 'string' || !description.trim())
+  )
+    throw new RangeError('Dialog description must not be empty');
+  if (summary) assertActionBarSummary(summary);
+}
+
 export function Dialog({
+  'aria-describedby': describedBy,
   children,
   className,
   closeLabel,
+  description,
+  footer,
+  icon,
+  role,
+  summary,
   onCancel,
   onClose,
   onKeyDown,
@@ -84,7 +140,10 @@ export function Dialog({
   titleLevel = 3,
   ...rest
 }: DialogProps) {
+  assertDialogProps(size, role, description, summary);
   const titleId = useId();
+  const descriptionId = useId();
+  const hasFooter = Boolean(footer) || Boolean(summary);
   const { nodeRef, handlers } = useDialogCloseRequests({
     open,
     onClose,
@@ -98,25 +157,35 @@ export function Dialog({
     <dialog
       {...rest}
       ref={nodeRef}
+      aria-describedby={
+        describedBy ?? (description ? descriptionId : undefined)
+      }
       aria-labelledby={titleId}
       className={cx(
         'sw-dialog',
-        size === 'lg' && 'sw-dialog-lg',
+        size !== 'md' && `sw-dialog-${size}`,
         sheetBelow && dialogSheetClass(sheetBelow),
         ...spacingClassNames({ padding: 5 }),
         className,
       )}
+      role={role === 'alertdialog' ? 'alertdialog' : undefined}
       {...handlers}
     >
       <Stack gap={4}>
         <DialogTitle
           closeLabel={closeLabel}
+          description={description}
+          descriptionId={descriptionId}
+          icon={icon}
           id={titleId}
           level={titleLevel === 2 ? 2 : 3}
           onClose={onClose}
           title={title}
         />
         {children}
+        {hasFooter ? (
+          <DialogFooter summary={summary}>{footer}</DialogFooter>
+        ) : null}
       </Stack>
     </dialog>
   );

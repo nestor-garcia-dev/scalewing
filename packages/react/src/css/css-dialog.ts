@@ -12,6 +12,10 @@ const title = typographyVariants.title;
 /* The modal's height cap: a space-8 strip of backdrop stays in view. */
 const maxHeight = 'min(100vh - var(--sw-space-8), 100dvh - var(--sw-space-8))';
 
+/* How far a sheet's pinned footer steps past the sheet's bottom padding. */
+const sheetFooterOffset =
+  'calc(-1 * (var(--sw-space-5) + env(safe-area-inset-bottom, 0px)))';
+
 export function dialogSheetClass(sheetBelow: Breakpoint): string {
   return `sw-dialog-sheet-below-${sheetBelow}`;
 }
@@ -20,9 +24,11 @@ export function dialogSheetClass(sheetBelow: Breakpoint): string {
  * Below the breakpoint the dialog is a bottom sheet: docked to the bottom
  * edge at the full viewport width, the top corners rounded and the bottom
  * ones square, the same height cap (so the whole space-8 strip of backdrop
- * shows above it), and padding that clears the safe areas. Emitted after
- * `sw-dialog-lg` so it wins at equal specificity. No grabber: there is no
- * drag gesture.
+ * shows above it), and padding that clears the safe areas. A pinned
+ * footer steps past that padding so its surface reaches the bottom edge,
+ * and pads itself clear of the home indicator. Emitted after
+ * `sw-dialog-lg` and `sw-dialog-xl` so it wins at equal specificity. No
+ * grabber: there is no drag gesture.
  */
 function sheetRules(): string {
   return breakpoints
@@ -42,6 +48,12 @@ function sheetRules(): string {
 
   .${dialogSheetClass(breakpoint)}[open] {
     animation: sw-dialog-sheet-in var(--sw-motion-default) var(--sw-motion-easing);
+  }
+
+  .${dialogSheetClass(breakpoint)} .sw-dialog-footer {
+    bottom: ${sheetFooterOffset};
+    margin-bottom: ${sheetFooterOffset};
+    padding-bottom: calc(var(--sw-space-3) + env(safe-area-inset-bottom, 0px));
   }
 }`,
     )
@@ -81,7 +93,8 @@ function closeButtonRules(): string {
   gap: var(--sw-space-2);
 }
 
-.sw-dialog-header > :first-child {
+.sw-dialog-header > :is(h2, h3),
+.sw-dialog-titles {
   flex: 1 1 auto;
   min-width: 0;
 }
@@ -146,6 +159,10 @@ export function cssDialogClasses(): string {
   max-width: min(var(--sw-dialog-max-lg), calc(100vw - var(--sw-space-8)));
 }
 
+.sw-dialog-xl {
+  max-width: min(var(--sw-dialog-max-xl), calc(100vw - var(--sw-space-8)));
+}
+
 ${sheetRules()}
 
 ${sheetMotionRules()}
@@ -166,6 +183,7 @@ export function dialogClassCatalog(): string[] {
   return [
     'sw-dialog',
     'sw-dialog-lg',
+    'sw-dialog-xl',
     ...breakpoints.map((breakpoint) => dialogSheetClass(breakpoint)),
     'sw-dialog-header',
     'sw-dialog-close',

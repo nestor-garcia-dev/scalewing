@@ -93,7 +93,9 @@ export {
 export { Card, type CardProps, type CardVariant } from './components/Card.js';
 export {
   Dialog,
+  dialogSizes,
   type DialogProps,
+  type DialogRole,
   type DialogSize,
   type DialogTitleLevel,
 } from './components/Dialog.js';
