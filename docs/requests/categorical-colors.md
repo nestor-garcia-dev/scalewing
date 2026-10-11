@@ -1,6 +1,6 @@
 Scalewing request from Teisoro (system-wide token work).
 
-Status: accepted 2026-10-11 for the `@scalewing/tokens` 1.5.0 release (Teisoro F-011-S04, release R3 "identity", item 10; the redesign inventory's section 2 and row 6; Teisoro decision D-3).
+Status: released in `@scalewing/tokens` 1.5.0 (PR #126; Teisoro F-011-S04, release R3 "identity", item 10; the redesign inventory's section 2 and row 6; Teisoro decision D-3).
 Renderer: tokens (consumed by `@scalewing/react` `GlyphTile` next)
 Missing surface: a generic categorical colour scale: six hues and a neutral, for tiles that tell a small set of kinds apart.
 Why the semantic colours cannot do this: the F-011 canvas marks each of Teisoro's six services with a coloured rounded tile and a white glyph (37 boards), and drawer, vault and sheet headers with a grey one (36 boards). The semantic colours carry meaning (accent, success, warning, danger); a service is not a success or a danger, and six kinds need six hues that read apart. Teisoro owns no colour, so the hues must be tokens.
