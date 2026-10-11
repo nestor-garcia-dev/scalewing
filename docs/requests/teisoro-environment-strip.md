@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: requested under Teisoro F-002-S26 task 1145; accepted 2026-10-11 as `Notice variant="band"` for the `@scalewing/react` 1.28.0 release (Teisoro F-011-S03, release R2 "feedback", item 6; the redesign inventory's row 1). Teisoro replaces `EnvironmentBanner`'s composed fallback with it.
+Status: requested under Teisoro F-002-S26 task 1145; released as `Notice variant="band"` in `@scalewing/react` 1.28.0 (PR #120; Teisoro F-011-S03, release R2 "feedback", item 6; the redesign inventory's row 1). Teisoro replaces `EnvironmentBanner`'s composed fallback with it.
 Renderer: react
 Missing surface: a full-width, warning-filled notice strip for the page top (Angular's "TEST ENVIRONMENT — Data will NOT affect production" bar: an amber band across the viewport, dark text, a warning glyph, above the app header).
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: `Box` takes only `background="background" | "surface"`, so no Scalewing surface is filled with the warning tone; `Text color="warning"` colours the words only, and `Toast` is transient and positioned over content. A test or local build must be told apart from production at a glance on every page, so the cue should be a filled band, not coloured text on the canvas.

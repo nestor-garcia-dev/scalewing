@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: accepted 2026-10-11 for the `@scalewing/react` 1.28.0 release (Teisoro F-011-S03, release R2 "feedback", item 7; the redesign inventory's row 21).
+Status: released in `@scalewing/react` 1.28.0 (PR #119; Teisoro F-011-S03, release R2 "feedback", item 7; the redesign inventory's row 21).
 Renderer: react
 Missing surface: `Toast` `title`, `action`, `showRemaining` and `placement="top-end"`, with the timer held while the pointer or focus is on the toast. An extension of `Toast` (`fantasy-football-toast.md`, `teisoro-toast.md`), not a new component.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: five F-011 boards (EntryStepSaved, StepCheckSaved, NsfPaySaved, LedgerFix3, PosDaySaved) confirm a save with a small card at the top right for 10 seconds: a tick, "Money transfer saved", a muted "$480.00 · change $20.00 given", an "Open" action, and a thin line that shows the time left. It never covers the form and the next sale can start under it. `Toast` is a click-through pill at the bottom centre with no title, no action and no time line, and a consumer cannot position or time one without its own CSS.

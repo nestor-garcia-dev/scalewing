@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: accepted 2026-10-11 for the `@scalewing/react` 1.28.0 release (Teisoro F-011-S03, release R2 "feedback", item 8; the redesign inventory's row 23).
+Status: released in `@scalewing/react` 1.28.0 (PR #121; Teisoro F-011-S03, release R2 "feedback", item 8; the redesign inventory's row 23).
 Renderer: react
 Missing surface: `Progress` `tone="warning"`. An extension of `Progress` (`teisoro-progress.md`), not a new component.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: the F-011 SignInIdle board warns before an idle sign-out with an alert dialog: "Are you still working?", a countdown sentence ("Teisoro will sign you out in 1:42"), and an orange bar of the time left. `Progress` tones are accent, success and danger; orange (the warning tone, `teisoro-warning-tone.md`) is not one of them, and danger says the wrong thing before anything has gone wrong.

@@ -23,12 +23,13 @@ and `ActionBar` `summary` (#116), released in `@scalewing/react` 1.27.0.
 Next: Teisoro pins 1.27.0 and builds its `GuidedForm` and `BillCount`
 composites on them.
 
-Teisoro F-011-S03, release R2 "feedback" (`@scalewing/react` minor):
-`Notice` (`teisoro-notice.md`), then the `EnvironmentStrip` band, `Toast`
-title, action and remaining time, `Progress` warning, `Dialog` header and
-footer, and `DenominationGrid` plain row labels, one pull request each.
-Branch `teisoro/notice` carries the first. Next: review and merge each,
-then release.
+Teisoro F-011-S03, release R2 "feedback": `Notice` (#118), `Notice`
+`variant="band"` for the environment strip (#120), `Toast` title, action,
+remaining time and top-end card (#119), `Progress` warning (#121),
+`Dialog` header and pinned footer (#122) and `DenominationGrid`
+`labelAppearance` (#124), released in `@scalewing/react` 1.28.0. Next:
+release R3 "identity": `@scalewing/tokens` categorical colours first, then
+`GlyphTile`, `SegmentedControl` item icons and a web `MultiSelect`.
 
 FutMas score entry (canvas board W3): `StepperRow`
 (`futmas-stepper-row.md`) and `Field` `variant="search"`
