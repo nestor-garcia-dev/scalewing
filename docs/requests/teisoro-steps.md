@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: accepted 2026-10-11 for the `@scalewing/react` 1.27.0 release (Teisoro F-011-S02, release R1 "guided-form core", item 3; the inventory's rows 10 and 11).
+Status: released in `@scalewing/react` 1.27.0 (PR #115; Teisoro F-011-S02, release R1 "guided-form core", item 3; the inventory's rows 10 and 11).
 Renderer: react
 Missing surface: `Steps` and `Step`, a one-page vertical stepper: a form's steps in order on one page, the current one open, the done ones folded to one line with an Edit action, the ones ahead greyed. (`Stepper` is taken by the −/+ count.)
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: the F-011 canvas lays out every guided form (52 boards: the service entries, cash check, open and close the day, the POS closeout, the vault counts, change orders, audit review, NSF payments, Get change) as numbered steps joined by a line. A step has five looks (ahead: a grey ring and grey title; current: an accent dot with its number, a larger title and its fields; done: a green check, its title, a one-line summary and Edit; error: a red "!" and its fields; not needed: greyed with a reason). Composing that from `Card`, `Text` and `Badge` in the product would need its own dot, connector and check glyph (CSS Teisoro may not write), and each of the 52 boards would repeat the focus and status rules.

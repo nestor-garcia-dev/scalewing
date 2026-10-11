@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: accepted 2026-10-11 for the `@scalewing/react` 1.27.0 release (Teisoro F-011-S02, release R1 "guided-form core", item 4; the inventory's row 12).
+Status: released in `@scalewing/react` 1.27.0 (PR #116; Teisoro F-011-S02, release R1 "guided-form core", item 4; the inventory's row 12).
 Renderer: react
 Missing surface: `ActionBar` `summary`: a labelled figure (label, a large value, a detail line) in the bar's status, with a tone for a short or a matched count. An extension of `ActionBar` (`teisoro-action-bar.md`), not a new component.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: the F-011 canvas puts a bottom bar on 54 boards and 10 sheets: "Received **$500.00** Change $20.00", "Counted **$33,790.00** short $4,000.00" (the figure red), Cancel and one named primary. `ActionBar` `status` takes a node, but its status row is caption type, so a `Text variant="heading"` placed in it would be the consumer sizing a figure inside Scalewing's row, with the label, figure and detail on a baseline the consumer cannot set without CSS, and a tone mapping of its own.

@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: accepted 2026-10-11 for the `@scalewing/react` 1.27.0 release (Teisoro F-011-S02, release R1 "guided-form core", item 2; the inventory's row 14). Depends on the web `Stepper` (`teisoro-stepper.md`, merged in #113).
+Status: released in `@scalewing/react` 1.27.0 (PR #114; Teisoro F-011-S02, release R1 "guided-form core", item 2; the inventory's row 14). Depends on the web `Stepper` (`teisoro-stepper.md`, merged in #113).
 Renderer: react
 Missing surface: count entry in `DenominationGrid`: a row whose counts are typed or stepped (`entry`), with a row `caption`, a quiet row `emphasis`, a column `caption`, and a `disabled` row. An extension of the existing grid, not a new component.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: the F-011 canvas counts bills on 27 boards in the grid's own shape: bill columns ($1 … $100, or straps and rolls) and a Total, with editable rows (Received, Change, Counted, Take) next to read-only rows (Expected, Last close, Available) under the same column heads. A `Table` of `Stepper`s would lose the grid's column heads, sticky labels, totals, tones and alignment with the read-only rows; a separate count grid would be a parallel surface for the same columns.
