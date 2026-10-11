@@ -1,5 +1,8 @@
 import {
   type Theme,
+  categoricalColorKeys,
+  categoricalColors,
+  onCategorical,
   controlScale,
   disabledOpacity,
   focusRing,
@@ -18,6 +21,17 @@ function colorDeclarations(theme: Theme): string {
       (key) => `  --sw-color-${key}: ${theme.colors[key]};`,
     ),
     `  --sw-button-secondary-border: ${secondaryActionBorder(theme.colors)};`,
+  ].join('\n');
+}
+
+/* The categorical fills of the theme's scheme and the glyph drawn on them. */
+function categoricalDeclarations(theme: Theme): string {
+  const fills = categoricalColors[theme.colorScheme];
+  return [
+    ...categoricalColorKeys.map(
+      (key) => `  --sw-categorical-${key}: ${fills[key]};`,
+    ),
+    `  --sw-categorical-on: ${onCategorical};`,
   ].join('\n');
 }
 
@@ -74,11 +88,13 @@ export function cssVariables(light: Theme, dark: Theme): string {
   return `:root,
 [data-theme='light'] {
 ${colorDeclarations(light)}
+${categoricalDeclarations(light)}
 ${sharedDeclarations(light)}
 }
 
 [data-theme='dark'] {
 ${colorDeclarations(dark)}
+${categoricalDeclarations(dark)}
 ${sharedDeclarations(dark)}
 }`;
 }

@@ -21,6 +21,7 @@ import { cssTextClasses } from './css-text.js';
 import { cssSpinnerClasses } from './css-spinner.js';
 import { cssProgressClasses } from './css-progress.js';
 import { cssNoticeClasses } from './css-notice.js';
+import { cssGlyphTileClasses } from './css-glyph-tile.js';
 import { cssTooltipClasses } from './css-tooltip.js';
 import { cssInfoTipClasses } from './css-info-tip.js';
 import { cssSeparatorClasses } from './css-separator.js';
@@ -155,6 +156,8 @@ ${cssSpinnerClasses()}
 ${cssProgressClasses()}
 
 ${cssNoticeClasses()}
+
+${cssGlyphTileClasses()}
 
 ${cssTooltipClasses()}
 
