@@ -42,6 +42,7 @@ import { StatTileSection } from './sections/stat-tile.js';
 import { DescriptionListSection } from './sections/description-list.js';
 import { TabsSection } from './sections/tabs.js';
 import { SelectSection } from './sections/select.js';
+import { MultiSelectSection } from './sections/multi-select.js';
 import { SplitSection } from './sections/split.js';
 import { TableSection } from './sections/table.js';
 import { TextSection } from './sections/text.js';
@@ -131,6 +132,12 @@ export const catalog = [
   },
   { id: 'steps', label: 'Steps', group: 'controls', Section: StepsSection },
   { id: 'select', label: 'Select', group: 'controls', Section: SelectSection },
+  {
+    id: 'multi-select',
+    label: 'MultiSelect',
+    group: 'controls',
+    Section: MultiSelectSection,
+  },
   {
     id: 'action-menu',
     label: 'ActionMenu',

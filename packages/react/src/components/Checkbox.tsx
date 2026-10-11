@@ -2,6 +2,7 @@
 
 import { useId } from 'react';
 
+import { CheckboxControl } from './checkbox/CheckboxControl.js';
 import { FieldErrorRegion } from './FieldErrorRegion.js';
 
 export type CheckboxProps = {
@@ -35,21 +36,16 @@ export function Checkbox({
   return (
     <div className="sw-checkbox">
       <label className="sw-checkbox-label">
-        <span className="sw-checkbox-control">
-          <input
-            aria-describedby={describedBy || undefined}
-            aria-invalid={Boolean(error)}
-            checked={checked}
-            className="sw-checkbox-input"
-            disabled={disabled}
-            onChange={(event) => {
-              if (!disabled) onCheckedChange(event.currentTarget.checked);
-            }}
-            required={required}
-            type="checkbox"
-          />
-          <span aria-hidden="true" className="sw-checkbox-mark" />
-        </span>
+        <CheckboxControl
+          aria-describedby={describedBy || undefined}
+          aria-invalid={Boolean(error)}
+          checked={checked}
+          disabled={disabled}
+          onChange={(event) => {
+            if (!disabled) onCheckedChange(event.currentTarget.checked);
+          }}
+          required={required}
+        />
         <span className="sw-checkbox-text">{label}</span>
       </label>
       {description ? (
