@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { stackingOrder } from './stacking.js';
+import { joinedControlOrder, stackingOrder } from './stacking.js';
 import { generateStylesheet } from './stylesheet.js';
 
 const css = generateStylesheet();
@@ -22,6 +22,19 @@ describe('stacking order', () => {
     );
     expect(used.length).toBeGreaterThan(0);
     for (const value of used) expect(layers).toContain(value);
+  });
+
+  it('uses the joined-control order only inside an isolated attached ButtonGroup', () => {
+    const joined = [
+      ...css.matchAll(/([^{}\n]+)\{[^}]*z-index: (\d+);[^}]*\}/g),
+    ].filter((match) => match[1]!.includes('sw-button-group-attached'));
+    expect(joined.map((match) => Number(match[2]))).toEqual([
+      joinedControlOrder.pressed,
+      joinedControlOrder.focused,
+    ]);
+    expect(css).toMatch(
+      /\.sw-button-group\.sw-button-group-attached \{[^}]*isolation: isolate;/,
+    );
   });
 
   it('keeps a surface holding an open popup over the ActionBar and under the AppHeader', () => {

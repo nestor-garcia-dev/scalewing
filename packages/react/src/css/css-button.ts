@@ -8,6 +8,10 @@ import {
 } from '@scalewing/tokens';
 
 import { breakpointQuery } from './breakpoints.js';
+import {
+  buttonGroupAttachedClassCatalog,
+  cssButtonGroupAttachedClasses,
+} from './css-button-group-attached.js';
 
 const label = typographyVariants.label;
 
@@ -112,7 +116,9 @@ export function cssButtonClasses(): string {
 ${variantRules()}
 ${pressedRules()}
 ${sizeRules()}
-${groupRules()}`;
+${groupRules()}
+
+${cssButtonGroupAttachedClasses()}`;
 }
 
 export const buttonGroupJustifies = ['start', 'end', 'between'] as const;
@@ -144,5 +150,6 @@ export function buttonClassCatalog(): string[] {
     ...buttonSizes.map((size) => `sw-button-${size}`),
     'sw-button-group',
     ...buttonGroupJustifies.map((name) => `sw-button-group-${name}`),
+    ...buttonGroupAttachedClassCatalog(),
   ];
 }
