@@ -32,9 +32,14 @@ remaining time and top-end card (#119), `Progress` warning (#121),
 Teisoro F-011-S04, release R3 "identity": `@scalewing/tokens` categorical
 colours (#126, released in tokens 1.5.0), then `GlyphTile` (#128), a web
 `MultiSelect` (#129) and `SegmentedControl` item icons (#130), released in
-`@scalewing/react` 1.29.0. Next: release R4 "ledger and navigation": `Table`
-ledger extensions, `TableFooter`, `SectionNav` counts, `ActionMenuItem`
-`detail`, `ButtonGroup` `attached` and `FilterChips` validation.
+`@scalewing/react` 1.29.0.
+
+Teisoro F-011-S05, release R4 "ledger and navigation": `Table` ledger
+extensions (#132), `TableFooter` with a sticky total (#133), `SectionNav`
+counts and the filled appearance (#134), `ActionMenuItem` `detail` (#135),
+`ButtonGroup` `attached` (#136) and `FilterChips` validation (#137),
+released in `@scalewing/react` 1.30.0. Next: release R5 "search": `Field`
+`variant="search"` and a web `Combobox`.
 
 FutMas score entry (canvas board W3): `StepperRow`
 (`futmas-stepper-row.md`) and `Field` `variant="search"`

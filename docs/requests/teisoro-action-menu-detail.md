@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: accepted 2026-10-11 for the `@scalewing/react` 1.30.0 release (Teisoro F-011-S05, release R4 "ledger and navigation", item 17; the redesign inventory's row 4).
+Status: released in `@scalewing/react` 1.30.0 (PR #135; Teisoro F-011-S05, release R4 "ledger and navigation", item 17; the redesign inventory's row 4).
 Renderer: react
 Missing surface: an `ActionMenu` command's trailing value with a chevron (`detail`), and a hairline before a command (`separatorBefore`).
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: the AccountMenu board is a menu with a header (who, role, store), "Language" and "Appearance" commands that end with their current value and a chevron ("English ›", "Light ›"), then a hairline and a red "Sign out". `ActionMenu` has the `header` slot and `destructive`, but a command is only an icon and a label, and nothing separates commands. Teisoro owns no CSS.

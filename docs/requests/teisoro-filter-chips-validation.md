@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: accepted 2026-10-11 for the `@scalewing/react` 1.30.0 release (Teisoro F-011-S05, release R4 "ledger and navigation", item 19; the redesign inventory's row 9).
+Status: released in `@scalewing/react` 1.30.0 (PR #137; Teisoro F-011-S05, release R4 "ledger and navigation", item 19; the redesign inventory's row 9).
 Renderer: react
 Missing surface: `FilterChips` validation: a required choice that starts empty, with an error message.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: six boards (DrawerAdjust, VoidOne, VoidBatchOne, AuditReview2, VaultAdd1, CompanyLookup) pick a reason ("Why", "What happened", "Where from") from a row of single-choice chips, and a reason is required. `FilterChips` is the chip row, but its `value` must match an option (no "nothing chosen yet"), and it has no `required`, no error message and no way to add a description. `RadioGroup` has those but is a vertical list of radios, not chips. Teisoro owns no CSS.

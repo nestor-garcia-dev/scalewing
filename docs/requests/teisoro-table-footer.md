@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: accepted 2026-10-11 for the `@scalewing/react` 1.30.0 release (Teisoro F-011-S05, release R4 "ledger and navigation", item 15; the redesign inventory's row 15 and risk 7).
+Status: released in `@scalewing/react` 1.30.0 (PR #133; Teisoro F-011-S05, release R4 "ledger and navigation", item 15; the redesign inventory's row 15 and risk 7).
 Renderer: react
 Missing surface: `TableFooter`, a table footer for a total row that can stay pinned to the bottom edge while the rows scroll.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: the cash ledger (ServicesDayLedger2) pins a row to the bottom of the table while the day's entries scroll under it (the opening count, or the filtered subtotal when Show hides kinds), and the inventory asks for a bold total row under a heavier rule. `Table` has `TableHeader` and `TableBody` but no footer, nothing pins a row to the bottom, and the stacking order has no layer between the sticky header cells and the sticky `ActionBar` (inventory risk 7). Teisoro owns no CSS.
