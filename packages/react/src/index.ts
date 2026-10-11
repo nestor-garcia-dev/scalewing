@@ -101,6 +101,11 @@ export {
 export { Toast, toastTones } from './components/Toast.js';
 export type { ToastProps, ToastTone } from './components/Toast.js';
 export { Field, type FieldProps, type FieldSize } from './components/Field.js';
+export {
+  Stepper,
+  type StepperProps,
+  type StepperWidth,
+} from './components/Stepper.js';
 export { Inline, type InlineProps } from './components/Inline.js';
 export { Split } from './components/Split.js';
 export type { SplitProps } from './components/Split.js';

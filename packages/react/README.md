@@ -29,6 +29,7 @@ import {
   Grid,
   DateField,
   Field,
+  Stepper,
   Select,
   Switch,
   Split,
@@ -82,6 +83,21 @@ A disabled native text control (`<input>`, `<select>` or `<textarea>` on the can
 <Field label="Drop amount" prefix="$">
   <input inputMode="decimal" name="drop" />
 </Field>
+```
+
+`Stepper` is a whole-number count changed with − and + or typed. The count is a native text input with `role="spinbutton"` and `inputmode="numeric"`, named by `label` (visible above it, or `labelVisuallyHidden` where table headers say it) and the one tab stop: ArrowUp and ArrowDown step it by `step` (default 1), Home goes to `min` and End to a finite `max` (a range below zero takes `inputmode="text"`, since a phone's numeric pad has no minus key). The − and + buttons are pointer targets outside the tab order, named by `decrementLabel` and `incrementLabel` (your copy), and a press on one leaves focus where it was; the count and both buttons sit in a `group` named by the label. − is disabled at `min` (default 0) and + at `max` (no upper bound when left out). `value` is a count or `null` for an empty box, which the buttons treat as `min` and `placeholder` can fill. Typed text is refused unless it is digits (with a leading minus when `min` is below zero), so `onChange` only receives a whole number or `null`; a typed count is reported as typed even outside the bounds, so say why in `error` (a polite message, `aria-invalid` and the danger border, as `Field`'s), and the buttons then move it back inside them. `changed` takes `Field`'s changed look; `readOnly` keeps the count focusable and hides the buttons in their own room; `disabled` stops all three. The count is a few digits wide and keeps that width (`width="fixed"`), or fills its container (`width="full"`, for a table cell). Bounds that are not whole numbers, `min` above `max`, or a `step` that is not above zero throw a `RangeError`.
+
+```tsx
+<Stepper
+  label="Herons"
+  value={count}
+  onChange={setCount}
+  max={40}
+  decrementLabel="One less"
+  incrementLabel="One more"
+  placeholder="0"
+  error={count !== null && count > nests ? `Only ${nests} nests.` : undefined}
+/>
 ```
 
 `Select` is a labeled listbox menu: supply `label`, `options` (`value` and `label`), a controlled `value` and `onChange`; `size="xs"` and `labelVisuallyHidden` are for toolbar chrome, and `action` is a last listbox command that never becomes the value. The closed trigger matches `Field`: its text is centred in the control, it ends in the `Accordion` chevron, and it is as wide as its longest option (as a native select is), so it keeps its width when the value changes; past the available width the label ellipsizes. The option labels that size it are drawn by CSS from `data-label`, so the trigger's text content and accessible value are only the current label. Its label is drawn as `Field`'s (the same label words and mark inside a `<label>` that keeps the canvas type), so a `Select` beside a `Field` lines up at the label and the control.

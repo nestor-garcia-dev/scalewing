@@ -27,6 +27,7 @@ import { gridSpanClassCatalog } from './css-grid-span.js';
 import { denominationGridClassCatalog } from './css-denomination-grid.js';
 import { scrollRegionClassCatalog } from './css-scroll-region.js';
 import { fieldClassCatalog } from './css-field.js';
+import { stepperClassCatalog } from './css-stepper.js';
 import { boxBorderClassCatalog } from './css-box-border.js';
 import { cssComponentClasses } from './css-components.js';
 import { buttonClassCatalog } from './css-button.js';
@@ -94,6 +95,7 @@ export function utilityClassCatalog(): string[] {
     ...gridSpanClassCatalog(),
     ...denominationGridClassCatalog(),
     ...fieldClassCatalog(),
+    ...stepperClassCatalog(),
     ...splitClassCatalog(),
     ...toastClassCatalog(),
     ...responsiveClassCatalog(),
