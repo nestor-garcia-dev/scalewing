@@ -31,7 +31,11 @@ describe('stacking order', () => {
     );
     const appHeader = zIndexOf('.sw-app-header-sticky');
     const stickyCell = zIndexOf('.sw-table-sticky thead th');
-    expect(stickyCell).toBeLessThan(actionBar);
+    const stickyFooter = zIndexOf(
+      '.sw-table .sw-table-footer-sticky :is(th, td)',
+    );
+    expect(stickyCell).toBeLessThan(stickyFooter);
+    expect(stickyFooter).toBeLessThan(actionBar);
     expect(actionBar).toBeLessThan(popupHost);
     expect(popupHost).toBeLessThan(appHeader);
     for (const popup of [

@@ -1,7 +1,7 @@
 .gallery-header {
   position: sticky;
   top: 0;
-  z-index: 2;
+  z-index: 3;
   background: var(--sw-glass-fill);
   backdrop-filter: blur(var(--sw-glass-blur)) saturate(var(--sw-glass-saturate));
   -webkit-backdrop-filter: blur(var(--sw-glass-blur))
@@ -37,7 +37,7 @@
   position: absolute;
   left: var(--sw-space-4);
   top: var(--sw-space-2);
-  z-index: 4;
+  z-index: 5;
   width: auto;
   height: auto;
   overflow: visible;

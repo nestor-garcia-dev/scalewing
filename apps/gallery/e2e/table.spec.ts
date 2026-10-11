@@ -247,8 +247,8 @@ test('a wide Table shades the edge with more columns past it, on a phone too', a
   // VLT-1 / HIS-3: at 390 px nine columns do not fit, so the end is shaded.
   if (isPhone || isForced) expect(atStart.overflows).toBe(true);
   if (!atStart.overflows) {
-    // Nothing past either edge: no cue, and no shadow.
-    expect(atStart.className).toBe('sw-table-wrap');
+    // Nothing past either edge: no cue, and no shadow; only the fits mark.
+    expect(atStart.className).toBe('sw-table-wrap sw-scroll-fits');
     expect(atStart.shadow).toBe('none');
     return;
   }

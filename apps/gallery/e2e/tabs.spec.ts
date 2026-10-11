@@ -140,7 +140,8 @@ test('A sticky Tabs strip stays at the top of its page while the panel scrolls u
     };
   });
   expect(style.position).toBe('sticky');
-  expect(style.zIndex).toBe('4');
+  // The topChrome layer of css/stacking.ts.
+  expect(style.zIndex).toBe('5');
   expect(style.borderBottomWidth).toBe('1px');
   expect(style.borderBottomStyle).toBe('solid');
   expect(style.paddingLeft).toBe('0px');

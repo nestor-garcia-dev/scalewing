@@ -17,6 +17,7 @@ import { useState } from 'react';
 import { Section } from '../layout/Section.js';
 import { TableLayoutExamples } from './table-layout.js';
 import { TableLedgerExample } from './table-ledger.js';
+import { TableFooterExample } from './table-footer.js';
 import { SortedCensus } from './table-sorted.js';
 import {
   sampleCensusRows,
@@ -239,6 +240,8 @@ export function TableSection() {
         <TableLedgerExample />
         <Text variant="label">The same ledger, compact</Text>
         <TableLedgerExample density="compact" label="Colony ledger, compact" />
+        <Text variant="label">A pinned total</Text>
+        <TableFooterExample />
         <Text variant="caption" color="muted">
           Pass stickyHeader false when the header should scroll away. density
           compact and selected are for ranked lists. Why chips are Badge sm, not
@@ -247,7 +250,9 @@ export function TableSection() {
           phone shows that the table goes on. A ledger takes columnRules,
           TableCell tone for signed figures (never the only signal), TableRow
           variant sub under its entry (indenting its row header) and struck for
-          a voided row kept on the record, with a Badge saying why.
+          a voided row kept on the record, with a Badge saying why. TableFooter
+          holds a total at weight 600 under a heavier rule; sticky pins it to
+          the bottom edge, to the page while the table fits its width.
         </Text>
       </Stack>
     </Section>

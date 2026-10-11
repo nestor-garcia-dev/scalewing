@@ -4,16 +4,19 @@
  *
  * 1. `stickyCell`: a sticky table header cell or row label over the cells
  *    that scroll under it.
- * 2. `bottomChrome`: the sticky ActionBar over the page flow it follows.
- * 3. `popupHost`: a glass surface (glass Card, Accordion) while it holds an
+ * 2. `stickyFooter`: a sticky table footer (a pinned total row) over the
+ *    cells and pinned header cells that scroll under it, and under the
+ *    ActionBar, which stays the page's last word at the bottom edge.
+ * 3. `bottomChrome`: the sticky ActionBar over the page flow it follows.
+ * 4. `popupHost`: a glass surface (glass Card, Accordion) while it holds an
  *    open popup. Backdrop blur makes that surface its own stacking context, so
  *    its popup can only paint as high as the surface does; lifting the surface
  *    over the ActionBar keeps an open list tappable where the bar would cover
  *    it, and over the next surface in the flow.
- * 4. `topChrome`: the sticky AppHeader or sticky Tabs strip, over a lifted
+ * 5. `topChrome`: the sticky AppHeader or sticky Tabs strip, over a lifted
  *    surface that scrolls up under it (the header is the page's way back, the
  *    strip its way between sections, and a popup opens downward).
- * 5. `popup`: a popup outside any lifted surface (Select list, ActionMenu
+ * 6. `popup`: a popup outside any lifted surface (Select list, ActionMenu
  *    list, MultiSelect panel, Tooltip, the DateField and CalendarButton
  *    calendar) over everything in the page.
  *
@@ -21,9 +24,10 @@
  */
 export const stackingOrder = {
   stickyCell: 1,
-  bottomChrome: 2,
-  popupHost: 3,
-  topChrome: 4,
+  stickyFooter: 2,
+  bottomChrome: 3,
+  popupHost: 4,
+  topChrome: 5,
   popup: 10,
 } as const;
 

@@ -28,6 +28,11 @@ export type TableDensity = 'comfortable' | 'compact';
 
 export type TableProps = HTMLAttributes<HTMLTableElement> & {
   density?: TableDensity;
+  /**
+   * Pins the header row to the top of the table's own scroll region
+   * (default). In a table with a sticky `TableFooter` that fits its width
+   * the region does not scroll, so the header pins to the page's top.
+   */
   stickyHeader?: boolean;
   /**
    * `auto` (default) sizes each column by its content. `fixed` sizes the
@@ -74,6 +79,7 @@ export const Table = forwardRef<HTMLTableElement, TableProps>(function Table(
       aria-label={rest['aria-label']}
       aria-labelledby={rest['aria-labelledby']}
       className="sw-table-wrap"
+      markFits
     >
       <table
         ref={ref}
@@ -110,3 +116,33 @@ export const TableBody = forwardRef<HTMLTableSectionElement, TableBodyProps>(
     return <tbody ref={ref} className={className} {...rest} />;
   },
 );
+
+export type TableFooterProps = HTMLAttributes<HTMLTableSectionElement> & {
+  /**
+   * Pins the footer, such as a total row, to the bottom edge while the rows
+   * scroll under it: to the page while the table fits its width (the
+   * sticky header then pins to the page's top too, under any sticky
+   * AppHeader, which covers it), or to the table's own region while the
+   * table scrolls sideways in it. A sticky ActionBar covers a pinned
+   * footer, and so does a Dialog's pinned footer, so do not pair them.
+   */
+  sticky?: boolean;
+};
+
+/**
+ * The table's footer (`tfoot`): a total row, its cells at weight 600 under
+ * a heavier rule. A row header in it (`TableCell as="th" scope="row"`)
+ * names the total.
+ */
+export const TableFooter = forwardRef<
+  HTMLTableSectionElement,
+  TableFooterProps
+>(function TableFooter({ className, sticky = false, ...rest }, ref) {
+  return (
+    <tfoot
+      ref={ref}
+      className={cx(sticky && 'sw-table-footer-sticky', className)}
+      {...rest}
+    />
+  );
+});
