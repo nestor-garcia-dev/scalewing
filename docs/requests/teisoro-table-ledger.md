@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: accepted 2026-10-11 for the `@scalewing/react` 1.30.0 release (Teisoro F-011-S05, release R4 "ledger and navigation", item 14; the redesign inventory's row 15).
+Status: released in `@scalewing/react` 1.30.0 (PR #132; Teisoro F-011-S05, release R4 "ledger and navigation", item 14; the redesign inventory's row 15).
 Renderer: react
 Missing surface: ledger extensions to `Table`: a toned cell, rules between columns, a sub row under its entry and a struck (voided) row.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: the cash ledger (ServicesDayLedger2, LedgerFix1/3, VoidOne, VoidBatchOne, VoidRows, PosDay, PosDaySaved, VaultToday) reads across as well as down. It needs vertical hairlines between the bill columns, green figures for cash in, a batch's money orders and a Get change's parts indented under their entry, and a voided row greyed and struck but kept on the record. `Text color` inside a cell colours a span, not the cell; nothing draws column rules, indents a row's header or strikes a row, and Teisoro owns no CSS.

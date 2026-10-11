@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: accepted 2026-10-11 for the `@scalewing/react` 1.30.0 release (Teisoro F-011-S05, release R4 "ledger and navigation", item 18; the redesign inventory's row 5).
+Status: released in `@scalewing/react` 1.30.0 (PR #136; Teisoro F-011-S05, release R4 "ledger and navigation", item 18; the redesign inventory's row 5).
 Renderer: react
 Missing surface: `ButtonGroup` `attached`, buttons joined into one control.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: the day title on about 12 boards (ServicesDayLedger2, LedgerFix1–3, Void*, Drawer*) moves between days with Previous, Today and Next joined in one rounded control with dividers. `ButtonGroup` is an action row with a gap that stacks full width on a phone; `SegmentedControl` is a choice (`radiogroup`), not three commands. Teisoro owns no CSS.

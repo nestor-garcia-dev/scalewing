@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: accepted 2026-10-11 for the `@scalewing/react` 1.30.0 release (Teisoro F-011-S05, release R4 "ledger and navigation", item 16; the redesign inventory's row 3). Extends `SectionNav` (`teisoro-section-nav.md`).
+Status: released in `@scalewing/react` 1.30.0 (PR #134; Teisoro F-011-S05, release R4 "ledger and navigation", item 16; the redesign inventory's row 3). Extends `SectionNav` (`teisoro-section-nav.md`).
 Renderer: react
 Missing surface: `SectionNav` item counts and a filled appearance.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: the redesign's sub-navigation (about 80 boards; the "Tasks 3" count on 18 Vault boards) is an area's name at 19 px with its pages as quiet buttons on the right, the current one on a grey fill, and a red count pill after "Tasks". `SectionNav` marks the current item with an underline or a start bar and has no count; a `Badge` beside a link is outside its accessible name, and Teisoro owns no CSS.

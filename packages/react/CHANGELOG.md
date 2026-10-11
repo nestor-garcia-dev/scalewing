@@ -1,5 +1,46 @@
 # @scalewing/react
 
+## 1.30.0
+
+### Minor Changes
+
+- 63695b5: `ActionMenuItem` `detail`, `detailLang` and `separatorBefore` (`docs/requests/teisoro-action-menu-detail.md`, Teisoro F-011 release R4):
+
+  - `detail`: a short current value at the command's end in the muted colour with a chevron (mirrored right to left, `CanvasText` in forced colours), read in its name; it wraps between words. `detailLang` marks its language. A blank `detail`, a blank `detailLang` or one without `detail` throws a `RangeError`.
+  - `separatorBefore`: a `role="separator"` hairline before the command (never before the first), skipped by the arrow keys.
+  - New classes `sw-action-menu-detail`, `sw-action-menu-chevron`, `sw-action-menu-separator`. No new tokens or dependencies.
+
+- 180e140: `ButtonGroup` `attached` (`docs/requests/teisoro-button-group-attached.md`, Teisoro F-011 release R4): one joined control, such as Previous, Today and Next. Its direct `Button` children at one height with no gap, single dividers (overlapping borders; a borderless variant's in its text colour), square inner and `sm`-radius outer corners; an isolated stacking context raises a pressed toggle and the focused button's outer ring over their neighbours (a new `joinedControlOrder` in `css/stacking.ts`). It keeps its row on a phone and sizes to its buttons. New class `sw-button-group-attached`. No new tokens or dependencies.
+- b64e6ce: `FilterChips` `required`, `error` and `aria-describedby`, and `value: ''` for nothing chosen yet (`docs/requests/teisoro-filter-chips-validation.md`, Teisoro F-011 release R4):
+
+  - `required`: each radio `required` and the required mark after the label.
+  - `error`: a polite message under the chips linked by `aria-describedby`, the group `aria-invalid`, and every chip's edge in danger (`Mark` in forced colors).
+  - `aria-describedby`: consumer description ids, before the error.
+  - `value` may be `''` (nothing chosen); a value that is neither `''` nor an option still throws a `RangeError`.
+  - New class `sw-filter-chips-error`. No new tokens or dependencies.
+
+- a60f130: `SectionNav` item `count` and `appearance="filled"` (`docs/requests/teisoro-section-nav-count.md`, Teisoro F-011 release R4):
+
+  - `SectionNavItem.count?: number`: a 20 px filled pill after the label (danger with its on-colour figures, a `CanvasText` edge in forced colours), part of the link's accessible name; 0 shows none; a count that is not a whole number from 0 throws a `RangeError`.
+  - `SectionNavItem.countLabel?: string`: the count in words, read in place of the bare number (the pill then hidden from assistive technology); blank or without `count` throws.
+  - `appearance?: 'underline' | 'filled'` (`SectionNavAppearance`, `sectionNavAppearances`): `filled` drops the hairline and the underline or start bar, sets every link at the `sm` control (44 px on a coarse pointer) at weight 500 and fills the current one at 600 (a 2 px `Highlight` edge in forced colours), in the row or the side list; an unknown value throws a `RangeError`.
+  - New classes `sw-section-nav-filled` and `sw-section-nav-count`. No new tokens or dependencies.
+
+- 3beef0d: `TableFooter` (with `TableFooterProps`): the table's `tfoot` for a total row, its cells at weight 600 under a 2 px rule (`docs/requests/teisoro-table-footer.md`, Teisoro F-011 release R4).
+
+  - `sticky` pins the footer to the bottom edge on the header's glass, on a new stacking layer `stickyFooter` (2) between sticky table cells (1) and the sticky `ActionBar`. The other layers move up one: `bottomChrome` 3, `popupHost` 4, `topChrome` 5 (`popup` stays 10); update any test or stylesheet that pins those numbers. A sticky `ActionBar` or a `Dialog` footer covers a pinned footer, so do not pair them.
+  - In forced colors pinned footer and header cells are the solid system canvas.
+  - While a table with a sticky footer fits its width, its region stops being a scroll box (`sw-scroll-fits`, now on every measured `Table` region whose content fits, which changes its class list), so the footer and the sticky header pin to the page; a wider table scrolls sideways and pins inside its region.
+  - New classes `sw-table-footer-sticky` and `sw-scroll-fits`. No new tokens or dependencies.
+
+- d08712d: Table ledger extensions (`docs/requests/teisoro-table-ledger.md`, Teisoro F-011 release R4):
+
+  - `TableCell` `tone` (`success`, `danger`, `muted`, `accent`; `TableCellTone`, `tableCellTones`): the cell's text in the theme colour.
+  - `Table` `columnRules`: a hairline between columns, mirrored right to left.
+  - `TableRow` `variant="sub"` (`TableRowVariant`, `tableRowVariants`) indents the row's header (`th scope="row"`) with a guide bar under the row above, and `TableRow` `struck` keeps a voided row on the record: subtle fill, muted, struck through (a Badge in a line of text stays plain).
+  - A body or footer row header (`th scope="row"`) now reads as body text instead of a muted column header.
+  - An unknown `tone` or `variant` throws a `RangeError`. No new tokens or dependencies.
+
 ## 1.29.0
 
 ### Minor Changes
