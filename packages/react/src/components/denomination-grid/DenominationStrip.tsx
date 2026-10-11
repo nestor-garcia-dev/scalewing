@@ -10,7 +10,10 @@ import { type DenominationGridProps } from './types.js';
 type StripProps = Required<
   Pick<DenominationGridProps, 'label' | 'columns' | 'rows' | 'zeroLabel'>
 > &
-  Pick<DenominationGridProps, 'totalLabel' | 'labelWidth'>;
+  Pick<DenominationGridProps, 'totalLabel' | 'labelWidth'> & {
+    /** The row labels' appearance class, if any. */
+    className?: string;
+  };
 
 /**
  * The total column's header: the consumer's name for the column, shown over
@@ -30,6 +33,7 @@ function TotalHead({ totalLabel }: Pick<StripProps, 'totalLabel'>) {
 }
 
 export function DenominationStrip({
+  className,
   label,
   columns,
   rows,
@@ -62,6 +66,7 @@ export function DenominationStrip({
           labelWidth && 'sw-denomination-strip-aligned',
           rows.some((row) => row.entry) && 'sw-denomination-strip-entry',
           labelWidth && denominationLabelWidthClass(labelWidth),
+          className,
         )}
         style={aligned}
       >

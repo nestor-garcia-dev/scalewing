@@ -44,11 +44,13 @@ export function DenominationEntryExample() {
         <DenominationGrid
           columns={packColumns}
           label="Tag packs for the morning round"
+          labelAppearance="plain"
           totalLabel="Total"
           rows={[
             {
               id: 'fitted',
               label: 'Fitted',
+              tone: 'success',
               caption: 'this morning',
               cells: fitted,
               cellTones: fitted.map((count, index) =>
@@ -100,9 +102,15 @@ export function DenominationEntryExample() {
           its entry. Captions add a muted line under a row label and a note
           after a column label, in either layout.
         </Text>
+        <Text color="muted" variant="caption">
+          labelAppearance plain (both grids here) sets the row labels in the
+          text color with no tone stripe; a row&apos;s tone still colors its
+          total, as Fitted&apos;s success total shows.
+        </Text>
         <DenominationGrid
           columns={packColumns}
           label="Packs by crew"
+          labelAppearance="plain"
           layout="tiles"
           rows={[
             {
