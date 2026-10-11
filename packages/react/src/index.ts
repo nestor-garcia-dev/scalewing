@@ -34,9 +34,11 @@ export {
 export {
   Notice,
   noticeTones,
+  noticeVariants,
   type NoticeProps,
   type NoticeRole,
   type NoticeTone,
+  type NoticeVariant,
 } from './components/Notice.js';
 export {
   Progress,

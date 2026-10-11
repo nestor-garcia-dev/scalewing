@@ -145,6 +145,31 @@ describe('Notice', () => {
     ).toBe('sw-notice-content sw-notice-stacked');
   });
 
+  it('draws a band as page chrome: no live region unless asked', () => {
+    const { container } = render(
+      <>
+        <Notice title="Field station" tone="warning" variant="band">
+          Records here stay out of the census.
+        </Notice>
+        <Notice role="status" title="Offline" tone="info" variant="band" />
+        <Notice role="alert" title="Closed" tone="danger" variant="band" />
+        <Notice role="none" title="Quiet" tone="success" variant="band" />
+      </>,
+    );
+    const band = container.querySelector('.sw-notice-warning');
+    expect(band?.className).toBe('sw-notice sw-notice-warning sw-notice-band');
+    expect(band?.getAttribute('role')).toBeNull();
+    expect(band?.textContent).toBe(
+      'Field stationRecords here stay out of the census.',
+    );
+    expect(screen.getByRole('status').className).toBe(
+      'sw-notice sw-notice-info sw-notice-band',
+    );
+    expect(() =>
+      render(<Notice title="x" tone="info" variant={'banner' as 'band'} />),
+    ).toThrow(RangeError);
+  });
+
   it('hides the glyph from assistive technology and leaves out empty parts', () => {
     render(
       <Notice icon={<svg data-testid="glyph" />} tone="success">
@@ -197,6 +222,7 @@ describe('Notice CSS', () => {
         'sw-notice-title',
         'sw-notice-body',
         'sw-notice-action',
+        'sw-notice-band',
       ]),
     );
     expect(css).toContain(
@@ -206,7 +232,10 @@ describe('Notice CSS', () => {
       '.sw-notice-warning { --sw-notice-fill: color-mix(in srgb, var(--sw-color-warning) 10%, var(--sw-color-surface)); --sw-notice-ink: color-mix(in srgb, var(--sw-color-warning) 70%, var(--sw-color-text)); }',
     );
     expect(css).toContain(
-      '@media (forced-colors: active) {\n  .sw-notice { border: 1px solid CanvasText; }\n}',
+      '@media (forced-colors: active) {\n  .sw-notice { border: 1px solid CanvasText; }\n  .sw-notice-band { border-width: 0 0 1px; }\n}',
+    );
+    expect(css).toContain(
+      'min-height: var(--sw-control-xs-min-height);\n  padding: var(--sw-space-1) var(--sw-space-4);',
     );
     // A control's muted description inside takes the ink, tested below.
     expect(css).toContain('--sw-color-muted: var(--sw-notice-ink);');

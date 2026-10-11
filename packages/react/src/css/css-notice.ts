@@ -2,6 +2,11 @@ import { typographyVariants } from '@scalewing/tokens';
 
 export const noticeTones = ['info', 'success', 'warning', 'danger'] as const;
 
+export const noticeVariants = ['default', 'band'] as const;
+
+/** `default` is a rounded note in the flow; `band` a full-width strip of page chrome. */
+export type NoticeVariant = (typeof noticeVariants)[number];
+
 /** The notice's meaning: information, a good outcome, a caution, a refusal. */
 export type NoticeTone = (typeof noticeTones)[number];
 
@@ -45,6 +50,7 @@ function toneRules(): string {
 
 const label = typographyVariants.label;
 const body = typographyVariants.body;
+const caption = typographyVariants.caption;
 
 /*
  * A tinted block in the page: the tone's fill, its words in the tone's ink,
@@ -128,8 +134,41 @@ export function cssNoticeClasses(): string {
   margin-block: calc((${label.lineHeight}px - var(--sw-control-sm-min-height)) / 2);
 }
 
+/* A band across the page's full width, such as an environment strip
+   above the app header: square, the xs control height, caption type,
+   its words centered on one line that wraps on a phone. A glyph or an
+   action stays on the words' row (no wrap): the words wrap instead. */
+.sw-notice-band {
+  align-items: center;
+  border-radius: 0;
+  flex-wrap: nowrap;
+  font-size: ${caption.fontSize}px;
+  justify-content: center;
+  letter-spacing: ${caption.letterSpacing}px;
+  line-height: ${caption.lineHeight}px;
+  min-height: var(--sw-control-xs-min-height);
+  padding: var(--sw-space-1) var(--sw-space-4);
+  text-align: center;
+  width: 100%;
+}
+
+.sw-notice-band .sw-notice-content {
+  flex: 0 1 auto;
+  justify-content: center;
+}
+
+.sw-notice-band .sw-notice-icon,
+.sw-notice-band .sw-notice-action { min-height: ${caption.lineHeight}px; }
+
+.sw-notice-band .sw-notice-action { align-self: center; }
+
+.sw-notice-band .sw-notice-action > .sw-button {
+  margin-block: calc((${caption.lineHeight}px - var(--sw-control-sm-min-height)) / 2);
+}
+
 @media (forced-colors: active) {
   .sw-notice { border: 1px solid CanvasText; }
+  .sw-notice-band { border-width: 0 0 1px; }
 }`;
 }
 
@@ -143,5 +182,6 @@ export function noticeClassCatalog(): string[] {
     'sw-notice-title',
     'sw-notice-body',
     'sw-notice-action',
+    'sw-notice-band',
   ];
 }

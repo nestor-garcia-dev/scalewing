@@ -79,5 +79,30 @@ test('Notice tints each tone, announces by tone, and wraps a rich message under 
   await box.check();
   await expect(box).toBeChecked();
 
+  // The band: square, as wide as its column, xs control height, centered.
+  const band = section.getByTestId('notice-band');
+  await expect(band).not.toHaveAttribute('role');
+  await expect(band).toHaveCSS('border-top-left-radius', '0px');
+  await expect(band).toHaveCSS('font-size', '13px');
+  const bandBox = (await band.boundingBox())!;
+  const column = (await band.locator('xpath=..').boundingBox())!;
+  expect(Math.round(bandBox.width)).toBe(Math.round(column.width));
+  expect(bandBox.height).toBeGreaterThanOrEqual(28);
+  const words = (await band.locator('.sw-notice-content').boundingBox())!;
+  const glyph = (await band.locator('.sw-notice-icon').boundingBox())!;
+  expect(
+    // The glyph and the words together are centered.
+    Math.abs(
+      (glyph.x + words.x + words.width) / 2 - (bandBox.x + bandBox.width / 2),
+    ),
+  ).toBeLessThan(2);
+  // Its glyph stays on the words' row, even on a phone.
+  expect(glyph.y).toBeGreaterThanOrEqual(words.y - 2);
+  expect(glyph.y).toBeLessThan(words.y + words.height);
+  expect(glyph.x + glyph.width).toBeLessThanOrEqual(words.x);
+  expect(
+    await textContrast(band.locator('.sw-notice-body')),
+  ).toBeGreaterThanOrEqual(4.5);
+
   await section.screenshot({ path: testInfo.outputPath('notice.png') });
 });

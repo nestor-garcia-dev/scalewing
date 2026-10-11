@@ -6,10 +6,15 @@ import {
 } from 'react';
 
 import { cx } from '../class-names.js';
-import { type NoticeTone, noticeTones } from '../css/css-notice.js';
+import {
+  type NoticeTone,
+  type NoticeVariant,
+  noticeTones,
+  noticeVariants,
+} from '../css/css-notice.js';
 
-export { noticeTones };
-export type { NoticeTone };
+export { noticeTones, noticeVariants };
+export type { NoticeTone, NoticeVariant };
 
 /**
  * How the notice is announced: `status` (polite), `alert` (assertive), or
@@ -36,13 +41,22 @@ export type NoticeProps = Omit<
   action?: ReactNode;
   /** A consumer glyph (Lucide) before the text, hidden from assistive technology. */
   icon?: ReactNode;
-  /** Defaults to `alert` for danger and `status` for the other tones. */
+  /**
+   * Defaults to `alert` for danger and `status` for the other tones; a band
+   * is page chrome and defaults to `none`.
+   */
   role?: NoticeRole;
+  /**
+   * `band` is a full-width square strip in caption type, its words
+   * centered, such as an environment strip above the app header.
+   */
+  variant?: NoticeVariant;
 };
 
 const noticeRoles: readonly NoticeRole[] = ['status', 'alert', 'none'];
 
-function defaultRole(tone: NoticeTone): NoticeRole {
+function defaultRole(tone: NoticeTone, variant: NoticeVariant): NoticeRole {
+  if (variant === 'band') return 'none';
   return tone === 'danger' ? 'alert' : 'status';
 }
 
@@ -65,8 +79,11 @@ function assertNoticeProps(
   tone: NoticeTone,
   title: string | undefined,
   role: NoticeRole | undefined,
+  variant: NoticeVariant,
   hasMessage: boolean,
 ): void {
+  if (!(noticeVariants as readonly unknown[]).includes(variant))
+    throw new RangeError(`Unknown Notice variant: ${String(variant)}`);
   if (!(noticeTones as readonly unknown[]).includes(tone))
     throw new RangeError(`Unknown Notice tone: ${String(tone)}`);
   if (title !== undefined && (typeof title !== 'string' || !title.trim()))
@@ -80,23 +97,39 @@ function assertNoticeProps(
 /**
  * A tinted note in the page's flow: information, a good outcome, a caution
  * or a refusal, with an optional bold lead, glyph and one action. It stays
- * until the consumer removes it. Pass `tabIndex={-1}` and a ref to move
+ * until the consumer removes it. `variant="band"` is the same note as a
+ * full-width strip of page chrome. Pass `tabIndex={-1}` and a ref to move
  * focus to it.
  */
 export const Notice = forwardRef<HTMLDivElement, NoticeProps>(function Notice(
-  { action, children, className, icon, role, title, tone, ...rest },
+  {
+    action,
+    children,
+    className,
+    icon,
+    role,
+    title,
+    tone,
+    variant = 'default',
+    ...rest
+  },
   ref,
 ) {
   const parts = messageParts(children);
   const hasMessage = parts.length > 0;
-  assertNoticeProps(tone, title, role, hasMessage);
-  const announced = role ?? defaultRole(tone);
+  assertNoticeProps(tone, title, role, variant, hasMessage);
+  const announced = role ?? defaultRole(tone, variant);
 
   return (
     <div
       {...rest}
       ref={ref}
-      className={cx('sw-notice', `sw-notice-${tone}`, className)}
+      className={cx(
+        'sw-notice',
+        `sw-notice-${tone}`,
+        variant === 'band' && 'sw-notice-band',
+        className,
+      )}
       role={announced === 'none' ? undefined : announced}
     >
       {icon ? (
