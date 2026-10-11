@@ -7,6 +7,7 @@ import { CheckboxSection } from './sections/checkbox.js';
 import { RadioGroupSection } from './sections/radio-group.js';
 import { SpinnerSection } from './sections/spinner.js';
 import { ProgressSection } from './sections/progress.js';
+import { NoticeSection } from './sections/notice.js';
 import { TooltipSection } from './sections/tooltip.js';
 import { InfoTipSection } from './sections/info-tip.js';
 import { SeparatorSection } from './sections/separator.js';
@@ -147,6 +148,12 @@ export const catalog = [
     label: 'Progress',
     group: 'controls',
     Section: ProgressSection,
+  },
+  {
+    id: 'notice',
+    label: 'Notice',
+    group: 'content',
+    Section: NoticeSection,
   },
   {
     id: 'filter-chips',

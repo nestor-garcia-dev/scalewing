@@ -14,6 +14,7 @@ import { checkboxClassCatalog } from './css-checkbox.js';
 import { radioGroupClassCatalog } from './css-radio-group.js';
 import { spinnerClassCatalog } from './css-spinner.js';
 import { progressClassCatalog } from './css-progress.js';
+import { noticeClassCatalog } from './css-notice.js';
 import { tooltipClassCatalog } from './css-tooltip.js';
 import { infoTipClassCatalog } from './css-info-tip.js';
 import { separatorClassCatalog } from './css-separator.js';
@@ -85,6 +86,7 @@ export function utilityClassCatalog(): string[] {
     ...radioGroupClassCatalog(),
     ...spinnerClassCatalog(),
     ...progressClassCatalog(),
+    ...noticeClassCatalog(),
     ...tooltipClassCatalog(),
     ...infoTipClassCatalog(),
     ...separatorClassCatalog(),

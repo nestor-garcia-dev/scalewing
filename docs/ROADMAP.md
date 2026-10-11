@@ -21,8 +21,14 @@ Teisoro F-011-S02, release R1 "guided-form core": web `Stepper`
 (#113), `DenominationGrid` entry rows (#114), `Steps` / `Step` (#115)
 and `ActionBar` `summary` (#116), released in `@scalewing/react` 1.27.0.
 Next: Teisoro pins 1.27.0 and builds its `GuidedForm` and `BillCount`
-composites on them; release R2 (feedback: `Notice`, `EnvironmentStrip`,
-`Toast` action, `Progress` warning, `Dialog` header and footer) follows.
+composites on them.
+
+Teisoro F-011-S03, release R2 "feedback" (`@scalewing/react` minor):
+`Notice` (`teisoro-notice.md`), then the `EnvironmentStrip` band, `Toast`
+title, action and remaining time, `Progress` warning, `Dialog` header and
+footer, and `DenominationGrid` plain row labels, one pull request each.
+Branch `teisoro/notice` carries the first. Next: review and merge each,
+then release.
 
 FutMas score entry (canvas board W3): `StepperRow`
 (`futmas-stepper-row.md`) and `Field` `variant="search"`
