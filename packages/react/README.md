@@ -402,6 +402,33 @@ A header `TableCell` (`as="th"`) with `sort` (`'ascending'`, `'descending'` or `
 </Inline>
 ```
 
+`MultiSelect` is several choices from a short list behind one trigger, such as which kinds a list shows. The trigger reads the muted `label` and then `summary` (your words for what is chosen, such as "All entries" or "2 services") with a chevron; it opens a panel named by the label with `allLabel` and `clearLabel` commands over one checkbox per option, each with an optional `icon` (use a small `GlyphTile`, never a bare dot) and a hairline before an option with `separatorBefore`. `onChange` reports the checked values in the options' order. It is a disclosure of native checkboxes, not a listbox: the first checkbox takes focus as it opens, Escape closes it and returns focus to the trigger, focus or a press outside closes it, and disabling it while open closes it. Blank words, no or duplicate options, a value that is not an option, or an unknown `align` throw a `RangeError`.
+
+```tsx
+<MultiSelect
+  label="Show"
+  summary={
+    shown.length === options.length ? 'All sightings' : `${shown.length} kinds`
+  }
+  options={[
+    {
+      value: 'forest',
+      label: 'Forest',
+      icon: (
+        <GlyphTile hue="green" size="sm">
+          <Trees />
+        </GlyphTile>
+      ),
+    },
+    { value: 'station', label: 'Station moves', separatorBefore: true },
+  ]}
+  value={shown}
+  onChange={setShown}
+  allLabel="All"
+  clearLabel="Clear"
+/>
+```
+
 `Notice` is a tinted note in the page's flow (`tone`: `info`, `success`, `warning` or `danger`). The fill is the tone mixed into the surface (the accent tint for `info`) and the words are the tone moved toward the text color, so they keep 4.5:1 on the fill in every palette (only where a palette's own `danger` is under 4.5:1 on its surface does the note stay at least as readable as that). `title` is a bold lead; a text message (values interpolated in it included) shares its row while it fits and wraps under it otherwise, and a message with any element (a `span`, or a sentence and a `Checkbox` or `Field` in a `Stack`) is stacked under it. Write the message as plain text or a `span`, not a `Text`, which brings its own color. A control inside keeps its own colors; its muted description takes the notice's ink so it stays readable on the fill. `action` is one link or small `Button` at the end of the row; `icon` is a consumer glyph before the text, hidden from assistive technology. `danger` is `role="alert"` and the other tones `role="status"`; `role="none"` is for a note that is part of the page from the start (no live region). Screen readers announce an `alert` that appears, but not reliably a `status` mounted with its words: to have a status heard, keep the Notice mounted and change its words, or move focus to it. It never dismisses itself. Pass `tabIndex={-1}` and a `ref` to move focus to it. `variant="band"` makes it a full-width square strip of page chrome in caption type with its words centered, at least the `xs` control height, such as an environment strip first on the page (`<Notice tone="warning" variant="band" title="Field station">Records here stay out of the census.</Notice>`). It is as wide as its container, so put it outside any padded column, as the page's first child. A glyph or an action stays on the words' row and the words wrap. A band has no live region unless you pass `role`. An unknown `tone`, `role` or `variant`, a blank `title`, or a note with neither a title nor a message throws a `RangeError`.
 
 ```tsx

@@ -15,6 +15,7 @@ import { cssDateFieldClasses } from './css-date-field.js';
 import { cssDialogClasses } from './css-dialog.js';
 import { cssDialogFrameClasses } from './css-dialog-frame.js';
 import { cssSelectClasses } from './css-select.js';
+import { cssMultiSelectClasses } from './css-multi-select.js';
 import { cssSplitClasses } from './css-split.js';
 import { cssSwitchClasses } from './css-switch.js';
 import { cssTextClasses } from './css-text.js';
@@ -62,6 +63,7 @@ function reducedTransparencyRules(): string {
   .sw-accordion,
   .sw-select-list,
   .sw-action-menu-list,
+  .sw-multi-select-panel,
   .sw-date-field-calendar,
   .sw-toast {
     background: var(--sw-color-surface);
@@ -146,6 +148,8 @@ ${cssAccordionClasses()}
 ${cssSelectClasses()}
 
 ${cssActionMenuClasses()}
+
+${cssMultiSelectClasses()}
 
 ${cssActionBarClasses()}
 

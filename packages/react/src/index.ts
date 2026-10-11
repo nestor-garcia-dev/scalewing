@@ -168,6 +168,12 @@ export type {
   SelectWidth,
 } from './components/Select.js';
 export {
+  MultiSelect,
+  type MultiSelectAlign,
+  type MultiSelectOption,
+  type MultiSelectProps,
+} from './components/MultiSelect.js';
+export {
   Stack,
   type Align,
   type Justify,
