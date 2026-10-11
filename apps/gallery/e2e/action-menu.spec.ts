@@ -307,3 +307,97 @@ test('ActionMenu header shows the station above the commands, outside the arrow 
   await expect(menu).toBeHidden();
   await expect(trigger).toBeFocused();
 });
+
+test('ActionMenu item detail sits at the end with a chevron, read in the name, under a separator', async ({
+  page,
+}, testInfo) => {
+  await page.goto('/#action-menu');
+  if (testInfo.project.name === 'forced-colors')
+    await page.emulateMedia({ forcedColors: 'active' });
+  await page.getByRole('button', { name: 'Ranger', exact: true }).click();
+  const menu = page.getByRole('menu', { name: 'Ranger' });
+  await expect(menu).toBeVisible();
+  const language = menu.getByRole('menuitem', { name: 'Language Español' });
+  await expect(language).toBeFocused();
+  const detail = language.locator('.sw-action-menu-detail');
+  await expect(detail.locator('[lang="es"]')).toHaveText('Español');
+  const chevron = language.locator('.sw-action-menu-chevron');
+  await expect(chevron).toHaveAttribute('aria-hidden', 'true');
+  // The detail and chevron end the row; the chevron is last.
+  const row = (await language.boundingBox())!;
+  const chevronBox = (await chevron.boundingBox())!;
+  const label = (await language.getByText('Language').boundingBox())!;
+  const detailBox = (await detail.boundingBox())!;
+  expect(detailBox.x).toBeGreaterThan(label.x + label.width);
+  expect(row.x + row.width - (chevronBox.x + chevronBox.width)).toBeLessThan(
+    24,
+  );
+  if (testInfo.project.name !== 'forced-colors') {
+    const [colour, muted] = await detail.evaluate((node) => {
+      const probe = document.createElement('span');
+      probe.style.color = 'var(--sw-color-muted)';
+      node.append(probe);
+      const value = getComputedStyle(probe).color;
+      probe.remove();
+      return [getComputedStyle(node).color, value];
+    });
+    expect(colour).toBe(muted);
+  }
+  // A hairline separator sets the leaving command apart.
+  const separator = menu.getByRole('separator');
+  await expect(separator).toHaveCount(1);
+  await expect(separator).toHaveCSS('border-top-width', '1px');
+  // A long detail wraps between words, the chevron stays last, and nothing
+  // leaves the menu.
+  const station = menu.getByRole('menuitem', {
+    name: 'Home station for the winter census Blue Lagoon wetland observatory',
+  });
+  const words = await station
+    .locator(
+      '.sw-action-menu-detail [lang], .sw-action-menu-detail > span:not([aria-hidden])',
+    )
+    .first()
+    .evaluate((node) => {
+      const range = document.createRange();
+      const text = node.firstChild!;
+      const lines = new Map<number, string>();
+      for (let i = 0; i < text.textContent!.length; i += 1) {
+        range.setStart(text, i);
+        range.setEnd(text, i + 1);
+        const top = Math.round(range.getBoundingClientRect().top);
+        lines.set(top, (lines.get(top) ?? '') + text.textContent![i]);
+      }
+      return [...lines.values()].map((line) => line.trim());
+    });
+  for (const line of words)
+    for (const word of line.split(' '))
+      expect('Blue Lagoon wetland observatory'.split(' ')).toContain(word);
+  const menuBox = (await menu.boundingBox())!;
+  const stationChevron = (await station
+    .locator('.sw-action-menu-chevron')
+    .boundingBox())!;
+  const stationText = (await station
+    .locator('.sw-action-menu-detail')
+    .boundingBox())!;
+  expect(stationChevron.x + stationChevron.width).toBeLessThanOrEqual(
+    // The turned chevron's box pokes out a little past its own square.
+    stationText.x + stationText.width + 2,
+  );
+  expect(stationText.x + stationText.width).toBeLessThanOrEqual(
+    menuBox.x + menuBox.width,
+  );
+  if (testInfo.project.name === 'forced-colors')
+    await expect(chevron).toHaveCSS('border-right-style', 'solid');
+
+  // Arrow keys skip the separator.
+  await page.keyboard.press('ArrowDown');
+  await page.keyboard.press('ArrowDown');
+  await page.keyboard.press('ArrowDown');
+  await expect(
+    menu.getByRole('menuitem', { name: 'Leave the reserve' }),
+  ).toBeFocused();
+  await menu.screenshot({
+    path: testInfo.outputPath('action-menu-detail.png'),
+  });
+  await page.keyboard.press('Escape');
+});

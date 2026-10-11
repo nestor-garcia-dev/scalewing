@@ -19,7 +19,7 @@ export function ActionMenuSection() {
   return (
     <Section
       id="action-menu"
-      purpose="ActionMenu holds independent commands. Select chooses a value; ActionMenu does not. The caller supplies localized names, icons, and callbacks. Focus returns to the trigger before a command runs, so a dialog opened from the menu hands focus back to it on close. The menu opens a small gap below its trigger (above it near the bottom of the screen), keeps clear of the screen edges, and lines up with the trigger's end when the trigger ends a row. align end lines it up with the trigger's end even where the start would fit, so a menu from the end of a card stays over that card. On a touch screen the trigger is at least 44 px square and each command 44 px tall. A long command wraps inside the screen. header puts a non-interactive block above the commands, such as the station a ranger is working from: muted, set off by a hairline, outside the arrow keys, and read as the menu's description when it opens. An item's lang marks a label in another language, such as English on a Spanish page."
+      purpose="ActionMenu holds independent commands. Select chooses a value; ActionMenu does not. The caller supplies localized names, icons, and callbacks. Focus returns to the trigger before a command runs, so a dialog opened from the menu hands focus back to it on close. The menu opens a small gap below its trigger (above it near the bottom of the screen), keeps clear of the screen edges, and lines up with the trigger's end when the trigger ends a row. align end lines it up with the trigger's end even where the start would fit, so a menu from the end of a card stays over that card. On a touch screen the trigger is at least 44 px square and each command 44 px tall. A long command wraps inside the screen. header puts a non-interactive block above the commands, such as the station a ranger is working from: muted, set off by a hairline, outside the arrow keys, and read as the menu's description when it opens. An item's lang marks a label in another language, such as English on a Spanish page. An item's detail is its current value at the end with a chevron, such as Language Español, read in its name; separatorBefore sets a command, such as leaving, apart with a hairline."
       title="ActionMenu"
       usage={`<ActionMenu
   label="Sighting actions"
@@ -123,6 +123,51 @@ export function ActionMenuSection() {
             ]}
             label="Acciones del avistamiento"
             trigger="Acciones"
+          />
+        </Inline>
+        <Inline gap={3} justify="end">
+          <ActionMenu
+            align="end"
+            header={
+              <>
+                <Text as="strong" variant="label">
+                  Ranger Kim Ade
+                </Text>
+                <Text as="span" color="muted" variant="caption">
+                  Warden · North reserve
+                </Text>
+              </>
+            }
+            items={[
+              {
+                id: 'language',
+                label: 'Language',
+                detail: 'Español',
+                detailLang: 'es',
+                onSelect: () => setLastAction('Language'),
+              },
+              {
+                id: 'appearance',
+                label: 'Appearance',
+                detail: 'Light',
+                onSelect: () => setLastAction('Appearance'),
+              },
+              {
+                id: 'station',
+                label: 'Home station for the winter census',
+                detail: 'Blue Lagoon wetland observatory',
+                onSelect: () => setLastAction('Home station'),
+              },
+              {
+                id: 'leave',
+                label: 'Leave the reserve',
+                destructive: true,
+                separatorBefore: true,
+                onSelect: () => setLastAction('Leave the reserve'),
+              },
+            ]}
+            label="Ranger"
+            trigger="Kim Ade"
           />
         </Inline>
         <Card padding={3}>

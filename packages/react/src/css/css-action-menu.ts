@@ -1,5 +1,6 @@
 import { typographyVariants } from '@scalewing/tokens';
 
+import { chevronStroke } from './chevron.js';
 import { zIndex } from './stacking.js';
 import { coarsePointerQuery, touchTarget } from './touch-target.js';
 
@@ -117,6 +118,43 @@ export function cssActionMenuClasses(): string {
   color: var(--sw-color-danger);
 }
 
+/*
+ * A command's detail: its current value at the inline end in the muted
+ * colour, then a chevron pointing to the inline end (mirrored right to
+ * left). A long value wraps between words, never inside one (the command
+ * itself may break anywhere), and the chevron stays last.
+ */
+.sw-action-menu-detail {
+  align-items: center;
+  color: var(--sw-color-muted);
+  display: inline-flex;
+  gap: var(--sw-space-2);
+  margin-inline-start: auto;
+  overflow-wrap: normal;
+  padding-inline-start: var(--sw-space-3);
+  text-align: end;
+}
+
+.sw-action-menu-chevron {
+  ${chevronStroke}
+  flex: none;
+  transform: rotate(-45deg);
+}
+
+.sw-action-menu-chevron:dir(rtl) {
+  transform: rotate(135deg);
+}
+
+/* A hairline that sets a command apart from the ones above. */
+.sw-action-menu-separator {
+  border-top: 1px solid var(--sw-color-border);
+  margin-block: var(--sw-space-1);
+}
+
+@media (forced-colors: active) {
+  .sw-action-menu-chevron { border-color: CanvasText; }
+}
+
 /* A coarse pointer gets the full touch target: the trigger at least square, and every command as tall. */
 @media ${coarsePointerQuery} {
   .sw-action-menu-trigger {
@@ -139,5 +177,8 @@ export function actionMenuClassCatalog(): string[] {
     'sw-action-menu-items',
     'sw-action-menu-item',
     'sw-action-menu-item-danger',
+    'sw-action-menu-detail',
+    'sw-action-menu-chevron',
+    'sw-action-menu-separator',
   ];
 }
