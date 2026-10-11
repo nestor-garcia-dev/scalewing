@@ -66,7 +66,12 @@ export {
   type RadioGroupOption,
   type RadioGroupProps,
 } from './components/RadioGroup.js';
-export { AppHeader, type AppHeaderProps } from './components/AppHeader.js';
+export {
+  AppHeader,
+  appHeaderAppearances,
+  type AppHeaderAppearance,
+  type AppHeaderProps,
+} from './components/AppHeader.js';
 export {
   Badge,
   type BadgeProps,

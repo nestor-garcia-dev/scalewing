@@ -41,7 +41,11 @@ export type BoxProps = SpacingProps &
     as?: BoxElement;
     background?: Extract<SemanticColorKey, 'background' | 'surface'>;
     radius?: RadiusStep;
-    /** A hairline token border: `true` is solid, `'dashed'` marks a space to fill in by hand. */
+    /**
+     * A hairline token border: `true` is solid, `'dashed'` marks a space to
+     * fill in by hand, `'bottom'` is a hairline under the box only (a
+     * full-width bar, such as a section's sub-navigation).
+     */
     border?: BoxBorder;
   };
 

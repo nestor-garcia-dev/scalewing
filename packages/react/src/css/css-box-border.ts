@@ -1,4 +1,9 @@
-export type BoxBorderValue = boolean | 'dashed';
+/**
+ * `true` (solid) or `'dashed'` draws the hairline all round; `'bottom'`
+ * draws it under the box only, for a full-width bar such as a header or a
+ * section's sub-navigation.
+ */
+export type BoxBorderValue = boolean | 'dashed' | 'bottom';
 
 const borderStyles = ['solid', 'dashed'] as const;
 
@@ -13,8 +18,11 @@ export function boxBorderClass(
   border: BoxBorderValue | undefined,
 ): string | undefined {
   if (!border) return undefined;
+  if (border === 'bottom') return bottomBorderClass;
   return borderClass(border === 'dashed' ? 'dashed' : 'solid');
 }
+
+const bottomBorderClass = 'sw-border-bottom';
 
 /*
  * A Box `border` is a token hairline. These rules are emitted after every
@@ -23,14 +31,15 @@ export function boxBorderClass(
  * forced colors the system border color replaces the token and the style stays.
  */
 export function cssBoxBorderClasses(): string {
-  return borderStyles
-    .map(
+  return [
+    ...borderStyles.map(
       (style) =>
         `.${borderClass(style)} { border: 1px ${style} var(--sw-color-border); }`,
-    )
-    .join('\n');
+    ),
+    `.${bottomBorderClass} { border-width: 0 0 1px; border-style: solid; border-color: var(--sw-color-border); }`,
+  ].join('\n');
 }
 
 export function boxBorderClassCatalog(): string[] {
-  return borderStyles.map(borderClass);
+  return [...borderStyles.map(borderClass), bottomBorderClass];
 }

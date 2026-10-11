@@ -1,5 +1,9 @@
 import { typographyVariants } from '@scalewing/tokens';
 
+import {
+  appHeaderBarClassCatalog,
+  cssAppHeaderBarClasses,
+} from './css-app-header-bar.js';
 import { cssNavWordsClasses, navWordsClassCatalog } from './css-nav-words.js';
 import { zIndex } from './stacking.js';
 import { coarsePointerQuery, touchTarget } from './touch-target.js';
@@ -16,6 +20,8 @@ export function cssChromeClasses(): string {
   backdrop-filter: blur(var(--sw-glass-blur)) saturate(var(--sw-glass-saturate));
   -webkit-backdrop-filter: blur(var(--sw-glass-blur)) saturate(var(--sw-glass-saturate));
 }
+
+${cssAppHeaderBarClasses()}
 
 .sw-app-header-sticky {
   position: sticky;
@@ -78,6 +84,7 @@ export function chromeClassCatalog(): string[] {
   return [
     'sw-app-header',
     'sw-app-header-sticky',
+    ...appHeaderBarClassCatalog(),
     'sw-nav',
     ...navWordsClassCatalog(),
     'sw-field-xs',

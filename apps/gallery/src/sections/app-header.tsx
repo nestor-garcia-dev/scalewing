@@ -17,7 +17,7 @@ export function AppHeaderSection() {
   return (
     <Section
       id="app-header"
-      purpose="AppHeader is the sticky glass chrome for product title, compact Field, Nav, and filters. Nav marks the current page with aria-current. Native selects inherit canvas chevrons and accent focus. Do not restyle this in app CSS."
+      purpose="AppHeader is the sticky glass chrome for product title, compact Field, Nav, and filters. Nav marks the current page with aria-current. Native selects inherit canvas chevrons and accent focus. Do not restyle this in app CSS. The bar appearance is a full-width band of the solid surface with a hairline under it, no rounding; a sub-bar under it is a Box on the surface with a bottom border."
       title="AppHeader"
       usage={`<AppHeader>
   <Inline justify="between" wrap>
@@ -85,6 +85,38 @@ export function AppHeaderSection() {
           </Inline>
         </Stack>
       </AppHeader>
+      <Stack gap={0}>
+        <AppHeader appearance="bar" paddingY={3} sticky={false}>
+          <Inline align="center" gap={5} justify="between" wrap>
+            <Text as="strong" variant="label">
+              Field station
+            </Text>
+            <Nav appearance="words" aria-label="Station areas">
+              <Box aria-current="page" as="a" href="#app-header">
+                Herds
+              </Box>
+              <Box as="a" href="#nav">
+                Nests
+              </Box>
+            </Nav>
+          </Inline>
+        </AppHeader>
+        <Box
+          aria-label="Herd sections"
+          as="nav"
+          background="surface"
+          border="bottom"
+          paddingX={4}
+          paddingY={2}
+        >
+          <Text variant="label">Herds: today, tallies, reports</Text>
+        </Box>
+      </Stack>
+      <Text color="muted" variant="caption">
+        The bar appearance draws the header as a full-width band of the surface
+        with a hairline under it; a Box with a bottom border gives a sub-bar the
+        same hairline.
+      </Text>
     </Section>
   );
 }
