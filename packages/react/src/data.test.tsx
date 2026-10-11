@@ -318,7 +318,7 @@ describe('Table', () => {
     );
 
     const byHeading = screen.getByRole('group', { name: 'Census' });
-    expect(byHeading.className).toBe('sw-table-wrap');
+    expect(byHeading.className).toBe('sw-table-wrap sw-scroll-fits');
     expect(byHeading.tabIndex).toBe(0);
     expect(
       byHeading.contains(screen.getByRole('table', { name: 'Census' })),

@@ -5,7 +5,10 @@ import {
   render,
   screen,
 } from '@testing-library/react';
+import { renderToString } from 'react-dom/server';
 import { afterEach, describe, expect, it } from 'vitest';
+
+import { DenominationGrid } from './components/DenominationGrid.js';
 
 import { Table, TableBody, TableCell, TableRow } from './components/Table.js';
 import {
@@ -64,9 +67,47 @@ describe('Table scroll cue', () => {
     return screen.getByRole('group', { name: 'Sightings' });
   }
 
-  it('adds no cue to a table that fits', () => {
+  it('marks a measured table that fits with sw-scroll-fits and no shade', () => {
     const region = renderTable();
-    expect(region.className).toBe('sw-table-wrap');
+    expect(region.className).toBe('sw-table-wrap sw-scroll-fits');
+  });
+
+  it('leaves an unmeasured (server-rendered) table without the fits mark', () => {
+    const html = renderToString(
+      <Table aria-label="Sightings">
+        <TableBody>
+          <TableRow>
+            <TableCell>Heron</TableCell>
+          </TableRow>
+        </TableBody>
+      </Table>,
+    );
+    expect(html).toContain('class="sw-table-wrap"');
+    expect(html).not.toContain('sw-scroll-fits');
+  });
+
+  it('drops the fits mark while the table overflows and takes it back when it fits', () => {
+    const region = renderTable();
+    setMetrics(region, { scrollLeft: 0, scrollWidth: 800, clientWidth: 390 });
+    fireEvent.scroll(region);
+    expect(region.className).toBe('sw-table-wrap sw-scroll-more-end');
+    setMetrics(region, { scrollLeft: 0, scrollWidth: 390, clientWidth: 390 });
+    fireEvent.scroll(region);
+    expect(region.className).toBe('sw-table-wrap sw-scroll-fits');
+  });
+
+  it('never marks a region that does not ask for it, such as a DenominationGrid strip', () => {
+    render(
+      <DenominationGrid
+        columns={[{ key: 'one', label: '$1' }]}
+        label="Bills"
+        layout="strip"
+        rows={[{ id: 'in', label: 'In', cells: [1] }]}
+      />,
+    );
+    expect(
+      screen.getByRole('group', { name: 'Bills' }).className,
+    ).not.toContain('sw-scroll-fits');
   });
 
   it('marks each edge with content past it as the table scrolls', () => {

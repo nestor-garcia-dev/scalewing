@@ -9,21 +9,34 @@ import {
   scrollOverflow,
 } from '../scroll-overflow.js';
 
+/** A box's overflow, and whether it has been measured yet. */
+export type MeasuredScrollOverflow = ScrollOverflow & { measured: boolean };
+
+const unmeasured: MeasuredScrollOverflow = {
+  ...noScrollOverflow,
+  measured: false,
+};
+
 /**
  * Follows which inline edges of a scroll box have more content past them:
  * on mount, on every scroll, and whenever the box or its content changes
- * size. Before mount (and on the server) it reports no overflow, so the
- * box renders as it always has until it is measured.
+ * size. Before mount (and on the server) it reports no overflow and
+ * `measured: false`, so the box renders as it always has until it is
+ * measured; a measured box with neither edge set fits its content.
  */
 export function useScrollOverflow(
   ref: RefObject<HTMLElement | null>,
-): ScrollOverflow {
-  const [overflow, setOverflow] = useState<ScrollOverflow>(noScrollOverflow);
+): MeasuredScrollOverflow {
+  const [overflow, setOverflow] = useState<MeasuredScrollOverflow>(unmeasured);
 
   useEffect(() => {
     const box = ref.current;
     if (!box) return;
 
+    // The metrics hold on a box that does not scroll (a fitting table
+    // region set to overflow: visible): scrollWidth still reports content
+    // past its edge, so the box turns back into a scroll box as it widens.
+    // Keep it that way; a scroll-container-only check would pin it open.
     function measure() {
       if (!box) return;
       const next = scrollOverflow(
@@ -32,7 +45,9 @@ export function useScrollOverflow(
         box.clientWidth,
       );
       setOverflow((current) =>
-        sameScrollOverflow(current, next) ? current : next,
+        current.measured && sameScrollOverflow(current, next)
+          ? current
+          : { ...next, measured: true },
       );
     }
 

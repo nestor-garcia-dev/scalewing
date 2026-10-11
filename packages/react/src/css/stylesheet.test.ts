@@ -226,7 +226,7 @@ describe('generated CSS', () => {
     const popups =
       '.sw-select-list, .sw-action-menu-list, .sw-multi-select-panel, .sw-tooltip:not([hidden]), .sw-date-field-calendar';
     expect(css).toContain(
-      `.sw-card-glass:has(${popups}),\n.sw-accordion:has(${popups}) {\n  position: relative;\n  z-index: 3;\n}`,
+      `.sw-card-glass:has(${popups}),\n.sw-accordion:has(${popups}) {\n  position: relative;\n  z-index: 4;\n}`,
     );
   });
 

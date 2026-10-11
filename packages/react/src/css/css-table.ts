@@ -10,6 +10,10 @@ import {
   tableLedgerClassCatalog,
 } from './css-table-ledger.js';
 import {
+  cssTableFooterClasses,
+  tableFooterClassCatalog,
+} from './css-table-footer.js';
+import {
   cssTableSortClasses,
   tableSortClassCatalog,
 } from './css-table-sort.js';
@@ -105,6 +109,8 @@ ${cssTableSortClasses()}
 
 ${cssTableLedgerClasses()}
 
+${cssTableFooterClasses()}
+
 ${selectedRowRules()}`;
 }
 
@@ -121,5 +127,6 @@ export function tableClassCatalog(): string[] {
     ...tableLayoutClassCatalog(),
     ...tableSortClassCatalog(),
     ...tableLedgerClassCatalog(),
+    ...tableFooterClassCatalog(),
   ];
 }
