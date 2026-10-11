@@ -12,9 +12,13 @@ export function NoticeSection() {
   return (
     <Section
       id="notice"
-      purpose="Notice is a tinted note in the page's flow: info, success, warning or danger. A bold title leads, the message follows on the same row while it fits, and one action ends the row. Danger is announced as an alert and the others as a status; role none is for a note that is part of the page from the start. The note stays until the page removes it; pass tabIndex -1 and a ref to move focus to it."
+      purpose="Notice is a tinted note in the page's flow: info, success, warning or danger. A bold title leads, the message follows on the same row while it fits, and one action ends the row. Danger is announced as an alert and the others as a status; role none is for a note that is part of the page from the start. variant band is a full-width square strip of page chrome, such as an environment strip above the app header: caption type, the words centered, no live region by default. The note stays until the page removes it; pass tabIndex -1 and a ref to move focus to it."
       title="Notice"
-      usage={`<Notice tone="danger" title="$30.00 short.">
+      usage={`<Notice tone="warning" variant="band" title="Field station">
+  Records here stay out of the census.
+</Notice>
+
+<Notice tone="danger" title="$30.00 short.">
   Add the bills or change the amount.
 </Notice>
 
@@ -33,6 +37,15 @@ export function NoticeSection() {
 </Notice>`}
     >
       <Stack gap={3}>
+        <Notice
+          data-testid="notice-band"
+          icon={<Glyph grid={24} path={info} size={16} />}
+          title="Field station"
+          tone="warning"
+          variant="band"
+        >
+          Records here stay out of the census.
+        </Notice>
         <Notice
           action={
             <Button onPress={() => undefined} size="sm" variant="ghost">
