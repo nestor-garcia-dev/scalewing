@@ -1,4 +1,4 @@
-Status: implemented on `futmas/bracket` for the next `@scalewing/react-native` minor release.
+Status: implemented in `@scalewing/react-native` 1.16.0.
 
 Scalewing request from FutMas.
 
