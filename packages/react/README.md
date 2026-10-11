@@ -227,6 +227,8 @@ A `Button` that toggles something passes `aria-pressed`. The pressed button gets
 
 `ActionMenu` `header` is a non-interactive block above the commands, such as who is signed in: each child a line of its own, in the caption size and the muted color, set off by a hairline. It sits outside the `role="menu"` element and the arrow keys, and is the menu's description (`aria-describedby`), read as the menu opens; `null`, `false` and `''` are no header. An item's `lang` (a BCP 47 tag) marks its label as another language than the page's, such as "English" on a Spanish page (WCAG 3.1.2).
 
+`ActionMenu` `triggerAppearance="text"` (opt-in; default `"framed"`, `actionMenuTriggerAppearances`) draws the trigger as its words (`trigger`, or `label`) in label type at medium weight in the text color, with the shared muted chevron pointing down after them and no fill or outline; the quiet grey fill shows on hover and while the menu is open. It is the sm control height (the 44 px target on a coarse pointer). Name the trigger with `label` as before, and include the words shown in it (WCAG 2.5.3, so voice control can say them): a person's name that opens their account menu takes a `label` such as "Account, Ada Okafor". The trigger's words are one flex item (mixed inline content keeps its spaces), then the chevron. Forced colors draw its border in the system's border color, the chevron in CanvasText, and an open trigger's border in Highlight. An unknown value throws a `RangeError`.
+
 ```tsx
 <ActionMenu
   header={

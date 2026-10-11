@@ -1,6 +1,10 @@
 import { typographyVariants } from '@scalewing/tokens';
 
 import { chevronStroke } from './chevron.js';
+import {
+  actionMenuTriggerClassCatalog,
+  cssActionMenuTriggerClasses,
+} from './css-action-menu-trigger.js';
 import { zIndex } from './stacking.js';
 import { coarsePointerQuery, touchTarget } from './touch-target.js';
 import { quietFill } from './quiet-fill.js';
@@ -166,7 +170,9 @@ export function cssActionMenuClasses(): string {
   .sw-action-menu-item {
     min-height: ${touchTarget};
   }
-}`;
+}
+
+${cssActionMenuTriggerClasses()}`;
 }
 
 export function actionMenuClassCatalog(): string[] {
@@ -181,5 +187,6 @@ export function actionMenuClassCatalog(): string[] {
     'sw-action-menu-detail',
     'sw-action-menu-chevron',
     'sw-action-menu-separator',
+    ...actionMenuTriggerClassCatalog(),
   ];
 }
