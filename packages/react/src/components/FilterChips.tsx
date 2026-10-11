@@ -3,6 +3,7 @@
 import { useId } from 'react';
 
 import { cx } from '../class-names.js';
+import { FieldErrorRegion } from './FieldErrorRegion.js';
 
 export type FilterChipOption = {
   value: string;
@@ -17,9 +18,25 @@ function isCount(count: number | undefined): boolean {
 
 export type FilterChipsProps = {
   label: string;
+  /** The chosen option's value, or `''` while nothing is chosen yet. */
   value: string;
   onChange: (value: string) => void;
   options: readonly FilterChipOption[];
+  /**
+   * A choice must be made, such as a reason: each radio is `required` and
+   * the label shows the required mark (hidden from assistive technology,
+   * which reads the radios' own state).
+   */
+  required?: boolean;
+  /**
+   * A message under the chips, such as "Pick a reason": a polite live
+   * region linked to the group by `aria-describedby`; the group is marked
+   * invalid and every chip takes the danger edge. An empty string is no
+   * error.
+   */
+  error?: string;
+  /** More ids that describe the group, such as a hint beside it. */
+  'aria-describedby'?: string;
 };
 
 export function FilterChips({
@@ -27,8 +44,15 @@ export function FilterChips({
   value,
   onChange,
   options,
+  required = false,
+  error,
+  'aria-describedby': describedByProp,
 }: FilterChipsProps) {
   const name = useId();
+  const errorId = useId();
+  const describedBy = [describedByProp?.trim() || null, error ? errorId : null]
+    .filter((id) => id !== null)
+    .join(' ');
   const values = options.map((option) => option.value);
   if (!label.trim()) throw new RangeError('label must not be empty');
   if (
@@ -38,14 +62,26 @@ export function FilterChips({
     throw new RangeError('options must have nonempty values and labels');
   if (new Set(values).size !== values.length)
     throw new RangeError('options must have unique values');
-  if (!values.includes(value))
-    throw new RangeError('value must match an option');
+  if (value !== '' && !values.includes(value))
+    throw new RangeError('value must match an option or be empty');
   if (options.some((option) => !isCount(option.count)))
     throw new RangeError('count must be a non-negative integer');
 
   return (
-    <fieldset className="sw-filter-chips">
-      <legend className="sw-filter-chips-legend">{label}</legend>
+    <fieldset
+      aria-describedby={describedBy || undefined}
+      aria-invalid={error ? true : undefined}
+      className="sw-filter-chips"
+    >
+      <legend className="sw-filter-chips-legend">
+        {label}
+        {required ? (
+          <span aria-hidden="true" className="sw-field-required">
+            {' '}
+            *
+          </span>
+        ) : null}
+      </legend>
       <span className="sw-filter-chips-options">
         {options.map((option) => (
           <label
@@ -64,6 +100,7 @@ export function FilterChips({
                 if (event.currentTarget.checked && !option.disabled)
                   onChange(option.value);
               }}
+              required={required}
               type="radio"
               value={option.value}
             />
@@ -79,6 +116,11 @@ export function FilterChips({
           </label>
         ))}
       </span>
+      <FieldErrorRegion
+        className="sw-filter-chips-error"
+        id={errorId}
+        message={error}
+      />
     </fieldset>
   );
 }

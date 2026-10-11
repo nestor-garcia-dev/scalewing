@@ -2,6 +2,7 @@ import { typographyVariants } from '@scalewing/tokens';
 
 const label = typographyVariants.label;
 const data = typographyVariants.data;
+const caption = typographyVariants.caption;
 
 export function cssFilterChipsClasses(): string {
   return `.sw-filter-chips {
@@ -103,11 +104,35 @@ export function cssFilterChipsClasses(): string {
   opacity: var(--sw-disabled-opacity);
 }
 
+/*
+ * An error: the message under the chips in the danger colour (a polite live
+ * region, out of the layout while empty) and every chip's edge in danger,
+ * the chosen one too (it keeps its accent fill), in normal and forced
+ * colours alike.
+ */
+.sw-filter-chips-error {
+  color: var(--sw-color-danger);
+  display: block;
+  font-family: var(--sw-font-sans);
+  font-size: ${caption.fontSize}px;
+  line-height: ${caption.lineHeight}px;
+  padding-top: var(--sw-space-2);
+}
+
+.sw-filter-chips-error:empty { position: absolute; }
+
+.sw-filter-chips[aria-invalid='true'] .sw-filter-chip-face {
+  border-color: var(--sw-color-danger);
+}
+
 @media (forced-colors: active) {
   .sw-filter-chip-face { background: Canvas; border-color: CanvasText; color: CanvasText; }
+  .sw-filter-chips-error { color: Mark; }
   .sw-filter-chip-input:checked + .sw-filter-chip-face { background: Highlight; border-color: Highlight; color: HighlightText; }
   .sw-filter-chip-input:focus-visible + .sw-filter-chip-face { outline-color: Highlight; }
   .sw-filter-chip-count { color: inherit; }
+  /* After the checked rule, so every chip, the chosen one too, takes the edge. */
+  .sw-filter-chips[aria-invalid='true'] .sw-filter-chip-face { border-color: Mark; }
 }`;
 }
 
@@ -121,5 +146,6 @@ export function filterChipsClassCatalog(): string[] {
     'sw-filter-chip-face',
     'sw-filter-chip-count',
     'sw-filter-chip-quiet',
+    'sw-filter-chips-error',
   ];
 }

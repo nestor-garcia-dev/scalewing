@@ -85,3 +85,55 @@ test('FilterChips wraps long labels and supports native single-choice keyboard b
   ).toBeVisible();
   await expect(selva).toBeChecked();
 });
+
+test('FilterChips required with an error marks the group and clears on a choice', async ({
+  page,
+}, testInfo) => {
+  await page.goto('/#filter-chips');
+  const forced = testInfo.project.name === 'forced-colors';
+  if (forced) await page.emulateMedia({ forcedColors: 'active' });
+  const group = page.getByRole('group', { name: /Why remove this sighting/ });
+  await expect(group.getByRole('radio', { checked: true })).toHaveCount(0);
+  for (const radio of await group.getByRole('radio').all())
+    await expect(radio).toHaveJSProperty('required', true);
+  await expect(group).toHaveAccessibleDescription(
+    'The reason goes on the census record.',
+  );
+  await page.getByRole('button', { name: 'Remove sighting' }).click();
+  await expect(group).toHaveAttribute('aria-invalid', 'true');
+  await expect(group).toHaveAccessibleDescription(
+    'The reason goes on the census record. Pick a reason to remove the sighting.',
+  );
+  const face = group.locator('.sw-filter-chip-face').first();
+  // Danger in normal colours, Mark in forced colours.
+  const [edge, expected] = await face.evaluate(
+    (node, colour) => {
+      const probe = document.createElement('span');
+      probe.style.color = colour;
+      node.append(probe);
+      const value = getComputedStyle(probe).color;
+      probe.remove();
+      return [getComputedStyle(node).borderTopColor, value];
+    },
+    forced ? 'Mark' : 'var(--sw-color-danger)',
+  );
+  expect(edge).toBe(expected);
+  await group.screenshot({
+    path: testInfo.outputPath('filter-chips-error.png'),
+  });
+  // From the keyboard: Tab into the group with nothing checked, then an
+  // arrow key chooses and clears the error.
+  await page.getByRole('button', { name: 'Remove sighting' }).focus();
+  await page.keyboard.press('Shift+Tab');
+  await expect(group.getByRole('radio').last()).toBeFocused();
+  await page.keyboard.press('ArrowLeft');
+  await expect(
+    group.getByRole('radio', { name: 'Wrong species' }),
+  ).toBeChecked();
+  await expect(group).not.toHaveAttribute('aria-invalid', 'true');
+  await group.getByRole('radio', { name: 'Counted twice' }).check();
+  await page.getByRole('button', { name: 'Remove sighting' }).click();
+  await expect(page.getByTestId('filter-chips-saved')).toHaveText(
+    'Removed: duplicate',
+  );
+});
