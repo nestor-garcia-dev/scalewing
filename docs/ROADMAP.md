@@ -38,8 +38,10 @@ Teisoro F-011-S05, release R4 "ledger and navigation": `Table` ledger
 extensions (#132), `TableFooter` with a sticky total (#133), `SectionNav`
 counts and the filled appearance (#134), `ActionMenuItem` `detail` (#135),
 `ButtonGroup` `attached` (#136) and `FilterChips` validation (#137),
-released in `@scalewing/react` 1.30.0. Next: release R5 "search": `Field`
-`variant="search"` and a web `Combobox`.
+released in `@scalewing/react` 1.30.0.
+
+Teisoro F-011-S06, release R5 "search": `Field` `variant="search"` (#139)
+and a web `Combobox` (#140), released in `@scalewing/react` 1.31.0.
 
 FutMas score entry (canvas board W3): `StepperRow`
 (`futmas-stepper-row.md`) and `Field` `variant="search"`

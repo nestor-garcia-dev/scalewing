@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: accepted 2026-10-11 for the `@scalewing/react` 1.31.0 release (Teisoro F-011-S06, release R5 "search", item 21; the redesign inventory's row 24 and risk 8). Uses the `Field` input (`teisoro-field-search.md`, item 20).
+Status: released in `@scalewing/react` 1.31.0 (PR #140; Teisoro F-011-S06, release R5 "search", item 21; the redesign inventory's row 24 and risk 8). Uses the `Field` input (`teisoro-field-search.md`, item 20).
 Renderer: react
 Missing surface: `Combobox`, a text input with grouped suggestions, an action and an empty state.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: the checks step (StepCheck2, 2a, 3, Blocked, Edit) and CompanyLookup pick the company on a check by typing: "LUIS PÉREZ's companies" under an empty field, "All companies" once there is text, each company with a badge ("Warning", "Blocked") and a muted line ("2 checks · last Sep 28"), a blocked company shown but not choosable, a "+ New company “acme”" action at the end, and a note ("Not here? Type the name to search every company or add a new one."). `Select` is a button listbox with no typing; `Field` has no list. Teisoro owns no CSS.
