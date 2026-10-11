@@ -31,6 +31,7 @@ import { cssGridClasses } from './css-grid.js';
 import { cssGridSpanClasses } from './css-grid-span.js';
 import { cssDenominationGridClasses } from './css-denomination-grid.js';
 import { cssFieldClasses } from './css-field.js';
+import { cssStepperClasses } from './css-stepper.js';
 import { cssToastClasses } from './css-toast.js';
 import { cssBoxBorderClasses } from './css-box-border.js';
 import { cssPopupHostRules } from './stacking.js';
@@ -165,6 +166,8 @@ ${cssGridSpanClasses()}
 ${cssDenominationGridClasses()}
 
 ${cssFieldClasses()}
+
+${cssStepperClasses()}
 
 ${cssSplitClasses()}
 

@@ -17,6 +17,15 @@ release workflow completed successfully.
 
 ## Next action
 
+Teisoro F-011-S02, release R1 "guided-form core" (`@scalewing/react`
+1.27.0), one request and one pull request each, in order: web `Stepper`
+(`teisoro-stepper.md`), `DenominationGrid` entry rows
+(`teisoro-denomination-grid-entry.md`), `Steps` / `Step`
+(`teisoro-steps.md`), and `ActionBar` `summary`
+(`teisoro-action-bar-summary.md`). Branch `teisoro/web-stepper` carries
+the first. Next: review and merge each, then release `@scalewing/react`
+(minor) and Teisoro pins it for its guided forms.
+
 FutMas score entry (canvas board W3): `StepperRow`
 (`futmas-stepper-row.md`) and `Field` `variant="search"`
 (`futmas-search-field.md`), so a goal-scorer sheet lists a roster as
