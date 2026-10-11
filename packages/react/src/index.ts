@@ -148,6 +148,8 @@ export {
 } from './components/Steps.js';
 export {
   Stepper,
+  stepperLimitAppearances,
+  type StepperLimitAppearance,
   type StepperProps,
   type StepperWidth,
 } from './components/Stepper.js';
@@ -260,11 +262,16 @@ export type { GridColumnSpan } from './css/css-grid-span.js';
 export type { ColumnSpanProps } from './column-span-classes.js';
 export {
   DenominationGrid,
+  denominationCellToneAppearances,
+  denominationGridFrames,
   denominationLabelAppearances,
+  denominationTotalEmphases,
 } from './components/DenominationGrid.js';
 export type {
+  DenominationCellToneAppearance,
   DenominationGridColumn,
   DenominationGridEntry,
+  DenominationGridFrame,
   DenominationGridLayout,
   DenominationGridProps,
   DenominationGridRow,
@@ -273,6 +280,7 @@ export type {
   DenominationGridTone,
   DenominationLabelAppearance,
   DenominationLabelWidth,
+  DenominationTotalEmphasis,
 } from './components/DenominationGrid.js';
 
 export { FilterChips } from './components/FilterChips.js';

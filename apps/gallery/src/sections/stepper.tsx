@@ -51,7 +51,7 @@ export function StepperSection() {
     <Section
       id="stepper"
       purpose={
-        'Stepper is a whole-number count changed with − and + or typed: one tab stop (a spin button that ArrowUp and ArrowDown step), with the buttons as pointer targets beside it. − stops at min and + at max; an empty box counts as min. Typed counts are reported as typed, even past max, so the page can say why in error; the box refuses anything but digits. The count is a few digits wide, or fills a table cell with width="full".'
+        'Stepper is a whole-number count changed with − and + or typed: one tab stop (a spin button that ArrowUp and ArrowDown step), with the buttons as pointer targets beside it. − stops at min and + at max; an empty box counts as min. Typed counts are reported as typed, even past max, so the page can say why in error; the box refuses anything but digits. The count is a few digits wide, or fills a table cell with width="full". limitAppearance="plain" keeps − at min and + at max in their usual look instead of faded; they stay disabled.'
       }
       title="Stepper"
       usage={`<Stepper
@@ -76,6 +76,12 @@ export function StepperSection() {
           <Count changed initial={8} label="Storks, suggested" />
           <Count disabled initial={3} label="Cranes" />
           <Count initial={11} label="Pelicans, counted" readOnly />
+          <Count
+            initial={null}
+            label="Ibises, − kept plain at 0"
+            limitAppearance="plain"
+            placeholder="0"
+          />
         </Inline>
         <Stack gap={2}>
           <Text color="muted" variant="caption">

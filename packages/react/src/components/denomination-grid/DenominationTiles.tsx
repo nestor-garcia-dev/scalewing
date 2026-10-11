@@ -15,7 +15,7 @@ type TilesProps = Required<
   >
 > &
   Pick<DenominationGridProps, 'subtotal'> & {
-    /** The row labels' appearance class, if any. */
+    /** The grid's appearance classes (labels, totals), if any. */
     className?: string;
   };
 

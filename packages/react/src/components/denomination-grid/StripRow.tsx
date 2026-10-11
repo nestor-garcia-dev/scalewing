@@ -15,7 +15,10 @@ type StripRowProps = {
   hasTotals: boolean;
 };
 
-/** One count, read-only: the zero label, a signed delta, and the cell's tone. */
+/**
+ * One count, read-only: the zero label, a signed delta, and the cell's tone.
+ * The value has its own box, which the `pill` tone appearance fills.
+ */
 function CountCell({
   row,
   index,
@@ -34,7 +37,7 @@ function CountCell({
         ...denominationCellToneClassNames(row.cellTones?.[index]),
       )}
     >
-      {view.text}
+      <span className="sw-denomination-cell-value">{view.text}</span>
     </td>
   );
 }

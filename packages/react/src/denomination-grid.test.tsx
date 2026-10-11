@@ -392,7 +392,7 @@ describe('DenominationGrid cellTones', () => {
   it('generates a tone per cell from the Badge tones, over zero and signed colors', () => {
     const css = cssDenominationGridClasses();
     expect(css).toContain(
-      '.sw-denomination-cell-tone-danger { --sw-denomination-cell-tone: var(--sw-color-danger); }',
+      '.sw-denomination-cell-tone-danger { --sw-denomination-cell-tone: var(--sw-color-danger); --sw-denomination-cell-fill: color-mix(in srgb, var(--sw-color-danger) 10%, var(--sw-color-surface)); --sw-denomination-cell-ink: color-mix(in srgb, var(--sw-color-danger) 70%, var(--sw-color-text)); }',
     );
     expect(css).not.toContain('sw-denomination-cell-tone-neutral');
     // A toned zero stays GrayText in forced colors, not a count's CanvasText.
@@ -651,14 +651,14 @@ describe('DenominationGrid validation', () => {
         ),
     ],
     [
-      'empty zero label',
+      'a zero label that is not a string',
       () =>
         render(
           <DenominationGrid
             columns={columns}
             label="x"
             rows={rows}
-            zeroLabel=""
+            zeroLabel={0 as unknown as string}
           />,
         ),
     ],

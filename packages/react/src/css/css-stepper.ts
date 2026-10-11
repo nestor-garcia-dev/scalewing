@@ -29,6 +29,12 @@ function stateRules(): string {
   background-image: ${changedTintLayer};
 }
 
+/* A plain limit: − at min and + at max keep their look, still disabled. */
+.sw-stepper-limit-plain .sw-stepper-button:disabled {
+  cursor: default;
+  opacity: 1;
+}
+
 /* Read-only: the buttons keep their room, so the count lines up with an editable one. */
 .sw-stepper-readonly .sw-stepper-button { visibility: hidden; }
 
@@ -128,5 +134,6 @@ export function stepperClassCatalog(): string[] {
     'sw-stepper-invalid',
     'sw-stepper-changed',
     'sw-stepper-readonly',
+    'sw-stepper-limit-plain',
   ];
 }

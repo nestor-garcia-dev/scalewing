@@ -2,6 +2,10 @@ import { type CSSProperties } from 'react';
 
 import { cx } from '../../class-names.js';
 import { denominationLabelWidthClass } from '../../css/css-denomination-aligned.js';
+import {
+  denominationFramedClass,
+  denominationScrollFramedClass,
+} from '../../css/css-denomination-appearance.js';
 import { ScrollRegion } from '../ScrollRegion.js';
 import { ColumnHeadText } from './ColumnHeadText.js';
 import { StripRow } from './StripRow.js';
@@ -11,8 +15,10 @@ type StripProps = Required<
   Pick<DenominationGridProps, 'label' | 'columns' | 'rows' | 'zeroLabel'>
 > &
   Pick<DenominationGridProps, 'totalLabel' | 'labelWidth'> & {
-    /** The row labels' appearance class, if any. */
+    /** The grid's appearance classes (labels, totals, cell tones), if any. */
     className?: string;
+    /** The `table` frame: a hairline around the region and a heading-row fill. */
+    framed: boolean;
   };
 
 /**
@@ -34,6 +40,7 @@ function TotalHead({ totalLabel }: Pick<StripProps, 'totalLabel'>) {
 
 export function DenominationStrip({
   className,
+  framed,
   label,
   columns,
   rows,
@@ -58,6 +65,7 @@ export function DenominationStrip({
       className={cx(
         'sw-denomination-scroll',
         aligned && 'sw-denomination-scroll-aligned',
+        framed && denominationScrollFramedClass,
       )}
     >
       <table
@@ -66,6 +74,7 @@ export function DenominationStrip({
           labelWidth && 'sw-denomination-strip-aligned',
           rows.some((row) => row.entry) && 'sw-denomination-strip-entry',
           labelWidth && denominationLabelWidthClass(labelWidth),
+          framed && denominationFramedClass,
           className,
         )}
         style={aligned}

@@ -1,10 +1,21 @@
 import { type ReactNode } from 'react';
 
 import { type BadgeTone } from '../../css/css-data.js';
+import {
+  type DenominationGridFrame,
+  type DenominationTotalEmphasis,
+} from '../../css/css-denomination-appearance.js';
+import { type DenominationCellToneAppearance } from '../../css/css-denomination-cell-tones.js';
 import { type DenominationLabelAppearance } from '../../css/css-denomination-label.js';
 import { type DenominationLabelWidth } from '../../css/css-denomination-aligned.js';
+import { type StepperLimitAppearance } from '../Stepper.js';
 
-export type { DenominationLabelWidth };
+export type {
+  DenominationCellToneAppearance,
+  DenominationGridFrame,
+  DenominationLabelWidth,
+  DenominationTotalEmphasis,
+};
 
 export type DenominationGridTone = BadgeTone;
 
@@ -44,6 +55,11 @@ export type DenominationGridEntry = {
   errors?: readonly (string | null)[];
   /** What an empty box shows, such as "0". */
   placeholder?: string;
+  /**
+   * The Steppers' `limitAppearance`: `plain` keeps − at 0 (and + at a cap)
+   * in its usual look instead of faded; it is still disabled.
+   */
+  limitAppearance?: StepperLimitAppearance;
 };
 
 export type DenominationGridRow = {
@@ -89,6 +105,11 @@ export type DenominationGridProps = {
   rows: readonly DenominationGridRow[];
   layout?: DenominationGridLayout;
   subtotal?: (count: number, column: DenominationGridColumn) => string;
+  /**
+   * What a zero or empty read-only count shows, `—` by default. An empty
+   * string leaves those counts blank, so only the counts that are there
+   * stand out (the column header still names each cell).
+   */
   zeroLabel?: string;
   /**
    * Names the strip's total column, such as "Total": a column header over
@@ -121,4 +142,25 @@ export type DenominationGridProps = {
    * total.
    */
   labelAppearance?: DenominationLabelAppearance;
+  /**
+   * `table` frames the strip: its surface inside a hairline with rounded
+   * corners, the heading row on the subtle fill, a rule between columns,
+   * and the counts at label size, centred under their heads. `none` (the
+   * default) leaves open rows on the page's surface. Only the strip has a
+   * frame.
+   */
+  frame?: DenominationGridFrame;
+  /**
+   * `strong` sets the row totals in bold label type, a neutral row's in the
+   * text color and a toned row's in its tone; `default` keeps them in data
+   * type in the row's tone (a neutral row's muted).
+   */
+  totalEmphasis?: DenominationTotalEmphasis;
+  /**
+   * How a `cellTones` tone shows on a strip's read-only count: `text` (the
+   * default) sets the count in the tone; `pill` sets it on a rounded tint of
+   * the tone in the tone's ink, such as a difference in danger or a
+   * changed count in accent. Entry counts and tiles keep their tone border.
+   */
+  cellToneAppearance?: DenominationCellToneAppearance;
 };

@@ -1,4 +1,14 @@
+import { cx } from '../class-names.js';
 import { denominationLabelWidths } from '../css/css-denomination-aligned.js';
+import {
+  denominationGridFrames,
+  denominationTotalEmphases,
+  denominationTotalsStrongClass,
+} from '../css/css-denomination-appearance.js';
+import {
+  denominationCellToneAppearances,
+  denominationCellTonesPillClass,
+} from '../css/css-denomination-cell-tones.js';
 import {
   denominationLabelAppearances,
   denominationLabelsPlainClass,
@@ -13,8 +23,10 @@ import {
 } from './denomination-grid/validate-entry.js';
 
 export type {
+  DenominationCellToneAppearance,
   DenominationGridColumn,
   DenominationGridEntry,
+  DenominationGridFrame,
   DenominationGridLayout,
   DenominationGridProps,
   DenominationGridRow,
@@ -22,9 +34,25 @@ export type {
   DenominationGridRowRole,
   DenominationGridTone,
   DenominationLabelWidth,
+  DenominationTotalEmphasis,
 } from './denomination-grid/types.js';
 export type { DenominationLabelAppearance } from '../css/css-denomination-label.js';
-export { denominationLabelAppearances };
+export {
+  denominationCellToneAppearances,
+  denominationGridFrames,
+  denominationLabelAppearances,
+  denominationTotalEmphases,
+};
+
+/** Fails closed on a value outside a closed set, naming the prop. */
+function assertOneOf(
+  values: readonly string[],
+  value: unknown,
+  prop: string,
+): void {
+  if (!values.includes(value as string))
+    throw new RangeError(`Unknown ${prop}: ${String(value)}`);
+}
 
 export function DenominationGrid({
   label,
@@ -37,26 +65,39 @@ export function DenominationGrid({
   rowRole = 'region',
   labelWidth,
   labelAppearance = 'tone',
+  frame = 'none',
+  totalEmphasis = 'default',
+  cellToneAppearance = 'text',
 }: DenominationGridProps) {
   assertDenominationGrid(label, columns, rows);
   assertDenominationExtras(layout, columns, rows);
   assertDenominationEntries(layout, columns, rows);
-  if (!zeroLabel) throw new RangeError('zeroLabel must not be empty');
+  if (typeof zeroLabel !== 'string')
+    throw new RangeError('zeroLabel must be a string');
   if (totalLabel !== undefined && !totalLabel.trim())
     throw new RangeError('totalLabel must not be empty');
   if (rowRole !== 'region' && rowRole !== 'group')
     throw new RangeError("rowRole must be 'region' or 'group'");
-  if (labelWidth !== undefined && !denominationLabelWidths.includes(labelWidth))
-    throw new RangeError(`Unknown labelWidth: ${String(labelWidth)}`);
-  if (!denominationLabelAppearances.includes(labelAppearance))
-    throw new RangeError(`Unknown labelAppearance: ${String(labelAppearance)}`);
-  const labelClass =
-    labelAppearance === 'plain' ? denominationLabelsPlainClass : undefined;
+  if (labelWidth !== undefined)
+    assertOneOf(denominationLabelWidths, labelWidth, 'labelWidth');
+  assertOneOf(denominationLabelAppearances, labelAppearance, 'labelAppearance');
+  assertOneOf(denominationGridFrames, frame, 'frame');
+  assertOneOf(denominationTotalEmphases, totalEmphasis, 'totalEmphasis');
+  assertOneOf(
+    denominationCellToneAppearances,
+    cellToneAppearance,
+    'cellToneAppearance',
+  );
+  const appearanceClass = cx(
+    labelAppearance === 'plain' && denominationLabelsPlainClass,
+    totalEmphasis === 'strong' && denominationTotalsStrongClass,
+    cellToneAppearance === 'pill' && denominationCellTonesPillClass,
+  );
 
   if (layout === 'tiles')
     return (
       <DenominationTiles
-        className={labelClass}
+        className={appearanceClass || undefined}
         columns={columns}
         label={label}
         rowRole={rowRole}
@@ -68,8 +109,9 @@ export function DenominationGrid({
 
   return (
     <DenominationStrip
-      className={labelClass}
+      className={appearanceClass || undefined}
       columns={columns}
+      framed={frame === 'table'}
       label={label}
       labelWidth={labelWidth}
       rows={rows}

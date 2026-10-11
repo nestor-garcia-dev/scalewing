@@ -41,6 +41,7 @@ export function EntryCell({ row, entry, column, index }: EntryCellProps) {
         incrementLabel={entry.incrementLabel}
         label={`${row.label} ${columnName(column)}`}
         labelVisuallyHidden
+        limitAppearance={entry.limitAppearance}
         max={max}
         onChange={(value) => entry.onChange(column.key, value)}
         placeholder={entry.placeholder}
