@@ -32,6 +32,43 @@ test('DenominationGrid entry rows count in place beside read-only rows', async (
   ).toBeVisible();
   await expect(fitted).toContainText('45 tags');
 
+  // A plain label's row keeps its tone on its total.
+  if (testInfo.project.name !== 'forced-colors') {
+    const total = fitted.locator(
+      testInfo.project.name === 'mobile-es'
+        ? '.sw-denomination-total-inline'
+        : '.sw-denomination-total-value',
+    );
+    expect(
+      await total.evaluate((node) => {
+        const probe = document.createElement('span');
+        probe.style.color = 'var(--sw-color-success)';
+        node.append(probe);
+        const success = getComputedStyle(probe).color;
+        probe.remove();
+        return getComputedStyle(node).color === success;
+      }),
+    ).toBe(true);
+  }
+
+  // Plain row labels: no tone stripe, the text color at label weight.
+  const label = table.locator('.sw-denomination-label').first();
+  expect(
+    await label.evaluate((node) => getComputedStyle(node, '::before').content),
+  ).toBe('none');
+  await expect(label).toHaveCSS('font-weight', '600');
+  if (testInfo.project.name !== 'forced-colors')
+    expect(
+      await label.evaluate((node) => {
+        const probe = document.createElement('span');
+        probe.style.color = 'var(--sw-color-text)';
+        node.append(probe);
+        const text = getComputedStyle(probe).color;
+        probe.remove();
+        return getComputedStyle(node).color === text;
+      }),
+    ).toBe(true);
+
   // A count past the stock says why under it.
   await medium.fill('9');
   await expect(medium).toHaveAttribute('aria-invalid', 'true');

@@ -1,6 +1,7 @@
 import { type ReactNode } from 'react';
 
 import { type BadgeTone } from '../../css/css-data.js';
+import { type DenominationLabelAppearance } from '../../css/css-denomination-label.js';
 import { type DenominationLabelWidth } from '../../css/css-denomination-aligned.js';
 
 export type { DenominationLabelWidth };
@@ -112,4 +113,12 @@ export type DenominationGridProps = {
    * strip has a label column.
    */
   labelWidth?: DenominationLabelWidth;
+  /**
+   * `tone` (the default) marks each row label with its row's tone: a
+   * stripe at its start and the words in the tone. `plain` sets every row
+   * label in the text color at label weight with no stripe, for a grid
+   * whose rows need no color to tell apart; a row's tone still colors its
+   * total.
+   */
+  labelAppearance?: DenominationLabelAppearance;
 };

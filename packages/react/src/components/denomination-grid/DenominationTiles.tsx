@@ -14,7 +14,10 @@ type TilesProps = Required<
     'label' | 'columns' | 'rows' | 'zeroLabel' | 'rowRole'
   >
 > &
-  Pick<DenominationGridProps, 'subtotal'>;
+  Pick<DenominationGridProps, 'subtotal'> & {
+    /** The row labels' appearance class, if any. */
+    className?: string;
+  };
 
 /**
  * A lone row is named by the grid's own label, so its label line shows only
@@ -40,6 +43,7 @@ function namesRow(
 }
 
 export function DenominationTiles({
+  className,
   label,
   columns,
   rows,
@@ -50,7 +54,7 @@ export function DenominationTiles({
   return (
     <div
       aria-label={label}
-      className="sw-denomination-grid sw-denomination-tiles"
+      className={cx('sw-denomination-grid sw-denomination-tiles', className)}
       role="group"
     >
       {rows.map((row) => {

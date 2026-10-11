@@ -3,6 +3,10 @@ import { typographyVariants } from '@scalewing/tokens';
 import { breakpointQuery } from './breakpoints.js';
 import { badgeTones } from './css-data.js';
 import {
+  cssDenominationLabelClasses,
+  denominationLabelClassCatalog,
+} from './css-denomination-label.js';
+import {
   cssDenominationAlignedClasses,
   denominationAlignedClassCatalog,
 } from './css-denomination-aligned.js';
@@ -273,6 +277,8 @@ ${cssDenominationEntryClasses()}
 
 ${cssDenominationAlignedClasses()}
 
+${cssDenominationLabelClasses()}
+
 @media (forced-colors: active) {
   .sw-denomination-label { border-inline-start-color: CanvasText; color: CanvasText; }
   .sw-denomination-strip .sw-denomination-label::before { background: CanvasText; forced-color-adjust: none; }
@@ -315,5 +321,6 @@ export function denominationGridClassCatalog(): string[] {
     ...denominationCellToneClassCatalog(),
     ...denominationEntryClassCatalog(),
     ...denominationAlignedClassCatalog(),
+    ...denominationLabelClassCatalog(),
   ];
 }
