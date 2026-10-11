@@ -3,6 +3,8 @@ export {
   type ActionMenuAlign,
   type ActionMenuItem,
   type ActionMenuProps,
+  actionMenuTriggerAppearances,
+  type ActionMenuTriggerAppearance,
 } from './components/ActionMenu.js';
 export {
   ActionBar,

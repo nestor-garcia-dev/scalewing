@@ -10,9 +10,17 @@ import {
 } from 'react';
 
 import { type InlineAlign } from '../anchored-position.js';
+import { cx } from '../class-names.js';
+import {
+  type ActionMenuTriggerAppearance,
+  actionMenuTriggerAppearances,
+  actionMenuTriggerTextClass,
+} from '../css/css-action-menu-trigger.js';
 import { ActionMenuList } from './action-menu/ActionMenuList.js';
 
 export type ActionMenuAlign = InlineAlign;
+
+export { actionMenuTriggerAppearances, type ActionMenuTriggerAppearance };
 
 export type ActionMenuItem = {
   id: string;
@@ -60,6 +68,13 @@ export type ActionMenuProps = {
    * menu takes the other edge when the preferred one would leave the screen.
    */
   align?: ActionMenuAlign;
+  /**
+   * `text` draws the trigger as its words with a chevron after them, no
+   * fill or outline until hovered or open, such as a person's name opening
+   * their account menu; `framed` (the default) is the small outlined
+   * control.
+   */
+  triggerAppearance?: ActionMenuTriggerAppearance;
 };
 
 function nextEnabled(
@@ -82,6 +97,7 @@ export function ActionMenu({
   trigger,
   disabled = false,
   align = 'start',
+  triggerAppearance = 'framed',
 }: ActionMenuProps) {
   const menuId = useId();
   const triggerRef = useRef<HTMLButtonElement>(null);
@@ -98,6 +114,14 @@ export function ActionMenu({
   )
     throw new RangeError(
       'ActionMenu item detail and detailLang must not be blank; detailLang needs a detail',
+    );
+  if (
+    !(actionMenuTriggerAppearances as readonly unknown[]).includes(
+      triggerAppearance,
+    )
+  )
+    throw new RangeError(
+      `Unknown ActionMenu triggerAppearance: ${String(triggerAppearance)}`,
     );
   const enabled = !disabled && items.some((item) => !item.disabled);
 
@@ -169,14 +193,22 @@ export function ActionMenu({
         aria-expanded={open}
         aria-haspopup="menu"
         aria-label={label}
-        className="sw-action-menu-trigger"
+        className={cx(
+          'sw-action-menu-trigger',
+          triggerAppearance === 'text' && actionMenuTriggerTextClass,
+        )}
         disabled={!enabled}
         onClick={() => (open ? close(true) : openMenu())}
         onKeyDown={onTriggerKeyDown}
         ref={triggerRef}
         type="button"
       >
-        {trigger ?? label}
+        {triggerAppearance === 'text' ? (
+          // One flex item, so mixed inline words keep their spaces.
+          <span>{trigger ?? label}</span>
+        ) : (
+          (trigger ?? label)
+        )}
       </button>
       {open ? (
         <ActionMenuList
