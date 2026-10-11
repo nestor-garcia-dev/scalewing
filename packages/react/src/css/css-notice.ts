@@ -1,0 +1,147 @@
+import { typographyVariants } from '@scalewing/tokens';
+
+export const noticeTones = ['info', 'success', 'warning', 'danger'] as const;
+
+/** The notice's meaning: information, a good outcome, a caution, a refusal. */
+export type NoticeTone = (typeof noticeTones)[number];
+
+/**
+ * How much of a tone's color the notice's fill mixes into the surface. Info
+ * uses the derived accent tint instead (ADR 0011), which already keeps the
+ * accent readable on every palette.
+ */
+export const noticeTintShare = 0.1;
+
+/**
+ * How far the notice's words move from the tone's color toward the text
+ * color, so they read darker than the tone on a light fill (lighter on a
+ * dark one) and keep 4.5:1 on the tint (`notice.test.tsx`).
+ */
+export const noticeInkTextShare = 0.3;
+
+/** The semantic color a tone is drawn from. */
+export function noticeToneColor(tone: NoticeTone): string {
+  return tone === 'info' ? 'accent' : tone;
+}
+
+function toneFill(tone: NoticeTone): string {
+  if (tone === 'info') return 'var(--sw-color-accentSubtle)';
+  return `color-mix(in srgb, var(--sw-color-${tone}) ${noticeTintShare * 100}%, var(--sw-color-surface))`;
+}
+
+function toneInk(tone: NoticeTone): string {
+  const toneShare = Math.round((1 - noticeInkTextShare) * 100);
+  return `color-mix(in srgb, var(--sw-color-${noticeToneColor(tone)}) ${toneShare}%, var(--sw-color-text))`;
+}
+
+function toneRules(): string {
+  return noticeTones
+    .map(
+      (tone) =>
+        `.sw-notice-${tone} { --sw-notice-fill: ${toneFill(tone)}; --sw-notice-ink: ${toneInk(tone)}; }`,
+    )
+    .join('\n');
+}
+
+const label = typographyVariants.label;
+const body = typographyVariants.body;
+
+/*
+ * A tinted block in the page: the tone's fill, its words in the tone's ink,
+ * label-size type. An optional glyph leads; the title (a bold lead) and a
+ * text message share a row while they fit and wrap under one another when
+ * they do not; a message of elements (a field, a checkbox) is stacked under
+ * the title. An action ends the row (a small Button
+ * overhangs the padding rather than growing it) and drops under the text on
+ * a narrow column. Controls inside keep their own colors. Forced
+ * colors draw a border instead of the fill.
+ */
+export function cssNoticeClasses(): string {
+  return `${toneRules()}
+
+.sw-notice {
+  align-items: flex-start;
+  background: var(--sw-notice-fill);
+  border-radius: var(--sw-radius-sm);
+  box-sizing: border-box;
+  color: var(--sw-notice-ink);
+  column-gap: var(--sw-space-2);
+  display: flex;
+  flex-wrap: wrap;
+  font-family: var(--sw-font-sans);
+  font-size: ${label.fontSize}px;
+  letter-spacing: ${label.letterSpacing}px;
+  line-height: ${label.lineHeight}px;
+  min-width: 0;
+  padding: var(--sw-space-2) var(--sw-space-3);
+  row-gap: var(--sw-space-2);
+  /* Muted words of a control inside (a field's or a checkbox's
+     description) take the ink, which keeps 4.5:1 on the fill. */
+  --sw-color-muted: var(--sw-notice-ink);
+}
+
+.sw-notice-icon {
+  display: inline-flex;
+  flex: none;
+  min-height: ${label.lineHeight}px;
+  align-items: center;
+}
+
+.sw-notice-content {
+  align-items: baseline;
+  column-gap: var(--sw-space-2);
+  display: flex;
+  flex: 1 1 16rem;
+  flex-wrap: wrap;
+  min-width: 0;
+  row-gap: var(--sw-space-1);
+}
+
+.sw-notice-stacked {
+  align-items: stretch;
+  flex-direction: column;
+  row-gap: var(--sw-space-2);
+}
+
+.sw-notice-title {
+  font-weight: ${label.fontWeight};
+  min-width: 0;
+}
+
+.sw-notice-body {
+  flex: 1 1 auto;
+  font-weight: ${body.fontWeight};
+  min-width: 0;
+}
+
+.sw-notice-action {
+  align-items: center;
+  align-self: flex-start;
+  display: inline-flex;
+  flex: none;
+  min-height: ${label.lineHeight}px;
+}
+
+/* A small Button keeps the note one text line tall: it overhangs the
+   padding evenly instead of growing the row. */
+.sw-notice-action > .sw-button {
+  margin-block: calc((${label.lineHeight}px - var(--sw-control-sm-min-height)) / 2);
+}
+
+@media (forced-colors: active) {
+  .sw-notice { border: 1px solid CanvasText; }
+}`;
+}
+
+export function noticeClassCatalog(): string[] {
+  return [
+    'sw-notice',
+    ...noticeTones.map((tone) => `sw-notice-${tone}`),
+    'sw-notice-icon',
+    'sw-notice-content',
+    'sw-notice-stacked',
+    'sw-notice-title',
+    'sw-notice-body',
+    'sw-notice-action',
+  ];
+}

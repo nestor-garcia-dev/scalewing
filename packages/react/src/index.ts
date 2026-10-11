@@ -32,6 +32,13 @@ export {
   type SpinnerSize,
 } from './components/Spinner.js';
 export {
+  Notice,
+  noticeTones,
+  type NoticeProps,
+  type NoticeRole,
+  type NoticeTone,
+} from './components/Notice.js';
+export {
   Progress,
   type ProgressProps,
   type ProgressTone,

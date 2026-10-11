@@ -19,6 +19,7 @@ import { cssSwitchClasses } from './css-switch.js';
 import { cssTextClasses } from './css-text.js';
 import { cssSpinnerClasses } from './css-spinner.js';
 import { cssProgressClasses } from './css-progress.js';
+import { cssNoticeClasses } from './css-notice.js';
 import { cssTooltipClasses } from './css-tooltip.js';
 import { cssInfoTipClasses } from './css-info-tip.js';
 import { cssSeparatorClasses } from './css-separator.js';
@@ -148,6 +149,8 @@ ${cssSwitchClasses()}
 ${cssSpinnerClasses()}
 
 ${cssProgressClasses()}
+
+${cssNoticeClasses()}
 
 ${cssTooltipClasses()}
 
