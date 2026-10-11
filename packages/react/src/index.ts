@@ -192,9 +192,11 @@ export type { ColumnSpanProps } from './column-span-classes.js';
 export { DenominationGrid } from './components/DenominationGrid.js';
 export type {
   DenominationGridColumn,
+  DenominationGridEntry,
   DenominationGridLayout,
   DenominationGridProps,
   DenominationGridRow,
+  DenominationGridRowEmphasis,
   DenominationGridRowRole,
   DenominationGridTone,
   DenominationLabelWidth,

@@ -7,6 +7,10 @@ import {
   denominationAlignedClassCatalog,
 } from './css-denomination-aligned.js';
 import {
+  cssDenominationEntryClasses,
+  denominationEntryClassCatalog,
+} from './css-denomination-entry.js';
+import {
   cssDenominationCellToneClasses,
   denominationCellToneClassCatalog,
 } from './css-denomination-cell-tones.js';
@@ -265,6 +269,8 @@ ${pinnedStartShadeRules('.sw-denomination-scroll', [
 
 ${cssDenominationCellToneClasses()}
 
+${cssDenominationEntryClasses()}
+
 ${cssDenominationAlignedClasses()}
 
 @media (forced-colors: active) {
@@ -307,6 +313,7 @@ export function denominationGridClassCatalog(): string[] {
     'sw-denomination-tile',
     'sw-denomination-subtotal',
     ...denominationCellToneClassCatalog(),
+    ...denominationEntryClassCatalog(),
     ...denominationAlignedClassCatalog(),
   ];
 }

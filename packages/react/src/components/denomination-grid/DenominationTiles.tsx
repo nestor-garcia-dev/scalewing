@@ -1,6 +1,7 @@
 import { cx } from '../../class-names.js';
 import { denominationCellToneClassNames } from '../../css/css-denomination-cell-tones.js';
 import { denominationCellView } from '../../denomination-cells.js';
+import { ColumnHeadText } from './ColumnHeadText.js';
 import { RowLabelLine } from './RowLabelLine.js';
 import {
   type DenominationGridProps,
@@ -95,7 +96,9 @@ export function DenominationTiles({
                     )}
                     key={column.key}
                   >
-                    <span className="sw-denomination-head">{column.label}</span>
+                    <span className="sw-denomination-head">
+                      <ColumnHeadText column={column} />
+                    </span>
                     <span
                       className={`sw-denomination-cell sw-denomination-cell-${view.state}`}
                     >

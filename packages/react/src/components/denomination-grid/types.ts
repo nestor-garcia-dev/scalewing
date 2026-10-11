@@ -18,6 +18,31 @@ export type DenominationGridRowRole = 'region' | 'group';
 export type DenominationGridColumn = {
   key: string;
   label: string;
+  /** A muted note after the label, such as "× 100" for a strap of $1 bills. */
+  caption?: string;
+};
+
+/** How a row sits among the others: `quiet` sets it on the subtle fill, for a row to compare against. */
+export type DenominationGridRowEmphasis = 'default' | 'quiet';
+
+/**
+ * Makes a strip row's counts editable: one `Stepper` per column, holding the
+ * row's `cells` (`null` is an empty box), named by the row label and the
+ * column's label and caption ("Counted $1 × 100"). The minimum is 0. The
+ * grid does no arithmetic: recompute the row's `total` in `onChange`.
+ */
+export type DenominationGridEntry = {
+  onChange: (columnKey: string, value: number | null) => void;
+  /** The − buttons' name, such as "One less". */
+  decrementLabel: string;
+  /** The + buttons' name, such as "One more". */
+  incrementLabel: string;
+  /** A cap per column (`null` for none), such as the bills the drawer holds. */
+  max?: readonly (number | null)[];
+  /** A message per column (`null` for none), shown under that count. */
+  errors?: readonly (string | null)[];
+  /** What an empty box shows, such as "0". */
+  placeholder?: string;
 };
 
 export type DenominationGridRow = {
@@ -32,9 +57,29 @@ export type DenominationGridRow = {
    * A tone per count, one entry per column (null for none), for a single
    * count that needs attention, such as a bill the vault is short of. The
    * count is set in the tone and, in the tiles layout, its tile's border
-   * too, in place. The tone never says why alone: put that in words.
+   * too, in place; an entry count's border takes it. The tone never says
+   * why alone: put that in words.
    */
   cellTones?: readonly (DenominationGridTone | null)[];
+  /** A muted line under the label, such as "from the customer". */
+  caption?: string;
+  /** The `strip` layout only. */
+  emphasis?: DenominationGridRowEmphasis;
+  /**
+   * A row that does not apply now (the `strip` layout only): its entry is
+   * disabled, its label, counts and total fade, and the row is
+   * `aria-disabled`.
+   */
+  disabled?: boolean;
+  /**
+   * Count entry for this row (the `strip` layout only). Its counts are zero
+   * or more, it is not `signed`, and its label is its own among the entry
+   * rows, as each column's label and caption are, so every count has its
+   * own name. A cell tone draws the count's border in that tone (an
+   * `accent` one is the `Stepper`'s changed look); a message in
+   * `entry.errors` wins.
+   */
+  entry?: DenominationGridEntry;
 };
 
 export type DenominationGridProps = {

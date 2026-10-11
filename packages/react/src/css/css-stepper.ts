@@ -55,6 +55,9 @@ export function cssStepperClasses(): string {
   flex-direction: column;
   gap: var(--sw-space-1);
   min-width: 0;
+  /* Holds its hidden label and empty error region, which leave the flow,
+     so inside a scroll region they never widen the page. */
+  position: relative;
 }
 
 .sw-stepper-full { align-items: stretch; display: flex; }
