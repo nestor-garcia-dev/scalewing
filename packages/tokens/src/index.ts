@@ -19,6 +19,18 @@ export { secondaryActionBorder } from './action-colors.js';
 export { accentSubtleFor } from './accent-subtle.js';
 export { type CardVariant, cardVariants } from './card.js';
 export {
+  type CategoricalColor,
+  type CategoricalHue,
+  categoricalColorFor,
+  categoricalColorKeys,
+  categoricalColors,
+  categoricalGlyphContrast,
+  categoricalGlyphMinContrast,
+  categoricalHues,
+  isCategoricalColor,
+  onCategorical,
+} from './categorical.js';
+export {
   type ColorTokens,
   type SemanticColorKey,
   semanticColorKeys,
