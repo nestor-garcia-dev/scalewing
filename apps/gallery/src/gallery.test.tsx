@@ -163,7 +163,8 @@ describe('gallery', () => {
     expect(screen.getByRole('button', { name: 'Overlay save' })).toBeTruthy();
   }, 60_000);
 
-  // Each of these renders the whole catalog too, so each gets the same room.
+  // Each of these renders the whole catalog too, so each gets the catalog
+  // render's 60 s (a loaded machine took over 20 s on 2026-10-11).
   it('persists an explicit theme preference', () => {
     render(<App />);
 
@@ -175,7 +176,7 @@ describe('gallery', () => {
 
     expect(window.localStorage.getItem(themeStorageKey)).toBe('dark');
     expect(document.querySelector('[data-theme="dark"]')).not.toBeNull();
-  }, 20_000);
+  }, 60_000);
 
   it('applies a named palette from the header control', () => {
     render(<App />);
@@ -186,5 +187,5 @@ describe('gallery', () => {
 
     expect(window.localStorage.getItem(paletteStorageKey)).toBe('cerulean');
     expect(document.querySelector('[data-palette="cerulean"]')).not.toBeNull();
-  }, 20_000);
+  }, 60_000);
 });

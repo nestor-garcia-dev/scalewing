@@ -1,5 +1,13 @@
 import { typographyVariants } from '@scalewing/tokens';
 
+import {
+  type TintColor,
+  toneInkTextShare,
+  toneTintFill,
+  toneTintInk,
+  toneTintShare,
+} from './tone-tint.js';
+
 export const noticeTones = ['info', 'success', 'warning', 'danger'] as const;
 
 export const noticeVariants = ['default', 'band'] as const;
@@ -10,40 +18,22 @@ export type NoticeVariant = (typeof noticeVariants)[number];
 /** The notice's meaning: information, a good outcome, a caution, a refusal. */
 export type NoticeTone = (typeof noticeTones)[number];
 
-/**
- * How much of a tone's color the notice's fill mixes into the surface. Info
- * uses the derived accent tint instead (ADR 0011), which already keeps the
- * accent readable on every palette.
- */
-export const noticeTintShare = 0.1;
+/** How much of a tone's color the notice's fill mixes into the surface. */
+export const noticeTintShare = toneTintShare;
 
-/**
- * How far the notice's words move from the tone's color toward the text
- * color, so they read darker than the tone on a light fill (lighter on a
- * dark one) and keep 4.5:1 on the tint (`notice.test.tsx`).
- */
-export const noticeInkTextShare = 0.3;
+/** How far the notice's words move from the tone's color toward the text color. */
+export const noticeInkTextShare = toneInkTextShare;
 
 /** The semantic color a tone is drawn from. */
-export function noticeToneColor(tone: NoticeTone): string {
+export function noticeToneColor(tone: NoticeTone): TintColor {
   return tone === 'info' ? 'accent' : tone;
-}
-
-function toneFill(tone: NoticeTone): string {
-  if (tone === 'info') return 'var(--sw-color-accentSubtle)';
-  return `color-mix(in srgb, var(--sw-color-${tone}) ${noticeTintShare * 100}%, var(--sw-color-surface))`;
-}
-
-function toneInk(tone: NoticeTone): string {
-  const toneShare = Math.round((1 - noticeInkTextShare) * 100);
-  return `color-mix(in srgb, var(--sw-color-${noticeToneColor(tone)}) ${toneShare}%, var(--sw-color-text))`;
 }
 
 function toneRules(): string {
   return noticeTones
     .map(
       (tone) =>
-        `.sw-notice-${tone} { --sw-notice-fill: ${toneFill(tone)}; --sw-notice-ink: ${toneInk(tone)}; }`,
+        `.sw-notice-${tone} { --sw-notice-fill: ${toneTintFill(noticeToneColor(tone))}; --sw-notice-ink: ${toneTintInk(noticeToneColor(tone))}; }`,
     )
     .join('\n');
 }

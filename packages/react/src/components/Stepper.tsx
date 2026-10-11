@@ -22,6 +22,15 @@ import { FieldLabelText } from './FieldLabelText.js';
 /** `fixed` sizes the count for a few digits; `full` fills its container, such as a table cell. */
 export type StepperWidth = 'fixed' | 'full';
 
+export const stepperLimitAppearances = ['faded', 'plain'] as const;
+
+/**
+ * How − looks at `min` and + at `max`, where a press cannot move the count:
+ * `faded` (the default) fades the button as any disabled control; `plain`
+ * keeps its usual look. Either way the button is disabled.
+ */
+export type StepperLimitAppearance = (typeof stepperLimitAppearances)[number];
+
 export type StepperProps = {
   /** Names the count. Keep it visible unless headers around it say it (`labelVisuallyHidden`). */
   label: string;
@@ -57,6 +66,12 @@ export type StepperProps = {
   placeholder?: string;
   name?: string;
   width?: StepperWidth;
+  /**
+   * `plain` keeps − at `min` and + at `max` in their usual look instead of
+   * fading them (`faded`, the default). The button is still disabled, and a
+   * disabled or read-only Stepper is unchanged.
+   */
+  limitAppearance?: StepperLimitAppearance;
 };
 
 /** Keeps focus where it was (the count, or nowhere) when a button is pressed. */
@@ -89,11 +104,16 @@ export const Stepper = forwardRef<HTMLInputElement, StepperProps>(
       placeholder,
       name,
       width = 'fixed',
+      limitAppearance = 'faded',
     },
     ref,
   ) {
     const bounds = { min, max, step };
     assertStepperBounds(bounds);
+    if (!stepperLimitAppearances.includes(limitAppearance))
+      throw new RangeError(
+        `Unknown Stepper limitAppearance: ${String(limitAppearance)}`,
+      );
     if (value !== null && !Number.isSafeInteger(value))
       throw new RangeError('Stepper value must be a whole number or null');
 
@@ -157,6 +177,10 @@ export const Stepper = forwardRef<HTMLInputElement, StepperProps>(
           invalid && 'sw-stepper-invalid',
           changed && !invalid && 'sw-stepper-changed',
           readOnly && 'sw-stepper-readonly',
+          limitAppearance === 'plain' &&
+            !disabled &&
+            !readOnly &&
+            'sw-stepper-limit-plain',
         )}
       >
         {/* A hidden label leaves the flow itself, so it adds no gap. */}

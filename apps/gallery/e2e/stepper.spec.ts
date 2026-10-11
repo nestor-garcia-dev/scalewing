@@ -94,3 +94,25 @@ test('Stepper steps, types, stops at its bounds and keeps one tab stop', async (
 
   await section.screenshot({ path: testInfo.outputPath('stepper.png') });
 });
+
+test('Stepper limitAppearance plain keeps − unfaded at min, still disabled', async ({
+  page,
+}, testInfo) => {
+  await page.goto('/#stepper');
+  const forced = testInfo.project.name === 'forced-colors';
+  if (forced) await page.emulateMedia({ forcedColors: 'active' });
+  const group = page
+    .locator('#stepper')
+    .getByRole('group', { name: 'Ibises, − kept plain at 0' });
+  const less = group.getByRole('button', { name: 'One less' });
+  await expect(less).toBeDisabled();
+  await expect(less).toHaveCSS('opacity', '1');
+  await expect(less).toHaveCSS('cursor', 'default');
+  // A faded stepper beside it still fades its − at min.
+  await expect(
+    page
+      .locator('#stepper')
+      .getByRole('group', { name: 'Herons' })
+      .getByRole('button', { name: 'One less' }),
+  ).toHaveCSS('opacity', forced ? '1' : '0.4');
+});

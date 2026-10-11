@@ -357,3 +357,61 @@ describe('Stepper CSS', () => {
     ).toBeGreaterThan(sheet.indexOf("[data-theme] :is(input[type='text']"));
   });
 });
+
+describe('Stepper limitAppearance', () => {
+  it('fades the limit buttons by default', () => {
+    render(<Counted initial={0} />);
+    expect(document.querySelector('.sw-stepper')?.className).not.toContain(
+      'sw-stepper-limit-plain',
+    );
+  });
+
+  it('keeps − at min plain, still disabled, while + works', () => {
+    const spy = vi.fn();
+    render(<Counted initial={0} limitAppearance="plain" spy={spy} />);
+    const { less, more } = parts();
+    expect(document.querySelector('.sw-stepper')?.className).toContain(
+      'sw-stepper-limit-plain',
+    );
+    expect(less.disabled).toBe(true);
+    fireEvent.click(less);
+    expect(spy).not.toHaveBeenCalled();
+    fireEvent.click(more);
+    expect(spy).toHaveBeenCalledWith(1);
+  });
+
+  it('leaves a disabled or read-only Stepper faded or hidden as before', () => {
+    render(
+      <>
+        <Counted disabled initial={0} limitAppearance="plain" />
+        <Counted initial={0} label="Owls" limitAppearance="plain" readOnly />
+      </>,
+    );
+    document
+      .querySelectorAll('.sw-stepper')
+      .forEach((stepper) =>
+        expect(stepper.className).not.toContain('sw-stepper-limit-plain'),
+      );
+  });
+
+  it('fails closed on an unknown appearance', () => {
+    expect(() =>
+      render(
+        <Counted
+          limitAppearance={'hidden' as StepperProps['limitAppearance']}
+        />,
+      ),
+    ).toThrow(RangeError);
+  });
+
+  it('generates the plain limit rule, with forced colors still greying it', () => {
+    const css = cssStepperClasses();
+    expect(utilityClassCatalog()).toContain('sw-stepper-limit-plain');
+    expect(css).toContain(
+      '.sw-stepper-limit-plain .sw-stepper-button:disabled {\n  cursor: default;\n  opacity: 1;\n}',
+    );
+    expect(generateStylesheet()).toContain(
+      '.sw-stepper-button:disabled { border-color: GrayText; color: GrayText; opacity: 1; }',
+    );
+  });
+});
