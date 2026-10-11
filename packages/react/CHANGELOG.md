@@ -1,5 +1,24 @@
 # @scalewing/react
 
+## 1.29.0
+
+### Minor Changes
+
+- 98f6f89: `GlyphTile` (with `GlyphTileProps`, `GlyphTileHue`, `GlyphTileSize` and `glyphTileSizes`): a small rounded square in a categorical colour holding the consumer's glyph in white, the mark of a kind beside its name (`docs/requests/teisoro-glyph-tile.md`, Teisoro F-011 release R3).
+
+  - `hue` (`green`, `blue`, `orange`, `purple`, `teal`, `rose` or `neutral`, from `@scalewing/tokens` categorical colours), `size` (`sm` 24, `md` 28 by default, `lg` 32), `children` (the glyph, drawn at spacing step 4).
+  - Always `aria-hidden`; forced colors draw its edge. An unknown `hue` or `size` throws a `RangeError`.
+  - New generated custom properties `--sw-categorical-<colour>` and `--sw-categorical-on` in both schemes, and classes `sw-glyph-tile`, `sw-glyph-tile-<hue>` and `sw-glyph-tile-<size>`. Needs `@scalewing/tokens` 1.5.0. No new dependencies.
+
+- b8fe06f: `MultiSelect` (with `MultiSelectProps`, `MultiSelectOption` and `MultiSelectAlign`): several choices from a short list behind one trigger (`docs/requests/teisoro-multi-select.md`, Teisoro F-011 release R3).
+
+  - `label`, `options` (`{ value, label, icon?, separatorBefore? }`), `value`, `onChange` (checked values in the options' order), `allLabel`, `clearLabel`, `summary` (the trigger's words), `disabled`, `align`.
+  - A disclosure: a button with `aria-expanded` showing a group of native checkboxes, with All and Clear, on the popover layer beside the trigger; focus moves to the first checkbox, Escape returns it to the trigger, and focus or a press outside closes the panel.
+  - Blank words, no or duplicate options, an unknown value or `align` throw a `RangeError`.
+  - New generated `sw-multi-select-*` classes; the panel joins the popup layer in `css/stacking.ts`. No new tokens or dependencies.
+
+- 4a648a9: `SegmentedControl` item `icon` (`docs/requests/teisoro-segmented-control-icon.md`, Teisoro F-011 release R3): a consumer mark (such as a `GlyphTile`) before an item's label, `aria-hidden`. A track with icons takes the `md` control height and label type, a subtle track fill and a raised selected item; a track without icons is unchanged. New generated classes `sw-segmented-with-icons` and `sw-segmented-item-icon`. No new tokens or dependencies.
+
 ## 1.28.0
 
 ### Minor Changes
