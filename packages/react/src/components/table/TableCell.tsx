@@ -6,6 +6,10 @@ import {
 
 import { cx } from '../../class-names.js';
 import {
+  assertTableCellTone,
+  type TableCellTone,
+} from '../../css/css-table-ledger.js';
+import {
   assertTableColumnWidth,
   tableColumnWidthClass,
   type TableColumnWidth,
@@ -56,6 +60,13 @@ export type TableCellProps = (
    * it as no width.
    */
   width?: TableColumnWidth;
+  /**
+   * Colours the cell's text: `success` and `danger` for signed figures
+   * (money in, a shortfall), `accent` for a figure to act on, `muted` for
+   * a quiet one, in the theme's colour as `Text color` uses it. A colour
+   * is never the only signal: keep the sign or the words.
+   */
+  tone?: TableCellTone;
 };
 
 const tableSorts: readonly TableSort[] = ['ascending', 'descending', 'none'];
@@ -85,6 +96,7 @@ export const TableCell = forwardRef<HTMLTableCellElement, TableCellProps>(
       numeric = false,
       onSort,
       sort,
+      tone,
       truncate = false,
       width,
       ...rest
@@ -93,6 +105,7 @@ export const TableCell = forwardRef<HTMLTableCellElement, TableCellProps>(
   ) {
     assertSort(as, sort, onSort);
     assertTableColumnWidth(width);
+    assertTableCellTone(tone);
     const Component = as;
     const alignmentClass = numeric
       ? 'sw-table-numeric'
@@ -107,6 +120,7 @@ export const TableCell = forwardRef<HTMLTableCellElement, TableCellProps>(
         className={cx(
           alignmentClass,
           truncate && 'sw-table-clip',
+          tone && `sw-table-tone-${tone}`,
           width && tableColumnWidthClass(width),
           className,
         )}
