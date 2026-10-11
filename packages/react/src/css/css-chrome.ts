@@ -1,5 +1,6 @@
 import { typographyVariants } from '@scalewing/tokens';
 
+import { cssNavWordsClasses, navWordsClassCatalog } from './css-nav-words.js';
 import { zIndex } from './stacking.js';
 import { coarsePointerQuery, touchTarget } from './touch-target.js';
 
@@ -52,6 +53,8 @@ export function cssChromeClasses(): string {
   }
 }
 
+${cssNavWordsClasses()}
+
 .sw-field-xs :is(select, input, textarea) {
   font-size: ${caption.fontSize}px;
   letter-spacing: ${caption.letterSpacing}px;
@@ -72,5 +75,11 @@ export function cssChromeClasses(): string {
 }
 
 export function chromeClassCatalog(): string[] {
-  return ['sw-app-header', 'sw-app-header-sticky', 'sw-nav', 'sw-field-xs'];
+  return [
+    'sw-app-header',
+    'sw-app-header-sticky',
+    'sw-nav',
+    ...navWordsClassCatalog(),
+    'sw-field-xs',
+  ];
 }
