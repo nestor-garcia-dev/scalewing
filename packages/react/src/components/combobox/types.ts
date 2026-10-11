@@ -1,4 +1,5 @@
 import { type BadgeTone } from '../../css/css-data.js';
+import { type RequiredMark } from '../FieldLabelText.js';
 
 /** A short tag after an option's label, such as "Warning" or "Blocked". */
 export type ComboboxBadge = { label: string; tone?: BadgeTone };
@@ -61,6 +62,13 @@ export type ComboboxProps = {
   description?: string;
   error?: string;
   required?: boolean;
+  /**
+   * `hidden` leaves out the label's " *" while the input stays required
+   * (and announced so); `visible` (default) draws it.
+   * When hidden, say in visible text which fields must be filled; a
+   * placeholder alone is not enough.
+   */
+  requiredMark?: RequiredMark;
   disabled?: boolean;
   size?: ComboboxSize;
 };

@@ -4,6 +4,11 @@ import { useId } from 'react';
 
 import { cx } from '../class-names.js';
 import { FieldErrorRegion } from './FieldErrorRegion.js';
+import {
+  assertRequiredMark,
+  type RequiredMark,
+  showsRequiredMark,
+} from './FieldLabelText.js';
 
 export type FilterChipOption = {
   value: string;
@@ -29,6 +34,13 @@ export type FilterChipsProps = {
    */
   required?: boolean;
   /**
+   * `hidden` leaves out the label's " *" while the control stays required
+   * (and announced so); `visible` (default) draws it.
+   * When hidden, say in visible text which fields must be filled; a
+   * placeholder alone is not enough.
+   */
+  requiredMark?: RequiredMark;
+  /**
    * A message under the chips, such as "Pick a reason": a polite live
    * region linked to the group by `aria-describedby`; the group is marked
    * invalid and every chip takes the danger edge. An empty string is no
@@ -45,6 +57,7 @@ export function FilterChips({
   onChange,
   options,
   required = false,
+  requiredMark = 'visible',
   error,
   'aria-describedby': describedByProp,
 }: FilterChipsProps) {
@@ -55,6 +68,7 @@ export function FilterChips({
     .join(' ');
   const values = options.map((option) => option.value);
   if (!label.trim()) throw new RangeError('label must not be empty');
+  assertRequiredMark(requiredMark);
   if (
     options.length === 0 ||
     options.some((option) => !option.value.trim() || !option.label.trim())
@@ -75,7 +89,7 @@ export function FilterChips({
     >
       <legend className="sw-filter-chips-legend">
         {label}
-        {required ? (
+        {showsRequiredMark(required, requiredMark) ? (
           <span aria-hidden="true" className="sw-field-required">
             {' '}
             *

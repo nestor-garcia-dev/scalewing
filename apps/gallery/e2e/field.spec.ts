@@ -411,3 +411,24 @@ test('Field search shows a glyph, clears its text and returns focus', async ({
   await expect(ring).toHaveAttribute('aria-invalid', 'true');
   await expect(ring).toHaveAccessibleDescription('Type at least two letters.');
 });
+
+test('Field requiredMark hidden drops the asterisk and keeps the control required', async ({
+  page,
+}) => {
+  await page.goto('/#field');
+  const labelOf = async (name: string) => {
+    const id = await page
+      .getByRole('textbox', { name, exact: true })
+      .getAttribute('id');
+    return page.locator(`label[for="${id}"]`);
+  };
+  const ranger = page.getByRole('textbox', { name: 'Ranger on duty' });
+  await expect(ranger).toHaveAttribute('required', '');
+  await expect(ranger).toHaveAccessibleName('Ranger on duty');
+  await expect(
+    (await labelOf('Ranger on duty')).locator('.sw-field-required'),
+  ).toHaveCount(0);
+  await expect(
+    (await labelOf('Sighting name')).locator('.sw-field-required'),
+  ).toHaveCount(1);
+});

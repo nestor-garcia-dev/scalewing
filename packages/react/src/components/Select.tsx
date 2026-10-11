@@ -6,7 +6,11 @@ import { cx } from '../class-names.js';
 import { selectedSelectIndex, type SelectOption } from '../select-list.js';
 import { type FieldSize } from './Field.js';
 import { FieldErrorRegion } from './FieldErrorRegion.js';
-import { FieldLabelText } from './FieldLabelText.js';
+import {
+  assertRequiredMark,
+  FieldLabelText,
+  type RequiredMark,
+} from './FieldLabelText.js';
 import { SelectListbox } from './select/SelectListbox.js';
 import { SelectValue } from './select/SelectValue.js';
 import { useSelectList } from './select/use-select-list.js';
@@ -41,6 +45,13 @@ export type SelectProps = {
   placeholder?: string;
   /** Marks the label as Field does and sets `aria-required`. */
   required?: boolean;
+  /**
+   * `hidden` leaves out the label's " *" while the control stays required
+   * (and announced so); `visible` (default) draws it.
+   * When hidden, say in visible text which fields must be filled; a
+   * placeholder alone is not enough.
+   */
+  requiredMark?: RequiredMark;
   /** A validation message under the control, wired as Field's error is. */
   error?: string;
   /**
@@ -61,9 +72,11 @@ export function Select({
   value,
   placeholder,
   required = false,
+  requiredMark = 'visible',
   error,
   width = 'content',
 }: SelectProps) {
+  assertRequiredMark(requiredMark);
   if (placeholder !== undefined && !placeholder.trim())
     throw new RangeError('placeholder must not be empty');
   const labelId = useId();
@@ -104,6 +117,7 @@ export function Select({
           <FieldLabelText
             label={label}
             required={required}
+            requiredMark={requiredMark}
             size={size}
             visuallyHidden={labelVisuallyHidden}
           />

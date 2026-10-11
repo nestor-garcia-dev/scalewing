@@ -137,3 +137,23 @@ test('FilterChips required with an error marks the group and clears on a choice'
     'Removed: duplicate',
   );
 });
+
+test('FilterChips requiredMark hidden keeps each radio required with no mark', async ({
+  page,
+}) => {
+  await page.goto('/#filter-chips');
+  const group = page.getByRole('group', { name: 'Weather' });
+  await expect(group.locator('.sw-field-required')).toHaveCount(0);
+  await expect(group.getByRole('radio', { name: 'Clear' })).toHaveAttribute(
+    'required',
+    '',
+  );
+  await expect(group).toHaveAccessibleDescription(
+    'Required: the weather goes on every survey.',
+  );
+  await expect(
+    page
+      .getByRole('group', { name: 'Why remove this sighting' })
+      .locator('.sw-field-required'),
+  ).toHaveCount(1);
+});
