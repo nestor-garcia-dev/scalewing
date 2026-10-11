@@ -1,4 +1,6 @@
-import { buttonVariants, typographyVariants } from '@scalewing/tokens';
+import { typographyVariants } from '@scalewing/tokens';
+
+import { webButtonVariants } from './css-button.js';
 
 export const badgeTones = [
   'neutral',
@@ -32,7 +34,7 @@ export function badgeClassNames(
  * button has no fill.
  */
 function badgeOnFilledButtonRules(): string {
-  const filled = buttonVariants
+  const filled = webButtonVariants
     .filter((variant) => variant !== 'ghost')
     .map((variant) => `.sw-button-${variant}`)
     .join(', ');

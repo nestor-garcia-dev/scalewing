@@ -5,6 +5,7 @@ import {
   disabledControlSurface,
 } from './css-document.js';
 import { zIndex } from './stacking.js';
+import { quietFill } from './quiet-fill.js';
 
 const body = typographyVariants.body;
 const label = typographyVariants.label;
@@ -234,7 +235,7 @@ function calendarRules(): string {
 
 .sw-date-field-step:hover:not([aria-disabled='true']),
 .sw-date-field-day:hover:not([aria-disabled='true']) {
-  background: color-mix(in srgb, var(--sw-color-muted) 16%, transparent);
+  background: ${quietFill};
 }
 
 /*

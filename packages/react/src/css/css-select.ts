@@ -2,6 +2,7 @@ import { typographyVariants } from '@scalewing/tokens';
 
 import { chevronStroke } from './chevron.js';
 import { zIndex } from './stacking.js';
+import { quietFill } from './quiet-fill.js';
 
 const caption = typographyVariants.caption;
 const label = typographyVariants.label;
@@ -175,7 +176,7 @@ export function cssSelectClasses(): string {
 }
 
 .sw-select-option[data-active='true'] {
-  background: color-mix(in srgb, var(--sw-color-muted) 16%, transparent);
+  background: ${quietFill};
 }
 
 .sw-select-xs .sw-select-option {

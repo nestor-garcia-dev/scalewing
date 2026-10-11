@@ -82,10 +82,15 @@ export {
 } from './components/BarChart.js';
 export {
   Button,
+  type ButtonDisabledAppearance,
   type ButtonProps,
   type ButtonSize,
   type ButtonVariant,
 } from './components/Button.js';
+export {
+  buttonDisabledAppearances,
+  webButtonVariants,
+} from './css/css-button.js';
 export {
   Box,
   type BoxBorder,

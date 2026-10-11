@@ -1,6 +1,5 @@
 import {
   type ButtonSize,
-  type ButtonVariant,
   buttonSizes,
   buttonVariants,
   controlScale,
@@ -12,17 +11,43 @@ import {
   buttonGroupAttachedClassCatalog,
   cssButtonGroupAttachedClasses,
 } from './css-button-group-attached.js';
+import { quietFill } from './quiet-fill.js';
 
 const label = typographyVariants.label;
 
+/**
+ * The web Button's variants: the shared tiers from `@scalewing/tokens`, plus
+ * `neutral`, a quiet grey fill in the text color for an action beside the
+ * primary that should not draw the eye (a Cancel on a sheet). Native has no
+ * `neutral` yet.
+ */
+export const webButtonVariants = [...buttonVariants, 'neutral'] as const;
+
+export type WebButtonVariant = (typeof webButtonVariants)[number];
+
+export const buttonDisabledAppearances = ['faded', 'neutral'] as const;
+
+/**
+ * How a disabled button looks: `faded` (the default) fades the variant as
+ * any disabled control; `neutral` draws a filled button on the quiet grey
+ * fill with muted words, whatever its variant (a ghost button, which has
+ * no fill, still fades).
+ */
+export type ButtonDisabledAppearance =
+  (typeof buttonDisabledAppearances)[number];
+
 export function buttonClassNames(options: {
   size: ButtonSize;
-  variant: ButtonVariant;
+  variant: WebButtonVariant;
+  disabledAppearance?: ButtonDisabledAppearance;
 }): string[] {
   return [
     'sw-button',
     `sw-button-${options.variant}`,
     `sw-button-${options.size}`,
+    ...(options.disabledAppearance === 'neutral'
+      ? ['sw-button-disabled-neutral']
+      : []),
   ];
 }
 
@@ -33,7 +58,24 @@ function variantRules(): string {
     `.sw-button-tertiary { background: var(--sw-color-tertiary); border-color: transparent; color: var(--sw-color-onTertiary); }`,
     `.sw-button-ghost { background: transparent; border-color: transparent; color: var(--sw-color-accent); }`,
     `.sw-button-danger { background: var(--sw-color-danger); border-color: transparent; color: var(--sw-color-onDanger); }`,
+    `.sw-button-neutral { background: ${quietFill}; border-color: transparent; color: var(--sw-color-text); }`,
   ].join('\n');
+}
+
+/*
+ * A neutral disabled button: the quiet fill with its words in the muted
+ * color at 48 %, about #AEAEAE on the grey (a disabled control needs no
+ * contrast, and the faded words say it cannot be pressed), at full
+ * opacity so no accent shows through.
+ * Forced colors draw it as any disabled button.
+ */
+function disabledNeutralRules(): string {
+  return `.sw-button-disabled-neutral:disabled:not(.sw-button-ghost) {
+  background: ${quietFill};
+  border-color: transparent;
+  color: color-mix(in srgb, var(--sw-color-muted) 48%, transparent);
+  opacity: 1;
+}`;
 }
 
 /*
@@ -114,6 +156,7 @@ export function cssButtonClasses(): string {
 }
 
 ${variantRules()}
+${disabledNeutralRules()}
 ${pressedRules()}
 ${sizeRules()}
 ${groupRules()}
@@ -146,7 +189,8 @@ function groupRules(): string {
 export function buttonClassCatalog(): string[] {
   return [
     'sw-button',
-    ...buttonVariants.map((variant) => `sw-button-${variant}`),
+    ...webButtonVariants.map((variant) => `sw-button-${variant}`),
+    'sw-button-disabled-neutral',
     ...buttonSizes.map((size) => `sw-button-${size}`),
     'sw-button-group',
     ...buttonGroupJustifies.map((name) => `sw-button-group-${name}`),

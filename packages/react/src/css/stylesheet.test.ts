@@ -621,7 +621,7 @@ describe('generated CSS', () => {
     // A badge on a filled button draws on the surface in the text color,
     // its tone on its border (Teisoro NSF-1).
     expect(css).toContain(
-      ':is(.sw-button-primary, .sw-button-secondary, .sw-button-tertiary, .sw-button-danger) .sw-badge { background: var(--sw-color-surface); color: var(--sw-color-text); }',
+      ':is(.sw-button-primary, .sw-button-secondary, .sw-button-tertiary, .sw-button-danger, .sw-button-neutral) .sw-badge { background: var(--sw-color-surface); color: var(--sw-color-text); }',
     );
     expect(css).not.toContain('.sw-button .sw-badge { forced-color-adjust');
     // An unpressed toggle keeps full contrast (Teisoro NSF-1, WCAG 1.4.3);

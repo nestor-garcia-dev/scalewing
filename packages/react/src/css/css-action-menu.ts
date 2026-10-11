@@ -3,6 +3,7 @@ import { typographyVariants } from '@scalewing/tokens';
 import { chevronStroke } from './chevron.js';
 import { zIndex } from './stacking.js';
 import { coarsePointerQuery, touchTarget } from './touch-target.js';
+import { quietFill } from './quiet-fill.js';
 
 const caption = typographyVariants.caption;
 const label = typographyVariants.label;
@@ -106,7 +107,7 @@ export function cssActionMenuClasses(): string {
 
 .sw-action-menu-item:hover,
 .sw-action-menu-item:focus-visible {
-  background: color-mix(in srgb, var(--sw-color-muted) 16%, transparent);
+  background: ${quietFill};
 }
 
 .sw-action-menu-item:disabled {
