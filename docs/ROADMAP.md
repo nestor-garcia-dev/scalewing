@@ -27,9 +27,14 @@ Teisoro F-011-S03, release R2 "feedback": `Notice` (#118), `Notice`
 `variant="band"` for the environment strip (#120), `Toast` title, action,
 remaining time and top-end card (#119), `Progress` warning (#121),
 `Dialog` header and pinned footer (#122) and `DenominationGrid`
-`labelAppearance` (#124), released in `@scalewing/react` 1.28.0. Next:
-release R3 "identity": `@scalewing/tokens` categorical colours first, then
-`GlyphTile`, `SegmentedControl` item icons and a web `MultiSelect`.
+`labelAppearance` (#124), released in `@scalewing/react` 1.28.0.
+
+Teisoro F-011-S04, release R3 "identity": `@scalewing/tokens` categorical
+colours (#126, released in tokens 1.5.0), then `GlyphTile` (#128), a web
+`MultiSelect` (#129) and `SegmentedControl` item icons (#130), released in
+`@scalewing/react` 1.29.0. Next: release R4 "ledger and navigation": `Table`
+ledger extensions, `TableFooter`, `SectionNav` counts, `ActionMenuItem`
+`detail`, `ButtonGroup` `attached` and `FilterChips` validation.
 
 FutMas score entry (canvas board W3): `StepperRow`
 (`futmas-stepper-row.md`) and `Field` `variant="search"`

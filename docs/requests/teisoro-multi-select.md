@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: accepted 2026-10-11 for the `@scalewing/react` 1.29.0 release (Teisoro F-011-S04, release R3 "identity", item 13; the redesign inventory's row 16). The web counterpart of the native `MultiSelect` (`futmas-multi-select.md`); no code is shared (AGENTS.md rule 9).
+Status: released in `@scalewing/react` 1.29.0 (PR #129; Teisoro F-011-S04, release R3 "identity", item 13; the redesign inventory's row 16). The web counterpart of the native `MultiSelect` (`futmas-multi-select.md`); no code is shared (AGENTS.md rule 9).
 Renderer: react
 Missing surface: a web `MultiSelect`: several choices from a short list behind one trigger.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: the F-011 Services day (ServicesDayLedger2, and VoidRows refers to it) filters the ledger with a "Show" menu: a trigger that names what is shown ("Show All entries"), a panel with All and Clear, one checkbox per service with its coloured tile, a hairline, and "Drawer movements". `Select` is one choice; `ActionMenu` runs commands; `FilterChips` is a row of chips in the page, not a compact trigger; a consumer composition of a Button and a positioned panel would need CSS and popover placement Scalewing owns.

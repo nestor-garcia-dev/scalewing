@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: accepted 2026-10-11 for the `@scalewing/react` 1.29.0 release (Teisoro F-011-S04, release R3 "identity", item 12; the redesign inventory's row 7). Refiles the icon follow-up in `teisoro-segmented-control.md`.
+Status: released in `@scalewing/react` 1.29.0 (PR #130; Teisoro F-011-S04, release R3 "identity", item 12; the redesign inventory's row 7). Refiles the icon follow-up in `teisoro-segmented-control.md`.
 Renderer: react
 Missing surface: `SegmentedItem.icon`: a consumer mark before an item's label.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: 26 F-011 boards (Entry*, StepCheck*, Nsf*, CompanyLookup, LedgerFix2b, SignInIdle) switch services with a segmented control whose items are a coloured tile and a name ("Cash check", "Money transfer"…), the selected one white and raised on a grey track, 40 high. An item's `label` takes a node, so a consumer could put a tile in it, but the tile would be part of the radio's accessible name, the gap and centring would be the consumer's, and the compact item (28 high, caption type) cannot hold a 24 tile with room.

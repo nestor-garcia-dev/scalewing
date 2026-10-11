@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: accepted 2026-10-11 for the `@scalewing/react` 1.29.0 release (Teisoro F-011-S04, release R3 "identity", item 11; the redesign inventory's row 6). Depends on the categorical colours (`categorical-colors.md`, `@scalewing/tokens` 1.5.0).
+Status: released in `@scalewing/react` 1.29.0 (PR #128; Teisoro F-011-S04, release R3 "identity", item 11; the redesign inventory's row 6). Depends on the categorical colours (`categorical-colors.md`, `@scalewing/tokens` 1.5.0).
 Renderer: react
 Missing surface: `GlyphTile`, a small rounded square in a categorical colour holding a white glyph.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: 37 F-011 boards mark each service with a coloured tile (24 square, radius 6, a white 14 glyph) in the segmented switcher, the ledger, the Show filter, menus and headers, and 36 boards mark drawer, vault and sheet headers with a grey tile (32, radius 9). No Scalewing surface fills a box with a categorical colour; `Box` takes `background` surface or background only, `Badge` is text, and `StatTile`'s glyph circle is the accent tint. Teisoro owns no CSS or colour.
