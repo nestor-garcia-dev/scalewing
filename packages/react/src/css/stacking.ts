@@ -17,7 +17,7 @@
  *    surface that scrolls up under it (the header is the page's way back, the
  *    strip its way between sections, and a popup opens downward).
  * 6. `popup`: a popup outside any lifted surface (Select list, ActionMenu
- *    list, MultiSelect panel, Tooltip, the DateField and CalendarButton
+ *    list, MultiSelect panel, Combobox list, Tooltip, the DateField and CalendarButton
  *    calendar) over everything in the page.
  *
  * Dialog and Toast sit on the browser's top layer, above all of these.
@@ -59,6 +59,9 @@ const openPopups = [
   // MultiSelect's panel. Rendered only while open; on the top layer where
   // the popover API exists.
   '.sw-multi-select-panel',
+  // Combobox's list. Rendered only while open; on the top layer where the
+  // popover API exists.
+  '.sw-combobox-popup',
   '.sw-tooltip:not([hidden])',
   // DateField and CalendarButton share it. Rendered only while open; on the
   // top layer where the popover API exists.

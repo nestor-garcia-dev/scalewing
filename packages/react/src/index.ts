@@ -168,6 +168,16 @@ export {
   type SegmentedControlVariant,
   type SegmentedItem,
 } from './components/SegmentedControl.js';
+export {
+  Combobox,
+  comboboxSizes,
+  type ComboboxAction,
+  type ComboboxBadge,
+  type ComboboxGroup,
+  type ComboboxOption,
+  type ComboboxProps,
+  type ComboboxSize,
+} from './components/Combobox.js';
 export { Select } from './components/Select.js';
 export type {
   SelectAction,

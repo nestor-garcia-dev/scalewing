@@ -14,6 +14,7 @@ import { cssTableClasses } from './css-table.js';
 import { cssDateFieldClasses } from './css-date-field.js';
 import { cssDialogClasses } from './css-dialog.js';
 import { cssDialogFrameClasses } from './css-dialog-frame.js';
+import { cssComboboxClasses } from './css-combobox.js';
 import { cssSelectClasses } from './css-select.js';
 import { cssMultiSelectClasses } from './css-multi-select.js';
 import { cssSplitClasses } from './css-split.js';
@@ -65,6 +66,7 @@ function reducedTransparencyRules(): string {
   .sw-select-list,
   .sw-action-menu-list,
   .sw-multi-select-panel,
+  .sw-combobox-popup,
   .sw-date-field-calendar,
   .sw-toast {
     background: var(--sw-color-surface);
@@ -150,6 +152,7 @@ ${cssSelectClasses()}
 
 ${cssActionMenuClasses()}
 
+${cssComboboxClasses()}
 ${cssMultiSelectClasses()}
 
 ${cssActionBarClasses()}
