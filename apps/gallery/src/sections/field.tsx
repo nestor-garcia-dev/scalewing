@@ -3,6 +3,7 @@ import { useId, useState } from 'react';
 
 import { Section } from '../layout/Section.js';
 import { SurveyCorrection } from './field-changed.js';
+import { BirdSearch } from './field-search.js';
 import { sampleHabitats } from '../sample-copy.js';
 
 /**
@@ -157,9 +158,13 @@ export function FieldSection() {
             name="counted-nests"
           />
         </Field>
+        <Text variant="label">A search box</Text>
+        <BirdSearch />
         <Text color="muted" variant="caption">
           The label names the control. Clicking the label name focuses the
-          field. Default gap is spacing step 1.
+          field. Default gap is spacing step 1. variant search hides the label
+          (it still names the search box), puts a glyph at the start and a clear
+          button at the end while there is text.
         </Text>
       </Stack>
     </Section>

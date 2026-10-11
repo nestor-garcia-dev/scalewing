@@ -1,7 +1,13 @@
 'use client';
 
 import { type SpacingStep } from '@scalewing/tokens';
-import { cloneElement, isValidElement, useId, type ReactNode } from 'react';
+import {
+  cloneElement,
+  isValidElement,
+  useId,
+  type KeyboardEvent,
+  type ReactNode,
+} from 'react';
 
 import {
   type AdornedControlAria,
@@ -10,9 +16,13 @@ import {
 } from './FieldAdornment.js';
 import { FieldErrorRegion } from './FieldErrorRegion.js';
 import { FieldLabelText } from './FieldLabelText.js';
+import { SearchFrame } from './field/SearchFrame.js';
 import { Stack } from './Stack.js';
 
 export type FieldSize = 'xs' | 'md';
+
+export const fieldVariants = ['outlined', 'search'] as const;
+export type FieldVariant = (typeof fieldVariants)[number];
 
 type FieldControlProps = {
   'aria-describedby'?: string;
@@ -21,6 +31,12 @@ type FieldControlProps = {
   'aria-labelledby'?: string;
   id?: string;
   required?: boolean;
+  disabled?: boolean;
+  readOnly?: boolean;
+  type?: string;
+  value?: unknown;
+  enterKeyHint?: string;
+  onKeyDown?: (event: KeyboardEvent<HTMLInputElement>) => void;
 };
 
 export type FieldProps = {
@@ -57,7 +73,51 @@ export type FieldProps = {
   prefix?: string;
   /** Short text inside the control frame after the value, such as a unit. Not part of the value. */
   suffix?: string;
+  /**
+   * `outlined` (default) is the labelled form field. `search` is a search
+   * box: the label is not drawn (it stays the input's name), a `leading`
+   * glyph sits at the frame's start, the input is `type="search"`, and a
+   * clear button named `clearLabel` shows while the input holds text and
+   * is enabled; it calls `onClear` (set the value to `''`) and puts focus
+   * back in the input. Needs one native `input` child with a `value`.
+   */
+  variant?: FieldVariant;
+  /** A search field's glyph at its start, such as a magnifier; hidden from assistive technology. */
+  leading?: ReactNode;
+  /** A search field's clear button name, such as "Clear search". */
+  clearLabel?: string;
+  /** Called by a search field's clear button; the consumer empties the value. */
+  onClear?: () => void;
 };
+
+function assertSearch(props: FieldProps, child: unknown): void {
+  const { variant = 'outlined' } = props;
+  if (!fieldVariants.includes(variant))
+    throw new RangeError(`Unknown Field variant: ${String(variant)}`);
+  if (variant !== 'search') {
+    if (
+      props.leading !== undefined ||
+      props.clearLabel !== undefined ||
+      props.onClear !== undefined
+    )
+      throw new TypeError(
+        'Field leading, clearLabel and onClear are for variant="search"',
+      );
+    return;
+  }
+  if (!props.clearLabel?.trim())
+    throw new RangeError('A search Field needs a nonempty clearLabel');
+  if (typeof props.onClear !== 'function')
+    throw new TypeError('A search Field needs onClear');
+  if (props.prefix || props.suffix)
+    throw new TypeError('A search Field takes leading, not prefix or suffix');
+  if (!isValidElement<FieldControlProps>(child) || child.type !== 'input')
+    throw new TypeError('A search Field needs one native input child');
+  if (child.props.value === undefined)
+    throw new TypeError(
+      'A search Field needs a controlled input: pass value (and onChange)',
+    );
+}
 
 /**
  * `invalid` was passed, even as `false`, but not as `undefined` (a wrapper
@@ -85,7 +145,13 @@ export function Field(props: FieldProps) {
     required = false,
     prefix,
     suffix,
+    variant = 'outlined',
+    leading,
+    clearLabel = '',
+    onClear,
   } = props;
+  assertSearch(props, children);
+  const search = variant === 'search';
   const controlId = useId();
   const descriptionId = useId();
   const errorId = useId();
@@ -102,16 +168,19 @@ export function Field(props: FieldProps) {
     'sw-field',
     size === 'xs' && 'sw-field-xs',
     marksInvalid && 'sw-field-invalid',
+    search && 'sw-field-search-field',
     changed && !marksInvalid && 'sw-field-changed',
   ]
     .filter(Boolean)
     .join(' ');
+  // A search field hides its whole label element instead (see below).
+  const labelHidden = labelVisuallyHidden && !search;
   const labelText = (
     <FieldLabelText
       label={label}
       required={required}
       size={size}
-      visuallyHidden={labelVisuallyHidden}
+      visuallyHidden={labelHidden}
     />
   );
 
@@ -125,11 +194,7 @@ export function Field(props: FieldProps) {
         'Field validation and adornments require one native input, select, or textarea child',
       );
     return (
-      <Stack
-        as="label"
-        className={className}
-        gap={labelVisuallyHidden ? 0 : gap}
-      >
+      <Stack as="label" className={className} gap={labelHidden ? 0 : gap}>
         {labelText}
         {children}
       </Stack>
@@ -161,14 +226,53 @@ export function Field(props: FieldProps) {
     'aria-invalid': marksInvalid ? true : children.props['aria-invalid'],
     'aria-labelledby': adornment.labelledBy,
     required: required || children.props.required,
+    ...(search
+      ? {
+          type: 'search',
+          enterKeyHint: children.props.enterKeyHint ?? 'search',
+          // Escape empties the box through onClear, the one clearing path
+          // (WebKit and Blink would otherwise clear it themselves).
+          onKeyDown: (event: KeyboardEvent<HTMLInputElement>) => {
+            children.props.onKeyDown?.(event);
+            if (
+              event.key === 'Escape' &&
+              !event.defaultPrevented &&
+              !event.currentTarget.readOnly &&
+              event.currentTarget.value !== ''
+            ) {
+              event.preventDefault();
+              onClear?.();
+            }
+          },
+        }
+      : {}),
   });
+  const value = children.props.value;
+  const hasText = value !== undefined && value !== null && String(value) !== '';
 
   return (
-    <Stack as="div" className={className} gap={labelVisuallyHidden ? 0 : gap}>
-      <label htmlFor={children.props.id || controlId} id={labelId}>
+    <Stack as="div" className={className} gap={labelHidden ? 0 : gap}>
+      {/* A search field's label is out of the flow, so the gap still sets
+          a description or an error off the frame. */}
+      <label
+        className={search ? 'sw-sr-only' : undefined}
+        htmlFor={children.props.id || controlId}
+        id={labelId}
+      >
         {labelText}
       </label>
-      {adorned ? (
+      {search ? (
+        <SearchFrame
+          clearLabel={clearLabel}
+          leading={leading}
+          onClear={onClear!}
+          showClear={
+            hasText && !children.props.disabled && !children.props.readOnly
+          }
+        >
+          {control}
+        </SearchFrame>
+      ) : adorned ? (
         <FieldAdornment
           prefix={prefix}
           prefixId={prefixId}

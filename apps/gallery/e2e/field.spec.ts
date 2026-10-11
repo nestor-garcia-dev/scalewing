@@ -338,3 +338,76 @@ test('Field changed marks a corrected value with the accent border and a tint fo
   expect(restored.color).toBe(before.color);
   expect(restored.image).toBe('none');
 });
+
+test('Field search shows a glyph, clears its text and returns focus', async ({
+  page,
+}, testInfo) => {
+  await page.goto('/#field');
+  const forced = testInfo.project.name === 'forced-colors';
+  if (forced) await page.emulateMedia({ forcedColors: 'active' });
+  const box = page.getByRole('searchbox', { name: 'Search birds' });
+  await expect(box).toHaveValue('he');
+  const frame = page.locator('.sw-field-search').filter({ has: box });
+  await expect(frame.locator('.sw-field-search-leading')).toHaveAttribute(
+    'aria-hidden',
+    'true',
+  );
+  const clear = frame.getByRole('button', { name: 'Clear search' });
+  const frameBox = (await frame.boundingBox())!;
+  expect(Math.round(frameBox.height)).toBeGreaterThanOrEqual(44);
+  const clearBox = (await clear.boundingBox())!;
+  // The clear button ends the frame.
+  expect(
+    Math.abs(frameBox.x + frameBox.width - 1 - (clearBox.x + clearBox.width)),
+  ).toBeLessThanOrEqual(1);
+  if (testInfo.project.name === 'mobile-es')
+    expect(Math.round(clearBox.width)).toBeGreaterThanOrEqual(44);
+  const disc = clear.locator('.sw-field-search-cross');
+  const [fill, bar] = await disc.evaluate((node) => [
+    getComputedStyle(node).backgroundColor,
+    getComputedStyle(node, '::before').backgroundColor,
+  ]);
+  expect(fill).not.toBe(bar);
+  await frame.screenshot({ path: testInfo.outputPath('field-search.png') });
+  await clear.click();
+  await expect(box).toHaveValue('');
+  await expect(box).toBeFocused();
+  await expect(clear).toHaveCount(0);
+  await expect(page.getByTestId('bird-results')).toContainText('Kingfisher');
+  // Typing brings the clear button back; a press on the glyph focuses the input.
+  await box.fill('egret');
+  await expect(page.getByTestId('bird-results')).toHaveText('Little egret');
+  await expect(clear).toBeVisible();
+  await clear.focus();
+  await frame.locator('.sw-field-search-leading').click();
+  await expect(box).toBeFocused();
+  // Escape empties it through onClear.
+  await page.keyboard.press('Escape');
+  await expect(box).toHaveValue('');
+
+  // Right to left, the clear button still ends the frame.
+  await box.fill('heron');
+  await frame.evaluate((node) => node.setAttribute('dir', 'rtl'));
+  const rtlFrame = (await frame.boundingBox())!;
+  const rtlClear = (await clear.boundingBox())!;
+  expect(Math.abs(rtlClear.x - (rtlFrame.x + 1))).toBeLessThanOrEqual(1);
+  await frame.evaluate((node) => node.removeAttribute('dir'));
+
+  // Disabled: no clear button, the description set off by the gap.
+  const closed = page.getByRole('searchbox', {
+    name: 'Search the ringing log',
+  });
+  await expect(closed).toBeDisabled();
+  const closedFrame = page.locator('.sw-field-search').filter({ has: closed });
+  await expect(closedFrame.getByRole('button')).toHaveCount(0);
+  const note = page.getByText('The ringing log is closed for the night.');
+  const gap =
+    (await note.boundingBox())!.y -
+    ((await closedFrame.boundingBox())!.y +
+      (await closedFrame.boundingBox())!.height);
+  expect(gap).toBeGreaterThanOrEqual(3);
+  // A compact search field with an error.
+  const ring = page.getByRole('searchbox', { name: 'Search ring numbers' });
+  await expect(ring).toHaveAttribute('aria-invalid', 'true');
+  await expect(ring).toHaveAccessibleDescription('Type at least two letters.');
+});

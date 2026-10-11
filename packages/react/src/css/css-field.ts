@@ -6,6 +6,10 @@ import {
   disabledControlSurface,
 } from './css-document.js';
 import { cssFieldChangedClasses } from './css-field-changed.js';
+import {
+  cssFieldSearchClasses,
+  fieldSearchClassCatalog,
+} from './css-field-search.js';
 
 const caption = typographyVariants.caption;
 
@@ -91,6 +95,8 @@ export function cssFieldClasses(): string {
 
 ${adornmentRules()}
 
+${cssFieldSearchClasses()}
+
 ${cssFieldChangedClasses()}
 
 @media (forced-colors: active) {
@@ -115,5 +121,6 @@ export function fieldClassCatalog(): string[] {
     'sw-field-adorned',
     'sw-field-prefix',
     'sw-field-suffix',
+    ...fieldSearchClassCatalog(),
   ];
 }
