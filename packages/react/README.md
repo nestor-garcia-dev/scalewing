@@ -170,6 +170,26 @@ A disabled native text control (`<input>`, `<select>` or `<textarea>` on the can
 
 `ActionBar` keeps the actions of a long page on a glass bar stuck to the bottom of the viewport, with an optional short `status` (such as when the work was last saved): a string, or a node such as a `Badge` and then a short line. Put it last in the content it acts on: it stays stuck while that content scrolls by and then rests in its own place at the end. `stickyBelow="md"` sticks only on a phone and leaves the bar in page flow from `md` up. The bar clears `env(safe-area-inset-bottom)` (set `viewport-fit=cover` in the page's viewport meta for the inset to apply). Its children are the actions: on a phone they share one row under the status. The status is a polite live region (`role="status"`, kept in the page even while empty), so a new status such as "Draft saved at 5:00 PM" is announced; do not announce the same save a second time with your own notice. The status is a `div` whose children sit on one row a `space-2` gap apart and wrap under one another when the row is full, so a line that does not fit beside its badge drops under it on a phone; put a phrase that mixes text and elements in one `span` so it wraps as a sentence. `undefined`, `null` or `false` leaves the status empty. An open `Select`, `ActionMenu` or `Tooltip` paints over the bar, including inside a glass `Card` or `Accordion`.
 
+`ActionBar` `summary` (`{ label, value, detail?, tone? }`, type `ActionBarSummary`) puts a labelled figure first in the same polite status region, before any `status`: the label and the detail in muted label-size words, the value between them in the `heading` variant (24 below `md`) at tabular figures, all on one baseline and wrapping as one phrase, such as "Counted **$33,790.00** short $4,000.00". `tone` (`'default' | 'danger' | 'success'`, such as danger while short or over and success once it matches) colors the value only, so say why in the detail. Format the value yourself; each new figure is announced politely. For a guided form, the actions are a secondary Cancel and one primary that stays `disabled` until the form is valid. A blank `label`, `value` or `detail`, or an unknown `tone`, throws a `RangeError`.
+
+```tsx
+<ActionBar
+  summary={{
+    label: 'Counted',
+    value: '14 nests',
+    detail: 'short 2',
+    tone: 'danger',
+  }}
+>
+  <Button variant="secondary" onPress={cancel}>
+    Cancel
+  </Button>
+  <Button disabled={!matches} onPress={save}>
+    Save count
+  </Button>
+</ActionBar>
+```
+
 ```tsx
 <Stack gap={4}>
   {longForm}

@@ -5,6 +5,10 @@ import {
   breakpointQuery,
   breakpoints,
 } from './breakpoints.js';
+import {
+  actionBarSummaryClassCatalog,
+  cssActionBarSummaryClasses,
+} from './css-action-bar-summary.js';
 import { zIndex } from './stacking.js';
 
 const caption = typographyVariants.caption;
@@ -107,6 +111,8 @@ export function cssActionBarClasses(): string {
   .sw-action-bar-actions > * { flex: 1 1 auto; }
 }
 
+${cssActionBarSummaryClasses()}
+
 ${stickyRules()}`;
 }
 
@@ -116,6 +122,7 @@ export function actionBarClassCatalog(): string[] {
     'sw-action-bar-status',
     'sw-action-bar-actions',
     'sw-action-bar-sticky',
+    ...actionBarSummaryClassCatalog(),
     ...breakpoints.map((breakpoint) => actionBarStickyClass(breakpoint)),
   ];
 }
