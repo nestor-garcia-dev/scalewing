@@ -1,5 +1,10 @@
 import { trackInset, typographyVariants } from '@scalewing/tokens';
 
+import {
+  cssSegmentedRaisedClasses,
+  segmentedRaisedClassCatalog,
+} from './css-segmented-raised.js';
+
 const body = typographyVariants.body;
 const data = typographyVariants.data;
 const label = typographyVariants.label;
@@ -11,13 +16,16 @@ const label = typographyVariants.label;
  * the row stays even; the track is the subtle fill (two classes, so
  * reduced transparency keeps it) and the selected item is the surface
  * raised by the small elevation, so the choice shows on a white canvas
- * too. A filled track keeps its own look and only gains the marks. The
- * error outline is restated after these rules so an icon track keeps it.
+ * too. A filled or raised track keeps its own look and only gains the
+ * marks (one `:not()` of both, so the compact rules keep their
+ * specificity). The error outline is restated after these rules so an
+ * icon track keeps it.
  * In forced colours the selected item is outlined in Highlight; a focused
  * selected item keeps that outline, offset by the focus ring's offset.
  */
 function iconRules(): string {
-  const compact = '.sw-segmented-with-icons:not(.sw-segmented-filled)';
+  const compact =
+    '.sw-segmented-with-icons:not(.sw-segmented-filled, .sw-segmented-raised)';
   return `.sw-segmented${compact} {
   background: var(--sw-color-subtle);
   border-color: transparent;
@@ -166,6 +174,8 @@ export function cssSegmentedClasses(): string {
 
 ${iconRules()}
 
+${cssSegmentedRaisedClasses()}
+
 .sw-segmented-disabled {
   opacity: var(--sw-disabled-opacity);
 }
@@ -186,5 +196,6 @@ export function segmentedClassCatalog(): string[] {
     'sw-segmented-with-icons',
     'sw-segmented-item-icon',
     'sw-segmented-disabled',
+    ...segmentedRaisedClassCatalog(),
   ];
 }
