@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: implemented and verified under Teisoro F-002-S05 task 570; pending final independent review and commit.
+Status: shipped (the base request; any follow-up below carries its own status); present in `@scalewing/react` 1.26.0, the version Teisoro pins, from an earlier release (see `packages/react/CHANGELOG.md`), checked 2026-10-11 for Teisoro F-011 (redesign inventory, section 3). Earlier status: implemented and verified under Teisoro F-002-S05 task 570; pending final independent review and commit.
 Renderer: react
 Missing surface: `Tooltip`.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: Native title is unreliable for keyboard and touch; a product popover and CSS would duplicate overlay behavior.
@@ -47,7 +47,7 @@ Evidence: `tooltip.test.tsx` (a tap on a non-acting trigger toggles and an outsi
 
 ## Follow-up request (2026-10-09, Teisoro F-006-S11, PR #65 review): a toggletip a tap opens
 
-Status: implemented on branch `teisoro/f006-s11-info-tip` for the next `@scalewing/react` minor; pending review and release.
+Status: released in `@scalewing/react` 1.25.0 (`InfoTip`). Earlier status: implemented on branch `teisoro/f006-s11-info-tip` for the next `@scalewing/react` minor; pending review and release.
 Source: the review of Teisoro PR #65 (blocking). The Services day shows an ⓘ beside the drawer's expected balance: a `Tooltip` (description) whose trigger is a ghost `Button` (44 px, `aria-label` "About the expected balance") with a no-op `onPress`. Since 1.22.0 (the 2026-10-08 follow-up above) a tap on a button presses it and never opens its tooltip, so on a phone or tablet the hint can never be read. The README's way out, "a trigger that does nothing else on a tap, such as a focusable badge", needs a 44 px focusable non-control, which Teisoro cannot draw (it owns no CSS) and which is the wrong semantics: a focusable thing a user presses is a button.
 Renderer: react
 Missing surface: `InfoTip`, the toggletip pattern: a ghost icon-only button whose only job is to show its tip, which a press opens.

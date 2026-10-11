@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: implemented under Teisoro F-002-S21 task 820; pending independent review and packed-consumer verification.
+Status: shipped (the base request; any follow-up below carries its own status); present in `@scalewing/react` 1.26.0, the version Teisoro pins, from an earlier release, its `warning` colour from `@scalewing/tokens` 1.2.0 (see both packages' `CHANGELOG.md`), checked 2026-10-11 for Teisoro F-011 (redesign inventory, section 3). Earlier status: implemented under Teisoro F-002-S21 task 820; pending independent review and packed-consumer verification.
 Renderer: tokens and react
 Missing surface: a `warning` semantic colour, and `Badge tone="warning"` / `Text color="warning"` on it.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: Teisoro's rebuilt routes carry three status levels that the frozen Angular pages show in green, orange and red: an employee count that is inactive, a draft closeout beside a finalized one, an unconfirmed audit beside a balanced one, a customer "at risk" between GOOD and BLOCKED, an NSF record that is PENDING. Scalewing has `success` and `danger`; the middle level has no tone. Mapping it to `accent` reads as informational (and the accent is now sky blue), mapping it to `neutral` loses the signal, and `danger` says the wrong thing.

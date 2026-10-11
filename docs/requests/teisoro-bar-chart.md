@@ -27,7 +27,7 @@ Evidence: `chart.test.tsx` ("BarChart formatValue and diverging": the axis and a
 
 ## Follow-up request (2026-10-09, Teisoro F-006-S11 task 1890): a bar colored by meaning
 
-Status: implemented on `teisoro/f006-s11-review-findings` for Teisoro F-006-S11 task 1890; awaiting review, merge and a `@scalewing/react` minor release.
+Status: released in `@scalewing/react` 1.24.0. Earlier status: implemented on `teisoro/f006-s11-review-findings` for Teisoro F-006-S11 task 1890; awaiting review, merge and a `@scalewing/react` minor release.
 Source: Teisoro's storyboard re-review of F-006-S11 (task 1890). The Services variance trend is diverging: an overage is a warning and a shortage is danger, as Teisoro's variance badges say, but a bar's fill is the accent, or danger only because the value is negative, so an overage reads as an ordinary accent bar.
 
 Teisoro need: in `VariancePanel.tsx`, each day's bar in the tone of its badge: `tone: dollars > 0 ? 'warning' : 'danger'`.

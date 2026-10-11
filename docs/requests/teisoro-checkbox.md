@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: implemented under Teisoro F-002-S05 task 530; pending review and packed-consumer verification.
+Status: shipped (the base request; any follow-up below carries its own status); present in `@scalewing/react` 1.26.0, the version Teisoro pins, from an earlier release (see `packages/react/CHANGELOG.md`), checked 2026-10-11 for Teisoro F-011 (redesign inventory, section 3). Earlier status: implemented under Teisoro F-002-S05 task 530; pending review and packed-consumer verification.
 Renderer: react
 Missing surface: `Checkbox`.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: Field plus raw input leaves reusable checkmark, focus, disabled, and invalid appearance in product CSS. Switch represents a persistent setting, not a discrete form choice.

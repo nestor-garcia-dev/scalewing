@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: implemented under Teisoro F-002-S21 task 810; pending independent review and packed-consumer verification.
+Status: shipped (the base request; any follow-up below carries its own status); present in `@scalewing/react` 1.26.0, the version Teisoro pins, from an earlier release (see `packages/react/CHANGELOG.md`), checked 2026-10-11 for Teisoro F-011 (redesign inventory, section 3). Earlier status: implemented under Teisoro F-002-S21 task 810; pending independent review and packed-consumer verification.
 Renderer: react
 Missing surface: `SegmentedControl` `variant="filled"`.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: the drawer adjustment dialog asks "What do you want to do?" and the answer (remove from the drawer or add to it) decides the sign of everything below. The compact `SegmentedControl` renders two small chips at content width, which the product owner judged too quiet for that choice on 2026-09-22 and asked for the familiar full-width pill toggle (two equal halves, the selected half filled with the accent). Two `Button`s lose the radiogroup semantics; a `RadioGroup` is a list, not a toggle; Teisoro owns no CSS.
@@ -14,7 +14,7 @@ Scalewing owns the class, tests, gallery evidence and changeset. Teisoro owns th
 
 ## Follow-up: `disabled` (Teisoro F-002-S21 task 815)
 
-Status: implemented under Teisoro F-002-S21 task 815; pending independent review and packed-consumer verification.
+Status: released in `@scalewing/react` 1.3.0. Earlier status: implemented under Teisoro F-002-S21 task 815; pending independent review and packed-consumer verification.
 Missing surface: `SegmentedControl` `disabled`.
 Why the existing surface cannot do this: the entry edit page shows the payment method (Cash / Debit card) as the same two-half toggle the new-entry page uses, but inert, because the entry contract locks that identity after creation; the workspace header also wants the language switch inert while a language save is in flight. Without the prop the consumer either hides the control (the employee loses the visual anchor Angular keeps) or wraps it in a product stylesheet.
 Teisoro use: `docs/design/entry-pages/08-edit-page.md` (identity read-only) and `WorkspaceShell` (saving state).
@@ -23,7 +23,7 @@ Behavior and failure boundary: presentation and interaction only; the consumer s
 
 ## Follow-up request (2026-09-25, Teisoro F-002-S19 task 1060): an icon slot on items
 
-Status: requested; not started.
+Status: to be refiled as `teisoro-segmented-control-icon.md` (Teisoro F-011 release R3). Earlier status: requested; not started.
 
 `SegmentedControl` items take a `label` node, so a consumer can put an icon in it, but nothing states how an icon-only item gets its accessible name or how the icon sits beside the text at each size. Angular's vault movement filter used icons for All, In and Out; React shows the text alone.
 

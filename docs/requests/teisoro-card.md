@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: requested by Teisoro F-002-S19 task 1060 (2026-09-25); not started.
+Status: declined 2026-10-11. Teisoro's F-011 redesign (the owner-approved canvas; Teisoro's `docs/design/redesign-2026-10/component-inventory.md` section 3) drops the coloured card edge, so nothing needs this surface; do not build it. Earlier status: requested by Teisoro F-002-S19 task 1060 (2026-09-25); not started.
 Renderer: react
 Missing surface: a tone edge on `Card`.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: the frozen Angular vault pages tell cards apart by a coloured left border (balance purple, audit green, tasks orange, movements grey; a movement card green when cash came in and orange when it went out; on change orders the inventory blue, the debt orange, a pending order orange and a completed one green). `Card` takes only `padding` and `variant`, and Teisoro owns no CSS, so the state now lives only in badges and text colour.

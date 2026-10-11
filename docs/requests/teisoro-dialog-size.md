@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: implemented under Teisoro F-002-S21 task 810; pending independent review and packed-consumer verification.
+Status: shipped (the base request; any follow-up below carries its own status); present in `@scalewing/react` 1.26.0, the version Teisoro pins, from an earlier release (see `packages/react/CHANGELOG.md`), checked 2026-10-11 for Teisoro F-011 (redesign inventory, section 3). Earlier status: implemented under Teisoro F-002-S21 task 810; pending independent review and packed-consumer verification.
 Renderer: react
 Missing surface: `Dialog` `size` prop (`'md' | 'lg'`).
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: `Dialog` caps its box at `--sw-dialog-max` (32rem). A drawer count dialog lays six bill fields in one row so a cashier reads them the way the drawer is laid out; at 32rem a six-column `Grid` folds to two rows and the neighbors change. Teisoro owns no CSS, so it cannot pass a width through `className`, and a wider `Card` is not a modal.

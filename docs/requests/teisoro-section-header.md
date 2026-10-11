@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: requested by Teisoro F-002-S19 task 1060 (2026-09-25); not started.
+Status: declined 2026-10-11. Teisoro's F-011 redesign (the owner-approved canvas; Teisoro's `docs/design/redesign-2026-10/component-inventory.md` section 3) drops the toned section band, so nothing needs this surface; do not build it. Earlier status: requested by Teisoro F-002-S19 task 1060 (2026-09-25); not started.
 Renderer: react
 Missing surface: a tinted section header (a heading on a toned band).
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: Angular's Get Change dialog heads its two halves with a green band ("Getting from the vault") and an orange band ("Giving back to the vault"). Scalewing has toned `Text` but no toned surface, and Teisoro owns no CSS, so React shows a coloured heading with an arrow icon.

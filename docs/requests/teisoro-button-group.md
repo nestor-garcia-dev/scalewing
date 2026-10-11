@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: implemented under Teisoro F-002-S21 task 815; pending independent review and packed-consumer verification.
+Status: shipped (the base request; any follow-up below carries its own status); present in `@scalewing/react` 1.26.0, the version Teisoro pins, from an earlier release (see `packages/react/CHANGELOG.md`), checked 2026-10-11 for Teisoro F-011 (redesign inventory, section 3). Earlier status: implemented under Teisoro F-002-S21 task 815; pending independent review and packed-consumer verification.
 Renderer: react
 Missing surface: `ButtonGroup`, the action row of a form or dialog.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: every Teisoro form and dialog ends in a Cancel / primary row. `Inline justify="end" wrap` puts them on one line on desktop, but on a phone the wrapped row leaves the second button hanging right-aligned under the first at its own width (the product owner flagged this on the task 815 preview, 2026-09-22). The phone layout wants each button to fill its row, which needs a breakpoint rule and a child width rule; Teisoro owns no CSS.
