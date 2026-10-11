@@ -130,7 +130,13 @@ export {
   type ToastPlacement,
 } from './components/Toast.js';
 export type { ToastProps, ToastTone } from './components/Toast.js';
-export { Field, type FieldProps, type FieldSize } from './components/Field.js';
+export {
+  Field,
+  fieldVariants,
+  type FieldProps,
+  type FieldSize,
+  type FieldVariant,
+} from './components/Field.js';
 export {
   Step,
   type StepHeadingLevel,
