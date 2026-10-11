@@ -16,15 +16,18 @@ type DialogTitleProps = {
   /** The close button's accessible name; without it there is no button. */
   closeLabel?: string;
   onClose: () => void;
+  /** A banded dialog's title is always a row, which draws the band. */
+  banded: boolean;
 };
 
 /**
  * The dialog's title, which names it through `aria-labelledby`. Alone it is
  * the heading, as it always was. With an icon, a description or a
- * `closeLabel` it is a row: the icon, the title over its description, and
- * an icon-only ghost close button at the end.
+ * `closeLabel`, or in a banded dialog, it is a row: the icon, the title over
+ * its description, and an icon-only ghost close button at the end.
  */
 export function DialogTitle({
+  banded,
   closeLabel,
   description,
   descriptionId,
@@ -39,7 +42,7 @@ export function DialogTitle({
       {title}
     </Text>
   );
-  if (!closeLabel && !icon && !description) return heading;
+  if (!banded && !closeLabel && !icon && !description) return heading;
 
   return (
     <div
