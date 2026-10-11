@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { Section } from '../layout/Section.js';
 
 export function FilterChipsSection() {
+  const [weather, setWeather] = useState('');
   const [selected, setSelected] = useState('all');
   const [sightings, setSightings] = useState(42);
   const [changes, setChanges] = useState(0);
@@ -26,7 +27,7 @@ export function FilterChipsSection() {
   return (
     <Section
       id="filter-chips"
-      purpose="FilterChips keeps long single-choice filter sets visible. Native radios supply arrow and Space behavior; options wrap on narrow screens. An optional count renders as a tabular chicklet after the label, and a zero count quiets the chip until it is selected: a muted label on no fill, never faded. value '' is nothing chosen yet; required marks the label and each radio, and error puts a message under the chips (a polite live region), marks the group invalid and edges every chip in danger; aria-describedby adds a hint."
+      purpose="FilterChips keeps long single-choice filter sets visible. Native radios supply arrow and Space behavior; options wrap on narrow screens. An optional count renders as a tabular chicklet after the label, and a zero count quiets the chip until it is selected: a muted label on no fill, never faded. value '' is nothing chosen yet; required marks the label and each radio, and error puts a message under the chips (a polite live region), marks the group invalid and edges every chip in danger; aria-describedby adds a hint. requiredMark hidden leaves out the label's mark while each radio stays required; the hint says it in words."
       title="FilterChips"
       usage={`<FilterChips
   label="Sighting filters"
@@ -87,6 +88,21 @@ export function FilterChipsSection() {
         <Text color="muted" data-testid="filter-chips-saved" variant="caption">
           {saved || 'Nothing removed yet.'}
         </Text>
+        <Text color="muted" id="weather-hint" variant="caption">
+          Required: the weather goes on every survey.
+        </Text>
+        <FilterChips
+          aria-describedby="weather-hint"
+          label="Weather"
+          onChange={setWeather}
+          options={[
+            { value: 'clear', label: 'Clear' },
+            { value: 'rain', label: 'Rain' },
+          ]}
+          required
+          requiredMark="hidden"
+          value={weather}
+        />
       </Stack>
     </Section>
   );

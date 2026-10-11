@@ -15,7 +15,11 @@ import {
   FieldAdornment,
 } from './FieldAdornment.js';
 import { FieldErrorRegion } from './FieldErrorRegion.js';
-import { FieldLabelText } from './FieldLabelText.js';
+import {
+  assertRequiredMark,
+  FieldLabelText,
+  type RequiredMark,
+} from './FieldLabelText.js';
 import { SearchFrame } from './field/SearchFrame.js';
 import { Stack } from './Stack.js';
 
@@ -69,6 +73,13 @@ export type FieldProps = {
    */
   changed?: boolean;
   required?: boolean;
+  /**
+   * `hidden` leaves out the label's " *" while the control stays required
+   * (and announced so); `visible` (default) draws it.
+   * When hidden, say in visible text which fields must be filled; a
+   * placeholder alone is not enough.
+   */
+  requiredMark?: RequiredMark;
   /** Short text inside the control frame before the value, such as a currency sign. Not part of the value. */
   prefix?: string;
   /** Short text inside the control frame after the value, such as a unit. Not part of the value. */
@@ -143,6 +154,7 @@ export function Field(props: FieldProps) {
     invalid = false,
     changed = false,
     required = false,
+    requiredMark = 'visible',
     prefix,
     suffix,
     variant = 'outlined',
@@ -158,6 +170,7 @@ export function Field(props: FieldProps) {
   const labelId = useId();
   const prefixId = useId();
   const suffixId = useId();
+  assertRequiredMark(requiredMark);
   const message = error || description;
   const marksInvalid = Boolean(error) || invalid;
   const adorned = Boolean(prefix || suffix);
@@ -179,6 +192,7 @@ export function Field(props: FieldProps) {
     <FieldLabelText
       label={label}
       required={required}
+      requiredMark={requiredMark}
       size={size}
       visuallyHidden={labelHidden}
     />

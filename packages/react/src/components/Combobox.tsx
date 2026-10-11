@@ -53,6 +53,7 @@ export function Combobox(props: ComboboxProps) {
     onSelect,
     placeholder,
     required = false,
+    requiredMark = 'visible',
     size = 'md',
   } = props;
   const listId = useId();
@@ -145,6 +146,7 @@ export function Combobox(props: ComboboxProps) {
         label={label}
         labelVisuallyHidden={labelVisuallyHidden}
         required={required}
+        requiredMark={requiredMark}
         size={size}
       >
         <input

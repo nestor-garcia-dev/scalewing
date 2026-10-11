@@ -145,6 +145,10 @@ export {
   type FieldVariant,
 } from './components/Field.js';
 export {
+  requiredMarks,
+  type RequiredMark,
+} from './components/FieldLabelText.js';
+export {
   Step,
   type StepHeadingLevel,
   type StepProps,

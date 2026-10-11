@@ -11,7 +11,11 @@ import { dateEntryPattern, dateEntryPlaceholder } from '../date-entry.js';
 import { dateEntryValidity } from '../date-entry-validity.js';
 import { assertDateBounds, isOutsideDateRange } from '../date-only.js';
 import { FieldErrorRegion } from './FieldErrorRegion.js';
-import { FieldLabelText } from './FieldLabelText.js';
+import {
+  assertRequiredMark,
+  FieldLabelText,
+  type RequiredMark,
+} from './FieldLabelText.js';
 import { CalendarDialog } from './date-field/CalendarDialog.js';
 import { DateFieldGlyph } from './date-field/DateFieldGlyph.js';
 import { useCalendarPopup } from './date-field/use-calendar-popup.js';
@@ -37,6 +41,13 @@ export type DateFieldProps = {
   today?: string;
   disabled?: boolean;
   required?: boolean;
+  /**
+   * `hidden` leaves out the label's " *" while the control stays required
+   * (and announced so); `visible` (default) draws it.
+   * When hidden, say in visible text which fields must be filled; a
+   * placeholder alone is not enough.
+   */
+  requiredMark?: RequiredMark;
   description?: string;
   error?: string;
   /**
@@ -59,12 +70,14 @@ export function DateField({
   today,
   disabled = false,
   required = false,
+  requiredMark = 'visible',
   description,
   error,
   locale,
   weekStartsOn = 0,
   labels,
 }: DateFieldProps) {
+  assertRequiredMark(requiredMark);
   assertDateBounds(value, min, max);
   assertWeekStart(weekStartsOn);
   const words = resolveDateFieldLabels(labels);
@@ -113,7 +126,11 @@ export function DateField({
       {/* Field's label words and mark, so the label row and its gap to the
           entry match a Field beside it (Teisoro NSF-35). */}
       <label className="sw-date-field-label" htmlFor={inputId} id={labelId}>
-        <FieldLabelText label={label} required={required} />
+        <FieldLabelText
+          label={label}
+          required={required}
+          requiredMark={requiredMark}
+        />
       </label>
       <div className="sw-date-field-control" ref={controlRef}>
         <input
