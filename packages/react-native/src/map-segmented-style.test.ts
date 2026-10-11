@@ -37,6 +37,15 @@ describe('mapSegmentedItemStyle', () => {
   });
 });
 
+describe('a scrolling segmented track', () => {
+  it('keeps each label its width and fills spare room', () => {
+    expect(mapSegmentedControlStyle(lightTheme, true).flexGrow).toBe(1);
+    const item = mapSegmentedItemStyle(lightTheme, false, true);
+    expect(item.flex).toBeUndefined();
+    expect(item).toMatchObject({ flexGrow: 1, flexShrink: 0 });
+  });
+});
+
 describe('segmentedItemColor', () => {
   it('uses onAccent when selected and muted otherwise', () => {
     expect(segmentedItemColor(true)).toBe('onAccent');
