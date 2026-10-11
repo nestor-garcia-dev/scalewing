@@ -32,6 +32,13 @@ export {
   type SpinnerSize,
 } from './components/Spinner.js';
 export {
+  GlyphTile,
+  glyphTileSizes,
+  type GlyphTileHue,
+  type GlyphTileProps,
+  type GlyphTileSize,
+} from './components/GlyphTile.js';
+export {
   Notice,
   noticeTones,
   noticeVariants,

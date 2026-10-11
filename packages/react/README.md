@@ -391,6 +391,17 @@ A header `TableCell` (`as="th"`) with `sort` (`'ascending'`, `'descending'` or `
 
 `Spinner` shows indeterminate loading in small, medium, or large sizes. Supply localized `label` for the one announced status in a loading region. Use `decorative` on additional indicators beside that status so screen readers do not hear the same message repeatedly. Reduced motion leaves a static accented ring.
 
+`GlyphTile` is a small rounded square in a categorical colour with the consumer's glyph in white: the mark of a kind beside its name, such as a service in a list. `hue` is one of the `@scalewing/tokens` categorical colours (`green`, `blue`, `orange`, `purple`, `teal`, `rose`, or `neutral`); which kind takes which hue is yours. `size` is `sm` (24), `md` (28, the default) or `lg` (32); the glyph is drawn at spacing step 4 in white, which keeps 3:1 on every fill; pass the SVG (a Lucide component) as the tile's direct child, since only a direct-child SVG is sized. It is always `aria-hidden`, so put the kind's name in visible text beside it. An unknown `hue` or `size` throws a `RangeError`.
+
+```tsx
+<Inline gap={2} align="center">
+  <GlyphTile hue="teal">
+    <Waves />
+  </GlyphTile>
+  <Text>Reef</Text>
+</Inline>
+```
+
 `Notice` is a tinted note in the page's flow (`tone`: `info`, `success`, `warning` or `danger`). The fill is the tone mixed into the surface (the accent tint for `info`) and the words are the tone moved toward the text color, so they keep 4.5:1 on the fill in every palette (only where a palette's own `danger` is under 4.5:1 on its surface does the note stay at least as readable as that). `title` is a bold lead; a text message (values interpolated in it included) shares its row while it fits and wraps under it otherwise, and a message with any element (a `span`, or a sentence and a `Checkbox` or `Field` in a `Stack`) is stacked under it. Write the message as plain text or a `span`, not a `Text`, which brings its own color. A control inside keeps its own colors; its muted description takes the notice's ink so it stays readable on the fill. `action` is one link or small `Button` at the end of the row; `icon` is a consumer glyph before the text, hidden from assistive technology. `danger` is `role="alert"` and the other tones `role="status"`; `role="none"` is for a note that is part of the page from the start (no live region). Screen readers announce an `alert` that appears, but not reliably a `status` mounted with its words: to have a status heard, keep the Notice mounted and change its words, or move focus to it. It never dismisses itself. Pass `tabIndex={-1}` and a `ref` to move focus to it. `variant="band"` makes it a full-width square strip of page chrome in caption type with its words centered, at least the `xs` control height, such as an environment strip first on the page (`<Notice tone="warning" variant="band" title="Field station">Records here stay out of the census.</Notice>`). It is as wide as its container, so put it outside any padded column, as the page's first child. A glyph or an action stays on the words' row and the words wrap. A band has no live region unless you pass `role`. An unknown `tone`, `role` or `variant`, a blank `title`, or a note with neither a title nor a message throws a `RangeError`.
 
 ```tsx
