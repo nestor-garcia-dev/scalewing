@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: implemented on branch `claude/tooltip-labels` for the next `@scalewing/react` minor; pending review and release. Teisoro adopts it after its `Tooltip` `disabled` pin (`teisoro-tooltip-disabled.md`, `@scalewing/react` 1.19.0) has merged.
+Status: shipped (the base request; any follow-up below carries its own status); present in `@scalewing/react` 1.26.0, the version Teisoro pins, from an earlier release (see `packages/react/CHANGELOG.md`), checked 2026-10-11 for Teisoro F-011 (redesign inventory, section 3). Earlier status: implemented on branch `claude/tooltip-labels` for the next `@scalewing/react` minor; pending review and release. Teisoro adopts it after its `Tooltip` `disabled` pin (`teisoro-tooltip-disabled.md`, `@scalewing/react` 1.19.0) has merged.
 Source: Teisoro's workspace navigation (`apps/teisoro-web/src/app/WorkspaceShell.tsx`), as Teisoro PR #43 (the `disabled` adoption) renders it.
 Renderer: react
 Missing surface: `relationship?: 'description' | 'label'` on `Tooltip`. `'label'` makes the tooltip its trigger's accessible name (`aria-labelledby`) instead of its description (`aria-describedby`), the naming tooltip of an icon-only control.

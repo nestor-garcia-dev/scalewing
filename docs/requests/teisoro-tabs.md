@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: implemented under Teisoro F-002-S21 task 820; pending independent review and packed-consumer verification.
+Status: shipped (the base request; any follow-up below carries its own status); present in `@scalewing/react` 1.26.0, the version Teisoro pins, from an earlier release (see `packages/react/CHANGELOG.md`), checked 2026-10-11 for Teisoro F-011 (redesign inventory, section 3). Earlier status: implemented under Teisoro F-002-S21 task 820; pending independent review and packed-consumer verification.
 Renderer: react
 Missing surface: `Tabs`, a tab strip with `tablist` semantics, and `TabPanel`.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: the frozen Angular Services reports page is four Material tabs (Variance audit, Intermex reconciliation, Cash flow, Shift audits) that scroll on a phone. React has used `SegmentedControl` for them since S06, which is a `radiogroup` for an exclusive choice, not a tab strip: it announces radios, has no `tabpanel` relationship, and its filled or chip track does not read as page sections. Scalewing's own `Nav` guidance says a segmented control is for exclusive choices.

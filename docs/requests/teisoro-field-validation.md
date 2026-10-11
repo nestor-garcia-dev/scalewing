@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: implemented and verified under Teisoro F-002-S05 task 600; pending independent review and commit.
+Status: shipped (the base request; any follow-up below carries its own status); present in `@scalewing/react` 1.26.0, the version Teisoro pins, from an earlier release (see `packages/react/CHANGELOG.md`), checked 2026-10-11 for Teisoro F-011 (redesign inventory, section 3). Earlier status: implemented and verified under Teisoro F-002-S05 task 600; pending independent review and commit.
 Renderer: react
 Missing surface: `Field description and validation`.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: Existing Field labels children but does not own stable description/error IDs, invalid association, or generated validation styling. A second product form wrapper would duplicate this logic.
@@ -97,7 +97,7 @@ Evidence: `field-changed.test.tsx` (the class and the description; an adorned fi
 
 ## Follow-up request (2026-10-09, Teisoro F-006-S11 task 1890): a changed value that does not read as focus
 
-Status: implemented on `teisoro/f006-s11-review-findings` for Teisoro F-006-S11 task 1890; awaiting review, merge and a `@scalewing/react` minor release.
+Status: released in `@scalewing/react` 1.24.0. Earlier status: implemented on `teisoro/f006-s11-review-findings` for Teisoro F-006-S11 task 1890; awaiting review, merge and a `@scalewing/react` minor release.
 Source: Teisoro's storyboard re-review of F-006-S11 (task 1890). `sw-field-changed` drew the accent border a hairline thicker, and the focus ring is the same accent, doubled; once the person tabs to the next field, two fields are outlined in the accent, and "changed" reads as "where I am".
 
 Teisoro need: the correction's changed fields marked so they read apart from the focused one at a glance, still beside their "Was …" words.

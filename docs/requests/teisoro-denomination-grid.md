@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: implemented under Teisoro F-002-S21 task 800; pending independent review and packed-consumer verification.
+Status: shipped (the base request; any follow-up below carries its own status); present in `@scalewing/react` 1.26.0, the version Teisoro pins, from an earlier release (see `packages/react/CHANGELOG.md`), checked 2026-10-11 for Teisoro F-011 (redesign inventory, section 3). Earlier status: implemented under Teisoro F-002-S21 task 800; pending independent review and packed-consumer verification.
 Renderer: react
 Missing surface: `DenominationGrid`.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: `Table` renders cells but cannot express a toned row label with an icon slot, muted zero cells, signed delta cells toned by sign, a per-row total that relocates on a phone, or the tile layout (column label over count over subtotal). Teisoro composed a bill-only, read-only strip from `Table`, `Badge`, `Text`, and `Stack` (S13 task 765) and every other route (drawer panel, cash-flow summary, register closeout, vault) would re-implement it with product-owned tone logic.
@@ -26,7 +26,7 @@ Teisoro use: `apps/teisoro-web/src/app/vault-page/MovementDialog.tsx` (the vault
 
 ## Follow-up request (2026-09-25, Teisoro F-002-S24 task 988): a wide strip scrolls on a phone
 
-Status: implemented for the react 1.8.0 release (Teisoro F-002-S26; PR #59 reviewed and merged); pending consumer verification in Teisoro.
+Status: released in `@scalewing/react` 1.8.0. Earlier status: implemented for the react 1.8.0 release (Teisoro F-002-S26; PR #59 reviewed and merged); pending consumer verification in Teisoro.
 
 A `strip` grid with eleven columns (seven bills and four coin rolls) does not fit a 390 px phone, and it does not scroll inside its card: it widens the page to about 630 px, so the whole page scrolls sideways. Teisoro's vault period summary now shows the same rows in two grids, bills and then coin rolls, to stay within the phone width.
 

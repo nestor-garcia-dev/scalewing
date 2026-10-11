@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: implemented and verified under Teisoro F-002-S05 task 580; pending independent review and commit.
+Status: shipped (the base request; any follow-up below carries its own status); present in `@scalewing/react` 1.26.0, the version Teisoro pins, from an earlier release (see `packages/react/CHANGELOG.md`), checked 2026-10-11 for Teisoro F-011 (redesign inventory, section 3). Earlier status: implemented and verified under Teisoro F-002-S05 task 580; pending independent review and commit.
 Renderer: react
 Missing surface: `Separator`.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: A hand-styled hr or border in each product would duplicate a reusable token-based visual rule.

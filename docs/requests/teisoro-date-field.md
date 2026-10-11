@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: implementation in progress under Teisoro F-002-S05 task 520.
+Status: shipped (the base request; any follow-up below carries its own status); present in `@scalewing/react` 1.26.0, the version Teisoro pins, from an earlier release (see `packages/react/CHANGELOG.md`), checked 2026-10-11 for Teisoro F-011 (redesign inventory, section 3). Earlier status: implementation in progress under Teisoro F-002-S05 task 520.
 Renderer: react
 Missing surface: `DateField`.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: Field labels a child but does not own a consistently styled date input or date-only contract. A hand-styled native date input in Teisoro would duplicate the control skin.
@@ -14,7 +14,7 @@ Scalewing owns the reusable visual and interaction behavior, typed public API, g
 
 ## 2026-09-27 update: a Scalewing-drawn calendar
 
-Status: implemented for the react 1.9.0 release (Teisoro F-007-S03 task 1280; PR #61 reviewed and merged); pending consumer verification in Teisoro (task 1285).
+Status: released in `@scalewing/react` 1.9.0. Earlier status: implemented for the react 1.9.0 release (Teisoro F-007-S03 task 1280; PR #61 reviewed and merged); pending consumer verification in Teisoro (task 1285).
 
 Decision: on 2026-09-27 the Teisoro product owner ruled that the native `<input type="date">` fails the acceptance matrix above. The browser draws its own calendar, so it differs by browser and operating system, cannot follow Scalewing's visual language (quiet, glass-minimal, large radius, hairline borders), and cannot be captured in screenshots for UX review. The "use native date-input behavior" and "do not invent a JavaScript calendar" lines above are kept as history and are superseded by this section.
 

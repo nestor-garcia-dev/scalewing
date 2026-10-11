@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: implemented under Teisoro F-002-S21 task 820; pending independent review and packed-consumer verification.
+Status: shipped (the base request; any follow-up below carries its own status); present in `@scalewing/react` 1.26.0, the version Teisoro pins, from an earlier release (see `packages/react/CHANGELOG.md`), checked 2026-10-11 for Teisoro F-011 (redesign inventory, section 3). Earlier status: implemented under Teisoro F-002-S21 task 820; pending independent review and packed-consumer verification.
 Renderer: react
 Missing surface: `StatTile`, one prominent figure with its label.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: the frozen Angular pages open every report and list with a row of figure tiles (employees: Active / Inactive / Total; closeout reports: five totals with the first one filled; every Services report tab: two to four), each with a glyph, a small uppercase label, a large tabular value and sometimes a second line. Teisoro composed this in task 805 (`Card variant="outlined"` + `Text variant="heading"` + a caption) and the rendered-parity contract said that a second repeat would be the request; task 820 repeats it twelve times across three routes and needs the filled "primary" tile, a glyph slot and a toned value, which the composition cannot express without Teisoro CSS.

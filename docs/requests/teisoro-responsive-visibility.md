@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: implemented and verified under Teisoro F-002 (no-custom-CSS ruling, 2026-09-21); independent review approved; awaiting publish and Teisoro pin bump.
+Status: shipped (the base request; any follow-up below carries its own status); present in `@scalewing/react` 1.26.0, the version Teisoro pins, from an earlier release (see `packages/react/CHANGELOG.md`), checked 2026-10-11 for Teisoro F-011 (redesign inventory, section 3). Earlier status: implemented and verified under Teisoro F-002 (no-custom-CSS ruling, 2026-09-21); independent review approved; awaiting publish and Teisoro pin bump.
 Renderer: react
 Missing surface: responsive visibility props on `Box` (`hideFrom`, `hideBelow`) backed by a `md` breakpoint token.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: No primitive can show one region on wide screens and another on narrow screens, so a product must ship its own media-query stylesheet.
