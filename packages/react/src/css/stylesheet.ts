@@ -43,6 +43,7 @@ import { dialogClassCatalog } from './css-dialog.js';
 import { selectClassCatalog } from './css-select.js';
 import { splitClassCatalog } from './css-split.js';
 import { toastClassCatalog } from './css-toast.js';
+import { toastCardClassCatalog } from './css-toast-card.js';
 import { cssDocumentCanvas } from './css-document.js';
 import { cssPaletteAttributes } from './css-palettes.js';
 import { cssUtilities } from './css-utilities.js';
@@ -102,6 +103,7 @@ export function utilityClassCatalog(): string[] {
     ...stepsClassCatalog(),
     ...splitClassCatalog(),
     ...toastClassCatalog(),
+    ...toastCardClassCatalog(),
     ...responsiveClassCatalog(),
     ...boxBorderClassCatalog(),
   ];

@@ -113,7 +113,13 @@ export {
   tabId,
   tabPanelId,
 } from './components/Tabs.js';
-export { Toast, toastTones } from './components/Toast.js';
+export {
+  Toast,
+  toastPlacements,
+  toastTones,
+  type ToastAction,
+  type ToastPlacement,
+} from './components/Toast.js';
 export type { ToastProps, ToastTone } from './components/Toast.js';
 export { Field, type FieldProps, type FieldSize } from './components/Field.js';
 export {

@@ -242,6 +242,24 @@ A `Button` that toggles something passes `aria-pressed`. The pressed button gets
 
 `Toast` is an auto-dismiss confirmation on the popover layer, controlled by `open` and `onOpenChange`; it does not trap focus and closes after `timeoutMs` (default 800, or 6000 for a `warning` or `danger` toast, which must be read). `anchor` and `target` send it from a press to a destination. `tone` (`neutral` by default, `success`, `warning`, `danger`) tints its border and an optional consumer `icon` (a Lucide glyph, hidden from assistive technology); the message keeps the text color, so its words carry the meaning. A `danger` toast is announced as `role="alert"`, the others as `role="status"`, so do not wrap the message in another live region. A toast still dismisses itself: an error the person must act on belongs in the page. A toast is as wide as its message, up to the page's gutter (spacing step 4) on each side, so on a phone a long message wraps inside the gutter instead of running to the screen's edges.
 
+A toast can also be a corner card that confirms a save: `placement="top-end"` puts it `space-4` from the viewport's top and end corner, `title` is a bold first line with the children as a muted detail under it (pass plain text, not a `Text`), `action` (`{ label, onPress }`) is one ghost small Button at the end that runs `onPress` and then closes the toast, and `showRemaining` adds a thin line that runs down with the time left. A toast with an action or the line takes the pointer, and its time (and the line) is held while the pointer is over it or focus is inside it; each opening starts with the whole time. Pass the time you want, such as `timeoutMs={10000}`, and close it yourself when it no longer applies (for example when the next sale starts). It is never modal and never takes focus; when it closes with focus inside (after its action), focus goes back to where it came from. Keyboard users reach the action in the Toast's place in the DOM, so render it right after the control that saves. A travelling toast ignores `placement` and `showRemaining`.
+
+```tsx
+<Toast
+  open={saved}
+  onOpenChange={setSaved}
+  placement="top-end"
+  tone="success"
+  icon={<Check />}
+  title="Heron count saved"
+  action={{ label: 'Open', onPress: openCount }}
+  showRemaining
+  timeoutMs={10000}
+>
+  12 herons · 2 nests
+</Toast>
+```
+
 `Switch` is a controlled on/off input. It keeps native checkbox keyboard behavior and exposes switch semantics. Provide the current `checked` value and update it in `onCheckedChange`.
 
 `Checkbox` is a controlled native checkbox for one independent form or confirmation choice. `checked` and `onCheckedChange` own its state. The consumer supplies `error` after validation to describe and style an invalid choice (associated by `aria-describedby` with `aria-invalid` and announced from a polite live region, as `Field`'s error is, never an alert); `required` retains native form semantics.

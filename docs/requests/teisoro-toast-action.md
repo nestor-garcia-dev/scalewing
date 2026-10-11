@@ -1,0 +1,26 @@
+Scalewing request from Teisoro.
+
+Status: accepted 2026-10-11 for the `@scalewing/react` 1.28.0 release (Teisoro F-011-S03, release R2 "feedback", item 7; the redesign inventory's row 21).
+Renderer: react
+Missing surface: `Toast` `title`, `action`, `showRemaining` and `placement="top-end"`, with the timer held while the pointer or focus is on the toast. An extension of `Toast` (`fantasy-football-toast.md`, `teisoro-toast.md`), not a new component.
+Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: five F-011 boards (EntryStepSaved, StepCheckSaved, NsfPaySaved, LedgerFix3, PosDaySaved) confirm a save with a small card at the top right for 10 seconds: a tick, "Money transfer saved", a muted "$480.00 · change $20.00 given", an "Open" action, and a thin line that shows the time left. It never covers the form and the next sale can start under it. `Toast` is a click-through pill at the bottom centre with no title, no action and no time line, and a consumer cannot position or time one without its own CSS.
+Existing surface this might already be: `Toast` (`tone`, `icon`); `Notice` (stays in the flow; this one floats and leaves on its own).
+Workaround I almost used: a `Toast` with a `Button` inside, which `pointer-events: none` makes unpressable, and the 800 ms default gone before it is read.
+Teisoro use: the `SavedNote` composite in `apps/teisoro-web/src/app/ui/` after each saved entry; it closes the toast itself when the next sale starts.
+Proposed API (inventory): `title?` + children as detail, `action?: { label, onPress }`, `showRemaining?: boolean`, `placement?: 'top-end'`. `timeoutMs=10000`, paused on hover or focus. Non-modal, no focus trap.
+
+## Accepted API (2026-10-11)
+
+- `title?: string`: a bold first line (label type); the children become a muted detail under it (label size, regular weight). Without a title, an icon or an action the toast's markup is unchanged.
+- `action?: ToastAction` (`{ label: string; onPress: () => void }`): a ghost small `Button` at the end of the row; pressing it runs `onPress` and then closes the toast (`onOpenChange(false)`). Its negative block margins keep the row one line tall.
+- `showRemaining?: boolean`: a thin line under the content (spacing step 1 high, the tone's color, the accent for a neutral toast) that runs from full to empty over the toast's duration (`--sw-toast-duration`, set from `timeoutMs`). It is `aria-hidden`; it is a measure of time, so it runs under reduced motion too. Forced colors draw it in `CanvasText` on `Canvas`.
+- `placement?: ToastPlacement` (`'bottom' | 'top-end'`, default `bottom`, `toastPlacements` exported): `top-end` is fixed `space-4` from the top and the inline end (clear of the safe areas, mirrored in right-to-left), at most the dialog reading width (32rem) and the page gutter, and drops in from above (no motion when reduced).
+- A toast with an `action` or `showRemaining` takes the pointer (`sw-toast-interactive`); the timer and the line are held while the pointer is over it or focus is inside it, and resume with the time that was left. Each time it opens it starts with the whole time, unpaused. A plain toast stays click-through. Focus is never moved to it and never trapped.
+- The consumer passes `timeoutMs={10000}`; the tone defaults are unchanged. A travelling toast (`anchor` and `target`) ignores `placement` and `showRemaining` and does not pause.
+- When the toast closes with focus inside it (its action, or the consumer closing it while it is focused), focus goes back to where it came from. The action is reached in the Toast's DOM order, so render the Toast right after the control that saves. The live region reads the action's name after the detail.
+- `title` is no longer forwarded to the `div` as the HTML tooltip attribute; it is the bold first line.
+- Failure boundary: a blank `title`, an `action` without a nonblank `label` or an `onPress`, or an unknown `placement` throws a `RangeError`.
+- Sizes on Scalewing's scale (Teisoro D-2): the card is as wide as its content up to 32rem (the board's fixed 340), sits `space-4` (16) from the viewport's top and end corner (the board floats it under the area bar, over the content's top right; Scalewing places it on the viewport, so it can cover the header's end for its 10 seconds), padding `space-3` (12; the board's 14 × 16), glass with a hairline in the tone (the board's white card with a shadow), title 15 (board 15), detail 15 regular (board 14), line 4 high (board 3) and `space-2` (8) under the row (board 10), action a ghost `sm` Button (the board's bold link). The board's tick in a filled tone circle is the consumer's `icon`.
+- Generated classes `sw-toast-title`, `sw-toast-detail`, `sw-toast-action`, `sw-toast-interactive`, `sw-toast-top-end`, `sw-toast-remaining`, `sw-toast-paused`.
+
+Evidence: `toast-card.test.tsx` (the card's parts and reading order, the action runs then closes, hover and focus hold the time and it resumes with what was left, reopening starts over, focus goes back after the action, a travelling toast ignores the placement, `title` never reaches the DOM, the plain toast unchanged, failures, the generated rules and their order); gallery "Toast" (the "Save the heron count" card); `apps/gallery/e2e/toast-card.spec.ts` on desktop-en, mobile-es and forced-colors (the corner, the line held on hover, Open closes it).
