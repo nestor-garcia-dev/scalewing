@@ -1,6 +1,7 @@
 'use client';
 
 import {
+  Fragment,
   useId,
   useLayoutEffect,
   useRef,
@@ -78,28 +79,39 @@ export function ActionMenuList({
       role="menu"
     >
       {items.map((item, index) => (
-        <button
-          className={cx(
-            'sw-action-menu-item',
-            item.destructive && 'sw-action-menu-item-danger',
-          )}
-          disabled={item.disabled}
-          key={item.id}
-          onClick={() => onSelect(item)}
-          onFocus={() => onFocusIndex(index)}
-          onKeyDown={(event) => {
-            if (event.key === 'Enter' || event.key === ' ') {
-              event.preventDefault();
-              onSelect(item);
-            }
-          }}
-          role="menuitem"
-          tabIndex={index === focusIndex ? 0 : -1}
-          type="button"
-        >
-          {item.icon ? <span aria-hidden="true">{item.icon}</span> : null}
-          <span lang={item.lang}>{item.label}</span>
-        </button>
+        <Fragment key={item.id}>
+          {item.separatorBefore && index > 0 ? (
+            <div className="sw-action-menu-separator" role="separator" />
+          ) : null}
+          <button
+            className={cx(
+              'sw-action-menu-item',
+              item.destructive && 'sw-action-menu-item-danger',
+            )}
+            disabled={item.disabled}
+            onClick={() => onSelect(item)}
+            onFocus={() => onFocusIndex(index)}
+            onKeyDown={(event) => {
+              if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault();
+                onSelect(item);
+              }
+            }}
+            role="menuitem"
+            tabIndex={index === focusIndex ? 0 : -1}
+            type="button"
+          >
+            {item.icon ? <span aria-hidden="true">{item.icon}</span> : null}
+            <span lang={item.lang}>{item.label}</span>
+            {item.detail ? (
+              <span className="sw-action-menu-detail">
+                {' '}
+                <span lang={item.detailLang}>{item.detail}</span>
+                <span aria-hidden="true" className="sw-action-menu-chevron" />
+              </span>
+            ) : null}
+          </button>
+        </Fragment>
       ))}
     </div>
   );

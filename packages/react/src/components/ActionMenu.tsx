@@ -26,6 +26,20 @@ export type ActionMenuItem = {
   icon?: ReactNode;
   disabled?: boolean;
   destructive?: boolean;
+  /**
+   * A short current value at the command's end with a chevron, such as
+   * "English" on a Language command that opens a choice: muted, read as
+   * part of the command's name ("Language English"). The chevron is
+   * decorative and points to the inline end. Meant for a short value; a
+   * long one wraps between words. The command still runs like any other:
+   * it opens no submenu, so a command that opens a dialog or a picker
+   * says so in its label or what it opens.
+   */
+  detail?: string;
+  /** The BCP 47 language of `detail` when it is not the page's. */
+  detailLang?: string;
+  /** Draws a hairline before the command, setting it apart from the ones above. */
+  separatorBefore?: boolean;
 };
 
 export type ActionMenuProps = {
@@ -74,6 +88,17 @@ export function ActionMenu({
   const openRef = useRef(false);
   const [open, setOpen] = useState(false);
   const [focusIndex, setFocusIndex] = useState(-1);
+  if (
+    items.some(
+      (item) =>
+        (item.detail !== undefined && !item.detail.trim()) ||
+        (item.detailLang !== undefined &&
+          (!item.detailLang.trim() || item.detail === undefined)),
+    )
+  )
+    throw new RangeError(
+      'ActionMenu item detail and detailLang must not be blank; detailLang needs a detail',
+    );
   const enabled = !disabled && items.some((item) => !item.disabled);
 
   useLayoutEffect(() => {
