@@ -146,3 +146,52 @@ test('SegmentedControl shows an error under the track, described on the group', 
     ((await group.boundingBox())?.y ?? 0);
   expect(Math.abs(gapAfter - gapBefore)).toBeLessThan(1);
 });
+
+test('SegmentedControl items with icons put a hidden mark before the label at the md height', async ({
+  page,
+}, testInfo) => {
+  await page.goto('/#segmented-control');
+  if (testInfo.project.name === 'forced-colors')
+    await page.emulateMedia({ forcedColors: 'active' });
+  const group = page.getByRole('radiogroup', { name: 'Survey', exact: true });
+  const lake = group.getByRole('radio', { name: 'Lake' });
+  await expect(lake).toHaveAttribute('aria-checked', 'true');
+  const icon = lake.locator('.sw-segmented-item-icon');
+  await expect(icon).toHaveAttribute('aria-hidden', 'true');
+  // The mark sits before the label, on its row, and the item is 44 high.
+  const box = (await lake.boundingBox())!;
+  expect(Math.round(box.height)).toBeGreaterThanOrEqual(44);
+  const mark = (await icon.boundingBox())!;
+  expect(mark.x).toBeLessThan(box.x + box.width / 2);
+  expect(
+    Math.abs(mark.y + mark.height / 2 - (box.y + box.height / 2)),
+  ).toBeLessThan(2);
+  await group.getByRole('radio', { name: 'Savanna' }).click();
+  await expect(group.getByRole('radio', { name: 'Savanna' })).toHaveAttribute(
+    'aria-checked',
+    'true',
+  );
+  await page.keyboard.press('ArrowLeft');
+  await expect(lake).toHaveAttribute('aria-checked', 'true');
+  await group.screenshot({ path: testInfo.outputPath('segmented-icons.png') });
+});
+
+test('SegmentedControl icon tracks keep the disabled and error states', async ({
+  page,
+}) => {
+  await page.goto('/#segmented-control');
+  const closed = page.getByRole('radiogroup', { name: 'Closed survey' });
+  await expect(closed).toHaveClass(/sw-segmented-disabled/);
+  await expect(closed.getByRole('radio', { name: 'Forest' })).toBeDisabled();
+  const retake = page.getByRole('radiogroup', { name: 'Survey to retake' });
+  await expect(retake).toHaveAttribute('aria-invalid', 'true');
+  const [border, danger] = await retake.evaluate((node) => {
+    const probe = document.createElement('span');
+    probe.style.color = 'var(--sw-color-danger)';
+    node.append(probe);
+    const colour = getComputedStyle(probe).color;
+    probe.remove();
+    return [getComputedStyle(node).borderTopColor, colour];
+  });
+  expect(border).toBe(danger);
+});

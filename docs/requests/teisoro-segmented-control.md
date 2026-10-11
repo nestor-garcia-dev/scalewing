@@ -23,7 +23,7 @@ Behavior and failure boundary: presentation and interaction only; the consumer s
 
 ## Follow-up request (2026-09-25, Teisoro F-002-S19 task 1060): an icon slot on items
 
-Status: to be refiled as `teisoro-segmented-control-icon.md` (Teisoro F-011 release R3). Earlier status: requested; not started.
+Status: refiled as `teisoro-segmented-control-icon.md` (Teisoro F-011 release R3), which ships `icon`; `labelVisuallyHidden` (an icon-only item) is not built: the F-011 boards always show the label. Earlier status: requested; not started.
 
 `SegmentedControl` items take a `label` node, so a consumer can put an icon in it, but nothing states how an icon-only item gets its accessible name or how the icon sits beside the text at each size. Angular's vault movement filter used icons for All, In and Out; React shows the text alone.
 

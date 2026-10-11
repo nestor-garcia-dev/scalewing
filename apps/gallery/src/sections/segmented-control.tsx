@@ -8,6 +8,7 @@ import {
 import { useId, useState } from 'react';
 
 import { Section } from '../layout/Section.js';
+import { SegmentedIconsExample } from './segmented-icons.js';
 
 export function SegmentedControlSection() {
   const [animalClass, setAnimalClass] = useState('mammals');
@@ -27,7 +28,7 @@ export function SegmentedControlSection() {
   return (
     <Section
       id="segmented-control"
-      purpose="SegmentedControl is one exclusive choice. Use it instead of a row of independent Buttons. The compact variant is a quiet section switch; variant filled gives every segment the same width and an accent-filled selection, for a choice that decides what a form does; it takes the full width in a Stack and its labels' width in an Inline. disabled keeps the recorded choice visible but inert. error puts a message under the track, as Field does: described on the group, aria-invalid, a danger outline, and announced politely, never as an alert; required sets aria-required, and the element that labels the group shows the mark. error is for a control in a Stack or block layout, as the compact Group size is; in an Inline the field grows to fit the message (at least 24ch), so the row moves."
+      purpose="SegmentedControl is one exclusive choice. Use it instead of a row of independent Buttons. The compact variant is a quiet section switch; variant filled gives every segment the same width and an accent-filled selection, for a choice that decides what a form does; it takes the full width in a Stack and its labels' width in an Inline. disabled keeps the recorded choice visible but inert. error puts a message under the track, as Field does: described on the group, aria-invalid, a danger outline, and announced politely, never as an alert; required sets aria-required, and the element that labels the group shows the mark. error is for a control in a Stack or block layout, as the compact Group size is; in an Inline the field grows to fit the message (at least 24ch), so the row moves. An item's icon (such as a GlyphTile) sits before its label, hidden from assistive technology; a track with icons takes the md control height."
       title="SegmentedControl"
       usage={`<SegmentedControl
   aria-label="Class"
@@ -36,6 +37,16 @@ export function SegmentedControlSection() {
   items={[
     { id: 'mammals', label: 'Mammals' },
     { id: 'birds', label: 'Birds' },
+  ]}
+/>
+
+<SegmentedControl
+  aria-label="Survey"
+  value={survey}
+  onChange={setSurvey}
+  items={[
+    { id: 'forest', label: 'Forest', icon: <GlyphTile hue="green" size="sm"><Trees /></GlyphTile> },
+    { id: 'lake', label: 'Lake', icon: <GlyphTile hue="blue" size="sm"><Waves /></GlyphTile> },
   ]}
 />
 
@@ -153,6 +164,7 @@ export function SegmentedControlSection() {
             value={groupSize}
           />
         </Stack>
+        <SegmentedIconsExample />
         <Button onPress={() => setChecked(true)} variant="secondary">
           Log movement
         </Button>

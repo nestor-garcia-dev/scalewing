@@ -8,6 +8,14 @@ import { FieldErrorRegion } from './FieldErrorRegion.js';
 export type SegmentedItem = {
   id: string;
   label: ReactNode;
+  /**
+   * A consumer mark before the label, such as a `GlyphTile` or a Lucide
+   * glyph, hidden from assistive technology (the label names the item).
+   * When any item has one, every item of a compact track takes the `md`
+   * control height and label type on a subtle track; a filled track keeps
+   * its look and gains the marks. A falsy value (`0`, `''`) is no icon.
+   */
+  icon?: ReactNode;
 };
 
 type SegmentedLabel =
@@ -66,6 +74,7 @@ export const SegmentedControl = forwardRef<
   ref,
 ) {
   const errorId = useId();
+  const withIcons = items.some((item) => item.icon);
 
   function onKeyDown(event: KeyboardEvent<HTMLDivElement>) {
     if (disabled || (event.key !== 'ArrowRight' && event.key !== 'ArrowLeft')) {
@@ -103,6 +112,7 @@ export const SegmentedControl = forwardRef<
         className={cx(
           'sw-segmented',
           variant === 'filled' && 'sw-segmented-filled',
+          withIcons && 'sw-segmented-with-icons',
           disabled && 'sw-segmented-disabled',
         )}
         onKeyDown={onKeyDown}
@@ -129,6 +139,11 @@ export const SegmentedControl = forwardRef<
               role="radio"
               type="button"
             >
+              {item.icon ? (
+                <span aria-hidden="true" className="sw-segmented-item-icon">
+                  {item.icon}
+                </span>
+              ) : null}
               {item.label}
             </button>
           );
