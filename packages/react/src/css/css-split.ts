@@ -7,6 +7,7 @@ export function cssSplitClasses(): string {
   display: flex;
   flex: 0 0 auto;
   flex-direction: row;
+  max-width: calc(100% - var(--sw-split-min));
   min-width: 0;
 }
 

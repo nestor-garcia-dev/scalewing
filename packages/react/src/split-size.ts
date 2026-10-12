@@ -44,29 +44,40 @@ export function clampSplitSize(size: number, min: number, max: number): number {
   return Math.min(max, Math.max(min, size));
 }
 
+/**
+ * The pane's place between its minimum and maximum as 0–100. When the
+ * container leaves no range (min equals max), the pane is as wide as it can
+ * be: 100.
+ */
 export function splitPercent(width: number, min: number, max: number): number {
   if (max <= min) {
-    return 0;
+    return 100;
   }
   return Math.round(
     ((clampSplitSize(width, min, max) - min) / (max - min)) * 100,
   );
 }
 
-export function effectiveSplitMax(
-  tokenMax: number,
-  parentWidth: number,
+/**
+ * The range a pane can take in its container. The stylesheet keeps the split
+ * at most its container less the split minimum, so the next column keeps that
+ * minimum and the pane gets the room left after the handle. In a narrow
+ * container that room is under the token minimum, so the range narrows to it:
+ * a pane never grows past what shows, and only a move narrower than the room
+ * collapses it. A container that is not laid out (zero width) keeps the
+ * token range.
+ */
+export function effectiveSplitRange(
+  tokens: Pick<SplitMetrics, 'min' | 'max'>,
+  containerWidth: number,
   handleWidth: number,
-  min: number,
-): number {
-  if (parentWidth <= 0) {
-    return tokenMax;
+): Pick<SplitMetrics, 'min' | 'max'> {
+  if (containerWidth <= 0) {
+    return { min: tokens.min, max: tokens.max };
   }
-  const room = parentWidth - handleWidth - min;
-  if (room < min) {
-    return min;
-  }
-  return Math.min(tokenMax, room);
+  const room = Math.max(0, containerWidth - handleWidth - tokens.min);
+  const max = Math.min(tokens.max, room);
+  return { min: Math.min(tokens.min, max), max };
 }
 
 export function applySplitDrag(

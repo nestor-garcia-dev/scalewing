@@ -13,7 +13,11 @@ test('a toned Toast tints its border and icon and announces danger as an alert',
 
   // Teisoro DRW-14: every toast was the same neutral glass pill.
   await section.getByRole('button', { name: 'Save survey' }).click();
-  const saved = page.getByRole('status').filter({ hasText: 'Survey saved.' });
+  // The Notice section also shows a "Survey saved." status, so match the toast.
+  const saved = page
+    .getByRole('status')
+    .and(page.locator('.sw-toast'))
+    .filter({ hasText: 'Survey saved.' });
   await expect(saved).toBeVisible();
   await expect(saved).toHaveClass(/sw-toast-success/);
   const icon = saved.locator('.sw-toast-icon');

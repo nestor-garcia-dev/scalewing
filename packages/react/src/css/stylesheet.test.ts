@@ -609,6 +609,10 @@ describe('generated CSS', () => {
     expect(css).toContain('.sw-split');
     expect(css).toContain('.sw-split-handle');
     expect(css).toContain('.sw-split-grip');
+    // The split leaves the next column its minimum in a narrow container.
+    expect(css).toMatch(
+      /\.sw-split \{[^}]*max-width: calc\(100% - var\(--sw-split-min\)\);/,
+    );
     expect(css).toContain('--sw-split-min: 14rem');
     expect(css).toContain('--sw-split-size: 22rem');
     expect(css).toContain('--sw-split-max: 32rem');
