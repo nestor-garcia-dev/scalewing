@@ -1,4 +1,5 @@
 import { typographyVariants } from '@scalewing/tokens';
+import { cssBoxLinkClasses } from './css-box-link.js';
 
 const body = typographyVariants.body;
 
@@ -105,6 +106,8 @@ body {
   outline: var(--sw-focus-ring-width) solid var(--sw-color-accent);
   outline-offset: var(--sw-focus-ring-offset);
 }
+
+${cssBoxLinkClasses()}
 
 /*
  * A programmatic focus target (tabindex="-1": a notice, a card or a heading

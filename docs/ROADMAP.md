@@ -57,6 +57,13 @@ and sizes carried by a product theme need a non-colour theme concept
 (ThemeProvider carries colours only); a date heading as the calendar
 trigger was dropped (a date's text is never the trigger).
 
+Teisoro F-011 task 2145, two fixes for the cash ledger and the cash
+check: scroll regions contain absolutely placed content (#152, patch)
+and `Box` `link="quiet"`, a row title's link in the text colour set
+apart by weight (`teisoro-box-link-quiet.md`). Next: release both as the
+next `@scalewing/react` minor; Teisoro pins it and sets quiet titles on
+its `CashLedger`.
+
 FutMas score entry (canvas board W3): `StepperRow`
 (`futmas-stepper-row.md`) and `Field` `variant="search"`
 (`futmas-search-field.md`), so a goal-scorer sheet lists a roster as

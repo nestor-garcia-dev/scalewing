@@ -32,6 +32,7 @@ import { fieldClassCatalog } from './css-field.js';
 import { stepperClassCatalog } from './css-stepper.js';
 import { stepsClassCatalog } from './css-steps.js';
 import { boxBorderClassCatalog } from './css-box-border.js';
+import { boxLinkClassCatalog } from './css-box-link.js';
 import { cssComponentClasses } from './css-components.js';
 import { buttonClassCatalog } from './css-button.js';
 import { chartClassCatalog } from './css-chart.js';
@@ -116,6 +117,7 @@ export function utilityClassCatalog(): string[] {
     ...toastCardClassCatalog(),
     ...responsiveClassCatalog(),
     ...boxBorderClassCatalog(),
+    ...boxLinkClassCatalog(),
   ];
 }
 
