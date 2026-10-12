@@ -292,8 +292,8 @@ rules. Next: independent review and merge, then release `@scalewing/react`
 through Release packages; Teisoro verifies the vault period summary and the
 drawer audit card with a local link first. Found on the way: the gallery's
 `Split` demo widens the page at 390 px (the start pane plus handle is wider
-than the section), a separate Split request. Fixed in a `@scalewing/react`
-patch (Teisoro F-011 task 2155): the split leaves the next column its minimum
+than the section), a separate Split request. Fixed in `@scalewing/react`
+1.33.1 (#155, Teisoro F-011 task 2155): the split leaves the next column its minimum
 and the gallery no longer scrolls sideways at 390 px.
 
 `SingleSelect` `variant="list"` for FutMas F-002-S40
