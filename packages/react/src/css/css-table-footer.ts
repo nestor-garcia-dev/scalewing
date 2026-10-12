@@ -10,7 +10,7 @@ import { zIndex } from './stacking.js';
  * A sticky footer pins its cells to the bottom edge on the header's glass
  * (solid surface under reduced transparency, the system canvas in forced
  * colours, as the pinned header cells), on the `stickyFooter` layer: over
- * the cells and the pinned header cells, under the ActionBar, which covers
+ * the cells and the pinned head group, under the ActionBar, which covers
  * it, so a page does not pair the two. Where it pins (the page or the
  * table's own region) is `css-table-page-pin.ts`.
  */
@@ -42,7 +42,7 @@ export function cssTableFooterClasses(): string {
 @media (forced-colors: active) {
   .sw-table tfoot > tr:first-child > :is(th, td)::before { border-color: CanvasText; }
   .sw-table .sw-table-footer-sticky :is(th, td),
-  .sw-table-sticky thead th { background: Canvas; backdrop-filter: none; -webkit-backdrop-filter: none; }
+  .sw-table-sticky thead :is(th, td) { background: Canvas; backdrop-filter: none; -webkit-backdrop-filter: none; }
 }`;
 }
 

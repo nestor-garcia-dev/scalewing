@@ -53,8 +53,9 @@ test('TableFooter pins its total to the bottom of the page while the rows scroll
   await table
     .getByRole('cell', { name: 'Lagoon' })
     .evaluate((node) => node.scrollIntoView({ block: 'center' }));
+  // The whole head group is what pins (its thead), not each cell.
+  await expect(table.locator('thead')).toHaveCSS('position', 'sticky');
   const header = table.getByRole('columnheader', { name: 'Site' });
-  await expect(header).toHaveCSS('position', 'sticky');
   const headerBox = (await header.boundingBox())!;
   expect(Math.abs(headerBox.y)).toBeLessThanOrEqual(1);
   if (testInfo.project.name === 'forced-colors') {

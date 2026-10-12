@@ -22,10 +22,13 @@ import {
   tablePressClassCatalog,
 } from './css-table-press.js';
 import {
+  cssTableStickyHeaderClasses,
+  tableStickyHeaderClassCatalog,
+} from './css-table-sticky-header.js';
+import {
   cssTableSortClasses,
   tableSortClassCatalog,
 } from './css-table-sort.js';
-import { zIndex } from './stacking.js';
 
 const caption = typographyVariants.caption;
 
@@ -97,14 +100,7 @@ export function cssTableClasses(): string {
   overflow: hidden;
 }
 
-.sw-table-sticky thead th {
-  background: var(--sw-glass-fill);
-  backdrop-filter: blur(var(--sw-glass-blur)) saturate(var(--sw-glass-saturate));
-  -webkit-backdrop-filter: blur(var(--sw-glass-blur)) saturate(var(--sw-glass-saturate));
-  position: sticky;
-  top: 0;
-  ${zIndex('stickyCell')}
-}
+${cssTableStickyHeaderClasses()}
 
 .sw-table-compact th,
 .sw-table-compact td {
@@ -133,7 +129,7 @@ export function tableClassCatalog(): string[] {
     'sw-table-end',
     'sw-table-numeric',
     'sw-table-clip',
-    'sw-table-sticky',
+    ...tableStickyHeaderClassCatalog(),
     'sw-table-compact',
     'sw-table-row-selected',
     ...tableLayoutClassCatalog(),

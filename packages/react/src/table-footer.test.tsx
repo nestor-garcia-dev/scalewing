@@ -89,7 +89,7 @@ describe('TableFooter CSS', () => {
 
   it('paints pinned footer and header cells solid in forced colours', () => {
     expect(css).toContain(
-      '  .sw-table .sw-table-footer-sticky :is(th, td),\n  .sw-table-sticky thead th { background: Canvas; backdrop-filter: none; -webkit-backdrop-filter: none; }',
+      '  .sw-table .sw-table-footer-sticky :is(th, td),\n  .sw-table-sticky thead :is(th, td) { background: Canvas; backdrop-filter: none; -webkit-backdrop-filter: none; }',
     );
   });
 
