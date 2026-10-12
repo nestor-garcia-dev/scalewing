@@ -92,7 +92,7 @@ describe('generated CSS', () => {
       ]),
     );
     expect(css).toContain(
-      '.sw-denomination-scroll {\n  overflow: auto;\n  width: 100%;\n}',
+      '.sw-denomination-scroll {\n  overflow: auto;\n  position: relative;\n  width: 100%;\n}',
     );
     expect(css).toContain(
       '.sw-denomination-scroll:focus-visible {\n  outline: var(--sw-focus-ring-width) solid var(--sw-color-accent);',

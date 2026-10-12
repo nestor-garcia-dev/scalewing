@@ -345,3 +345,44 @@ test('a wide right-to-left Table shades its start on the right and its end on th
   expect(await shadow()).toContain(' -32px 0px 24px -24px inset');
   expect(await shadow()).not.toContain(' 32px 0px 24px -24px inset');
 });
+
+test('a visually hidden label in a cell past the edge stays inside the table’s scroll', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/#table');
+  const region = page
+    .locator('#table')
+    .getByRole('group', { name: 'Field log' });
+  await expect(region).toHaveCSS('position', 'relative');
+  // A label hidden in the last cell of the first row, which sits past the
+  // region's end at 390, as a cell's inline field names itself.
+  const placed = await region.evaluate((node) => {
+    const cell = node.querySelector('tbody tr:first-child > :last-child');
+    if (!cell) throw new Error('no last cell in the first row');
+    const hidden = document.createElement('span');
+    hidden.className = 'sw-sr-only';
+    hidden.textContent = 'Observer’s note';
+    cell.append(hidden);
+    return {
+      overflows: node.scrollWidth > node.clientWidth,
+      anchored: hidden.offsetParent === node,
+    };
+  });
+  // The label is past the region's edge and placed against the region.
+  expect(placed).toEqual({ overflows: true, anchored: true });
+  // Measure the page with only this section shown, so another section's
+  // layout cannot mask or cause the result.
+  const documentWidth = await page.evaluate(() => {
+    for (const other of document.querySelectorAll<HTMLElement>(
+      '.gallery-section:not(#table)',
+    )) {
+      other.style.display = 'none';
+    }
+    return {
+      scrollWidth: document.documentElement.scrollWidth,
+      viewport: window.innerWidth,
+    };
+  });
+  expect(documentWidth.scrollWidth).toBe(documentWidth.viewport);
+});
