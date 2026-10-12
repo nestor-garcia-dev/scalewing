@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: accepted 2026-10-12 (Teisoro F-011 task 2185; plan approval under Teisoro decisions O-1 to O-4 and D-1). Teisoro's acceptance review listed it as gap 17, "Whole-row press for search results (NsfPay1)".
+Status: released in `@scalewing/react` 1.34.0 (PR #157; accepted 2026-10-12; Teisoro F-011 task 2185; plan approval under Teisoro decisions O-1 to O-4 and D-1). Teisoro's acceptance review listed it as gap 17, "Whole-row press for search results (NsfPay1)".
 Renderer: react
 Missing surface: a whole-row press on `TableRow` for a row's one action, and a cell action drawn as the cell's text. An extension of `TableRow` and `TableCell`, not a new component.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: the product owner, at the cash check's customer search: "on these tables, can we make the entire row clickable instead of just the link. that would help speed up the process for the cashiers". Teisoro's pick-from-a-list tables (the cash check's customer results, the bounced check's "who owes" search, the NSF list) put the action on the name only, an accent ghost `Button`, so a cashier must hit the name. The boards (StepCheck1a, NsfPay1) draw the name as bold text with the whole row pressable. A `Button` cannot wrap a `tr`, a row `onClick` in product code is not reachable by keyboard and gives no hover or pressed state, and Teisoro owns no CSS (no cursor, no row fill, no button reset).
