@@ -1,5 +1,11 @@
 # @scalewing/react
 
+## 1.33.1
+
+### Patch Changes
+
+- 2a52f01: `Split` no longer widens the page in a narrow container. The split is now at most its container's width less the split minimum (`max-width: calc(100% - var(--sw-split-min))`), so the next column keeps 14rem and the start pane shrinks below its 22rem default instead of running past the container. Before, at 390 px the pane kept 22rem, the next column got no width and its words pushed the page out sideways (the gallery measured 481 px; found by Teisoro F-011). The drag and keyboard range follows the same room: the pane's maximum is the container less the handle and the next column's minimum (as before), and when that room is under the minimum the range narrows to it, so a gesture starts from the width on screen, a move to the end never collapses or jumps the pane, and one step to the start collapses it. The pane keeps the width the reader chose (a collapse never overwrites it) and shows it held to the container's range, so a pane expanded after the container widens shows at least its minimum. The separator's `aria-valuenow` reports the width that shows (100 when the container leaves no range) and follows container resizes. No API, class or token changes.
+
 ## 1.33.0
 
 ### Minor Changes
