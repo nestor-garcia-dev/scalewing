@@ -4,7 +4,6 @@ import { spacingScale } from '@scalewing/tokens';
 import {
   useCallback,
   useId,
-  useLayoutEffect,
   useRef,
   useState,
   type HTMLAttributes,
@@ -17,13 +16,12 @@ import { cx } from '../class-names.js';
 import {
   applySplitDrag,
   applySplitKey,
-  cssLengthToPx,
-  effectiveSplitMax,
-  readSplitMetrics,
+  clampSplitSize,
   splitPercent,
   type SplitMetrics,
   type SplitSnapshot,
 } from '../split-size.js';
+import { useSplitRange } from './use-split-range.js';
 
 export type SplitProps = Omit<HTMLAttributes<HTMLDivElement>, 'children'> & {
   children: ReactNode;
@@ -40,13 +38,6 @@ type DragSession = {
   moved: boolean;
 };
 
-function metricsFrom(node: HTMLElement) {
-  const styles = getComputedStyle(node);
-  const remPx =
-    cssLengthToPx(getComputedStyle(document.documentElement).fontSize) || 16;
-  return readSplitMetrics((name) => styles.getPropertyValue(name), remPx);
-}
-
 export function Split({
   children,
   className,
@@ -60,9 +51,6 @@ export function Split({
   const handleRef = useRef<HTMLDivElement>(null);
   const dragRef = useRef<DragSession | null>(null);
   const [width, setWidth] = useState<number | null>(null);
-  const [range, setRange] = useState<Pick<SplitMetrics, 'min' | 'max'> | null>(
-    null,
-  );
   const [collapsedUncontrolled, setCollapsedUncontrolled] = useState(false);
   const collapsed = collapsedProp ?? collapsedUncontrolled;
 
@@ -76,46 +64,35 @@ export function Split({
     [collapsedProp, onCollapsedChange],
   );
 
-  useLayoutEffect(() => {
-    const node = splitRef.current;
-    if (!node) {
-      return;
-    }
-    const measured = metricsFrom(node);
-    setRange({ min: measured.min, max: measured.max });
-    setWidth((current) => current ?? measured.defaultWidth);
-  }, []);
+  const { range, measure } = useSplitRange(splitRef, handleRef);
 
-  function dragMetrics(): SplitMetrics & { defaultWidth: number } {
-    const split = splitRef.current;
-    const handle = handleRef.current;
-    if (!split) {
-      return { min: 0, max: 0, step: 16, defaultWidth: 0 };
-    }
-    const measured = metricsFrom(split);
-    const parentWidth = split.parentElement?.getBoundingClientRect().width ?? 0;
-    const handleWidth = handle?.getBoundingClientRect().width ?? 0;
+  /**
+   * `width` is the reader's chosen width; what shows is it held to the range
+   * the container leaves, so an expansion never shows a pane under its
+   * minimum or past the room, and a gesture starts from what shows.
+   */
+  function currentSnapshot(
+    metrics: Pick<SplitMetrics, 'min' | 'max'> & {
+      defaultWidth: number;
+    },
+  ) {
     return {
-      ...measured,
-      max: effectiveSplitMax(
-        measured.max,
-        parentWidth,
-        handleWidth,
-        measured.min,
+      collapsed,
+      width: clampSplitSize(
+        width ?? metrics.defaultWidth,
+        metrics.min,
+        metrics.max,
       ),
     };
   }
 
-  function currentSnapshot(): SplitSnapshot {
-    const measured = dragMetrics();
-    return {
-      collapsed,
-      width: width ?? measured.defaultWidth,
-    };
-  }
-
-  function applySnapshot(next: SplitSnapshot) {
-    setWidth(next.width);
+  function applySnapshot(next: SplitSnapshot, start: SplitSnapshot) {
+    // Only a gesture that moves the pane chooses a width: a collapse, or a
+    // move held at the end of a narrow container's range, keeps the chosen
+    // one, so it shows again when the container widens.
+    if (!next.collapsed && next.width !== start.width) {
+      setWidth(next.width);
+    }
     if (next.collapsed !== collapsed) {
       setCollapsed(next.collapsed);
     }
@@ -128,11 +105,12 @@ export function Split({
     event.preventDefault();
     event.currentTarget.focus();
     event.currentTarget.setPointerCapture?.(event.pointerId);
+    const metrics = measure();
     dragRef.current = {
       pointerId: event.pointerId,
       startX: event.clientX,
-      snapshot: currentSnapshot(),
-      metrics: dragMetrics(),
+      snapshot: currentSnapshot(metrics),
+      metrics,
       moved: false,
     };
   }
@@ -146,7 +124,10 @@ export function Split({
     if (Math.abs(delta) >= spacingScale[1]) {
       drag.moved = true;
     }
-    applySnapshot(applySplitDrag(drag.snapshot, delta, drag.metrics));
+    applySnapshot(
+      applySplitDrag(drag.snapshot, delta, drag.metrics),
+      drag.snapshot,
+    );
   }
 
   function endDrag(event: PointerEvent<HTMLDivElement>) {
@@ -165,19 +146,24 @@ export function Split({
     if (!splitRef.current) {
       return;
     }
-    const next = applySplitKey(event.key, currentSnapshot(), dragMetrics());
+    const metrics = measure();
+    const start = currentSnapshot(metrics);
+    const next = applySplitKey(event.key, start, metrics);
     if (!next) {
       return;
     }
     event.preventDefault();
-    applySnapshot(next);
+    applySnapshot(next, start);
   }
 
-  const valueNow = collapsed
-    ? 0
-    : range && width !== null
-      ? splitPercent(width, range.min, range.max)
-      : 0;
+  // What shows: the chosen width held to the container's range.
+  const shownWidth = range
+    ? clampSplitSize(width ?? range.defaultWidth, range.min, range.max)
+    : null;
+  const valueNow =
+    collapsed || !range || shownWidth === null
+      ? 0
+      : splitPercent(shownWidth, range.min, range.max);
 
   return (
     <div
@@ -190,7 +176,7 @@ export function Split({
         className="sw-split-pane"
         id={paneId}
         aria-hidden={collapsed || undefined}
-        style={width === null ? undefined : { width: `${width}px` }}
+        style={shownWidth === null ? undefined : { width: `${shownWidth}px` }}
       >
         {children}
       </div>

@@ -5,7 +5,7 @@ import {
   applySplitKey,
   clampSplitSize,
   cssLengthToPx,
-  effectiveSplitMax,
+  effectiveSplitRange,
   readSplitMetrics,
   splitPercent,
 } from './split-size.js';
@@ -33,12 +33,29 @@ describe('split-size', () => {
     expect(splitPercent(100, 100, 400)).toBe(0);
     expect(splitPercent(250, 100, 400)).toBe(50);
     expect(splitPercent(400, 100, 400)).toBe(100);
+    // No range left: the pane is as wide as it can be.
+    expect(splitPercent(106, 106, 106)).toBe(100);
   });
 
   it('keeps room for a sibling pane when the parent is narrow', () => {
-    expect(effectiveSplitMax(512, 800, 28, 224)).toBe(512);
-    expect(effectiveSplitMax(512, 600, 28, 224)).toBe(348);
-    expect(effectiveSplitMax(512, 400, 28, 224)).toBe(224);
+    const tokens = { min: 224, max: 512 };
+    expect(effectiveSplitRange(tokens, 800, 28)).toEqual({
+      min: 224,
+      max: 512,
+    });
+    expect(effectiveSplitRange(tokens, 600, 28)).toEqual({
+      min: 224,
+      max: 348,
+    });
+    // A phone: the room after the handle and the next column's 14rem is under
+    // the minimum, so the range narrows to that room (the stylesheet's cap).
+    expect(effectiveSplitRange(tokens, 358, 28)).toEqual({
+      min: 106,
+      max: 106,
+    });
+    expect(effectiveSplitRange(tokens, 200, 28)).toEqual({ min: 0, max: 0 });
+    // Not laid out: the token range.
+    expect(effectiveSplitRange(tokens, 0, 28)).toEqual({ min: 224, max: 512 });
   });
 
   it('collapses when dragged below min and restores from a collapsed drag', () => {
@@ -69,5 +86,20 @@ describe('split-size', () => {
     expect(
       applySplitKey('Tab', { collapsed: false, width: 200 }, metrics),
     ).toBe(null);
+  });
+
+  it('never collapses a narrowed pane on a move to the end', () => {
+    const narrow = { min: 106, max: 106, step: 16 };
+    const start = { collapsed: false, width: 106 };
+    expect(applySplitDrag(start, 10, narrow)).toEqual(start);
+    expect(applySplitDrag(start, -10, narrow)).toEqual({
+      collapsed: true,
+      width: 106,
+    });
+    expect(applySplitKey('ArrowRight', start, narrow)).toEqual(start);
+    expect(applySplitKey('ArrowLeft', start, narrow)).toEqual({
+      collapsed: true,
+      width: 106,
+    });
   });
 });
