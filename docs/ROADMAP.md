@@ -71,6 +71,12 @@ one action with the action drawn as the cell's text (#157). Released in
 `@scalewing/react` 1.34.0. Next: Teisoro pins it on `CustomerSearch`,
 `WhoOwes` and the NSF list.
 
+Teisoro F-011 task 2180, the owner's "this last bottom row doesnt need
+to be sticky" on the cash ledger: `Table` `stickyHeader="page"`
+(`teisoro-table-sticky-page.md`), the header pinned to the page without
+a sticky footer. Next: release as the next `@scalewing/react` minor;
+Teisoro pins it on `CashLedger` and drops its footer's `sticky`.
+
 FutMas score entry (canvas board W3): `StepperRow`
 (`futmas-stepper-row.md`) and `Field` `variant="search"`
 (`futmas-search-field.md`), so a goal-scorer sheet lists a roster as

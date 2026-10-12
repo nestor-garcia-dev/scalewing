@@ -11,12 +11,8 @@ import { zIndex } from './stacking.js';
  * (solid surface under reduced transparency, the system canvas in forced
  * colours, as the pinned header cells), on the `stickyFooter` layer: over
  * the cells and the pinned header cells, under the ActionBar, which covers
- * it, so a page does not pair the two. A table's region is a scroll box,
- * which would pin it to the region's own bottom; while the table fits its
- * width (`sw-scroll-fits`) a region that holds a sticky footer stops being
- * one, so the footer pins to the page's bottom and the sticky header to
- * its top, under any sticky top chrome (an AppHeader covers it). A table
- * wider than its region scrolls sideways in it and pins to the region.
+ * it, so a page does not pair the two. Where it pins (the page or the
+ * table's own region) is `css-table-page-pin.ts`.
  */
 export function cssTableFooterClasses(): string {
   return `.sw-table tfoot :is(th, td) {
@@ -43,10 +39,6 @@ export function cssTableFooterClasses(): string {
   ${zIndex('stickyFooter')}
 }
 
-.sw-table-wrap.sw-scroll-fits:has(> .sw-table > .sw-table-footer-sticky) {
-  overflow: visible;
-}
-
 @media (forced-colors: active) {
   .sw-table tfoot > tr:first-child > :is(th, td)::before { border-color: CanvasText; }
   .sw-table .sw-table-footer-sticky :is(th, td),
@@ -55,5 +47,5 @@ export function cssTableFooterClasses(): string {
 }
 
 export function tableFooterClassCatalog(): string[] {
-  return ['sw-table-footer-sticky', 'sw-scroll-fits'];
+  return ['sw-table-footer-sticky'];
 }
