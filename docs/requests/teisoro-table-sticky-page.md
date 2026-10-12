@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: accepted 2026-10-12 (Teisoro F-011 task 2180; plan approval under Teisoro decisions O-1 to O-4 and D-1). Next: release as the next `@scalewing/react` minor.
+Status: released in `@scalewing/react` 1.35.0 (PR #159; accepted 2026-10-12; Teisoro F-011 task 2180; plan approval under Teisoro decisions O-1 to O-4 and D-1).
 Renderer: react
 Missing surface: a `Table` header pinned to the page's top while the page scrolls, without a sticky `TableFooter`. An extension of `Table` `stickyHeader`, not a new component.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: the product owner, looking at the Services day's cash ledger (board ServicesDayLedger2): "this last bottom row doesnt need to be sticky". The ledger's last row (the opening count, or the total of the rows shown) is a sticky `TableFooter` today, and only that sticky footer makes the table's region stop being a scroll box (`sw-scroll-fits` with `.sw-table-footer-sticky`), which is what pins the header to the page. Dropping `sticky` from the footer, measured at 1280 by 500 scrolled down, turns the region back into a scroll box (`overflow: auto`) and the header scrolls off with the rows (its top at −131 px instead of 0). Teisoro owns no CSS, and the region is Scalewing's.
