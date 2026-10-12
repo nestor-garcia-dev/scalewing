@@ -18,6 +18,7 @@ import { Section } from '../layout/Section.js';
 import { TableLayoutExamples } from './table-layout.js';
 import { TableLedgerExample } from './table-ledger.js';
 import { TableFooterExample } from './table-footer.js';
+import { PressableCensus } from './table-pressable.js';
 import { SortedCensus } from './table-sorted.js';
 import {
   sampleCensusRows,
@@ -36,7 +37,7 @@ export function TableSection() {
   return (
     <Section
       id="table"
-      purpose="Table aligns data in rows. stickyHeader keeps column labels visible. numeric cells use tabular numerals and end alignment. truncate clips overflowing cell copy. density compact densifies cells. selected marks the current row with an accent bar at its start that takes no space and no fill, so no column moves and no text loses contrast when a row is picked; the bar follows the writing direction and forced colors keep it. A table wider than its container scrolls sideways inside its own region, and each edge with content past it draws a shade until it is scrolled to that end. A header cell with sort and onSort is the column's sort control: its name becomes a button in the header's own style with a chevron (up ascending, down descending, a quiet pair on a column it is not sorted by), and the sorted header carries aria-sort; in a numeric column the chevron goes before the name, so the name lines up with the figures. layout fixed sizes the columns from the header row's widths alone (a column without one shares what is left, and gets none when the widths fill the container, so a table that scrolls on a phone sizes every column), so a filter that hides a row moves no column; width xs to xl on a header cell are 4, 6, 8, 12 and 16 rem, and width min (on every cell of an auto table's column) keeps the column as narrow as its content on one line. verticalAlign top starts every cell of a tall row on its first line."
+      purpose="Table aligns data in rows. stickyHeader keeps column labels visible. numeric cells use tabular numerals and end alignment. truncate clips overflowing cell copy. density compact densifies cells. selected marks the current row with an accent bar at its start that takes no space and no fill, so no column moves and no text loses contrast when a row is picked; the bar follows the writing direction and forced colors keep it. A table wider than its container scrolls sideways inside its own region, and each edge with content past it draws a shade until it is scrolled to that end. A header cell with sort and onSort is the column's sort control: its name becomes a button in the header's own style with a chevron (up ascending, down descending, a quiet pair on a column it is not sorted by), and the sorted header carries aria-sort; in a numeric column the chevron goes before the name, so the name lines up with the figures. layout fixed sizes the columns from the header row's widths alone (a column without one shares what is left, and gets none when the widths fill the container, so a table that scrolls on a phone sizes every column), so a filter that hides a row moves no column; width xs to xl on a header cell are 4, 6, 8, 12 and 16 rem, and width min (on every cell of an auto table's column) keeps the column as narrow as its content on one line. verticalAlign top starts every cell of a tall row on its first line. pressable makes a whole row the target of its one action, such as a search result that is picked: a body cell with onPress draws its text as a button at weight 600, and a pointer press anywhere else on the row presses that button (not with a modifier key, on another control, or when it ends a text selection); the row takes the pointer cursor and the quiet fill while hovered, pressed or while its action has keyboard focus, and keyboard and screen reader users use the button itself."
       title="Table"
       usage={`<Table aria-label="Field log" layout="fixed" verticalAlign="top">
   …<TableCell as="th" width="lg">When</TableCell>…
@@ -45,6 +46,11 @@ export function TableSection() {
 <TableCell as="th" numeric sort="descending" onSort={() => sortBy('sightings')}>
   Sightings
 </TableCell>
+
+<TableRow pressable>
+  <TableCell onPress={() => pick('Red fox')}>Red fox</TableCell>
+  <TableCell>Forest</TableCell>
+</TableRow>
 
 <Table aria-label="Census" density="compact">
   <TableBody>
@@ -235,6 +241,8 @@ export function TableSection() {
           </TableBody>
         </Table>
         <SortedCensus />
+        <Text variant="label">Rows picked by a press</Text>
+        <PressableCensus />
         <TableLayoutExamples />
         <Text variant="label">A ledger</Text>
         <TableLedgerExample />

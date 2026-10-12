@@ -64,6 +64,13 @@ apart by weight (`teisoro-box-link-quiet.md`, #153). Released in
 `@scalewing/react` 1.33.0. Next: Teisoro pins 1.33.0 and sets quiet
 titles on its `CashLedger`.
 
+Teisoro F-011 task 2185, the owner's "make the entire row clickable"
+for the counter's search results: `TableRow` `pressable` and `TableCell`
+`onPress` (`teisoro-table-row-press.md`), a whole-row press for a row's
+one action with the action drawn as the cell's text. Next: release as the
+next `@scalewing/react` minor; Teisoro pins it on `CustomerSearch`,
+`WhoOwes` and the NSF list.
+
 FutMas score entry (canvas board W3): `StepperRow`
 (`futmas-stepper-row.md`) and `Field` `variant="search"`
 (`futmas-search-field.md`), so a goal-scorer sheet lists a roster as

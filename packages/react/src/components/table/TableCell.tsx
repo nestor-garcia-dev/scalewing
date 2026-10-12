@@ -67,9 +67,30 @@ export type TableCellProps = (
    * is never the only signal: keep the sign or the words.
    */
   tone?: TableCellTone;
+  /**
+   * Makes the cell's children a button in the cell's own text style at
+   * weight 600, underlined while hovered or focused: a row's one action,
+   * such as the name of a search result that picks it. Pair it with
+   * `TableRow pressable` so a press anywhere on the row does the same. A
+   * body cell's (`td`, or a row header `th` in `TableBody`; not for a
+   * column header in `TableHeader`), never with `sort`.
+   */
+  onPress?: () => void;
 };
 
 const tableSorts: readonly TableSort[] = ['ascending', 'descending', 'none'];
+
+/** A cell's press is a function, and never on a sortable header. */
+function assertPress(
+  onPress: (() => void) | undefined,
+  sort: TableSort | undefined,
+) {
+  if (onPress === undefined) return;
+  if (typeof onPress !== 'function')
+    throw new TypeError('TableCell onPress is a function');
+  if (sort !== undefined)
+    throw new TypeError('TableCell onPress is not for a sortable header');
+}
 
 /** `sort` and `onSort` come together, on a header cell, with a known value. */
 function assertSort(
@@ -94,6 +115,7 @@ export const TableCell = forwardRef<HTMLTableCellElement, TableCellProps>(
       children,
       className,
       numeric = false,
+      onPress,
       onSort,
       sort,
       tone,
@@ -104,6 +126,7 @@ export const TableCell = forwardRef<HTMLTableCellElement, TableCellProps>(
     ref,
   ) {
     assertSort(as, sort, onSort);
+    assertPress(onPress, sort);
     assertTableColumnWidth(width);
     assertTableCellTone(tone);
     const Component = as;
@@ -133,6 +156,10 @@ export const TableCell = forwardRef<HTMLTableCellElement, TableCellProps>(
               aria-hidden="true"
               className={cx('sw-table-sort-glyph', `sw-table-sort-${sort}`)}
             />
+          </button>
+        ) : onPress ? (
+          <button className="sw-table-action" onClick={onPress} type="button">
+            {children}
           </button>
         ) : (
           children
