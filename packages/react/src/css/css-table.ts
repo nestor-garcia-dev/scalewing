@@ -14,6 +14,10 @@ import {
   tableFooterClassCatalog,
 } from './css-table-footer.js';
 import {
+  cssTablePressClasses,
+  tablePressClassCatalog,
+} from './css-table-press.js';
+import {
   cssTableSortClasses,
   tableSortClassCatalog,
 } from './css-table-sort.js';
@@ -111,6 +115,8 @@ ${cssTableLedgerClasses()}
 
 ${cssTableFooterClasses()}
 
+${cssTablePressClasses()}
+
 ${selectedRowRules()}`;
 }
 
@@ -128,5 +134,6 @@ export function tableClassCatalog(): string[] {
     ...tableSortClassCatalog(),
     ...tableLedgerClassCatalog(),
     ...tableFooterClassCatalog(),
+    ...tablePressClassCatalog(),
   ];
 }

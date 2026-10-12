@@ -1,10 +1,16 @@
-import { forwardRef, type HTMLAttributes } from 'react';
+import {
+  forwardRef,
+  type HTMLAttributes,
+  type MouseEvent,
+  useRef,
+} from 'react';
 
 import { cx } from '../../class-names.js';
 import {
   assertTableRowVariant,
   type TableRowVariant,
 } from '../../css/css-table-ledger.js';
+import { rowPressAction } from './row-press.js';
 
 export type { TableRowVariant };
 
@@ -25,12 +31,29 @@ export type TableRowProps = HTMLAttributes<HTMLTableRowElement> & {
    * flex item, a direct child of `Inline`, is). Works with either variant.
    */
   struck?: boolean;
+  /**
+   * Makes the whole row a press target for its one action, such as a
+   * search result that is picked: the row's first link or button (a
+   * `TableCell onPress`, or a `Box as="a"`), so keep one control in the
+   * row. A plain pointer press anywhere else on the row activates that
+   * control, unless it is disabled; a press with a modifier key, on another
+   * control, or one that ends a text selection is left alone. The row takes
+   * the pointer cursor and the quiet fill while hovered, pressed, or while
+   * its action has keyboard focus. Keyboard and assistive technology use
+   * the action itself: the row is not a control and adds no tab stop.
+   * A consumer `onClick` runs once per press, not again for the click the
+   * row hands its action. Each click of a double click presses the action,
+   * as a native button's would, so keep the action safe to repeat.
+   */
+  pressable?: boolean;
 };
 
 export const TableRow = forwardRef<HTMLTableRowElement, TableRowProps>(
   function TableRow(
     {
       className,
+      onClick,
+      pressable = false,
       selected = false,
       struck = false,
       variant = 'default',
@@ -39,6 +62,22 @@ export const TableRow = forwardRef<HTMLTableRowElement, TableRowProps>(
     ref,
   ) {
     assertTableRowVariant(variant);
+    // The click the row hands its action bubbles back to the row; it is
+    // the action's, so neither the row nor a consumer onClick takes it.
+    const forwarding = useRef(false);
+    const press = (event: MouseEvent<HTMLTableRowElement>) => {
+      if (forwarding.current) return;
+      onClick?.(event);
+      if (!pressable) return;
+      const action = rowPressAction(event.currentTarget, event);
+      if (action === null) return;
+      forwarding.current = true;
+      try {
+        action.click();
+      } finally {
+        forwarding.current = false;
+      }
+    };
     return (
       <tr
         ref={ref}
@@ -47,8 +86,10 @@ export const TableRow = forwardRef<HTMLTableRowElement, TableRowProps>(
           selected && 'sw-table-row-selected',
           variant === 'sub' && 'sw-table-row-sub',
           struck && 'sw-table-row-struck',
+          pressable && 'sw-table-row-press',
           className,
         )}
+        onClick={pressable || onClick ? press : undefined}
         {...rest}
       />
     );
