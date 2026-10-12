@@ -8,6 +8,11 @@ import {
 import { cx } from '../class-names.js';
 import { boxBorderClass, type BoxBorderValue } from '../css/css-box-border.js';
 import {
+  assertBoxLink,
+  boxLinkClass,
+  type BoxLinkAppearance,
+} from '../css/css-box-link.js';
+import {
   columnSpanClassNames,
   type ColumnSpanProps,
 } from '../column-span-classes.js';
@@ -47,9 +52,18 @@ export type BoxProps = SpacingProps &
      * full-width bar, such as a section's sub-navigation).
      */
     border?: BoxBorder;
+    /**
+     * How a `Box as="a"` reads: `accent` (default) is the canvas link;
+     * `quiet` keeps the surrounding text's colour at weight 600 and
+     * underlines on hover and focus, for a title that opens something,
+     * such as a table row's. Weight is its non-colour cue, so use it in
+     * text lighter than 600. Only for `as="a"`; an unknown value throws.
+     */
+    link?: BoxLink;
   };
 
 export type BoxBorder = BoxBorderValue;
+export type BoxLink = BoxLinkAppearance;
 
 export const Box = forwardRef<HTMLElement, BoxProps>(function Box(
   {
@@ -60,6 +74,7 @@ export const Box = forwardRef<HTMLElement, BoxProps>(function Box(
     columnSpan,
     hideBelow,
     hideFrom,
+    link,
     padding,
     paddingBottom,
     paddingLeft,
@@ -73,6 +88,7 @@ export const Box = forwardRef<HTMLElement, BoxProps>(function Box(
   },
   ref,
 ) {
+  assertBoxLink(link, as);
   const Component = as;
 
   return (
@@ -91,6 +107,7 @@ export const Box = forwardRef<HTMLElement, BoxProps>(function Box(
         ...visibilityClassNames({ hideBelow, hideFrom }),
         ...columnSpanClassNames({ columnSpan }),
         boxBorderClass(border),
+        boxLinkClass(link),
         className,
       )}
       style={{

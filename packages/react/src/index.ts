@@ -102,8 +102,10 @@ export {
   Box,
   type BoxBorder,
   type BoxElement,
+  type BoxLink,
   type BoxProps,
 } from './components/Box.js';
+export { boxLinkAppearances } from './css/css-box-link.js';
 export {
   ButtonGroup,
   buttonGroupAppearances,
