@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: accepted and implemented 2026-10-11 (Teisoro F-011 release R6 "canvas fidelity", S17 shell; plan approval under Teisoro decisions O-1 to O-4, D-1, D-2; closes the "attached day buttons" item of D-37).
+Status: released in `@scalewing/react` 1.32.0 (PR #149; accepted 2026-10-11; Teisoro F-011 release R6 "canvas fidelity", S17 shell; plan approval under Teisoro decisions O-1 to O-4, D-1, D-2; closes the "attached day buttons" item of D-37).
 Renderer: react
 Missing surface: `ButtonGroup` `appearance="track"`: an attached group drawn as one grey track. An extension of `ButtonGroup` `attached` (`teisoro-button-group-attached.md`), not a new component.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: on the F-011 day pages (ShellProposed, ServicesDayLedger, PosDay) the Previous day, Today and Next day buttons are one grey track (#E8E8ED, radius 8, 32 px) of words and chevrons with hairline dividers between them, no outlines. `ButtonGroup attached` joins the buttons but keeps each button's own fill and outline (a row of outlined or filled buttons, D-37). Teisoro owns no CSS.

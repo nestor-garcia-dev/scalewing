@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: accepted 2026-10-11 (Teisoro F-011 release R6 "canvas fidelity"; plan approval under Teisoro decisions O-1 to O-4, D-1, D-2).
+Status: released in `@scalewing/react` 1.32.0 (PR #142; accepted 2026-10-11; Teisoro F-011 release R6 "canvas fidelity"; plan approval under Teisoro decisions O-1 to O-4, D-1, D-2).
 Renderer: react
 Missing surface: `DenominationGrid` grid-level appearance options for a framed count sheet: `frame`, `totalEmphasis`, `cellToneAppearance`, and an empty `zeroLabel`. An extension of `DenominationGrid` (`teisoro-denomination-grid.md`, `teisoro-denomination-grid-label.md`), not a new component.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: the F-011 canvas draws every count grid (the drawer sheets DrawerAdd, DrawerAudit, DrawerAdjust, DrawerDrop; VaultCount1; PosClose1; AuditReview1/2; 64 boards in all) as a framed table: a white surface inside a hairline with rounded corners, a grey heading row, a rule between columns, blank cells where a count is zero, bold totals in the text color, and a difference (or a changed "after" count) on a tinted pill. `DenominationGrid` draws open rows with muted dashes for zeros, small muted totals and a tone that colors only the figure, and `zeroLabel=""` throws. Teisoro owns no CSS (its AGENTS.md), so the look must come from Scalewing, and FutMas and fantasy-football must keep theirs.

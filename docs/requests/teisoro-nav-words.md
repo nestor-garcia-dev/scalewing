@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: accepted and implemented 2026-10-11 (Teisoro F-011 release R6 "canvas fidelity", S17 shell; plan approval under Teisoro decisions O-1 to O-4, D-1, D-2).
+Status: released in `@scalewing/react` 1.32.0 (PR #147; accepted 2026-10-11; Teisoro F-011 release R6 "canvas fidelity", S17 shell; plan approval under Teisoro decisions O-1 to O-4, D-1, D-2).
 Renderer: react
 Missing surface: `Nav` `appearance="words"`: a workspace's destinations drawn as plain words. An extension of `Nav` (`teisoro-nav.md`), not a new component.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: the F-011 shell (ShellProposed and every page board) draws the top navigation as words: "Services" in the text color at 600, "POS registers", "Vault", "Admin" muted at 500, no fill, no outline, no underline. Teisoro's shell renders each destination as a `Button` in `Nav` (primary for the current one, ghost for the others) so it can guard navigation, which paints the current one as an accent pill. A link cluster would lose the guard; Teisoro owns no CSS.

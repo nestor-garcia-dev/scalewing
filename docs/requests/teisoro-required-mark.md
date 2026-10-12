@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: accepted and implemented 2026-10-11 (Teisoro F-011 release R6 "canvas fidelity"; plan approval under Teisoro decisions O-1 to O-4, D-1, D-2).
+Status: released in `@scalewing/react` 1.32.0 (PR #145; accepted 2026-10-11; Teisoro F-011 release R6 "canvas fidelity"; plan approval under Teisoro decisions O-1 to O-4, D-1, D-2).
 Renderer: react
 Missing surface: `requiredMark` on the labelled form controls (`Field`, `Select`, `DateField`, `Combobox`, `FilterChips`): whether a required control's label draws " \*". An extension of those controls, not a new component.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: the F-011 boards label required fields without any mark (the amount, the reason, the company; a shortage note says "Required" in its placeholder instead). Scalewing draws " \*" after the label of every control passed `required`, so Teisoro either keeps the asterisk (unlike the boards) or drops `required` (and with it the native required state assistive technology announces). Teisoro owns no CSS.

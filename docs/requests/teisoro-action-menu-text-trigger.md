@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: accepted and implemented 2026-10-11 (Teisoro F-011 release R6 "canvas fidelity", S17 shell; plan approval under Teisoro decisions O-1 to O-4, D-1, D-2).
+Status: released in `@scalewing/react` 1.32.0 (PR #148; accepted 2026-10-11; Teisoro F-011 release R6 "canvas fidelity", S17 shell; plan approval under Teisoro decisions O-1 to O-4, D-1, D-2).
 Renderer: react
 Missing surface: `ActionMenu` `triggerAppearance="text"`: an unframed trigger. An extension of `ActionMenu` (`teisoro-action-menu-header.md`, `teisoro-action-menu-detail.md`), not a new component.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: the F-011 shell (ShellProposed and every page board) ends the header with the signed-in person's name and a small chevron ("Alex Rivera ⌄"), no outline or fill, opening the account menu. ActionMenu's trigger is always a small outlined control on the glass fill, and its `trigger` slot only replaces the words inside that frame. Teisoro owns no CSS. D-37 also listed "account menu as wide as its content", which this does not change (the menu list is its own surface).

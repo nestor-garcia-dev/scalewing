@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: accepted and implemented 2026-10-11 (Teisoro F-011 release R6 "canvas fidelity"; plan approval under Teisoro decisions O-1 to O-4, D-1, D-2; closes the segmented-control item of decision D-37).
+Status: released in `@scalewing/react` 1.32.0 (PR #146; accepted 2026-10-11; Teisoro F-011 release R6 "canvas fidelity"; plan approval under Teisoro decisions O-1 to O-4, D-1, D-2; closes the segmented-control item of decision D-37).
 Renderer: react
 Missing surface: `SegmentedControl` `variant="raised"`. An extension of `SegmentedControl` (`teisoro-segmented-control.md`, `teisoro-segmented-control-icon.md`), not a new component.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: on about twenty F-011 boards (the entry steps' service switcher with its tiles, EntryStep1/2, EntryMulti, NsfPay, StepCheck; the "Largest first / Twenties only" choice; DrawerAdjust; AuditReview2) a one-of choice is a grey track (#e8e8ed, radius 10 to 12) whose selected segment is white with a small shadow, the other labels in the body color. Scalewing's compact track is a glass pill with muted unselected labels (an icon track moves it to the subtle fill but keeps the muted labels and the pill), and the filled track paints the selection in the accent. Teisoro owns no CSS. D-37 listed this as a look not matched in R3.
