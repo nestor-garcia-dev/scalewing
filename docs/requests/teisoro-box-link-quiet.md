@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: accepted 2026-10-12 (Teisoro F-011 task 2145; plan approval under Teisoro decisions O-1 to O-4 and D-1).
+Status: released in `@scalewing/react` 1.33.0 (PR #153; accepted 2026-10-12; Teisoro F-011 task 2145; plan approval under Teisoro decisions O-1 to O-4 and D-1).
 Renderer: react
 Missing surface: `Box` `link="quiet"`: a quiet link look for a title that opens something, such as a table row's title. An extension of `Box as="a"`, not a new component.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: Teisoro's cash ledger (F-011 S18, `CashLedger`) makes each row's title a link to the entry. The boards draw those titles in the text colour, bold, not in the accent. With the canvas link (`[data-theme] a`, accent colour, no underline) inside the row's body text, axe's `link-in-text-block` fails (accent to text contrast under 3:1 in the sky palette and no non-colour cue), so Teisoro's ledger journeys could only audit an open sheet, not the page (Teisoro D-85). Teisoro owns no CSS and cannot restyle `a`.
