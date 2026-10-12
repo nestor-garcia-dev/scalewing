@@ -1,5 +1,0 @@
----
-'@scalewing/react': minor
----
-
-`Button` `variant="neutral"` (web only; `webButtonVariants`, and the React `ButtonVariant` type now includes it) is a quiet grey fill in the text color, and `disabledAppearance` (`ButtonDisabledAppearance`, `buttonDisabledAppearances`): `'faded'` (default, unchanged) or `'neutral'`, a disabled button on that grey with muted words at full opacity, whatever its variant; a ghost still fades (`docs/requests/teisoro-button-neutral.md`, Teisoro F-011 release R6). An unknown `disabledAppearance` throws a `RangeError`. A Badge inside a neutral button takes the surface, as in any filled button. `CalendarButton` `variant` takes the same web list. The quiet grey fill is now one named constant (`css/quiet-fill.ts`) shared by the menu, list, calendar, split and dialog rules; their CSS is unchanged. New generated classes `sw-button-neutral`, `sw-button-disabled-neutral`. No new tokens or dependencies; `@scalewing/tokens` `buttonVariants` and React Native are unchanged.

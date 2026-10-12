@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: accepted 2026-10-11 (Teisoro F-011 release R6 "canvas fidelity"; plan approval under Teisoro decisions O-1 to O-4, D-1, D-2).
+Status: released in `@scalewing/react` 1.32.0 (PR #142; accepted 2026-10-11; Teisoro F-011 release R6 "canvas fidelity"; plan approval under Teisoro decisions O-1 to O-4, D-1, D-2).
 Renderer: react
 Missing surface: `Stepper` `limitAppearance`: how − at `min` and + at `max` look. An extension of `Stepper` (`teisoro-stepper.md`), not a new component.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: on every F-011 count board (DrawerAdd, DrawerAudit, VaultCount1, PosClose1, the entry steps) the − beside an empty or zero count is drawn in the same grey as +, while Scalewing fades a button at its limit to 40 %, so a fresh count sheet shows a column of faded minus signs. Teisoro owns no CSS.

@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: accepted 2026-10-11 (Teisoro F-011 release R6 "canvas fidelity"; plan approval under Teisoro decisions O-1 to O-4, D-1, D-2).
+Status: released in `@scalewing/react` 1.32.0 (PR #144; accepted 2026-10-11; Teisoro F-011 release R6 "canvas fidelity"; plan approval under Teisoro decisions O-1 to O-4, D-1, D-2).
 Renderer: react
 Missing surface: `Button` `variant="neutral"` and `disabledAppearance`. An extension of `Button`, not a new component.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: on every F-011 board a sheet's or page's Cancel and the page actions beside a primary are a grey fill (#e8e8ed, words in the text color, no border), and a primary that cannot be pressed yet ("Record the audit" until a note and a recount are given on DrawerAudit) is the same grey with grey words. Scalewing's `secondary` is an outlined pill (filled only when a palette sets `secondary`), and a disabled button fades its own fill to 40 %, so a disabled primary reads as a pale accent. Teisoro owns no CSS and adds no parallel colours, so it cannot overlay a hex secondary itself.

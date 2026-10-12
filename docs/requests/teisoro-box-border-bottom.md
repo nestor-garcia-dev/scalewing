@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: accepted and implemented 2026-10-11 (Teisoro F-011 release R6 "canvas fidelity", S17 shell; plan approval under Teisoro decisions O-1 to O-4, D-1, D-2).
+Status: released in `@scalewing/react` 1.32.0 (PR #150; accepted 2026-10-11; Teisoro F-011 release R6 "canvas fidelity", S17 shell; plan approval under Teisoro decisions O-1 to O-4, D-1, D-2).
 Renderer: react
 Missing surface: `Box` `border="bottom"`: a hairline under a box only. An extension of `Box border` (`teisoro-box-border-style.md`), not a new component.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: the F-011 boards put sub-bars (an area's section row, a day heading row) under the header as full-width white bands each with a 1 px hairline under it. `Box border` only draws all four sides; `Separator` is a separate rule element that does not belong to the bar's landmark. Teisoro owns no CSS.

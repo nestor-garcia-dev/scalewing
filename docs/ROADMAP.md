@@ -43,6 +43,20 @@ released in `@scalewing/react` 1.30.0.
 Teisoro F-011-S06, release R5 "search": `Field` `variant="search"` (#139)
 and a web `Combobox` (#140), released in `@scalewing/react` 1.31.0.
 
+Teisoro F-011, release R6 "canvas fidelity", every option opt-in:
+`DenominationGrid` `frame="table"`, `totalEmphasis`, `cellToneAppearance`
+and a blank `zeroLabel`, with `Stepper` `limitAppearance` (#142);
+`Dialog` `appearance="banded"` (#143); `Button` `variant="neutral"` and
+`disabledAppearance` (#144); `requiredMark="hidden"` (#145);
+`SegmentedControl` `variant="raised"` (#146); and for the S17 shell `Nav`
+`appearance="words"` (#147), `ActionMenu` `triggerAppearance="text"`
+(#148), `ButtonGroup` `appearance="track"` (#149), and `AppHeader`
+`appearance="bar"` with `Box` `border="bottom"` (#150). Released in
+`@scalewing/react` 1.32.0. Out of R6: the canvas background, page width
+and sizes carried by a product theme need a non-colour theme concept
+(ThemeProvider carries colours only); a date heading as the calendar
+trigger was dropped (a date's text is never the trigger).
+
 FutMas score entry (canvas board W3): `StepperRow`
 (`futmas-stepper-row.md`) and `Field` `variant="search"`
 (`futmas-search-field.md`), so a goal-scorer sheet lists a roster as

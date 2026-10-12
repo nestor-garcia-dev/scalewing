@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: accepted and implemented 2026-10-11 (Teisoro F-011 release R6 "canvas fidelity", S17 shell; plan approval under Teisoro decisions O-1 to O-4, D-1, D-2).
+Status: released in `@scalewing/react` 1.32.0 (PR #150; accepted 2026-10-11; Teisoro F-011 release R6 "canvas fidelity", S17 shell; plan approval under Teisoro decisions O-1 to O-4, D-1, D-2).
 Renderer: react
 Missing surface: `AppHeader` `appearance="bar"`: the top chrome as a full-width band with a hairline under it. An extension of `AppHeader`, not a new component.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: the F-011 shell (ShellProposed and every page board) draws the header as a white band across the whole window with a 1 px hairline under it, no rounding, no blur. `AppHeader` is only a rounded glass card, and a plain `Box` would lose the header's sticky layer (`topChrome`) and landmark. Teisoro owns no CSS.

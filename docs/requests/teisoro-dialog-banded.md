@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: accepted 2026-10-11 (Teisoro F-011 release R6 "canvas fidelity"; plan approval under Teisoro decisions O-1 to O-4, D-1, D-2).
+Status: released in `@scalewing/react` 1.32.0 (PR #143; accepted 2026-10-11; Teisoro F-011 release R6 "canvas fidelity"; plan approval under Teisoro decisions O-1 to O-4, D-1, D-2).
 Renderer: react
 Missing surface: `Dialog` `appearance`: a banded sheet. An extension of `Dialog` (`teisoro-dialog-header-footer.md`, `teisoro-dialog-close.md`), not a new component.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: the F-011 drawer sheets (DrawerAdd, DrawerAudit, DrawerAdjust, DrawerDrop, opened from the day's toolbar) are solid white sheets whose header (icon tile, title, description, a × in a grey circle) and footer (summary figure, Cancel, primary) are bands across the sheet's full width, ruled off from the body by hairlines. Scalewing's Dialog is one frosted glass panel whose header sits inside its padding with a ghost ×. Teisoro owns no CSS, and other products keep the glass panel.
