@@ -40,9 +40,13 @@ export function scrollShadeRules(selector: string): string {
 /**
  * A scroll region is a full-width box that scrolls its own content when the
  * content is wider (or taller) than the box, so a wide table never widens the
- * page. It is a keyboard stop, so its focus ring is drawn inside its edge
- * where an ancestor's clipping cannot hide it. While its content is scrolled
- * out past an inline edge, `ScrollRegion` adds `sw-scroll-more-start` or
+ * page. It is positioned, so it is the containing block of anything
+ * absolutely placed inside it that no nearer box holds, such as a visually
+ * hidden label (`sw-sr-only`) in a cell past its edge: that stays inside the
+ * scroll, not placed against the page, where it would widen it. It is a
+ * keyboard stop, so its focus ring is drawn inside its edge where an
+ * ancestor's clipping cannot hide it. While its content is scrolled out past
+ * an inline edge, `ScrollRegion` adds `sw-scroll-more-start` or
  * `sw-scroll-more-end`, and that edge draws a shade: the cue that the content
  * goes on, which overlay scrollbars (phones, macOS) do not give. In forced
  * colors the shade is not drawn and the system's scrollbar is the cue. Table
@@ -51,6 +55,7 @@ export function scrollShadeRules(selector: string): string {
 export function scrollRegionRules(selector: string): string {
   return `${selector} {
   overflow: auto;
+  position: relative;
   width: 100%;
 }
 

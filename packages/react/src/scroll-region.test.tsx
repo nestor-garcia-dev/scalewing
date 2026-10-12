@@ -167,6 +167,14 @@ describe('scrollRegionRules', () => {
   const endShade =
     'inset calc(-1 * var(--sw-space-6)) 0 var(--sw-space-5) calc(-1 * var(--sw-space-5)) color-mix(in srgb, var(--sw-color-text) 28%, transparent)';
 
+  it('is the containing block of what is absolutely placed inside it', () => {
+    expect(css).toContain(`.sw-table-wrap {
+  overflow: auto;
+  position: relative;
+  width: 100%;
+}`);
+  });
+
   it('shades the edge with more content, mirrored right to left, both last', () => {
     expect(css).toContain(
       `.sw-table-wrap.sw-scroll-more-start { box-shadow: ${startShade}; }`,
