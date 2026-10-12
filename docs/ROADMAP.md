@@ -60,9 +60,9 @@ trigger was dropped (a date's text is never the trigger).
 Teisoro F-011 task 2145, two fixes for the cash ledger and the cash
 check: scroll regions contain absolutely placed content (#152, patch)
 and `Box` `link="quiet"`, a row title's link in the text colour set
-apart by weight (`teisoro-box-link-quiet.md`). Next: release both as the
-next `@scalewing/react` minor; Teisoro pins it and sets quiet titles on
-its `CashLedger`.
+apart by weight (`teisoro-box-link-quiet.md`, #153). Released in
+`@scalewing/react` 1.33.0. Next: Teisoro pins 1.33.0 and sets quiet
+titles on its `CashLedger`.
 
 FutMas score entry (canvas board W3): `StepperRow`
 (`futmas-stepper-row.md`) and `Field` `variant="search"`
