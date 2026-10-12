@@ -63,9 +63,10 @@ export function cssTableLedgerClasses(): string {
   border-inline-start: 1px solid var(--sw-color-border);
 }
 
-/* A sticky header cell is positioned, so the next cell's fill covers a
-   collapsed border; its rule is a border on its own ::after instead, so
-   forced colours keep it and the logical inset mirrors it. */
+/* A pinned head cell (in a sticky header group) is positioned, so the
+   next cell's fill covers a collapsed border; its rule is a border on its
+   own ::after instead, so forced colours keep it and the logical inset
+   mirrors it. */
 .sw-table-sticky.sw-table-column-rules thead :is(th, td) + :is(th, td)::after {
   border-inline-start: 1px solid var(--sw-color-border);
   content: '';

@@ -42,15 +42,40 @@ test('Table stickyHeader="page" pins its header to the page while the total scro
   const totalBox = (await total.boundingBox())!;
   expect(totalBox.y).toBeGreaterThan(viewport.height);
 
-  // Mid-table, the header is pinned to the page's top (the gallery's own
-  // sticky header covers it, as an AppHeader would).
+  // Mid-table, the whole header group is pinned to the page's top (the
+  // gallery's own sticky header covers it, as an AppHeader would): the
+  // headings at the edge and last season's row right under them, its
+  // figures (td cells) as well as its name, over the rows scrolling by.
   await table
     .getByRole('cell', { name: 'Lagoon' })
     .evaluate((node) => node.scrollIntoView({ block: 'center' }));
+  await expect(table.locator('thead')).toHaveCSS('position', 'sticky');
   const header = table.getByRole('columnheader', { name: 'Site' });
-  await expect(header).toHaveCSS('position', 'sticky');
   const headerBox = (await header.boundingBox())!;
   expect(Math.abs(headerBox.y)).toBeLessThanOrEqual(1);
+  const headerBottom = headerBox.y + headerBox.height;
+  // With the gallery's header out of the way, the pinned cells are what a
+  // press at their middle hits, not the body rows scrolling under them.
+  await page
+    .locator('.gallery-header')
+    .evaluate((node: HTMLElement) => (node.style.visibility = 'hidden'));
+  for (const cell of [
+    table.getByRole('rowheader', { name: 'Last season' }),
+    table.getByRole('cell', { name: '1184' }),
+    table.getByRole('cell', { name: '402' }),
+  ]) {
+    const box = (await cell.boundingBox())!;
+    expect(Math.abs(box.y - headerBottom)).toBeLessThanOrEqual(1);
+    const onTop = await cell.evaluate((node) => {
+      const rect = node.getBoundingClientRect();
+      const hit = document.elementFromPoint(
+        rect.left + rect.width / 2,
+        rect.top + rect.height / 2,
+      );
+      return hit === node || node.contains(hit);
+    });
+    expect(onTop).toBe(true);
+  }
 
   // At the table's end the total sits in the flow under the last site.
   await total.evaluate((node) => node.scrollIntoView({ block: 'center' }));

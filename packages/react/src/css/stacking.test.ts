@@ -43,7 +43,7 @@ describe('stacking order', () => {
       '.sw-accordion:has(.sw-select-list, .sw-action-menu-list, .sw-multi-select-panel, .sw-combobox-popup, .sw-tooltip:not([hidden]), .sw-date-field-calendar)',
     );
     const appHeader = zIndexOf('.sw-app-header-sticky');
-    const stickyCell = zIndexOf('.sw-table-sticky thead th');
+    const stickyCell = zIndexOf('.sw-table-sticky thead');
     const stickyFooter = zIndexOf(
       '.sw-table .sw-table-footer-sticky :is(th, td)',
     );

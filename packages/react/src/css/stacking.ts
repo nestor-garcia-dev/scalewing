@@ -2,8 +2,8 @@
  * The one stacking order of the generated stylesheet. Every generated
  * `z-index` reads a layer from here, lowest first:
  *
- * 1. `stickyCell`: a sticky table header cell or row label over the cells
- *    that scroll under it.
+ * 1. `stickyCell`: a sticky table head group (every row in a sticky
+ *    `thead`) or row label over the cells that scroll under it.
  * 2. `stickyFooter`: a sticky table footer (a pinned total row) over the
  *    cells and pinned header cells that scroll under it, and under the
  *    ActionBar, which stays the page's last word at the bottom edge.

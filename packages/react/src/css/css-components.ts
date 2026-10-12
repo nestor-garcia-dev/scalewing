@@ -57,7 +57,7 @@ function reducedTransparencyRules(): string {
   .sw-steps-item,
   .sw-badge-neutral,
   .sw-segmented,
-  .sw-table-sticky thead th,
+  .sw-table-sticky thead :is(th, td),
   .sw-table .sw-table-footer-sticky :is(th, td),
   .sw-denomination-strip .sw-denomination-label,
   .sw-denomination-strip thead .sw-denomination-corner:first-child,
