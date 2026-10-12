@@ -247,6 +247,7 @@ export {
   type TableRowProps,
   type TableRowVariant,
   type TableSort,
+  type TableStickyHeader,
   type TableVerticalAlign,
 } from './components/Table.js';
 export {

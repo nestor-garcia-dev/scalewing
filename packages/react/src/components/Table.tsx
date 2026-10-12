@@ -4,8 +4,10 @@ import { cx } from '../class-names.js';
 import { ScrollRegion } from './ScrollRegion.js';
 import {
   assertTableLayout,
+  assertTableStickyHeader,
   assertTableVerticalAlign,
   type TableLayout,
+  type TableStickyHeader,
   type TableVerticalAlign,
 } from './table/table-layout.js';
 
@@ -22,7 +24,7 @@ export {
 } from './table/TableRow.js';
 export type { TableCellTone } from '../css/css-table-ledger.js';
 export { tableCellTones, tableRowVariants } from '../css/css-table-ledger.js';
-export type { TableLayout, TableVerticalAlign };
+export type { TableLayout, TableStickyHeader, TableVerticalAlign };
 
 export type TableDensity = 'comfortable' | 'compact';
 
@@ -30,10 +32,14 @@ export type TableProps = HTMLAttributes<HTMLTableElement> & {
   density?: TableDensity;
   /**
    * Pins the header row to the top of the table's own scroll region
-   * (default). In a table with a sticky `TableFooter` that fits its width
-   * the region does not scroll, so the header pins to the page's top.
+   * (`true`, default). `'page'` pins it to the page's top while the page
+   * scrolls: while the table fits its width its region stops being a
+   * scroll box (under any sticky AppHeader, which covers it); a table
+   * wider than its region scrolls sideways in it and pins to the region.
+   * A table with a sticky `TableFooter` that fits its width pins its
+   * header to the page with `true` too. `false` lets it scroll away.
    */
-  stickyHeader?: boolean;
+  stickyHeader?: TableStickyHeader;
   /**
    * `auto` (default) sizes each column by its content. `fixed` sizes the
    * columns from the header row's `width`s alone (`table-layout: fixed`),
@@ -73,6 +79,7 @@ export const Table = forwardRef<HTMLTableElement, TableProps>(function Table(
   ref,
 ) {
   assertTableLayout(layout);
+  assertTableStickyHeader(stickyHeader);
   assertTableVerticalAlign(verticalAlign);
   return (
     <ScrollRegion
@@ -87,7 +94,8 @@ export const Table = forwardRef<HTMLTableElement, TableProps>(function Table(
           'sw-table',
           density === 'compact' && 'sw-table-compact',
           layout === 'fixed' && 'sw-table-fixed',
-          stickyHeader && 'sw-table-sticky',
+          stickyHeader !== false && 'sw-table-sticky',
+          stickyHeader === 'page' && 'sw-table-sticky-page',
           verticalAlign === 'top' && 'sw-table-top',
           columnRules && 'sw-table-column-rules',
           className,

@@ -107,7 +107,7 @@ describe('TableFooter CSS', () => {
 
   it('lets a fitting region holding a sticky footer stop being a scroll box', () => {
     expect(css).toContain(
-      '.sw-table-wrap.sw-scroll-fits:has(> .sw-table > .sw-table-footer-sticky) {\n  overflow: visible;\n}',
+      '.sw-table-wrap.sw-scroll-fits:has(> .sw-table > .sw-table-footer-sticky),\n',
     );
   });
 

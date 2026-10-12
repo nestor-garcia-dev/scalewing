@@ -40,13 +40,13 @@ const sites = [
   'Scrape',
 ] as const;
 
-const counts = sites.map((site, index) => ({
+export const counts = sites.map((site, index) => ({
   site,
   adults: 3 + ((index * 7) % 11),
   young: (index * 5) % 6,
 }));
 
-const totals = counts.reduce(
+export const totals = counts.reduce(
   (sum, row) => ({
     adults: sum.adults + row.adults,
     young: sum.young + row.young,
