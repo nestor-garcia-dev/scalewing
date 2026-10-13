@@ -3,6 +3,8 @@ import { denominationCellToneClassNames } from '../../css/css-denomination-cell-
 import { denominationCellView } from '../../denomination-cells.js';
 import { EntryCell } from './EntryCell.js';
 import { RowLabelLine } from './RowLabelLine.js';
+import { StripTotalCell, StripTotalInline } from './StripTotal.js';
+import { hasValue, StripValueRow, valueCellId } from './StripValueRow.js';
 import {
   type DenominationGridColumn,
   type DenominationGridRow,
@@ -13,6 +15,10 @@ type StripRowProps = {
   columns: readonly DenominationGridColumn[];
   zeroLabel: string;
   hasTotals: boolean;
+  /** A per-grid prefix that keeps the value cells' ids unique on the page. */
+  idPrefix: string;
+  /** The row's place in the grid, for its value cells' ids. */
+  rowIndex: number;
 };
 
 /**
@@ -44,59 +50,74 @@ function CountCell({
 
 /**
  * One strip row: its pinned label (with the phone total under it), a count
- * per column, read-only or entered, and its total.
+ * per column, read-only or entered, and its total. With a `valueRow`, the
+ * value line follows it and takes the total; each entry count is described
+ * by the value under it.
  */
 export function StripRow({
   row,
   columns,
   zeroLabel,
   hasTotals,
+  idPrefix,
+  rowIndex,
 }: StripRowProps) {
-  const { entry } = row;
+  const { entry, valueRow } = row;
+  // With a value line, the total is on it, not on the counts.
+  const total = valueRow ? undefined : row.total;
+  const describedBy = (index: number) =>
+    hasValue(valueRow?.cells[index])
+      ? valueCellId(idPrefix, rowIndex, index)
+      : undefined;
   return (
-    <tr
-      aria-disabled={row.disabled || undefined}
-      className={cx(
-        'sw-denomination-row',
-        `sw-denomination-row-${row.tone ?? 'neutral'}`,
-        row.signed && 'sw-denomination-row-signed',
-        row.emphasis === 'quiet' && 'sw-denomination-row-quiet',
-        row.disabled && 'sw-denomination-row-disabled',
-      )}
-    >
-      <th className="sw-denomination-label" scope="row">
-        <span className="sw-denomination-label-body">
-          <RowLabelLine row={row} />
-          {row.total !== undefined ? (
-            <span aria-hidden="true" className="sw-denomination-total-inline">
-              {row.total}
-            </span>
-          ) : null}
-        </span>
-      </th>
-      {columns.map((column, index) =>
-        entry ? (
-          <EntryCell
-            column={column}
-            entry={entry}
-            index={index}
-            key={column.key}
-            row={row}
-          />
-        ) : (
-          <CountCell
-            index={index}
-            key={column.key}
-            row={row}
-            zeroLabel={zeroLabel}
-          />
-        ),
-      )}
-      {hasTotals ? (
-        <td className="sw-denomination-total">
-          <span className="sw-denomination-total-value">{row.total ?? ''}</span>
-        </td>
+    <>
+      <tr
+        aria-disabled={row.disabled || undefined}
+        className={cx(
+          'sw-denomination-row',
+          `sw-denomination-row-${row.tone ?? 'neutral'}`,
+          row.signed && 'sw-denomination-row-signed',
+          row.emphasis === 'quiet' && 'sw-denomination-row-quiet',
+          row.disabled && 'sw-denomination-row-disabled',
+        )}
+      >
+        <th className="sw-denomination-label" scope="row">
+          <span className="sw-denomination-label-body">
+            <RowLabelLine row={row} />
+            <StripTotalInline total={total} />
+          </span>
+        </th>
+        {columns.map((column, index) =>
+          entry ? (
+            <EntryCell
+              column={column}
+              describedBy={describedBy(index)}
+              entry={entry}
+              index={index}
+              key={column.key}
+              row={row}
+            />
+          ) : (
+            <CountCell
+              index={index}
+              key={column.key}
+              row={row}
+              zeroLabel={zeroLabel}
+            />
+          ),
+        )}
+        {hasTotals ? <StripTotalCell total={total} /> : null}
+      </tr>
+      {valueRow ? (
+        <StripValueRow
+          columns={columns}
+          hasTotals={hasTotals}
+          idPrefix={idPrefix}
+          row={row}
+          rowIndex={rowIndex}
+          valueRow={valueRow}
+        />
       ) : null}
-    </tr>
+    </>
   );
 }

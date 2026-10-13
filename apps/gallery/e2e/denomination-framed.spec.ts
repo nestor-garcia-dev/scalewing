@@ -11,7 +11,9 @@ test('DenominationGrid framed table: blank zeros, strong totals, tone pills and 
   const isPhone = testInfo.project.name === 'mobile-es';
 
   const table = page.getByRole('table', { name: 'Wading birds at the weir' });
-  const region = page.locator('.sw-denomination-scroll-framed');
+  const region = page
+    .locator('.sw-denomination-scroll-framed')
+    .filter({ has: table });
   await expect(region).toHaveCount(1);
   await expect(table).toBeVisible();
 

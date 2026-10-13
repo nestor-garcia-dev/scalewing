@@ -5,6 +5,7 @@ import { Section } from '../layout/Section.js';
 import { DenominationEntryExample } from './denomination-entry.js';
 import { DenominationFeed } from './denomination-feed.js';
 import { DenominationFramedExample } from './denomination-framed.js';
+import { DenominationValueRowExample } from './denomination-value-row.js';
 
 const tagColumns = [
   { key: 'xs', label: 'XS' },
@@ -43,7 +44,7 @@ export function DenominationGridSection() {
   return (
     <Section
       id="denomination-grid"
-      purpose="DenominationGrid shows counts per unit across a fixed set of columns: the strip layout is a captioned table with a toned row label, muted zeros, signed deltas, and an optional total; the tiles layout stacks label, count, and a consumer-formatted subtotal per column. A lone tiles row without an icon or total whose label repeats the grid's is named only by the grid; any other row names its own region, or its own group with rowRole set to group, so a page of grids keeps its landmark list short. A row's cellTones tone single counts in place (the count and, in tiles, its tile's border); the words beside the grid say why. Icons are consumer slots; a row's glyph stays on its label's line, and a long label wraps its words beside the glyph. An entry row (strip only) makes its counts editable, one Stepper per column; a row caption, a column caption, a quiet emphasis and a disabled row label and set rows apart. labelWidth lines a strip's columns up with every other strip of the same columns in a container of the same width, such as the cards of a feed: the labels take that width and the counts share the rest equally. frame table draws a strip as a framed table, an empty zeroLabel leaves zeros blank, totalEmphasis strong sets bold totals, cellToneAppearance pill draws a toned count on a tint, and an entry's limitAppearance plain keeps − unfaded at zero."
+      purpose="DenominationGrid shows counts per unit across a fixed set of columns: the strip layout is a captioned table with a toned row label, muted zeros, signed deltas, and an optional total; the tiles layout stacks label, count, and a consumer-formatted subtotal per column. A lone tiles row without an icon or total whose label repeats the grid's is named only by the grid; any other row names its own region, or its own group with rowRole set to group, so a page of grids keeps its landmark list short. A row's cellTones tone single counts in place (the count and, in tiles, its tile's border); the words beside the grid say why. Icons are consumer slots; a row's glyph stays on its label's line, and a long label wraps its words beside the glyph. An entry row (strip only) makes its counts editable, one Stepper per column; a row caption, a column caption, a quiet emphasis and a disabled row label and set rows apart. labelWidth lines a strip's columns up with every other strip of the same columns in a container of the same width, such as the cards of a feed: the labels take that width and the counts share the rest equally. frame table draws a strip as a framed table, an empty zeroLabel leaves zeros blank, totalEmphasis strong sets bold totals, cellToneAppearance pill draws a toned count on a tint, and an entry's limitAppearance plain keeps − unfaded at zero. A strip row's valueRow adds a line under it giving each column's consumer-formatted value, centred on the subtle fill, with the row's total moved onto it."
       title="DenominationGrid"
       usage={`<DenominationGrid
   label="Tag movement by size"
@@ -59,6 +60,7 @@ export function DenominationGridSection() {
         <DenominationFeed />
         <DenominationEntryExample />
         <DenominationFramedExample />
+        <DenominationValueRowExample />
         <Card padding={4}>
           <Stack gap={2}>
             <Text color="muted" variant="label">
