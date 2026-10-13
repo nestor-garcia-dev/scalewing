@@ -1,4 +1,4 @@
-import { type CSSProperties } from 'react';
+import { type CSSProperties, useId } from 'react';
 
 import { cx } from '../../class-names.js';
 import { denominationLabelWidthClass } from '../../css/css-denomination-aligned.js';
@@ -48,6 +48,7 @@ export function DenominationStrip({
   totalLabel,
   labelWidth,
 }: StripProps) {
+  const idPrefix = useId();
   const hasTotals = rows.some((row) => row.total !== undefined);
   // An aligned strip sizes its columns from the region's width; it needs
   // the column count and whether a total column takes a share.
@@ -92,12 +93,14 @@ export function DenominationStrip({
           </tr>
         </thead>
         <tbody>
-          {rows.map((row) => (
+          {rows.map((row, rowIndex) => (
             <StripRow
               columns={columns}
               hasTotals={hasTotals}
+              idPrefix={idPrefix}
               key={row.id}
               row={row}
+              rowIndex={rowIndex}
               zeroLabel={zeroLabel}
             />
           ))}

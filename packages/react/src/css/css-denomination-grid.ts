@@ -19,6 +19,10 @@ import {
   denominationEntryClassCatalog,
 } from './css-denomination-entry.js';
 import {
+  cssDenominationValueRowClasses,
+  denominationValueRowClassCatalog,
+} from './css-denomination-value-row.js';
+import {
   cssDenominationCellToneClasses,
   denominationCellToneClassCatalog,
 } from './css-denomination-cell-tones.js';
@@ -285,6 +289,8 @@ ${cssDenominationLabelClasses()}
 
 ${cssDenominationAppearanceClasses()}
 
+${cssDenominationValueRowClasses()}
+
 @media (forced-colors: active) {
   .sw-denomination-label { border-inline-start-color: CanvasText; color: CanvasText; }
   .sw-denomination-strip .sw-denomination-label::before { background: CanvasText; forced-color-adjust: none; }
@@ -329,5 +335,6 @@ export function denominationGridClassCatalog(): string[] {
     ...denominationAlignedClassCatalog(),
     ...denominationLabelClassCatalog(),
     ...denominationAppearanceClassCatalog(),
+    ...denominationValueRowClassCatalog(),
   ];
 }

@@ -17,6 +17,7 @@ import { DenominationStrip } from './denomination-grid/DenominationStrip.js';
 import { DenominationTiles } from './denomination-grid/DenominationTiles.js';
 import { type DenominationGridProps } from './denomination-grid/types.js';
 import { assertDenominationGrid } from './denomination-grid/validate.js';
+import { assertDenominationValueRows } from './denomination-grid/validate-value-row.js';
 import {
   assertDenominationEntries,
   assertDenominationExtras,
@@ -33,6 +34,7 @@ export type {
   DenominationGridRowEmphasis,
   DenominationGridRowRole,
   DenominationGridTone,
+  DenominationGridValueRow,
   DenominationLabelWidth,
   DenominationTotalEmphasis,
 } from './denomination-grid/types.js';
@@ -72,6 +74,7 @@ export function DenominationGrid({
   assertDenominationGrid(label, columns, rows);
   assertDenominationExtras(layout, columns, rows);
   assertDenominationEntries(layout, columns, rows);
+  assertDenominationValueRows(layout, columns, rows);
   if (typeof zeroLabel !== 'string')
     throw new RangeError('zeroLabel must be a string');
   if (totalLabel !== undefined && !totalLabel.trim())

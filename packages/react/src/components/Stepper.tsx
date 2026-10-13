@@ -62,6 +62,11 @@ export type StepperProps = {
   readOnly?: boolean;
   /** Says the count in words for assistive technology (`aria-valuetext`), such as "12 straps". */
   valueText?: string;
+  /**
+   * Ids of elements that describe the count, such as the value it adds up
+   * to; read before an `error`'s message.
+   */
+  'aria-describedby'?: string;
   /** Shown in an empty box, such as "0". */
   placeholder?: string;
   name?: string;
@@ -101,6 +106,7 @@ export const Stepper = forwardRef<HTMLInputElement, StepperProps>(
       disabled = false,
       readOnly = false,
       valueText,
+      'aria-describedby': describedBy,
       placeholder,
       name,
       width = 'fixed',
@@ -210,7 +216,11 @@ export const Stepper = forwardRef<HTMLInputElement, StepperProps>(
           </button>
           <input
             ref={ref}
-            aria-describedby={invalid ? errorId : undefined}
+            aria-describedby={
+              [describedBy?.trim() || null, invalid ? errorId : null]
+                .filter((id) => id !== null)
+                .join(' ') || undefined
+            }
             aria-invalid={invalid || undefined}
             aria-valuemax={Number.isFinite(max) ? max : undefined}
             aria-valuemin={min}

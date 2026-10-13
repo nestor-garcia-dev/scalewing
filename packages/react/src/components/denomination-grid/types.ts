@@ -62,6 +62,21 @@ export type DenominationGridEntry = {
   limitAppearance?: StepperLimitAppearance;
 };
 
+/**
+ * A line under a strip row that gives each column's value, such as the
+ * money its count adds up to: its own table row on the subtle fill, named
+ * in the label column, one consumer-formatted value per column centred
+ * under its count (`null` or `''` leaves a cell blank, such as for a zero
+ * count), and the row's `total` in the total column. The grid does no
+ * arithmetic and no currency formatting.
+ */
+export type DenominationGridValueRow = {
+  /** The line's name in the label column, such as "Value". */
+  label: string;
+  /** One formatted value, or `null` for none, per column. */
+  cells: readonly (string | null)[];
+};
+
 export type DenominationGridRow = {
   id: string;
   label: string;
@@ -97,6 +112,11 @@ export type DenominationGridRow = {
    * `entry.errors` wins.
    */
   entry?: DenominationGridEntry;
+  /**
+   * A value line under this row (the `strip` layout only); the row's
+   * `total` moves to it, and each entry count is described by its value.
+   */
+  valueRow?: DenominationGridValueRow;
 };
 
 export type DenominationGridProps = {

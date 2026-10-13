@@ -105,6 +105,13 @@ disabled yet stays focusable and pressable
 (`teisoro-button-aria-disabled.md`, #165). Released in
 `@scalewing/react` 1.36.0. Next: Teisoro's open guided forms use it.
 
+Teisoro F-011 task 2205, the owner's "show each column's value under its
+count" for every bill count, then as its own row: `DenominationGrid` row
+`valueRow` (`teisoro-denomination-value-row.md`), a value line under a
+strip row with the total on it, each typed count described by its value
+(`Stepper` `aria-describedby`). Next: release with the Safari tab stops
+(#163) and Teisoro turns it on in `BillCount`.
+
 FutMas score entry (canvas board W3): `StepperRow`
 (`futmas-stepper-row.md`) and `Field` `variant="search"`
 (`futmas-search-field.md`), so a goal-scorer sheet lists a roster as

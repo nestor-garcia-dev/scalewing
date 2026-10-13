@@ -306,6 +306,7 @@ export type {
   DenominationGridRowEmphasis,
   DenominationGridRowRole,
   DenominationGridTone,
+  DenominationGridValueRow,
   DenominationLabelAppearance,
   DenominationLabelWidth,
   DenominationTotalEmphasis,

@@ -13,6 +13,8 @@ type EntryCellProps = {
   entry: DenominationGridEntry;
   column: DenominationGridColumn;
   index: number;
+  /** The value cell under this count, which describes it, if any. */
+  describedBy?: string;
 };
 
 /**
@@ -21,7 +23,13 @@ type EntryCellProps = {
  * message from the entry, and the cell's tone on its border (an accent one
  * is the Stepper's changed look).
  */
-export function EntryCell({ row, entry, column, index }: EntryCellProps) {
+export function EntryCell({
+  row,
+  entry,
+  column,
+  index,
+  describedBy,
+}: EntryCellProps) {
   const max = entry.max?.[index] ?? undefined;
   const tone = row.cellTones?.[index];
   return (
@@ -34,6 +42,7 @@ export function EntryCell({ row, entry, column, index }: EntryCellProps) {
       {/* An accent count is a suggestion or a change: the Stepper's own
           changed look (border and tint), as anywhere else. */}
       <Stepper
+        aria-describedby={describedBy}
         changed={tone === 'accent'}
         decrementLabel={entry.decrementLabel}
         disabled={row.disabled}

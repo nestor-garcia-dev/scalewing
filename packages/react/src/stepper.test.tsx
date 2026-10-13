@@ -415,3 +415,26 @@ describe('Stepper limitAppearance', () => {
     );
   });
 });
+
+describe('Stepper aria-describedby', () => {
+  it('describes the count by the given ids, before an error, and drops a blank one', () => {
+    const { rerender } = render(
+      <>
+        <span id="worth">$40</span>
+        <Counted aria-describedby="worth" initial={2} />
+      </>,
+    );
+    expect(parts().count.getAttribute('aria-describedby')).toBe('worth');
+    rerender(
+      <>
+        <span id="worth">$40</span>
+        <Counted aria-describedby="worth" error="Too many" initial={2} />
+      </>,
+    );
+    const ids = parts().count.getAttribute('aria-describedby')!.split(' ');
+    expect(ids[0]).toBe('worth');
+    expect(document.getElementById(ids[1]!)!.textContent).toBe('Too many');
+    rerender(<Counted aria-describedby="  " initial={2} />);
+    expect(parts().count.hasAttribute('aria-describedby')).toBe(false);
+  });
+});
