@@ -35,6 +35,17 @@ export default defineConfig({
         forcedColors: 'active',
       },
     },
+    {
+      // Safari's default Tab order (buttons and links only with a tabindex).
+      name: 'safari',
+      testMatch: /tab-order\.spec\.ts/,
+      use: {
+        browserName: 'webkit',
+        locale: 'en-US',
+        timezoneId: 'America/New_York',
+        viewport: { width: 1280, height: 900 },
+      },
+    },
   ],
   webServer: {
     command: 'pnpm dev --host 127.0.0.1 --port 4179',

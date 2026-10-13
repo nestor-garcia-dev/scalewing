@@ -17,6 +17,7 @@ import {
   actionMenuTriggerTextClass,
 } from '../css/css-action-menu-trigger.js';
 import { ActionMenuList } from './action-menu/ActionMenuList.js';
+import { tabStop } from '../tab-stop.js';
 
 export type ActionMenuAlign = InlineAlign;
 
@@ -201,6 +202,7 @@ export function ActionMenu({
         onClick={() => (open ? close(true) : openMenu())}
         onKeyDown={onTriggerKeyDown}
         ref={triggerRef}
+        tabIndex={tabStop}
         type="button"
       >
         {triggerAppearance === 'text' ? (

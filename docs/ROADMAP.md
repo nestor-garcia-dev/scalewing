@@ -83,6 +83,15 @@ header now pins the whole `thead` as one group, every row and cell, with
 each pinned cell's row rule on its own `::before` (#161). Released in
 `@scalewing/react` 1.35.1. Next: Teisoro pins it on `CashLedger`.
 
+Teisoro F-011 task 2205, the owner's Safari report: Tab from the cash
+check's amount left the page instead of reaching its ✓ button. Every press
+control and link now renders an explicit `tabindex="0"` (Safari skips a
+button, link, checkbox or radio without one); a `RadioGroup` or
+`FilterChips` gives it to its checked radio, else its first enabled one;
+the gallery's `safari` Playwright project (WebKit, after `pnpm exec
+playwright install webkit`; not in CI) holds the order. Next: release with the task's `DenominationGrid` change and
+Teisoro pins it.
+
 FutMas score entry (canvas board W3): `StepperRow`
 (`futmas-stepper-row.md`) and `Field` `variant="search"`
 (`futmas-search-field.md`), so a goal-scorer sheet lists a roster as

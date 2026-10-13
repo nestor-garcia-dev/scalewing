@@ -17,6 +17,7 @@ import {
   type ColumnSpanProps,
 } from '../column-span-classes.js';
 import { spacingClassNames, type SpacingProps } from '../spacing-classes.js';
+import { tabStop } from '../tab-stop.js';
 import {
   visibilityClassNames,
   type VisibilityProps,
@@ -84,12 +85,16 @@ export const Box = forwardRef<HTMLElement, BoxProps>(function Box(
     paddingY,
     radius,
     style,
+    tabIndex,
     ...rest
   },
   ref,
 ) {
   assertBoxLink(link, as);
   const Component = as;
+  // A link with a destination is a tab stop in Safari too (see tabStop).
+  const linkTabStop =
+    as === 'a' && rest.href !== undefined ? tabStop : undefined;
 
   return (
     <Component
@@ -117,6 +122,7 @@ export const Box = forwardRef<HTMLElement, BoxProps>(function Box(
         borderRadius: radius ? `var(--sw-radius-${radius})` : undefined,
         ...style,
       }}
+      tabIndex={tabIndex ?? linkTabStop}
       {...rest}
     />
   );

@@ -9,6 +9,7 @@ import {
   type RequiredMark,
   showsRequiredMark,
 } from './FieldLabelText.js';
+import { radioTabStopValue, tabStop } from '../tab-stop.js';
 
 export type FilterChipOption = {
   value: string;
@@ -80,6 +81,7 @@ export function FilterChips({
     throw new RangeError('value must match an option or be empty');
   if (options.some((option) => !isCount(option.count)))
     throw new RangeError('count must be a non-negative integer');
+  const entry = radioTabStopValue(options, value);
 
   return (
     <fieldset
@@ -115,6 +117,7 @@ export function FilterChips({
                   onChange(option.value);
               }}
               required={required}
+              tabIndex={option.value === entry ? tabStop : undefined}
               type="radio"
               value={option.value}
             />

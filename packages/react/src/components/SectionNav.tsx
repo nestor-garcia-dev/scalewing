@@ -7,6 +7,7 @@ import {
   assertSectionNavAppearance,
   type SectionNavAppearance,
 } from '../css/css-section-nav-filled.js';
+import { tabStop } from '../tab-stop.js';
 
 export type { SectionNavAppearance };
 export { sectionNavAppearances } from '../css/css-section-nav-filled.js';
@@ -147,6 +148,7 @@ export function SectionNav({
               aria-current={ariaCurrent(item.current)}
               className="sw-section-nav-link"
               href={item.href}
+              tabIndex={tabStop}
               // Only a given onNavigate attaches a handler, so the links
               // render from a server component without one.
               onClick={

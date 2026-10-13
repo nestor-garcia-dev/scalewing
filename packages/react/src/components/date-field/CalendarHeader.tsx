@@ -9,6 +9,7 @@ import { calendarYearRange, yearsIn } from '../../calendar-years.js';
 import { type DateFieldLabels } from '../../date-field-labels.js';
 import { Select } from '../Select.js';
 import { DateFieldGlyph } from './DateFieldGlyph.js';
+import { tabStop } from '../../tab-stop.js';
 
 export type CalendarHeaderProps = {
   labels: DateFieldLabels;
@@ -43,6 +44,7 @@ function MonthStep({
       onClick={() => {
         if (!unavailable) onMonthChange(target);
       }}
+      tabIndex={tabStop}
       type="button"
     >
       <DateFieldGlyph name={delta < 0 ? 'previous' : 'next'} />

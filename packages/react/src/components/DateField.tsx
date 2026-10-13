@@ -21,6 +21,7 @@ import { DateFieldGlyph } from './date-field/DateFieldGlyph.js';
 import { useCalendarPopup } from './date-field/use-calendar-popup.js';
 import { useDateEntry } from './date-field/use-date-entry.js';
 import { useLangLocale } from './date-field/use-lang-locale.js';
+import { tabStop } from '../tab-stop.js';
 
 export type { DateFieldLabels, WeekStart };
 
@@ -163,6 +164,7 @@ export function DateField({
           disabled={disabled}
           onClick={toggle}
           ref={buttonRef}
+          tabIndex={tabStop}
           type="button"
         >
           <span className="sw-sr-only">{words.chooseDate}</span>
