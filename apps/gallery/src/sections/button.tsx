@@ -34,7 +34,7 @@ export function ButtonSection() {
   return (
     <Section
       id="button"
-      purpose="Button is a real button element. Use it for press actions. Primary, secondary, and tertiary are the three action tiers; secondary is outlined until a palette fills it (switch to signal to see all three filled). Ghost is text only; danger is destructive. Disabled blocks onPress. Default type is button; forms may pass submit. A toggle button passes aria-pressed: the pressed one gets an accent ring. A glyph and its label, passed as the button's own children, sit one token gap (spacing step 2) apart. neutral (web) is a quiet grey fill in the text color, for a Cancel beside the primary that should not draw the eye; disabledAppearance neutral draws a disabled button on that grey with muted words instead of fading its variant."
+      purpose="Button is a real button element. Use it for press actions. Primary, secondary, and tertiary are the three action tiers; secondary is outlined until a palette fills it (switch to signal to see all three filled). Ghost is text only; danger is destructive. Disabled blocks onPress. Default type is button; forms may pass submit. A toggle button passes aria-pressed: the pressed one gets an accent ring. A glyph and its label, passed as the button's own children, sit one token gap (spacing step 2) apart. neutral (web) is a quiet grey fill in the text color, for a Cancel beside the primary that should not draw the eye; disabledAppearance neutral draws a disabled button on that grey with muted words instead of fading its variant. aria-disabled true looks the same as disabled but stays focusable and pressable: onPress still runs, for a submit that, pressed while off, takes the person to what is missing."
       title="Button"
       usage={`<Button variant="primary" size="md" onPress={() => undefined}>
   Save
@@ -42,6 +42,7 @@ export function ButtonSection() {
 
 <Button variant="neutral" onPress={cancel}>Cancel</Button>
 <Button disabled disabledAppearance="neutral" onPress={save}>Save</Button>
+<Button aria-disabled={!ready} disabledAppearance="neutral" onPress={save}>Save</Button>
 
 <Button onPress={() => undefined}>
   <Plus aria-hidden />
@@ -100,6 +101,15 @@ export function ButtonSection() {
               variant="secondary"
             >
               Recount the herd
+            </Button>
+          </Inline>
+          <Inline aria-label="Off until ready" gap={2} role="group" wrap>
+            <Button
+              aria-disabled="true"
+              disabledAppearance="neutral"
+              onPress={() => setLastPress('count off, name the herd first')}
+            >
+              Count the herd
             </Button>
           </Inline>
         </Stack>

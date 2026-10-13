@@ -98,6 +98,12 @@ as a region named by its title, only the markers following each status.
 Next: release as the next `@scalewing/react` minor; Teisoro builds
 `GuidedForm mode="open"` on it.
 
+Teisoro F-011 task 2210, the owner's off-but-pressable submit for
+"every step open" forms: a `Button` with `aria-disabled="true"` looks
+disabled yet stays focusable and pressable
+(`teisoro-button-aria-disabled.md`). Next: release as the next
+`@scalewing/react` minor with `Steps` `open`.
+
 FutMas score entry (canvas board W3): `StepperRow`
 (`futmas-stepper-row.md`) and `Field` `variant="search"`
 (`futmas-search-field.md`), so a goal-scorer sheet lists a roster as
