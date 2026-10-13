@@ -75,21 +75,84 @@ function SurveySteps() {
   );
 }
 
+/**
+ * The same survey with every step open: each section is filled on one
+ * page, its marker turning to a check once its fields are complete, and
+ * the step after a blocked one greyed with why.
+ */
+function OpenSurveySteps() {
+  const [site, setSite] = useState('');
+  const [herons, setHerons] = useState<number | null>(null);
+  const flooded = site.trim().toLowerCase() === 'flooded';
+  const siteDone = site.trim() !== '' && !flooded;
+  return (
+    <Steps aria-label="Wader count, every step open" open>
+      <Step
+        status={flooded ? 'error' : siteDone ? 'done' : 'current'}
+        title="The site"
+      >
+        <Stack gap={2}>
+          <Field label="Site">
+            <input
+              onChange={(event) => setSite(event.target.value)}
+              value={site}
+            />
+          </Field>
+          {flooded ? (
+            <Text color="danger" variant="caption">
+              A flooded site cannot be surveyed.
+            </Text>
+          ) : null}
+        </Stack>
+      </Step>
+      <Step
+        status={flooded ? 'upcoming' : herons ? 'done' : 'current'}
+        title="The count"
+      >
+        {flooded ? (
+          <Text color="muted">Choose another site to go on.</Text>
+        ) : (
+          <Stepper
+            decrementLabel="One less"
+            incrementLabel="One more"
+            label="Herons"
+            onChange={setHerons}
+            placeholder="0"
+            value={herons}
+          />
+        )}
+      </Step>
+      <Step status={flooded ? 'upcoming' : 'current'} title="Review">
+        <Text color="muted">
+          {flooded
+            ? 'Choose another site to go on.'
+            : `${site.trim() || 'No site yet'}: ${herons ?? 0} herons.`}
+        </Text>
+      </Step>
+    </Steps>
+  );
+}
+
 export function StepsSection() {
   return (
     <Section
       id="steps"
-      purpose="Steps is a one-page vertical stepper: a form's Step panels in order, numbered by their place and joined by a line. The current step is open with its fields; a done step folds to one line with its summary and an Edit button named by its title; steps ahead are greyed; an error step stays open with a ! marker; a skipped step shows its reason. When a folded step opens, focus moves to its heading. Heading level and the status words assistive technology hears come from Steps (English by default)."
+      purpose="Steps is a one-page vertical stepper: a form's Step panels in order, numbered by their place and joined by a line. The current step is open with its fields; a done step folds to one line with its summary and an Edit button named by its title; steps ahead are greyed; an error step stays open with a ! marker; a skipped step shows its reason. When a folded step opens, focus moves to its heading. Heading level and the status words assistive technology hears come from Steps (English by default). With open, every step shows its fields as a region named by its title; only the markers follow each status, and focus never moves on its own."
       title="Steps"
       usage={`<Steps aria-label="Heron survey">
   <Step status="done" title="The site" summary="North marsh"
     editLabel="Edit" onEdit={() => setCurrent(0)} />
   <Step status="current" title="The count">{fields}</Step>
   <Step status="upcoming" title="Review" />
+</Steps>
+<Steps aria-label="Wader count" open>
+  <Step status="done" title="The site">{fields}</Step>
+  <Step status="current" title="The count">{fields}</Step>
 </Steps>`}
     >
       <Stack gap={5}>
         <SurveySteps />
+        <OpenSurveySteps />
         <Steps aria-label="Every status" headingLevel={3}>
           <Step
             editLabel="Edit"
