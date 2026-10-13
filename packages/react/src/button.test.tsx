@@ -265,7 +265,7 @@ describe('Button neutral variant and disabledAppearance', () => {
       '.sw-button-neutral { background: color-mix(in srgb, var(--sw-color-muted) 16%, transparent); border-color: transparent; color: var(--sw-color-text); }',
     );
     expect(css)
-      .toContain(`.sw-button-disabled-neutral:disabled:not(.sw-button-ghost) {
+      .toContain(`.sw-button-disabled-neutral:is(:disabled, [aria-disabled='true']):not(.sw-button-ghost) {
   background: color-mix(in srgb, var(--sw-color-muted) 16%, transparent);
   border-color: transparent;
   color: color-mix(in srgb, var(--sw-color-muted) 48%, transparent);
@@ -273,5 +273,43 @@ describe('Button neutral variant and disabledAppearance', () => {
 }`);
     expect(webButtonVariants).toContain('neutral');
     expect(buttonDisabledAppearances).toEqual(['faded', 'neutral']);
+  });
+});
+
+describe('Button aria-disabled', () => {
+  afterEach(() => cleanup());
+
+  it('stays focusable and pressable, its press the consumer decides', () => {
+    const onPress = vi.fn();
+    render(
+      <Button
+        aria-disabled="true"
+        disabledAppearance="neutral"
+        onPress={onPress}
+      >
+        Count the herd
+      </Button>,
+    );
+    const count = screen.getByRole('button', {
+      name: 'Count the herd',
+    }) as HTMLButtonElement;
+    expect(count.disabled).toBe(false);
+    expect(count.getAttribute('aria-disabled')).toBe('true');
+    count.focus();
+    expect(document.activeElement).toBe(count);
+    count.click();
+    expect(onPress).toHaveBeenCalledTimes(1);
+  });
+
+  it('looks as a disabled button, neutral or faded, and greys in forced colors', () => {
+    const css = cssButtonClasses();
+    expect(css).toContain(`.sw-button:disabled,
+.sw-button[aria-disabled='true'] {
+  cursor: not-allowed;
+  opacity: var(--sw-disabled-opacity);
+}`);
+    expect(css).toMatch(
+      /@media \(forced-colors: active\) \{\n {2}\.sw-button\[aria-disabled='true'\],\n {2}\.sw-button-disabled-neutral\[aria-disabled='true'\]:not\(\.sw-button-ghost\) \{ border-color: GrayText; color: GrayText; \}/,
+    );
   });
 });

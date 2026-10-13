@@ -66,11 +66,11 @@ function variantRules(): string {
  * A neutral disabled button: the quiet fill with its words in the muted
  * color at 48 %, about #AEAEAE on the grey (a disabled control needs no
  * contrast, and the faded words say it cannot be pressed), at full
- * opacity so no accent shows through.
- * Forced colors draw it as any disabled button.
+ * opacity so no accent shows through. The same for one that is only
+ * \`aria-disabled\`. Forced colors draw it as any disabled button.
  */
 function disabledNeutralRules(): string {
-  return `.sw-button-disabled-neutral:disabled:not(.sw-button-ghost) {
+  return `.sw-button-disabled-neutral:is(:disabled, [aria-disabled='true']):not(.sw-button-ghost) {
   background: ${quietFill};
   border-color: transparent;
   color: color-mix(in srgb, var(--sw-color-muted) 48%, transparent);
@@ -104,6 +104,15 @@ function pressedRules(): string {
 @media (forced-colors: active) {
   .sw-button[aria-pressed='true'] { border-color: Highlight; position: relative; }
   .sw-button[aria-pressed='true']::after { border: ${pressedRingWidth - pressedRingGap}px solid Highlight; border-radius: inherit; content: ''; inset: calc(-1px - ${pressedRingWidth}px); pointer-events: none; position: absolute; }
+}`;
+}
+
+/* The system greys a disabled button in forced colors, not one that is
+   only aria-disabled: grey it the same, over the neutral look's words. */
+function ariaDisabledForcedRules(): string {
+  return `@media (forced-colors: active) {
+  .sw-button[aria-disabled='true'],
+  .sw-button-disabled-neutral[aria-disabled='true']:not(.sw-button-ghost) { border-color: GrayText; color: GrayText; }
 }`;
 }
 
@@ -150,14 +159,18 @@ export function cssButtonClasses(): string {
   outline-offset: var(--sw-focus-ring-offset);
 }
 
-.sw-button:disabled {
+/* A button that is off but still pressed and focused (\`aria-disabled\`,
+   for a submit that, pressed while off, shows what to fix) looks as a
+   disabled one; forced colors grey it too, after the pressed rules. */
+.sw-button:disabled,
+.sw-button[aria-disabled='true'] {
   cursor: not-allowed;
   opacity: var(--sw-disabled-opacity);
 }
-
 ${variantRules()}
 ${disabledNeutralRules()}
 ${pressedRules()}
+${ariaDisabledForcedRules()}
 ${sizeRules()}
 ${groupRules()}
 
