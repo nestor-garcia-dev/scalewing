@@ -89,20 +89,21 @@ control and link now renders an explicit `tabindex="0"` (Safari skips a
 button, link, checkbox or radio without one); a `RadioGroup` or
 `FilterChips` gives it to its checked radio, else its first enabled one;
 the gallery's `safari` Playwright project (WebKit, after `pnpm exec
-playwright install webkit`; not in CI) holds the order. Next: release with the task's `DenominationGrid` change and
-Teisoro pins it.
+playwright install webkit`; not in CI) holds the order (#163). Released in `@scalewing/react` 1.36.0 (with
+Teisoro task 2210's two surfaces). Next: release the task's
+`DenominationGrid` change and Teisoro pins it.
 
 Teisoro F-011 task 2210, the owner's "every step open" for short guided
 forms: `Steps` `open` (`teisoro-steps-open.md`), every step shown at once
-as a region named by its title, only the markers following each status.
-Next: release as the next `@scalewing/react` minor; Teisoro builds
+as a region named by its title, only the markers following each status
+(#164). Released in `@scalewing/react` 1.36.0. Next: Teisoro builds
 `GuidedForm mode="open"` on it.
 
 Teisoro F-011 task 2210, the owner's off-but-pressable submit for
 "every step open" forms: a `Button` with `aria-disabled="true"` looks
 disabled yet stays focusable and pressable
-(`teisoro-button-aria-disabled.md`). Next: release as the next
-`@scalewing/react` minor with `Steps` `open`.
+(`teisoro-button-aria-disabled.md`, #165). Released in
+`@scalewing/react` 1.36.0. Next: Teisoro's open guided forms use it.
 
 FutMas score entry (canvas board W3): `StepperRow`
 (`futmas-stepper-row.md`) and `Field` `variant="search"`
