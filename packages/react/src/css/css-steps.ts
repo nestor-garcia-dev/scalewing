@@ -78,7 +78,9 @@ function forcedColorRules(): string {
  * gap apart. Each has a header line (marker, title, and on a done step its
  * summary and Edit) and, while open (current or error), a body indented to
  * the title. An open step's title is the title variant; a folded one's is
- * body size at label weight, muted ahead of the form or skipped.
+ * body size at label weight, muted ahead of the form or skipped. In an
+ * open list (`sw-steps-open`) every step is open: each panel takes the open
+ * padding and title, its header and body in one region.
  */
 export function cssStepsClasses(): string {
   return `.sw-steps {
@@ -105,8 +107,18 @@ export function cssStepsClasses(): string {
 }
 
 .sw-steps-item-current,
-.sw-steps-item-error {
+.sw-steps-item-error,
+.sw-steps-open > .sw-steps-item {
   --sw-steps-padding: var(--sw-space-4);
+}
+
+/* An open list's step is a region holding its header and body, spaced as
+   the item spaces them in a stepped list. */
+.sw-steps-region {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sw-space-4);
+  min-width: 0;
 }
 
 /* The marker sits at the top of the header, so the connector always starts
@@ -147,7 +159,8 @@ export function cssStepsClasses(): string {
 }
 
 .sw-steps-item-current .sw-steps-title,
-.sw-steps-item-error .sw-steps-title {
+.sw-steps-item-error .sw-steps-title,
+.sw-steps-open > .sw-steps-item .sw-steps-title {
   font-size: ${title.fontSize}px;
   letter-spacing: ${title.letterSpacing}px;
   line-height: ${title.lineHeight}px;
@@ -193,6 +206,7 @@ ${forcedColorRules()}`;
 export function stepsClassCatalog(): string[] {
   return [
     'sw-steps',
+    'sw-steps-open',
     'sw-steps-item',
     'sw-steps-item-upcoming',
     'sw-steps-item-current',
@@ -206,5 +220,6 @@ export function stepsClassCatalog(): string[] {
     'sw-steps-summary',
     'sw-steps-edit',
     'sw-steps-body',
+    'sw-steps-region',
   ];
 }

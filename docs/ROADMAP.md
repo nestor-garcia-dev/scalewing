@@ -92,6 +92,12 @@ the gallery's `safari` Playwright project (WebKit, after `pnpm exec
 playwright install webkit`; not in CI) holds the order. Next: release with the task's `DenominationGrid` change and
 Teisoro pins it.
 
+Teisoro F-011 task 2210, the owner's "every step open" for short guided
+forms: `Steps` `open` (`teisoro-steps-open.md`), every step shown at once
+as a region named by its title, only the markers following each status.
+Next: release as the next `@scalewing/react` minor; Teisoro builds
+`GuidedForm mode="open"` on it.
+
 FutMas score entry (canvas board W3): `StepperRow`
 (`futmas-stepper-row.md`) and `Field` `variant="search"`
 (`futmas-search-field.md`), so a goal-scorer sheet lists a roster as

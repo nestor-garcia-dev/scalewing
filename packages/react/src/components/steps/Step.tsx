@@ -36,7 +36,7 @@ export type StepProps = {
   skippedReason?: string;
   /** Overrides the list's heading level for this step's title. */
   headingLevel?: StepHeadingLevel;
-  /** The step's fields, shown while it is current or in error. */
+  /** The step's fields, shown while it is current or in error, or always in an open list. */
   children?: ReactNode;
 };
 
@@ -56,16 +56,22 @@ function assertStep(props: StepProps, level: StepHeadingLevel): void {
  * Moves focus to the heading when the step becomes current from a folded
  * state, unless an earlier step of the list already took it in this commit
  * (effects run in list order, so the first one wins; the claim is released
- * after the flush).
+ * after the flush). In an open list nothing folds or opens, so focus stays
+ * where the person put it.
  */
 function useFocusWhenOpened(
   status: StepStatus,
   heading: RefObject<HTMLHeadingElement | null>,
   focusClaimRef: RefObject<boolean>,
+  open: boolean,
 ) {
   const previous = useRef<StepStatus | undefined>(undefined);
   useEffect(() => {
-    if (stepTakesFocus(previous.current, status) && !focusClaimRef.current) {
+    if (
+      !open &&
+      stepTakesFocus(previous.current, status) &&
+      !focusClaimRef.current
+    ) {
       focusClaimRef.current = true;
       heading.current?.focus();
       // One commit's effects run in one flush: release the claim after it,
@@ -75,13 +81,15 @@ function useFocusWhenOpened(
       });
     }
     previous.current = status;
-  }, [status, heading, focusClaimRef]);
+  }, [status, heading, focusClaimRef, open]);
 }
 
 /**
  * One step of a `Steps` list: a numbered marker, the title as a heading,
  * and, by status, its fields (current, error) or one folded line (a done
- * step's summary and Edit; an upcoming or skipped step's title alone).
+ * step's summary and Edit; an upcoming or skipped step's title alone). In
+ * an open list every step shows its fields, inside a region named by its
+ * title.
  */
 export function Step(props: StepProps) {
   const place = useContext(StepPlaceContext);
@@ -93,50 +101,64 @@ export function Step(props: StepProps) {
   const heading = useRef<HTMLHeadingElement>(null);
   const titleId = useId();
   const editId = useId();
-  useFocusWhenOpened(status, heading, place.focusClaimRef);
+  useFocusWhenOpened(status, heading, place.focusClaimRef, place.open);
 
   const Heading = `h${level}` as 'h2' | 'h3' | 'h4';
   const reason = status === 'skipped' ? skippedReason : undefined;
   const word = stepStatusWord(status, place.labels, reason !== undefined);
   const done = status === 'done';
+  const header = (
+    <div className="sw-steps-header">
+      <span aria-hidden="true" className="sw-steps-marker">
+        {status === 'error' ? '!' : done ? null : place.number}
+      </span>
+      <Heading ref={heading} className="sw-steps-title" tabIndex={-1}>
+        <span id={titleId}>{title}</span>
+        {reason ? (
+          <>
+            {' '}
+            <span className="sw-steps-reason">{reason}</span>
+          </>
+        ) : null}
+        {word ? <span className="sw-sr-only">, {word}</span> : null}
+      </Heading>
+      {done && summary ? (
+        <span className="sw-steps-summary">{summary}</span>
+      ) : null}
+      {done && onEdit ? (
+        <Button
+          aria-labelledby={`${editId} ${titleId}`}
+          className="sw-steps-edit"
+          id={editId}
+          onPress={onEdit}
+          size="sm"
+          variant="ghost"
+        >
+          {editLabel}
+        </Button>
+      ) : null}
+    </div>
+  );
+  const shown =
+    (place.open || isOpenStep(status)) && Children.toArray(children).length > 0;
+  const content = (
+    <>
+      {header}
+      {shown ? <div className="sw-steps-body">{children}</div> : null}
+    </>
+  );
   return (
     <li
-      aria-current={status === 'current' ? 'step' : undefined}
+      aria-current={!place.open && status === 'current' ? 'step' : undefined}
       className={cx('sw-steps-item', `sw-steps-item-${status}`)}
     >
-      <div className="sw-steps-header">
-        <span aria-hidden="true" className="sw-steps-marker">
-          {status === 'error' ? '!' : done ? null : place.number}
-        </span>
-        <Heading ref={heading} className="sw-steps-title" tabIndex={-1}>
-          <span id={titleId}>{title}</span>
-          {reason ? (
-            <>
-              {' '}
-              <span className="sw-steps-reason">{reason}</span>
-            </>
-          ) : null}
-          {word ? <span className="sw-sr-only">, {word}</span> : null}
-        </Heading>
-        {done && summary ? (
-          <span className="sw-steps-summary">{summary}</span>
-        ) : null}
-        {done && onEdit ? (
-          <Button
-            aria-labelledby={`${editId} ${titleId}`}
-            className="sw-steps-edit"
-            id={editId}
-            onPress={onEdit}
-            size="sm"
-            variant="ghost"
-          >
-            {editLabel}
-          </Button>
-        ) : null}
-      </div>
-      {isOpenStep(status) && Children.toArray(children).length > 0 ? (
-        <div className="sw-steps-body">{children}</div>
-      ) : null}
+      {place.open ? (
+        <section aria-labelledby={titleId} className="sw-steps-region">
+          {content}
+        </section>
+      ) : (
+        content
+      )}
     </li>
   );
 }
