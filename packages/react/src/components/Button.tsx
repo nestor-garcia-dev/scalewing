@@ -8,6 +8,7 @@ import {
 import { forwardRef, type ButtonHTMLAttributes, type ReactNode } from 'react';
 
 import { cx } from '../class-names.js';
+import { tabStop } from '../tab-stop.js';
 
 /** The web variants: the shared tiers plus `neutral`. */
 export type ButtonVariant = WebButtonVariant;
@@ -45,6 +46,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       disabledAppearance = 'faded',
       onPress,
       size = 'md',
+      tabIndex,
       type = 'button',
       variant = 'primary',
       ...rest
@@ -67,6 +69,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           className,
         )}
         disabled={disabled}
+        tabIndex={tabIndex ?? tabStop}
         type={type}
         {...rest}
         onClick={onPress}

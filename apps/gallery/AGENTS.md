@@ -25,3 +25,7 @@ import { lightTheme } from '@scalewing/tokens';
 ## Avoid
 
 Vendoring Scalewing CSS, importing renderer internals, and treating the gallery as a design-token source.
+
+## Browser checks
+
+`pnpm --filter @scalewing/gallery test:browser` runs `e2e/` on desktop-en, mobile-es and forced-colors in Chromium, and `e2e/tab-order.spec.ts` also in the `safari` project (WebKit, which keeps Safari's default Tab order: buttons, links, checkboxes and radios only with a `tabindex`). Install its browser once with `pnpm --filter @scalewing/gallery exec playwright install webkit`. CI does not run these; run them before a release.

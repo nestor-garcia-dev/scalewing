@@ -5,6 +5,7 @@ import { forwardRef, useId, type KeyboardEvent, type ReactNode } from 'react';
 import { cx } from '../class-names.js';
 import { segmentedRaisedClass } from '../css/css-segmented-raised.js';
 import { FieldErrorRegion } from './FieldErrorRegion.js';
+import { tabStop } from '../tab-stop.js';
 
 export type SegmentedItem = {
   id: string;
@@ -142,6 +143,9 @@ export const SegmentedControl = forwardRef<
                 }
               }}
               role="radio"
+              // Every item stays a tab stop, as each already was outside
+              // Safari: the arrow keys change the value, not the focus.
+              tabIndex={tabStop}
               type="button"
             >
               {item.icon ? (

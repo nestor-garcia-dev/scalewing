@@ -1,4 +1,12 @@
-import { Card, Grid, Inline, SectionNav, Stack, Text } from '@scalewing/react';
+import {
+  Box,
+  Card,
+  Grid,
+  Inline,
+  SectionNav,
+  Stack,
+  Text,
+} from '@scalewing/react';
 import { useState } from 'react';
 
 import { Glyph } from '../glyph.js';
@@ -84,7 +92,8 @@ export function SectionNavSection() {
               </Text>
               <Text>{current.note}</Text>
               <Text color="muted" variant="caption">
-                <a
+                <Box
+                  as="a"
                   href={`#section-nav/${section}/today`}
                   onClick={(event) => {
                     event.preventDefault();
@@ -92,7 +101,7 @@ export function SectionNavSection() {
                   }}
                 >
                   Open today&apos;s page
-                </a>{' '}
+                </Box>{' '}
                 (the section stays current).
               </Text>
             </Stack>

@@ -1,4 +1,5 @@
 import type { MouseEvent, ReactNode } from 'react';
+import { tabStop } from '../../tab-stop.js';
 
 type SearchFrameProps = {
   children: ReactNode;
@@ -59,6 +60,7 @@ export function SearchFrame({
               ?.focus();
             onClear();
           }}
+          tabIndex={tabStop}
           type="button"
         >
           <span aria-hidden="true" className="sw-field-search-cross" />

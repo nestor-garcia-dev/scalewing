@@ -7,6 +7,7 @@ import {
   RadioGroupOptionLabel,
   type RadioGroupOption,
 } from './radio-group/RadioGroupOptionLabel.js';
+import { radioTabStopValue } from '../tab-stop.js';
 
 export type { RadioGroupOption };
 
@@ -48,6 +49,7 @@ export function RadioGroup({
     throw new RangeError('options must have unique values');
   if (value !== '' && !values.includes(value))
     throw new RangeError('value must match an option or be empty');
+  const entry = radioTabStopValue(options, value);
 
   return (
     <fieldset
@@ -73,6 +75,7 @@ export function RadioGroup({
             }}
             option={option}
             required={required}
+            isTabStop={option.value === entry}
           />
         ))}
       </span>

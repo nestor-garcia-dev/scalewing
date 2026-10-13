@@ -1,5 +1,7 @@
 import { useId, type ReactNode } from 'react';
 
+import { tabStop } from '../../tab-stop.js';
+
 export type RadioGroupOption = {
   value: string;
   label: string;
@@ -29,6 +31,8 @@ type RadioGroupOptionLabelProps = {
   name: string;
   checked: boolean;
   required: boolean;
+  /** Whether this radio is its group's explicit Tab stop (`radioTabStopValue`). */
+  isTabStop: boolean;
   onSelect: () => void;
 };
 
@@ -53,6 +57,7 @@ export function RadioGroupOptionLabel({
   name,
   checked,
   required,
+  isTabStop,
   onSelect,
 }: RadioGroupOptionLabelProps) {
   const id = useId();
@@ -79,6 +84,7 @@ export function RadioGroupOptionLabel({
             if (event.currentTarget.checked) onSelect();
           }}
           required={required}
+          tabIndex={isTabStop ? tabStop : undefined}
           type="radio"
           value={option.value}
         />

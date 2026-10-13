@@ -15,6 +15,7 @@ import { SelectListbox } from './select/SelectListbox.js';
 import { SelectValue } from './select/SelectValue.js';
 import { useSelectList } from './select/use-select-list.js';
 import { Stack } from './Stack.js';
+import { tabStop } from '../tab-stop.js';
 
 export type { SelectOption };
 
@@ -152,6 +153,7 @@ export function Select({
             }}
             onKeyDown={onTriggerKeyDown}
             role="combobox"
+            tabIndex={tabStop}
             type="button"
           >
             <SelectValue

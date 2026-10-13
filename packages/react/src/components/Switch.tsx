@@ -1,6 +1,7 @@
 'use client';
 
 import { useId } from 'react';
+import { tabStop } from '../tab-stop.js';
 
 export type SwitchProps = {
   label: string;
@@ -34,6 +35,7 @@ export function Switch({
             if (!disabled) onCheckedChange(event.currentTarget.checked);
           }}
           role="switch"
+          tabIndex={tabStop}
           type="checkbox"
         />
         <span aria-hidden="true" className="sw-switch-track">

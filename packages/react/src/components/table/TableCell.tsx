@@ -14,6 +14,7 @@ import {
   tableColumnWidthClass,
   type TableColumnWidth,
 } from './table-layout.js';
+import { tabStop } from '../../tab-stop.js';
 
 export type { TableColumnWidth };
 
@@ -150,7 +151,12 @@ export const TableCell = forwardRef<HTMLTableCellElement, TableCellProps>(
         {...rest}
       >
         {sort !== undefined && onSort ? (
-          <button className="sw-table-sort" onClick={onSort} type="button">
+          <button
+            className="sw-table-sort"
+            onClick={onSort}
+            tabIndex={tabStop}
+            type="button"
+          >
             {children}
             <span
               aria-hidden="true"
@@ -158,7 +164,12 @@ export const TableCell = forwardRef<HTMLTableCellElement, TableCellProps>(
             />
           </button>
         ) : onPress ? (
-          <button className="sw-table-action" onClick={onPress} type="button">
+          <button
+            className="sw-table-action"
+            onClick={onPress}
+            tabIndex={tabStop}
+            type="button"
+          >
             {children}
           </button>
         ) : (

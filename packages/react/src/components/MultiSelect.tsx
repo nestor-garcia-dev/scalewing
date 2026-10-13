@@ -5,6 +5,7 @@ import { useId, useRef, useState, type KeyboardEvent } from 'react';
 import { MultiSelectPanel } from './multi-select/MultiSelectPanel.js';
 import { type MultiSelectProps } from './multi-select/types.js';
 import { assertMultiSelect } from './multi-select/validate.js';
+import { tabStop } from '../tab-stop.js';
 
 export type {
   MultiSelectAlign,
@@ -90,6 +91,7 @@ export function MultiSelect({
         onClick={() => (shown ? close(true) : setOpen(true))}
         onKeyDown={onTriggerKeyDown}
         ref={triggerRef}
+        tabIndex={tabStop}
         type="button"
       >
         <span className="sw-multi-select-label">{label}</span>{' '}
