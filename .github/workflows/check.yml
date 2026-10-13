@@ -1,9 +1,9 @@
 name: Check
 
+# Manual only: GitHub Actions is not paid for on this repository, so the
+# local gates (pnpm check, pnpm check:package) and the Bar Raiser reviews
+# are the evidence. Run it from the Actions tab when a hosted run is wanted.
 on:
-  pull_request:
-  push:
-    branches: [main]
   workflow_dispatch:
 
 permissions:
