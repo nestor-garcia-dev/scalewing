@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: in review (Teisoro F-011 task 2205).
+Status: released in `@scalewing/react` 1.37.0 (PR #167; Teisoro F-011 task 2205).
 Renderer: react
 Missing surface: `DenominationGrid` `valueRow`: a line under a strip row giving each column's value (the money its count adds up to), with the row's total on it; and `Stepper` `aria-describedby`, so a typed count is described by its value. An extension of `DenominationGrid` (`teisoro-denomination-grid.md`, `teisoro-denomination-grid-entry.md`), not a new component.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: the owner asked (2026-10-12) for every bill and coin count to show each column's value under its count ("$1, $5, $10, $40, blank, $300"), one shared change for every count form, and then for the values in their own row under the counts, as the vault's balance table shows a Count row and a Value row (canvas board StepCheckOpen1: a value row on the subtle fill, each value centred, blank for zero, the total bold in the Total column). A second read-only row of the grid would be a row of counts (tones, zeros, signed counts, the count's own weight), sit in the row order as a peer, and could not describe the typed count above it; a `Table` beside the grid would lose its columns and pinned labels. Teisoro owns no CSS.
