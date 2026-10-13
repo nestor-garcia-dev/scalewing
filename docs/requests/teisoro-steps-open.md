@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: accepted 2026-10-12 (Teisoro F-011 task 2210; plan approval under Teisoro decisions O-1 to O-4 and D-1, and the owner's decision of 2026-10-12). Next: release as the next `@scalewing/react` minor.
+Status: released in `@scalewing/react` 1.36.0 (PR #164; accepted 2026-10-12; Teisoro F-011 task 2210; plan approval under Teisoro decisions O-1 to O-4 and D-1, and the owner's decision of 2026-10-12).
 Renderer: react
 Missing surface: a `Steps` list whose every step is open at once. An extension of `Steps`, not a new component.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: the Teisoro owner decided on 2026-10-12 that short guided forms become "every step open": the stepper layout stays (numbered sections that turn green as each part is complete), but every section is always open, there is no Continue, and one submit saves (boards StepCheckOpen1, StepCheckOpen2, StepCheckOpen3). `Step` shows its fields only while it is current or in error, so a done step folds and hides them, and only one step can be `aria-current`. Drawing the panels, markers and connector from `Card` and `Text` in the product would need its own marker, tick and line, CSS Teisoro may not write, and would fork the stepped look the closeouts keep.

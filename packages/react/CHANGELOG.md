@@ -1,5 +1,16 @@
 # @scalewing/react
 
+## 1.36.0
+
+### Minor Changes
+
+- bc5d37c: A `Button` with `aria-disabled="true"` now looks disabled (`docs/requests/teisoro-button-aria-disabled.md`, Teisoro F-011 task 2210): the faded look, or with `disabledAppearance="neutral"` the neutral grey, and `GrayText` in forced colors, while it stays focusable and its `onPress` still runs, for a submit that, pressed while off, takes the person to what is missing. No new prop, token, class or dependency.
+- 3d431f7: `Steps` `open` shows every step's fields at once (`docs/requests/teisoro-steps-open.md`, Teisoro F-011 task 2210): each step is a region named by its title, its marker still following its status (a number to fill, a check when done, "!" in error, a grey ring when greyed), every title at the open size, no step `aria-current` and no focus moved when a status changes. Off by default; a list without `open` is unchanged. New generated classes `sw-steps-open` and `sw-steps-region`. No new tokens, no new dependency.
+
+### Patch Changes
+
+- 743a7a0: Every press control and link now renders an explicit `tabindex="0"` (Teisoro F-011 task 2205), so Safari users reach it with Tab: Safari's default leaves a `<button>`, a link, a checkbox and a radio out of the Tab order unless it carries a `tabindex`, so Tab from a field went past them to the address bar. Covered: `Button` (with `CalendarButton` and `InfoTip`), `Box as="a"` with an `href`, `SectionNav` links, the `Select`, `MultiSelect` and `ActionMenu` triggers, `SegmentedControl` items, `DateField`'s calendar button and month steps, a search `Field`'s clear button, `Table` sort and `TableCell onPress` buttons, `Checkbox` (and `MultiSelect`'s rows), `Switch`, and the checked (else first enabled) radio of a `RadioGroup` or `FilterChips`. A consumer's `tabIndex` wins; a `Stepper`'s − and + and roving items keep their `-1`. No new prop, class or token, no new dependency.
+
 ## 1.35.1
 
 ### Patch Changes

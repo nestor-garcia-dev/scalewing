@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: accepted 2026-10-12 (Teisoro F-011 task 2210; plan approval under Teisoro decisions O-1 to O-4 and D-1, and the owner's decision of 2026-10-12). Next: release as the next `@scalewing/react` minor.
+Status: released in `@scalewing/react` 1.36.0 (PR #165; accepted 2026-10-12; Teisoro F-011 task 2210; plan approval under Teisoro decisions O-1 to O-4 and D-1, and the owner's decision of 2026-10-12).
 Renderer: react
 Missing surface: the look of a `Button` that is `aria-disabled="true"`. An extension of `Button`'s disabled look, not a new prop.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: the Teisoro owner's rule for "every step open" forms (2026-10-12): "The submit is off until everything is valid; pressing it while off (use aria-disabled, not the disabled attribute, so it can be pressed and focused) scrolls to and focuses the first thing to fix, with its message shown." A `disabled` button cannot be focused or pressed; an `aria-disabled` one looks enabled today (only `:disabled` is styled), so the off state is not seen. Teisoro owns no CSS.
