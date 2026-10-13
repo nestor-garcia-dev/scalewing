@@ -109,8 +109,8 @@ Teisoro F-011 task 2205, the owner's "show each column's value under its
 count" for every bill count, then as its own row: `DenominationGrid` row
 `valueRow` (`teisoro-denomination-value-row.md`), a value line under a
 strip row with the total on it, each typed count described by its value
-(`Stepper` `aria-describedby`). Next: release with the Safari tab stops
-(#163) and Teisoro turns it on in `BillCount`.
+(`Stepper` `aria-describedby`) (#167). Released in `@scalewing/react`
+1.37.0. Next: Teisoro pins 1.37.0 and turns it on in `BillCount`.
 
 FutMas score entry (canvas board W3): `StepperRow`
 (`futmas-stepper-row.md`) and `Field` `variant="search"`
