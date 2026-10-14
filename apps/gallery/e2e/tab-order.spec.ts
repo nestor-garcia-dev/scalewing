@@ -100,3 +100,14 @@ test('a RadioGroup or FilterChips is one tab stop, on its checked radio', async 
     expect(group).toEqual({ stops: 1, onEntry: true, others: true });
   }
 });
+
+test('Tab reaches both Pagination steps, the one at an end too', async ({
+  page,
+}) => {
+  await page.goto('/#pagination');
+  const pager = page.getByRole('navigation', { name: 'Site pages' });
+  const previous = pager.getByRole('button', { name: 'Previous page' });
+  const next = pager.getByRole('button', { name: 'Next page' });
+  await expect(previous).toHaveAttribute('aria-disabled', 'true');
+  await tabsTo(page, previous, next);
+});

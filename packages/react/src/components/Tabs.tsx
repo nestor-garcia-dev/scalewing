@@ -7,6 +7,7 @@ import {
   useRef,
 } from 'react';
 
+import { type AccessibleName } from '../accessible-name.js';
 import { cx } from '../class-names.js';
 import { useScrollOverflow } from './use-scroll-overflow.js';
 
@@ -15,11 +16,7 @@ export type TabItem = {
   label: ReactNode;
 };
 
-type TabsLabel =
-  | { 'aria-label': string; 'aria-labelledby'?: never }
-  | { 'aria-label'?: never; 'aria-labelledby': string };
-
-export type TabsProps = TabsLabel & {
+export type TabsProps = AccessibleName & {
   /** Prefix for the tab and panel ids, so a `TabPanel` can point back at its tab. */
   id: string;
   items: readonly TabItem[];

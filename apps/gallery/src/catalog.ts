@@ -47,6 +47,7 @@ import { MultiSelectSection } from './sections/multi-select.js';
 import { ComboboxSection } from './sections/combobox.js';
 import { SplitSection } from './sections/split.js';
 import { TableSection } from './sections/table.js';
+import { PaginationSection } from './sections/pagination.js';
 import { TextSection } from './sections/text.js';
 import { ThemeProviderSection } from './sections/theme-provider.js';
 
@@ -246,6 +247,12 @@ export const catalog = [
     Section: DescriptionListSection,
   },
   { id: 'table', label: 'Table', group: 'data', Section: TableSection },
+  {
+    id: 'pagination',
+    label: 'Pagination',
+    group: 'data',
+    Section: PaginationSection,
+  },
   {
     id: 'denomination-grid',
     label: 'DenominationGrid',

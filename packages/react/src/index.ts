@@ -94,6 +94,11 @@ export {
   dataBarTones,
 } from './components/DataBar.js';
 export {
+  Pagination,
+  type PaginationLabels,
+  type PaginationProps,
+} from './components/Pagination.js';
+export {
   Button,
   type ButtonDisabledAppearance,
   type ButtonProps,

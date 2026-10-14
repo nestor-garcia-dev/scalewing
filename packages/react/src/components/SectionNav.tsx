@@ -1,5 +1,6 @@
 import { type MouseEvent, type ReactNode } from 'react';
 
+import { type AccessibleName } from '../accessible-name.js';
 import { cx } from '../class-names.js';
 import { type Breakpoint, breakpoints } from '../css/breakpoints.js';
 import { sectionNavVerticalClass } from '../css/css-section-nav.js';
@@ -39,11 +40,7 @@ export type SectionNavItem = {
   countLabel?: string;
 };
 
-type SectionNavLabel =
-  | { 'aria-label': string; 'aria-labelledby'?: never }
-  | { 'aria-label'?: never; 'aria-labelledby': string };
-
-export type SectionNavProps = SectionNavLabel & {
+export type SectionNavProps = AccessibleName & {
   items: readonly SectionNavItem[];
   /**
    * Called for a plain press on an item (the main button, no modifier key),

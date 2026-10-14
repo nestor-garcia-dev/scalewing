@@ -19,6 +19,7 @@ import {
   RadioGroup,
   SectionNav,
   Spinner,
+  Pagination,
   Progress,
   Tooltip,
   InfoTip,
@@ -454,6 +455,19 @@ A bar in its own column reads as empty cells to assistive technology, which is f
     <span>−6</span>
   </Grid>
 </TableCell>
+```
+
+`Pagination` steps through a list shown a page at a time, for a list with no total to keep in view (a list that adds up scrolls inside itself instead, with `Table` `maxHeight`). It is a `nav` landmark named by `aria-label` or `aria-labelledby` (one is required), holding the consumer's words for what the page shows (`rangeLabel`, such as "1–25 of 130 changes", in the muted caption at the inline start and announced politely when it changes) and the previous and next steps at the end: icon-only neutral `sm` Buttons, square, the 44 px touch target on a coarse pointer, named by `labels` (`PaginationLabels`: `previous`, `next`) with a private chevron glyph mirrored right to left. `page` (from 1) and `pageCount` place it; a step calls `onPageChange` with the page it goes to. At either end its step looks disabled (`aria-disabled`, the neutral grey) but stays a Tab stop, so focus is never dropped when the last page is reached, and a press there does nothing. Pages that are not whole numbers in range, or an empty step label (`labels.previous` or `labels.next`), throw a `RangeError`. The row wraps on a narrow column, the steps staying at the end.
+
+```tsx
+<Pagination
+  aria-label="Change pages"
+  page={page}
+  pageCount={6}
+  onPageChange={setPage}
+  rangeLabel="1–25 of 130 changes"
+  labels={{ previous: 'Previous page', next: 'Next page' }}
+/>
 ```
 
 `Spinner` shows indeterminate loading in small, medium, or large sizes. Supply localized `label` for the one announced status in a loading region. Use `decorative` on additional indicators beside that status so screen readers do not hear the same message repeatedly. Reduced motion leaves a static accented ring.
