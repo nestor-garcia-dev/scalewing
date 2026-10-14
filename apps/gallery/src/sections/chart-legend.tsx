@@ -43,6 +43,7 @@ const colonyDay: readonly ChartLegendItem[] = [
   { label: 'Flew off', swatch: 'bar', tone: 'muted' },
   { label: 'Expected at dusk', swatch: 'bar', tone: 'strong' },
   { label: 'Counted at dusk', swatch: 'bar', tone: 'accent' },
+  { label: 'Short of the count', swatch: 'bar', tone: 'danger' },
 ];
 
 export function ChartLegendSection() {

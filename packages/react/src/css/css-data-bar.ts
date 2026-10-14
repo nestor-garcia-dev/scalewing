@@ -3,8 +3,9 @@ import { chartFill, statementFillTones } from './chart-tones.js';
 /**
  * What a range bar's fill means: the start or a carried figure (`neutral`),
  * money in (`success`), money out (`muted`, never danger: an outflow is not
- * an error), a subtotal (`strong`) and what was counted or recorded
- * (`accent`).
+ * an error), a subtotal (`strong`), what was counted or recorded
+ * (`accent`), and a shortage (`danger`, light red: for a shortage, never
+ * for cash leaving).
  */
 export const dataBarTones = statementFillTones;
 
@@ -18,7 +19,8 @@ export type DataBarTone = (typeof dataBarTones)[number];
  * tones apart from one another rather than meeting a text contrast: every
  * tone at 1.5:1 or more on the surface, and the three greys (out, start,
  * subtotal) 1.5:1 or more from the next one, in every palette and scheme
- * (`data-bar.test.tsx`). `accent` is the accent itself.
+ * (`data-bar.test.tsx`). `accent` is the accent itself; `danger` is the
+ * danger colour at 40 %.
  */
 function toneRules(): string {
   return dataBarTones

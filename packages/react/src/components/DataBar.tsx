@@ -21,9 +21,9 @@ export type DataBarProps = Omit<
   max: number;
   /**
    * What the bar means (default `neutral`): `success` for money in,
-   * `muted` for money out (an outflow is not an error, so there is no
-   * danger tone), `strong` for a subtotal and `accent` for a counted or
-   * recorded figure.
+   * `muted` for money out (an outflow is not an error, so it is never
+   * danger), `strong` for a subtotal, `accent` for a counted or recorded
+   * figure and `danger` for a shortage, never for cash leaving.
    */
   tone?: DataBarTone;
 };

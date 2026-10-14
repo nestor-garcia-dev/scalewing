@@ -93,6 +93,20 @@ describe('ChartLegend', () => {
     expect(ref.current?.children).toHaveLength(0);
   });
 
+  it("draws a shortage as a bar in danger, DataBar's light fill", () => {
+    render(
+      <ChartLegend
+        aria-label="Key"
+        items={[{ label: 'Short day', swatch: 'bar', tone: 'danger' }]}
+      />,
+    );
+    const item = screen.getByRole('listitem');
+    expect(item.className).toBe('sw-chart-legend-item sw-chart-tone-danger');
+    expect(item.firstElementChild?.className).toBe(
+      'sw-chart-legend-swatch sw-chart-legend-bar',
+    );
+  });
+
   it('refuses an item with no words', () => {
     expect(refusal({ label: '', swatch: 'bar', tone: 'blue' })).toBeInstanceOf(
       RangeError,

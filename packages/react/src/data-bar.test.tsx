@@ -1,4 +1,4 @@
-import { contrastRatio } from '@scalewing/tokens';
+import { contrastRatio, parseHexColor } from '@scalewing/tokens';
 import { cleanup, render, screen } from '@testing-library/react';
 import { createRef } from 'react';
 import { afterEach, describe, expect, it } from 'vitest';
@@ -108,7 +108,7 @@ describe('DataBar', () => {
     expect(screen.getByRole('row', { name: 'Tue +$41.53' })).not.toBeNull();
   });
 
-  it('throws a RangeError for an unknown tone, such as danger', () => {
+  it('throws a RangeError for an unknown tone, such as warning', () => {
     expect(() =>
       render(
         <DataBar
@@ -116,12 +116,12 @@ describe('DataBar', () => {
           max={1}
           min={0}
           to={1}
-          tone={'danger' as DataBarTone}
+          tone={'warning' as DataBarTone}
         />,
       ),
     ).toThrow(
       new RangeError(
-        'DataBar tone must be one of neutral, success, muted, strong, accent; received danger',
+        'DataBar tone must be one of neutral, success, muted, strong, accent, danger; received warning',
       ),
     );
   });
@@ -149,14 +149,19 @@ describe('DataBar CSS', () => {
     );
   });
 
-  it('has no danger tone', () => {
+  it('has a danger tone, last, for a shortage', () => {
     expect(dataBarTones).toEqual([
       'neutral',
       'success',
       'muted',
       'strong',
       'accent',
+      'danger',
     ]);
+    // The danger colour at 40 %, mixed into the surface like the others.
+    expect(css).toContain(
+      '.sw-data-bar-danger > .sw-data-bar-fill { background: color-mix(in srgb, var(--sw-color-danger) 40%, var(--sw-color-surface)); }',
+    );
   });
 
   it('places the fill with logical insets from the shares', () => {
@@ -225,6 +230,21 @@ describe('DataBar CSS', () => {
         contrastRatio(fill('neutral'), fill('strong')),
         `${label} neutral/strong`,
       ).toBeGreaterThanOrEqual(1.5);
+      // A shortage reads red beside money out's grey: its red channel
+      // leads its green by more.
+      const lean = (tone: DataBarTone) => {
+        const [red, green] = parseHexColor(fill(tone));
+        return red! - green!;
+      };
+      expect(lean('danger'), `${label} danger/muted`).toBeGreaterThan(
+        lean('muted') + 30,
+      );
+      // And red on its own: its red channel leads both others.
+      const [red, green, blue] = parseHexColor(fill('danger'));
+      expect(
+        red! - Math.max(green!, blue!),
+        `${label} danger red`,
+      ).toBeGreaterThan(5);
     });
   });
 });

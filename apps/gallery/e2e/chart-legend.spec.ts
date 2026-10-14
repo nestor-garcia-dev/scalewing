@@ -106,13 +106,13 @@ test('ChartLegend draws a marker as a downward triangle and statement bars in th
   expect(marker!.background).toBe(await tokenColor(page, 'danger'));
   expect(owed!.background).toBe(await tokenColor(page, 'warning'));
 
-  // The five statement tones are five fills; dark keeps them apart too.
+  // The six statement tones are six fills; dark keeps them apart too.
   const colony = page.getByRole('list', { name: 'Colony day key' });
   const light = (await swatches(colony)).map((swatch) => swatch.background);
-  expect(new Set(light).size).toBe(5);
+  expect(new Set(light).size).toBe(6);
   await page.getByRole('radio', { name: 'Dark' }).check();
   const dark = (await swatches(colony)).map((swatch) => swatch.background);
-  expect(new Set(dark).size).toBe(5);
+  expect(new Set(dark).size).toBe(6);
   expect(dark).not.toEqual(light);
   await colony.screenshot({
     path: testInfo.outputPath('chart-legend-dark.png'),

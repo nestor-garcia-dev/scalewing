@@ -43,13 +43,17 @@ function sourceProperty(source: ChartColorSource): string {
     : `var(--sw-categorical-${source.categorical})`;
 }
 
-/** The statement tones a range bar's fill takes (see DataBar). */
+/**
+ * The statement tones a range bar's fill takes (see DataBar). `danger` is
+ * for a shortage, never for cash leaving: an outflow is `muted`.
+ */
 export const statementFillTones = [
   'neutral',
   'success',
   'muted',
   'strong',
   'accent',
+  'danger',
 ] as const;
 
 /**
@@ -89,6 +93,13 @@ export const chartTones: readonly ChartTone[] = [
  */
 export const categoricalFillShare = 0.72;
 
+/**
+ * How much of the danger colour its fill mixes into the surface (a
+ * shortage's range bar, never cash leaving): a light red, at 1.5:1 or more
+ * on the surface in every palette and scheme, as every other fill.
+ */
+export const dangerFillShare = 0.4;
+
 /** Each fill tone's colour, mixed into the surface. */
 export const chartFillMixes: Record<ChartFillTone, ChartColorMix> = {
   ...(Object.fromEntries(
@@ -102,6 +113,7 @@ export const chartFillMixes: Record<ChartFillTone, ChartColorMix> = {
   muted: { semantic: 'muted', share: 0.35, into: 'surface' },
   strong: { semantic: 'text', share: 0.85, into: 'surface' },
   accent: { semantic: 'accent', share: 1, into: 'surface' },
+  danger: { semantic: 'danger', share: dangerFillShare, into: 'surface' },
 };
 
 /** Each stroke tone's colour: a semantic colour, or muted for neutral. */
