@@ -8,6 +8,15 @@ export const statTileTones = [
 
 export type StatTileTone = (typeof statTileTones)[number];
 
+/**
+ * `card` (the default) is a tile on the surface with its own hairline and
+ * radius; `plain` has no surface, edge or padding, for figures inside a
+ * card that already has them, such as a row of answers divided by hairlines.
+ */
+export const statTileAppearances = ['card', 'plain'] as const;
+
+export type StatTileAppearance = (typeof statTileAppearances)[number];
+
 /** The figure tile: a glyph circle before a label, a tabular value and a caption. Text colours come from `Text color`. */
 export function cssStatTileClasses(): string {
   return `.sw-stat-tile {
@@ -47,6 +56,15 @@ export function cssStatTileClasses(): string {
   overflow-wrap: anywhere;
 }
 
+/* A plain tile is its figure alone, top-aligned, inside the card around it. */
+.sw-stat-tile-plain {
+  align-items: flex-start;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  padding: 0;
+}
+
 .sw-stat-tile-primary {
   background: var(--sw-color-accent);
   border-color: transparent;
@@ -67,6 +85,7 @@ export function cssStatTileClasses(): string {
 export function statTileClassCatalog(): string[] {
   return [
     'sw-stat-tile',
+    'sw-stat-tile-plain',
     'sw-stat-tile-primary',
     'sw-stat-tile-glyph',
     'sw-stat-tile-body',

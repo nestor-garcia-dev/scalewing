@@ -1,11 +1,16 @@
 import { type HTMLAttributes, type ReactNode } from 'react';
 
 import { cx } from '../class-names.js';
-import { type StatTileTone, statTileTones } from '../css/css-stat-tile.js';
+import {
+  type StatTileAppearance,
+  statTileAppearances,
+  type StatTileTone,
+  statTileTones,
+} from '../css/css-stat-tile.js';
 import { Text } from './Text.js';
 
-export type { StatTileTone };
-export { statTileTones };
+export type { StatTileAppearance, StatTileTone };
+export { statTileAppearances, statTileTones };
 
 export type StatTileEmphasis = 'default' | 'primary';
 
@@ -22,7 +27,23 @@ export type StatTileProps = Omit<HTMLAttributes<HTMLElement>, 'children'> & {
   caption?: ReactNode;
   /** `primary` fills the tile in the accent for the one figure a page leads with. */
   emphasis?: StatTileEmphasis;
+  /**
+   * `plain` drops the tile's surface, edge and padding, so the figure sits
+   * inside a card that already has them, such as four answers in a row
+   * with hairlines between them. A plain tile cannot be `primary`, which
+   * is a fill. Default `card`.
+   */
+  appearance?: StatTileAppearance;
 };
+
+function assertStatTile(appearance: unknown, emphasis: StatTileEmphasis) {
+  if (!(statTileAppearances as readonly unknown[]).includes(appearance))
+    throw new RangeError(`Unknown StatTile appearance: ${String(appearance)}`);
+  if (appearance === 'plain' && emphasis === 'primary')
+    throw new RangeError(
+      'A plain StatTile has no surface to fill; emphasis primary needs appearance card',
+    );
+}
 
 /**
  * One prominent figure with its label: the tiles a report or a list opens
@@ -30,6 +51,7 @@ export type StatTileProps = Omit<HTMLAttributes<HTMLElement>, 'children'> & {
  * glyph.
  */
 export function StatTile({
+  appearance = 'card',
   caption,
   className,
   emphasis = 'default',
@@ -39,12 +61,14 @@ export function StatTile({
   value,
   ...rest
 }: StatTileProps) {
+  assertStatTile(appearance, emphasis);
   const primary = emphasis === 'primary';
 
   return (
     <section
       className={cx(
         'sw-stat-tile',
+        appearance === 'plain' && 'sw-stat-tile-plain',
         primary && 'sw-stat-tile-primary',
         className,
       )}
