@@ -1,5 +1,0 @@
----
-'@scalewing/react': minor
----
-
-`DataBar`: a decorative (`aria-hidden`) horizontal range bar for a table cell or a list row, from `from` to `to` on a track whose domain runs from `min` to `max`, such as where a statement's line leaves the running total. A domain from below zero to above it draws a zero line, so a column of differences diverges around it, the bar's end at zero square. `tone` (`DataBarTone`: `neutral`, `success`, `muted`, `strong`, `accent`; no danger tone, money out is `muted`) colours it from the semantic colours mixed into the surface. Values past the domain are clamped; non-finite numbers, a `min` not under `max` and an unknown tone throw a `RangeError`. The bar follows the writing direction and is drawn in the system text colour in forced colours. New exports `DataBar`, `DataBarProps`, `DataBarTone`, `dataBarTones`; new classes `sw-data-bar`, `sw-data-bar-fill`, `sw-data-bar-diverging`, `sw-data-bar-zero-start`, `sw-data-bar-zero-end` and `sw-data-bar-<tone>`; no new tokens, no new dependency. Request: `docs/requests/teisoro-data-bar.md`.

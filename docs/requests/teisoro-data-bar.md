@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: accepted 2026-10-13 for `@scalewing/react` 1.38.0 (Teisoro F-012-S03, release M1 "tables that hold a period", item 3; the manager views inventory's rows 6 and 7 and its token-gap table; plan approval under Teisoro decisions O-1 and D-1).
+Status: released in `@scalewing/react` 1.38.0 (PR #172; accepted 2026-10-13; Teisoro F-012-S03, release M1 "tables that hold a period", item 3; the manager views inventory's rows 6 and 7 and its token-gap table; plan approval under Teisoro decisions O-1 and D-1).
 Renderer: react
 Missing surface: `DataBar`, a horizontal range bar for a table cell or a list row, from one value to another on a domain, with a zero line when the domain spans zero.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: the statement boards (ReportsOverview "How the cash moved", Services, Vault, Bounced checks, a day, a bounced check) draw a bar in each line from where the running total stood to where the line leaves it, coloured by what the line is (where it started, came in, went out, expected, counted or recorded); the Overview's Days table draws each day's Off as a bar either side of a zero line beside its figure. `BarChart` is a whole labelled chart (its own list, labels, values and axis), not a cell's mark, and its bars always start at zero or the middle. A bar placed by shares needs an inline position and width, which Teisoro cannot write (no CSS, no inline style).

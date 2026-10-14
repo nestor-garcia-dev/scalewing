@@ -1,5 +1,0 @@
----
-'@scalewing/react': minor
----
-
-`Pagination`: previous and next steps through a list shown a page at a time, in a `nav` landmark named by `aria-label` or `aria-labelledby`. It shows the consumer's `rangeLabel` (such as "1–25 of 130 changes") at the inline start, a polite live region, and the steps at the end: icon-only neutral `sm` Buttons named by `labels` (`PaginationLabels`: `previous`, `next`), square, 44 px on a coarse pointer, with a private chevron mirrored right to left. `page` and `pageCount` count from 1 and `onPageChange` receives the page a step goes to. At either end a step is `aria-disabled` (the neutral grey) but stays a Tab stop, so focus is not dropped at the last page, and a press there does nothing. Invalid pages or an empty step label (`labels.previous` or `labels.next`) throw a `RangeError`. New exports `Pagination`, `PaginationProps`, `PaginationLabels`; new classes `sw-pagination`, `sw-pagination-range`, `sw-pagination-steps`, `sw-pagination-step`, `sw-pagination-glyph`, `sw-pagination-glyph-previous` and `sw-pagination-glyph-next`; no new tokens, no new dependency. Request: `docs/requests/teisoro-pagination.md`.

@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: accepted 2026-10-13 for `@scalewing/react` 1.38.0 (Teisoro F-012-S03, release M1 "tables that hold a period", item 4; the manager views inventory's row 16; plan approval under Teisoro decisions O-1, D-1 and D-6).
+Status: released in `@scalewing/react` 1.38.0 (PR #173; accepted 2026-10-13; Teisoro F-012-S03, release M1 "tables that hold a period", item 4; the manager views inventory's row 16; plan approval under Teisoro decisions O-1, D-1 and D-6).
 Renderer: react
 Missing surface: `Pagination`, previous and next steps through a list shown a page at a time, beside the consumer's words for the range shown.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: the owner's rule (Teisoro D-6) is that a list without a total shows 25 a page. The boards (ReportsCorrections, ReportsVault, ChecksRisk, AdminEmployees, ChecksBounced) draw "1–16 of 16 changes · 25 a page" in the muted caption with ‹ › steps at the end, greyed at either end. Teisoro could compose a `Button` pair, but the icon-only square, its chevron (private chrome, no icon catalog), the landmark, the live range and the end behaviour would be rebuilt in each of five reports.
