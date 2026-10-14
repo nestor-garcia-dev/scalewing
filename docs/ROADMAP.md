@@ -23,8 +23,9 @@ scroll inside the table's own region with the header and a sticky total
 pinned to it (`teisoro-table-contained-scroll.md`, #170); `TableRow`
 `variant="total"` (`teisoro-table-row-total.md`, #171); `DataBar`
 (`teisoro-data-bar.md`, #172); and `Pagination` (`teisoro-pagination.md`),
-the last item. Next: release `@scalewing/react` 1.38.0 (tag
-`react-v1.38.0`), then Teisoro's `ReportTable` and `Statement` pin it.
+the last item (#173). Released in `@scalewing/react` 1.38.0. Next:
+Teisoro pins 1.38.0 in its first consuming web story (S12, `ReportTable`
+and `Statement`); then release M2 (charts, F-012-S04).
 
 Teisoro F-011-S02, release R1 "guided-form core": web `Stepper`
 (#113), `DenominationGrid` entry rows (#114), `Steps` / `Step` (#115)

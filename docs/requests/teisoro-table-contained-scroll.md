@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: accepted 2026-10-13 for `@scalewing/react` 1.38.0 (Teisoro F-012-S03, release M1 "tables that hold a period", item 1; the manager views inventory's row 15 and risk 2; plan approval under Teisoro decisions O-1, O-3, D-1 and D-6).
+Status: released in `@scalewing/react` 1.38.0 (PR #170; accepted 2026-10-13; Teisoro F-012-S03, release M1 "tables that hold a period", item 1; the manager views inventory's row 15 and risk 2; plan approval under Teisoro decisions O-1, O-3, D-1 and D-6).
 Renderer: react
 Missing surface: a `Table` of bounded height whose rows scroll inside the table's own region, with the header pinned to the region's top and a sticky `TableFooter` total pinned to its bottom. An extension of `Table` (`maxHeight`), not a new component.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: the owner's rule (Teisoro O-3, D-6) is that a table which adds things up scrolls instead of paging, so the total over the whole filtered period stays in view. The boards (ReportsRegisters' Closeouts, 14 rows; ReportsOverview's Days) draw the table at a bounded height with its header and total pinned and the rows scrolling between them ("14 closeouts · the table scrolls · the total is all 14"). Today `stickyHeader` and `TableFooter sticky` pin to the page while the table fits its width, or to a region that never scrolls vertically; nothing bounds the region's height, and Teisoro owns no CSS.

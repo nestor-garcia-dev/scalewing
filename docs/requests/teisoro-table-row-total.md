@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: accepted 2026-10-13 for `@scalewing/react` 1.38.0 (Teisoro F-012-S03, release M1 "tables that hold a period", item 2; the manager views inventory's row 6; plan approval under Teisoro decisions O-1 and D-1).
+Status: released in `@scalewing/react` 1.38.0 (PR #171; accepted 2026-10-13; Teisoro F-012-S03, release M1 "tables that hold a period", item 2; the manager views inventory's row 6; plan approval under Teisoro decisions O-1 and D-1).
 Renderer: react
 Missing surface: a bold total row mid-table, under the heavier rule, for a subtotal the rows above add up to before the table goes on (the statement's "Expected in the store"). An extension of `TableRow` `variant`, not a new component.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: the statement boards (ReportsOverview "How the cash moved", Services, Vault, Bounced checks, a day, a bounced check) list where the cash started, what came in and went out, then a bold "Expected in the store" line under a heavier rule, then what was counted and what is off under it. `TableFooter` draws a total at weight 600 under a 2 px rule, but only as the table's last row group; `TableRow` has `default` and `sub` only, and Teisoro owns no CSS (no bold class, no rule).
