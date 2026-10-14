@@ -69,7 +69,7 @@ test('DataBar on a domain either side of zero draws a zero line and bars either 
   const forced = testInfo.project.name === 'forced-colors';
   await page.goto('/#data-bar');
   if (forced) await page.emulateMedia({ forcedColors: 'active' });
-  const table = page.getByRole('table', { name: 'Change since yesterday' });
+  const table = page.getByRole('table', { name: 'Counted against expected' });
   await table.scrollIntoViewIfNeeded();
   await expect(
     table.getByRole('cell', { name: '−6', exact: true }),
@@ -124,6 +124,28 @@ test('DataBar on a domain either side of zero draws a zero line and bars either 
     past.track.x + past.track.width,
     0,
   );
+  // A shortage is drawn in danger, apart from the over count's success;
+  // forced colours draw both as text.
+  await expect(down).toHaveClass(/sw-data-bar-danger/);
+  const [short, over] = await Promise.all(
+    [down, up].map((bar) =>
+      bar.evaluate(
+        (node) => getComputedStyle(node.firstElementChild!).backgroundColor,
+      ),
+    ),
+  );
+  // Money out's grey, from the statement above.
+  const out = await page
+    .getByRole('row', { name: 'Flew off −18' })
+    .locator('.sw-data-bar-fill')
+    .evaluate((node) => getComputedStyle(node).backgroundColor);
+  if (forced) {
+    expect(short).toBe(zero.canvasText);
+    expect(over).toBe(zero.canvasText);
+  } else {
+    expect(short).not.toBe(over);
+    expect(short).not.toBe(out);
+  }
   await table.screenshot({
     path: testInfo.outputPath('data-bar-diverging.png'),
   });

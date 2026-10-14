@@ -20,7 +20,9 @@ export { chartFillTones, chartLegendSwatches, chartStrokeTones };
 /**
  * One item of a legend: its words and the mark they name. A `bar` is a
  * filled mark (a column, a range bar) and takes a fill tone: a categorical
- * colour for a chart's series, or a range bar's statement tone. A `line`,
+ * colour for a chart's series, or a range bar's statement tone (`danger`
+ * is DataBar's light shortage fill: for a shortage only, never for cash
+ * leaving). A `line`,
  * a `marker` (a downward triangle) and a `box` (the boxed current period)
  * are drawn strokes and take a stroke tone. Each swatch is the colour of
  * the mark it names in the same tone.

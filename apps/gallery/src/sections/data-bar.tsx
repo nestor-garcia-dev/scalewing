@@ -39,8 +39,9 @@ const colonyDay: readonly StatementLine[] = [
 ];
 
 /**
- * Each site's change since yesterday, on one domain either side of zero;
- * the old quarry's runs past it and is clamped to its end.
+ * Each site's count against the count expected, on one domain either side
+ * of zero: a site short of it is a shortage, drawn in danger; the old
+ * quarry's runs past the domain and is clamped to its end.
  */
 const siteChanges = [
   { site: 'North reed bed', change: 9 },
@@ -92,12 +93,12 @@ function ColonyStatement() {
 
 function SiteChanges() {
   return (
-    <Table aria-label="Change since yesterday">
+    <Table aria-label="Counted against expected">
       <TableHeader>
         <TableRow>
           <TableCell as="th">Site</TableCell>
           <TableCell as="th" numeric>
-            Change
+            Against expected
           </TableCell>
         </TableRow>
       </TableHeader>
@@ -112,7 +113,7 @@ function SiteChanges() {
                   max={10}
                   min={-10}
                   to={row.change}
-                  tone={row.change >= 0 ? 'success' : 'muted'}
+                  tone={row.change >= 0 ? 'success' : 'danger'}
                 />
                 <span>{signed(row.change)}</span>
               </Grid>
@@ -128,21 +129,23 @@ export function DataBarSection() {
   return (
     <Section
       id="data-bar"
-      purpose="DataBar is a horizontal range bar for a table cell or a list row: a bar from from to to on a track whose domain runs from min to max, such as where a statement's line leaves the running total. It is decorative and hidden from assistive technology, so the figure stays the cell's text beside it. tone says what the bar is: neutral for where it started, success for what came in, muted for what went out (never danger: an outflow is not an error), strong for a subtotal and accent for what was counted. A domain from below zero to above it draws a zero line, so a column of differences diverges around it. The bar's ends follow the writing direction; forced colors draw it in the system text color."
+      purpose="DataBar is a horizontal range bar for a table cell or a list row: a bar from from to to on a track whose domain runs from min to max, such as where a statement's line leaves the running total. It is decorative and hidden from assistive technology, so the figure stays the cell's text beside it. tone says what the bar is: neutral for where it started, success for what came in, muted for what went out (never danger: an outflow is not an error), strong for a subtotal, accent for what was counted, and danger for a shortage (never for what went out). A domain from below zero to above it draws a zero line, so a column of differences diverges around it. The bar's ends follow the writing direction; forced colors draw it in the system text color."
       title="DataBar"
       usage={`<TableCell>
   <DataBar from={120} to={154} min={0} max={160} tone="success" />
 </TableCell>
 <TableCell numeric>+34</TableCell>
 
-<DataBar from={0} to={-6} min={-10} max={10} tone="muted" />`}
+<DataBar from={0} to={-6} min={-10} max={10} tone="danger" />`}
     >
       <Stack gap={4}>
         <Text variant="label">
           A statement, each bar from the running total
         </Text>
         <ColonyStatement />
-        <Text variant="label">A column either side of zero</Text>
+        <Text variant="label">
+          A column either side of zero, a shortage in danger
+        </Text>
         <SiteChanges />
         <Text variant="caption" color="muted">
           The bar never carries the figure: keep the value in the cell. Values

@@ -26,6 +26,7 @@ describe('chart tones', () => {
       'muted',
       'strong',
       'accent',
+      'danger',
     ]);
     expect(chartStrokeTones).toEqual([
       'accent',
@@ -58,6 +59,10 @@ describe('chart tones', () => {
     );
     expect(css).toContain(
       '.sw-chart-tone-warning { --sw-chart-stroke: var(--sw-color-warning); --sw-chart-ink: color-mix(in srgb, var(--sw-color-warning) 50%, var(--sw-color-text)); }',
+    );
+    // danger is a stroke, its ink, and DataBar's light shortage fill.
+    expect(css).toContain(
+      '.sw-chart-tone-danger { --sw-chart-fill: color-mix(in srgb, var(--sw-color-danger) 40%, var(--sw-color-surface)); --sw-chart-stroke: var(--sw-color-danger); --sw-chart-ink: color-mix(in srgb, var(--sw-color-danger) 50%, var(--sw-color-text)); }',
     );
     expect(generateStylesheet()).toContain(css);
     for (const tone of chartTones)
