@@ -48,7 +48,9 @@ describe('LineChart', () => {
   it('carries every date, value and marker in a hidden table', () => {
     chart();
     const table = screen.getByRole('table', { name: 'Birds roosting' });
-    expect(table.className).toBe('sw-sr-only');
+    // Hidden in a box: a table is never narrower than its contents.
+    expect(table.parentElement?.className).toBe('sw-sr-only');
+    expect(table.getAttribute('class')).toBeNull();
     expect(
       within(table)
         .getAllByRole('columnheader')

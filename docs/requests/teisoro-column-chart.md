@@ -41,7 +41,7 @@ Proposed API (inventory): `categories`, `series: {id, label, values, tone}[]`, `
 - **Colour:** every mark reads the chart tones (`ChartLegend`'s table). Columns use their hue's fill (72 % into the surface), the line and box the accent stroke, and the words the ink: callouts are 30 % hue and 70 % text, at 4.5:1. Grid lines are the border colour, zero is the muted colour, and axis words are muted. Forced colours draw columns in `CanvasText` outlined in `Canvas`, the line and its last value in `Highlight`, grid lines in `GrayText`, and words in `CanvasText`.
 - **Accessibility:**
   - The SVG is `aria-hidden` and not focusable.
-  - A `sw-sr-only` table (private `ChartTable`, shared with LineChart) holds the caption, a header per series and for the line, a row header per category, and every value in `formatValue`.
+  - A table in a `sw-sr-only` box (private `ChartTable`, shared with LineChart; the box, not the table, is hidden, because a table is never narrower than its contents and would widen a phone's page) holds the caption, a header per series and for the line, a row header per category, and every value in `formatValue`.
   - Callouts are a list (`role="list"`). It is visible under a compact chart and `sw-sr-only` otherwise, each item an `aria-hidden` dot in its hue's fill and its words.
 - **Refusals:** empty words, a series or line without one finite value per category, a repeated series id, a tone off the categorical scale, an unknown mode, or a highlight or callout that is not a category's index throw a `RangeError`.
 - **Additions:** no new tokens, layers or dependencies. New classes `sw-chart`, `sw-chart-svg`, `sw-chart-tick`, `sw-chart-tick-line`, `sw-chart-category`, `sw-chart-grid`, `sw-chart-zero`, `sw-chart-highlight`, `sw-chart-line`, `sw-chart-dot`, `sw-chart-end-label`, `sw-chart-leader`, `sw-chart-callout-text`, `sw-chart-column`, `sw-chart-callouts`, `sw-chart-callout` and `sw-chart-callout-dot` (`src/css/css-chart-plot.ts`, shared with LineChart).
@@ -78,3 +78,4 @@ Evidence:
   - the 360 px frame labelling fewer weeks, ending on the last;
   - grouped columns side by side on one baseline;
   - two distinct fills in dark that differ from light.
+- Pre-release browser run for 1.39.0: at 390 px the hidden table, then on `<table class="sw-sr-only">`, widened the page by 118 px (`split.spec.ts` and four other page-width checks failed on mobile-es and forced-colors). The table now sits in a `sw-sr-only` box; `column-chart.spec.ts` and `line-chart.spec.ts` check the page is no wider than the viewport, and the full suite on all four projects passes (497 passed, 18 conditional skips). Reviewed by a fresh Bar Raiser: approved with suggestions, all applied.

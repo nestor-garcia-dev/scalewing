@@ -51,7 +51,9 @@ describe('ColumnChart', () => {
   it('carries every figure in a hidden table named by its label', () => {
     chart();
     const table = screen.getByRole('table', { name: 'Change in birds' });
-    expect(table.className).toBe('sw-sr-only');
+    // Hidden in a box: a table is never narrower than its contents.
+    expect(table.parentElement?.className).toBe('sw-sr-only');
+    expect(table.getAttribute('class')).toBeNull();
     expect(
       within(table)
         .getAllByRole('columnheader')
