@@ -6,7 +6,7 @@ import {
 import { forwardRef, type CSSProperties, type HTMLAttributes } from 'react';
 
 import { cx } from '../class-names.js';
-import { type BarChartTone, barChartTones } from '../css/css-chart.js';
+import { type BarChartTone, barChartTones } from '../css/css-bar-chart.js';
 
 export type { BarChartTone };
 export { barChartTones };

@@ -76,7 +76,7 @@ function divergingRules(): string {
 }`;
 }
 
-export function cssChartClasses(): string {
+export function cssBarChartClasses(): string {
   return `.sw-bar-chart {
   display: grid;
   gap: var(--sw-space-2);
@@ -166,7 +166,7 @@ ${divergingRules()}
 }`;
 }
 
-export function chartClassCatalog(): string[] {
+export function barChartClassCatalog(): string[] {
   return [
     'sw-bar-chart',
     'sw-bar-chart-plot',

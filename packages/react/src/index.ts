@@ -100,6 +100,15 @@ export {
   chartStrokeTones,
 } from './components/ChartLegend.js';
 export {
+  ColumnChart,
+  type ColumnChartCallout,
+  type ColumnChartLine,
+  type ColumnChartMode,
+  type ColumnChartProps,
+  type ColumnChartSeries,
+  columnChartModes,
+} from './components/ColumnChart.js';
+export {
   DataBar,
   type DataBarProps,
   type DataBarTone,

@@ -37,8 +37,9 @@ import { boxBorderClassCatalog } from './css-box-border.js';
 import { boxLinkClassCatalog } from './css-box-link.js';
 import { cssComponentClasses } from './css-components.js';
 import { buttonClassCatalog } from './css-button.js';
-import { chartClassCatalog } from './css-chart.js';
+import { barChartClassCatalog } from './css-bar-chart.js';
 import { chartLegendClassCatalog } from './css-chart-legend.js';
+import { chartPlotClassCatalog } from './css-chart-plot.js';
 import { dataBarClassCatalog } from './css-data-bar.js';
 import { paginationClassCatalog } from './css-pagination.js';
 import { dataClassCatalog } from './css-data.js';
@@ -83,10 +84,11 @@ export function utilityClassCatalog(): string[] {
     ...segmentedClassCatalog(),
     ...tableClassCatalog(),
     ...scrollRegionClassCatalog(),
-    ...chartClassCatalog(),
+    ...barChartClassCatalog(),
     ...dataBarClassCatalog(),
     ...chartToneClassCatalog(),
     ...chartLegendClassCatalog(),
+    ...chartPlotClassCatalog(),
     ...paginationClassCatalog(),
     ...chromeClassCatalog(),
     ...sectionNavClassCatalog(),

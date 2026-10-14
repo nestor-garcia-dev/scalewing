@@ -136,3 +136,8 @@
     row-gap: var(--sw-space-5);
   }
 }
+
+/* A phone column's width, to show a chart laid out for 360 px. */
+.gallery-phone-frame {
+  max-width: 22.5rem;
+}

@@ -5,6 +5,8 @@ import {
   categoricalHues,
 } from '@scalewing/tokens';
 
+import { isOneOf } from '../is-one-of.js';
+
 /*
  * The colours every chart mark and legend swatch is drawn from, so a
  * legend's swatch is always the colour of the mark it names. A tone plays
@@ -147,14 +149,6 @@ export function chartColorMix(mix: ChartColorMix): string {
 /** A fill tone's colour. */
 export function chartFill(tone: ChartFillTone): string {
   return chartColorMix(chartFillMixes[tone]);
-}
-
-/** Whether a value is one of a list of names, for a component's own check. */
-export function isOneOf<Name extends string>(
-  names: readonly Name[],
-  value: unknown,
-): value is Name {
-  return (names as readonly unknown[]).includes(value);
 }
 
 /*

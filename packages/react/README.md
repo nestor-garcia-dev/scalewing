@@ -11,6 +11,7 @@ import {
   ActionMenu,
   BarChart,
   ChartLegend,
+  ColumnChart,
   DataBar,
   Box,
   Button,
@@ -469,6 +470,23 @@ A bar in its own column reads as empty cells to assistive technology, which is f
     { label: 'Flood', swatch: 'marker', tone: 'danger' },
     { label: 'This week', swatch: 'box', tone: 'accent' },
   ]}
+/>
+```
+
+`ColumnChart` draws columns for each of its `categories` (weeks, months: each a row header in its table), one per series (`ColumnChartSeries`: a unique `id`, a `label`, a value per category and a categorical `tone`). `mode` (`ColumnChartMode`, listed in `columnChartModes`) is `'stacked'` by default, a category's positive values stacked up from zero and its negative values down from it, or `'grouped'`, side by side, each from zero; negative values always run below the zero line. `line` (`ColumnChartLine`: `label`, a value per category, `endLabel`) draws an accent line over the columns, such as a running total, on its own right-hand scale whose zero and grid lines are level with the columns' (each scale keeps its own round step); its last value is written beside that axis, in the accent's ink, unless `endLabel` is `false`. `highlight` boxes one category (a dashed accent outline, the current period), and its table row is `aria-current`. `callouts` (`ColumnChartCallout[]`: a category `index`, its `text` and an optional categorical `tone` for its words) are pinned in rows above the plot, each beside a dashed leader down to its column. `formatValue` writes the figures (the table and the line's last value; a plain number with at most one decimal by default) and `formatTick` the axes (defaulting to `formatValue`). The chart fills its container's width and is laid out for it in its own pixels, so its words stay the caption size; under 480 px it is compact: a shorter plot, fewer category labels (always the last) and its callouts listed under the plot, so it never scrolls sideways. The drawing is hidden from assistive technology: a visually hidden table captioned by `label` carries every figure, and the callouts stay a list. Fills, strokes and words come from the chart tones, so a `ChartLegend` above it names each series (`bar` in its tone), the line (`line`, `'accent'`) and the box (`box`, `'accent'`); put both on the surface (a `Card`). Forced colors draw the columns in the text color (outlined in the canvas color), the line in the highlight color and every word in the text color. Empty words, a series or line without one finite value per category, a repeated series id, a tone off the categorical scale, or a highlight or callout that is not a category's index throw a `RangeError`.
+
+```tsx
+<ColumnChart
+  label="Change in birds, last 13 weeks"
+  categories={weeks}
+  series={[
+    { id: 'herons', label: 'Herons', tone: 'blue', values: herons },
+    { id: 'egrets', label: 'Egrets', tone: 'purple', values: egrets },
+  ]}
+  line={{ label: 'Running total', values: runningTotal }}
+  highlight={weeks.length - 1}
+  callouts={[{ index: 3, text: 'Aug 4 · Roost found +50', tone: 'purple' }]}
+  formatValue={signed}
 />
 ```
 
