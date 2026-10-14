@@ -27,6 +27,13 @@ export {
   type CalendarButtonProps,
   type CalendarButtonRange,
 } from './components/CalendarButton.js';
+export {
+  DateRangeButton,
+  type DateRangeButtonLabels,
+  type DateRangeButtonProps,
+  type DateRangeButtonValue,
+  type DateRangePreset,
+} from './components/DateRangeButton.js';
 export { Checkbox, type CheckboxProps } from './components/Checkbox.js';
 export {
   Spinner,

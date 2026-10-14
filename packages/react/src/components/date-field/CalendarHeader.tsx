@@ -1,15 +1,9 @@
 import { monthNames, monthTitle } from '../../calendar-labels.js';
-import {
-  monthInRange,
-  monthsInRange,
-  shiftMonth,
-  type CalendarMonth,
-} from '../../calendar-month.js';
+import { monthsInRange, type CalendarMonth } from '../../calendar-month.js';
 import { calendarYearRange, yearsIn } from '../../calendar-years.js';
 import { type DateFieldLabels } from '../../date-field-labels.js';
 import { Select } from '../Select.js';
-import { DateFieldGlyph } from './DateFieldGlyph.js';
-import { tabStop } from '../../tab-stop.js';
+import { MonthStep } from '../calendar/MonthStep.js';
 
 export type CalendarHeaderProps = {
   labels: DateFieldLabels;
@@ -21,36 +15,6 @@ export type CalendarHeaderProps = {
   titleId: string;
   todayYear: number;
 };
-
-function MonthStep({
-  delta,
-  label,
-  max,
-  min,
-  month,
-  onMonthChange,
-}: Pick<CalendarHeaderProps, 'max' | 'min' | 'month' | 'onMonthChange'> & {
-  delta: 1 | -1;
-  label: string;
-}) {
-  const target = shiftMonth(month, delta);
-  const unavailable =
-    target.year < 1 || target.year > 9999 || !monthInRange(target, min, max);
-  return (
-    <button
-      aria-disabled={unavailable || undefined}
-      aria-label={label}
-      className="sw-date-field-step"
-      onClick={() => {
-        if (!unavailable) onMonthChange(target);
-      }}
-      tabIndex={tabStop}
-      type="button"
-    >
-      <DateFieldGlyph name={delta < 0 ? 'previous' : 'next'} />
-    </button>
-  );
-}
 
 /**
  * Month stepping plus month and year selectors for jumping far, both cut to

@@ -37,6 +37,12 @@ Teisoro pins 1.39.0 in its first story that draws a chart (S13,
 `RunningTotalChart` and the Overview's Days bars); then release M3
 (periods, lists and figures, F-012-S05).
 
+Teisoro F-012-S05, release M3 "periods, lists and figures"
+(`@scalewing/react` 1.40.0), one PR each: `DateRangeButton`
+(`teisoro-date-range-button.md`); then web `ListGroup` / `ListRow`
+(`teisoro-list-group.md`), a count on a `Nav` word (`teisoro-nav-count.md`)
+and `StatTile` `appearance="plain"` (`teisoro-stat-tile-plain.md`).
+
 Teisoro F-011-S02, release R1 "guided-form core": web `Stepper`
 (#113), `DenominationGrid` entry rows (#114), `Steps` / `Step` (#115)
 and `ActionBar` `summary` (#116), released in `@scalewing/react` 1.27.0.

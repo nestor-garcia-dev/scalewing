@@ -27,7 +27,22 @@ export type CalendarGridProps = {
   onSelect: (value: string) => void;
   /** Days to tint as a span, such as the period a page shows. */
   range?: DateOnlyRange;
-  selected: string;
+  /**
+   * The selected day; `''` for none. A range instead selects every day in
+   * it (the grid is then multiselectable) and tints it as `range` does.
+   */
+  selected: string | DateOnlyRange;
+  /**
+   * The last day a press may pick when it is earlier than `max`, such as a
+   * range's longest end. Later days are `aria-disabled`; keys still reach
+   * them up to `max`, for orientation.
+   */
+  latest?: string;
+  /**
+   * Leave the neighbouring months' days blank, so months shown side by
+   * side hold each day once. By default they are shown, muted.
+   */
+  blankOutside?: boolean;
   titleId: string;
   today: string;
   weekStartsOn: WeekStart;
@@ -42,6 +57,12 @@ function rangeClassNames(
     (place === 'start' || place === 'only') && 'sw-date-field-day-range-start',
     (place === 'end' || place === 'only') && 'sw-date-field-day-range-end',
   ];
+}
+
+function isSelectedDay(value: string, selected: string | DateOnlyRange) {
+  return typeof selected === 'string'
+    ? value === selected
+    : dayInRange(value, selected) !== null;
 }
 
 /**
@@ -60,12 +81,20 @@ export function CalendarGrid({
   onSelect,
   range,
   selected,
+  latest,
+  blankOutside = false,
   titleId,
   today,
   weekStartsOn,
 }: CalendarGridProps) {
+  const pickMax =
+    latest !== undefined && (max === undefined || latest < max) ? latest : max;
+  const tint = typeof selected === 'string' ? range : selected;
+  const unavailable = (value: string) =>
+    isOutsideDateRange(value, min, pickMax);
+
   function choose(value: string) {
-    if (!isOutsideDateRange(value, min, max)) onSelect(value);
+    if (!unavailable(value)) onSelect(value);
   }
 
   function onKeyDown(event: KeyboardEvent<HTMLTableElement>) {
@@ -88,6 +117,7 @@ export function CalendarGrid({
   return (
     <table
       aria-labelledby={titleId}
+      aria-multiselectable={typeof selected === 'string' ? undefined : true}
       className="sw-date-field-grid"
       onKeyDown={onKeyDown}
       role="grid"
@@ -106,8 +136,9 @@ export function CalendarGrid({
           // Rows are positions in a fixed six-row grid.
           <tr key={rowIndex}>
             {row.map((cell, column) =>
-              cell === null ? (
-                // No four-digit date exists here: a blank, inert cell.
+              cell === null || (blankOutside && !cell.inMonth) ? (
+                // No four-digit date exists here, or a neighbouring month's
+                // day is left out: a blank, inert cell.
                 <td
                   aria-disabled="true"
                   className="sw-date-field-day sw-date-field-day-outside"
@@ -117,15 +148,13 @@ export function CalendarGrid({
               ) : (
                 <td
                   aria-current={cell.value === today ? 'date' : undefined}
-                  aria-disabled={
-                    isOutsideDateRange(cell.value, min, max) || undefined
-                  }
+                  aria-disabled={unavailable(cell.value) || undefined}
                   aria-label={formatDateLabel(cell.value, locale)}
-                  aria-selected={cell.value === selected}
+                  aria-selected={isSelectedDay(cell.value, selected)}
                   className={cx(
                     'sw-date-field-day',
                     !cell.inMonth && 'sw-date-field-day-outside',
-                    ...rangeClassNames(dayInRange(cell.value, range)),
+                    ...rangeClassNames(dayInRange(cell.value, tint)),
                   )}
                   data-date={cell.value}
                   key={cell.value}

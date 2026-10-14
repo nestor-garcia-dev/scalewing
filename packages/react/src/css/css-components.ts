@@ -4,6 +4,7 @@ import { cssActionMenuClasses } from './css-action-menu.js';
 import { cssAccordionClasses } from './css-accordion.js';
 import { cssButtonClasses } from './css-button.js';
 import { cssCalendarButtonClasses } from './css-calendar-button.js';
+import { cssDateRangeClasses } from './css-date-range.js';
 import { cssBarChartClasses } from './css-bar-chart.js';
 import { cssChartLegendClasses } from './css-chart-legend.js';
 import { cssChartPlotClasses } from './css-chart-plot.js';
@@ -142,6 +143,8 @@ ${cssTableClasses()}
 ${cssDateFieldClasses()}
 
 ${cssCalendarButtonClasses()}
+
+${cssDateRangeClasses()}
 
 ${cssBarChartClasses()}
 
