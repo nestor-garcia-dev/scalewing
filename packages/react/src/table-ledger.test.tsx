@@ -96,7 +96,7 @@ describe('Table ledger', () => {
 
   it('fails closed on an unknown tone or variant', () => {
     expect(tableCellTones).toEqual(['success', 'danger', 'muted', 'accent']);
-    expect(tableRowVariants).toEqual(['default', 'sub']);
+    expect(tableRowVariants).toEqual(['default', 'sub', 'total']);
     expect(() =>
       render(
         <table>

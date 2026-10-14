@@ -2,8 +2,11 @@
 export const tableCellTones = ['success', 'danger', 'muted', 'accent'] as const;
 export type TableCellTone = (typeof tableCellTones)[number];
 
-/** A row's place in the table: a row of its own, or one under the row above. */
-export const tableRowVariants = ['default', 'sub'] as const;
+/**
+ * A row's place in the table: a row of its own, one under the row above,
+ * or a total of the rows above it, mid-table.
+ */
+export const tableRowVariants = ['default', 'sub', 'total'] as const;
 export type TableRowVariant = (typeof tableRowVariants)[number];
 
 export function assertTableCellTone(tone: unknown): void {

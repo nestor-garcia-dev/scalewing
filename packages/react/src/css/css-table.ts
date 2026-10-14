@@ -23,6 +23,10 @@ import {
   tablePagePinClassCatalog,
 } from './css-table-page-pin.js';
 import {
+  cssTableTotalRowClasses,
+  tableTotalRowClassCatalog,
+} from './css-table-total-row.js';
+import {
   cssTablePressClasses,
   tablePressClassCatalog,
 } from './css-table-press.js';
@@ -120,6 +124,8 @@ ${cssTableSortClasses()}
 
 ${cssTableLedgerClasses()}
 
+${cssTableTotalRowClasses()}
+
 ${cssTableFooterClasses()}
 
 ${cssTablePagePinClasses()}
@@ -144,6 +150,7 @@ export function tableClassCatalog(): string[] {
     ...tableLayoutClassCatalog(),
     ...tableSortClassCatalog(),
     ...tableLedgerClassCatalog(),
+    ...tableTotalRowClassCatalog(),
     ...tableFooterClassCatalog(),
     ...tablePagePinClassCatalog(),
     ...tableBoundedClassCatalog(),
