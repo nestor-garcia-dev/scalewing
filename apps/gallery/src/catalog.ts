@@ -22,6 +22,7 @@ import { AppHeaderSection } from './sections/app-header.js';
 import { BadgeSection } from './sections/badge.js';
 import { BarChartSection } from './sections/bar-chart.js';
 import { ChartLegendSection } from './sections/chart-legend.js';
+import { ColumnChartSection } from './sections/column-chart.js';
 import { DataBarSection } from './sections/data-bar.js';
 import { ButtonGroupSection } from './sections/button-group.js';
 import { ButtonSection } from './sections/button.js';
@@ -277,6 +278,12 @@ export const catalog = [
     label: 'ChartLegend',
     group: 'data',
     Section: ChartLegendSection,
+  },
+  {
+    id: 'column-chart',
+    label: 'ColumnChart',
+    group: 'data',
+    Section: ColumnChartSection,
   },
   {
     id: 'app-header',

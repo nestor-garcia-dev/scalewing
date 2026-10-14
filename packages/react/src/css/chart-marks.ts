@@ -9,3 +9,12 @@ export const chartLineWidth = 2;
 
 /** A hairline: a grid line, a leader, the boxed period's dashed edge. */
 export const chartHairline = 1;
+
+/** The boxed period's dashes: 3 px drawn, 3 px left out. */
+export const chartBoxDash = '3 3';
+
+/** A callout's leader: finer dashes, 2 px drawn, 2 px left out. */
+export const chartLeaderDash = '2 2';
+
+/** The gap between grouped columns side by side, at most. */
+export const chartColumnGap = chartLineWidth;

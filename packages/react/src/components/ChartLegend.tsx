@@ -7,12 +7,12 @@ import {
   type ChartStrokeTone,
   chartStrokeTones,
   type ChartTone,
-  isOneOf,
 } from '../css/chart-tones.js';
 import {
   type ChartLegendSwatch,
   chartLegendSwatches,
 } from '../css/css-chart-legend.js';
+import { isOneOf } from '../is-one-of.js';
 
 export type { ChartFillTone, ChartLegendSwatch, ChartStrokeTone, ChartTone };
 export { chartFillTones, chartLegendSwatches, chartStrokeTones };

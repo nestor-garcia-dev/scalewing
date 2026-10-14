@@ -4,8 +4,9 @@ import { cssActionMenuClasses } from './css-action-menu.js';
 import { cssAccordionClasses } from './css-accordion.js';
 import { cssButtonClasses } from './css-button.js';
 import { cssCalendarButtonClasses } from './css-calendar-button.js';
-import { cssChartClasses } from './css-chart.js';
+import { cssBarChartClasses } from './css-bar-chart.js';
 import { cssChartLegendClasses } from './css-chart-legend.js';
+import { cssChartPlotClasses } from './css-chart-plot.js';
 import { cssDataBarClasses } from './css-data-bar.js';
 import { cssPaginationClasses } from './css-pagination.js';
 import { cssCheckboxClasses } from './css-checkbox.js';
@@ -141,13 +142,15 @@ ${cssDateFieldClasses()}
 
 ${cssCalendarButtonClasses()}
 
-${cssChartClasses()}
+${cssBarChartClasses()}
 
 ${cssDataBarClasses()}
 
 ${cssChartToneClasses()}
 
 ${cssChartLegendClasses()}
+
+${cssChartPlotClasses()}
 
 ${cssPaginationClasses()}
 
