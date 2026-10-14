@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: accepted 2026-10-13 for `@scalewing/react` 1.39.0 (Teisoro F-012-S04, release M2 "charts", item 2; the manager views inventory's row 9 and its risk 1; plan approval under Teisoro decisions O-1 and D-1).
+Status: released in `@scalewing/react` 1.39.0 (PR #176; the hidden table fix in #179; accepted 2026-10-13; Teisoro F-012-S04, release M2 "charts", item 2; the manager views inventory's row 9 and its risk 1; plan approval under Teisoro decisions O-1 and D-1).
 Renderer: react
 Missing surface: `ColumnChart`, columns per category (stacked or grouped by series) with an optional line on its own scale, a boxed current period and callouts.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: the report boards draw 13 weeks (or 12 months) as columns: ReportsOverview "Off, last 13 weeks" (two series stacked either side of zero, the running total as a line, the current week boxed, two callouts pinned to the top with a dashed leader), ReportsRegisters (two registers), ReportsServices (checks cashed and money transfers grouped), ReportsCorrections (three stacked counts), and their phone boards at 390 px. `BarChart` is horizontal magnitudes, one bar per row, with no series, stacking, line or time axis; drawing columns needs placed shapes, which Teisoro cannot draw (no CSS, no inline style, no SVG of its own).

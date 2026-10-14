@@ -31,7 +31,11 @@ Teisoro F-012-S04, release M2 "charts" (`@scalewing/react` 1.39.0), one
 PR each: `ChartLegend` (`teisoro-chart-legend.md`, #175); `ColumnChart`
 (`teisoro-column-chart.md`, #176); `LineChart` (`teisoro-line-chart.md`,
 #177); and `DataBar` `tone="danger"` for a shortage
-(`teisoro-data-bar-short.md`), in review. Then the release.
+(`teisoro-data-bar-short.md`, #178); with a pre-release fix to the charts'
+hidden table (#179). Released in `@scalewing/react` 1.39.0. Next:
+Teisoro pins 1.39.0 in its first story that draws a chart (S13,
+`RunningTotalChart` and the Overview's Days bars); then release M3
+(periods, lists and figures, F-012-S05).
 
 Teisoro F-011-S02, release R1 "guided-form core": web `Stepper`
 (#113), `DenominationGrid` entry rows (#114), `Steps` / `Step` (#115)

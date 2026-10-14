@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: accepted 2026-10-13 for `@scalewing/react` 1.39.0 (Teisoro F-012-S04, release M2 "charts", item 1; the manager views inventory's row 12; plan approval under Teisoro decisions O-1 and D-1).
+Status: released in `@scalewing/react` 1.39.0 (PR #175; accepted 2026-10-13; Teisoro F-012-S04, release M2 "charts", item 1; the manager views inventory's row 12; plan approval under Teisoro decisions O-1 and D-1).
 Renderer: react
 Missing surface: `ChartLegend`, a chart's key: a list of swatches (a bar, a line, a marker, the boxed current period), each beside its words, in the charts' own colours.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: every chart board (ReportsOverview "Off, last 13 weeks" and "How the cash moved", Registers, Services, Corrections, Vault, and their phone boards) draws a key above the chart: a small square in each series' colour, a short line for the running total, a red downward triangle for a money truck, and a dashed outline for "This week". A swatch is a coloured mark with no text, which Teisoro cannot draw (no CSS, no inline style), and its colour must be the one the chart draws for that series, which only Scalewing knows.
