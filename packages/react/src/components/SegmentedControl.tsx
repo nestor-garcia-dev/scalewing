@@ -2,6 +2,7 @@
 
 import { forwardRef, useId, type KeyboardEvent, type ReactNode } from 'react';
 
+import { type AccessibleName } from '../accessible-name.js';
 import { cx } from '../class-names.js';
 import { segmentedRaisedClass } from '../css/css-segmented-raised.js';
 import { FieldErrorRegion } from './FieldErrorRegion.js';
@@ -19,10 +20,6 @@ export type SegmentedItem = {
    */
   icon?: ReactNode;
 };
-
-type SegmentedLabel =
-  | { 'aria-label': string; 'aria-labelledby'?: never }
-  | { 'aria-label'?: never; 'aria-labelledby': string };
 
 /**
  * `compact` is the quiet chip track for a section switch; `filled` gives every
@@ -47,7 +44,7 @@ type SegmentedChange =
       onChange?: (id: string) => void;
     };
 
-export type SegmentedControlProps = SegmentedLabel &
+export type SegmentedControlProps = AccessibleName &
   SegmentedChange & {
     items: readonly SegmentedItem[];
     value: string;

@@ -5,6 +5,7 @@ import { cssButtonClasses } from './css-button.js';
 import { cssCalendarButtonClasses } from './css-calendar-button.js';
 import { cssChartClasses } from './css-chart.js';
 import { cssDataBarClasses } from './css-data-bar.js';
+import { cssPaginationClasses } from './css-pagination.js';
 import { cssCheckboxClasses } from './css-checkbox.js';
 import { cssRadioGroupClasses } from './css-radio-group.js';
 import { cssChromeClasses } from './css-chrome.js';
@@ -141,6 +142,8 @@ ${cssCalendarButtonClasses()}
 ${cssChartClasses()}
 
 ${cssDataBarClasses()}
+
+${cssPaginationClasses()}
 
 ${cssChromeClasses()}
 

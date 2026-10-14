@@ -20,12 +20,11 @@ release workflow completed successfully.
 Teisoro F-012-S03, release M1 "tables that hold a period"
 (`@scalewing/react` 1.38.0), one PR each: `Table` `maxHeight`, rows that
 scroll inside the table's own region with the header and a sticky total
-pinned to it (`teisoro-table-contained-scroll.md`); then `TableRow`
-`variant="total"` (`teisoro-table-row-total.md`), `DataBar` and
-`Pagination`. `maxHeight` merged in #170 and `variant="total"` in #171; `DataBar`
-(`teisoro-data-bar.md`) follows.
-Next: the remaining M1 items,
-then the release, and Teisoro's `ReportTable` and `Statement` pin it.
+pinned to it (`teisoro-table-contained-scroll.md`, #170); `TableRow`
+`variant="total"` (`teisoro-table-row-total.md`, #171); `DataBar`
+(`teisoro-data-bar.md`, #172); and `Pagination` (`teisoro-pagination.md`),
+the last item. Next: release `@scalewing/react` 1.38.0 (tag
+`react-v1.38.0`), then Teisoro's `ReportTable` and `Statement` pin it.
 
 Teisoro F-011-S02, release R1 "guided-form core": web `Stepper`
 (#113), `DenominationGrid` entry rows (#114), `Steps` / `Step` (#115)
