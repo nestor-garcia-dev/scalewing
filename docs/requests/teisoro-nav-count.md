@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: accepted 2026-10-14 (Teisoro F-012-S05, release M3 "periods, lists and figures", item 3; the manager views inventory's row 1; plan approval under Teisoro decisions O-1, D-1 and D-9).
+Status: released in `@scalewing/react` 1.40.0 (PR #183; accepted 2026-10-14; Teisoro F-012-S05, release M3 "periods, lists and figures", item 3; the manager views inventory's row 1; plan approval under Teisoro decisions O-1, D-1 and D-9).
 Renderer: react
 Missing surface: a count after a word in `Nav appearance="words"`, the top bar's "Tasks 8".
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: all 43 boards put Tasks on the top bar as an area with its count ("Tasks 8", a red pill after the word). Teisoro's `AreaBar` composes `AppHeader` and `Nav appearance="words"` with its own router links, and today says "Areas carry no count"; the count moves there from the Vault's area bar. `SectionNav` draws this pill for its items (`count`, `countLabel`), but Nav's destinations are the consumer's own children, not items, so the pill has no way in. Drawing it in Teisoro would copy SectionNav's pill CSS.

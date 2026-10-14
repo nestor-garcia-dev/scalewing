@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: accepted 2026-10-14 (Teisoro F-012-S05, release M3 "periods, lists and figures", item 4; the manager views inventory's row 5; plan approval under Teisoro decisions O-1, D-1 and D-9).
+Status: released in `@scalewing/react` 1.40.0 (PR #184; accepted 2026-10-14; Teisoro F-012-S05, release M3 "periods, lists and figures", item 4; the manager views inventory's row 5; plan approval under Teisoro decisions O-1, D-1 and D-9).
 Renderer: react
 Missing surface: `StatTile` `appearance="plain"`, a figure with no card surface, so it fits inside a card.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: every report opens with its answer in one card: the question in grey, a dot and the answer line, then four figures in a row with hairlines between them ("Expected in the store", its amount, then "From <day>'s <amount> and every move since"; "In the store, Mon night"; "Off"; "Off, last 13 weeks"); on a phone the four sit two by two. `StatTile` already draws a label, a toned tabular value and a caption, but always on its own bordered surface with padding, so four tiles inside the answer card would be cards in a card. Rebuilding the label, value and caption from `Text` in Teisoro would copy StatTile's type and tone mapping.
