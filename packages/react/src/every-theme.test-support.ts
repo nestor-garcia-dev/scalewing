@@ -1,10 +1,16 @@
 import {
+  categoricalColors,
   type ColorTokens,
   createTheme,
   paletteIds,
   parseHexColor,
   type Theme,
 } from '@scalewing/tokens';
+
+import {
+  type ChartColorMix,
+  type ChartColorSource,
+} from './css/chart-tones.js';
 
 export const colorSchemes = ['light', 'dark'] as const;
 
@@ -66,4 +72,31 @@ export function tintOver(
   backdrop: string,
 ): string {
   return toHex(over(parseHexColor(color), strength, parseHexColor(backdrop)));
+}
+
+/** A chart colour's source, resolved in one theme. */
+export function chartSourceColor(
+  source: ChartColorSource,
+  colors: ColorTokens,
+  theme: Theme,
+): string {
+  return 'semantic' in source
+    ? colors[source.semantic]
+    : categoricalColors[theme.colorScheme][source.categorical];
+}
+
+/**
+ * A chart colour mix resolved in one theme, as `color-mix(in srgb, …)`
+ * paints it: the source at its share over the surface or the text colour.
+ */
+export function chartMixColor(
+  mix: ChartColorMix,
+  colors: ColorTokens,
+  theme: Theme,
+): string {
+  return tintOver(
+    chartSourceColor(mix, colors, theme),
+    mix.share,
+    colors[mix.into],
+  );
 }

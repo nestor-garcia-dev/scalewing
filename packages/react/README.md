@@ -10,6 +10,7 @@ import {
   ActionBar,
   ActionMenu,
   BarChart,
+  ChartLegend,
   DataBar,
   Box,
   Button,
@@ -455,6 +456,20 @@ A bar in its own column reads as empty cells to assistive technology, which is f
     <span>−6</span>
   </Grid>
 </TableCell>
+```
+
+`ChartLegend` is a chart's key: a list of its marks, each a swatch and its words, in a wrapping row in the caption type, placed above the chart or the statement bars it names. `items` (`ChartLegendItem[]`) gives each one's `label`, `swatch` (`ChartLegendSwatch`, listed in `chartLegendSwatches`: `'bar'`, `'line'`, `'marker'` or `'box'`) and `tone`. A `'bar'` is a filled mark and takes a fill tone (`ChartFillTone`, listed in `chartFillTones`): a categorical colour (`'green'`, `'blue'`, `'orange'`, `'purple'`, `'teal'`, `'rose'`, `'neutral'`) for a chart's series, or one of `DataBar`'s statement tones (`'success'`, `'muted'`, `'strong'`, `'accent'`, and `'neutral'`). A `'line'`, a `'marker'` (a downward triangle) and a `'box'` (the dashed outline of a boxed current period) are strokes and take a stroke tone (`ChartStrokeTone`, listed in `chartStrokeTones`: `'accent'`, `'success'`, `'warning'`, `'danger'`, `'neutral'`). `ChartTone` is either. Each swatch is the colour of the mark it names in the same tone, because the legend, `DataBar` and the charts read one tone table: a fill keeps 1.5:1 on the surface, a stroke 3:1, in every palette and scheme. The swatches are decorative (`aria-hidden`), so each item reads as its words; the list keeps its role (`role="list"`, which Safari drops from an unmarked list) and takes a name with `aria-label`. An empty or blank `label`, or a swatch or tone the item cannot draw, throws a `RangeError`. Forced colors draw every swatch in the system text color. The contrasts hold on the surface, so put a chart and its legend on it (a `Card`). A `BarChart`'s default bar is a `'bar'` swatch in `'accent'`; its toned bars are drawn in the full semantic colour, the `'line'` swatch's colour.
+
+```tsx
+<ChartLegend
+  aria-label="Key"
+  items={[
+    { label: 'Herons', swatch: 'bar', tone: 'blue' },
+    { label: 'Running total', swatch: 'line', tone: 'accent' },
+    { label: 'Flood', swatch: 'marker', tone: 'danger' },
+    { label: 'This week', swatch: 'box', tone: 'accent' },
+  ]}
+/>
 ```
 
 `Pagination` steps through a list shown a page at a time, for a list with no total to keep in view (a list that adds up scrolls inside itself instead, with `Table` `maxHeight`). It is a `nav` landmark named by `aria-label` or `aria-labelledby` (one is required), holding the consumer's words for what the page shows (`rangeLabel`, such as "1–25 of 130 changes", in the muted caption at the inline start and announced politely when it changes) and the previous and next steps at the end: icon-only neutral `sm` Buttons, square, the 44 px touch target on a coarse pointer, named by `labels` (`PaginationLabels`: `previous`, `next`) with a private chevron glyph mirrored right to left. `page` (from 1) and `pageCount` place it; a step calls `onPageChange` with the page it goes to. At either end its step looks disabled (`aria-disabled`, the neutral grey) but stays a Tab stop, so focus is never dropped when the last page is reached, and a press there does nothing. Pages that are not whole numbers in range, or an empty step label (`labels.previous` or `labels.next`), throw a `RangeError`. The row wraps on a narrow column, the steps staying at the end.

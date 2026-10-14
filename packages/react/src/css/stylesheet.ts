@@ -4,6 +4,8 @@ import {
   lightTheme,
   typographyVariants,
 } from '@scalewing/tokens';
+
+import { chartToneClassCatalog } from './chart-tones.js';
 import { actionBarClassCatalog } from './css-action-bar.js';
 import { actionMenuClassCatalog } from './css-action-menu.js';
 import { accordionClassCatalog } from './css-accordion.js';
@@ -36,6 +38,7 @@ import { boxLinkClassCatalog } from './css-box-link.js';
 import { cssComponentClasses } from './css-components.js';
 import { buttonClassCatalog } from './css-button.js';
 import { chartClassCatalog } from './css-chart.js';
+import { chartLegendClassCatalog } from './css-chart-legend.js';
 import { dataBarClassCatalog } from './css-data-bar.js';
 import { paginationClassCatalog } from './css-pagination.js';
 import { dataClassCatalog } from './css-data.js';
@@ -82,6 +85,8 @@ export function utilityClassCatalog(): string[] {
     ...scrollRegionClassCatalog(),
     ...chartClassCatalog(),
     ...dataBarClassCatalog(),
+    ...chartToneClassCatalog(),
+    ...chartLegendClassCatalog(),
     ...paginationClassCatalog(),
     ...chromeClassCatalog(),
     ...sectionNavClassCatalog(),

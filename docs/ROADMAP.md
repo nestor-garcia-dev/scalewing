@@ -25,7 +25,12 @@ pinned to it (`teisoro-table-contained-scroll.md`, #170); `TableRow`
 (`teisoro-data-bar.md`, #172); and `Pagination` (`teisoro-pagination.md`),
 the last item (#173). Released in `@scalewing/react` 1.38.0. Next:
 Teisoro pins 1.38.0 in its first consuming web story (S12, `ReportTable`
-and `Statement`); then release M2 (charts, F-012-S04).
+and `Statement`).
+
+Teisoro F-012-S04, release M2 "charts" (`@scalewing/react` 1.39.0), one
+PR each: `ChartLegend` (`teisoro-chart-legend.md`), in review; then
+`ColumnChart`, `LineChart` and `DataBar` `tone="danger"`, each with its
+request file to come.
 
 Teisoro F-011-S02, release R1 "guided-form core": web `Stepper`
 (#113), `DenominationGrid` entry rows (#114), `Steps` / `Step` (#115)
