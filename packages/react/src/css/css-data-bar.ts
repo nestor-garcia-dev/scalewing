@@ -1,51 +1,30 @@
+import { chartFill, statementFillTones } from './chart-tones.js';
+
 /**
  * What a range bar's fill means: the start or a carried figure (`neutral`),
  * money in (`success`), money out (`muted`, never danger: an outflow is not
  * an error), a subtotal (`strong`) and what was counted or recorded
  * (`accent`).
  */
-export const dataBarTones = [
-  'neutral',
-  'success',
-  'muted',
-  'strong',
-  'accent',
-] as const;
+export const dataBarTones = statementFillTones;
 
 export type DataBarTone = (typeof dataBarTones)[number];
 
 /*
- * Each tone is a semantic colour, mixed into the surface where the board
- * draws a lighter fill: the bar is decorative (the figure is the cell's
- * text), so the mixes keep the tones apart from one another rather than
- * meeting a text contrast: every tone at 1.5:1 or more on the surface, and
- * the three greys (out, start, subtotal) 1.5:1 or more from the next one,
- * in every palette and scheme (`data-bar.test.tsx`). `accent` is the
- * accent itself.
+ * Each tone is a chart fill (`chart-tones.ts`, shared with ChartLegend's
+ * `bar` swatch so a statement's legend matches its bars): a semantic
+ * colour mixed into the surface where the board draws a lighter fill. The
+ * bar is decorative (the figure is the cell's text), so the mixes keep the
+ * tones apart from one another rather than meeting a text contrast: every
+ * tone at 1.5:1 or more on the surface, and the three greys (out, start,
+ * subtotal) 1.5:1 or more from the next one, in every palette and scheme
+ * (`data-bar.test.tsx`). `accent` is the accent itself.
  */
-export const dataBarToneMixes: Record<
-  DataBarTone,
-  { color: 'muted' | 'success' | 'text' | 'accent'; share: number }
-> = {
-  neutral: { color: 'muted', share: 0.65 },
-  success: { color: 'success', share: 0.55 },
-  muted: { color: 'muted', share: 0.35 },
-  strong: { color: 'text', share: 0.85 },
-  accent: { color: 'accent', share: 1 },
-};
-
-/** A tone's fill: its colour, mixed into the surface by its share. */
-export function dataBarToneFill(tone: DataBarTone): string {
-  const { color, share } = dataBarToneMixes[tone];
-  if (share === 1) return `var(--sw-color-${color})`;
-  return `color-mix(in srgb, var(--sw-color-${color}) ${Math.round(share * 100)}%, var(--sw-color-surface))`;
-}
-
 function toneRules(): string {
   return dataBarTones
     .map(
       (tone) =>
-        `.sw-data-bar-${tone} > .sw-data-bar-fill { background: ${dataBarToneFill(tone)}; }`,
+        `.sw-data-bar-${tone} > .sw-data-bar-fill { background: ${chartFill(tone)}; }`,
     )
     .join('\n');
 }

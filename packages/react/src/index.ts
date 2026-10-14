@@ -88,6 +88,18 @@ export {
   barChartTones,
 } from './components/BarChart.js';
 export {
+  ChartLegend,
+  type ChartFillTone,
+  type ChartLegendItem,
+  type ChartLegendProps,
+  type ChartLegendSwatch,
+  type ChartStrokeTone,
+  type ChartTone,
+  chartFillTones,
+  chartLegendSwatches,
+  chartStrokeTones,
+} from './components/ChartLegend.js';
+export {
   DataBar,
   type DataBarProps,
   type DataBarTone,

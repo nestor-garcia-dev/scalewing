@@ -12,9 +12,9 @@ import {
   TableCell,
   TableRow,
 } from './index.js';
-import { dataBarToneFill, dataBarToneMixes } from './css/css-data-bar.js';
+import { chartFill, chartFillMixes } from './css/chart-tones.js';
 import { generateStylesheet, utilityClassCatalog } from './css/stylesheet.js';
-import { forEveryTheme, tintOver } from './every-theme.test-support.js';
+import { chartMixColor, forEveryTheme } from './every-theme.test-support.js';
 
 afterEach(() => cleanup());
 
@@ -170,9 +170,17 @@ describe('DataBar CSS', () => {
   });
 
   it('colours each tone from the semantic colours, no hex', () => {
+    // Pinned as written, so a change to the shared chart tones that moved
+    // a range bar's colour is caught here.
+    expect(css).toContain(
+      '.sw-data-bar-neutral > .sw-data-bar-fill { background: color-mix(in srgb, var(--sw-color-muted) 65%, var(--sw-color-surface)); }',
+    );
+    expect(css).toContain(
+      '.sw-data-bar-accent > .sw-data-bar-fill { background: var(--sw-color-accent); }',
+    );
     for (const tone of dataBarTones)
       expect(css).toContain(
-        `.sw-data-bar-${tone} > .sw-data-bar-fill { background: ${dataBarToneFill(tone)}; }`,
+        `.sw-data-bar-${tone} > .sw-data-bar-fill { background: ${chartFill(tone)}; }`,
       );
     const rules = css.slice(css.indexOf('.sw-data-bar {'));
     expect(rules.slice(0, rules.indexOf('@media'))).not.toMatch(
@@ -200,11 +208,9 @@ describe('DataBar CSS', () => {
   });
 
   it('keeps every tone apart from the surface and the tones next to each other apart', () => {
-    forEveryTheme((colors, label) => {
-      const fill = (tone: DataBarTone) => {
-        const { color, share } = dataBarToneMixes[tone];
-        return tintOver(colors[color], share, colors.surface);
-      };
+    forEveryTheme((colors, label, theme) => {
+      const fill = (tone: DataBarTone) =>
+        chartMixColor(chartFillMixes[tone], colors, theme);
       for (const tone of dataBarTones)
         expect(
           contrastRatio(fill(tone), colors.surface),

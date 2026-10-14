@@ -21,6 +21,7 @@ import { AccordionSection } from './sections/accordion.js';
 import { AppHeaderSection } from './sections/app-header.js';
 import { BadgeSection } from './sections/badge.js';
 import { BarChartSection } from './sections/bar-chart.js';
+import { ChartLegendSection } from './sections/chart-legend.js';
 import { DataBarSection } from './sections/data-bar.js';
 import { ButtonGroupSection } from './sections/button-group.js';
 import { ButtonSection } from './sections/button.js';
@@ -270,6 +271,12 @@ export const catalog = [
     label: 'DataBar',
     group: 'data',
     Section: DataBarSection,
+  },
+  {
+    id: 'chart-legend',
+    label: 'ChartLegend',
+    group: 'data',
+    Section: ChartLegendSection,
   },
   {
     id: 'app-header',
