@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: accepted 2026-10-13 for `@scalewing/react` 1.39.0 (Teisoro F-012-S04, release M2 "charts", item 3; the manager views inventory's row 10 and its risk 1; plan approval under Teisoro decisions O-1 and D-1).
+Status: released in `@scalewing/react` 1.39.0 (PR #177; the hidden table fix in #179; accepted 2026-10-13; Teisoro F-012-S04, release M2 "charts", item 3; the manager views inventory's row 10 and its risk 1; plan approval under Teisoro decisions O-1 and D-1).
 Renderer: react
 Missing surface: `LineChart`, a value by date, straight or in steps, with markers on chosen dates, an optional area and a boxed period.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: ReportsVault and PhoneVault draw "The vault at night" every day for 90 days as a line over a tinted area, each money truck a downward triangle with its amount, the current week boxed and the last value beside the line, and "Owed to the bank" as a step line that changes on the days a check is cashed or paid back. `ColumnChart` places values by category, not by date, and has no steps or markers; drawing a line needs placed shapes, which Teisoro cannot draw (no CSS, no inline style, no SVG of its own).

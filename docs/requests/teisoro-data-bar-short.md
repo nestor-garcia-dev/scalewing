@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: accepted 2026-10-13 for `@scalewing/react` 1.39.0 (Teisoro F-012-S04, release M2 "charts", item 4; after M1's DataBar, Teisoro decision D-38; plan approval under Teisoro decisions O-1 and D-1).
+Status: released in `@scalewing/react` 1.39.0 (PR #178; accepted 2026-10-13; Teisoro F-012-S04, release M2 "charts", item 4; after M1's DataBar, Teisoro decision D-38; plan approval under Teisoro decisions O-1 and D-1).
 Renderer: react
 Missing surface: `DataBar` `tone="danger"`, a light red range bar for a shortage.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: the ReportsOverview board's Days table draws each day's Off as a bar either side of zero, and a short day's bar in light red (#f4c7c2). DataBar shipped in 1.38.0 without a danger tone, because money out must never be red, so Teisoro drew a short day's bar `muted` and listed the red as a difference from the board (D-38). A shortage is not an outflow: red is allowed for it.
