@@ -1,4 +1,5 @@
 import { chevronStroke } from './chevron.js';
+import { tableSortMinHeight } from './css-table-metrics.js';
 import { coarsePointerQuery, touchTarget } from './touch-target.js';
 
 /*
@@ -65,7 +66,7 @@ export function cssTableSortClasses(): string {
   letter-spacing: inherit;
   /* A step of room for the focus ring, taken back so the name stays on the cell's edge. */
   margin-inline: calc(-1 * var(--sw-space-1));
-  min-height: var(--sw-control-xs-min-height);
+  min-height: ${tableSortMinHeight};
   padding: 0 var(--sw-space-1);
   text-align: inherit;
 }

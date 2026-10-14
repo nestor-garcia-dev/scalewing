@@ -3,26 +3,53 @@
 import { type RefObject, useEffect, useState } from 'react';
 
 import {
+  blockScrollOverflow,
+  type BlockScrollOverflow,
+  noBlockScrollOverflow,
   noScrollOverflow,
+  sameBlockScrollOverflow,
   sameScrollOverflow,
   type ScrollOverflow,
   scrollOverflow,
 } from '../scroll-overflow.js';
 
-/** A box's overflow, and whether it has been measured yet. */
-export type MeasuredScrollOverflow = ScrollOverflow & { measured: boolean };
+/** A box's overflow on both axes, and whether it has been measured yet. */
+export type MeasuredScrollOverflow = ScrollOverflow &
+  BlockScrollOverflow & { measured: boolean };
 
 const unmeasured: MeasuredScrollOverflow = {
   ...noScrollOverflow,
+  ...noBlockScrollOverflow,
   measured: false,
 };
 
+function measureBox(box: HTMLElement): MeasuredScrollOverflow {
+  return {
+    ...scrollOverflow(box.scrollLeft, box.scrollWidth, box.clientWidth),
+    ...blockScrollOverflow(box.scrollTop, box.scrollHeight, box.clientHeight),
+    measured: true,
+  };
+}
+
+function sameMeasure(
+  current: MeasuredScrollOverflow,
+  next: MeasuredScrollOverflow,
+): boolean {
+  return (
+    current.measured &&
+    sameScrollOverflow(current, next) &&
+    sameBlockScrollOverflow(current, next)
+  );
+}
+
 /**
- * Follows which inline edges of a scroll box have more content past them:
- * on mount, on every scroll, and whenever the box or its content changes
- * size. Before mount (and on the server) it reports no overflow and
- * `measured: false`, so the box renders as it always has until it is
- * measured; a measured box with neither edge set fits its content.
+ * Follows which edges of a scroll box have more content past them, the
+ * inline start and end and the top and bottom: on mount, on every scroll,
+ * and whenever the box or its content changes size. Before mount (and on
+ * the server) it reports no overflow and `measured: false`, so the box
+ * renders as it always has until it is measured; a measured box with
+ * neither inline edge set fits its content's width. A box whose height
+ * follows its content never reports a block edge.
  */
 export function useScrollOverflow(
   ref: RefObject<HTMLElement | null>,
@@ -39,16 +66,8 @@ export function useScrollOverflow(
     // Keep it that way; a scroll-container-only check would pin it open.
     function measure() {
       if (!box) return;
-      const next = scrollOverflow(
-        box.scrollLeft,
-        box.scrollWidth,
-        box.clientWidth,
-      );
-      setOverflow((current) =>
-        current.measured && sameScrollOverflow(current, next)
-          ? current
-          : { ...next, measured: true },
-      );
+      const next = measureBox(box);
+      setOverflow((current) => (sameMeasure(current, next) ? current : next));
     }
 
     measure();

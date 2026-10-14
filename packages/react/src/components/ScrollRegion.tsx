@@ -1,6 +1,6 @@
 'use client';
 
-import { type ReactNode, useRef } from 'react';
+import { type CSSProperties, type ReactNode, useRef } from 'react';
 
 import { cx } from '../class-names.js';
 import { useScrollOverflow } from './use-scroll-overflow.js';
@@ -12,6 +12,8 @@ type ScrollRegionProps = {
   'aria-labelledby'?: string;
   /** Adds `sw-scroll-fits` once measured with content that fits its width. */
   markFits?: boolean;
+  /** Generated custom properties only, such as a bounded table's row count. */
+  style?: CSSProperties;
 };
 
 /**
@@ -21,9 +23,11 @@ type ScrollRegionProps = {
  * keyboard and is announced as one group. While content is scrolled out past
  * an inline edge, that edge draws a shade (`sw-scroll-more-start`,
  * `sw-scroll-more-end`), so a phone, whose scrollbars hide, still shows that
- * the table goes on. With `markFits`, a measured region whose content fits
- * its width carries `sw-scroll-fits`, so a table with a sticky footer can
- * stop being a scroll box and pin its header and footer to the page.
+ * the table goes on. A region of bounded height that scrolls its rows marks
+ * its top and bottom the same way (`sw-scroll-more-top`,
+ * `sw-scroll-more-bottom`). With `markFits`, a measured region whose content
+ * fits its width carries `sw-scroll-fits`, so a table with a sticky footer
+ * can stop being a scroll box and pin its header and footer to the page.
  */
 export function ScrollRegion({
   children,
@@ -31,6 +35,7 @@ export function ScrollRegion({
   'aria-label': ariaLabel,
   'aria-labelledby': ariaLabelledBy,
   markFits = false,
+  style,
 }: ScrollRegionProps) {
   const ref = useRef<HTMLDivElement>(null);
   const overflow = useScrollOverflow(ref);
@@ -44,6 +49,8 @@ export function ScrollRegion({
         className,
         overflow.start && 'sw-scroll-more-start',
         overflow.end && 'sw-scroll-more-end',
+        overflow.top && 'sw-scroll-more-top',
+        overflow.bottom && 'sw-scroll-more-bottom',
         markFits &&
           overflow.measured &&
           !overflow.start &&
@@ -51,6 +58,7 @@ export function ScrollRegion({
           'sw-scroll-fits',
       )}
       role="group"
+      style={style}
       tabIndex={0}
     >
       {children}

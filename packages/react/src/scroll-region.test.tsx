@@ -15,7 +15,7 @@ import {
   pinnedStartShadeRules,
   scrollRegionRules,
 } from './css/css-scroll-region.js';
-import { scrollOverflow } from './scroll-overflow.js';
+import { blockScrollOverflow, scrollOverflow } from './scroll-overflow.js';
 
 afterEach(() => cleanup());
 
@@ -41,6 +41,34 @@ describe('scrollOverflow', () => {
     expect(scrollOverflow(-410, 800, 390)).toEqual({
       start: true,
       end: false,
+    });
+  });
+});
+
+describe('blockScrollOverflow', () => {
+  it('reports no overflow when the content fits its height, within a pixel', () => {
+    expect(blockScrollOverflow(0, 300, 300)).toEqual({
+      top: false,
+      bottom: false,
+    });
+    expect(blockScrollOverflow(0, 300.6, 300)).toEqual({
+      top: false,
+      bottom: false,
+    });
+  });
+
+  it('reports the bottom at the top, both in the middle, and the top at the bottom', () => {
+    expect(blockScrollOverflow(0, 900, 400)).toEqual({
+      top: false,
+      bottom: true,
+    });
+    expect(blockScrollOverflow(250, 900, 400)).toEqual({
+      top: true,
+      bottom: true,
+    });
+    expect(blockScrollOverflow(499.5, 900, 400)).toEqual({
+      top: true,
+      bottom: false,
     });
   });
 });

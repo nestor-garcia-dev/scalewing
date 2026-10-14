@@ -18,6 +18,10 @@ import { Section } from '../layout/Section.js';
 import { TableLayoutExamples } from './table-layout.js';
 import { TableLedgerExample } from './table-ledger.js';
 import { TableFooterExample } from './table-footer.js';
+import {
+  TableBoundedExample,
+  TableBoundedListExample,
+} from './table-bounded.js';
 import { TableStickyPageExample } from './table-sticky-page.js';
 import { PressableCensus } from './table-pressable.js';
 import { SortedCensus } from './table-sorted.js';
@@ -38,7 +42,7 @@ export function TableSection() {
   return (
     <Section
       id="table"
-      purpose="Table aligns data in rows. stickyHeader keeps the header rows visible, every row of the table header and all its cells as one group: pinned to the table's own scroll region by default, or, with stickyHeader page, to the page's top while the page scrolls and the table fits its width (a table wider than its region still pins inside it). numeric cells use tabular numerals and end alignment. truncate clips overflowing cell copy. density compact densifies cells. selected marks the current row with an accent bar at its start that takes no space and no fill, so no column moves and no text loses contrast when a row is picked; the bar follows the writing direction and forced colors keep it. A table wider than its container scrolls sideways inside its own region, and each edge with content past it draws a shade until it is scrolled to that end. A header cell with sort and onSort is the column's sort control: its name becomes a button in the header's own style with a chevron (up ascending, down descending, a quiet pair on a column it is not sorted by), and the sorted header carries aria-sort; in a numeric column the chevron goes before the name, so the name lines up with the figures. layout fixed sizes the columns from the header row's widths alone (a column without one shares what is left, and gets none when the widths fill the container, so a table that scrolls on a phone sizes every column), so a filter that hides a row moves no column; width xs to xl on a header cell are 4, 6, 8, 12 and 16 rem, and width min (on every cell of an auto table's column) keeps the column as narrow as its content on one line. verticalAlign top starts every cell of a tall row on its first line. pressable makes a whole row the target of its one action, such as a search result that is picked: a body cell with onPress draws its text as a button at weight 600, and a pointer press anywhere else on the row presses that button (not with a modifier key, on another control, or when it ends a text selection); the row takes the pointer cursor and the quiet fill while hovered, pressed or while its action has keyboard focus, and keyboard and screen reader users use the button itself."
+      purpose="Table aligns data in rows. stickyHeader keeps the header rows visible, every row of the table header and all its cells as one group: pinned to the table's own scroll region by default, or, with stickyHeader page, to the page's top while the page scrolls and the table fits its width (a table wider than its region still pins inside it). numeric cells use tabular numerals and end alignment. truncate clips overflowing cell copy. density compact densifies cells. selected marks the current row with an accent bar at its start that takes no space and no fill, so no column moves and no text loses contrast when a row is picked; the bar follows the writing direction and forced colors keep it. A table wider than its container scrolls sideways inside its own region, and each edge with content past it draws a shade until it is scrolled to that end. A header cell with sort and onSort is the column's sort control: its name becomes a button in the header's own style with a chevron (up ascending, down descending, a quiet pair on a column it is not sorted by), and the sorted header carries aria-sort; in a numeric column the chevron goes before the name, so the name lines up with the figures. layout fixed sizes the columns from the header row's widths alone (a column without one shares what is left, and gets none when the widths fill the container, so a table that scrolls on a phone sizes every column), so a filter that hides a row moves no column; width xs to xl on a header cell are 4, 6, 8, 12 and 16 rem, and width min (on every cell of an auto table's column) keeps the column as narrow as its content on one line. verticalAlign top starts every cell of a tall row on its first line. pressable makes a whole row the target of its one action, such as a search result that is picked: a body cell with onPress draws its text as a button at weight 600, and a pointer press anywhere else on the row presses that button (not with a modifier key, on another control, or when it ends a text selection); the row takes the pointer cursor and the quiet fill while hovered, pressed or while its action has keyboard focus, and keyboard and screen reader users use the button itself. maxHeight bounds the table to a number of rows, rows: 8, and the rest scroll inside the table's own region: the header pins to the region's top and a sticky total to its bottom, so a total over every row stays in view, and the edge with rows hidden past it draws a shade, cast from the pinned header or total, or from the region's own edge where nothing is pinned."
       title="Table"
       usage={`<Table aria-label="Field log" layout="fixed" verticalAlign="top">
   …<TableCell as="th" width="lg">When</TableCell>…
@@ -49,6 +53,10 @@ export function TableSection() {
 </TableCell>
 
 <Table aria-label="Site census" stickyHeader="page">…</Table>
+
+<Table aria-label="Census" maxHeight={{ rows: 8 }}>
+  …<TableFooter sticky>…</TableFooter>
+</Table>
 
 <TableRow pressable>
   <TableCell onPress={() => pick('Red fox')}>Red fox</TableCell>
@@ -253,6 +261,10 @@ export function TableSection() {
         <TableLedgerExample density="compact" label="Colony ledger, compact" />
         <Text variant="label">A pinned total</Text>
         <TableFooterExample />
+        <Text variant="label">A table that scrolls inside itself</Text>
+        <TableBoundedExample />
+        <Text variant="label">A compact list that scrolls inside itself</Text>
+        <TableBoundedListExample />
         <Text variant="label">A header of two rows pinned to the page</Text>
         <TableStickyPageExample />
         <Text variant="caption" color="muted">
@@ -265,7 +277,8 @@ export function TableSection() {
           variant sub under its entry (indenting its row header) and struck for
           a voided row kept on the record, with a Badge saying why. TableFooter
           holds a total at weight 600 under a heavier rule; sticky pins it to
-          the bottom edge, to the page while the table fits its width.
+          the bottom edge, to the page while the table fits its width, or to the
+          region of a table bounded by maxHeight, whose rows scroll inside it.
         </Text>
       </Stack>
     </Section>

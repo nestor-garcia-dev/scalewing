@@ -7,14 +7,15 @@
  * inherited variables, so a scroll region inside another never takes its
  * ancestor's shade.
  */
-const shadeColor = 'color-mix(in srgb, var(--sw-color-text) 28%, transparent)';
+export const scrollShadeColor =
+  'color-mix(in srgb, var(--sw-color-text) 28%, transparent)';
 
 type Side = 'left' | 'right';
 
 function edgeShade(side: Side): string {
   const offset =
     side === 'left' ? 'var(--sw-space-6)' : 'calc(-1 * var(--sw-space-6))';
-  return `inset ${offset} 0 var(--sw-space-5) calc(-1 * var(--sw-space-5)) ${shadeColor}`;
+  return `inset ${offset} 0 var(--sw-space-5) calc(-1 * var(--sw-space-5)) ${scrollShadeColor}`;
 }
 
 /**
@@ -68,7 +69,12 @@ ${scrollShadeRules(selector)}`;
 }
 
 export function scrollRegionClassCatalog(): string[] {
-  return ['sw-scroll-more-start', 'sw-scroll-more-end'];
+  return [
+    'sw-scroll-more-start',
+    'sw-scroll-more-end',
+    'sw-scroll-more-top',
+    'sw-scroll-more-bottom',
+  ];
 }
 
 /**
@@ -90,7 +96,7 @@ export function pinnedStartShadeRules(
       )
       .join(',\n');
   return `${after('')} {
-  background: linear-gradient(to right, ${shadeColor}, transparent);
+  background: linear-gradient(to right, ${scrollShadeColor}, transparent);
   content: '';
   inset-block: 0;
   inset-inline-start: 100%;
@@ -100,7 +106,7 @@ export function pinnedStartShadeRules(
 }
 
 ${after(':dir(rtl)')} {
-  background: linear-gradient(to left, ${shadeColor}, transparent);
+  background: linear-gradient(to left, ${scrollShadeColor}, transparent);
 }
 
 @media (forced-colors: active) {
