@@ -245,6 +245,7 @@ export {
   type NavAppearance,
   type NavProps,
 } from './components/Nav.js';
+export { NavCount, type NavCountProps } from './components/NavCount.js';
 export {
   SectionNav,
   sectionNavAppearances,

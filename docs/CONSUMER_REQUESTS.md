@@ -31,6 +31,7 @@ import {
   ListGroup,
   ListRow,
   Nav,
+  NavCount,
   Pagination,
   SegmentedControl,
   Select,

@@ -147,12 +147,16 @@ describe('SectionNav filled CSS', () => {
     ).toBe('true');
   });
 
-  it('draws the count as a danger pill and keeps both in forced colours', () => {
+  it('draws the count as the shared danger pill and keeps both in forced colours', () => {
+    // SectionNav's count and Nav's NavCount share one pill.
     expect(css).toMatch(
-      /\[data-theme\] \.sw-section-nav-count \{[^}]*background: var\(--sw-color-danger\);[^}]*color: var\(--sw-color-onDanger\);[^}]*font-weight: 700;/,
+      /\[data-theme\] \.sw-section-nav-count,\n\[data-theme\] \.sw-nav-count \{[^}]*background: var\(--sw-color-danger\);[^}]*color: var\(--sw-color-onDanger\);[^}]*font-weight: 700;/,
     );
     expect(css).toMatch(
-      /forced-colors: active\) \{\n {2}\[data-theme\] \.sw-section-nav\.sw-section-nav-filled \.sw-section-nav-link\[aria-current\] \{ border-color: Highlight; \}\n {2}\[data-theme\] \.sw-section-nav-count \{ border: 1px solid CanvasText; \}/,
+      /forced-colors: active\) \{\n {2}\[data-theme\] \.sw-section-nav\.sw-section-nav-filled \.sw-section-nav-link\[aria-current\] \{ border-color: Highlight; \}\n\}/,
+    );
+    expect(css).toContain(
+      '@media (forced-colors: active) {\n  [data-theme] .sw-section-nav-count,\n  [data-theme] .sw-nav-count { border: 1px solid CanvasText; }\n}',
     );
   });
 });

@@ -6,6 +6,7 @@ import { cssButtonClasses } from './css-button.js';
 import { cssCalendarButtonClasses } from './css-calendar-button.js';
 import { cssDateRangeClasses } from './css-date-range.js';
 import { cssListClasses } from './css-list.js';
+import { cssCountPillClasses } from './css-count-pill.js';
 import { cssBarChartClasses } from './css-bar-chart.js';
 import { cssChartLegendClasses } from './css-chart-legend.js';
 import { cssChartPlotClasses } from './css-chart-plot.js';
@@ -148,6 +149,8 @@ ${cssCalendarButtonClasses()}
 ${cssDateRangeClasses()}
 
 ${cssListClasses()}
+
+${cssCountPillClasses()}
 
 ${cssBarChartClasses()}
 
