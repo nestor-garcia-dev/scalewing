@@ -44,13 +44,13 @@ describe('ButtonGroup attached CSS', () => {
     );
     expect(css).toContain(`${group} > .sw-button {\n  border-radius: 0;\n}`);
     expect(css).toContain(
-      `${group} > .sw-button + .sw-button {\n  margin-inline-start: -1px;\n}`,
+      `${group} > .sw-button ~ .sw-button {\n  margin-inline-start: -1px;\n}`,
     );
     expect(css).toContain(
-      `${group} > .sw-button:first-child {\n  border-end-start-radius: var(--sw-radius-sm);\n  border-start-start-radius: var(--sw-radius-sm);\n}`,
+      `${group} > .sw-button:first-of-type {\n  border-end-start-radius: var(--sw-radius-sm);\n  border-start-start-radius: var(--sw-radius-sm);\n}`,
     );
     expect(css).toContain(
-      `${group} > .sw-button:last-child {\n  border-end-end-radius: var(--sw-radius-sm);\n  border-start-end-radius: var(--sw-radius-sm);\n}`,
+      `${group} > .sw-button:last-of-type {\n  border-end-end-radius: var(--sw-radius-sm);\n  border-start-end-radius: var(--sw-radius-sm);\n}`,
     );
   });
 
@@ -69,7 +69,7 @@ describe('ButtonGroup attached CSS', () => {
 
   it('draws a divider for a borderless variant in its own text colour', () => {
     expect(css).toContain(
-      `${group} > .sw-button + .sw-button:not(.sw-button-secondary) {\n  border-inline-start-color: color-mix(in srgb, currentColor 30%, transparent);\n}`,
+      `${group} > .sw-button ~ .sw-button:not(.sw-button-secondary) {\n  border-inline-start-color: color-mix(in srgb, currentColor 30%, transparent);\n}`,
     );
   });
 
@@ -130,11 +130,11 @@ describe('ButtonGroup appearance track', () => {
     expect(css).toContain(
       `${track} > .sw-button {\n  background: transparent;\n  border-color: transparent;\n  color: var(--sw-color-text);\n}`,
     );
-    const divider = `${track} > .sw-button + .sw-button {\n  border-inline-start-color: var(--sw-color-border);\n}`;
+    const divider = `${track} > .sw-button ~ .sw-button {\n  border-inline-start-color: var(--sw-color-border);\n}`;
     expect(css).toContain(divider);
     expect(css.indexOf(divider)).toBeGreaterThan(
       css.indexOf(
-        '.sw-button-group.sw-button-group-attached > .sw-button + .sw-button:not(.sw-button-secondary) {',
+        '.sw-button-group.sw-button-group-attached > .sw-button ~ .sw-button:not(.sw-button-secondary) {',
       ),
     );
     expect(css).toContain(`${track} { outline: 1px solid CanvasText; }`);

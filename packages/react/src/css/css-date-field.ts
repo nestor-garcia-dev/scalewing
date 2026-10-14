@@ -6,6 +6,7 @@ import {
 } from './css-document.js';
 import { zIndex } from './stacking.js';
 import { quietFill } from './quiet-fill.js';
+import { rangeBand, rangeBandHover } from './range-band.js';
 
 const body = typographyVariants.body;
 const label = typographyVariants.label;
@@ -249,7 +250,7 @@ function calendarRules(): string {
  * accent ring (3:1 or more on the band). The selected day sits on top.
  */
 .sw-date-field-day-in-range {
-  background: color-mix(in srgb, var(--sw-color-accent) 16%, transparent);
+  background: ${rangeBand};
   border-radius: 0;
   color: var(--sw-color-text);
 }
@@ -275,7 +276,7 @@ function calendarRules(): string {
 }
 
 .sw-date-field-day-in-range:hover:not([aria-disabled='true']) {
-  background: color-mix(in srgb, var(--sw-color-accent) 24%, transparent);
+  background: ${rangeBandHover};
 }
 
 .sw-date-field-day[aria-selected='true'],

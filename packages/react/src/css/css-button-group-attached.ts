@@ -17,6 +17,10 @@ import { joinedZIndex } from './stacking.js';
  * divider in its own text colour at low strength, so a joined row of them
  * still reads as separate buttons; forced colours draw every border.
  *
+ * The buttons are found by type, not by place, so an open calendar a
+ * button renders beside itself (CalendarButton, DateRangeButton) does not
+ * cost the next button its divider or the last one its rounded corners.
+ *
  * The group is its own stacking context: a pressed button's ring paints
  * over its neighbours and the focused button's standard outer ring over
  * both, so neither is covered by the next button.
@@ -37,21 +41,21 @@ ${group} > .sw-button {
   border-radius: 0;
 }
 
-${group} > .sw-button + .sw-button {
+${group} > .sw-button ~ .sw-button {
   margin-inline-start: -1px;
 }
 
-${group} > .sw-button:first-child {
+${group} > .sw-button:first-of-type {
   border-end-start-radius: var(--sw-radius-sm);
   border-start-start-radius: var(--sw-radius-sm);
 }
 
-${group} > .sw-button:last-child {
+${group} > .sw-button:last-of-type {
   border-end-end-radius: var(--sw-radius-sm);
   border-start-end-radius: var(--sw-radius-sm);
 }
 
-${group} > .sw-button + .sw-button:not(.sw-button-secondary) {
+${group} > .sw-button ~ .sw-button:not(.sw-button-secondary) {
   border-inline-start-color: color-mix(in srgb, currentColor 30%, transparent);
 }
 

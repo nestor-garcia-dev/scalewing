@@ -17,6 +17,7 @@ import {
   Box,
   Button,
   CalendarButton,
+  DateRangeButton,
   Card,
   Checkbox,
   RadioGroup,
@@ -734,6 +735,32 @@ People type the date into a text entry in the locale's numeric order (`MM/DD/YYY
     ›
   </Button>
 </Inline>
+```
+
+`DateRangeButton` shows a range of days and opens a calendar to pick a first and a last day, such as a report's period between its own ‹ and › steps. Supply `label` (what pressing it does, such as "Choose survey period"), `value` (`{ start, end }`, both `YYYY-MM-DD` and included) and `onChange`; optional `min`, `max`, `today`, `disabled`, `locale`, `weekStartsOn`, `id` and a `ref` behave as on `CalendarButton`. The button shows a calendar glyph and the range in the locale, sharing what both ends have ("Oct 6 – 12, 2026"; one day as one date); its name is `label`, `labels.nameSeparator`, then that range. The first press on a day sets the start and the second the end; a press before the start starts over from it, and Apply with only a start applies that one day. Days after `max` are disabled, and once a start is pressed so are the days past `maxDays` (a whole number of days, both ends counted, such as 366). The range being picked and its length (`labels.dayCount`) are a polite status. **Apply** calls `onChange` when the range changed, closes and returns focus to the button; **Cancel**, Escape and a press outside close without a change. `presets` (`{ id, label, range }[]`) are ranges chosen in one press: a press applies its range at once and closes, and the one matching the range shown is pressed; a preset outside `min`/`max` or longer than `maxDays` throws, so compute presets from the same bounds and leave out one that does not fit (such as Last year for a station opened this spring). From `md` up the calendar is a popover with the presets beside two months (above them below `lg`, where both do not fit side by side), the range and the hint, and Cancel and Apply; below `md` it is a `Dialog` bottom sheet titled by `label` with the range under the title, the presets in a row that scrolls sideways, one month and the hint over Cancel and Apply. The keyboard is the calendar's: arrows, Home, End, PageUp and PageDown (with Shift by year) move one focus day across both months, and Enter or Space presses it. `labels` takes `previousMonth`, `nextMonth`, `nameSeparator`, `presets` (the presets group's name), `apply`, `cancel`, `close`, `hint` and `dayCount(days)`, in English by default. `size` (default `md`, at least 44 px tall on a coarse pointer) and `variant` (default `neutral`) follow `Button`. A value outside `min`/`max` or longer than `maxDays` is kept; an empty or malformed date, a start after its end, a `maxDays` under 1 or fractional, repeated preset ids, or an empty word throws a `RangeError`.
+
+```tsx
+<ButtonGroup aria-label="Survey period" attached>
+  <Button aria-label="The period before" variant="neutral" onPress={previous}>
+    ‹
+  </Button>
+  <DateRangeButton
+    label="Choose survey period"
+    value={period}
+    onChange={setPeriod}
+    presets={[
+      { id: 'week', label: 'Last 7 days', range: lastSevenDays },
+      { id: 'month', label: 'This month', range: thisMonth },
+    ]}
+    max={stationDay}
+    maxDays={366}
+    today={stationDay}
+    labels={{ apply: 'Show' }}
+  />
+  <Button aria-label="The period after" variant="neutral" onPress={next}>
+    ›
+  </Button>
+</ButtonGroup>
 ```
 
 ```tsx

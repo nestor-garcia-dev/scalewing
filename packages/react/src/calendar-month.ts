@@ -93,6 +93,11 @@ export function addMonths(value: string, delta: number): string {
   });
 }
 
+/** Days from `start` to `end`: 0 for the same day, negative when `end` is earlier. */
+export function daysBetween(start: string, end: string): number {
+  return toDayNumber(requireDate(end)) - toDayNumber(requireDate(start));
+}
+
 export function monthOf(value: string): CalendarMonth {
   const parts = requireDate(value);
   return { year: parts.year, month: parts.month };
@@ -101,6 +106,19 @@ export function monthOf(value: string): CalendarMonth {
 export function shiftMonth(month: CalendarMonth, delta: number): CalendarMonth {
   const index = month.year * 12 + (month.month - 1) + delta;
   return { year: Math.floor(index / 12), month: (index % 12) + 1 };
+}
+
+/** Months from `from` to `to`: 0 for the same month, negative when `to` is earlier. */
+export function monthsBetween(from: CalendarMonth, to: CalendarMonth): number {
+  return to.year * 12 + to.month - (from.year * 12 + from.month);
+}
+
+/** `value`'s day of the month in `month`, capped at that month's length. */
+export function sameDayIn(month: CalendarMonth, value: string): string {
+  return formatDateOnly({
+    ...month,
+    day: Math.min(requireDate(value).day, daysInMonth(month.year, month.month)),
+  });
 }
 
 export function firstOfMonth(month: CalendarMonth): string {

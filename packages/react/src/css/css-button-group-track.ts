@@ -42,7 +42,7 @@ ${track} > .sw-button {
   color: var(--sw-color-text);
 }
 
-${track} > .sw-button + .sw-button {
+${track} > .sw-button ~ .sw-button {
   border-inline-start-color: var(--sw-color-border);
 }
 

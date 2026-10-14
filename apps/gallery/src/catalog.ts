@@ -3,6 +3,7 @@ import { SwitchSection } from './sections/switch.js';
 import { ActionBarSection } from './sections/action-bar.js';
 import { DateFieldSection } from './sections/date-field.js';
 import { CalendarButtonSection } from './sections/calendar-button.js';
+import { DateRangeButtonSection } from './sections/date-range-button.js';
 import { CheckboxSection } from './sections/checkbox.js';
 import { RadioGroupSection } from './sections/radio-group.js';
 import { SpinnerSection } from './sections/spinner.js';
@@ -234,6 +235,12 @@ export const catalog = [
     label: 'CalendarButton',
     group: 'controls',
     Section: CalendarButtonSection,
+  },
+  {
+    id: 'date-range-button',
+    label: 'DateRangeButton',
+    group: 'controls',
+    Section: DateRangeButtonSection,
   },
   { id: 'dialog', label: 'Dialog', group: 'controls', Section: DialogSection },
   { id: 'toast', label: 'Toast', group: 'controls', Section: ToastSection },

@@ -64,8 +64,8 @@ const openPopups = [
   // popover API exists.
   '.sw-combobox-popup',
   '.sw-tooltip:not([hidden])',
-  // DateField and CalendarButton share it. Rendered only while open; on the
-  // top layer where the popover API exists.
+  // DateField, CalendarButton and DateRangeButton share it. Rendered only
+  // while open; on the top layer where the popover API exists.
   '.sw-date-field-calendar',
 ].join(', ');
 
