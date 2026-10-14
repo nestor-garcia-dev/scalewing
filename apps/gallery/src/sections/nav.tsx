@@ -1,4 +1,12 @@
-import { Box, Button, Nav, Stack, Text, Tooltip } from '@scalewing/react';
+import {
+  Box,
+  Button,
+  Nav,
+  NavCount,
+  Stack,
+  Text,
+  Tooltip,
+} from '@scalewing/react';
 import { useState } from 'react';
 
 import { Glyph } from '../glyph.js';
@@ -10,11 +18,19 @@ export function NavSection() {
   return (
     <Section
       id="nav"
-      purpose="Nav is a label-size link cluster. Mark the current destination with aria-current. It is not a button group; use SegmentedControl for exclusive choices. appearance words draws its links or Buttons as plain words, the current one bold in the text color."
+      purpose="Nav is a label-size link cluster. Mark the current destination with aria-current. It is not a button group; use SegmentedControl for exclusive choices. appearance words draws its links or Buttons as plain words, the current one bold in the text color. NavCount, placed inside a destination after its words, adds a count pill (the one SectionNav's items draw) that is part of the destination's name; countLabel says what it means in place of the bare number, and 0 shows nothing."
       title="Nav"
       usage={`<Nav aria-label="Habitats">
   <Box as="a" href="#nav" aria-current="page">Forest</Box>
   <Box as="a" href="#card">Savanna</Box>
+</Nav>
+
+<Nav appearance="words" aria-label="Areas">
+  <Box as="a" href="/sightings">Sightings</Box>
+  <Box as="a" href="/tasks" aria-current="page">
+    Tasks
+    <NavCount count={8} countLabel="8 tasks to do" />
+  </Box>
 </Nav>`}
     >
       <Stack gap={3}>
@@ -27,6 +43,7 @@ export function NavSection() {
               key={habitat.value}
             >
               {habitat.label}
+              {index === 1 ? <NavCount count={4} /> : null}
             </Box>
           ))}
         </Nav>
@@ -73,6 +90,32 @@ export function NavSection() {
           Buttons (a glyph beside its words, one in a Tooltip, one disabled) and
           links read the same. Keep each destination's words visible: a glyph
           alone has no weight to change.
+        </Text>
+        <Nav appearance="words" aria-label="Reserve areas">
+          <Box as="a" href="#nav">
+            Sightings
+          </Box>
+          <Box aria-current="page" as="a" href="#nav">
+            Tasks
+            <NavCount count={8} countLabel="8 tasks to do" />
+          </Box>
+          <Box as="a" href="#nav">
+            Nests
+            <NavCount count={12} />
+          </Box>
+          <Box as="a" href="#nav">
+            Traps
+            <NavCount count={0} />
+          </Box>
+          <Button onPress={() => undefined} size="sm" variant="ghost">
+            Alerts
+            <NavCount count={3} />
+          </Button>
+        </Nav>
+        <Text color="muted" variant="caption">
+          NavCount: a count after a destination&apos;s words, read in its name
+          (&quot;Tasks 8 tasks to do&quot;, &quot;Nests 12&quot;); Traps has
+          none to show.
         </Text>
       </Stack>
     </Section>
