@@ -111,3 +111,28 @@ test('Tab reaches both Pagination steps, the one at an end too', async ({
   await expect(previous).toHaveAttribute('aria-disabled', 'true');
   await tabsTo(page, previous, next);
 });
+
+test('Tab moves through ListRows, the link rows too, past a disabled one', async ({
+  page,
+}) => {
+  await page.goto('/#list-group');
+  const look = page
+    .locator('#list-group')
+    .getByRole('list', { name: 'Worth a look' });
+  await tabsTo(page, look.getByRole('button').first(), look.getByRole('link'));
+  await tabsTo(page, look.getByRole('link'), look.getByRole('button').nth(1));
+
+  const station = page
+    .locator('#list-group')
+    .getByRole('list', { name: 'Station' });
+  // The disabled row is no tab stop: Shift+Tab from the row after it goes
+  // back to the choice list above.
+  await station.getByRole('button', { name: 'Leave the survey' }).focus();
+  await page.keyboard.press('Shift+Tab');
+  await expect(
+    page
+      .locator('#list-group')
+      .getByRole('list', { name: 'Survey habitat' })
+      .getByRole('button', { name: 'Savanna' }),
+  ).toBeFocused();
+});

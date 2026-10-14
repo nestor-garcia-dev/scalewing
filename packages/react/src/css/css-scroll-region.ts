@@ -68,6 +68,56 @@ ${selector}:focus-visible {
 ${scrollShadeRules(selector)}`;
 }
 
+/** The scroll shade fading away from an edge, a gradient toward `direction`. */
+export function blockShade(direction: 'bottom' | 'top'): string {
+  return `linear-gradient(to ${direction}, ${scrollShadeColor}, transparent)`;
+}
+
+/** The selectors of a region scrolled past its top, its bottom, or both. */
+export type BlockEdgeSelectors = { top: string; bottom: string; both: string };
+
+/**
+ * The shade a region of bounded height draws on its own top or bottom
+ * edge while `ScrollRegion` marks rows past it (`sw-scroll-more-top`,
+ * `sw-scroll-more-bottom`): a background layer a spacing step 5 deep,
+ * fixed to the box and under the rows. A caller narrows the selectors to
+ * the edges nothing pinned covers. Forced colours draw no shade; the
+ * system's scrollbar is the cue. A bounded Table and a bounded ListGroup
+ * share it.
+ */
+export function blockEdgeShadeRules({
+  top,
+  bottom,
+  both,
+}: BlockEdgeSelectors): string {
+  return `${top},
+${bottom} {
+  background-repeat: no-repeat;
+  background-size: 100% var(--sw-space-5);
+}
+
+${top} {
+  background-image: ${blockShade('bottom')};
+  background-position: top;
+}
+
+${bottom} {
+  background-image: ${blockShade('top')};
+  background-position: bottom;
+}
+
+${both} {
+  background-image: ${blockShade('bottom')}, ${blockShade('top')};
+  background-position: top, bottom;
+}
+
+@media (forced-colors: active) {
+  ${top},
+  ${bottom},
+  ${both} { background-image: none; }
+}`;
+}
+
 export function scrollRegionClassCatalog(): string[] {
   return [
     'sw-scroll-more-start',

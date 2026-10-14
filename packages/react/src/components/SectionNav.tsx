@@ -1,4 +1,4 @@
-import { type MouseEvent, type ReactNode } from 'react';
+import { type ReactNode } from 'react';
 
 import { type AccessibleName } from '../accessible-name.js';
 import { cx } from '../class-names.js';
@@ -9,6 +9,7 @@ import {
   type SectionNavAppearance,
 } from '../css/css-section-nav-filled.js';
 import { tabStop } from '../tab-stop.js';
+import { plainPress } from './link-press.js';
 
 export type { SectionNavAppearance };
 export { sectionNavAppearances } from '../css/css-section-nav-filled.js';
@@ -62,17 +63,6 @@ export type SectionNavProps = AccessibleName & {
    */
   appearance?: SectionNavAppearance;
 };
-
-function plainPress(event: MouseEvent<HTMLAnchorElement>): boolean {
-  return (
-    event.button === 0 &&
-    !event.defaultPrevented &&
-    !event.metaKey &&
-    !event.ctrlKey &&
-    !event.shiftKey &&
-    !event.altKey
-  );
-}
 
 function ariaCurrent(
   current: SectionNavItem['current'],

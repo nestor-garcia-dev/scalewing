@@ -45,6 +45,7 @@ import { PalettesSection } from './sections/palettes.js';
 import { SegmentedControlSection } from './sections/segmented-control.js';
 import { StatTileSection } from './sections/stat-tile.js';
 import { DescriptionListSection } from './sections/description-list.js';
+import { ListGroupSection } from './sections/list-group.js';
 import { TabsSection } from './sections/tabs.js';
 import { SelectSection } from './sections/select.js';
 import { MultiSelectSection } from './sections/multi-select.js';
@@ -249,6 +250,12 @@ export const catalog = [
     label: 'StatTile',
     group: 'data',
     Section: StatTileSection,
+  },
+  {
+    id: 'list-group',
+    label: 'ListGroup',
+    group: 'data',
+    Section: ListGroupSection,
   },
   {
     id: 'description-list',

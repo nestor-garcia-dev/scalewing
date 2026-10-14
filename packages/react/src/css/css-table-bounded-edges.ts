@@ -1,4 +1,4 @@
-import { scrollShadeColor } from './css-scroll-region.js';
+import { blockEdgeShadeRules, blockShade } from './css-scroll-region.js';
 
 const region = '.sw-table-bounded';
 
@@ -19,8 +19,6 @@ const region = '.sw-table-bounded';
  * is. Forced colours draw no shade; the system scrollbar is the cue.
  */
 function shadeRules(): string {
-  const shade = (direction: 'bottom' | 'top') =>
-    `linear-gradient(to ${direction}, ${scrollShadeColor}, transparent)`;
   const headCells = `${region}.sw-scroll-more-top > .sw-table-sticky > thead > tr:last-child > :is(th, td)::before`;
   const footCells = `${region}.sw-scroll-more-bottom > .sw-table > .sw-table-footer-sticky > tr:first-child > :is(th, td)::before`;
   const noHead = ':not(:has(> .sw-table > thead))';
@@ -29,7 +27,7 @@ function shadeRules(): string {
   const ownBottom = `${region}.sw-scroll-more-bottom${noPinnedFoot}`;
   const ownBoth = `${region}.sw-scroll-more-top.sw-scroll-more-bottom${noHead}${noPinnedFoot}`;
   return `${headCells} {
-  background: ${shade('bottom')};
+  background: ${blockShade('bottom')};
   border-bottom: 0;
   border-top: 1px solid var(--sw-color-border);
   box-sizing: border-box;
@@ -39,7 +37,7 @@ function shadeRules(): string {
 }
 
 ${footCells} {
-  background: ${shade('top')};
+  background: ${blockShade('top')};
   border-bottom: 2px solid var(--sw-color-border);
   border-top: 0;
   box-sizing: border-box;
@@ -48,33 +46,11 @@ ${footCells} {
   inset-block-start: auto;
 }
 
-${ownTop},
-${ownBottom} {
-  background-repeat: no-repeat;
-  background-size: 100% var(--sw-space-5);
-}
-
-${ownTop} {
-  background-image: ${shade('bottom')};
-  background-position: top;
-}
-
-${ownBottom} {
-  background-image: ${shade('top')};
-  background-position: bottom;
-}
-
-${ownBoth} {
-  background-image: ${shade('bottom')}, ${shade('top')};
-  background-position: top, bottom;
-}
+${blockEdgeShadeRules({ top: ownTop, bottom: ownBottom, both: ownBoth })}
 
 @media (forced-colors: active) {
   ${headCells},
   ${footCells} { background: none; border-color: CanvasText; }
-  ${ownTop},
-  ${ownBottom},
-  ${ownBoth} { background-image: none; }
 }`;
 }
 
