@@ -7,7 +7,9 @@ const phone = 'Change in birds, on a phone';
 
 /** The chart box around a hidden table, found by the table's name. */
 function chartNamed(page: Page, name: string): Locator {
-  return page.getByRole('table', { name }).locator('..');
+  return page.locator('.sw-chart', {
+    has: page.getByRole('table', { name }),
+  });
 }
 
 /** Each column's painted fill, in drawing order. */
@@ -37,6 +39,13 @@ test('ColumnChart draws its figures, read from a hidden table, and fits its widt
   await expect(table.getByRole('cell', { name: '+63' })).toHaveCount(1);
   const svg = chart.locator('svg');
   await expect(svg).toHaveAttribute('aria-hidden', 'true');
+
+  // The hidden table does not widen the page.
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth - innerWidth,
+    ),
+  ).toBeLessThanOrEqual(0);
 
   // The drawing is laid out at the chart's own width: no sideways scroll.
   const fit = await chart.evaluate((node) => ({

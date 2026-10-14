@@ -6,7 +6,9 @@ const roost = 'Birds roosting at the reserve each night';
 const phone = 'Birds roosting, on a phone';
 
 function chartNamed(page: Page, name: string): Locator {
-  return page.getByRole('table', { name }).locator('..');
+  return page.locator('.sw-chart', {
+    has: page.getByRole('table', { name }),
+  });
 }
 
 test('LineChart draws a value by date, read from a hidden table, and fits its width', async ({
@@ -30,6 +32,13 @@ test('LineChart draws a value by date, read from a hidden table, and fits its wi
     '2600',
   );
   await expect(chart.locator('svg')).toHaveAttribute('aria-hidden', 'true');
+
+  // The hidden table does not widen the page.
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth - innerWidth,
+    ),
+  ).toBeLessThanOrEqual(0);
 
   const fit = await chart.evaluate((node) => ({
     box: node.getBoundingClientRect().width,
