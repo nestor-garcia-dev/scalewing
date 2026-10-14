@@ -637,6 +637,29 @@ A bar in its own column reads as empty cells to assistive technology, which is f
 </DescriptionList>
 ```
 
+`StatTile` is one prominent figure with its label: a `label`, a consumer-formatted `value` (tabular figures; `tone` `accent`, `success`, `danger` or `warning` colours it), an optional `caption` under it and an optional `glyph` in a tinted circle. `emphasis="primary"` fills the one figure a page leads with in the accent. `appearance="plain"` (default `"card"`, `statTileAppearances`) drops the tile's surface, edge, radius and padding, top-aligned, for figures inside a card that already has them, such as four answers in a row divided by hairlines: compose a `Grid` and a vertical `Separator` before every tile but the first, hiding the one that would start a row below `md` (`Inline hideBelow="md"` around it). A plain tile cannot be `primary` (there is no surface to fill), and an unknown appearance throws a `RangeError`.
+
+```tsx
+<Card padding={5}>
+  <Grid columns={4} columnsBelow={{ md: 2 }} gap={4}>
+    {answers.map((answer, index) => (
+      <Inline align="stretch" gap={4} key={answer.label}>
+        {index > 0 ? (
+          // 2 is columnsBelow md: an answer that starts a row there has no hairline.
+          <Inline
+            align="stretch"
+            hideBelow={index % 2 === 0 ? 'md' : undefined}
+          >
+            <Separator orientation="vertical" decorative />
+          </Inline>
+        ) : null}
+        <StatTile appearance="plain" {...answer} />
+      </Inline>
+    ))}
+  </Grid>
+</Card>
+```
+
 `ListGroup` is rows in one list with a hairline between each pair, the web twin of react-native's: a `ul` (its list role kept) named by `aria-label` or `aria-labelledby`. `variant="panel"` (the default) is one bordered panel; `plain` draws no panel and a hairline above the first row too, for rows inside a `Card`. Each `ListRow` has a `title` (weight 600, or the body weight with `titleAppearance="plain"`; `tone="danger"` for a row that ends something), an optional muted `detail` line, an optional `value` at its end (weight 600, tabular figures; `valueTone` `success`, `danger`, `muted` or `accent`; `valueDetail` a muted line under it) and an optional `leading` mark such as a status dot, hidden from assistive technology, so the words say what it means. With `onPress` the whole row is a button, and with `href` a link (`onPress` then takes a plain press for a client router); either adds a chevron, a quiet fill under the pointer and 44 px on a coarse pointer, and the row is named by its title and value and described by its detail lines (`aria-label` replaces the name). `selected` makes a pressable row a choice: a check while true, `aria-pressed` on a button or `aria-current` on a link (on a row with neither `onPress` nor `href` it throws, since nothing could read the state). `accessory="none"` hides the chevron of a row that acts in place; `disabled` blocks presses. A row with neither `onPress` nor `href` only states something. `maxHeight={{ rows }}` bounds the list to that many rows of a title and one detail line, the rest scrolling inside its own named region, which shades an edge with more rows past it; a bounded list must be named. `footer` stays pinned under the rows, outside the scroll, such as a `ListRow` with the count and the total (a row there is not a list item). An empty title or value, an unknown variant or tone, a `valueDetail` without a value, or a bad row count throws a `RangeError`.
 
 ```tsx

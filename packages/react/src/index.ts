@@ -187,6 +187,8 @@ export {
 } from './components/Dialog.js';
 export {
   StatTile,
+  type StatTileAppearance,
+  statTileAppearances,
   type StatTileEmphasis,
   type StatTileProps,
   type StatTileTone,
