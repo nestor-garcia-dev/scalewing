@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: accepted 2026-10-14 (Teisoro F-012-S05, release M3 "periods, lists and figures", item 1; the manager views inventory's row 4 and risk 3; plan approval under Teisoro decisions O-1, D-1 and D-9).
+Status: released in `@scalewing/react` 1.40.0 (PR #181; accepted 2026-10-14; Teisoro F-012-S05, release M3 "periods, lists and figures", item 1; the manager views inventory's row 4 and risk 3; plan approval under Teisoro decisions O-1, D-1 and D-9).
 Renderer: react
 Missing surface: `DateRangeButton`, a button showing a range of days that opens a calendar to pick a first and a last day, with presets.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: every report's period control has a date button ("Oct 6 – 12, 2026") between ‹ and ›. The PeriodPicker board opens a popover from it: presets on the left (Last 7 days, This month, Last month, Last 90 days, This year, Last year), then two months, then the chosen range with its length and how to pick, and Cancel and Show. The PhonePeriod board is a bottom sheet: the title, the range and its length under it, the presets in a row, one month, the hint, and Cancel and Show. A range is up to a year (the store's reports read up to 366 days), and days after today cannot be picked. Teisoro would otherwise rebuild the calendar grid, its keyboard, its popover and its sheet.

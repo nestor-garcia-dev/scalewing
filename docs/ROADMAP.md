@@ -42,8 +42,9 @@ Teisoro F-012-S05, release M3 "periods, lists and figures"
 (`teisoro-date-range-button.md`, #181); web `ListGroup` / `ListRow`
 (`teisoro-list-group.md`, #182); a count on a `Nav` word, `NavCount`
 (`teisoro-nav-count.md`, #183); and `StatTile` `appearance="plain"`
-(`teisoro-stat-tile-plain.md`). Next: release `@scalewing/react` 1.40.0;
-Teisoro pins it in S12 (`PeriodControl`, `ReportAnswer`, `LookList`).
+(`teisoro-stat-tile-plain.md`, #184). Released in `@scalewing/react`
+1.40.0. Next: Teisoro pins 1.40.0 in S12 (`PeriodControl`, `ReportAnswer`,
+`LookList`).
 
 Teisoro F-011-S02, release R1 "guided-form core": web `Stepper`
 (#113), `DenominationGrid` entry rows (#114), `Steps` / `Step` (#115)

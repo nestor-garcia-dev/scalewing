@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: accepted 2026-10-14 (Teisoro F-012-S05, release M3 "periods, lists and figures", item 2; the manager views inventory's rows 13 and 30; plan approval under Teisoro decisions O-1, D-1, D-6 and D-9).
+Status: released in `@scalewing/react` 1.40.0 (PR #182; accepted 2026-10-14; Teisoro F-012-S05, release M3 "periods, lists and figures", item 2; the manager views inventory's rows 13 and 30; plan approval under Teisoro decisions O-1, D-1, D-6 and D-9).
 Renderer: react
 Missing surface: web `ListGroup` and `ListRow`, the web counterpart of react-native 1.10.0's (`futmas-list-row.md`), with a bounded height and a pinned footer.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: every report has "Worth a look" (a status dot, a bold title, one muted detail line, the row opens the source, a chevron) and "Went smoothly" (a check and a plain statement, no chevron) inside a Card with hairlines between rows. All 21 phone boards draw their lists the same way, many with a signed amount and a note at the end, and a list with a total scrolls inside itself with the total pinned below it ("14 closeouts · the list scrolls · the total is all 14", Teisoro D-6). Table is for columns; a Card per row cannot draw one panel with hairlines; a `Box as="a"` row would rebuild the chevron, the pressed fill, the names and the bounded scroll in every report.
