@@ -22,7 +22,8 @@ Teisoro F-012-S03, release M1 "tables that hold a period"
 scroll inside the table's own region with the header and a sticky total
 pinned to it (`teisoro-table-contained-scroll.md`); then `TableRow`
 `variant="total"` (`teisoro-table-row-total.md`), `DataBar` and
-`Pagination`. `maxHeight` merged in #170; `variant="total"` in review.
+`Pagination`. `maxHeight` merged in #170 and `variant="total"` in #171; `DataBar`
+(`teisoro-data-bar.md`) follows.
 Next: the remaining M1 items,
 then the release, and Teisoro's `ReportTable` and `Statement` pin it.
 

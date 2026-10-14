@@ -36,6 +36,7 @@ import { boxLinkClassCatalog } from './css-box-link.js';
 import { cssComponentClasses } from './css-components.js';
 import { buttonClassCatalog } from './css-button.js';
 import { chartClassCatalog } from './css-chart.js';
+import { dataBarClassCatalog } from './css-data-bar.js';
 import { dataClassCatalog } from './css-data.js';
 import { segmentedClassCatalog } from './css-segmented.js';
 import { tableClassCatalog } from './css-table.js';
@@ -79,6 +80,7 @@ export function utilityClassCatalog(): string[] {
     ...tableClassCatalog(),
     ...scrollRegionClassCatalog(),
     ...chartClassCatalog(),
+    ...dataBarClassCatalog(),
     ...chromeClassCatalog(),
     ...sectionNavClassCatalog(),
     ...dialogClassCatalog(),
