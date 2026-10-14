@@ -39,8 +39,8 @@ Teisoro pins 1.39.0 in its first story that draws a chart (S13,
 
 Teisoro F-012-S05, release M3 "periods, lists and figures"
 (`@scalewing/react` 1.40.0), one PR each: `DateRangeButton`
-(`teisoro-date-range-button.md`); then web `ListGroup` / `ListRow`
-(`teisoro-list-group.md`), a count on a `Nav` word (`teisoro-nav-count.md`)
+(`teisoro-date-range-button.md`, #181); web `ListGroup` / `ListRow`
+(`teisoro-list-group.md`); then a count on a `Nav` word (`teisoro-nav-count.md`)
 and `StatTile` `appearance="plain"` (`teisoro-stat-tile-plain.md`).
 
 Teisoro F-011-S02, release R1 "guided-form core": web `Stepper`

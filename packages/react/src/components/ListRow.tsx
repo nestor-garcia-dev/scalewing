@@ -1,0 +1,186 @@
+'use client';
+
+import { type ReactNode, useContext, useId } from 'react';
+
+import { cx } from '../class-names.js';
+import {
+  assertListRow,
+  listRowAccessory,
+  type ListRowTitleAppearance,
+  type ListRowTone,
+  type ListRowValueTone,
+} from '../list-options.js';
+import { tabStop } from '../tab-stop.js';
+import { plainPress } from './link-press.js';
+import { ListRowContent } from './list/ListRowContent.js';
+import { ListRowContainer } from './list/list-row-container.js';
+
+export type ListRowProps = {
+  title: string;
+  /** A muted line under the title. */
+  detail?: string;
+  /** A figure or word at the row's end, such as "+$1.48". */
+  value?: string;
+  /** A muted line under the value, such as "checks $3,427". */
+  valueDetail?: string;
+  /** Colours the value only, as a table cell's tone; the words say why. */
+  valueTone?: ListRowValueTone;
+  /**
+   * A consumer mark at the row's start, such as a status dot or a Lucide
+   * glyph (ADR 0008). It is hidden from assistive technology, so the words
+   * must say what it means.
+   */
+  leading?: ReactNode;
+  /**
+   * Makes the whole row a button (or, with `href`, a link's plain press
+   * for a client router) and adds the chevron.
+   */
+  onPress?: () => void;
+  /** Makes the whole row a link to `href`, with the chevron. */
+  href?: string;
+  /**
+   * Makes the row a choice: a check while true, nothing while false, and
+   * the state (`aria-pressed` on a button, `aria-current` on a link). Only
+   * on a row with `onPress` or `href`.
+   */
+  selected?: boolean;
+  /** Dims the row and blocks presses; a link row drops its `href`. */
+  disabled?: boolean;
+  /** `danger` draws the title in the danger colour, for a row that ends something. */
+  tone?: ListRowTone;
+  /** `plain` sets the title at the body weight, for a list of plain statements. */
+  titleAppearance?: ListRowTitleAppearance;
+  /** `none` hides the chevron of a pressable row that acts in place. */
+  accessory?: 'chevron' | 'none';
+  /**
+   * Replaces a pressable row's name, which is its title and value; its
+   * detail lines are its description.
+   */
+  'aria-label'?: string;
+};
+
+function ids(...parts: (string | false)[]): string | undefined {
+  const joined = parts.filter(Boolean).join(' ');
+  return joined === '' ? undefined : joined;
+}
+
+/**
+ * One row of a `ListGroup`: it opens something (`onPress` or `href`, with
+ * a chevron, the whole row pressing), picks one option in place
+ * (`selected`), or only states something (neither).
+ */
+export function ListRow({
+  title,
+  detail,
+  value,
+  valueDetail,
+  valueTone,
+  leading,
+  onPress,
+  href,
+  selected,
+  disabled = false,
+  tone = 'default',
+  titleAppearance = 'strong',
+  accessory = 'chevron',
+  'aria-label': ariaLabel,
+}: ListRowProps) {
+  const pressable = onPress !== undefined || href !== undefined;
+  assertListRow({
+    title,
+    tone,
+    titleAppearance,
+    valueTone,
+    accessory,
+    value,
+    valueDetail,
+    selected,
+    pressable,
+  });
+  const container = useContext(ListRowContainer);
+  const id = useId();
+  const kind = listRowAccessory({ pressable, selected, accessory });
+  const content = (
+    <ListRowContent
+      accessory={kind}
+      detail={detail}
+      id={id}
+      leading={leading}
+      title={title}
+      titleAppearance={titleAppearance}
+      tone={tone}
+      value={value}
+      valueDetail={valueDetail}
+      valueTone={valueTone}
+    />
+  );
+  const className = cx(
+    'sw-list-row',
+    pressable && 'sw-list-row-pressable',
+    disabled && 'sw-list-row-disabled',
+  );
+  const naming = {
+    'aria-label': ariaLabel,
+    'aria-labelledby': ariaLabel
+      ? undefined
+      : ids(`${id}-title`, value !== undefined && `${id}-value`),
+    'aria-describedby': ids(
+      Boolean(detail) && `${id}-detail`,
+      Boolean(valueDetail) && `${id}-value-detail`,
+    ),
+  };
+
+  let row: ReactNode;
+  if (href !== undefined)
+    row = (
+      <a
+        {...naming}
+        aria-current={selected ? 'true' : undefined}
+        aria-disabled={disabled || undefined}
+        className={className}
+        href={disabled ? undefined : href}
+        onClick={
+          onPress && !disabled
+            ? (event) => {
+                if (!plainPress(event)) return;
+                event.preventDefault();
+                onPress();
+              }
+            : undefined
+        }
+        role={disabled ? 'link' : undefined}
+        tabIndex={disabled ? undefined : tabStop}
+      >
+        {content}
+      </a>
+    );
+  else if (onPress !== undefined)
+    row = (
+      <button
+        {...naming}
+        aria-pressed={selected}
+        className={className}
+        disabled={disabled}
+        onClick={onPress}
+        tabIndex={tabStop}
+        type="button"
+      >
+        {content}
+      </button>
+    );
+  else
+    row = (
+      <div
+        aria-label={ariaLabel}
+        className={className}
+        role={ariaLabel ? 'group' : undefined}
+      >
+        {content}
+      </div>
+    );
+  return container === 'li' ? (
+    <li className="sw-list-item">{row}</li>
+  ) : (
+    <div className="sw-list-item">{row}</div>
+  );
+}

@@ -1,4 +1,5 @@
 import { typographyVariants } from '@scalewing/tokens';
+import { checkStrokeIn } from './chevron.js';
 
 const body = typographyVariants.body;
 const caption = typographyVariants.caption;
@@ -32,8 +33,7 @@ function markerRules(): string {
 
 /* Private chrome: a check drawn with two borders, as Checkbox's. */
 .sw-steps-item-done .sw-steps-marker::after {
-  border-bottom: 2px solid var(--sw-color-surface);
-  border-right: 2px solid var(--sw-color-surface);
+  ${checkStrokeIn('var(--sw-color-surface)')}
   content: '';
   height: var(--sw-space-3);
   margin-top: calc(-1 * var(--sw-space-1) / 2);

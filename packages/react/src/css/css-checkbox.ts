@@ -1,4 +1,5 @@
 import { typographyVariants } from '@scalewing/tokens';
+import { checkStrokeIn } from './chevron.js';
 
 const label = typographyVariants.label;
 const caption = typographyVariants.caption;
@@ -51,8 +52,7 @@ export function cssCheckboxClasses(): string {
 }
 
 .sw-checkbox-mark::after {
-  border-bottom: 2px solid var(--sw-color-surface);
-  border-right: 2px solid var(--sw-color-surface);
+  ${checkStrokeIn('var(--sw-color-surface)')}
   content: '';
   display: none;
   height: var(--sw-space-2);
