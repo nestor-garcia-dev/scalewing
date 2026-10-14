@@ -10,6 +10,7 @@ import {
   ActionBar,
   ActionMenu,
   BarChart,
+  DataBar,
   Box,
   Button,
   CalendarButton,
@@ -441,6 +442,19 @@ A ledger read across as well as down takes `Table` `columnRules` (a hairline at 
 ```
 
 `BarChart` `formatValue` writes the axis's values and each value without its own `valueLabel`, such as a currency. `diverging` puts zero in the middle of each track behind a hairline: a positive bar grows toward the inline end and a negative one toward the start, on one scale, and the axis reads minus the maximum, zero and the maximum. Without it every bar grows from the start. An item's `tone` (`BarChartTone`: `'accent'`, `'success'`, `'warning'` or `'danger'`, listed in the exported `barChartTones`) colors its bar by what it means in place of its sign's default (the accent, or danger for a negative value), such as a diverging chart's overage in `'warning'` and shortage in `'danger'`; a toned bar keeps its sign's place, every tone keeps 3:1 against the track, and an unknown tone throws a `RangeError`. Forced colors draw every bar in the system text color, so the value and its side of zero carry the meaning there.
+
+`DataBar` is a horizontal range bar for a table cell or a list row: a bar from `from` to `to` (whichever is larger is its far end) on a track whose domain runs from `min` to `max`, such as where a statement's line leaves the running total. It fills its container's width, a spacing step 4 tall with no track fill, and its ends follow the writing direction. It is decorative (`aria-hidden`): the figure is the cell's own text, so keep the value beside it, and a cell holding both is named by the figure alone. `tone` (`DataBarTone`, listed in `dataBarTones`; default `'neutral'`) says what the bar is: `'neutral'` for where it started, `'success'` for what came in, `'muted'` for what went out (there is no danger tone: an outflow is not an error), `'strong'` for a subtotal and `'accent'` for what was counted or recorded. Each is a semantic colour mixed into the surface, 1.5:1 or more on it, the three greys 1.5:1 or more apart, in every palette and scheme. A domain from below zero to above it (`min < 0 < max`) draws a hairline at zero, so a column of differences diverges around it (`from={0} to={value}`), and the bar's end at zero is square. Values past the domain are clamped to it; non-finite numbers, a `min` not under `max`, or an unknown tone throw a `RangeError`. Forced colors draw the bar and the zero line in the system text color.
+
+A bar in its own column reads as empty cells to assistive technology, which is fine while the figure's cell carries the value; a bar and its figure can also share one cell, side by side in a `Grid`.
+
+```tsx
+<TableCell numeric>
+  <Grid align="center" columns={2} gap={2}>
+    <DataBar from={0} to={-6} min={-10} max={10} tone="muted" />
+    <span>−6</span>
+  </Grid>
+</TableCell>
+```
 
 `Spinner` shows indeterminate loading in small, medium, or large sizes. Supply localized `label` for the one announced status in a loading region. Use `decorative` on additional indicators beside that status so screen readers do not hear the same message repeatedly. Reduced motion leaves a static accented ring.
 

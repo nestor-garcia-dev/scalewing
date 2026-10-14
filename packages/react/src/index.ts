@@ -88,6 +88,12 @@ export {
   barChartTones,
 } from './components/BarChart.js';
 export {
+  DataBar,
+  type DataBarProps,
+  type DataBarTone,
+  dataBarTones,
+} from './components/DataBar.js';
+export {
   Button,
   type ButtonDisabledAppearance,
   type ButtonProps,

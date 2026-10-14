@@ -4,6 +4,7 @@ import { cssAccordionClasses } from './css-accordion.js';
 import { cssButtonClasses } from './css-button.js';
 import { cssCalendarButtonClasses } from './css-calendar-button.js';
 import { cssChartClasses } from './css-chart.js';
+import { cssDataBarClasses } from './css-data-bar.js';
 import { cssCheckboxClasses } from './css-checkbox.js';
 import { cssRadioGroupClasses } from './css-radio-group.js';
 import { cssChromeClasses } from './css-chrome.js';
@@ -138,6 +139,8 @@ ${cssDateFieldClasses()}
 ${cssCalendarButtonClasses()}
 
 ${cssChartClasses()}
+
+${cssDataBarClasses()}
 
 ${cssChromeClasses()}
 
