@@ -1,11 +1,4 @@
-/** One row of a chart's figures: what it is, and each column's words. */
-export type ChartTableRow = {
-  key: string;
-  header: string;
-  cells: readonly string[];
-  /** Marks the boxed current period. */
-  current?: boolean;
-};
+import { type ChartTableRow } from '../../chart-table-rows.js';
 
 export type ChartTableProps = {
   caption: string;

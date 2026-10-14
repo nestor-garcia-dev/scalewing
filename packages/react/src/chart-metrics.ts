@@ -48,6 +48,9 @@ export function chartPlotHeight(compact: boolean): number {
 export const chartColumnRadius = radiusScale.sm / 4;
 export const chartBoxRadius = radiusScale.sm / 2;
 
+/** A marker's downward triangle: as wide and tall as a legend's marker swatch. */
+export const chartMarkerSize = spacingScale[3];
+
 /** The dot at a line's last value. */
 export const chartDotRadius = chartLineWidth * 1.75;
 
