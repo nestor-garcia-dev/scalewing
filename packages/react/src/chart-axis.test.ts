@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
 import {
+  endGutter,
   labelGutter,
   labelledPlaces,
   ticksClearOf,
@@ -50,5 +51,29 @@ describe('chart axis', () => {
       { value: 40, y: 60, label: '40' },
     ];
     expect(ticksClearOf(ticks, 70)).toEqual([ticks[0]]);
+  });
+
+  it('leaves room past the plot for a line axis and its last value', () => {
+    const words = ['0', '20', '40'];
+    const wide = endGutter({
+      width: 600,
+      left: 40,
+      axisWords: words,
+      endLabel: '+63',
+    });
+    expect(wide).toEqual({
+      gutter: 8 + Math.ceil(chartTextWidth('+63')) + 8,
+      axisWordsShown: true,
+    });
+    // Too narrow: the axis words give way, the last value stays.
+    expect(
+      endGutter({ width: 150, left: 40, axisWords: words, endLabel: '+63' }),
+    ).toEqual({
+      gutter: 8 + Math.ceil(chartTextWidth('+63')) + 8,
+      axisWordsShown: false,
+    });
+    expect(
+      endGutter({ width: 600, left: 40, axisWords: [], endLabel: null }),
+    ).toEqual({ gutter: 8, axisWordsShown: false });
   });
 });

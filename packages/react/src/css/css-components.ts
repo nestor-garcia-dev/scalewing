@@ -7,6 +7,7 @@ import { cssCalendarButtonClasses } from './css-calendar-button.js';
 import { cssBarChartClasses } from './css-bar-chart.js';
 import { cssChartLegendClasses } from './css-chart-legend.js';
 import { cssChartPlotClasses } from './css-chart-plot.js';
+import { cssLineChartClasses } from './css-line-chart.js';
 import { cssDataBarClasses } from './css-data-bar.js';
 import { cssPaginationClasses } from './css-pagination.js';
 import { cssCheckboxClasses } from './css-checkbox.js';
@@ -151,6 +152,8 @@ ${cssChartToneClasses()}
 ${cssChartLegendClasses()}
 
 ${cssChartPlotClasses()}
+
+${cssLineChartClasses()}
 
 ${cssPaginationClasses()}
 

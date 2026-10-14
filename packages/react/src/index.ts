@@ -109,6 +109,15 @@ export {
   columnChartModes,
 } from './components/ColumnChart.js';
 export {
+  LineChart,
+  type LineChartCurve,
+  type LineChartMarker,
+  type LineChartPeriod,
+  type LineChartPoint,
+  type LineChartProps,
+  lineChartCurves,
+} from './components/LineChart.js';
+export {
   DataBar,
   type DataBarProps,
   type DataBarTone,

@@ -29,8 +29,8 @@ and `Statement`).
 
 Teisoro F-012-S04, release M2 "charts" (`@scalewing/react` 1.39.0), one
 PR each: `ChartLegend` (`teisoro-chart-legend.md`, #175); `ColumnChart`
-(`teisoro-column-chart.md`), in review; then `LineChart` and `DataBar`
-`tone="danger"`, each with its request file to come.
+(`teisoro-column-chart.md`, #176); `LineChart` (`teisoro-line-chart.md`),
+in review; then `DataBar` `tone="danger"`, its request file to come.
 
 Teisoro F-011-S02, release R1 "guided-form core": web `Stepper`
 (#113), `DenominationGrid` entry rows (#114), `Steps` / `Step` (#115)

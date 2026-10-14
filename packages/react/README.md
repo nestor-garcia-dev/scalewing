@@ -12,6 +12,7 @@ import {
   BarChart,
   ChartLegend,
   ColumnChart,
+  LineChart,
   DataBar,
   Box,
   Button,
@@ -488,6 +489,24 @@ A bar in its own column reads as empty cells to assistive technology, which is f
   callouts={[{ index: 3, text: 'Aug 4 · Roost found +50', tone: 'purple' }]}
   formatValue={signed}
 />
+```
+
+`LineChart` draws a value over time: `points` (`LineChartPoint[]`: `x` a `YYYY-MM-DD` date, `y` a value), in date order (a date may repeat, as a balance that changes twice in a day), placed by the days between them. `curve` (`LineChartCurve`, listed in `lineChartCurves`) is `'linear'` by default or `'step'`, each value held until the next date. `area` tints the area between the line and zero with its tone, and `tone` (a `ChartStrokeTone`, `'accent'` by default) colors the line, its dot and its last value, written beside the plot's end unless `endLabel` is `false`. `markers` (`LineChartMarker[]`: `x`, one of the points' dates; `label`; a stroke `tone`) put a downward triangle on the line at that date's last value with its words below it (above it where they would pass the plot's bottom), moved in to stay over the plot; words that would meet an earlier marker's are left out of the drawing, never the table. `markersLabel` heads the table's column of marker words and is required with markers. `ticks` are the dates the time axis labels (the first and last point by default), thinned from the last so none meet; `highlight` (`LineChartPeriod`: `from`, `to`) boxes a period, its rows `aria-current`. `formatValue`, `formatTick` (the value axis) and `formatDate` (the time axis and the table's row headers; the date itself by default) write its words. It is laid out for its measured width like `ColumnChart`, never scrolling sideways, and its drawing is hidden: a visually hidden table captioned by `label`, its value column headed by `valueLabel` (default `label`), carries every date, value and marker. A `ChartLegend` above it names the line (`line` in its tone), the markers (`marker` in theirs) and the box (`box`, `'accent'`). Forced colors draw the line in the highlight color, the markers and every word in the text color, and drop the area. Empty words, a date that is not `YYYY-MM-DD`, points out of date order, a value that is not finite, an unknown curve or tone, a marker off the points' dates or without `markersLabel`, a tick outside the points' dates, or a period that ends before it starts throw a `RangeError`.
+
+```tsx
+<LineChart
+  label="Birds roosting each night"
+  valueLabel="Roosting"
+  points={nights}
+  area
+  markers={[{ x: '2026-08-12', label: '2600', tone: 'warning' }]}
+  markersLabel="A flock left"
+  ticks={['2026-07-27', '2026-08-17', '2026-10-12']}
+  highlight={{ from: '2026-10-06', to: '2026-10-12' }}
+  formatDate={shortDate}
+/>
+
+<LineChart label="Nest boxes lent" curve="step" tone="warning" points={loans} />
 ```
 
 `Pagination` steps through a list shown a page at a time, for a list with no total to keep in view (a list that adds up scrolls inside itself instead, with `Table` `maxHeight`). It is a `nav` landmark named by `aria-label` or `aria-labelledby` (one is required), holding the consumer's words for what the page shows (`rangeLabel`, such as "1–25 of 130 changes", in the muted caption at the inline start and announced politely when it changes) and the previous and next steps at the end: icon-only neutral `sm` Buttons, square, the 44 px touch target on a coarse pointer, named by `labels` (`PaginationLabels`: `previous`, `next`) with a private chevron glyph mirrored right to left. `page` (from 1) and `pageCount` place it; a step calls `onPageChange` with the page it goes to. At either end its step looks disabled (`aria-disabled`, the neutral grey) but stays a Tab stop, so focus is never dropped when the last page is reached, and a press there does nothing. Pages that are not whole numbers in range, or an empty step label (`labels.previous` or `labels.next`), throw a `RangeError`. The row wraps on a narrow column, the steps staying at the end.

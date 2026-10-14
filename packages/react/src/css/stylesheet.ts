@@ -40,6 +40,7 @@ import { buttonClassCatalog } from './css-button.js';
 import { barChartClassCatalog } from './css-bar-chart.js';
 import { chartLegendClassCatalog } from './css-chart-legend.js';
 import { chartPlotClassCatalog } from './css-chart-plot.js';
+import { lineChartClassCatalog } from './css-line-chart.js';
 import { dataBarClassCatalog } from './css-data-bar.js';
 import { paginationClassCatalog } from './css-pagination.js';
 import { dataClassCatalog } from './css-data.js';
@@ -89,6 +90,7 @@ export function utilityClassCatalog(): string[] {
     ...chartToneClassCatalog(),
     ...chartLegendClassCatalog(),
     ...chartPlotClassCatalog(),
+    ...lineChartClassCatalog(),
     ...paginationClassCatalog(),
     ...chromeClassCatalog(),
     ...sectionNavClassCatalog(),

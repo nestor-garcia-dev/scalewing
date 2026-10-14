@@ -113,6 +113,12 @@ export const chartStrokeColors: Record<ChartStrokeTone, ChartColorSource> = {
   neutral: { semantic: 'muted' },
 };
 
+/**
+ * How much of a line's stroke the area under it takes, over transparency:
+ * a quiet tint behind the line, decorative (the line carries the values).
+ */
+export const chartAreaShare = 0.12;
+
 /** How much of a hue's colour its words keep, moved toward the text colour. */
 export const categoricalInkShare = 0.3;
 

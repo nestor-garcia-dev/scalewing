@@ -1,7 +1,10 @@
 import {
   type ChartPlot,
   type ChartTick,
+  endGutter,
   labelGutter,
+  labelInside,
+  periodBox,
   labelledPlaces,
   ticksClearOf,
   valueTicks,
@@ -11,9 +14,7 @@ import {
   chartCompactWidth,
   chartGap,
   chartInset,
-  chartMinPlotWidth,
   chartPlotHeight,
-  chartTextWidth,
   chartType,
 } from './chart-metrics.js';
 import {
@@ -29,7 +30,6 @@ import {
   placeColumns,
 } from './column-chart-bars.js';
 import { calloutRows, type PlacedCallout } from './column-chart-callouts.js';
-import { chartHairline } from './css/chart-marks.js';
 
 export type ColumnChartLayoutInput = {
   width: number;
@@ -93,15 +93,14 @@ export function columnChartLayout(
   const lineWords = scales.line ? scales.line.ticks.map(input.formatTick) : [];
   const endLabel = input.line?.endLabel ?? null;
   const left = labelGutter(tickWords);
-  const endRoom = endLabel ? Math.ceil(chartTextWidth(endLabel)) + chartGap : 0;
-  // A line's axis words, unless they would leave the plot too narrow.
-  const lineWordsShown =
-    scales.line !== null &&
-    width - left - chartGap - Math.max(labelGutter(lineWords), endRoom) >=
-      chartMinPlotWidth;
-  const rightGutter = scales.line
-    ? chartGap + Math.max(lineWordsShown ? labelGutter(lineWords) : 0, endRoom)
-    : chartGap;
+  const end = endGutter({
+    width,
+    left,
+    axisWords: scales.line ? lineWords : [],
+    endLabel: scales.line ? endLabel : null,
+  });
+  const lineWordsShown = end.axisWordsShown;
+  const rightGutter = end.gutter;
   const right = Math.max(left + 1, width - rightGutter);
   const band = categories.length > 0 ? (right - left) / categories.length : 0;
   const centre = (index: number) => left + band * (index + 0.5);
@@ -132,7 +131,7 @@ export function columnChartLayout(
         }))
       : null;
   const last = line?.at(-1);
-  const end =
+  const endMark =
     last && endLabel
       ? { x: right + chartGap, y: last.y, text: endLabel }
       : null;
@@ -147,44 +146,23 @@ export function columnChartLayout(
     compact,
     plot,
     ticks: valueTicks(scales.values, plot, input.formatTick),
-    lineTicks: end ? ticksClearOf(lineTicks, end.y) : lineTicks,
+    lineTicks: endMark ? ticksClearOf(lineTicks, endMark.y) : lineTicks,
     columns,
     categoryLabels: labelledPlaces(categories, band).map((index) => ({
       index,
-      x: withinChart(centre(index), categories[index]!, width),
+      x: labelInside(centre(index), categories[index]!, width),
       y: plot.bottom + chartGap + chartType.fontSize,
       text: categories[index]!,
     })),
     highlight:
       input.highlight === null || categories.length === 0
         ? null
-        : boxAround(left + band * input.highlight, band, plot),
-    line: line ? { points: line, end } : null,
+        : periodBox(left + band * input.highlight, band, plot),
+    line: line ? { points: line, end: endMark } : null,
     callouts: placed.callouts.map((callout) =>
       leaderFrom(callout, columns, plot, scales.values),
     ),
   };
-}
-
-/**
- * The boxed period around a category's band, a little inside it and past
- * the plot's top and bottom; never narrower than a hairline on a chart so
- * dense a band is thinner than its inset.
- */
-function boxAround(start: number, band: number, plot: ChartPlot) {
-  const width = Math.max(band - chartInset, chartHairline);
-  return {
-    x: start + (band - width) / 2,
-    y: plot.top - chartGap,
-    width,
-    height: plot.bottom - plot.top + chartGap + chartInset,
-  };
-}
-
-/** A label's centre, moved in so its words stay inside the chart's width. */
-function withinChart(x: number, text: string, width: number): number {
-  const half = chartTextWidth(text) / 2;
-  return Math.min(Math.max(x, half), width - half);
 }
 
 /** A callout's leader starts just above its category's tallest column. */
