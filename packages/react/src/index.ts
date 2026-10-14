@@ -243,6 +243,7 @@ export {
   type TableFooterProps,
   type TableHeaderProps,
   type TableLayout,
+  type TableMaxHeight,
   type TableProps,
   type TableRowProps,
   type TableRowVariant,

@@ -1,6 +1,11 @@
 import { typographyVariants } from '@scalewing/tokens';
 
 import { scrollRegionRules } from './css-scroll-region.js';
+import { tableCellPadding, tableRuleWidth } from './css-table-metrics.js';
+import {
+  cssTableBoundedClasses,
+  tableBoundedClassCatalog,
+} from './css-table-bounded.js';
 import {
   cssTableLayoutClasses,
   tableLayoutClassCatalog,
@@ -31,6 +36,8 @@ import {
 } from './css-table-sort.js';
 
 const caption = typographyVariants.caption;
+const comfortable = tableCellPadding.comfortable;
+const compact = tableCellPadding.compact;
 
 /*
  * A selected row is marked by an accent bar at its inline start and nothing
@@ -70,8 +77,8 @@ export function cssTableClasses(): string {
 
 .sw-table th,
 .sw-table td {
-  border-bottom: 1px solid var(--sw-color-border);
-  padding: var(--sw-space-2) var(--sw-space-3);
+  border-bottom: ${tableRuleWidth} solid var(--sw-color-border);
+  padding: ${comfortable.block} ${comfortable.inline};
   text-align: start;
   vertical-align: middle;
 }
@@ -104,7 +111,7 @@ ${cssTableStickyHeaderClasses()}
 
 .sw-table-compact th,
 .sw-table-compact td {
-  padding: var(--sw-space-1) var(--sw-space-2);
+  padding: ${compact.block} ${compact.inline};
 }
 
 ${cssTableLayoutClasses()}
@@ -116,6 +123,8 @@ ${cssTableLedgerClasses()}
 ${cssTableFooterClasses()}
 
 ${cssTablePagePinClasses()}
+
+${cssTableBoundedClasses()}
 
 ${cssTablePressClasses()}
 
@@ -137,6 +146,7 @@ export function tableClassCatalog(): string[] {
     ...tableLedgerClassCatalog(),
     ...tableFooterClassCatalog(),
     ...tablePagePinClassCatalog(),
+    ...tableBoundedClassCatalog(),
     ...tablePressClassCatalog(),
   ];
 }

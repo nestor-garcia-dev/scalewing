@@ -10,6 +10,11 @@ import {
   type TableStickyHeader,
   type TableVerticalAlign,
 } from './table/table-layout.js';
+import {
+  assertTableMaxHeight,
+  type TableMaxHeight,
+  tableMaxHeightStyle,
+} from './table/table-max-height.js';
 
 export {
   TableCell,
@@ -24,7 +29,12 @@ export {
 } from './table/TableRow.js';
 export type { TableCellTone } from '../css/css-table-ledger.js';
 export { tableCellTones, tableRowVariants } from '../css/css-table-ledger.js';
-export type { TableLayout, TableStickyHeader, TableVerticalAlign };
+export type {
+  TableLayout,
+  TableMaxHeight,
+  TableStickyHeader,
+  TableVerticalAlign,
+};
 
 export type TableDensity = 'comfortable' | 'compact';
 
@@ -62,9 +72,31 @@ export type TableProps = HTMLAttributes<HTMLTableElement> & {
    * after a row's first, for a ledger read across as well as down.
    */
   columnRules?: boolean;
+  /**
+   * Bounds the table's height, counted in rows (`{ rows: 12 }`): its region
+   * is as tall as that many single-line body rows plus the header row (a
+   * sorting header as tall as its buttons, the touch target on a coarse
+   * pointer) and, when there is one, the footer row, and the rest of the
+   * rows scroll inside it. Rows of two lines or with controls, a second
+   * header or footer row and a horizontal scrollbar that takes room show
+   * fewer rows. The header pins to the region's top and a sticky
+   * `TableFooter` total to its bottom, so a total over every row stays in
+   * view. The region is a keyboard stop named after the table, its focus
+   * ring drawn over the pinned rows too, and an edge with rows scrolled
+   * out past it draws a shade (cast from the pinned header's last row or
+   * the total when there is one). Printed, every row shows. It keeps its
+   * header pinned to the region, so `stickyHeader` `'page'` or `false`
+   * throw with it, as do a value that is not `{ rows }` and a row count
+   * that is not a whole number from 1. Without it (the default) the table
+   * is as tall as its rows.
+   */
+  maxHeight?: TableMaxHeight;
 };
 
-/** A wide table scrolls inside its own `ScrollRegion`, named after the table. */
+/**
+ * A wide table scrolls inside its own `ScrollRegion`, named after the
+ * table; a bounded one (`maxHeight`) scrolls its rows in it too.
+ */
 export const Table = forwardRef<HTMLTableElement, TableProps>(function Table(
   {
     children,
@@ -72,6 +104,7 @@ export const Table = forwardRef<HTMLTableElement, TableProps>(function Table(
     columnRules = false,
     density = 'comfortable',
     layout = 'auto',
+    maxHeight,
     stickyHeader = true,
     verticalAlign = 'middle',
     ...rest
@@ -81,12 +114,15 @@ export const Table = forwardRef<HTMLTableElement, TableProps>(function Table(
   assertTableLayout(layout);
   assertTableStickyHeader(stickyHeader);
   assertTableVerticalAlign(verticalAlign);
+  assertTableMaxHeight(maxHeight, stickyHeader);
+  const bounded = maxHeight !== undefined;
   return (
     <ScrollRegion
       aria-label={rest['aria-label']}
       aria-labelledby={rest['aria-labelledby']}
-      className="sw-table-wrap"
-      markFits
+      className={cx('sw-table-wrap', bounded && 'sw-table-bounded')}
+      markFits={!bounded}
+      style={tableMaxHeightStyle(maxHeight)}
     >
       <table
         ref={ref}
@@ -131,7 +167,8 @@ export type TableFooterProps = HTMLAttributes<HTMLTableSectionElement> & {
    * scroll under it: to the page while the table fits its width (the
    * sticky header then pins to the page's top too, under any sticky
    * AppHeader, which covers it), or to the table's own region while the
-   * table scrolls sideways in it. A sticky ActionBar covers a pinned
+   * table scrolls sideways in it or is bounded (`Table maxHeight`), where
+   * it stays at the region's bottom. A sticky ActionBar covers a pinned
    * footer, and so does a Dialog's pinned footer, so do not pair them.
    */
   sticky?: boolean;
