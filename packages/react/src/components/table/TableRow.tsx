@@ -20,7 +20,10 @@ export type TableRowProps = HTMLAttributes<HTMLTableRowElement> & {
    * `sub` sets the row under the one above it, as an item of a batch: its
    * row header (`TableCell as="th" scope="row"`) is indented with a guide
    * bar at the indent; a sub row without a row header is not indented.
-   * `default` is a row of its own.
+   * `total` is a total mid-table, such as a subtotal the rows above add up
+   * to: its cells at weight 600 under a 2 px rule, as a
+   * `TableFooter` total is; name it with a row header and keep it in the
+   * body. `default` is a row of its own.
    */
   variant?: TableRowVariant;
   /**
@@ -85,6 +88,7 @@ export const TableRow = forwardRef<HTMLTableRowElement, TableRowProps>(
         className={cx(
           selected && 'sw-table-row-selected',
           variant === 'sub' && 'sw-table-row-sub',
+          variant === 'total' && 'sw-table-row-total',
           struck && 'sw-table-row-struck',
           pressable && 'sw-table-row-press',
           className,

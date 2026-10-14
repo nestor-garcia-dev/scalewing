@@ -21,8 +21,10 @@ Teisoro F-012-S03, release M1 "tables that hold a period"
 (`@scalewing/react` 1.38.0), one PR each: `Table` `maxHeight`, rows that
 scroll inside the table's own region with the header and a sticky total
 pinned to it (`teisoro-table-contained-scroll.md`); then `TableRow`
-`variant="total"`, `DataBar` and `Pagination`. Next: the next M1 item,
-then the release, and Teisoro's `ReportTable` pins it.
+`variant="total"` (`teisoro-table-row-total.md`), `DataBar` and
+`Pagination`. `maxHeight` merged in #170; `variant="total"` in review.
+Next: the remaining M1 items,
+then the release, and Teisoro's `ReportTable` and `Statement` pin it.
 
 Teisoro F-011-S02, release R1 "guided-form core": web `Stepper`
 (#113), `DenominationGrid` entry rows (#114), `Steps` / `Step` (#115)

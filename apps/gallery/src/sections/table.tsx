@@ -18,6 +18,7 @@ import { Section } from '../layout/Section.js';
 import { TableLayoutExamples } from './table-layout.js';
 import { TableLedgerExample } from './table-ledger.js';
 import { TableFooterExample } from './table-footer.js';
+import { TableTotalRowExample } from './table-total-row.js';
 import {
   TableBoundedExample,
   TableBoundedListExample,
@@ -57,6 +58,11 @@ export function TableSection() {
 <Table aria-label="Census" maxHeight={{ rows: 8 }}>
   …<TableFooter sticky>…</TableFooter>
 </Table>
+
+<TableRow variant="total">
+  <TableCell as="th" scope="row">Expected at dusk</TableCell>
+  <TableCell numeric>136</TableCell>
+</TableRow>
 
 <TableRow pressable>
   <TableCell onPress={() => pick('Red fox')}>Red fox</TableCell>
@@ -259,6 +265,13 @@ export function TableSection() {
         <TableLedgerExample />
         <Text variant="label">The same ledger, compact</Text>
         <TableLedgerExample density="compact" label="Colony ledger, compact" />
+        <Text variant="label">A total mid-table</Text>
+        <TableTotalRowExample />
+        <Text variant="label">The same total, compact</Text>
+        <TableTotalRowExample
+          density="compact"
+          label="Waders through the day, compact"
+        />
         <Text variant="label">A pinned total</Text>
         <TableFooterExample />
         <Text variant="label">A table that scrolls inside itself</Text>
@@ -274,11 +287,13 @@ export function TableSection() {
           its own region, and the edge with more columns past it is shaded, so a
           phone shows that the table goes on. A ledger takes columnRules,
           TableCell tone for signed figures (never the only signal), TableRow
-          variant sub under its entry (indenting its row header) and struck for
-          a voided row kept on the record, with a Badge saying why. TableFooter
-          holds a total at weight 600 under a heavier rule; sticky pins it to
-          the bottom edge, to the page while the table fits its width, or to the
-          region of a table bounded by maxHeight, whose rows scroll inside it.
+          variant sub under its entry (indenting its row header), variant total
+          for a subtotal mid-table (weight 600 under the footer's 2 px rule, no
+          fill) and struck for a voided row kept on the record, with a Badge
+          saying why. TableFooter holds a total at weight 600 under a heavier
+          rule; sticky pins it to the bottom edge, to the page while the table
+          fits its width, or to the region of a table bounded by maxHeight,
+          whose rows scroll inside it.
         </Text>
       </Stack>
     </Section>
