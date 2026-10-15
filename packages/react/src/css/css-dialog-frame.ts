@@ -1,3 +1,7 @@
+import { typographyVariants } from '@scalewing/tokens';
+
+const caption = typographyVariants.caption;
+
 /*
  * The dialog's frame beyond its title: a consumer icon before the title, a
  * muted description under it, and a footer pinned to the bottom edge.
@@ -42,13 +46,27 @@ export function cssDialogFrameClasses(): string {
 
 .sw-dialog-footer-status {
   align-items: center;
+  column-gap: var(--sw-space-2);
   display: flex;
   flex: 1 1 auto;
+  flex-wrap: wrap;
   min-width: 0;
 }
 
-/* With no summary the live region stays in the dialog, so a first figure
-   is still announced, but it takes no room in the footer. */
+/* The status line: muted caption words beside the actions. Its children
+   sit on one row and wrap as one phrase. */
+.sw-dialog-footer-note {
+  color: var(--sw-color-muted);
+  font-family: var(--sw-font-sans);
+  font-size: ${caption.fontSize}px;
+  line-height: ${caption.lineHeight}px;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+/* With no figure and no status line the live region stays in the
+   dialog, so a first figure is still announced, but it takes no room in
+   the footer. */
 .sw-dialog-footer-status:empty {
   clip-path: inset(50%);
   height: 1px;
@@ -79,6 +97,7 @@ export function dialogFrameClassCatalog(): string[] {
     'sw-dialog-description',
     'sw-dialog-footer',
     'sw-dialog-footer-status',
+    'sw-dialog-footer-note',
     'sw-dialog-footer-actions',
   ];
 }

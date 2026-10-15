@@ -9,7 +9,12 @@ export type ActionBarSummaryTone = (typeof actionBarSummaryTones)[number];
 export type ActionBarSummary = {
   /** What the figure is, such as "Counted". */
   label: string;
-  /** The figure, formatted by the consumer, such as "$33,790.00". */
+  /**
+   * The figure, formatted by the consumer, such as "$33,790.00". An empty
+   * string (or only spaces) means there is no figure yet, such as before
+   * anything is counted: the summary line is left out and the live region
+   * stays, so the first figure is announced when it arrives.
+   */
   value: string;
   /** A short line after the figure, such as "short $4,000.00". */
   detail?: string;
@@ -21,9 +26,16 @@ function isBlank(text: unknown): boolean {
   return typeof text !== 'string' || !text.trim();
 }
 
+/** Whether the summary has a figure to show; an empty value has none yet. */
+export function hasActionBarSummaryFigure(summary: ActionBarSummary): boolean {
+  return !isBlank(summary.value);
+}
+
 export function assertActionBarSummary(summary: ActionBarSummary): void {
-  if (isBlank(summary.label) || isBlank(summary.value))
-    throw new RangeError('ActionBar summary needs a label and a value');
+  if (isBlank(summary.label))
+    throw new RangeError('ActionBar summary needs a label');
+  if (typeof summary.value !== 'string')
+    throw new RangeError('ActionBar summary value must be a string');
   if (summary.detail !== undefined && isBlank(summary.detail))
     throw new RangeError('ActionBar summary detail must not be empty');
   if (
@@ -38,12 +50,14 @@ export function assertActionBarSummary(summary: ActionBarSummary): void {
 /**
  * The bar's figure: its label, the value in the heading variant at tabular
  * figures, and its detail, on one baseline, wrapping as one phrase.
+ * Nothing while the value is empty.
  */
 export function ActionBarSummaryLine({
   summary,
 }: {
   summary: ActionBarSummary;
 }) {
+  if (!hasActionBarSummaryFigure(summary)) return null;
   const tone = summary.tone ?? 'default';
   return (
     <span

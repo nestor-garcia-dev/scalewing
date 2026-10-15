@@ -27,8 +27,9 @@ export function dialogSheetClass(sheetBelow: Breakpoint): string {
  * shows above it), and padding that clears the safe areas. A pinned
  * footer steps past that padding so its surface reaches the bottom edge,
  * and pads itself clear of the home indicator. Emitted after
- * `sw-dialog-lg` and `sw-dialog-xl` so it wins at equal specificity. No
- * grabber: there is no drag gesture.
+ * `sw-dialog-lg` and `sw-dialog-xl` so it wins at equal specificity. A
+ * grabber is opt-in (css-dialog-grabber.ts) and marks the sheet only: there
+ * is no drag gesture.
  */
 function sheetRules(): string {
   return breakpoints

@@ -54,6 +54,8 @@ import { sectionNavClassCatalog } from './css-section-nav.js';
 import { dialogClassCatalog } from './css-dialog.js';
 import { dialogBandedClassCatalog } from './css-dialog-banded.js';
 import { dialogFrameClassCatalog } from './css-dialog-frame.js';
+import { dialogCanvasClassCatalog } from './css-dialog-canvas.js';
+import { dialogGrabberClassCatalog } from './css-dialog-grabber.js';
 import { selectClassCatalog } from './css-select.js';
 import { multiSelectClassCatalog } from './css-multi-select.js';
 import { comboboxClassCatalog } from './css-combobox.js';
@@ -100,6 +102,8 @@ export function utilityClassCatalog(): string[] {
     ...dialogClassCatalog(),
     ...dialogFrameClassCatalog(),
     ...dialogBandedClassCatalog(),
+    ...dialogCanvasClassCatalog(),
+    ...dialogGrabberClassCatalog(),
     ...accordionClassCatalog(),
     ...selectClassCatalog(),
     ...actionMenuClassCatalog(),
