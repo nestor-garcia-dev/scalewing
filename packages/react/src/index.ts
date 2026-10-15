@@ -381,8 +381,14 @@ export type {
   DenominationTotalEmphasis,
 } from './components/DenominationGrid.js';
 
-export { FilterChips } from './components/FilterChips.js';
+export {
+  FilterChips,
+  filterChipCountAppearances,
+  filterChipsOverflows,
+} from './components/FilterChips.js';
 export type {
+  FilterChipCountAppearance,
   FilterChipOption,
+  FilterChipsOverflow,
   FilterChipsProps,
 } from './components/FilterChips.js';

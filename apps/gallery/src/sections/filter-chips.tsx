@@ -11,6 +11,8 @@ export function FilterChipsSection() {
   const [reason, setReason] = useState('');
   const [reasonError, setReasonError] = useState('');
   const [saved, setSaved] = useState('');
+  const [nights, setNights] = useState('all');
+  const [watchDays, setWatchDays] = useState<string[]>(['fri', 'sat']);
   const options = [
     { value: 'all', label: 'All sightings', count: sightings },
     { value: 'forest', label: 'Forest canopy records', count: 18 },
@@ -27,13 +29,31 @@ export function FilterChipsSection() {
   return (
     <Section
       id="filter-chips"
-      purpose="FilterChips keeps long single-choice filter sets visible. Native radios supply arrow and Space behavior; options wrap on narrow screens. An optional count renders as a tabular chicklet after the label, and a zero count quiets the chip until it is selected: a muted label on no fill, never faded. value '' is nothing chosen yet; required marks the label and each radio, and error puts a message under the chips (a polite live region), marks the group invalid and edges every chip in danger; aria-describedby adds a hint. requiredMark hidden leaves out the label's mark while each radio stays required; the hint says it in words."
+      purpose="FilterChips keeps long single-choice filter sets visible. Native radios supply arrow and Space behavior; options wrap on narrow screens. An optional count renders as a tabular chicklet after the label, and a zero count quiets the chip until it is selected: a muted label on no fill, never faded. value '' is nothing chosen yet; required marks the label and each radio, and error puts a message under the chips (a polite live region), marks the group invalid and edges every chip in danger; aria-describedby adds a hint. requiredMark hidden leaves out the label's mark while each radio stays required; the hint says it in words. labelVisuallyHidden keeps the label as the group's name without drawing it; countAppearance inline writes the count in the chip's words after a middle dot; overflow scroll keeps one row that scrolls sideways inside its own box; multiple turns several chips on at once as checkboxes, value a list."
       title="FilterChips"
       usage={`<FilterChips
   label="Sighting filters"
   value={selected}
   onChange={setSelected}
   options={[{ value: 'all', label: 'All sightings', count: 42 }]}
+/>
+
+<FilterChips
+  label="Show nights"
+  labelVisuallyHidden
+  countAppearance="inline"
+  overflow="scroll"
+  value={nights}
+  onChange={setNights}
+  options={[{ value: 'all', label: 'All', count: 7 }]}
+/>
+
+<FilterChips
+  label="Watch days"
+  multiple
+  value={watchDays}
+  onChange={setWatchDays}
+  options={[{ value: 'fri', label: 'Fri' }]}
 />`}
     >
       <Stack gap={3}>
@@ -87,6 +107,39 @@ export function FilterChipsSection() {
         </Button>
         <Text color="muted" data-testid="filter-chips-saved" variant="caption">
           {saved || 'Nothing removed yet.'}
+        </Text>
+        <FilterChips
+          countAppearance="inline"
+          label="Show nights"
+          labelVisuallyHidden
+          onChange={setNights}
+          options={[
+            { value: 'all', label: 'All', count: 7 },
+            { value: 'owls', label: 'Owls heard', count: 3 },
+            { value: 'bats', label: 'Bats counted', count: 4 },
+            { value: 'moths', label: 'Moth traps', count: 1 },
+            { value: 'frogs', label: 'Frog chorus', count: 0 },
+          ]}
+          overflow="scroll"
+          value={nights}
+        />
+        <FilterChips
+          label="Watch days"
+          multiple
+          onChange={setWatchDays}
+          options={[
+            { value: 'mon', label: 'Mon' },
+            { value: 'tue', label: 'Tue' },
+            { value: 'wed', label: 'Wed' },
+            { value: 'thu', label: 'Thu' },
+            { value: 'fri', label: 'Fri' },
+            { value: 'sat', label: 'Sat' },
+            { value: 'sun', label: 'Sun' },
+          ]}
+          value={watchDays}
+        />
+        <Text color="muted" data-testid="watch-days" variant="caption">
+          Watch days: {watchDays.join(', ') || 'none'}.
         </Text>
         <Text color="muted" id="weather-hint" variant="caption">
           Required: the weather goes on every survey.

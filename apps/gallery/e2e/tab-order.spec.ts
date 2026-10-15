@@ -60,6 +60,12 @@ test('Tab moves between Buttons, segmented items, links and checkboxes', async (
 
   const boxes = page.locator('#checkbox').getByRole('checkbox');
   await tabsTo(page, boxes.nth(0), boxes.nth(1));
+
+  const watchDays = page
+    .locator('#filter-chips')
+    .getByRole('group', { name: 'Watch days' })
+    .getByRole('checkbox');
+  await tabsTo(page, watchDays.nth(0), watchDays.nth(1));
 });
 
 test('Tab goes from one Stepper count to the next, past its − and +', async ({
@@ -75,7 +81,10 @@ test('a RadioGroup or FilterChips is one tab stop, on its checked radio', async 
 }) => {
   await page.goto('/');
   const groups = await page
-    .locator('#radio-group fieldset, #filter-chips fieldset')
+    // A multiple FilterChips is checkboxes, each its own stop (below).
+    .locator(
+      '#radio-group fieldset, #filter-chips fieldset:has(input[type="radio"])',
+    )
     .evaluateAll((sets) =>
       sets.map((set) => {
         const radios = [

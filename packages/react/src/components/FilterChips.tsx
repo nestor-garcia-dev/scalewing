@@ -3,93 +3,85 @@
 import { useId } from 'react';
 
 import { cx } from '../class-names.js';
+import { radioTabStopValue } from '../tab-stop.js';
 import { FieldErrorRegion } from './FieldErrorRegion.js';
-import {
-  assertRequiredMark,
-  type RequiredMark,
-  showsRequiredMark,
-} from './FieldLabelText.js';
-import { radioTabStopValue, tabStop } from '../tab-stop.js';
+import { showsRequiredMark } from './FieldLabelText.js';
+import { FilterChip } from './filter-chips/FilterChip.js';
+import { type FilterChipsProps } from './filter-chips/options.js';
+import { assertFilterChips } from './filter-chips/validate.js';
 
-export type FilterChipOption = {
-  value: string;
-  label: string;
-  count?: number;
-  disabled?: boolean;
-};
+export {
+  filterChipCountAppearances,
+  filterChipsOverflows,
+  type FilterChipCountAppearance,
+  type FilterChipOption,
+  type FilterChipsOverflow,
+  type FilterChipsProps,
+} from './filter-chips/options.js';
 
-function isCount(count: number | undefined): boolean {
-  return count === undefined || (Number.isInteger(count) && count >= 0);
+/** The values a change leaves on, in the options' order. */
+function toggled(
+  options: FilterChipsProps['options'],
+  chosen: readonly string[],
+  value: string,
+  checked: boolean,
+): string[] {
+  return options
+    .map((option) => option.value)
+    .filter((each) => (each === value ? checked : chosen.includes(each)));
 }
 
-export type FilterChipsProps = {
-  label: string;
-  /** The chosen option's value, or `''` while nothing is chosen yet. */
-  value: string;
-  onChange: (value: string) => void;
-  options: readonly FilterChipOption[];
-  /**
-   * A choice must be made, such as a reason: each radio is `required` and
-   * the label shows the required mark (hidden from assistive technology,
-   * which reads the radios' own state).
-   */
-  required?: boolean;
-  /**
-   * `hidden` leaves out the label's " *" while the control stays required
-   * (and announced so); `visible` (default) draws it.
-   * When hidden, say in visible text which fields must be filled; a
-   * placeholder alone is not enough.
-   */
-  requiredMark?: RequiredMark;
-  /**
-   * A message under the chips, such as "Pick a reason": a polite live
-   * region linked to the group by `aria-describedby`; the group is marked
-   * invalid and every chip takes the danger edge. An empty string is no
-   * error.
-   */
-  error?: string;
-  /** More ids that describe the group, such as a hint beside it. */
-  'aria-describedby'?: string;
-};
-
-export function FilterChips({
-  label,
-  value,
-  onChange,
-  options,
-  required = false,
-  requiredMark = 'visible',
-  error,
-  'aria-describedby': describedByProp,
-}: FilterChipsProps) {
+/**
+ * A labelled row of chips: one choice (radios), or several at once
+ * (`multiple`, checkboxes), each chip optionally counted.
+ */
+export function FilterChips(props: FilterChipsProps) {
+  const {
+    label,
+    options,
+    labelVisuallyHidden = false,
+    requiredMark = 'visible',
+    countAppearance = 'figure',
+    overflow = 'wrap',
+    error,
+    'aria-describedby': describedByProp,
+  } = props;
   const name = useId();
   const errorId = useId();
+  assertFilterChips(props);
+  const required = props.multiple ? false : (props.required ?? false);
   const describedBy = [describedByProp?.trim() || null, error ? errorId : null]
     .filter((id) => id !== null)
     .join(' ');
-  const values = options.map((option) => option.value);
-  if (!label.trim()) throw new RangeError('label must not be empty');
-  assertRequiredMark(requiredMark);
-  if (
-    options.length === 0 ||
-    options.some((option) => !option.value.trim() || !option.label.trim())
-  )
-    throw new RangeError('options must have nonempty values and labels');
-  if (new Set(values).size !== values.length)
-    throw new RangeError('options must have unique values');
-  if (value !== '' && !values.includes(value))
-    throw new RangeError('value must match an option or be empty');
-  if (options.some((option) => !isCount(option.count)))
-    throw new RangeError('count must be a non-negative integer');
-  const entry = radioTabStopValue(options, value);
+  const entry = props.multiple
+    ? undefined
+    : radioTabStopValue(options, props.value);
+
+  function isChecked(value: string): boolean {
+    return props.multiple ? props.value.includes(value) : props.value === value;
+  }
+
+  function change(value: string, checked: boolean): void {
+    if (props.multiple)
+      props.onChange(toggled(options, props.value, value, checked));
+    else if (checked) props.onChange(value);
+  }
 
   return (
     <fieldset
       aria-describedby={describedBy || undefined}
       aria-invalid={error ? true : undefined}
-      className="sw-filter-chips"
+      className={cx(
+        'sw-filter-chips',
+        overflow === 'scroll' && 'sw-filter-chips-scroll',
+      )}
     >
-      <legend className="sw-filter-chips-legend">
+      <legend
+        className={cx(
+          'sw-filter-chips-legend',
+          labelVisuallyHidden && 'sw-sr-only',
+        )}
+      >
         {label}
         {showsRequiredMark(required, requiredMark) ? (
           <span aria-hidden="true" className="sw-field-required">
@@ -100,37 +92,17 @@ export function FilterChips({
       </legend>
       <span className="sw-filter-chips-options">
         {options.map((option) => (
-          <label
-            className={cx(
-              'sw-filter-chip',
-              option.count === 0 && 'sw-filter-chip-quiet',
-            )}
+          <FilterChip
+            checked={isChecked(option.value)}
+            countAppearance={countAppearance}
             key={option.value}
-          >
-            <input
-              checked={option.value === value}
-              className="sw-filter-chip-input"
-              disabled={option.disabled}
-              name={name}
-              onChange={(event) => {
-                if (event.currentTarget.checked && !option.disabled)
-                  onChange(option.value);
-              }}
-              required={required}
-              tabIndex={option.value === entry ? tabStop : undefined}
-              type="radio"
-              value={option.value}
-            />
-            <span className="sw-filter-chip-face">
-              {option.label}
-              {option.count === undefined ? null : (
-                <>
-                  {' '}
-                  <span className="sw-filter-chip-count">{option.count}</span>
-                </>
-              )}
-            </span>
-          </label>
+            name={name}
+            onCheckedChange={(checked) => change(option.value, checked)}
+            option={option}
+            required={required}
+            tabStopHere={props.multiple ? true : option.value === entry}
+            type={props.multiple ? 'checkbox' : 'radio'}
+          />
         ))}
       </span>
       <FieldErrorRegion
