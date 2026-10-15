@@ -28,6 +28,11 @@ export type DateFieldLabels = {
    * outside `min` and `max`.
    */
   outOfRange: string;
+  /**
+   * Said after a calendar entry's name while the field is required (a
+   * button has no required state of its own), such as "Required".
+   */
+  required: string;
   /** Placeholder letters, arranged in the locale's field order. */
   dayPlaceholder: string;
   monthPlaceholder: string;
@@ -44,6 +49,7 @@ export const defaultDateFieldLabels: DateFieldLabels = {
   clear: 'Clear',
   invalidEntry: 'Enter a valid date.',
   outOfRange: 'Choose a date in the allowed range.',
+  required: 'Required',
   dayPlaceholder: 'DD',
   monthPlaceholder: 'MM',
   yearPlaceholder: 'YYYY',

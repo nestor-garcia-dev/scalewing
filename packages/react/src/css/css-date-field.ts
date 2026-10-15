@@ -4,6 +4,10 @@ import {
   disabledControlForcedColors,
   disabledControlSurface,
 } from './css-document.js';
+import {
+  cssDateFieldCalendarEntryClasses,
+  dateFieldCalendarEntryClassCatalog,
+} from './css-date-field-calendar-entry.js';
 import { zIndex } from './stacking.js';
 import { quietFill } from './quiet-fill.js';
 import { rangeBand, rangeBandHover } from './range-band.js';
@@ -344,6 +348,8 @@ function adaptiveRules(): string {
 export function cssDateFieldClasses(): string {
   return `${fieldRules()}
 
+${cssDateFieldCalendarEntryClasses()}
+
 ${calendarRules()}
 
 ${adaptiveRules()}`;
@@ -351,6 +357,7 @@ ${adaptiveRules()}`;
 
 export function dateFieldClassCatalog(): string[] {
   return [
+    ...dateFieldCalendarEntryClassCatalog(),
     'sw-date-field',
     'sw-date-field-label',
     'sw-date-field-control',

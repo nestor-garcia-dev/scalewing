@@ -1,4 +1,4 @@
-import { DateField, Field, Grid, Stack, Text } from '@scalewing/react';
+import { Button, DateField, Field, Grid, Stack, Text } from '@scalewing/react';
 import { useState } from 'react';
 
 import { Section } from '../layout/Section.js';
@@ -26,11 +26,14 @@ export function DateFieldSection() {
   const [surveyStart, setSurveyStart] = useState('2024-04-02');
   const [stationDay] = useState(() => stationToday());
   const [reefLogDate, setReefLogDate] = useState('');
+  const [bandingDay, setBandingDay] = useState('');
+  const [bandingChecked, setBandingChecked] = useState(false);
+  const [releaseDay, setReleaseDay] = useState('2024-04-18');
 
   return (
     <Section
       id="date-field"
-      purpose="DateField keeps a date-only value. Type the date in the locale's order, or open the calendar: arrows move by day and week, PageUp and PageDown by month, Shift with them by year, and the month and year selectors jump decades. Callbacks receive YYYY-MM-DD or an empty value. Month and weekday names come from Intl; the control's own words come from labels. Its label row matches Field's, so a date beside a text field lines up. today sets the day the calendar marks, opens on when empty, and picks as today, such as a business's own day in its time zone; it defaults to the device's."
+      purpose="DateField keeps a date-only value. Type the date in the locale's order, or open the calendar: arrows move by day and week, PageUp and PageDown by month, Shift with them by year, and the month and year selectors jump decades. Callbacks receive YYYY-MM-DD or an empty value. Month and weekday names come from Intl; the control's own words come from labels. Its label row matches Field's, so a date beside a text field lines up. today sets the day the calendar marks, opens on when empty, and picks as today, such as a business's own day in its time zone; it defaults to the device's. entry calendar is one button showing the chosen day, or labels.chooseDate while empty, that opens the same calendar, for a day that is picked, never typed; validation stays with the consumer's error, and a required one says labels.required after its name."
       title="DateField"
       usage={`<DateField
   label="Sighting date"
@@ -38,6 +41,14 @@ export function DateFieldSection() {
   onChange={setSightingDate}
   min="2024-01-01"
   max="2024-12-31"
+/>
+
+<DateField
+  entry="calendar"
+  label="Banding day"
+  labels={{ chooseDate: 'Choose a day' }}
+  value={bandingDay}
+  onChange={setBandingDay}
 />`}
     >
       <Stack gap={4}>
@@ -97,6 +108,41 @@ export function DateFieldSection() {
             value={spanishDate}
             weekStartsOn={1}
           />
+        </Grid>
+        <Grid columns={3} columnsBelow={{ md: 1 }} gap={4}>
+          <Stack gap={2}>
+            <DateField
+              entry="calendar"
+              error={
+                bandingChecked && !bandingDay
+                  ? 'Choose the banding day'
+                  : undefined
+              }
+              label="Banding day"
+              labels={{ chooseDate: 'Choose a day' }}
+              onChange={setBandingDay}
+              required
+              value={bandingDay}
+            />
+            <Button
+              onPress={() => setBandingChecked(true)}
+              size="sm"
+              variant="secondary"
+            >
+              Check banding
+            </Button>
+          </Stack>
+          <DateField
+            description="The day the heron left the clinic"
+            entry="calendar"
+            label="Release day"
+            labels={{ chooseDate: 'Choose a day' }}
+            onChange={setReleaseDay}
+            value={releaseDay}
+          />
+          <Field label="Ring code" width="sm">
+            <input defaultValue="GH-12" name="ring-code" />
+          </Field>
         </Grid>
         <Grid columns={2} columnsBelow={{ md: 1 }} gap={4}>
           <DateField
