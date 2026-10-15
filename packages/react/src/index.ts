@@ -104,6 +104,8 @@ export {
 } from './components/Badge.js';
 export {
   BarChart,
+  barChartAppearances,
+  type BarChartAppearance,
   type BarChartItem,
   type BarChartProps,
   type BarChartTone,

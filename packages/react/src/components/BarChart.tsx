@@ -6,10 +6,15 @@ import {
 import { forwardRef, type CSSProperties, type HTMLAttributes } from 'react';
 
 import { cx } from '../class-names.js';
-import { type BarChartTone, barChartTones } from '../css/css-bar-chart.js';
+import {
+  type BarChartAppearance,
+  barChartAppearances,
+  type BarChartTone,
+  barChartTones,
+} from '../css/css-bar-chart.js';
 
-export type { BarChartTone };
-export { barChartTones };
+export type { BarChartAppearance, BarChartTone };
+export { barChartAppearances, barChartTones };
 
 export type BarChartItem = {
   label: string;
@@ -18,7 +23,9 @@ export type BarChartItem = {
   /**
    * Colors the bar by what it means, in place of its sign's default (the
    * accent, or danger for a negative value): such as `'warning'` for an
-   * overage and `'danger'` for a shortage. The color is a cue beside the
+   * overage, `'danger'` for a shortage and `'neutral'` (the muted grey)
+   * for a bar that is counted but not the point, such as the usual days
+   * beside the busiest ones. The color is a cue beside the
    * value and its label, never the only sign of the meaning. An unknown tone
    * throws a `RangeError`.
    */
@@ -56,12 +63,20 @@ export type BarChartProps = Omit<HTMLAttributes<HTMLDivElement>, 'children'> & {
    * alone tells a negative value.
    */
   diverging?: boolean;
+  /**
+   * `track` (the default) draws each bar in a track with the value axis
+   * under the bars. `bare` draws the bars alone, with no track and no
+   * axis, for bars whose values are all written beside them. An unknown
+   * appearance throws a `RangeError`.
+   */
+  appearance?: BarChartAppearance;
 };
 
 export const BarChart = forwardRef<HTMLDivElement, BarChartProps>(
   function BarChart(
     {
       'aria-label': ariaLabel,
+      appearance = 'track',
       className,
       diverging = false,
       formatValue = formatBarChartValue,
@@ -72,11 +87,20 @@ export const BarChart = forwardRef<HTMLDivElement, BarChartProps>(
     },
     ref,
   ) {
+    if (!(barChartAppearances as readonly unknown[]).includes(appearance))
+      throw new RangeError(
+        `Unknown BarChart appearance: ${String(appearance)}`,
+      );
     const scaleMax = barChartScaleMax(
       items.map((item) => item.value),
       max,
     );
-    const axis = diverging ? [-scaleMax, 0, scaleMax] : [0, scaleMax];
+    const bare = appearance === 'bare';
+    const axis = bare
+      ? []
+      : diverging
+        ? [-scaleMax, 0, scaleMax]
+        : [0, scaleMax];
 
     return (
       <div
@@ -84,6 +108,7 @@ export const BarChart = forwardRef<HTMLDivElement, BarChartProps>(
         className={cx(
           'sw-bar-chart',
           diverging && 'sw-bar-chart-diverging',
+          bare && 'sw-bar-chart-bare',
           className,
         )}
         style={style}
@@ -112,15 +137,17 @@ export const BarChart = forwardRef<HTMLDivElement, BarChartProps>(
             );
           })}
         </ul>
-        <div aria-hidden="true" className="sw-bar-chart-axis">
-          <span />
-          <span className="sw-bar-chart-axis-track">
-            {axis.map((value) => (
-              <span key={value}>{formatValue(value)}</span>
-            ))}
-          </span>
-          <span />
-        </div>
+        {bare ? null : (
+          <div aria-hidden="true" className="sw-bar-chart-axis">
+            <span />
+            <span className="sw-bar-chart-axis-track">
+              {axis.map((value) => (
+                <span key={value}>{formatValue(value)}</span>
+              ))}
+            </span>
+            <span />
+          </div>
+        )}
       </div>
     );
   },

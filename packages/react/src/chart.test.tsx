@@ -7,6 +7,7 @@ import {
   type BarChartTone,
   barChartTones,
 } from './components/BarChart.js';
+import { chartStrokeColors } from './css/chart-tones.js';
 import { generateStylesheet, utilityClassCatalog } from './css/stylesheet.js';
 import {
   forEveryTheme,
@@ -192,7 +193,8 @@ describe('BarChart tone', () => {
     );
     expect(negative).toBeGreaterThan(-1);
     for (const tone of barChartTones) {
-      const rule = `.sw-bar-chart-fill-${tone} { background: var(--sw-color-${tone}); }`;
+      const color = chartStrokeColors[tone].semantic;
+      const rule = `.sw-bar-chart-fill-${tone} { background: var(--sw-color-${color}); }`;
       expect(css.indexOf(rule)).toBeGreaterThan(negative);
       expect(utilityClassCatalog()).toContain(`sw-bar-chart-fill-${tone}`);
     }
@@ -208,6 +210,7 @@ describe('BarChart tone', () => {
       'success',
       'warning',
       'danger',
+      'neutral',
     ]);
   });
 
@@ -218,7 +221,7 @@ describe('BarChart tone', () => {
       const track = glassOverBackground(theme);
       for (const tone of barChartTones)
         expect(
-          contrastRatio(colors[tone], track),
+          contrastRatio(colors[chartStrokeColors[tone].semantic], track),
           `${label} ${tone}`,
         ).toBeGreaterThanOrEqual(3);
     });
