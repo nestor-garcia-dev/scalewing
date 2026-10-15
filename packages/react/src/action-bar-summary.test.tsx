@@ -71,7 +71,6 @@ describe('ActionBar summary', () => {
     vi.spyOn(console, 'error').mockImplementation(() => undefined);
     for (const bad of [
       { label: ' ', value: '1' },
-      { label: 'Counted', value: '' },
       { label: 'Counted', value: '1', detail: ' ' },
       { label: 'Counted', value: '1', tone: 'warning' as 'danger' },
       { label: 'Counted', value: 1240 as unknown as string },

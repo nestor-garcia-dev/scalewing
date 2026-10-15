@@ -17,7 +17,9 @@
  *    Dialog's title band, inside its dialog), over a lifted
  *    surface that scrolls up under it (the header is the page's way back, the
  *    strip its way between sections, and a popup opens downward).
- * 6. `popup`: a popup outside any lifted surface (Select list, ActionMenu
+ * 6. `sheetGrabber`: a bottom sheet's grabber, inside its dialog, over the
+ *    banded title band that sticks under it.
+ * 7. `popup`: a popup outside any lifted surface (Select list, ActionMenu
  *    list, MultiSelect panel, Combobox list, Tooltip, the DateField and CalendarButton
  *    calendar) over everything in the page.
  *
@@ -29,6 +31,7 @@ export const stackingOrder = {
   bottomChrome: 3,
   popupHost: 4,
   topChrome: 5,
+  sheetGrabber: 6,
   popup: 10,
 } as const;
 

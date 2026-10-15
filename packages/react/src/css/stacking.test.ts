@@ -72,6 +72,15 @@ describe('stacking order', () => {
     expect(strip).toBeLessThan(zIndexOf('.sw-select-list'));
   });
 
+  it('puts a sheet grabber over the banded title band and under popups', () => {
+    const grabber = zIndexOf('.sw-dialog-sheet-below-md .sw-dialog-grabber');
+    expect(grabber).toBe(stackingOrder.sheetGrabber);
+    expect(grabber).toBeGreaterThan(
+      zIndexOf('.sw-dialog-banded .sw-dialog-header'),
+    );
+    expect(grabber).toBeLessThan(zIndexOf('.sw-select-list'));
+  });
+
   it('lifts the ActionBar only as far as bottom chrome at every breakpoint', () => {
     const sticky = [
       ...css.matchAll(/\.sw-action-bar-sticky[\w-]* \{[^}]*z-index: (\d+);/g),

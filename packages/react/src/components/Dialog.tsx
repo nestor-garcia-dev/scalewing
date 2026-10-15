@@ -10,29 +10,27 @@ import {
   dialogAppearances,
   dialogBandedClass,
 } from '../css/css-dialog-banded.js';
+import { type ThemeCanvas } from '../css/css-canvas-grouped.js';
+import { dialogCanvasClass } from '../css/css-dialog-canvas.js';
+import {
+  dialogGrabberClass,
+  dialogHasGrabberClass,
+} from '../css/css-dialog-grabber.js';
 import { spacingClassNames } from '../spacing-classes.js';
 import { useDialogCloseRequests } from './dialog-close-requests.js';
-import {
-  type ActionBarSummary,
-  assertActionBarSummary,
-} from './action-bar/ActionBarSummary.js';
+import { type ActionBarSummary } from './action-bar/ActionBarSummary.js';
 import { DialogFooter } from './dialog/DialogFooter.js';
 import { DialogTitle } from './dialog/DialogTitle.js';
+import {
+  assertDialogProps,
+  type DialogRole,
+  type DialogSize,
+  dialogSizes,
+} from './dialog/validate.js';
 import { Stack } from './Stack.js';
 
 export { dialogAppearances, type DialogAppearance };
-
-export const dialogSizes = ['md', 'lg', 'xl'] as const;
-
-/**
- * `md` is the reading width (32rem) for a message or a short form; `lg`
- * (56rem) holds a row of six fields or a data grid without folding it;
- * `xl` (65rem) holds a grid of six count columns with its labels and total.
- */
-export type DialogSize = (typeof dialogSizes)[number];
-
-/** `alertdialog` for a dialog that interrupts to warn, such as an idle sign-out. */
-export type DialogRole = 'dialog' | 'alertdialog';
+export { dialogSizes, type DialogRole, type DialogSize };
 
 /**
  * The heading level of the dialog's title. It changes only the element (and
@@ -70,11 +68,19 @@ export type DialogProps = Omit<
    * bottom edge at the full viewport width, its top corners rounded and its
    * bottom corners square, a strip of backdrop left in view above it, and
    * its bottom padding clearing `env(safe-area-inset-bottom)`. It slides up
-   * on open unless reduced motion is asked for. There is no drag grabber
-   * (and no drag): it closes as any dialog does. From the breakpoint up it
-   * is the centered dialog, at its `size`.
+   * on open unless reduced motion is asked for. There is no drag: it
+   * closes as any dialog does. From the breakpoint up it is the centered
+   * dialog, at its `size`.
    */
   sheetBelow?: Breakpoint;
+  /**
+   * Draws a grabber, a short rounded bar centered at the top edge, while
+   * the dialog is a bottom sheet (below `sheetBelow`, which it needs). It
+   * only marks the sheet as one: it is hidden from assistive technology
+   * and does not drag. It stays at the top while the content scrolls.
+   * From the breakpoint up it is not drawn.
+   */
+  sheetGrabber?: boolean;
   /**
    * The accessible name of a close button, such as "Close". When given, an
    * icon-only ghost button ends the title row and asks `onClose`, like
@@ -100,6 +106,13 @@ export type DialogProps = Omit<
    * polite live region: "Drawer +$1,000.00 vault −$1,000.00".
    */
   summary?: ActionBarSummary;
+  /**
+   * One short line in the footer, after the summary and before the
+   * actions, in the same polite live region: plain words (muted, caption
+   * size), or a `Badge` and a short line in one `span`. Nothing
+   * (`undefined`, `null`, `false`, or blank words) leaves it out.
+   */
+  status?: ReactNode;
   /** `alertdialog` for a warning that interrupts. Default `dialog`. */
   role?: DialogRole;
   /**
@@ -108,35 +121,20 @@ export type DialogProps = Omit<
    * quiet round fill; `glass` (the default) is one frosted panel.
    */
   appearance?: DialogAppearance;
+  /**
+   * The dialog's fill. `grouped` puts its content on the grouped canvas
+   * (the quieter grey `ThemeProvider canvas="grouped"` paints), solid with
+   * no blur, so `Card`s inside stand apart; a banded title row and the
+   * footer stay on the surface. `default` keeps the appearance's fill.
+   */
+  canvas?: ThemeCanvas;
   children: ReactNode;
 };
-
-const dialogRoles: readonly DialogRole[] = ['dialog', 'alertdialog'];
-
-function assertDialogProps(
-  size: DialogSize,
-  role: DialogRole | undefined,
-  description: string | undefined,
-  summary: ActionBarSummary | undefined,
-  appearance: DialogAppearance,
-): void {
-  if (!(dialogSizes as readonly unknown[]).includes(size))
-    throw new RangeError(`Unknown Dialog size: ${String(size)}`);
-  if (!(dialogAppearances as readonly unknown[]).includes(appearance))
-    throw new RangeError(`Unknown Dialog appearance: ${String(appearance)}`);
-  if (role !== undefined && !dialogRoles.includes(role))
-    throw new RangeError(`Unknown Dialog role: ${String(role)}`);
-  if (
-    description !== undefined &&
-    (typeof description !== 'string' || !description.trim())
-  )
-    throw new RangeError('Dialog description must not be empty');
-  if (summary) assertActionBarSummary(summary);
-}
 
 export function Dialog({
   'aria-describedby': describedBy,
   appearance = 'glass',
+  canvas = 'default',
   children,
   className,
   closeLabel,
@@ -152,15 +150,32 @@ export function Dialog({
   onSubmit,
   open,
   sheetBelow,
+  sheetGrabber = false,
   size = 'md',
+  status,
   title,
   titleLevel = 3,
   ...rest
 }: DialogProps) {
-  assertDialogProps(size, role, description, summary, appearance);
+  assertDialogProps({
+    appearance,
+    canvas,
+    description,
+    role,
+    sheetBelow,
+    sheetGrabber,
+    size,
+    summary,
+  });
   const titleId = useId();
   const descriptionId = useId();
-  const hasFooter = Boolean(footer) || Boolean(summary);
+  // Nothing, or blank words, leaves the line out, as in ActionBar.
+  const hasStatus =
+    status !== undefined &&
+    status !== null &&
+    status !== false &&
+    !(typeof status === 'string' && !status.trim());
+  const hasFooter = Boolean(footer) || Boolean(summary) || hasStatus;
   const { nodeRef, handlers } = useDialogCloseRequests({
     open,
     onClose,
@@ -183,12 +198,17 @@ export function Dialog({
         size !== 'md' && `sw-dialog-${size}`,
         sheetBelow && dialogSheetClass(sheetBelow),
         appearance === 'banded' && dialogBandedClass,
+        canvas === 'grouped' && dialogCanvasClass,
+        sheetGrabber && dialogHasGrabberClass,
         ...spacingClassNames({ padding: 5 }),
         className,
       )}
       role={role === 'alertdialog' ? 'alertdialog' : undefined}
       {...handlers}
     >
+      {sheetGrabber ? (
+        <span aria-hidden="true" className={dialogGrabberClass} />
+      ) : null}
       <Stack gap={4}>
         <DialogTitle
           banded={appearance === 'banded'}
@@ -203,7 +223,12 @@ export function Dialog({
         />
         {children}
         {hasFooter ? (
-          <DialogFooter summary={summary}>{footer}</DialogFooter>
+          <DialogFooter
+            status={hasStatus ? status : undefined}
+            summary={summary}
+          >
+            {footer}
+          </DialogFooter>
         ) : null}
       </Stack>
     </dialog>

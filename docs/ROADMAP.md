@@ -61,8 +61,9 @@ Teisoro F-012-S23, release M4 "board fidelity" (`@scalewing/react`
 `SegmentedControl` and an attached `ButtonGroup`, and `SegmentedControl`
 `size="sm"` (`teisoro-full-width-controls.md`, #193); `Switch`
 `layout="trailing"` and `checkedTone="success"`
-(`teisoro-switch-trailing.md`). Next: `Dialog` and `ActionBar` summary,
-the last item of M4, then the release.
+(`teisoro-switch-trailing.md`, #194); `Dialog` `status`,
+`canvas="grouped"` and `sheetGrabber`, and an `ActionBar` summary with no
+figure yet (`teisoro-dialog-board.md`). Next: the release.
 
 Teisoro F-011-S02, release R1 "guided-form core": web `Stepper`
 (#113), `DenominationGrid` entry rows (#114), `Steps` / `Step` (#115)

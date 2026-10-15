@@ -24,6 +24,8 @@ import { cssDateFieldClasses } from './css-date-field.js';
 import { cssDialogClasses } from './css-dialog.js';
 import { cssDialogBandedClasses } from './css-dialog-banded.js';
 import { cssDialogFrameClasses } from './css-dialog-frame.js';
+import { cssDialogCanvasClasses } from './css-dialog-canvas.js';
+import { cssDialogGrabberClasses } from './css-dialog-grabber.js';
 import { cssComboboxClasses } from './css-combobox.js';
 import { cssSelectClasses } from './css-select.js';
 import { cssMultiSelectClasses } from './css-multi-select.js';
@@ -175,6 +177,10 @@ ${cssDialogClasses()}
 ${cssDialogFrameClasses()}
 
 ${cssDialogBandedClasses()}
+
+${cssDialogCanvasClasses()}
+
+${cssDialogGrabberClasses()}
 
 ${cssAccordionClasses()}
 
