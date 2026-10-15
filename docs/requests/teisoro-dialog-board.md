@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: accepted 2026-10-14 (Teisoro F-012-S23, release M4 "board fidelity", item 10; plan approval under Teisoro decisions O-1, D-1 and D-9).
+Status: released in `@scalewing/react` 1.41.0 (PR #195; accepted 2026-10-14; Teisoro F-012-S23, release M4 "board fidelity", item 10; plan approval under Teisoro decisions O-1, D-1 and D-9).
 Renderer: react
 Missing surface: four opt-in `Dialog` and `ActionBar` changes:
 

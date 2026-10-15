@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: accepted 2026-10-14 (Teisoro F-012-S23, release M4 "board fidelity", item 3; plan approval under Teisoro decisions O-1, D-1 and D-9).
+Status: released in `@scalewing/react` 1.41.0 (PR #188; accepted 2026-10-14; Teisoro F-012-S23, release M4 "board fidelity", item 3; plan approval under Teisoro decisions O-1, D-1 and D-9).
 Renderer: react
 Missing surface: a day-picker field: a labelled "Choose a day" button that opens the calendar, with Field's label, description, required mark and error. Accepted as `DateField` `entry="calendar"`.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: the employee board's hire date is a grey button with a calendar glyph and "Choose a day" under its label, showing the day once picked. `DateField` always has a typed entry; `CalendarButton` is icon-only, never empty and has no label, description or error; a `Field` around a `CalendarButton` cannot wire the description or error to a non-native control and still shows no text. Teisoro F-012-S20 lists the typed hire date as a remaining difference.

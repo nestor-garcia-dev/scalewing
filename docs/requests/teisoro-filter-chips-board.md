@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: accepted 2026-10-14 (Teisoro F-012-S23, release M4 "board fidelity", item 4; plan approval under Teisoro decisions O-1, D-1 and D-9).
+Status: released in `@scalewing/react` 1.41.0 (PR #189; accepted 2026-10-14; Teisoro F-012-S23, release M4 "board fidelity", item 4; plan approval under Teisoro decisions O-1, D-1 and D-9).
 Renderer: react
 Missing surface: four opt-in `FilterChips` options: a label kept as the group's name but not drawn, a count written inline after a middle dot, one row that scrolls sideways instead of wrapping, and several chips on at once.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: every list board draws its chips with no label above them, each chip as "Label · n", and on a phone the chips stay on one row that scrolls sideways; the store settings board picks its busiest days as chips, several on at once. `FilterChips` always draws its legend, writes a count as a separate muted figure, wraps, and holds one choice. Teisoro F-012-S13, S15, S16, S18, S19 and S20 each list these as remaining differences.
