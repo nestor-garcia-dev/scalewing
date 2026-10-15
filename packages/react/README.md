@@ -333,6 +333,19 @@ A toast can also be a corner card that confirms a save: `placement="top-end"` pu
 
 `Switch` is a controlled on/off input. It keeps native checkbox keyboard behavior and exposes switch semantics. Provide the current `checked` value and update it in `onCheckedChange`.
 
+`Switch` `layout="trailing"` (`switchLayouts`, default `"leading"`) puts the label and description first and the control at the end of a row as wide as its column, lined up with the label's first line, as a settings list draws it; the reading order follows. `checkedTone="success"` (`switchCheckedTones`, default `"accent"`) fills the track with the success colour while on, for a setting whose on state is the healthy one (3:1 or more on the surface in every palette; `Highlight` in forced colors); the thumb's place says the state either way. An unknown layout or tone throws a `RangeError`.
+
+```tsx
+<Switch
+  label="Number the observers"
+  description="Names stay out of the file"
+  layout="trailing"
+  checkedTone="success"
+  checked={numbered}
+  onCheckedChange={setNumbered}
+/>
+```
+
 `Checkbox` is a controlled native checkbox for one independent form or confirmation choice. `checked` and `onCheckedChange` own its state. The consumer supplies `error` after validation to describe and style an invalid choice (associated by `aria-describedby` with `aria-invalid` and announced from a polite live region, as `Field`'s error is, never an alert); `required` retains native form semantics.
 
 `RadioGroup` is a controlled fieldset of native radio choices. Supply a unique nonempty `value` for each option, one selected `value` or an empty value for no selection, a `legend`, and `onChange`. Long labels wrap in a vertical group. The consumer provides localized option labels and validation `error`; `required` keeps native form semantics. An option's optional `icon` (a `ReactNode`, such as a Lucide glyph) sits between the radio and the label, in the text color and the option's gap; it is `aria-hidden`, so the radio's accessible name stays the `label` text, and a press on it chooses the option as the label does.

@@ -59,8 +59,10 @@ Teisoro F-012-S23, release M4 "board fidelity" (`@scalewing/react`
 `negativeAppearance`, `transposeBelow` and `countDigits`
 (`teisoro-denomination-grid-board.md`, #192); `fullWidthBelow` on
 `SegmentedControl` and an attached `ButtonGroup`, and `SegmentedControl`
-`size="sm"` (`teisoro-full-width-controls.md`). Next: `Switch`, then
-the rest of the request files named `teisoro-*` for M4.
+`size="sm"` (`teisoro-full-width-controls.md`, #193); `Switch`
+`layout="trailing"` and `checkedTone="success"`
+(`teisoro-switch-trailing.md`). Next: `Dialog` and `ActionBar` summary,
+the last item of M4, then the release.
 
 Teisoro F-011-S02, release R1 "guided-form core": web `Stepper`
 (#113), `DenominationGrid` entry rows (#114), `Steps` / `Step` (#115)
