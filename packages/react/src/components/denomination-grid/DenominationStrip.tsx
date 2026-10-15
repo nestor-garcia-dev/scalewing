@@ -19,6 +19,8 @@ type StripProps = Required<
     className?: string;
     /** The `table` frame: a hairline around the region and a heading-row fill. */
     framed: boolean;
+    /** The entry counts' room (`countDigits`), if set. */
+    countStyle?: CSSProperties;
   };
 
 /**
@@ -40,6 +42,7 @@ function TotalHead({ totalLabel }: Pick<StripProps, 'totalLabel'>) {
 
 export function DenominationStrip({
   className,
+  countStyle,
   framed,
   label,
   columns,
@@ -78,7 +81,9 @@ export function DenominationStrip({
           framed && denominationFramedClass,
           className,
         )}
-        style={aligned}
+        style={
+          aligned || countStyle ? { ...aligned, ...countStyle } : undefined
+        }
       >
         <caption className="sw-sr-only">{label}</caption>
         <thead>

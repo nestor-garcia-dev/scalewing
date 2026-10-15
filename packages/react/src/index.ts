@@ -364,7 +364,9 @@ export {
   denominationCellToneAppearances,
   denominationGridFrames,
   denominationLabelAppearances,
+  denominationNegativeAppearances,
   denominationTotalEmphases,
+  denominationTransposeBreakpoints,
 } from './components/DenominationGrid.js';
 export type {
   DenominationCellToneAppearance,
@@ -372,6 +374,7 @@ export type {
   DenominationGridEntry,
   DenominationGridFrame,
   DenominationGridLayout,
+  DenominationGridNegativeAppearance,
   DenominationGridProps,
   DenominationGridRow,
   DenominationGridRowEmphasis,
@@ -381,6 +384,7 @@ export type {
   DenominationLabelAppearance,
   DenominationLabelWidth,
   DenominationTotalEmphasis,
+  DenominationTransposeBreakpoint,
 } from './components/DenominationGrid.js';
 
 export {

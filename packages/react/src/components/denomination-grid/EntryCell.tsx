@@ -15,6 +15,8 @@ type EntryCellProps = {
   index: number;
   /** The value cell under this count, which describes it, if any. */
   describedBy?: string;
+  /** More classes for the cell, such as the transposed layout's row look. */
+  className?: string;
 };
 
 /**
@@ -29,6 +31,7 @@ export function EntryCell({
   column,
   index,
   describedBy,
+  className,
 }: EntryCellProps) {
   const max = entry.max?.[index] ?? undefined;
   const tone = row.cellTones?.[index];
@@ -37,6 +40,7 @@ export function EntryCell({
       className={cx(
         'sw-denomination-entry',
         ...denominationCellToneClassNames(tone),
+        className,
       )}
     >
       {/* An accent count is a suggestion or a change: the Stepper's own

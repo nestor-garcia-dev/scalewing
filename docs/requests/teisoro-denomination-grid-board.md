@@ -1,0 +1,27 @@
+Scalewing request from Teisoro.
+
+Status: accepted 2026-10-14 (Teisoro F-012-S23, release M4 "board fidelity", item 7; plan approval under Teisoro decisions O-1, D-1 and D-9).
+Renderer: react
+Missing surface: three opt-in `DenominationGrid` options: signed counts out without the danger colour, a phone layout with the denominations as rows, and entry counts with room for four digits in a grid of seven columns.
+Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: the day boards count bills out and bagged as negative counts, and Teisoro's ledger rule keeps money going out out of red (cash out is never an error), but the grid draws every negative count in danger, so Teisoro drops the minus instead. The phone boards draw a day's bills and the settings' change with a row per bill, where the strip keeps a column per bill and scrolls. The settings' change grid has seven entry columns and counts in the thousands, which its three-digit steppers clip. Teisoro F-012-S13 and S20 list these as remaining differences.
+Existing surface this might already be: `DenominationGrid` `signed` (toned by sign), `layout="tiles"` (stacked tiles, not rows; read-only), `labelWidth` (lines strips up; does not widen counts); `Table` (no entry steppers, no value line).
+Workaround I almost used: unsigned counts with words saying "out"; a second Teisoro table for phones; a wider page.
+Teisoro use: `BillCount` on the day page (Every bill) and the store settings (the change to keep on hand), phone and desktop.
+Proposed API: a row `negativeAppearance`, a strip `transposeBelow`, and `countDigits`.
+
+## Accepted API (2026-10-14)
+
+- `DenominationGridRow` gains `negativeAppearance?: 'danger' | 'plain'` (`DenominationGridNegativeAppearance`, `denominationNegativeAppearances`), default `danger` (unchanged). `plain` sets the row's negative counts in the text colour, still with their minus (`sw-denomination-cell-plain`); forced colours draw them as text. A signed count's cell now also carries `sw-denomination-cell-signed`, so its positive success colour reads from the cell, which a transposed column needs (the strip's look is unchanged).
+- `DenominationGrid` gains `transposeBelow?: 'md' | 'lg'` (`DenominationTransposeBreakpoint`, `denominationTransposeBreakpoints`), the strip layout only. Below that width (`useMediaQuery` on `breakpointQuery('below', …)`; a server render draws the strip) the grid is a `TransposedStrip` (`sw-denomination-transposed`): a row per denomination headed by its label and caption, a column per grid row headed by its label line (glyph, words, caption; on one line, the region scrolling sideways when the columns do not fit), then a column for its value line when it has one (named "row label + value label"), and the totals in a `tfoot` row named by `totalLabel` (each total under its value line when the row has one, in the row's tone). Entry rows keep their `Stepper`s, names ("row label + column name") and the value under each count as its description; read-only counts keep the zero label, sign and cell tones; a quiet row's heads and cells take the subtle fill; a disabled row's heads, read-only counts (toned ones too), values and total fade and its heads are `aria-disabled`, as the strip's row is. The denomination column is pinned with the strip's start shade while the columns scroll. Crossing the breakpoint remounts the grid, so a count being typed loses focus. `labelWidth`, `frame` and `totalEmphasis` are the strip's at width.
+- `DenominationGrid` gains `countDigits?: number` (a whole number from 3 to 6, entry rows only): the table takes `sw-denomination-count-digits` and `--sw-denomination-count-digits`, and each entry track keeps `n` digits (`1ch` in the input's own type), its padding and its hairlines before the strip scrolls. Left out, the room is the 3 digits it was.
+- An unknown appearance or breakpoint, `transposeBelow` on tiles, and a `countDigits` out of range or without entry rows throw a `RangeError`.
+- New files: `denomination-grid/CountCell.tsx` (the read-only count, shared by both drawings), `TransposedStrip.tsx`, `validate-options.ts`, and `css/css-denomination-transposed.ts`. No new tokens or dependencies.
+
+### Differences from the boards (Teisoro D-2)
+
+- The transposed grid keeps the strip's steppers and a value column per value line; the boards draw the row-per-bill layout with their own spacing.
+- In the transposed grid a row's tone shows on its total only; its head is the column heads' muted type, with no stripe.
+
+No board figures are quoted here.
+
+Evidence: `denomination-transposed.test.tsx` (plain negatives with their minus beside a danger row, the strip from md up and transposed below, the transposed rows, heads and totals, entry steppers named and described in the transposed grid, the four-digit room's class, property and rule, quiet and disabled columns (fill, fade over a tone, `aria-disabled` heads), `lg` and a totals row without `totalLabel`, the refusals); `denomination-grid.test.tsx` updated for the signed cell class; gallery "DenominationGrid" (bird rings: seven columns of four-digit entry counts with a value line, rings given out as plain negatives on a quiet row, a disabled Returned row, transposed on a phone); `apps/gallery/e2e/denomination-transposed.spec.ts` on desktop-en, mobile-es and forced-colors (a four-digit count unclipped, the plain negative in the text colour, a row per size and the totals last on a phone, no sideways page scroll at 390 px, light and dark).

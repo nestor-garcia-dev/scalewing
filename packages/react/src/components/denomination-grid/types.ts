@@ -21,6 +21,19 @@ export type DenominationGridTone = BadgeTone;
 
 export type DenominationGridLayout = 'strip' | 'tiles';
 
+/** How a negative count reads: in the danger colour, or plain text. */
+export const denominationNegativeAppearances = ['danger', 'plain'] as const;
+export type DenominationGridNegativeAppearance =
+  (typeof denominationNegativeAppearances)[number];
+
+/**
+ * The widths below which a strip is drawn transposed: the denominations as
+ * rows, the grid's rows as columns.
+ */
+export const denominationTransposeBreakpoints = ['md', 'lg'] as const;
+export type DenominationTransposeBreakpoint =
+  (typeof denominationTransposeBreakpoints)[number];
+
 /**
  * What a named tiles row is to assistive technology: a `region` (a landmark,
  * the default) or a `group` (named, but not in the landmark list).
@@ -95,6 +108,13 @@ export type DenominationGridRow = {
   cellTones?: readonly (DenominationGridTone | null)[];
   /** A muted line under the label, such as "from the customer". */
   caption?: string;
+  /**
+   * How a negative count reads: `danger` (the default) in the danger
+   * colour; `plain` in the text colour, with its minus sign, for counts
+   * that go out by design, such as bills paid out (cash out is never an
+   * error, so never red).
+   */
+  negativeAppearance?: DenominationGridNegativeAppearance;
   /** The `strip` layout only. */
   emphasis?: DenominationGridRowEmphasis;
   /**
@@ -183,4 +203,19 @@ export type DenominationGridProps = {
    * changed count in accent. Entry counts and tiles keep their tone border.
    */
   cellToneAppearance?: DenominationCellToneAppearance;
+  /**
+   * Below this breakpoint (`md` or `lg`) the strip is drawn transposed,
+   * for a phone: one row per denomination (its label and caption) and one
+   * column per grid row (its label over its counts, entry steppers or
+   * value line), the totals in a last row. Its names, entry, cell tones
+   * and zero label are the strip's. The `strip` layout only.
+   */
+  transposeBelow?: DenominationTransposeBreakpoint;
+  /**
+   * The digits an entry count holds without clipping, from 3 (the
+   * default room) to 6: a column of steppers keeps that many digits'
+   * width before the strip scrolls, such as 4 for a count in the
+   * thousands in a grid of seven columns. Entry rows only.
+   */
+  countDigits?: number;
 };

@@ -1,4 +1,10 @@
+'use client';
+
+import { type CSSProperties } from 'react';
+
 import { cx } from '../class-names.js';
+import { breakpointQuery } from '../css/breakpoints.js';
+import { denominationCountDigitsClass } from '../css/css-denomination-transposed.js';
 import { denominationLabelWidths } from '../css/css-denomination-aligned.js';
 import {
   denominationGridFrames,
@@ -15,9 +21,12 @@ import {
 } from '../css/css-denomination-label.js';
 import { DenominationStrip } from './denomination-grid/DenominationStrip.js';
 import { DenominationTiles } from './denomination-grid/DenominationTiles.js';
+import { TransposedStrip } from './denomination-grid/TransposedStrip.js';
 import { type DenominationGridProps } from './denomination-grid/types.js';
 import { assertDenominationGrid } from './denomination-grid/validate.js';
+import { assertDenominationOptions } from './denomination-grid/validate-options.js';
 import { assertDenominationValueRows } from './denomination-grid/validate-value-row.js';
+import { useMediaQuery } from './use-media-query.js';
 import {
   assertDenominationEntries,
   assertDenominationExtras,
@@ -29,6 +38,7 @@ export type {
   DenominationGridEntry,
   DenominationGridFrame,
   DenominationGridLayout,
+  DenominationGridNegativeAppearance,
   DenominationGridProps,
   DenominationGridRow,
   DenominationGridRowEmphasis,
@@ -37,6 +47,11 @@ export type {
   DenominationGridValueRow,
   DenominationLabelWidth,
   DenominationTotalEmphasis,
+  DenominationTransposeBreakpoint,
+} from './denomination-grid/types.js';
+export {
+  denominationNegativeAppearances,
+  denominationTransposeBreakpoints,
 } from './denomination-grid/types.js';
 export type { DenominationLabelAppearance } from '../css/css-denomination-label.js';
 export {
@@ -70,11 +85,14 @@ export function DenominationGrid({
   frame = 'none',
   totalEmphasis = 'default',
   cellToneAppearance = 'text',
+  transposeBelow,
+  countDigits,
 }: DenominationGridProps) {
   assertDenominationGrid(label, columns, rows);
   assertDenominationExtras(layout, columns, rows);
   assertDenominationEntries(layout, columns, rows);
   assertDenominationValueRows(layout, columns, rows);
+  assertDenominationOptions(layout, rows, transposeBelow, countDigits);
   if (typeof zeroLabel !== 'string')
     throw new RangeError('zeroLabel must be a string');
   if (totalLabel !== undefined && !totalLabel.trim())
@@ -95,6 +113,19 @@ export function DenominationGrid({
     labelAppearance === 'plain' && denominationLabelsPlainClass,
     totalEmphasis === 'strong' && denominationTotalsStrongClass,
     cellToneAppearance === 'pill' && denominationCellTonesPillClass,
+    countDigits !== undefined && denominationCountDigitsClass,
+  );
+  const countStyle =
+    countDigits === undefined
+      ? undefined
+      : ({ '--sw-denomination-count-digits': countDigits } as CSSProperties);
+  // Read on every render (hooks run in order); without transposeBelow the
+  // query never matches.
+  const transposed = useMediaQuery(
+    transposeBelow === undefined
+      ? 'not all'
+      : breakpointQuery('below', transposeBelow),
+    false,
   );
 
   if (layout === 'tiles')
@@ -110,9 +141,23 @@ export function DenominationGrid({
       />
     );
 
+  if (transposeBelow !== undefined && transposed)
+    return (
+      <TransposedStrip
+        className={appearanceClass || undefined}
+        columns={columns}
+        label={label}
+        rows={rows}
+        style={countStyle}
+        totalLabel={totalLabel}
+        zeroLabel={zeroLabel}
+      />
+    );
+
   return (
     <DenominationStrip
       className={appearanceClass || undefined}
+      countStyle={countStyle}
       columns={columns}
       framed={frame === 'table'}
       label={label}
