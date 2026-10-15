@@ -7,6 +7,10 @@ import {
 } from './css-document.js';
 import { cssFieldChangedClasses } from './css-field-changed.js';
 import {
+  cssFieldWidthClasses,
+  fieldWidthClassCatalog,
+} from './css-field-width.js';
+import {
   cssFieldSearchClasses,
   fieldSearchClassCatalog,
 } from './css-field-search.js';
@@ -99,6 +103,8 @@ ${cssFieldSearchClasses()}
 
 ${cssFieldChangedClasses()}
 
+${cssFieldWidthClasses()}
+
 @media (forced-colors: active) {
   [data-theme] .sw-field-invalid :is(input, select, textarea),
   .sw-field-invalid .sw-field-adorned { border-color: Mark; }
@@ -122,5 +128,6 @@ export function fieldClassCatalog(): string[] {
     'sw-field-prefix',
     'sw-field-suffix',
     ...fieldSearchClassCatalog(),
+    ...fieldWidthClassCatalog(),
   ];
 }

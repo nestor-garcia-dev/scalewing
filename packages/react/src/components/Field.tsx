@@ -20,28 +20,20 @@ import {
   FieldLabelText,
   type RequiredMark,
 } from './FieldLabelText.js';
+import { type FieldWidth, fieldWidthClass } from '../css/css-field-width.js';
 import { SearchFrame } from './field/SearchFrame.js';
+import {
+  assertFieldProps,
+  type FieldControlProps,
+  fieldVariants,
+  type FieldVariant,
+  passesInvalid,
+} from './field/field-checks.js';
 import { Stack } from './Stack.js';
 
 export type FieldSize = 'xs' | 'md';
 
-export const fieldVariants = ['outlined', 'search'] as const;
-export type FieldVariant = (typeof fieldVariants)[number];
-
-type FieldControlProps = {
-  'aria-describedby'?: string;
-  'aria-label'?: string;
-  'aria-invalid'?: boolean | 'true' | 'false';
-  'aria-labelledby'?: string;
-  id?: string;
-  required?: boolean;
-  disabled?: boolean;
-  readOnly?: boolean;
-  type?: string;
-  value?: unknown;
-  enterKeyHint?: string;
-  onKeyDown?: (event: KeyboardEvent<HTMLInputElement>) => void;
-};
+export { fieldVariants, type FieldVariant };
 
 export type FieldProps = {
   children: ReactNode;
@@ -99,48 +91,17 @@ export type FieldProps = {
   clearLabel?: string;
   /** Called by a search field's clear button; the consumer empties the value. */
   onClear?: () => void;
+  /**
+   * Caps the control's width at a Table column size (`xs` 4rem, `sm` 6rem,
+   * `md` 8rem, `lg` 12rem, `xl` 16rem), at the start of the column and
+   * never wider than it, so a short value such as a rate or a count does
+   * not stretch across a form. The label and messages keep the column's
+   * width. Left out, the control fills the column. It needs one native
+   * text input, select or textarea child (a `TypeError` otherwise); an
+   * unknown width throws a `RangeError`.
+   */
+  width?: FieldWidth;
 };
-
-function assertSearch(props: FieldProps, child: unknown): void {
-  const { variant = 'outlined' } = props;
-  if (!fieldVariants.includes(variant))
-    throw new RangeError(`Unknown Field variant: ${String(variant)}`);
-  if (variant !== 'search') {
-    if (
-      props.leading !== undefined ||
-      props.clearLabel !== undefined ||
-      props.onClear !== undefined
-    )
-      throw new TypeError(
-        'Field leading, clearLabel and onClear are for variant="search"',
-      );
-    return;
-  }
-  if (!props.clearLabel?.trim())
-    throw new RangeError('A search Field needs a nonempty clearLabel');
-  if (typeof props.onClear !== 'function')
-    throw new TypeError('A search Field needs onClear');
-  if (props.prefix || props.suffix)
-    throw new TypeError('A search Field takes leading, not prefix or suffix');
-  if (!isValidElement<FieldControlProps>(child) || child.type !== 'input')
-    throw new TypeError('A search Field needs one native input child');
-  if (child.props.value === undefined)
-    throw new TypeError(
-      'A search Field needs a controlled input: pass value (and onChange)',
-    );
-}
-
-/**
- * `invalid` was passed, even as `false`, but not as `undefined` (a wrapper
- * forwarding an optional prop passes nothing): such a field needs one native
- * control from its first render, so a form learns it on the happy path
- * instead of on its first failed submit. `error` keeps its older rule (it
- * requires the control only while it holds a message), so a composed
- * child beside `error={undefined}` still renders.
- */
-function passesInvalid(props: FieldProps): boolean {
-  return props.invalid !== undefined || props.changed !== undefined;
-}
 
 export function Field(props: FieldProps) {
   const {
@@ -161,8 +122,9 @@ export function Field(props: FieldProps) {
     leading,
     clearLabel = '',
     onClear,
+    width,
   } = props;
-  assertSearch(props, children);
+  assertFieldProps(props, children);
   const search = variant === 'search';
   const controlId = useId();
   const descriptionId = useId();
@@ -175,7 +137,12 @@ export function Field(props: FieldProps) {
   const marksInvalid = Boolean(error) || invalid;
   const adorned = Boolean(prefix || suffix);
   const needsControl = Boolean(
-    message || marksInvalid || passesInvalid(props) || required || adorned,
+    message ||
+    marksInvalid ||
+    passesInvalid(props) ||
+    required ||
+    adorned ||
+    Boolean(width),
   );
   const className = [
     'sw-field',
@@ -183,6 +150,8 @@ export function Field(props: FieldProps) {
     marksInvalid && 'sw-field-invalid',
     search && 'sw-field-search-field',
     changed && !marksInvalid && 'sw-field-changed',
+    width && 'sw-field-sized',
+    width && fieldWidthClass(width),
   ]
     .filter(Boolean)
     .join(' ');
@@ -205,7 +174,7 @@ export function Field(props: FieldProps) {
   ) {
     if (needsControl)
       throw new TypeError(
-        'Field validation and adornments require one native input, select, or textarea child',
+        'Field validation, adornments and width require one native input, select, or textarea child',
       );
     return (
       <Stack as="label" className={className} gap={labelHidden ? 0 : gap}>
