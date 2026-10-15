@@ -4,6 +4,10 @@ import {
   cssSegmentedRaisedClasses,
   segmentedRaisedClassCatalog,
 } from './css-segmented-raised.js';
+import {
+  cssSegmentedSizingClasses,
+  segmentedSizingClassCatalog,
+} from './css-segmented-sizing.js';
 
 const body = typographyVariants.body;
 const data = typographyVariants.data;
@@ -176,6 +180,8 @@ ${iconRules()}
 
 ${cssSegmentedRaisedClasses()}
 
+${cssSegmentedSizingClasses()}
+
 .sw-segmented-disabled {
   opacity: var(--sw-disabled-opacity);
 }
@@ -197,5 +203,6 @@ export function segmentedClassCatalog(): string[] {
     'sw-segmented-item-icon',
     'sw-segmented-disabled',
     ...segmentedRaisedClassCatalog(),
+    ...segmentedSizingClassCatalog(),
   ];
 }

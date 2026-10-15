@@ -264,6 +264,8 @@ export {
   SegmentedControl,
   type SegmentedControlProps,
   type SegmentedControlVariant,
+  segmentedSizes,
+  type SegmentedSize,
   type SegmentedItem,
 } from './components/SegmentedControl.js';
 export {
