@@ -218,6 +218,7 @@ export {
   type FieldSize,
   type FieldVariant,
 } from './components/Field.js';
+export { fieldWidths, type FieldWidth } from './css/css-field-width.js';
 export {
   requiredMarks,
   type RequiredMark,

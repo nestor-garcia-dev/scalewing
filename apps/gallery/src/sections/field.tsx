@@ -4,7 +4,7 @@ import { useId, useState } from 'react';
 import { Section } from '../layout/Section.js';
 import { SurveyCorrection } from './field-changed.js';
 import { BirdSearch } from './field-search.js';
-import { sampleHabitats } from '../sample-copy.js';
+import { sampleHabitats, sampleRegions } from '../sample-copy.js';
 
 /**
  * Two counts checked as one group: when they add up to nothing, each field
@@ -69,7 +69,7 @@ export function FieldSection() {
   return (
     <Section
       id="field"
-      purpose="Field labels native controls and associates optional hints, required state, and validation errors. An error is described on its control, marks it invalid, and is announced politely from a live region that is always there; it is never an alert, so several errors at once do not interrupt, and the form moves focus to the first invalid field. Validation stays with the consumer. size xs compacts the control; the canvas paints its native surface. prefix and suffix put short text such as a unit inside an input's frame; it is not part of the value and joins the accessible name, or the description when the input names itself with aria-label. A press anywhere on the frame focuses the input. A disabled control keeps its value in the text color on the quiet subtle fill with a dashed border, so a locked value stays readable and looks locked. invalid marks a control invalid without a message of its own, for fields whose one error is shown under their group. changed marks a value changed from a saved one, as in a correction: the accent border, a hairline thicker without moving anything, and a light accent tint over the fill, on the control or its frame; focus draws only its ring, so a changed field and the focused one read apart. Say what it was in the description. invalid and error win over it. A required field marks its label with an aria-hidden asterisk; requiredMark hidden leaves the mark out (on Field, Select, DateField, Combobox and FilterChips) while the control stays required."
+      purpose="Field labels native controls and associates optional hints, required state, and validation errors. An error is described on its control, marks it invalid, and is announced politely from a live region that is always there; it is never an alert, so several errors at once do not interrupt, and the form moves focus to the first invalid field. Validation stays with the consumer. size xs compacts the control; the canvas paints its native surface. prefix and suffix put short text such as a unit inside an input's frame; it is not part of the value and joins the accessible name, or the description when the input names itself with aria-label. A press anywhere on the frame focuses the input. A disabled control keeps its value in the text color on the quiet subtle fill with a dashed border, so a locked value stays readable and looks locked. invalid marks a control invalid without a message of its own, for fields whose one error is shown under their group. changed marks a value changed from a saved one, as in a correction: the accent border, a hairline thicker without moving anything, and a light accent tint over the fill, on the control or its frame; focus draws only its ring, so a changed field and the focused one read apart. Say what it was in the description. invalid and error win over it. width caps a short control at a Table column size (xs 4rem to xl 16rem), at the start of the column and never wider than it, while the label and messages keep the column. A required field marks its label with an aria-hidden asterisk; requiredMark hidden leaves the mark out (on Field, Select, DateField, Combobox and FilterChips) while the control stays required."
       title="Field"
       usage={`<Field label="Habitat">
   <select>
@@ -79,6 +79,10 @@ export function FieldSection() {
 
 <Field invalid={noNests} label="Eggs">
   <input aria-describedby="nest-error" />
+</Field>
+
+<Field label="Body length" suffix="cm" width="sm">
+  <input inputMode="decimal" />
 </Field>`}
     >
       <Stack gap={3}>
@@ -165,6 +169,40 @@ export function FieldSection() {
             inputMode="numeric"
             name="counted-nests"
           />
+        </Field>
+        <Text variant="label">Short values at their own width</Text>
+        <Field
+          description="Measured from the bill to the tail"
+          label="Body length"
+          suffix="cm"
+          width="sm"
+        >
+          <input
+            defaultValue="94"
+            inputMode="decimal"
+            name="sized-body-length"
+          />
+        </Field>
+        <Field label="Nests found" width="xs">
+          <input defaultValue="12" inputMode="numeric" name="sized-nests" />
+        </Field>
+        <Field label="Survey region" size="xs" width="md">
+          <select defaultValue="amazon" name="sized-region">
+            {sampleRegions.map((region) => (
+              <option key={region.value} value={region.value}>
+                {region.label}
+              </option>
+            ))}
+          </select>
+        </Field>
+        <Field label="Survey habitat" width="lg">
+          <select defaultValue="forest" name="sized-habitat">
+            {sampleHabitats.map((habitat) => (
+              <option key={habitat.value} value={habitat.value}>
+                {habitat.label}
+              </option>
+            ))}
+          </select>
         </Field>
         <Text variant="label">A search box</Text>
         <BirdSearch />

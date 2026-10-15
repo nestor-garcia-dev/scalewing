@@ -123,6 +123,14 @@ A disabled native text control (`<input>`, `<select>` or `<textarea>` on the can
 
 `Field` `prefix` and `suffix` put short text such as `$` or `%` inside the frame of one native `<input>` child, before or after the value. The text is not part of the value; the input is named by its label plus the adornment (`"Drop amount $"`), unless it names itself with its own `aria-label` or `aria-labelledby`, in which case the adornment joins its description. A press anywhere on the frame focuses the input. Formatting the value stays with the consumer. Any other child throws a `TypeError`.
 
+`Field` `width` (opt-in; `fieldWidths`) caps the control at a Table column size, `xs` 4rem, `sm` 6rem, `md` 8rem, `lg` 12rem or `xl` 16rem, so a short value such as a rate, a count or a code sits in a box its own size instead of stretching across the form's column. The cap is on the control alone (an adorned or search field's frame), placed at the column's start and never wider than the column on a narrow screen; the label, description and error keep the column's width. It caps a text input (the canvas's typed inputs: text, email, number, search, url, password or no type), a select or a textarea (a checkbox, a range or another input type keeps its own size), and a sized select keeps its control height. It needs one native control child, as `prefix` does (a `TypeError` otherwise); an unknown width throws a `RangeError`.
+
+```tsx
+<Field label="Body length" suffix="cm" width="sm">
+  <input inputMode="decimal" />
+</Field>
+```
+
 `Field` `variant="search"` (default `"outlined"`; `fieldVariants`) is a search box over one native `<input>` child with a `value`: the `label` is not drawn but still names the input, which becomes `type="search"` (a `searchbox`); `leading` is your glyph at the frame's start, such as a magnifier, hidden from assistive technology; and while the input holds text and is enabled and not read-only, a clear button named `clearLabel` ("Clear search") ends the frame, puts focus back in the input and calls `onClear` (set the value to `''`); Escape with text calls `onClear` too. The browser's own clear button is hidden, so there is one. The input gets `enterKeyHint="search"` unless you pass one. The frame is the adorned field's, so focus, `error`, `description`, `invalid` and the disabled look work as on any field; a press on the glyph focuses the input; the clear button is the 44 px target on a coarse pointer. A search field without a nonempty `clearLabel` or `onClear`, with `prefix` or `suffix`, or with a child that is not an `<input>` with a `value` throws; `leading`, `clearLabel` and `onClear` on an outlined field, or an unknown `variant`, throw too.
 
 ```tsx
