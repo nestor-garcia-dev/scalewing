@@ -1,6 +1,8 @@
 import { type ReactNode } from 'react';
 
 import { cx } from '../../class-names.js';
+import { type BadgeTone } from '../../css/css-data.js';
+import { Badge } from '../Badge.js';
 import {
   type ListRowAccessory,
   type ListRowTitleAppearance,
@@ -17,6 +19,7 @@ export type ListRowContentProps = {
   value?: string;
   valueDetail?: string;
   valueTone?: ListRowValueTone;
+  valueBadge?: BadgeTone;
   leading?: ReactNode;
   tone: ListRowTone;
   titleAppearance: ListRowTitleAppearance;
@@ -34,6 +37,7 @@ export function ListRowContent({
   value,
   valueDetail,
   valueTone,
+  valueBadge,
   leading,
   tone,
   titleAppearance,
@@ -72,7 +76,7 @@ export function ListRowContent({
             )}
             id={`${id}-value`}
           >
-            {value}
+            {valueBadge ? <Badge tone={valueBadge}>{value}</Badge> : value}
           </span>
           {valueDetail ? (
             <span

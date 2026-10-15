@@ -277,6 +277,7 @@ describe('ListRow', () => {
       accessory: 'chevron',
       value: undefined,
       valueDetail: undefined,
+      valueBadge: undefined,
       selected: undefined,
       pressable: false,
     } as const;
@@ -290,8 +291,8 @@ describe('ListRow', () => {
       'Unknown ListRow titleAppearance: bold',
     );
     expect(() =>
-      assertListRow({ ...base, value: '1', valueTone: 'warning' }),
-    ).toThrow('Unknown ListRow valueTone: warning');
+      assertListRow({ ...base, value: '1', valueTone: 'amber' }),
+    ).toThrow('Unknown ListRow valueTone: amber');
     expect(() => assertListRow({ ...base, accessory: 'check' })).toThrow(
       'Unknown ListRow accessory: check',
     );
@@ -305,7 +306,7 @@ describe('ListRow', () => {
       assertListRow({ ...base, selected: false, pressable: true }),
     ).not.toThrow();
     expect(() => assertListRow({ ...base, valueDetail: 'herons' })).toThrow(
-      'ListRow valueDetail and valueTone need a value',
+      'ListRow valueDetail, valueTone and valueBadge need a value',
     );
     expect(() =>
       assertListGroup({

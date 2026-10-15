@@ -1,6 +1,10 @@
 import { type CSSProperties } from 'react';
 
-import { tableCellTones, type TableCellTone } from './css/css-table-ledger.js';
+import { badgeTones, type BadgeTone } from './css/css-data.js';
+import {
+  listRowValueTones,
+  type ListRowValueTone,
+} from './css/css-list-row.js';
 import { isOneOf } from './is-one-of.js';
 
 /**
@@ -26,9 +30,7 @@ export type ListRowTone = (typeof listRowTones)[number];
 export const listRowTitleAppearances = ['strong', 'plain'] as const;
 export type ListRowTitleAppearance = (typeof listRowTitleAppearances)[number];
 
-/** The colours a row's value can take, as a table cell's. */
-export const listRowValueTones = tableCellTones;
-export type ListRowValueTone = TableCellTone;
+export { listRowValueTones, type ListRowValueTone };
 
 /** What ends a row: a chevron (it opens something), a check (chosen), or none. */
 export type ListRowAccessory = 'chevron' | 'check' | 'none';
@@ -87,15 +89,17 @@ export type ListRowInput = {
   accessory: unknown;
   value: string | undefined;
   valueDetail: string | undefined;
+  valueBadge: BadgeTone | undefined;
   selected: boolean | undefined;
   pressable: boolean;
 };
 
 /**
  * Fails closed on a ListRow it cannot draw: an empty title or value, an
- * unknown tone, title appearance, value tone or accessory, a `valueDetail`
- * or `valueTone` with no value, or `selected` on a row that is not a
- * button or link (its check would be a state nothing can read).
+ * unknown tone, title appearance, value tone, badge tone or accessory, a
+ * `valueDetail`, `valueTone` or `valueBadge` with no value, a value both
+ * toned and a badge, or `selected` on a row that is not a button or link
+ * (its check would be a state nothing can read).
  */
 export function assertListRow(input: ListRowInput): void {
   if (isBlank(input.title))
@@ -117,6 +121,14 @@ export function assertListRow(input: ListRowInput): void {
     throw new RangeError(
       `Unknown ListRow accessory: ${String(input.accessory)}`,
     );
+  if (input.valueBadge !== undefined && !isOneOf(badgeTones, input.valueBadge))
+    throw new RangeError(
+      `Unknown ListRow valueBadge: ${String(input.valueBadge)}`,
+    );
+  if (input.valueBadge !== undefined && input.valueTone !== undefined)
+    throw new RangeError(
+      'A ListRow value is a toned figure or a badge, not both',
+    );
   if (input.value !== undefined && isBlank(input.value))
     throw new RangeError('ListRow value must be non-empty text');
   if (input.selected !== undefined && !input.pressable)
@@ -125,9 +137,13 @@ export function assertListRow(input: ListRowInput): void {
     );
   if (
     input.value === undefined &&
-    (input.valueDetail !== undefined || input.valueTone !== undefined)
+    (input.valueDetail !== undefined ||
+      input.valueTone !== undefined ||
+      input.valueBadge !== undefined)
   )
-    throw new RangeError('ListRow valueDetail and valueTone need a value');
+    throw new RangeError(
+      'ListRow valueDetail, valueTone and valueBadge need a value',
+    );
 }
 
 /**
