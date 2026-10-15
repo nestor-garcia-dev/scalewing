@@ -1,4 +1,6 @@
 import { cx } from '../class-names.js';
+import { type Breakpoint, breakpoints } from '../css/breakpoints.js';
+import { buttonGroupFullWidthClass } from '../css/css-button-group-attached.js';
 import {
   type ButtonGroupAppearance,
   buttonGroupAppearances,
@@ -27,6 +29,12 @@ export type ButtonGroupProps = BoxProps & {
    * variant; `default` keeps each button's own fill and outline.
    */
   appearance?: ButtonGroupAppearance;
+  /**
+   * Below this breakpoint (an `attached` group only) the group fills its
+   * column and its buttons share the width equally, such as ‹, a period and
+   * › across a phone. From it up the group sizes to its buttons.
+   */
+  fullWidthBelow?: Breakpoint;
 };
 
 /**
@@ -40,6 +48,7 @@ export function ButtonGroup({
   appearance = 'default',
   attached = false,
   className,
+  fullWidthBelow,
   justify = 'end',
   ...rest
 }: ButtonGroupProps) {
@@ -49,6 +58,15 @@ export function ButtonGroup({
     );
   if (appearance === 'track' && !attached)
     throw new RangeError('ButtonGroup appearance="track" needs attached');
+  if (fullWidthBelow !== undefined) {
+    if (!(breakpoints as readonly unknown[]).includes(fullWidthBelow))
+      throw new RangeError(
+        `Unknown ButtonGroup fullWidthBelow: ${String(fullWidthBelow)}`,
+      );
+    // An unattached group already stacks full width below md.
+    if (!attached)
+      throw new RangeError('ButtonGroup fullWidthBelow needs attached');
+  }
   return (
     <Box
       className={cx(
@@ -56,6 +74,7 @@ export function ButtonGroup({
         `sw-button-group-${justify}`,
         attached && 'sw-button-group-attached',
         appearance === 'track' && buttonGroupTrackClass,
+        fullWidthBelow && buttonGroupFullWidthClass(fullWidthBelow),
         className,
       )}
       role="group"

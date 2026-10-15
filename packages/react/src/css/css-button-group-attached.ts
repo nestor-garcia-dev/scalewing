@@ -1,9 +1,14 @@
-import { breakpointQuery } from './breakpoints.js';
+import { breakpointQuery, type Breakpoint } from './breakpoints.js';
 import {
   buttonGroupTrackClassCatalog,
   cssButtonGroupTrackClasses,
 } from './css-button-group-track.js';
 import { joinedZIndex } from './stacking.js';
+
+/** The class that stretches an attached group below a breakpoint. */
+export function buttonGroupFullWidthClass(breakpoint: Breakpoint): string {
+  return `sw-button-group-full-below-${breakpoint}`;
+}
 
 /*
  * An attached ButtonGroup is one joined control, such as Previous, Today
@@ -20,6 +25,9 @@ import { joinedZIndex } from './stacking.js';
  * The buttons are found by type, not by place, so an open calendar a
  * button renders beside itself (CalendarButton, DateRangeButton) does not
  * cost the next button its divider or the last one its rounded corners.
+ *
+ * With `fullWidthBelow`, below that breakpoint the group fills its column
+ * and its buttons share the width equally.
  *
  * The group is its own stacking context: a pressed button's ring paints
  * over its neighbours and the focused button's standard outer ring over
@@ -74,9 +82,19 @@ ${group} > .sw-button:focus-visible {
   ${group} > * { width: auto; }
 }
 
+/* Its own block, after the phone row's, so a group that does not fill is unchanged. */
+@media ${breakpointQuery('below', 'md')} {
+  ${group}.${buttonGroupFullWidthClass('md')} { width: 100%; }
+  ${group}.${buttonGroupFullWidthClass('md')} > .sw-button { flex: 1 1 0; min-width: 0; }
+}
+
 ${cssButtonGroupTrackClasses()}`;
 }
 
 export function buttonGroupAttachedClassCatalog(): string[] {
-  return ['sw-button-group-attached', ...buttonGroupTrackClassCatalog()];
+  return [
+    'sw-button-group-attached',
+    buttonGroupFullWidthClass('md'),
+    ...buttonGroupTrackClassCatalog(),
+  ];
 }

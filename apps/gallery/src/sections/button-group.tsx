@@ -11,7 +11,7 @@ export function ButtonGroupSection() {
   return (
     <Section
       id="button-group"
-      purpose="ButtonGroup is the action row of a form or dialog. From the md breakpoint up the buttons sit on one line, at the end by default; on a phone they stack full width in source order, so put the primary action last. attached joins the buttons into one control, such as Previous, Today and Next: no gap, single dividers, square inner corners; it keeps its row on a phone. appearance track (attached only) sets the buttons as words on one quiet grey track with a hairline between them."
+      purpose="ButtonGroup is the action row of a form or dialog. From the md breakpoint up the buttons sit on one line, at the end by default; on a phone they stack full width in source order, so put the primary action last. attached joins the buttons into one control, such as Previous, Today and Next: no gap, single dividers, square inner corners; it keeps its row on a phone. appearance track (attached only) sets the buttons as words on one quiet grey track with a hairline between them. fullWidthBelow md (attached only) fills the column on a phone, the buttons sharing it equally."
       title="ButtonGroup"
       usage={`<ButtonGroup>
   <Button variant="secondary" onPress={discard}>Discard</Button>
@@ -94,6 +94,30 @@ export function ButtonGroupSection() {
             variant="secondary"
           >
             <Glyph path="M6 3l5 5-5 5" />
+          </Button>
+        </ButtonGroup>
+        <Text variant="label">Attached, full width on a phone</Text>
+        <ButtonGroup aria-label="Tide window" attached fullWidthBelow="md">
+          <Button
+            onPress={() => setLastPress('Earlier tide')}
+            size="sm"
+            variant="secondary"
+          >
+            Earlier tide
+          </Button>
+          <Button
+            onPress={() => setLastPress('Low tide')}
+            size="sm"
+            variant="secondary"
+          >
+            Low tide
+          </Button>
+          <Button
+            onPress={() => setLastPress('Later tide')}
+            size="sm"
+            variant="secondary"
+          >
+            Later tide
           </Button>
         </ButtonGroup>
         <Text variant="label">Attached toggles and a borderless variant</Text>

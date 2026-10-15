@@ -4,9 +4,18 @@ import { forwardRef, useId, type KeyboardEvent, type ReactNode } from 'react';
 
 import { type AccessibleName } from '../accessible-name.js';
 import { cx } from '../class-names.js';
+import { type Breakpoint, breakpoints } from '../css/breakpoints.js';
 import { segmentedRaisedClass } from '../css/css-segmented-raised.js';
+import {
+  segmentedFullWidthClass,
+  type SegmentedSize,
+  segmentedSizes,
+  segmentedSmClass,
+} from '../css/css-segmented-sizing.js';
 import { FieldErrorRegion } from './FieldErrorRegion.js';
 import { tabStop } from '../tab-stop.js';
+
+export { segmentedSizes, type SegmentedSize };
 
 export type SegmentedItem = {
   id: string;
@@ -57,6 +66,20 @@ export type SegmentedControlProps = AccessibleName &
     error?: string;
     /** Sets `aria-required` on the group; the visible mark belongs to the element that labels it. */
     required?: boolean;
+    /**
+     * Below this breakpoint the control fills its column and its segments
+     * share the width equally, whatever the variant, such as a period
+     * switch across a phone. From it up it keeps its own width.
+     */
+    fullWidthBelow?: Breakpoint;
+    /**
+     * `sm` pads every segment a step less and keeps each label on one line
+     * (ending in an ellipsis past its share; its name keeps the whole
+     * label), so three or four segments with counts fit a phone's card.
+     * Keep the labels short enough to fit: the hidden part cannot be read.
+     * `md` (the default) is the variant's own padding.
+     */
+    size?: SegmentedSize;
   };
 
 export const SegmentedControl = forwardRef<
@@ -66,9 +89,11 @@ export const SegmentedControl = forwardRef<
   {
     disabled = false,
     error,
+    fullWidthBelow,
     items,
     onChange,
     required = false,
+    size = 'md',
     value,
     variant = 'compact',
     ...labelProps
@@ -76,6 +101,15 @@ export const SegmentedControl = forwardRef<
   ref,
 ) {
   const errorId = useId();
+  if (
+    fullWidthBelow !== undefined &&
+    !(breakpoints as readonly unknown[]).includes(fullWidthBelow)
+  )
+    throw new RangeError(
+      `Unknown SegmentedControl fullWidthBelow: ${String(fullWidthBelow)}`,
+    );
+  if (!(segmentedSizes as readonly unknown[]).includes(size))
+    throw new RangeError(`Unknown SegmentedControl size: ${String(size)}`);
   const withIcons = items.some((item) => item.icon);
 
   function onKeyDown(event: KeyboardEvent<HTMLDivElement>) {
@@ -103,6 +137,7 @@ export const SegmentedControl = forwardRef<
       className={cx(
         'sw-segmented-field',
         variant === 'filled' && 'sw-segmented-field-filled',
+        fullWidthBelow && segmentedFullWidthClass(fullWidthBelow),
       )}
     >
       <div
@@ -117,6 +152,7 @@ export const SegmentedControl = forwardRef<
           variant === 'raised' && segmentedRaisedClass,
           withIcons && 'sw-segmented-with-icons',
           disabled && 'sw-segmented-disabled',
+          size === 'sm' && segmentedSmClass,
         )}
         onKeyDown={onKeyDown}
         role="radiogroup"
@@ -150,7 +186,12 @@ export const SegmentedControl = forwardRef<
                   {item.icon}
                 </span>
               ) : null}
-              {item.label}
+              {size === 'sm' ? (
+                // Its own box, so the ellipsis works in a flex item too.
+                <span className="sw-segmented-item-label">{item.label}</span>
+              ) : (
+                item.label
+              )}
             </button>
           );
         })}

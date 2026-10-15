@@ -255,6 +255,8 @@ A `Button` that toggles something passes `aria-pressed`. The pressed button gets
 
 `ButtonGroup` `appearance="track"` (an `attached` group only; default `"default"`, `buttonGroupAppearances`) sets the joined buttons as words in the text color on one quiet grey track (the muted fill at 16 %, the sm radius) with the `border` token's hairline between them, whatever their variant, such as Previous, This week and Next above a period. It is for equal-weight navigation: every variant's meaning goes, so keep a primary or destructive action out of it. A pressed button keeps its ring, a focused one its outline and a disabled one fades (`disabledAppearance="neutral"` too); forced colors outline the track, keep every border and draw a pressed button's in Highlight. An unknown value, or `track` without `attached`, throws a `RangeError`.
 
+`ButtonGroup` `fullWidthBelow="md"` (an `attached` group only; the layout `Breakpoint`) makes the joined control fill its column below that breakpoint, its buttons sharing the width equally (each may shrink, so keep their words short), such as earlier, a period and later across a phone; from `md` up it sizes to its buttons as before. On a group that is not attached it throws (that row already stacks full width on a phone), as does an unknown breakpoint.
+
 `Badge` is a non-interactive chicklet with a `tone` (`neutral`, `accent`, `success`, `danger`, `warning`) and a `size` (`md`, or `sm` for a table cell). A badge inside a filled `Button` (every variant but `ghost`) sits on `--sw-color-surface` with its words in the text color and its tone on its border, so it reads at 4.5:1 in every palette whatever the button's fill.
 
 `ActionMenu` opens independent commands from a labelled button. Provide localized command labels and callbacks; use `disabled` for unavailable commands and `destructive` for a dangerous command's presentation. Escape and choosing a command both return focus to the trigger (before the command runs, so a `Dialog` it opens hands focus back to the trigger on close), and outside interaction dismisses the menu. The open menu sits on the popover layer a `space-1` gap below its trigger (above it when it only fits there), at least `space-2` from every viewport edge (a classic scrollbar is not part of the viewport), and aligned to the trigger's inline start (its right edge in right-to-left), or to its other edge when the trigger ends a row and the menu would not fit from its start. `align="end"` (default `"start"`) lines the menu up with the trigger's inline end even where the start would fit, for a trigger that ends a card or a list row, so the menu stays over that card instead of hanging past it; it takes the start when the end would leave the screen. The menu is as wide as its longest command up to the viewport less both insets, and a longer command wraps. The menu follows its trigger through scroll, window resize, and a change in the menu's or the trigger's size. The menu is in the DOM only while it is open. The trigger and its commands use the compact xs control height for a fine pointer; on a coarse pointer the trigger is at least 44 × 44 px (the md control height, as on `CalendarButton`) and every command is at least 44 px tall. An item's `detail` is its current value at the command's end, such as "English" on a Language command that opens a choice: muted, before a chevron that points to the inline end (mirrored right to left), and read as part of the command's name ("Language English"); `detailLang` marks its language. It is meant for a short value; a long one wraps between words, never inside one. The command runs like any other and opens no submenu, so a command that opens a dialog or a picker says so in its label. A blank `detail`, or a blank `detailLang` or one without a `detail`, throws a `RangeError`. `separatorBefore` draws a hairline (`role="separator"`) before a command, setting it apart, such as Sign out; the arrow keys skip it, and it is never drawn before the first command.
@@ -372,6 +374,23 @@ An option's optional `description` (a `ReactNode`) is secondary text for that op
 ```
 
 `SegmentedControl` is one exclusive choice shown as a track of segments (`role="radiogroup"`), named by `aria-label` or `aria-labelledby`, with a controlled `value` and `onChange`; `variant="filled"` gives every segment the same width and fills the selection with the accent, and `disabled` keeps the choice visible but inert. `error` puts a message under the track (`sw-field-error`), links it to the group by `aria-describedby` and sets `aria-invalid` and a danger outline on the group (`Mark` in forced colors); as `Field`'s it is announced politely from a live region that is always there, never as an alert, and an empty string is no error. `required` sets `aria-required` on the group; since the control has no label of its own, the element that labels it shows the mark. The track sits in a `.sw-segmented-field` wrapper that holds the message and takes the track's place in the layout, so a `ref` still reaches the `radiogroup`. `error` is for a control in a `Stack` or block layout, where the track keeps its width and the message wraps under it. While it shows a message the field is at least 24ch wide, capped at its container, so a short compact track does not squeeze the message into a column. In an `Inline` the field therefore grows and the rest of the row moves, while the track keeps its labels' width. An item's `icon` (such as a small `GlyphTile`) sits before its label, hidden from assistive technology, so the label names the segment; when any item has one, a compact track takes the `md` control height and label type on a subtle fill, with the selected item raised, and a filled track keeps its look and only gains the marks.
+
+`SegmentedControl` `fullWidthBelow="md"` makes the control fill its column below that breakpoint, its segments sharing the width equally whatever the variant (a raised track too); from `md` up it keeps its own width. `size="sm"` (`segmentedSizes`, default `"md"`) pads every segment a step less and keeps each label on one line, ending in an ellipsis past its share while its name keeps the whole label, so three or four segments with counts fit a phone's card (a segment with a mark keeps its padding, and the label truncates on any variant). The ellipsis is a last resort that sighted people cannot expand: keep `sm` labels short enough to fit at the widths you expect, at 200 % zoom too, and never let the hidden part carry meaning. An unknown breakpoint or size throws a `RangeError`.
+
+```tsx
+<SegmentedControl
+  aria-label="Field log"
+  variant="raised"
+  size="sm"
+  fullWidthBelow="md"
+  items={[
+    { id: 'changes', label: 'Changes 57' },
+    { id: 'people', label: 'People 12' },
+  ]}
+  value={log}
+  onChange={setLog}
+/>
+```
 
 `variant="raised"` (opt-in; default `"compact"`) is a grey track (the quiet muted fill, no border, corners concentric with the segments' small radius) as wide as its segments even in a `Stack`; every segment is the `md` control height in label type with its words in the text color at medium weight, and the selected one is the surface raised by the small elevation at label weight; in the dark scheme, where a shadow does not show, it draws a hairline ring in the muted color instead (3:1 or more on the track in every dark palette). Item `icon`s keep that look, and `error` and `disabled` behave as on the other tracks. It is the same radiogroup with the same keys; forced colors outline the track and the selected segment.
 
@@ -824,7 +843,7 @@ A strip row with `entry` makes its counts editable: each column holds a `Stepper
 
 ```tsx
 <FilterChips
-  label="Show nights"
+  label="Nocturnal surveys"
   labelVisuallyHidden
   countAppearance="inline"
   overflow="scroll"

@@ -4,7 +4,7 @@ test('FilterChips without a drawn label, with inline counts, scroll on one row',
   page,
 }, testInfo) => {
   await page.goto('/#filter-chips');
-  const group = page.getByRole('group', { name: 'Show nights' });
+  const group = page.getByRole('group', { name: 'Nocturnal surveys' });
   await expect(group).toBeVisible();
   // The label names the group but is not drawn.
   const legend = group.locator('legend');

@@ -39,7 +39,7 @@ export function FilterChipsSection() {
 />
 
 <FilterChips
-  label="Show nights"
+  label="Nocturnal surveys"
   labelVisuallyHidden
   countAppearance="inline"
   overflow="scroll"
@@ -110,7 +110,7 @@ export function FilterChipsSection() {
         </Text>
         <FilterChips
           countAppearance="inline"
-          label="Show nights"
+          label="Nocturnal surveys"
           labelVisuallyHidden
           onChange={setNights}
           options={[
