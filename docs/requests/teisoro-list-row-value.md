@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: accepted 2026-10-14 (Teisoro F-012-S23, release M4 "board fidelity", item 5; plan approval under Teisoro decisions O-1, D-1 and D-9).
+Status: released in `@scalewing/react` 1.41.0 (PR #190; accepted 2026-10-14; Teisoro F-012-S23, release M4 "board fidelity", item 5; plan approval under Teisoro decisions O-1, D-1 and D-9).
 Renderer: react
 Missing surface: two opt-in `ListRow` value options: a `warning` value tone, and a value drawn as a `Badge`.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: the phone boards' lists end some rows in a figure that needs a look (amber, not red) and others in a status pill (Open, Paid, Blocked) where the value goes. `ListRow`'s value tones are a table cell's four, without warning, and its value is text only, so a status pill would have to go in the title line or as the leading mark. Teisoro F-012-S14 and S19 list both as remaining differences.

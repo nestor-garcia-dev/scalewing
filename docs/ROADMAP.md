@@ -63,7 +63,9 @@ Teisoro F-012-S23, release M4 "board fidelity" (`@scalewing/react`
 `layout="trailing"` and `checkedTone="success"`
 (`teisoro-switch-trailing.md`, #194); `Dialog` `status`,
 `canvas="grouped"` and `sheetGrabber`, and an `ActionBar` summary with no
-figure yet (`teisoro-dialog-board.md`). Next: the release.
+figure yet (`teisoro-dialog-board.md`, #195). Released in
+`@scalewing/react` 1.41.0. Next: Teisoro adopts 1.41.0 in its own task
+(2410); its pin stays until then.
 
 Teisoro F-011-S02, release R1 "guided-form core": web `Stepper`
 (#113), `DenominationGrid` entry rows (#114), `Steps` / `Step` (#115)

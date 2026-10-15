@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: accepted 2026-10-14 (Teisoro F-012-S23, release M4 "board fidelity", item 9; plan approval under Teisoro decisions O-1, D-1 and D-9).
+Status: released in `@scalewing/react` 1.41.0 (PR #194; accepted 2026-10-14; Teisoro F-012-S23, release M4 "board fidelity", item 9; plan approval under Teisoro decisions O-1, D-1 and D-9).
 Renderer: react
 Missing surface: two opt-in `Switch` options: the control after its label (a trailing layout), and a success colour while on.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: the download sheet and the store settings boards set each switch at the end of its row, after its words and description, in green while on. `Switch` always puts its control before its label and fills it with the accent. Teisoro F-012-S17 and S20 list both as remaining differences (D-159).

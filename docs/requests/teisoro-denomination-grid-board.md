@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: accepted 2026-10-14 (Teisoro F-012-S23, release M4 "board fidelity", item 7; plan approval under Teisoro decisions O-1, D-1 and D-9).
+Status: released in `@scalewing/react` 1.41.0 (PR #192; accepted 2026-10-14; Teisoro F-012-S23, release M4 "board fidelity", item 7; plan approval under Teisoro decisions O-1, D-1 and D-9).
 Renderer: react
 Missing surface: three opt-in `DenominationGrid` options: signed counts out without the danger colour, a phone layout with the denominations as rows, and entry counts with room for four digits in a grid of seven columns.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: the day boards count bills out and bagged as negative counts, and Teisoro's ledger rule keeps money going out out of red (cash out is never an error), but the grid draws every negative count in danger, so Teisoro drops the minus instead. The phone boards draw a day's bills and the settings' change with a row per bill, where the strip keeps a column per bill and scrolls. The settings' change grid has seven entry columns and counts in the thousands, which its three-digit steppers clip. Teisoro F-012-S13 and S20 list these as remaining differences.

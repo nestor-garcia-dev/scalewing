@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: accepted 2026-10-14 (Teisoro F-012-S23, release M4 "board fidelity", item 1; plan approval under Teisoro decisions O-1, D-1 and D-9).
+Status: released in `@scalewing/react` 1.41.0 (PR #186; accepted 2026-10-14; Teisoro F-012-S23, release M4 "board fidelity", item 1; plan approval under Teisoro decisions O-1, D-1 and D-9).
 Renderer: react
 Missing surface: an opt-in grey page tone for the generated canvas, `ThemeProvider canvas="grouped"`.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: every manager-views board sets its page on a light grey with its content in white cards (a report, a settings form, a list), and Teisoro may not restyle the page canvas in app CSS. `Box background` takes the background or the surface only, and a Box would not fill the page behind its header and gutters. The tasks of Teisoro F-012-S12, S18 and S19 list "the page surface is white, not the board's grey" as a remaining difference.

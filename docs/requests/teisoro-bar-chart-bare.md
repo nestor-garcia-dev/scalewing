@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: accepted 2026-10-14 (Teisoro F-012-S23, release M4 "board fidelity", item 6; plan approval under Teisoro decisions O-1, D-1 and D-9).
+Status: released in `@scalewing/react` 1.41.0 (PR #191; accepted 2026-10-14; Teisoro F-012-S23, release M4 "board fidelity", item 6; plan approval under Teisoro decisions O-1, D-1 and D-9).
 Renderer: react
 Missing surface: two opt-in `BarChart` options: a `neutral` bar tone, and an appearance with no track and no axis.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: the Services board's checks cashed by weekday greys the usual days and keeps the two busiest in blue, and the bounced checks board draws its days to pay back as bare bars with each value beside its bar, with no track and no axis. `BarChart` tones are accent, success, warning and danger, and it always draws a track and a value axis. Teisoro F-012-S14 and S15 list both as remaining differences (S14's weekday bars are all accent, D-138).

@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: accepted 2026-10-14 (Teisoro F-012-S23, release M4 "board fidelity", item 8; plan approval under Teisoro decisions O-1, D-1 and D-9).
+Status: released in `@scalewing/react` 1.41.0 (PR #193; accepted 2026-10-14; Teisoro F-012-S23, release M4 "board fidelity", item 8; plan approval under Teisoro decisions O-1, D-1 and D-9).
 Renderer: react
 Missing surface: `fullWidthBelow` on `SegmentedControl` and on an attached `ButtonGroup` (fill a phone's width), and `SegmentedControl` `size="sm"` (labels kept on one line in a phone's card).
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: the phone boards stretch the period's quick choice (a raised switch) and the joined ‹ › steps across the screen, and the corrections board's switch with three counted labels sits on one line in a 390 card. A raised `SegmentedControl` and an attached `ButtonGroup` always size to their contents, and a segment's label wraps onto two lines when the track is squeezed. Teisoro F-012-S12, S16 and S19 list these as remaining differences.

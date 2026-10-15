@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: accepted 2026-10-14 (Teisoro F-012-S23, release M4 "board fidelity", item 2; plan approval under Teisoro decisions O-1, D-1 and D-9).
+Status: released in `@scalewing/react` 1.41.0 (PR #187; accepted 2026-10-14; Teisoro F-012-S23, release M4 "board fidelity", item 2; plan approval under Teisoro decisions O-1, D-1 and D-9).
 Renderer: react
 Missing surface: `Field` `width`, a cap on a short field's control so it does not stretch across a form.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: the settings and employee boards draw short values (a rate, a limit, a code) in boxes their own size inside a form column, and a Field's control always fills its column. Wrapping the Field in a sized Box would also squeeze its label and description; sizing the input in Teisoro would need app CSS or a width in JSX.
