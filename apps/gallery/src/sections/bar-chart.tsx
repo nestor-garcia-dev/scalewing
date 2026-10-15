@@ -1,4 +1,10 @@
-import { BarChart, type BarChartItem, Stack, Text } from '@scalewing/react';
+import {
+  BarChart,
+  type BarChartItem,
+  Card,
+  Stack,
+  Text,
+} from '@scalewing/react';
 
 import { Section } from '../layout/Section.js';
 import {
@@ -24,11 +30,24 @@ const feedVariance: BarChartItem[] = sampleFeedVariance.map((item) => ({
   tone: item.value > 0 ? 'warning' : 'danger',
 }));
 
+/** The two busiest nights keep the accent; the others are neutral. */
+const owlNights: BarChartItem[] = [
+  { label: 'Mon', value: 3 },
+  { label: 'Tue', value: 2 },
+  { label: 'Wed', value: 4 },
+  { label: 'Thu', value: 3 },
+  { label: 'Fri', value: 9 },
+  { label: 'Sat', value: 11 },
+  { label: 'Sun', value: 5 },
+].map((night) =>
+  night.value > 8 ? night : { ...night, tone: 'neutral' as const },
+);
+
 export function BarChartSection() {
   return (
     <Section
       id="bar-chart"
-      purpose="BarChart is a labeled horizontal magnitude chart. Accent fill is positive contribution; danger fill is negative. max keeps several charts on one scale. formatValue writes the axis and every value without its own label, such as a unit or a currency. diverging puts zero in the middle of each track, so a negative value's bar grows toward the start and a positive one's toward the end on the same scale, and the axis reads from minus max to max. An item's tone (accent, success, warning or danger) colors its bar by what it means in place of its sign's default, such as an overage in warning and a shortage in danger; the value and its side of zero still say it."
+      purpose="BarChart is a labeled horizontal magnitude chart. Accent fill is positive contribution; danger fill is negative. max keeps several charts on one scale. formatValue writes the axis and every value without its own label, such as a unit or a currency. diverging puts zero in the middle of each track, so a negative value's bar grows toward the start and a positive one's toward the end on the same scale, and the axis reads from minus max to max. appearance bare draws the bars alone, with no track and no axis, for bars whose values are all written beside them. An item's tone (accent, success, warning, danger or neutral, the muted grey for a bar that is counted but not the point) colors its bar by what it means in place of its sign's default, such as an overage in warning and a shortage in danger; the value and its side of zero still say it."
       title="BarChart"
       usage={`<BarChart
   aria-label="Trait contributions"
@@ -52,6 +71,15 @@ export function BarChartSection() {
   items={[
     { label: 'Otter pool', value: 3, tone: 'warning' },
     { label: 'Owl barn', value: -4, tone: 'danger' },
+  ]}
+/>
+
+<BarChart
+  aria-label="Owls heard by night"
+  appearance="bare"
+  items={[
+    { label: 'Thu', value: 3, tone: 'neutral' },
+    { label: 'Fri', value: 9 },
   ]}
 />`}
     >
@@ -84,6 +112,20 @@ export function BarChartSection() {
         <Text variant="caption" color="muted">
           tone: feed put out against the plan, by enclosure. Over the plan runs
           right in warning, short of it runs left in danger.
+        </Text>
+        <Card padding={4}>
+          <Stack gap={2}>
+            <Text variant="label">Owls heard by night</Text>
+            <BarChart
+              appearance="bare"
+              aria-label="Owls heard by night"
+              items={owlNights}
+            />
+          </Stack>
+        </Card>
+        <Text variant="caption" color="muted">
+          appearance bare: no track and no axis, each value beside its bar. The
+          usual nights are neutral and the two busiest keep the accent.
         </Text>
       </Stack>
     </Section>

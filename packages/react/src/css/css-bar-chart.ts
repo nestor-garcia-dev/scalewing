@@ -1,5 +1,11 @@
 import { typographyVariants } from '@scalewing/tokens';
 
+import {
+  chartStroke,
+  chartStrokeTones,
+  type ChartStrokeTone,
+} from './chart-tones.js';
+
 const caption = typographyVariants.caption;
 const data = typographyVariants.data;
 
@@ -8,14 +14,27 @@ const data = typographyVariants.data;
  * accent, or danger for a negative value), such as a diverging chart whose
  * overage is a warning and whose shortage is danger.
  */
-export const barChartTones = [
-  'accent',
-  'success',
-  'warning',
-  'danger',
-] as const;
+export const barChartTones = chartStrokeTones;
 
-export type BarChartTone = (typeof barChartTones)[number];
+export type BarChartTone = ChartStrokeTone;
+
+/**
+ * A tone's colour: the charts' stroke colour of that tone (`chart-tones.ts`),
+ * a semantic colour at 3:1 or more, the muted grey for `neutral`, a bar
+ * that is counted but not the point (the other days beside the busiest
+ * ones). Not the lighter fill mix a column takes, which is 1.5:1.
+ */
+export function barChartToneColor(tone: BarChartTone): string {
+  return chartStroke(tone);
+}
+
+/**
+ * `track` (the default) draws each bar in a track with the value axis
+ * under the bars; `bare` draws the bars alone, with no track and no axis,
+ * for bars whose values are all written beside them.
+ */
+export const barChartAppearances = ['track', 'bare'] as const;
+export type BarChartAppearance = (typeof barChartAppearances)[number];
 
 /*
  * A tone's rule follows the negative fill's, at the same specificity, so a
@@ -29,7 +48,7 @@ function toneRules(): string {
   return barChartTones
     .map(
       (tone) =>
-        `.sw-bar-chart-fill-${tone} { background: var(--sw-color-${tone}); }`,
+        `.sw-bar-chart-fill-${tone} { background: ${barChartToneColor(tone)}; }`,
     )
     .join('\n');
 }
@@ -73,6 +92,24 @@ function divergingRules(): string {
 
 @media (forced-colors: active) {
   .sw-bar-chart-diverging .sw-bar-chart-track::before { background: CanvasText; }
+}`;
+}
+
+/*
+ * A bare chart draws no track: the bar sits on the surface around it, the
+ * track's room kept so the labels and values line up as before (in forced
+ * colours its edge is the canvas colour, as forcing replaces a transparent
+ * one). A diverging bare chart keeps its zero hairline.
+ */
+function bareRules(): string {
+  return `.sw-bar-chart-bare .sw-bar-chart-track {
+  background: transparent;
+  border-color: transparent;
+}
+
+/* Forced colours replace a transparent edge; the canvas colour hides it. */
+@media (forced-colors: active) {
+  .sw-bar-chart-bare .sw-bar-chart-track { border-color: Canvas; }
 }`;
 }
 
@@ -161,6 +198,8 @@ ${toneRules()}
 
 ${divergingRules()}
 
+${bareRules()}
+
 @media (forced-colors: active) {
   .sw-bar-chart-fill { background: CanvasText; }
 }`;
@@ -180,5 +219,6 @@ export function barChartClassCatalog(): string[] {
     'sw-bar-chart-value',
     'sw-bar-chart-axis-track',
     'sw-bar-chart-diverging',
+    'sw-bar-chart-bare',
   ];
 }

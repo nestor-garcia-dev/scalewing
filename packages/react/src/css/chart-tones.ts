@@ -125,6 +125,11 @@ export const chartStrokeColors: Record<ChartStrokeTone, ChartColorSource> = {
   neutral: { semantic: 'muted' },
 };
 
+/** A stroke tone's colour as CSS, such as a line's or a bar's. */
+export function chartStroke(tone: ChartStrokeTone): string {
+  return sourceProperty(chartStrokeColors[tone]);
+}
+
 /**
  * How much of a line's stroke the area under it takes, over transparency:
  * a quiet tint behind the line, decorative (the line carries the values).
@@ -180,9 +185,7 @@ function toneDeclarations(tone: ChartTone): string {
   if (isOneOf(chartFillTones, tone))
     declarations.push(`--sw-chart-fill: ${chartFill(tone)};`);
   if (isOneOf(chartStrokeTones, tone))
-    declarations.push(
-      `--sw-chart-stroke: ${sourceProperty(chartStrokeColors[tone])};`,
-    );
+    declarations.push(`--sw-chart-stroke: ${chartStroke(tone)};`);
   if (isOneOf(chartInkTones, tone))
     declarations.push(`--sw-chart-ink: ${chartColorMix(chartInkMixes[tone])};`);
   return declarations.join(' ');
