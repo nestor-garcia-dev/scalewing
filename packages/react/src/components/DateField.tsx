@@ -10,6 +10,10 @@ import {
 import { dateEntryPattern, dateEntryPlaceholder } from '../date-entry.js';
 import { dateEntryValidity } from '../date-entry-validity.js';
 import { assertDateBounds, isOutsideDateRange } from '../date-only.js';
+import {
+  assertDateFieldEntry,
+  type DateFieldEntry,
+} from '../css/css-date-field-calendar-entry.js';
 import { FieldErrorRegion } from './FieldErrorRegion.js';
 import {
   assertRequiredMark,
@@ -17,13 +21,14 @@ import {
   type RequiredMark,
 } from './FieldLabelText.js';
 import { CalendarDialog } from './date-field/CalendarDialog.js';
-import { DateFieldGlyph } from './date-field/DateFieldGlyph.js';
+import { CalendarEntryButton } from './date-field/CalendarEntryButton.js';
+import { TypedEntry } from './date-field/TypedEntry.js';
 import { useCalendarPopup } from './date-field/use-calendar-popup.js';
 import { useDateEntry } from './date-field/use-date-entry.js';
 import { useLangLocale } from './date-field/use-lang-locale.js';
-import { tabStop } from '../tab-stop.js';
 
-export type { DateFieldLabels, WeekStart };
+export type { DateFieldEntry, DateFieldLabels, WeekStart };
+export { dateFieldEntries } from '../css/css-date-field-calendar-entry.js';
 
 export type DateFieldProps = {
   label: string;
@@ -60,6 +65,16 @@ export type DateFieldProps = {
   weekStartsOn?: WeekStart;
   /** The control's own words; English by default. */
   labels?: Partial<DateFieldLabels>;
+  /**
+   * `typed` (the default) is a text entry in the locale's order with a
+   * calendar button. `calendar` is one button showing the chosen day (or
+   * `labels.chooseDate`, such as "Choose a day", while empty) that opens
+   * the same calendar, for a form where a day is picked, never typed. It
+   * has no text to check, so validation and a required day stay with the
+   * consumer's `error`; while `required`, `labels.required` is said after
+   * its name.
+   */
+  entry?: DateFieldEntry;
 };
 
 export function DateField({
@@ -77,8 +92,10 @@ export function DateField({
   locale,
   weekStartsOn = 0,
   labels,
+  entry: entryKind = 'typed',
 }: DateFieldProps) {
   assertRequiredMark(requiredMark);
+  assertDateFieldEntry(entryKind);
   assertDateBounds(value, min, max);
   assertWeekStart(weekStartsOn);
   const words = resolveDateFieldLabels(labels);
@@ -112,7 +129,10 @@ export function DateField({
   const descriptionId = useId();
   const entryErrorId = useId();
   const errorId = useId();
+  const requiredId = useId();
+  const calendarEntry = entryKind === 'calendar';
   const describedBy = [
+    calendarEntry && required ? requiredId : null,
     description ? descriptionId : null,
     entry.invalid ? entryErrorId : null,
     error ? errorId : null,
@@ -133,44 +153,49 @@ export function DateField({
           requiredMark={requiredMark}
         />
       </label>
-      <div className="sw-date-field-control" ref={controlRef}>
-        <input
-          aria-describedby={describedBy || undefined}
-          aria-invalid={invalid}
-          autoComplete="off"
-          className="sw-date-field-input"
+      {calendarEntry ? (
+        <div className="sw-date-field-control" ref={controlRef}>
+          <CalendarEntryButton
+            buttonRef={buttonRef}
+            describedBy={describedBy || undefined}
+            disabled={disabled}
+            emptyText={words.chooseDate}
+            id={inputId}
+            invalid={invalid}
+            labelId={labelId}
+            locale={resolvedLocale}
+            onPress={toggle}
+            trigger={trigger}
+            value={value}
+          />
+          {required ? (
+            <span hidden id={requiredId}>
+              {words.required}
+            </span>
+          ) : null}
+        </div>
+      ) : (
+        <TypedEntry
+          buttonRef={buttonRef}
+          controlRef={controlRef}
+          describedBy={describedBy || undefined}
           disabled={disabled}
+          entry={entry}
           id={inputId}
-          onBlur={entry.check}
-          onChange={(event) => entry.change(event.currentTarget.value)}
-          onKeyDown={(event) => {
-            if (event.key === 'Enter') entry.check();
-          }}
+          inputRef={inputRef}
+          invalid={invalid}
+          labelId={labelId}
+          onToggle={toggle}
           placeholder={dateEntryPlaceholder(pattern, {
             day: words.dayPlaceholder,
             month: words.monthPlaceholder,
             year: words.yearPlaceholder,
           })}
-          ref={inputRef}
           required={required}
-          spellCheck={false}
-          type="text"
-          value={entry.text}
+          toggleName={words.chooseDate}
+          trigger={trigger}
         />
-        <button
-          {...trigger}
-          aria-describedby={labelId}
-          className="sw-date-field-button"
-          disabled={disabled}
-          onClick={toggle}
-          ref={buttonRef}
-          tabIndex={tabStop}
-          type="button"
-        >
-          <span className="sw-sr-only">{words.chooseDate}</span>
-          <DateFieldGlyph name="calendar" />
-        </button>
-      </div>
+      )}
       {description ? (
         <span className="sw-date-field-description" id={descriptionId}>
           {description}

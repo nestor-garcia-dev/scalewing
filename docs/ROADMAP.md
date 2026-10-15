@@ -49,8 +49,10 @@ Teisoro F-012-S05, release M3 "periods, lists and figures"
 Teisoro F-012-S23, release M4 "board fidelity" (`@scalewing/react`
 1.41.0), one PR each, the shared foundations first: the grouped canvas,
 `ThemeProvider canvas="grouped"` (`teisoro-canvas-grouped.md`, #186);
-`Field` `width` (`teisoro-field-width.md`). Next: the day-picker field,
-then the rest of the request files named `teisoro-*` for M4.
+`Field` `width` (`teisoro-field-width.md`, #187); `DateField`
+`entry="calendar"`, a day-picker field (`teisoro-date-field-calendar-entry.md`).
+Next: `FilterChips`, then the rest of the request files named `teisoro-*`
+for M4.
 
 Teisoro F-011-S02, release R1 "guided-form core": web `Stepper`
 (#113), `DenominationGrid` entry rows (#114), `Steps` / `Step` (#115)

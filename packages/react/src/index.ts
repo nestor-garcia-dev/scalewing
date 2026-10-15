@@ -17,6 +17,8 @@ export type { AccordionProps, AccordionSize } from './components/Accordion.js';
 export { Switch, type SwitchProps } from './components/Switch.js';
 export {
   DateField,
+  dateFieldEntries,
+  type DateFieldEntry,
   type DateFieldLabels,
   type DateFieldProps,
   type WeekStart,

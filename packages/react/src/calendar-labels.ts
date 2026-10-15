@@ -53,6 +53,15 @@ export function formatDateLabel(value: string, locale: string): string {
   );
 }
 
+/** A date as a field shows it, such as "Mar 10, 2024"; empty for no date. */
+export function formatDateMedium(value: string, locale: string): string {
+  const parts = parseDateOnly(value);
+  if (!parts) return '';
+  return dateFormatter(locale, { dateStyle: 'medium' }).format(
+    formatterDate(parts),
+  );
+}
+
 /**
  * An icon-only calendar trigger's name: its purpose, a separator, then the
  * date it holds spoken in full, such as "Choose survey day, Tuesday,
