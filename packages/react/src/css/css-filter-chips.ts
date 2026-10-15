@@ -1,5 +1,10 @@
 import { typographyVariants } from '@scalewing/tokens';
 
+import {
+  cssFilterChipsLayoutClasses,
+  filterChipsLayoutClassCatalog,
+} from './css-filter-chips-layout.js';
+
 const label = typographyVariants.label;
 const data = typographyVariants.data;
 const caption = typographyVariants.caption;
@@ -125,6 +130,8 @@ export function cssFilterChipsClasses(): string {
   border-color: var(--sw-color-danger);
 }
 
+${cssFilterChipsLayoutClasses()}
+
 @media (forced-colors: active) {
   .sw-filter-chip-face { background: Canvas; border-color: CanvasText; color: CanvasText; }
   .sw-filter-chips-error { color: Mark; }
@@ -147,5 +154,6 @@ export function filterChipsClassCatalog(): string[] {
     'sw-filter-chip-count',
     'sw-filter-chip-quiet',
     'sw-filter-chips-error',
+    ...filterChipsLayoutClassCatalog(),
   ];
 }

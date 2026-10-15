@@ -782,6 +782,34 @@ A strip row with `entry` makes its counts editable: each column holds a `Stepper
 
 `FilterChips` presents a long, wrapping single-choice filter set. Provide a localized group `label`, controlled `value`, `onChange`, and options with stable values and localized labels. An optional non-negative integer `count` renders as a tabular chicklet after the label and is part of the option's accessible name; a zero count quiets the chip until it is selected: it drops its glass fill and sets its label in the muted color (4.5:1 in every palette), without fading, since it can still be chosen. Native radios provide arrow and Space navigation; disabled options are skipped. A `value` of `''` is nothing chosen yet, for a choice the person must still make, such as a reason. `required` sets `required` on each radio and shows the required mark after the label (hidden from assistive technology). `error` puts a message under the chips, as `Field`'s does (a polite live region kept in the page, out of the layout while empty), links it to the group by `aria-describedby`, sets `aria-invalid` on the group and edges every chip in the danger color (`Mark` in forced colors); an empty string is no error. `aria-describedby` adds your own description ids, such as a hint, before the error. A value that is neither `''` nor an option throws a `RangeError`; a filter set always passes a real option. Inside a `<form>`, the browser checks `required` radios on submit and shows its own message first, so a form that shows `error` itself sets `noValidate`.
 
+`FilterChips` options for chips that sit above a list, all opt-in: `labelVisuallyHidden` keeps `label` as the group's name without drawing it, for chips whose words and place already say what they filter; `countAppearance="inline"` (`filterChipCountAppearances`, default `"figure"`) writes the count in the chip's own words after a middle dot ("Open · 3"), the dot hidden so the name reads "Open 3"; `overflow="scroll"` (`filterChipsOverflows`, default `"wrap"`) keeps the chips on one row that scrolls sideways inside its own box, never the page, each chip on one line, a focused chip scrolled into view and the focus ring unclipped. `multiple` turns several chips on at once, such as the days of a week: each chip is a native checkbox and its own Tab stop, `value` is a list of the chosen values (empty for none) and `onChange` receives every chosen value in the options' order. A multiple group cannot be `required` (nothing makes a checkbox group required); say what is needed in `error`. A value that is no option, a multiple `value` that is not a list, `required` with `multiple`, or an unknown count appearance or overflow throws a `RangeError`.
+
+```tsx
+<FilterChips
+  label="Show nights"
+  labelVisuallyHidden
+  countAppearance="inline"
+  overflow="scroll"
+  value={nights}
+  onChange={setNights}
+  options={[
+    { value: 'all', label: 'All', count: 7 },
+    { value: 'owls', label: 'Owls heard', count: 3 },
+  ]}
+/>
+
+<FilterChips
+  label="Watch days"
+  multiple
+  value={watchDays}
+  onChange={setWatchDays}
+  options={[
+    { value: 'fri', label: 'Fri' },
+    { value: 'sat', label: 'Sat' },
+  ]}
+/>
+```
+
 `DateField` is a controlled date-only field that draws its own calendar. Supply `value`, `min`, and `max` as valid `YYYY-MM-DD` dates; use an empty `value` for a blank field. Its callback returns a date-only string or an empty string, without timezone conversion. Invalid serialized dates and inverted bounds throw; a value outside the bounds remains visible with invalid styling. `required` marks the label with the same `aria-hidden` asterisk as `Field` and sets the entry's native `required`. Its label is drawn as `Field`'s (the same label words and mark inside a `<label>` that keeps the canvas type), so its label row and its gap to the entry match a `Field` beside it. For a blank required field, supply `error` when form validation runs to show the message and invalid styling.
 
 `DateField` `entry="calendar"` (opt-in; `dateFieldEntries`, default `"typed"`) is a day picked, never typed, such as a hire date: one neutral `Button` shaped as a field's control (the small radius, sized to its words on one line at the column's start) holding the calendar glyph and the chosen day in the locale's medium style ("Oct 6, 2026"), or `labels.chooseDate` while the field is empty (pass "Choose a day"). It opens the same calendar, which picks, steps by month and year, picks today and, on an optional field, clears. It is named by the label and its words ("Hire date Choose a day"), described by the `description` and `error`, and a label press opens it too. A button has no required state or text to check, so `required` draws the label's mark and says `labels.required` ("Required") after its name, the form's own check supplies `error`, and the danger edge marks it while `error` is set or the value is outside `min`/`max`. A button cannot be `aria-invalid`, so pass an `error` for a value outside the bounds too: the edge alone is colour only. A long day or `chooseDate` in a narrow column ends in an ellipsis; its name keeps the whole words. An unknown `entry` throws a `RangeError`.
