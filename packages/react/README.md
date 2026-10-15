@@ -55,6 +55,16 @@ import {
 
 `colorScheme` is `"light"`, `"dark"`, or `"system"` so product users can switch. Each named palette already has a light pair and a dark pair. Brand overlays may be a flat `colors` map or `{ light, dark }` so both schemes are declared once.
 
+`canvas="grouped"` (opt-in; `themeCanvases`, default `"default"`) sets the page on a quiet grey so white cards stand apart, as a report or a settings page that groups its content in cards: in the light scheme the background with a little of the muted colour, in the dark scheme the background itself, which is already darker than the surface. It writes `data-canvas="grouped"` on the themed node (set the attribute yourself on a `data-theme` node without `ThemeProvider`); a nested `ThemeProvider canvas="grouped"` paints a grouped region. The text and muted colours keep 4.5:1 or more on it in every palette.
+
+The accent does not keep 4.5:1 on the grey in every palette, so keep links and accent words in the cards. An unknown value throws a `RangeError`.
+
+```tsx
+<ThemeProvider canvas="grouped" colorScheme="system">
+  <Card padding={4}>North colony</Card>
+</ThemeProvider>
+```
+
 ```html
 <div class="sw-padding-top-4 sw-padding-x-4"></div>
 ```

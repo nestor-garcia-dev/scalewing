@@ -1,5 +1,6 @@
 import { typographyVariants } from '@scalewing/tokens';
 import { cssBoxLinkClasses } from './css-box-link.js';
+import { cssCanvasGroupedRules } from './css-canvas-grouped.js';
 
 const body = typographyVariants.body;
 
@@ -92,6 +93,8 @@ body {
 [data-theme='dark'] {
   color-scheme: dark;
 }
+
+${cssCanvasGroupedRules()}
 
 [data-theme] a {
   color: var(--sw-color-accent);

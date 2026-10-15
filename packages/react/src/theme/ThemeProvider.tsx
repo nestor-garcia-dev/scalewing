@@ -17,12 +17,26 @@ import {
   type ThemeColors,
 } from '@scalewing/tokens';
 
+import {
+  assertThemeCanvas,
+  type ThemeCanvas,
+} from '../css/css-canvas-grouped.js';
+
 const ThemeContext = createContext<Theme | null>(null);
 
 export type ThemeProviderProps = {
   colorScheme?: ColorScheme | 'system';
   palette?: PaletteId;
   colors?: ThemeColors;
+  /**
+   * The page's tone: `default` is the theme's background; `grouped` (opt-in)
+   * is a quiet grey in the light scheme (the background in the dark one,
+   * already darker than its surface), so white cards stand apart from the
+   * page. Put links and accent words in the cards: on the grouped grey the
+   * accent falls under 4.5:1 in some palettes, while the text and muted
+   * colours keep it. An unknown value throws a `RangeError`.
+   */
+  canvas?: ThemeCanvas;
   children: ReactNode;
 };
 
@@ -60,8 +74,10 @@ export function ThemeProvider({
   colorScheme = 'system',
   palette,
   colors,
+  canvas = 'default',
   children,
 }: ThemeProviderProps) {
+  assertThemeCanvas(canvas);
   const [systemScheme, setSystemScheme] =
     useState<ColorScheme>(schemeFromMedia);
 
@@ -89,6 +105,7 @@ export function ThemeProvider({
   return (
     <ThemeContext.Provider value={theme}>
       <div
+        data-canvas={canvas === 'default' ? undefined : canvas}
         data-palette={palette}
         data-theme={theme.colorScheme}
         style={themeCssVars(theme)}
