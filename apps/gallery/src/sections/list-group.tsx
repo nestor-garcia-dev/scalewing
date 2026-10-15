@@ -25,7 +25,7 @@ export function ListGroupSection() {
   return (
     <Section
       id="list-group"
-      purpose="ListGroup is rows in one list with hairlines between them: a bordered panel of its own, or plain rows inside a Card (variant plain, with a hairline above the first row too). A ListRow has a title, an optional muted detail line, an optional value at its end (valueTone colours it, valueDetail adds a muted line under it) and an optional leading mark, hidden from assistive technology. With onPress or href the whole row is the button or link, named by its title and value and described by its detail lines, with a chevron; selected makes it a choice with a check; without either it only states something. titleAppearance plain sets the title at the body weight. maxHeight bounds the list to a count of rows that scroll inside its own named region, shading an edge with more past it, and footer stays pinned under them, such as a total."
+      purpose="ListGroup is rows in one list with hairlines between them: a bordered panel of its own, or plain rows inside a Card (variant plain, with a hairline above the first row too). A ListRow has a title, an optional muted detail line, an optional value at its end (valueTone colours it, warning included for a figure that needs a look, valueBadge draws it as a Badge such as a status, valueDetail adds a muted line under it) and an optional leading mark, hidden from assistive technology. With onPress or href the whole row is the button or link, named by its title and value and described by its detail lines, with a chevron; selected makes it a choice with a check; without either it only states something. titleAppearance plain sets the title at the body weight. maxHeight bounds the list to a count of rows that scroll inside its own named region, shading an edge with more past it, and footer stays pinned under them, such as a total."
       title="ListGroup"
       usage={`<Card>
   <Text as="h3" variant="label" id="look">Worth a look</Text>
@@ -153,6 +153,26 @@ export function ListGroupSection() {
         </Stack>
         <ListGroup aria-label="Station">
           <ListRow title="Region" value="Pantanal" />
+          <ListRow
+            detail="Last checked 3 days ago"
+            title="Camera traps"
+            value="2 offline"
+            valueTone="warning"
+          />
+          <ListRow
+            detail="Jaguar, two cubs"
+            onPress={() => setOpened('Riverbank den')}
+            title="Riverbank den"
+            value="Watched"
+            valueBadge="warning"
+          />
+          <ListRow
+            detail="Ocelot"
+            onPress={() => setOpened('Hollow log den')}
+            title="Hollow log den"
+            value="Clear"
+            valueBadge="success"
+          />
           <ListRow
             detail="Shared with the field teams"
             title="Observers"

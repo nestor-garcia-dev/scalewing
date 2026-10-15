@@ -3,6 +3,7 @@
 import { type ReactNode, useContext, useId } from 'react';
 
 import { cx } from '../class-names.js';
+import { type BadgeTone } from '../css/css-data.js';
 import {
   assertListRow,
   listRowAccessory,
@@ -23,8 +24,16 @@ export type ListRowProps = {
   value?: string;
   /** A muted line under the value, such as "checks $3,427". */
   valueDetail?: string;
-  /** Colours the value only, as a table cell's tone; the words say why. */
+  /**
+   * Colours the value only, as a table cell's tone, or `warning` for a
+   * figure that needs a look; the words say why.
+   */
   valueTone?: ListRowValueTone;
+  /**
+   * Draws the value as a `Badge` in this tone, such as a status ("Open",
+   * "Blocked") at the row's end. Not with `valueTone`.
+   */
+  valueBadge?: BadgeTone;
   /**
    * A consumer mark at the row's start, such as a status dot or a Lucide
    * glyph (ADR 0008). It is hidden from assistive technology, so the words
@@ -75,6 +84,7 @@ export function ListRow({
   value,
   valueDetail,
   valueTone,
+  valueBadge,
   leading,
   onPress,
   href,
@@ -94,6 +104,7 @@ export function ListRow({
     accessory,
     value,
     valueDetail,
+    valueBadge,
     selected,
     pressable,
   });
@@ -110,6 +121,7 @@ export function ListRow({
       titleAppearance={titleAppearance}
       tone={tone}
       value={value}
+      valueBadge={valueBadge}
       valueDetail={valueDetail}
       valueTone={valueTone}
     />

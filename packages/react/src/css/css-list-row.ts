@@ -1,7 +1,8 @@
 import { typographyVariants } from '@scalewing/tokens';
 
 import { checkStrokeIn, chevronStrokeIn } from './chevron.js';
-import { tableCellTones as listRowValueTones } from './css-table-ledger.js';
+import { chartColorMix, chartInkMixes } from './chart-tones.js';
+import { tableCellTones } from './css-table-ledger.js';
 import { quietFill } from './quiet-fill.js';
 import { coarsePointerQuery, touchTarget } from './touch-target.js';
 
@@ -86,8 +87,25 @@ function rowRules(): string {
 }`;
 }
 
+/**
+ * The colours a row's value can take: a table cell's, and `warning`, for a
+ * figure that needs a look but is not wrong yet.
+ */
+export const listRowValueTones = [...tableCellTones, 'warning'] as const;
+export type ListRowValueTone = (typeof listRowValueTones)[number];
+
+/*
+ * A warning value is the warning colour's ink, moved halfway to the text
+ * colour as a chart's warning words are: the warning colour alone falls
+ * under 4.5:1 on the surface in some palettes. Forced colours draw it as
+ * text, as every tone.
+ */
+function warningValueRule(): string {
+  return `.sw-list-row-value-warning { color: ${chartColorMix(chartInkMixes.warning)}; }`;
+}
+
 function partRules(): string {
-  const tones = listRowValueTones
+  const tones = tableCellTones
     .map(
       (tone) =>
         `.sw-list-row-value-${tone} { color: var(--sw-color-${tone}); }`,
@@ -140,7 +158,8 @@ function partRules(): string {
 
 .sw-list-row-value { font-weight: ${label.fontWeight}; }
 
-${tones}`;
+${tones}
+${warningValueRule()}`;
 }
 
 /*

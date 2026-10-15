@@ -52,8 +52,10 @@ Teisoro F-012-S23, release M4 "board fidelity" (`@scalewing/react`
 `Field` `width` (`teisoro-field-width.md`, #187); `DateField`
 `entry="calendar"`, a day-picker field (`teisoro-date-field-calendar-entry.md`,
 #188); `FilterChips` hidden label, inline counts, one scrolling row and
-`multiple` (`teisoro-filter-chips-board.md`). Next: `ListRow`, then the
-rest of the request files named `teisoro-*` for M4.
+`multiple` (`teisoro-filter-chips-board.md`, #189); `ListRow`
+`valueTone="warning"` and `valueBadge` (`teisoro-list-row-value.md`).
+Next: `BarChart`, then the rest of the request files named `teisoro-*`
+for M4.
 
 Teisoro F-011-S02, release R1 "guided-form core": web `Stepper`
 (#113), `DenominationGrid` entry rows (#114), `Steps` / `Step` (#115)
