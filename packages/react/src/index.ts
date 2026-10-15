@@ -14,7 +14,14 @@ export {
 } from './components/ActionBar.js';
 export { Accordion } from './components/Accordion.js';
 export type { AccordionProps, AccordionSize } from './components/Accordion.js';
-export { Switch, type SwitchProps } from './components/Switch.js';
+export {
+  Switch,
+  switchCheckedTones,
+  switchLayouts,
+  type SwitchCheckedTone,
+  type SwitchLayout,
+  type SwitchProps,
+} from './components/Switch.js';
 export {
   DateField,
   dateFieldEntries,
