@@ -1,0 +1,5 @@
+---
+'@scalewing/react': minor
+---
+
+`DenominationGrid`: a row's `negativeAppearance="plain"` (`DenominationGridNegativeAppearance`, `denominationNegativeAppearances`; default `danger`) sets its negative counts in the text colour with their minus, for counts going out by design; `transposeBelow` (`'md' | 'lg'`, `DenominationTransposeBreakpoint`, `denominationTransposeBreakpoints`; strip only) draws the strip below that width with a row per denomination and a column per grid row, entry, value lines and totals kept; `countDigits` (3 to 6, entry rows only) keeps that many digits' room in entry counts. A signed count's cell also takes `sw-denomination-cell-signed`. Unknown values, `transposeBelow` on tiles and `countDigits` out of range or without entry rows throw a `RangeError`. New classes `sw-denomination-cell-signed`, `sw-denomination-cell-plain`, `sw-denomination-count-digits` and the `sw-denomination-transposed*` family; no new tokens or dependencies. Request: `docs/requests/teisoro-denomination-grid-board.md`.

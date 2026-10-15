@@ -358,9 +358,9 @@ describe('DenominationGrid cellTones', () => {
       'cell',
     );
     expect(cells.map((cell) => cell.className)).toEqual([
-      'sw-denomination-cell sw-denomination-cell-positive',
-      'sw-denomination-cell sw-denomination-cell-negative sw-denomination-cell-toned sw-denomination-cell-tone-accent',
-      'sw-denomination-cell sw-denomination-cell-zero',
+      'sw-denomination-cell sw-denomination-cell-positive sw-denomination-cell-signed',
+      'sw-denomination-cell sw-denomination-cell-negative sw-denomination-cell-signed sw-denomination-cell-toned sw-denomination-cell-tone-accent',
+      'sw-denomination-cell sw-denomination-cell-zero sw-denomination-cell-signed',
     ]);
   });
 

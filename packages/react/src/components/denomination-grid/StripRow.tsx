@@ -1,6 +1,5 @@
 import { cx } from '../../class-names.js';
-import { denominationCellToneClassNames } from '../../css/css-denomination-cell-tones.js';
-import { denominationCellView } from '../../denomination-cells.js';
+import { CountCell } from './CountCell.js';
 import { EntryCell } from './EntryCell.js';
 import { RowLabelLine } from './RowLabelLine.js';
 import { StripTotalCell, StripTotalInline } from './StripTotal.js';
@@ -20,33 +19,6 @@ type StripRowProps = {
   /** The row's place in the grid, for its value cells' ids. */
   rowIndex: number;
 };
-
-/**
- * One count, read-only: the zero label, a signed delta, and the cell's tone.
- * The value has its own box, which the `pill` tone appearance fills.
- */
-function CountCell({
-  row,
-  index,
-  zeroLabel,
-}: Pick<StripRowProps, 'row' | 'zeroLabel'> & { index: number }) {
-  const view = denominationCellView(
-    row.cells[index] ?? null,
-    row.signed ?? false,
-    zeroLabel,
-  );
-  return (
-    <td
-      className={cx(
-        'sw-denomination-cell',
-        `sw-denomination-cell-${view.state}`,
-        ...denominationCellToneClassNames(row.cellTones?.[index]),
-      )}
-    >
-      <span className="sw-denomination-cell-value">{view.text}</span>
-    </td>
-  );
-}
 
 /**
  * One strip row: its pinned label (with the phone total under it), a count
