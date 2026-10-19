@@ -9,6 +9,7 @@ import { cssFileFieldClasses } from './css-file-field.js';
 import { cssArticleClasses } from './css-article.js';
 import { cssDocumentViewerClasses } from './css-document-viewer.js';
 import { cssListClasses } from './css-list.js';
+import { cssMarkdownClasses } from './css-markdown.js';
 import { cssCountPillClasses } from './css-count-pill.js';
 import { cssBarChartClasses } from './css-bar-chart.js';
 import { cssChartLegendClasses } from './css-chart-legend.js';
@@ -160,6 +161,8 @@ ${cssFileFieldClasses()}
 ${cssArticleClasses()}
 
 ${cssDocumentViewerClasses()}
+
+${cssMarkdownClasses()}
 
 ${cssCountPillClasses()}
 

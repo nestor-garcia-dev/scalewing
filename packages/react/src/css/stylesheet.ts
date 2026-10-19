@@ -17,6 +17,7 @@ import { fileFieldClassCatalog } from './css-file-field.js';
 import { articleClassCatalog } from './css-article.js';
 import { documentViewerClassCatalog } from './css-document-viewer.js';
 import { listClassCatalog } from './css-list.js';
+import { markdownClassCatalog } from './css-markdown.js';
 import { countPillClassCatalog } from './css-count-pill.js';
 import { checkboxClassCatalog } from './css-checkbox.js';
 import { radioGroupClassCatalog } from './css-radio-group.js';
@@ -121,6 +122,7 @@ export function utilityClassCatalog(): string[] {
     ...fileFieldClassCatalog(),
     ...articleClassCatalog(),
     ...documentViewerClassCatalog(),
+    ...markdownClassCatalog(),
     ...countPillClassCatalog(),
     ...checkboxClassCatalog(),
     ...radioGroupClassCatalog(),

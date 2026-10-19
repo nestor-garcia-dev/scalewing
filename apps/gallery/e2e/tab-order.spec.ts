@@ -58,6 +58,9 @@ test('Tab moves between Buttons, segmented items, links and checkboxes', async (
     .getByRole('link');
   await tabsTo(page, sections.nth(0), sections.nth(1));
 
+  const notes = page.locator('#markdown-view .sw-markdown').getByRole('link');
+  await tabsTo(page, notes.nth(0), notes.nth(1));
+
   const boxes = page.locator('#checkbox').getByRole('checkbox');
   await tabsTo(page, boxes.nth(0), boxes.nth(1));
 

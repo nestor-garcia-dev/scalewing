@@ -32,6 +32,7 @@ import {
   DescriptionItem,
   ListGroup,
   ListRow,
+  MarkdownView,
   DenominationGrid,
   FilterChips,
   Grid,
@@ -764,6 +765,25 @@ The consumer needs no PDF.js dependency of its own. With another bundler, build 
 >
   <Stack gap={4}>{paragraphs}</Stack>
 </Article>
+```
+
+`MarkdownView` draws Markdown someone wrote or pasted (`source`) in Scalewing's type, as React elements and never as HTML from a string: paragraphs, headings (`#` drawn as an `h2`, since the page has its own title, `##` an `h3`, `###` and deeper an `h4`, in the title, body and label sizes; a `#` followed straight by a `###` skips a level, as written), bullet and numbered lists, bold, italic, links, block quotes as a highlighted box (the accent's tint with an accent bar; a link or photo caption in it is the text colour), line breaks, thematic breaks (a `Separator`) and photos. A link opens only `http`, `https` or `mailto` addresses, read as the browser would (`new URL`), in a new tab with `rel="noopener noreferrer"`, and carries your `newTabLabel` (required, such as "(opens in a new tab)") as hidden words; reference links and autolinks follow the same rule, and any other scheme (such as `javascript:` or `data:`), a relative or protocol-relative address shows as the link's plain words. Links are the accent, underlined; in the harvest palette's dark scheme the accent is 4.24:1 on the surface, a palette gap the tokens tests record. The only image is `![caption](photo:<id>)`: `resolveImage(id)` returns its `{ src, alt? }` or `null`; it is drawn as a figure at the page's width with the caption under it, outside any paragraph, when its `src` is relative, `https:`, `http:`, `blob:` or a `data:` PNG, JPEG, GIF, WebP, AVIF or SVG and it has words (its `alt`, else the caption). Keep `resolveImage` stable (`useCallback`): a new function reads the source again. Raw HTML (a tag's words stay), scripts, tables, other images and unresolved or wordless photos are left out; code is shown as plain text without highlighting. Quotes, lists and marks nested past 16 levels are shown as their words (a block reaching the parser's 128th level, where it stops reading, is reported once as it may be lost), and the parser's work stays linear, so a realistic 50,000-character page reads in about 7 ms and the slowest crafted one in about a tenth of a second (measured in the request). Each heading gets an id from its words, after `idPrefix`: give every view on a page its own (such as `"page-"`; `''`, the default, is none), or a heading such as "Content" takes the page's `content` id; repeats get `-2`, `-3`. `inspectMarkdown(source, { resolveImage, idPrefix })` gives the same `headings` (`id`, `level`, `text`) for an "On this page" `Nav`, the first 100 `omissions` (`kind`: `html`, `table`, `image`, `link`, `code` or `limit`, and up to 80 characters of `source`) and `omissionCounts` for every kind, for an editor to say what will not be shown. The parser is `markdown-it` (CommonMark, with GFM tables only so they are recognised and left out); its HTML renderer is never used. A `source` that is not text, an `idPrefix` other than `''` or a letter followed by letters, digits, `-` or `_`, or a `resolveImage` that is not a function throws a `RangeError` in both; a blank `newTabLabel` throws in the view.
+
+```tsx
+// One stable resolver for both: a new function reads the source again.
+const resolveImage = useCallback((id: string) => photos[id] ?? null, [photos]);
+
+const { headings, omissions } = inspectMarkdown(page.body, {
+  resolveImage,
+  idPrefix: 'page-',
+});
+
+<MarkdownView
+  source={page.body}
+  resolveImage={resolveImage}
+  idPrefix="page-"
+  newTabLabel="(opens in a new tab)"
+/>;
 ```
 
 `Separator` divides sections with a token-colored line. It is horizontal by default; use `orientation="vertical"` in a flex row. Set `decorative` when the line only supports layout so assistive technology ignores it.

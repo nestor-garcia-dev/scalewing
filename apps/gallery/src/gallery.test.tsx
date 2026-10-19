@@ -106,6 +106,16 @@ describe('gallery', () => {
 
     for (const link of screen.getAllByRole('link')) {
       expect(link.tagName).toBe('A');
+      if (link.closest('.sw-markdown')) {
+        // MarkdownView's sample links leave the gallery only for the
+        // reserved example.org, in a new tab without an opener.
+        expect(link.getAttribute('href')).toMatch(
+          /^(https:\/\/example\.org\/|mailto:[^@]+@example\.org$)/,
+        );
+        expect(link.getAttribute('target')).toBe('_blank');
+        expect(link.getAttribute('rel')).toBe('noopener noreferrer');
+        continue;
+      }
       expect(link.getAttribute('href')).toMatch(/^#/);
     }
 
