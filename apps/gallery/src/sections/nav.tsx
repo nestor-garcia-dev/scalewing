@@ -18,7 +18,7 @@ export function NavSection() {
   return (
     <Section
       id="nav"
-      purpose="Nav is a label-size link cluster. Mark the current destination with aria-current. It is not a button group; use SegmentedControl for exclusive choices. appearance words draws its links or Buttons as plain words, the current one bold in the text color. NavCount, placed inside a destination after its words, adds a count pill (the one SectionNav's items draw) that is part of the destination's name; countLabel says what it means in place of the bare number, and 0 shows nothing."
+      purpose="Nav is a label-size link cluster. Mark the current destination with aria-current. It is not a button group; use SegmentedControl for exclusive choices. appearance words draws its links or Buttons as plain words, the current one bold in the text color. NavCount, placed inside a destination after its words, adds a count pill (the one SectionNav's items draw) that is part of the destination's name; countLabel says what it means in place of the bare number, and 0 shows nothing. tone accent (default danger) draws the pill in the accent colour for news, such as what was added since the last visit, rather than work waiting."
       title="Nav"
       usage={`<Nav aria-label="Habitats">
   <Box as="a" href="#nav" aria-current="page">Forest</Box>
@@ -30,6 +30,10 @@ export function NavSection() {
   <Box as="a" href="/tasks" aria-current="page">
     Tasks
     <NavCount count={8} countLabel="8 tasks to do" />
+  </Box>
+  <Box as="a" href="/field-notes">
+    Field notes
+    <NavCount count={3} countLabel="3 new" tone="accent" />
   </Box>
 </Nav>`}
     >
@@ -107,6 +111,10 @@ export function NavSection() {
             Traps
             <NavCount count={0} />
           </Box>
+          <Box as="a" href="#nav">
+            Field notes
+            <NavCount count={3} countLabel="3 new" tone="accent" />
+          </Box>
           <Button onPress={() => undefined} size="sm" variant="ghost">
             Alerts
             <NavCount count={3} />
@@ -115,7 +123,8 @@ export function NavSection() {
         <Text color="muted" variant="caption">
           NavCount: a count after a destination&apos;s words, read in its name
           (&quot;Tasks 8 tasks to do&quot;, &quot;Nests 12&quot;); Traps has
-          none to show.
+          none to show. tone accent is news rather than work: Field notes has 3
+          new since the last visit, in the accent colour.
         </Text>
       </Stack>
     </Section>

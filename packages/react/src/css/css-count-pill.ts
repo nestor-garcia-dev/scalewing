@@ -5,6 +5,9 @@ const caption = typographyVariants.caption;
 /** The counts drawn as the pill: SectionNav's and a Nav word's. */
 const pills = ['sw-section-nav-count', 'sw-nav-count'] as const;
 
+/** NavCount's news tone, a modifier of its pill. */
+const accentPill = 'sw-nav-count-accent';
+
 /*
  * A count after a destination's words (a number waiting there, such as
  * tasks to do) is a filled pill: the danger colour with its on-colour
@@ -34,6 +37,17 @@ export function cssCountPillClasses(): string {
 }
 
 /*
+ * NavCount's \`tone="accent"\`: a count that is news, not work waiting (what
+ * was added since the person last looked), is the accent fill with its
+ * on-colour figures (4.5:1 in every palette, as a primary Button's label).
+ * One class more specific than the pill, so it wins in any order.
+ */
+[data-theme] .sw-nav-count.${accentPill} {
+  background: var(--sw-color-accent);
+  color: var(--sw-color-onAccent);
+}
+
+/*
  * A Nav link holding a count lays out as SectionNav's link does: the words
  * and the pill centred on one line a space-2 apart (the space text node
  * that keeps the name collapses), so the link is as tall as its siblings
@@ -54,5 +68,5 @@ export function cssCountPillClasses(): string {
 }
 
 export function countPillClassCatalog(): string[] {
-  return [...pills];
+  return [...pills, accentPill];
 }
