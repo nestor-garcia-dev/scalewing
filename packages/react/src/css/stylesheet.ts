@@ -13,6 +13,7 @@ import { switchClassCatalog } from './css-switch.js';
 import { dateFieldClassCatalog } from './css-date-field.js';
 import { calendarButtonClassCatalog } from './css-calendar-button.js';
 import { dateRangeClassCatalog } from './css-date-range.js';
+import { fileFieldClassCatalog } from './css-file-field.js';
 import { listClassCatalog } from './css-list.js';
 import { countPillClassCatalog } from './css-count-pill.js';
 import { checkboxClassCatalog } from './css-checkbox.js';
@@ -115,6 +116,7 @@ export function utilityClassCatalog(): string[] {
     ...calendarButtonClassCatalog(),
     ...dateRangeClassCatalog(),
     ...listClassCatalog(),
+    ...fileFieldClassCatalog(),
     ...countPillClassCatalog(),
     ...checkboxClassCatalog(),
     ...radioGroupClassCatalog(),

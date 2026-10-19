@@ -43,6 +43,11 @@ export {
   type DateRangeButtonValue,
   type DateRangePreset,
 } from './components/DateRangeButton.js';
+export {
+  FileField,
+  type FileFieldProps,
+  type FileFieldValue,
+} from './components/FileField.js';
 export { ListGroup, type ListGroupProps } from './components/ListGroup.js';
 export { ListRow, type ListRowProps } from './components/ListRow.js';
 export {

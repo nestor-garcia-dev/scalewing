@@ -70,7 +70,7 @@ figure yet (`teisoro-dialog-board.md`, #195). Released in
 Teisoro F-014-S03, release T1 "training library" (`@scalewing/react`
 1.42.0), one PR each: `NavCount` `tone="accent"`, a blue count for news
 (`teisoro-nav-count-tone.md`, #198); then `ListRow` `unread`, `tag` and
-`action` (`teisoro-list-row-trailing.md`), `FileField`
+`action` (`teisoro-list-row-trailing.md`, #199), `FileField`
 (`teisoro-file-field.md`), `DocumentViewer` (`teisoro-document-viewer.md`),
 `MarkdownView` (`teisoro-markdown-view.md`) and `Article`
 (`teisoro-article.md`). Next: Teisoro pins 1.42.0 in F-014-S04.

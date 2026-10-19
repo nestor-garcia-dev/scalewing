@@ -161,3 +161,26 @@ test('Tab moves through ListRows, the link rows too, past a disabled one', async
     guides.getByRole('link', { name: 'Owl pellets New' }),
   );
 });
+
+test('Tab reaches a FileField zone and the chosen file’s button, never its hidden input', async ({
+  page,
+}) => {
+  await page.goto('/#file-field');
+  const section = page.locator('#file-field');
+  await tabsTo(
+    page,
+    section.getByRole('button', { name: /^Field guide Choose a PDF/ }),
+    section.getByRole('button', { name: 'Heron survey map Choose another' }),
+  );
+  await tabsTo(
+    page,
+    section.getByRole('button', { name: 'Heron survey map Choose another' }),
+    section.getByRole('button', { name: /^Nest photo Choose a photo/ }),
+  );
+  // The native inputs are hidden and out of the Tab order.
+  const inputs = section.locator('input[type="file"]');
+  for (const input of await inputs.all()) {
+    await expect(input).toBeHidden();
+    await expect(input).toHaveAttribute('tabindex', '-1');
+  }
+});
