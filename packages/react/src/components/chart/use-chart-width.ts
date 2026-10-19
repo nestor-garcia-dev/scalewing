@@ -1,8 +1,9 @@
 'use client';
 
-import { type RefObject, useLayoutEffect, useState } from 'react';
+import { type RefObject } from 'react';
 
 import { chartFallbackWidth } from '../../chart-metrics.js';
+import { useElementWidth } from '../use-element-width.js';
 
 /**
  * Follows the width a chart is given, so its drawing is laid out in its
@@ -11,26 +12,5 @@ import { chartFallbackWidth } from '../../chart-metrics.js';
  * no ResizeObserver measures on window resizes instead.
  */
 export function useChartWidth(ref: RefObject<HTMLElement | null>): number {
-  const [width, setWidth] = useState(chartFallbackWidth);
-
-  // Before paint, so a phone never shows the wide layout first.
-  useLayoutEffect(() => {
-    const box = ref.current;
-    if (!box) return;
-    function measure() {
-      if (!box) return;
-      const next = Math.round(box.getBoundingClientRect().width);
-      if (next > 0) setWidth(next);
-    }
-    measure();
-    if (typeof ResizeObserver === 'undefined') {
-      window.addEventListener('resize', measure);
-      return () => window.removeEventListener('resize', measure);
-    }
-    const observer = new ResizeObserver(measure);
-    observer.observe(box);
-    return () => observer.disconnect();
-  }, [ref]);
-
-  return width;
+  return useElementWidth(ref, chartFallbackWidth);
 }

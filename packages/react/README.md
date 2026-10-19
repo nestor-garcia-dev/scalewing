@@ -642,6 +642,31 @@ A bar in its own column reads as empty cells to assistive technology, which is f
 />
 ```
 
+`DocumentViewer` draws a PDF from its bytes (`data`, an `ArrayBuffer` or `Uint8Array`, never a URL) with PDF.js, one page at a time, fitted to the width it is given, on a quiet grey stage at the large radius. Under the page, "Page n of m" (`labels.page(page, pageCount)`) is a polite live region between 48-point round previous and next steps (`labels.previous`, `labels.next`), which look off at either end but stay Tab stops; with one page only the words show. `page` and `onPageChange` hold the page in the consumer (left out, the viewer keeps its own; a page out of range shows the nearest). Two fingers zoom the page up to four times as wide, keeping the spot of the page between them under the fingers (the stage scrolls across and the boxes around it, the window at last, scroll down; the stage only pans, so the screen does not zoom instead), and on the focused page `+`, `-` and `0` zoom in, out and back to fit width about the middle of what shows; a zoomed page scrolls sideways inside the stage and is drawn again at its size once the zoom rests. The page's text lies over the drawing, transparent (PDF.js's text layer), so assistive technology reads it and the person can select it. While the PDF opens it shows `labels.loading`; when it cannot be opened or a page cannot be drawn, `labels.failed`, an optional `labels.failedDetail` and your `failedAction` (such as Try again and Download PDF) in an alert, and it calls `onError`; when only one page cannot be drawn, the steps stay, so another page can be read. `onLoad` receives the page count. New `data` opens again at the first page, so Try again is new bytes or a new `key`; keep `data` the same object between renders (in state or a memo), since bytes made afresh on each render reopen the PDF every time. The viewer is a region landmark named by `label`; its stage, once open, is a focusable group named by the page words. It has no download or print of its own and opens nothing from the network: no font, character map, colour profile or WebAssembly file (PDF.js uses system fonts and skips what it cannot decode), no XFA, no streaming or range requests, and no code evaluation (`isEvalSupported: false`); it draws from a copy, so your bytes stay usable for a download. PDF.js (`pdfjs-dist`, its legacy build, for the browsers stores run) is loaded the first time a viewer opens a document, so a page without one never downloads it. Missing words, a blank `workerSrc` or a `labels.page` that is not a function throw a `RangeError`.
+
+PDF.js parses in a worker. Scalewing ships the worker entry for its own pinned PDF.js version as `@scalewing/react/document-viewer-worker`; bundle it as a module worker and pass its URL as `workerSrc`. With Vite:
+
+```tsx
+import { DocumentViewer } from '@scalewing/react';
+import workerSrc from '@scalewing/react/document-viewer-worker?worker&url';
+
+<DocumentViewer
+  data={bytes}
+  workerSrc={workerSrc}
+  label={guide.title}
+  labels={{
+    previous: t('reader.previousPage'),
+    next: t('reader.nextPage'),
+    page: (page, count) => t('reader.pageOf', { page, count }),
+    loading: t('reader.opening'),
+    failed: t('reader.failed'),
+  }}
+  failedAction={<Button onPress={retry}>{t('reader.tryAgain')}</Button>}
+/>;
+```
+
+The consumer needs no PDF.js dependency of its own. With another bundler, build `@scalewing/react/document-viewer-worker` as a module worker (`new Worker(url, { type: 'module' })`) and pass the built file's URL. `pdfjs-dist` has an optional native canvas for Node (`@napi-rs/canvas`, 28 to 35 MB per platform) that a browser never loads; a pnpm consumer can skip it with `ignoredOptionalDependencies`. `pdfjs-dist` asks for Node 22.13 or later.
+
 `Spinner` shows indeterminate loading in small, medium, or large sizes. Supply localized `label` for the one announced status in a loading region. Use `decorative` on additional indicators beside that status so screen readers do not hear the same message repeatedly. Reduced motion leaves a static accented ring.
 
 `GlyphTile` is a small rounded square in a categorical colour with the consumer's glyph in white: the mark of a kind beside its name, such as a service in a list. `hue` is one of the `@scalewing/tokens` categorical colours (`green`, `blue`, `orange`, `purple`, `teal`, `rose`, or `neutral`); which kind takes which hue is yours. `size` is `sm` (24), `md` (28, the default) or `lg` (32); the glyph is drawn at spacing step 4 in white, which keeps 3:1 on every fill; pass the SVG (a Lucide component) as the tile's direct child, since only a direct-child SVG is sized. It is always `aria-hidden`, so put the kind's name in visible text beside it. An unknown `hue` or `size` throws a `RangeError`.

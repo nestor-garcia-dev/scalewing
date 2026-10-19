@@ -48,6 +48,11 @@ export {
   type FileFieldProps,
   type FileFieldValue,
 } from './components/FileField.js';
+export {
+  DocumentViewer,
+  type DocumentViewerLabels,
+  type DocumentViewerProps,
+} from './components/DocumentViewer.js';
 export { ListGroup, type ListGroupProps } from './components/ListGroup.js';
 export { ListRow, type ListRowProps } from './components/ListRow.js';
 export {

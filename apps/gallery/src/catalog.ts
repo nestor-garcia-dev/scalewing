@@ -1,5 +1,6 @@
 import { ActionMenuSection } from './sections/action-menu.js';
 import { FileFieldSection } from './sections/file-field.js';
+import { DocumentViewerSection } from './sections/document-viewer.js';
 import { SwitchSection } from './sections/switch.js';
 import { ActionBarSection } from './sections/action-bar.js';
 import { DateFieldSection } from './sections/date-field.js';
@@ -263,6 +264,12 @@ export const catalog = [
     label: 'ListGroup',
     group: 'data',
     Section: ListGroupSection,
+  },
+  {
+    id: 'document-viewer',
+    label: 'DocumentViewer',
+    group: 'data',
+    Section: DocumentViewerSection,
   },
   {
     id: 'description-list',
