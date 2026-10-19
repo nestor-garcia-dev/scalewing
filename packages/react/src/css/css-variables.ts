@@ -72,6 +72,7 @@ ${control}
   --sw-dialog-max: 32rem;
   --sw-dialog-max-lg: 56rem;
   --sw-dialog-max-xl: 65rem;
+  --sw-reading-max: 46rem;
   --sw-select-max: 16rem;
   --sw-split-min: ${splitScale.min}rem;
   --sw-split-size: ${splitScale.size}rem;

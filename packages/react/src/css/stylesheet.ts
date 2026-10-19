@@ -14,6 +14,7 @@ import { dateFieldClassCatalog } from './css-date-field.js';
 import { calendarButtonClassCatalog } from './css-calendar-button.js';
 import { dateRangeClassCatalog } from './css-date-range.js';
 import { fileFieldClassCatalog } from './css-file-field.js';
+import { articleClassCatalog } from './css-article.js';
 import { documentViewerClassCatalog } from './css-document-viewer.js';
 import { listClassCatalog } from './css-list.js';
 import { countPillClassCatalog } from './css-count-pill.js';
@@ -118,6 +119,7 @@ export function utilityClassCatalog(): string[] {
     ...dateRangeClassCatalog(),
     ...listClassCatalog(),
     ...fileFieldClassCatalog(),
+    ...articleClassCatalog(),
     ...documentViewerClassCatalog(),
     ...countPillClassCatalog(),
     ...checkboxClassCatalog(),

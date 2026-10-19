@@ -38,6 +38,7 @@ import {
   DateField,
   Field,
   FileField,
+  Article,
   Stepper,
   Steps,
   Step,
@@ -740,6 +741,29 @@ The consumer needs no PDF.js dependency of its own. With another bundler, build 
     <Info aria-hidden size={16} />
   </InfoTip>
 </Inline>
+```
+
+`Article` is a page that reads like a post, on a card (`variant`, as `Card`'s) no wider than the reading width (`--sw-reading-max`, 46rem): an optional `cover` photo (`{ src, alt }`, `alt` required, `''` when it only decorates) (or `null`) edge to edge across the top at 3:1 (2:1 below `md`) with the card's top corners; then, a space-6 from the top and bottom and a space-8 from the sides (space-5 all round below `md`), the `eyebrow` (muted caption type at the label's weight) with your `actions` at its row's end (such as a language switch; under the eyebrow, at its start, when the row is too narrow), the `title` in heading type (`titleAs`: `h1` by default, on the article's own page; `h2` or `h3` under other headings), the muted `meta` line (such as "Manager 1 · Oct 16 · 4 min read"), a hairline, and the body (`children`, your own content, such as paragraphs or Markdown your app draws). It is an `article` landmark named by its title, and its ref is that element; the eyebrow and meta are `div`s, so any content fits. The card sits at the start of a wider column. Empty parts draw nothing. A blank `title`, an unknown `titleAs` or `variant`, or a `cover` with a blank `src` or no `alt` throws a `RangeError`.
+
+```tsx
+<Article
+  cover={{ src: cover.url, alt: cover.alt }}
+  eyebrow="Field guide · Wetlands › Herons"
+  title="How to count herons at the north hide"
+  meta="Ranger 1 · Oct 16 · 4 min read"
+  actions={
+    <SegmentedControl
+      aria-label="Language"
+      variant="raised"
+      items={languages}
+      value={language}
+      onChange={(id) => setLanguage(id === 'es' ? 'es' : 'en')}
+    />
+  }
+  variant="outlined"
+>
+  <Stack gap={4}>{paragraphs}</Stack>
+</Article>
 ```
 
 `Separator` divides sections with a token-colored line. It is horizontal by default; use `orientation="vertical"` in a flex row. Set `decorative` when the line only supports layout so assistive technology ignores it.
