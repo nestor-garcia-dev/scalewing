@@ -1,6 +1,10 @@
 import { typographyVariants } from '@scalewing/tokens';
 
 import { cssListRowClasses, listRowClassCatalog } from './css-list-row.js';
+import {
+  cssListRowTrailingClasses,
+  listRowTrailingClassCatalog,
+} from './css-list-row-trailing.js';
 import { blockEdgeShadeRules, scrollRegionRules } from './css-scroll-region.js';
 
 const label = typographyVariants.label;
@@ -76,7 +80,9 @@ export function cssListClasses(): string {
 
 ${boundedRules()}
 
-${cssListRowClasses()}`;
+${cssListRowClasses()}
+
+${cssListRowTrailingClasses()}`;
 }
 
 export function listClassCatalog(): string[] {
@@ -89,5 +95,6 @@ export function listClassCatalog(): string[] {
     'sw-list-group-scroll',
     'sw-list-group-footer',
     ...listRowClassCatalog(),
+    ...listRowTrailingClassCatalog(),
   ];
 }

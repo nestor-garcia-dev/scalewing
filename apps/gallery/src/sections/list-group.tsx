@@ -1,9 +1,17 @@
-import { Card, ListGroup, ListRow, Stack, Text } from '@scalewing/react';
+import {
+  ActionMenu,
+  Card,
+  ListGroup,
+  ListRow,
+  Stack,
+  Text,
+} from '@scalewing/react';
 import { useState } from 'react';
 
 import { Glyph } from '../glyph.js';
 import { Section } from '../layout/Section.js';
 import { colonyNights } from './list-group-data.js';
+import { ListRowTrailingExample } from './list-row-trailing.js';
 
 /** A status dot in a semantic colour, as a consumer's Lucide Circle. */
 function Dot({ color }: { color: 'warning' | 'muted' }) {
@@ -25,7 +33,7 @@ export function ListGroupSection() {
   return (
     <Section
       id="list-group"
-      purpose="ListGroup is rows in one list with hairlines between them: a bordered panel of its own, or plain rows inside a Card (variant plain, with a hairline above the first row too). A ListRow has a title, an optional muted detail line, an optional value at its end (valueTone colours it, warning included for a figure that needs a look, valueBadge draws it as a Badge such as a status, valueDetail adds a muted line under it) and an optional leading mark, hidden from assistive technology. With onPress or href the whole row is the button or link, named by its title and value and described by its detail lines, with a chevron; selected makes it a choice with a check; without either it only states something. titleAppearance plain sets the title at the body weight. maxHeight bounds the list to a count of rows that scroll inside its own named region, shading an edge with more past it, and footer stays pinned under them, such as a total."
+      purpose="ListGroup is rows in one list with hairlines between them: a bordered panel of its own, or plain rows inside a Card (variant plain, with a hairline above the first row too). A ListRow has a title, an optional muted detail line, an optional value at its end (valueTone colours it, warning included for a figure that needs a look, valueBadge draws it as a Badge such as a status, valueDetail adds a muted line under it) and an optional leading mark, hidden from assistive technology. With onPress or href the whole row is the button or link, named by its title and value and described by its detail lines, with a chevron; selected makes it a choice with a check; without either it only states something. titleAppearance plain sets the title at the body weight. maxHeight bounds the list to a count of rows that scroll inside its own named region, shading an edge with more past it, and footer stays pinned under them, such as a total. unread marks a row new with an accent dot after its title, read as unreadLabel; tag puts a short status such as a Badge before the row's end, describing it; action holds a control such as an ActionMenu after the row, outside its press area."
       title="ListGroup"
       usage={`<Card>
   <Text as="h3" variant="label" id="look">Worth a look</Text>
@@ -48,9 +56,27 @@ export function ListGroupSection() {
     <ListRow key={night.id} title={night.name} detail={night.detail}
       value={night.change} valueTone={night.tone} onPress={() => open(night)} />
   ))}
-</ListGroup>`}
+</ListGroup>
+
+<ListRow
+  title="Owl pellets"
+  detail="Guide · 1 page · Oct 16"
+  href="/guides/owl"
+  unread
+  unreadLabel="New"
+  tag={<Badge>Only in English</Badge>}
+  accessory="none"
+  action={
+    <ActionMenu
+      label="More for Owl pellets"
+      trigger={<Ellipsis />}
+      items={[{ id: 'archive', label: 'Archive…', onSelect: archive }]}
+    />
+  }
+/>`}
     >
       <Stack gap={5}>
+        <ListRowTrailingExample onOpen={setOpened} />
         <Card padding={4}>
           <Stack gap={2}>
             <Text as="h3" id="list-group-look" variant="label">
@@ -174,6 +200,20 @@ export function ListGroupSection() {
             valueBadge="success"
           />
           <ListRow
+            action={
+              <ActionMenu
+                align="end"
+                items={[
+                  {
+                    id: 'invite',
+                    label: 'Invite an observer',
+                    onSelect: () => setOpened('Invite an observer'),
+                  },
+                ]}
+                label="More for Observers"
+                trigger={<Glyph path="M3 8h.01M8 8h.01M13 8h.01" />}
+              />
+            }
             detail="Shared with the field teams"
             title="Observers"
             value="12"

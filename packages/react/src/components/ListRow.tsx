@@ -1,6 +1,6 @@
 'use client';
 
-import { type ReactNode, useContext, useId } from 'react';
+import { type ReactNode, useId } from 'react';
 
 import { cx } from '../class-names.js';
 import { type BadgeTone } from '../css/css-data.js';
@@ -14,7 +14,8 @@ import {
 import { tabStop } from '../tab-stop.js';
 import { plainPress } from './link-press.js';
 import { ListRowContent } from './list/ListRowContent.js';
-import { ListRowContainer } from './list/list-row-container.js';
+import { ListRowItem } from './list/ListRowItem.js';
+import { rowNaming } from './list/row-naming.js';
 
 export type ListRowProps = {
   title: string;
@@ -59,6 +60,26 @@ export type ListRowProps = {
   tone?: ListRowTone;
   /** `plain` sets the title at the body weight, for a list of plain statements. */
   titleAppearance?: ListRowTitleAppearance;
+  /**
+   * Marks the row as new for the person, such as a document they have not
+   * opened: an accent dot after the title, read as `unreadLabel`.
+   */
+  unread?: boolean;
+  /**
+   * What the dot means in the consumer's words ("New"), read after the
+   * title (in a pressable row's name). Required while `unread`.
+   */
+  unreadLabel?: string;
+  /**
+   * A short status before the accessory, such as a `Badge` ("Only in
+   * English"); a pressable row is described by it.
+   */
+  tag?: ReactNode;
+  /**
+   * A control after the row and outside its press area, such as an
+   * `ActionMenu` of the row's own actions. It needs its own name.
+   */
+  action?: ReactNode;
   /** `none` hides the chevron of a pressable row that acts in place. */
   accessory?: 'chevron' | 'none';
   /**
@@ -68,15 +89,11 @@ export type ListRowProps = {
   'aria-label'?: string;
 };
 
-function ids(...parts: (string | false)[]): string | undefined {
-  const joined = parts.filter(Boolean).join(' ');
-  return joined === '' ? undefined : joined;
-}
-
 /**
  * One row of a `ListGroup`: it opens something (`onPress` or `href`, with
  * a chevron, the whole row pressing), picks one option in place
- * (`selected`), or only states something (neither).
+ * (`selected`), or only states something (neither). `unread` marks it new,
+ * `tag` adds a status before its end, and `action` a control beside it.
  */
 export function ListRow({
   title,
@@ -93,6 +110,10 @@ export function ListRow({
   tone = 'default',
   titleAppearance = 'strong',
   accessory = 'chevron',
+  unread = false,
+  unreadLabel,
+  tag,
+  action,
   'aria-label': ariaLabel,
 }: ListRowProps) {
   const pressable = onPress !== undefined || href !== undefined;
@@ -107,8 +128,9 @@ export function ListRow({
     valueBadge,
     selected,
     pressable,
+    unread,
+    unreadLabel,
   });
-  const container = useContext(ListRowContainer);
   const id = useId();
   const kind = listRowAccessory({ pressable, selected, accessory });
   const content = (
@@ -117,9 +139,11 @@ export function ListRow({
       detail={detail}
       id={id}
       leading={leading}
+      tag={tag}
       title={title}
       titleAppearance={titleAppearance}
       tone={tone}
+      unreadLabel={unread ? unreadLabel : undefined}
       value={value}
       valueBadge={valueBadge}
       valueDetail={valueDetail}
@@ -131,16 +155,14 @@ export function ListRow({
     pressable && 'sw-list-row-pressable',
     disabled && 'sw-list-row-disabled',
   );
-  const naming = {
+  const naming = rowNaming(id, {
     'aria-label': ariaLabel,
-    'aria-labelledby': ariaLabel
-      ? undefined
-      : ids(`${id}-title`, value !== undefined && `${id}-value`),
-    'aria-describedby': ids(
-      Boolean(detail) && `${id}-detail`,
-      Boolean(valueDetail) && `${id}-value-detail`,
-    ),
-  };
+    value,
+    detail,
+    valueDetail,
+    unread,
+    tag,
+  });
 
   let row: ReactNode;
   if (href !== undefined)
@@ -190,9 +212,5 @@ export function ListRow({
         {content}
       </div>
     );
-  return container === 'li' ? (
-    <li className="sw-list-item">{row}</li>
-  ) : (
-    <div className="sw-list-item">{row}</div>
-  );
+  return <ListRowItem action={action}>{row}</ListRowItem>;
 }

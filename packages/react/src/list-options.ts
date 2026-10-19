@@ -92,14 +92,17 @@ export type ListRowInput = {
   valueBadge: BadgeTone | undefined;
   selected: boolean | undefined;
   pressable: boolean;
+  unread: boolean;
+  unreadLabel: string | undefined;
 };
 
 /**
  * Fails closed on a ListRow it cannot draw: an empty title or value, an
  * unknown tone, title appearance, value tone, badge tone or accessory, a
  * `valueDetail`, `valueTone` or `valueBadge` with no value, a value both
- * toned and a badge, or `selected` on a row that is not a button or link
- * (its check would be a state nothing can read).
+ * toned and a badge, `selected` on a row that is not a button or link
+ * (its check would be a state nothing can read), or an unread row with no
+ * words for its dot (a colour alone says nothing).
  */
 export function assertListRow(input: ListRowInput): void {
   if (isBlank(input.title))
@@ -131,6 +134,10 @@ export function assertListRow(input: ListRowInput): void {
     );
   if (input.value !== undefined && isBlank(input.value))
     throw new RangeError('ListRow value must be non-empty text');
+  if (input.unreadLabel !== undefined && isBlank(input.unreadLabel))
+    throw new RangeError('ListRow unreadLabel must be non-empty text');
+  if (input.unread && input.unreadLabel === undefined)
+    throw new RangeError('An unread ListRow needs an unreadLabel to say so');
   if (input.selected !== undefined && !input.pressable)
     throw new RangeError(
       'A ListRow choice (selected) needs onPress or href to say its state',

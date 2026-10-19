@@ -10,6 +10,7 @@ import {
   type ListRowValueTone,
 } from '../../list-options.js';
 import { ListRowAccessoryMark } from './ListRowAccessoryMark.js';
+import { hasSlot } from './row-slot.js';
 
 export type ListRowContentProps = {
   /** Prefixes the ids that name and describe a pressable row. */
@@ -24,11 +25,15 @@ export type ListRowContentProps = {
   tone: ListRowTone;
   titleAppearance: ListRowTitleAppearance;
   accessory: ListRowAccessory;
+  /** The unread words; the dot shows while they are given. */
+  unreadLabel?: string;
+  tag?: ReactNode;
 };
 
 /**
  * A list row's parts in reading order: the hidden leading mark, the title
- * over its detail, the value over its detail, then the chevron or check.
+ * (with the unread dot and its hidden words) over its detail, the value
+ * over its detail, the tag, then the chevron or check.
  */
 export function ListRowContent({
   id,
@@ -42,10 +47,12 @@ export function ListRowContent({
   tone,
   titleAppearance,
   accessory,
+  unreadLabel,
+  tag,
 }: ListRowContentProps) {
   return (
     <>
-      {leading === undefined ? null : (
+      {!hasSlot(leading) ? null : (
         <span aria-hidden="true" className="sw-list-row-leading">
           {leading}
         </span>
@@ -60,7 +67,15 @@ export function ListRowContent({
           id={`${id}-title`}
         >
           {title}
+          {unreadLabel === undefined ? null : (
+            <span aria-hidden="true" className="sw-list-row-unread" />
+          )}
         </span>
+        {unreadLabel === undefined ? null : (
+          <span className="sw-sr-only" id={`${id}-unread`}>
+            {unreadLabel}
+          </span>
+        )}
         {detail ? (
           <span className="sw-list-row-detail" id={`${id}-detail`}>
             {detail}
@@ -86,6 +101,11 @@ export function ListRowContent({
               {valueDetail}
             </span>
           ) : null}
+        </span>
+      )}
+      {!hasSlot(tag) ? null : (
+        <span className="sw-list-row-tag" id={`${id}-tag`}>
+          {tag}
         </span>
       )}
       <ListRowAccessoryMark kind={accessory} />
