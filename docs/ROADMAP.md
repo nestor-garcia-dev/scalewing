@@ -71,9 +71,9 @@ Teisoro F-014-S03, release T1 "training library" (`@scalewing/react`
 1.42.0), one PR each: `NavCount` `tone="accent"`, a blue count for news
 (`teisoro-nav-count-tone.md`, #198); then `ListRow` `unread`, `tag` and
 `action` (`teisoro-list-row-trailing.md`, #199), `FileField`
-(`teisoro-file-field.md`), `DocumentViewer` (`teisoro-document-viewer.md`),
-`MarkdownView` (`teisoro-markdown-view.md`) and `Article`
-(`teisoro-article.md`). Next: Teisoro pins 1.42.0 in F-014-S04.
+(`teisoro-file-field.md`, #200), `DocumentViewer` (`teisoro-document-viewer.md`, #201),
+`Article` (`teisoro-article.md`, #202) and `MarkdownView`
+(`teisoro-markdown-view.md`). Next: Teisoro pins 1.42.0 in F-014-S04.
 
 Teisoro F-011-S02, release R1 "guided-form core": web `Stepper`
 (#113), `DenominationGrid` entry rows (#114), `Steps` / `Step` (#115)

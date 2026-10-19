@@ -61,6 +61,20 @@ export {
   type DocumentViewerProps,
 } from './components/DocumentViewer.js';
 export { ListGroup, type ListGroupProps } from './components/ListGroup.js';
+export {
+  inspectMarkdown,
+  markdownOmissionKinds,
+  MarkdownView,
+  type MarkdownHeading,
+  type MarkdownInspection,
+  type MarkdownImage,
+  type MarkdownImageResolver,
+  type MarkdownOmission,
+  type MarkdownOmissionCounts,
+  type MarkdownOmissionKind,
+  type MarkdownOptions,
+  type MarkdownViewProps,
+} from './components/MarkdownView.js';
 export { ListRow, type ListRowProps } from './components/ListRow.js';
 export {
   listGroupVariants,

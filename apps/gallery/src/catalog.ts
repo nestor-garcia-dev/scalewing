@@ -16,6 +16,7 @@ import { TooltipSection } from './sections/tooltip.js';
 import { InfoTipSection } from './sections/info-tip.js';
 import { SeparatorSection } from './sections/separator.js';
 import { ArticleSection } from './sections/article.js';
+import { MarkdownViewSection } from './sections/markdown-view.js';
 import { ResponsiveVisibilitySection } from './sections/responsive-visibility.js';
 import { FilterChipsSection } from './sections/filter-chips.js';
 import { DenominationGridSection } from './sections/denomination-grid.js';
@@ -209,6 +210,12 @@ export const catalog = [
     label: 'Article',
     group: 'content',
     Section: ArticleSection,
+  },
+  {
+    id: 'markdown-view',
+    label: 'MarkdownView',
+    group: 'content',
+    Section: MarkdownViewSection,
   },
   {
     id: 'responsive-visibility',
