@@ -14,12 +14,18 @@
     "url": "https://github.com/nestor-garcia-dev/scalewing/issues"
   },
   "sideEffects": [
-    "*.css"
+    "*.css",
+    "./src/document-viewer-worker.ts",
+    "./dist/document-viewer-worker.js"
   ],
   "exports": {
     ".": {
       "types": "./src/index.ts",
       "import": "./src/index.ts"
+    },
+    "./document-viewer-worker": {
+      "types": "./src/document-viewer-worker.ts",
+      "import": "./src/document-viewer-worker.ts"
     },
     "./styles.css": {
       "types": "./styles.css.d.ts",
@@ -44,7 +50,8 @@
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@scalewing/tokens": "workspace:^"
+    "@scalewing/tokens": "workspace:^",
+    "pdfjs-dist": "6.4.299"
   },
   "peerDependencies": {
     "react": "^19.0.0",
@@ -67,6 +74,10 @@
       ".": {
         "types": "./dist/index.d.ts",
         "import": "./dist/index.js"
+      },
+      "./document-viewer-worker": {
+        "types": "./dist/document-viewer-worker.d.ts",
+        "import": "./dist/document-viewer-worker.js"
       },
       "./styles.css": {
         "types": "./styles.css.d.ts",
