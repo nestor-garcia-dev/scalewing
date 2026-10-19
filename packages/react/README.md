@@ -37,6 +37,7 @@ import {
   Grid,
   DateField,
   Field,
+  FileField,
   Stepper,
   Steps,
   Step,
@@ -137,6 +138,23 @@ A disabled native text control (`<input>`, `<select>` or `<textarea>` on the can
 <Field label="Drop amount" prefix="$">
   <input inputMode="decimal" name="drop" />
 </Field>
+```
+
+`FileField` is one file chosen with the system picker or dropped on the field, with `Field`'s `label` (above it, or hidden with `labelVisuallyHidden`), `description` and `error` (a polite live region in place of the hint, the frame's edge in the danger color, `Mark` in forced colors). Empty, it is one wide zone on the subtle fill, a button named by the label and `chooseLabel` ("Field guide Choose a PDF"), with `dropLabel` ("or drop it here") muted after it where the pointer can drag (left out on a coarse pointer). Chosen (`value={{ name, detail? }}`), it shows the consumer's `icon` (hidden from assistive technology), the file's name over the muted `detail` and a neutral button named by the label and `changeLabel`, described by the name and detail. Either button opens the picker (the native input is hidden and out of the Tab order, its `accept` the list the picker offers); `onChange` receives the `File` chosen or dropped, the first of several, and when a choice or a drop swaps the zone and the chosen row while focus is in the field, focus moves to the button now there (focus the person moved elsewhere is never taken back). A file dragged over the field draws the accent edge and tint, its words in the text color. It never reads, checks or uploads the file, and a dropped file is not filtered by `accept`: check what you receive (type, size, its header) and say why in `error`, keeping the earlier `value` or none. `disabled` blocks the picker, refuses a dropped file and dashes the frame. `id` prefixes the ids of the field's parts. An empty `label`, `chooseLabel` or `changeLabel`, a blank `dropLabel`, or a `value` with no name or a blank detail throws a `RangeError`.
+
+```tsx
+<FileField
+  label="Field guide"
+  description="A PDF up to 25 MB"
+  accept=".pdf,application/pdf"
+  chooseLabel="Choose a PDF"
+  dropLabel="or drop it here"
+  changeLabel="Choose another"
+  icon={<FileText />}
+  value={file ? { name: file.name, detail: `${pages} pages · ${size}` } : null}
+  error={error}
+  onChange={(next) => checkPdf(next).then(setFile, (why) => setError(why))}
+/>
 ```
 
 `Stepper` is a whole-number count changed with − and + or typed. The count is a native text input with `role="spinbutton"` and `inputmode="numeric"`, named by `label` (visible above it, or `labelVisuallyHidden` where table headers say it) and the one tab stop: ArrowUp and ArrowDown step it by `step` (default 1), Home goes to `min` and End to a finite `max` (a range below zero takes `inputmode="text"`, since a phone's numeric pad has no minus key). The − and + buttons are pointer targets outside the tab order, named by `decrementLabel` and `incrementLabel` (your copy), and a press on one leaves focus where it was; the count and both buttons sit in a `group` named by the label. − is disabled at `min` (default 0) and + at `max` (no upper bound when left out). `value` is a count or `null` for an empty box, which the buttons treat as `min` and `placeholder` can fill. Typed text is refused unless it is digits (with a leading minus when `min` is below zero), so `onChange` only receives a whole number or `null`; a typed count is reported as typed even outside the bounds, so say why in `error` (a polite message, `aria-invalid` and the danger border, as `Field`'s), and the buttons then move it back inside them. `aria-describedby` takes ids of elements that describe the count, such as the value it adds up to, read before an `error`'s message. `changed` takes `Field`'s changed look; `readOnly` keeps the count focusable and hides the buttons in their own room; `disabled` stops all three. `limitAppearance="plain"` (default `"faded"`) keeps − at `min` and + at `max` in their usual look instead of faded, for a count sheet where a faded − reads as broken; they are still disabled, a disabled or read-only Stepper is unchanged, forced colors still grey them, and an unknown value throws a `RangeError`. The count is a few digits wide and keeps that width (`width="fixed"`), or fills its container (`width="full"`, for a table cell). Bounds that are not whole numbers, `min` above `max`, or a `step` that is not above zero throw a `RangeError`.

@@ -1,4 +1,5 @@
 import { ActionMenuSection } from './sections/action-menu.js';
+import { FileFieldSection } from './sections/file-field.js';
 import { SwitchSection } from './sections/switch.js';
 import { ActionBarSection } from './sections/action-bar.js';
 import { DateFieldSection } from './sections/date-field.js';
@@ -132,6 +133,12 @@ export const catalog = [
   },
   { id: 'tabs', label: 'Tabs', group: 'controls', Section: TabsSection },
   { id: 'field', label: 'Field', group: 'controls', Section: FieldSection },
+  {
+    id: 'file-field',
+    label: 'FileField',
+    group: 'controls',
+    Section: FileFieldSection,
+  },
   {
     id: 'stepper',
     label: 'Stepper',

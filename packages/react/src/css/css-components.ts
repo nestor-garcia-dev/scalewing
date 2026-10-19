@@ -5,6 +5,7 @@ import { cssAccordionClasses } from './css-accordion.js';
 import { cssButtonClasses } from './css-button.js';
 import { cssCalendarButtonClasses } from './css-calendar-button.js';
 import { cssDateRangeClasses } from './css-date-range.js';
+import { cssFileFieldClasses } from './css-file-field.js';
 import { cssListClasses } from './css-list.js';
 import { cssCountPillClasses } from './css-count-pill.js';
 import { cssBarChartClasses } from './css-bar-chart.js';
@@ -151,6 +152,8 @@ ${cssCalendarButtonClasses()}
 ${cssDateRangeClasses()}
 
 ${cssListClasses()}
+
+${cssFileFieldClasses()}
 
 ${cssCountPillClasses()}
 
