@@ -30,6 +30,7 @@ import {
   Toast,
   Field,
   FileField,
+  Article,
   ListGroup,
   ListRow,
   Nav,
@@ -79,7 +80,7 @@ Visual language: quiet canvas (system sans, large radius, white light `Card`, no
 
 Do this in the product without a Scalewing change:
 
-- Compose screens from `ThemeProvider`, `Box`, `Stack`, `Inline`, `Split`, `Card`, `Accordion`, `Dialog`, `Toast`, `Notice`, `GlyphTile`, `Text`, `Button`, `Field` (web), `FileField` (web), `Select` (web), `Combobox` (web), `MultiSelect` (web), `Badge`, `SegmentedControl`, `Table`, `ListGroup` (web and native), `BarChart`, `ColumnChart`, `LineChart`, `DataBar`, `ChartLegend`, `Pagination` (web), `DateRangeButton` (web), `DocumentViewer` (web; bundle `@scalewing/react/document-viewer-worker` as its worker), `AppHeader`, and `Nav` (web). Native also has `ActionRow`, `TabBar`, `DateField`, `Calendar`, `TimeField`, `WheelField`, `Stepper`, `StepperRow`, `Progress`, `MultiSelect`, and `SingleSelect`.
+- Compose screens from `ThemeProvider`, `Box`, `Stack`, `Inline`, `Split`, `Card`, `Accordion`, `Dialog`, `Toast`, `Notice`, `GlyphTile`, `Text`, `Button`, `Field` (web), `FileField` (web), `Article` (web), `Select` (web), `Combobox` (web), `MultiSelect` (web), `Badge`, `SegmentedControl`, `Table`, `ListGroup` (web and native), `BarChart`, `ColumnChart`, `LineChart`, `DataBar`, `ChartLegend`, `Pagination` (web), `DateRangeButton` (web), `DocumentViewer` (web; bundle `@scalewing/react/document-viewer-worker` as its worker), `AppHeader`, and `Nav` (web). Native also has `ActionRow`, `TabBar`, `DateField`, `Calendar`, `TimeField`, `WheelField`, `Stepper`, `StepperRow`, `Progress`, `MultiSelect`, and `SingleSelect`.
 - Pick a named palette with `ThemeProvider palette`, `data-palette`, or a generated palette CSS file.
 - Keep product-only chrome in the app. `Box as="a"` is a layout link. Use `Button` for press actions.
 - Do not add app CSS that restyles `a`, inputs, or the page canvas.
