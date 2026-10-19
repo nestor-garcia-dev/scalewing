@@ -67,6 +67,14 @@ figure yet (`teisoro-dialog-board.md`, #195). Released in
 `@scalewing/react` 1.41.0. Next: Teisoro adopts 1.41.0 in its own task
 (2410); its pin stays until then.
 
+Teisoro F-014-S03, release T1 "training library" (`@scalewing/react`
+1.42.0), one PR each: `NavCount` `tone="accent"`, a blue count for news
+(`teisoro-nav-count-tone.md`); then `ListRow` `unread`, `tag` and
+`action` (`teisoro-list-row-trailing.md`), `FileField`
+(`teisoro-file-field.md`), `DocumentViewer` (`teisoro-document-viewer.md`),
+`MarkdownView` (`teisoro-markdown-view.md`) and `Article`
+(`teisoro-article.md`). Next: Teisoro pins 1.42.0 in F-014-S04.
+
 Teisoro F-011-S02, release R1 "guided-form core": web `Stepper`
 (#113), `DenominationGrid` entry rows (#114), `Steps` / `Step` (#115)
 and `ActionBar` `summary` (#116), released in `@scalewing/react` 1.27.0.

@@ -448,7 +448,7 @@ An option's optional `description` (a `ReactNode`) is secondary text for that op
 
 `appearance="words"` (opt-in; default `"default"`, `navAppearances`) draws every destination, a link or a `Button` of any variant, as plain words: no fill, border or underline, label type, the others in the muted color at medium weight and the current one (`aria-current`, not `"false"`) in the text color at label weight. A Button keeps its size, padding, touch target and focus ring; hover lifts a destination to the text color where the pointer can hover, never a disabled one. The current mark is color and weight, so each destination's words must be visible: a glyph-only destination has no weight to change (keep `default` for a glyph rail). Forced colors draw the current one's border in Highlight and underline its words. An unknown value throws a `RangeError`.
 
-`NavCount` puts a count after a destination's words, such as the tasks waiting in an area: place it inside the link or `Button`, after its words (`<a href="/tasks">Tasks<NavCount count={8} /></a>`). It is the pill `SectionNav`'s item `count` draws (the danger color with its on-color figures, an edge in forced colors), a space-2 after the words in a link or a Button, the link keeping its siblings' height, and it is read as part of the destination's name ("Tasks 8"). `count` is a whole number; 0 shows nothing. `countLabel` says what it means in your words ("8 tasks to do"): it is read in place of the bare number ("Tasks 8 tasks to do") and the pill is hidden from assistive technology. A count that is not a whole number from 0, or a blank `countLabel`, throws a `RangeError`.
+`NavCount` puts a count after a destination's words, such as the tasks waiting in an area: place it inside the link or `Button`, after its words (`<a href="/tasks">Tasks<NavCount count={8} /></a>`). It is the pill `SectionNav`'s item `count` draws (the danger color with its on-color figures, an edge in forced colors), a space-2 after the words in a link or a Button, the link keeping its siblings' height, and it is read as part of the destination's name ("Tasks 8"). `count` is a whole number; 0 shows nothing. `countLabel` says what it means in your words ("8 tasks to do"): it is read in place of the bare number ("Tasks 8 tasks to do") and the pill is hidden from assistive technology. `tone="accent"` (default `"danger"`, `navCountTones`) draws the pill in the accent color with its on-color figures, for a count that is news rather than work waiting, such as what was added since the person last looked; its size, spacing and name are the same. Give an accent count a `countLabel` ("3 new") so its words, not its color, say it is news, and place either tone on a neutral or ghost destination, never a filled one of the same color. A count that is not a whole number from 0, a blank `countLabel` or an unknown `tone` throws a `RangeError`.
 
 ```tsx
 <Nav appearance="words" aria-label="Areas">
@@ -458,6 +458,10 @@ An option's optional `description` (a `ReactNode`) is secondary text for that op
   <Box as="a" href="/tasks" aria-current="page">
     Tasks
     <NavCount count={8} countLabel="8 tasks to do" />
+  </Box>
+  <Box as="a" href="/field-notes">
+    Field notes
+    <NavCount count={3} countLabel="3 new" tone="accent" />
   </Box>
 </Nav>
 ```

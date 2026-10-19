@@ -1,5 +1,7 @@
 import { expect, test, type Locator } from '@playwright/test';
 
+import { colorContrast, tokenColor } from './contrast.js';
+
 // The project's forcedColors option alone does not reach the page's media
 // queries, so the forced-colors project emulates it as the other specs do.
 test.beforeEach(async ({ page }, testInfo) => {
@@ -53,6 +55,55 @@ test('NavCount reads a count after a Nav word in its name, as a pill', async ({
     expect(fill).toBe(danger);
   }
   await nav.screenshot({ path: testInfo.outputPath('nav-count.png') });
+});
+
+test('NavCount tone accent draws news in the accent colour, light and dark', async ({
+  page,
+}, testInfo) => {
+  await page.goto('/#nav');
+  const nav = page.getByRole('navigation', { name: 'Reserve areas' });
+  const notes = nav.getByRole('link', { name: 'Field notes 3 new' });
+  const pill = notes.locator('.sw-nav-count');
+  await expect(pill).toHaveText('3');
+  await expect(pill).toHaveAttribute('aria-hidden', 'true');
+  // The same pill as the danger count beside it, inside its link (the row
+  // may wrap on a phone, so the link, not the row, is its line).
+  const danger = nav
+    .getByRole('link', { name: 'Nests 12' })
+    .locator('.sw-nav-count');
+  const [accentBox, dangerBox, linkBox] = await Promise.all([
+    pill.boundingBox(),
+    danger.boundingBox(),
+    notes.boundingBox(),
+  ]);
+  expect(accentBox && dangerBox && linkBox).toBeTruthy();
+  expect(accentBox?.height).toBe(dangerBox?.height);
+  if (accentBox && linkBox) {
+    expect(accentBox.y).toBeGreaterThanOrEqual(linkBox.y);
+    expect(accentBox.y + accentBox.height).toBeLessThanOrEqual(
+      linkBox.y + linkBox.height + 1,
+    );
+  }
+  if (testInfo.project.name === 'forced-colors') {
+    await expect(pill).toHaveCSS('border-top-style', 'solid');
+    return;
+  }
+  const fill = (node: Element) => getComputedStyle(node).backgroundColor;
+  for (const scheme of ['Light', 'Dark']) {
+    await page.getByRole('radio', { name: scheme }).first().check();
+    await expect
+      .poll(async () => pill.evaluate(fill))
+      .toBe(await tokenColor(page, 'accent'));
+    const figures = await pill.evaluate((node) => getComputedStyle(node).color);
+    expect(figures).toBe(await tokenColor(page, 'onAccent'));
+    expect(colorContrast(figures, await pill.evaluate(fill))).toBeGreaterThan(
+      4.5,
+    );
+    expect(await pill.evaluate(fill)).not.toBe(await danger.evaluate(fill));
+    await nav.screenshot({
+      path: testInfo.outputPath(`nav-count-accent-${scheme}.png`),
+    });
+  }
 });
 
 /** The space between a destination's words and its pill. */
@@ -136,6 +187,7 @@ test("NavCount names its destinations in Chromium's own accessibility tree", asy
       'Tasks 8 tasks to do',
       'Nests 12',
       'Traps',
+      'Field notes 3 new',
       'Alerts 3',
       'Savanna 4',
     ]),
