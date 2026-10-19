@@ -135,10 +135,29 @@ test('Tab moves through ListRows, the link rows too, past a disabled one', async
     .locator('#list-group')
     .getByRole('list', { name: 'Station' });
   // The disabled row is no tab stop: Shift+Tab from the row after it goes
-  // back to the pressable row before it.
+  // back to the Observers row's menu, then the pressable row before it.
   await station.getByRole('button', { name: 'Leave the survey' }).focus();
+  await page.keyboard.press('Shift+Tab');
+  await expect(
+    station.getByRole('button', { name: 'More for Observers' }),
+  ).toBeFocused();
   await page.keyboard.press('Shift+Tab');
   await expect(
     station.getByRole('button', { name: 'Hollow log den Clear' }),
   ).toBeFocused();
+
+  // A row's action comes after the row and before the next row.
+  const guides = page
+    .locator('#list-group')
+    .getByRole('list', { name: 'Field guides' });
+  await tabsTo(
+    page,
+    guides.getByRole('link', { name: 'Heron calls New' }),
+    guides.getByRole('button', { name: 'More for Heron calls' }),
+  );
+  await tabsTo(
+    page,
+    guides.getByRole('button', { name: 'More for Heron calls' }),
+    guides.getByRole('link', { name: 'Owl pellets New' }),
+  );
 });

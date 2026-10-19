@@ -747,6 +747,34 @@ A bar in its own column reads as empty cells to assistive technology, which is f
 
 `ListGroup` is rows in one list with a hairline between each pair, the web twin of react-native's: a `ul` (its list role kept) named by `aria-label` or `aria-labelledby`. `variant="panel"` (the default) is one bordered panel; `plain` draws no panel and a hairline above the first row too, for rows inside a `Card`. Each `ListRow` has a `title` (weight 600, or the body weight with `titleAppearance="plain"`; `tone="danger"` for a row that ends something), an optional muted `detail` line, an optional `value` at its end (weight 600, tabular figures; `valueTone` `success`, `danger`, `muted`, `accent` or `warning`, the warning colour's ink moved halfway to the text colour so it keeps 4.5:1 on the surface in every palette; `valueBadge` draws the value as a `Badge` in that tone instead, such as a status, still read in the row's name, never with `valueTone`; `valueDetail` a muted line under it) and an optional `leading` mark such as a status dot, hidden from assistive technology, so the words say what it means. With `onPress` the whole row is a button, and with `href` a link (`onPress` then takes a plain press for a client router); either adds a chevron, a quiet fill under the pointer and 44 px on a coarse pointer, and the row is named by its title and value and described by its detail lines (`aria-label` replaces the name). `selected` makes a pressable row a choice: a check while true, `aria-pressed` on a button or `aria-current` on a link (on a row with neither `onPress` nor `href` it throws, since nothing could read the state). `accessory="none"` hides the chevron of a row that acts in place; `disabled` blocks presses. A row with neither `onPress` nor `href` only states something. `maxHeight={{ rows }}` bounds the list to that many rows of a title and one detail line, the rest scrolling inside its own named region, which shades an edge with more rows past it; a bounded list must be named. `footer` stays pinned under the rows, outside the scroll, such as a `ListRow` with the count and the total (a row there is not a list item). An empty title or value, an unknown variant, tone or badge tone, a `valueDetail`, `valueTone` or `valueBadge` without a value, a value both toned and a badge, or a bad row count throws a `RangeError`.
 
+A row can also carry three trailing parts. `unread` marks it new for the person, such as a document they have not opened: an accent dot after the title's last word (drawn as a border, so forced colors keep it in the text color), hidden from assistive technology, and `unreadLabel` (required while `unread`, such as "New") is read after the title, in a pressable row's name ("Heron calls New"). `tag` is a short status before the row's end, such as a `Badge` ("Only in English"), centred on the row and never wrapped; a pressable row is described by it after its detail lines. `action` is a control after the row and outside its press area, such as an `ActionMenu` of the row's own commands named by the consumer ("More for Heron calls"): it is the row's sibling in the list item, centred on the row, after it in the Tab order, and a press on it never opens the row; it keeps the row's end inset (a space-4 in a panel or outside a ListGroup, none in a plain list), and where `:has` is supported the hover fill spans the row and its control. An empty slot (`undefined`, `null`, `false` or `''`, as conditional JSX gives) draws nothing, for `leading` too. Pair `action` with `accessory="none"` when the row's own chevron would sit beside it. An unread row without `unreadLabel`, or a blank one, throws a `RangeError`. An `aria-label` replaces the whole name, unread words included.
+
+```tsx
+<ListRow
+  leading={
+    <GlyphTile hue="orange">
+      <Feather />
+    </GlyphTile>
+  }
+  title={guide.title}
+  detail={guide.detail}
+  href={guide.href}
+  onPress={() => router.push(guide.href)}
+  unread={guide.isNew}
+  unreadLabel="New"
+  tag={guide.onlyOne ? <Badge>Only in English</Badge> : undefined}
+  accessory="none"
+  action={
+    <ActionMenu
+      label={`More for ${guide.title}`}
+      trigger={<Ellipsis />}
+      align="end"
+      items={items}
+    />
+  }
+/>
+```
+
 ```tsx
 <Card padding={4}>
   <Text as="h3" id="look" variant="label">
