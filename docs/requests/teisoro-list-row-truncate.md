@@ -11,7 +11,7 @@ Proposed API: `truncate?: boolean` on `ListRow`, opt-in; the full words stay in 
 
 ## Accepted API (2026-10-19)
 
-- `truncate?: boolean` (default `false`): the row takes `sw-list-row-truncate`. Its title's words sit in their own box (`sw-list-row-title-text`, its rule scoped under `sw-list-row-truncate` in 1.43.1) and it and the detail line each stay on one line, cut with an ellipsis where they do not fit (`white-space: nowrap`, `text-overflow: ellipsis`). The title is a one-line flex row, so the unread dot follows the cut words and is never hidden by the cut.
+- `truncate?: boolean` (default `false`): the row takes `sw-list-row-truncate`. Its title's words sit in their own box (`sw-list-row-title-text`, its rule scoped under `sw-list-row-truncate` in 1.44.0) and it and the detail line each stay on one line, cut with an ellipsis where they do not fit (`white-space: nowrap`, `text-overflow: ellipsis`). The title is a one-line flex row, so the unread dot follows the cut words and is never hidden by the cut.
 - The whole words stay in the DOM, so a pressable row's name (title, unread words, value) and description (detail, value detail, tag) are unchanged; the words box and the detail carry a `title` tooltip with the whole words for a pointer.
 - The value, its detail, the tag and the action keep their words whole and their place; only the label column gives way.
 - A tooltip needs a pointer: on a touch screen or from the keyboard the cut words are whole only in what the row opens and in what assistive technology reads. Teisoro's rows open the whole document.

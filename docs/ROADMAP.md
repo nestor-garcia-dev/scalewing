@@ -78,24 +78,25 @@ line under a done step, so it needed no change. Released in
 `@scalewing/react` 1.42.0. Next: Teisoro pins 1.42.0 in F-014-S04; its pin
 stays at 1.41.0 until then.
 
-Teisoro F-014-S07, release T2 "training fidelity", one PR each:
-`ListRow` `truncate`, a title and detail cut to one line each
+Teisoro F-014-S07, release T2 "training fidelity", one PR each: `ListRow`
+`truncate`, a title and detail cut to one line each
 (`teisoro-list-row-truncate.md`, #206); `DescriptionList`
 `layout="spread"`, each detail at its row's end
 (`teisoro-description-list-spread.md`, #207); `FilterChips` option
 `tone="warning"` (`teisoro-filter-chip-tone.md`, #208); and
 `FilterChipsRow`, chip groups that wrap or scroll sideways together
 (`teisoro-filter-chips-row.md`, #209). Tagged as 1.43.0, which was never
-published (its release validation's gallery test timed out, fixed in #211),
-with the words box's rule scoped to truncated rows (#212). Teisoro
+published (its release validation's gallery test timed out, fixed in
+#211), with the words box's rule scoped to truncated rows (#212). Teisoro
 F-014-S05's fidelity check then asked for four more, one PR each:
 `sw-font-mono`, the monospace face for a Markdown source
 (`teisoro-font-mono.md`, #213); `ActionMenu` `triggerAppearance="icon"`
-(`teisoro-action-menu-icon-trigger.md`, #214); `FileField` `value.preview`,
-a photo's thumbnail (`teisoro-file-field-preview.md`, #215); and
-`sw-container-reading`, a reading-width column
+(`teisoro-action-menu-icon-trigger.md`, #214); `FileField`
+`value.preview`, a photo's thumbnail (`teisoro-file-field-preview.md`,
+#215); and `sw-container-reading`, a reading-width column
 (`teisoro-container-reading.md`, #216). Released together in
-`@scalewing/react` 1.44.0. Next: Teisoro pins 1.44.0 in F-014-S07 (task 2630) and applies the new options in Training.
+`@scalewing/react` 1.44.0. Next: Teisoro pins 1.44.0 in its task 2630
+(F-014-S07) and applies the new options in Training.
 
 Teisoro F-011-S02, release R1 "guided-form core": web `Stepper`
 (#113), `DenominationGrid` entry rows (#114), `Steps` / `Step` (#115)
