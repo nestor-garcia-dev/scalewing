@@ -4,6 +4,7 @@ import { chevronStroke } from './chevron.js';
 import {
   actionMenuTriggerClassCatalog,
   cssActionMenuTriggerClasses,
+  cssActionMenuTriggerIconClasses,
 } from './css-action-menu-trigger.js';
 import { zIndex } from './stacking.js';
 import { coarsePointerQuery, touchTarget } from './touch-target.js';
@@ -172,7 +173,9 @@ export function cssActionMenuClasses(): string {
   }
 }
 
-${cssActionMenuTriggerClasses()}`;
+${cssActionMenuTriggerClasses()}
+
+${cssActionMenuTriggerIconClasses()}`;
 }
 
 export function actionMenuClassCatalog(): string[] {

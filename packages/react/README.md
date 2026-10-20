@@ -285,6 +285,8 @@ A `Button` that toggles something passes `aria-pressed`. The pressed button gets
 
 `ActionMenu` `triggerAppearance="text"` (opt-in; default `"framed"`, `actionMenuTriggerAppearances`) draws the trigger as its words (`trigger`, or `label`) in label type at medium weight in the text color, with the shared muted chevron pointing down after them and no fill or outline; the quiet grey fill shows on hover and while the menu is open. It is the sm control height (the 44 px target on a coarse pointer). Name the trigger with `label` as before, and include the words shown in it (WCAG 2.5.3, so voice control can say them): a person's name that opens their account menu takes a `label` such as "Account, Ada Okafor". The trigger's words are one flex item (mixed inline content keeps its spaces), then the chevron. Forced colors draw its border in the system's border color, the chevron in CanvasText, and an open trigger's border in Highlight. An unknown value throws a `RangeError`.
 
+`triggerAppearance="icon"` (opt-in) draws the `trigger` glyph alone in a round quiet button, as wide as it is tall (the sm control height, 44 px on a coarse pointer), in the muted colour with no fill, outline or chevron; it turns to the text colour on the quiet fill on hover and while the menu is open. Use it for a row's own ••• menu, named by `label` ("More for Heron calls"); the glyph says nothing on its own. An icon trigger without a `trigger` glyph throws a `RangeError`. Forced colors draw it in ButtonText with its kept border, Highlight while open.
+
 ```tsx
 <ActionMenu
   header={

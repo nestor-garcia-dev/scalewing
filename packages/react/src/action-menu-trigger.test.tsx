@@ -82,3 +82,57 @@ describe('ActionMenu triggerAppearance', () => {
     );
   });
 });
+
+describe('ActionMenu triggerAppearance icon', () => {
+  it('draws the glyph alone, named by the label, and opens the menu', () => {
+    render(
+      <ActionMenu
+        items={items}
+        label="More for Heron calls"
+        trigger={<svg aria-hidden="true" data-testid="dots" />}
+        triggerAppearance="icon"
+      />,
+    );
+    const trigger = screen.getByRole('button', {
+      name: 'More for Heron calls',
+    });
+    expect(trigger.className).toBe(
+      'sw-action-menu-trigger sw-action-menu-trigger-icon',
+    );
+    expect(trigger.textContent).toBe('');
+    expect(screen.getByTestId('dots').parentElement).toBe(trigger);
+    fireEvent.click(trigger);
+    expect(trigger.getAttribute('aria-expanded')).toBe('true');
+    expect(screen.getByRole('menuitem', { name: 'Sign out' })).toBeTruthy();
+  });
+
+  it('needs a glyph', () => {
+    for (const trigger of [undefined, null, false, '', '  '])
+      expect(() =>
+        render(
+          <ActionMenu
+            items={items}
+            label="More"
+            trigger={trigger}
+            triggerAppearance="icon"
+          />,
+        ),
+      ).toThrow(new RangeError('An icon ActionMenu trigger needs its glyph'));
+  });
+
+  it('generates a round quiet button with no chevron, the open fill and the touch target', () => {
+    const css = generateStylesheet();
+    const icon = '.sw-action-menu-trigger.sw-action-menu-trigger-icon';
+    expect(utilityClassCatalog()).toContain('sw-action-menu-trigger-icon');
+    expect(css).toContain(
+      `${icon} {\n  align-items: center;\n  background: transparent;\n  border-color: transparent;\n  border-radius: var(--sw-radius-pill);\n  color: var(--sw-color-muted);`,
+    );
+    expect(css).not.toContain(`${icon}::after`);
+    expect(css).toMatch(
+      /\.sw-action-menu-trigger\.sw-action-menu-trigger-icon\[aria-expanded='true'\] \{\n {2}background: color-mix/,
+    );
+    expect(css).toContain(
+      `${icon} {\n    min-height: var(--sw-control-md-min-height);\n    min-width: var(--sw-control-md-min-height);\n  }`,
+    );
+  });
+});

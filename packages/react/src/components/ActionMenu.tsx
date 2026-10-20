@@ -14,9 +14,11 @@ import { cx } from '../class-names.js';
 import {
   type ActionMenuTriggerAppearance,
   actionMenuTriggerAppearances,
+  actionMenuTriggerIconClass,
   actionMenuTriggerTextClass,
 } from '../css/css-action-menu-trigger.js';
 import { ActionMenuList } from './action-menu/ActionMenuList.js';
+import { assertActionMenu } from './action-menu/assert-action-menu.js';
 import { tabStop } from '../tab-stop.js';
 
 export type ActionMenuAlign = InlineAlign;
@@ -72,8 +74,10 @@ export type ActionMenuProps = {
   /**
    * `text` draws the trigger as its words with a chevron after them, no
    * fill or outline until hovered or open, such as a person's name opening
-   * their account menu; `framed` (the default) is the small outlined
-   * control.
+   * their account menu; `icon` draws the `trigger` glyph alone in a round
+   * quiet button with no chevron, such as a row's ••• menu, named by
+   * `label` (an icon trigger needs a `trigger`); `framed` (the default) is
+   * the small outlined control.
    */
   triggerAppearance?: ActionMenuTriggerAppearance;
 };
@@ -105,25 +109,7 @@ export function ActionMenu({
   const openRef = useRef(false);
   const [open, setOpen] = useState(false);
   const [focusIndex, setFocusIndex] = useState(-1);
-  if (
-    items.some(
-      (item) =>
-        (item.detail !== undefined && !item.detail.trim()) ||
-        (item.detailLang !== undefined &&
-          (!item.detailLang.trim() || item.detail === undefined)),
-    )
-  )
-    throw new RangeError(
-      'ActionMenu item detail and detailLang must not be blank; detailLang needs a detail',
-    );
-  if (
-    !(actionMenuTriggerAppearances as readonly unknown[]).includes(
-      triggerAppearance,
-    )
-  )
-    throw new RangeError(
-      `Unknown ActionMenu triggerAppearance: ${String(triggerAppearance)}`,
-    );
+  assertActionMenu({ items, trigger, triggerAppearance });
   const enabled = !disabled && items.some((item) => !item.disabled);
 
   useLayoutEffect(() => {
@@ -197,6 +183,7 @@ export function ActionMenu({
         className={cx(
           'sw-action-menu-trigger',
           triggerAppearance === 'text' && actionMenuTriggerTextClass,
+          triggerAppearance === 'icon' && actionMenuTriggerIconClass,
         )}
         disabled={!enabled}
         onClick={() => (open ? close(true) : openMenu())}
