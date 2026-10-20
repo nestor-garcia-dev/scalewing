@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: accepted 2026-10-20 (Teisoro F-014-S06 "Acceptance and UX check", task 2628; the gap its acceptance review found on Training's lists; plan approval under the owner's F-014 delegation of 2026-10-19).
+Status: released in `@scalewing/react` 1.45.0 (PR #218; accepted 2026-10-20; Teisoro F-014-S06 "Acceptance and UX check", task 2628; the gap its acceptance review found on Training's lists; plan approval under the owner's F-014 delegation of 2026-10-19).
 Renderer: react
 Missing surface: a web `ListRow` whose title is marked as another language than the page's.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: Teisoro's training library lists documents written in English, Spanish or both. On a Spanish screen a document only in English keeps its English title (and the other way round), and WCAG 3.1.2 (Language of Parts) asks for that title to carry its own `lang`, so a screen reader speaks it in English rather than reading English words with Spanish sounds. `ListRow` takes its `title` as a string and draws it itself, so Teisoro cannot wrap the words in a `<span lang>`; putting `lang` on the whole row would also mark the detail, the tag ("Solo en inglés") and the unread words ("Nuevo"), which are in the page's language.
