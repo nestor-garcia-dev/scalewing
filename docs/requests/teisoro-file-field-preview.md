@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: accepted 2026-10-20 (Teisoro F-014-S07 "Scalewing fidelity", task 2630; the gap Teisoro F-014-S05 task 2620 found on the training board TrainingWrite; plan approval under the owner's F-014 delegation of 2026-10-19).
+Status: released in `@scalewing/react` 1.44.0 (PR #215; accepted 2026-10-20; Teisoro F-014-S07 "Scalewing fidelity", task 2630; the gap Teisoro F-014-S05 task 2620 found on the training board TrainingWrite; plan approval under the owner's F-014 delegation of 2026-10-19).
 Renderer: react
 Missing surface: a `FileField` that shows a chosen photo as a thumbnail.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: the page editor's cover photo, once chosen, is drawn as a small 48 × 32 picture of the photo beside its file name, so the writer sees which photo will head the page. `FileField` shows a chosen file's name, detail and an optional `icon` mark; an `<img>` passed as `icon` would be wrapped as a hidden mark at the icon's size, with no crop or radius, and Teisoro owns no CSS to size it.

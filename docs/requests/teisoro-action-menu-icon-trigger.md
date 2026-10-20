@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: accepted 2026-10-20 (Teisoro F-014-S07 "Scalewing fidelity", task 2630; the gap Teisoro F-014-S05 task 2620 found on the training boards TrainingMenu and PhoneSection; plan approval under the owner's F-014 delegation of 2026-10-19).
+Status: released in `@scalewing/react` 1.44.0 (PR #214; accepted 2026-10-20; Teisoro F-014-S07 "Scalewing fidelity", task 2630; the gap Teisoro F-014-S05 task 2620 found on the training boards TrainingMenu and PhoneSection; plan approval under the owner's F-014 delegation of 2026-10-19).
 Renderer: react
 Missing surface: an `ActionMenu` trigger that is a glyph alone, with no chevron.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: every training row ends in a ••• menu drawn as the dots alone in a round 44 px button with no outline and no chevron. `ActionMenu`'s `framed` trigger is an outlined control and its `text` trigger always draws a chevron after its words, so Teisoro's ••• shows a chevron beside the dots. The menu's trigger is ActionMenu's own button, so it cannot be swapped for a `Button`.
