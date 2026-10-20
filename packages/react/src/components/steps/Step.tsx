@@ -14,14 +14,14 @@ import { cx } from '../../class-names.js';
 import { Button } from '../Button.js';
 import {
   isOpenStep,
-  stepHeadingLevels,
   type StepHeadingLevel,
   type StepStatus,
-  stepStatuses,
   stepStatusWord,
   stepTakesFocus,
 } from './step-status.js';
+import { assertStep } from './assert-step.js';
 import { StepPlaceContext } from './steps-context.js';
+import { StepTitleLine } from './StepTitleLine.js';
 import { StepTitleWords } from './StepTitleWords.js';
 
 export type StepProps = {
@@ -35,23 +35,19 @@ export type StepProps = {
   editLabel?: string;
   /** Muted words after a skipped step's title, such as "not needed". */
   skippedReason?: string;
+  /**
+   * Muted words after an open step's title, on its line, such as
+   * "Optional" or "Wetlands done · Woodlands empty". Drawn while the step
+   * is open (current or error, or any step of an open list) and outside
+   * the heading, so the heading and the region keep the title's name; an
+   * open list's region is described by them.
+   */
+  titleDetail?: string;
   /** Overrides the list's heading level for this step's title. */
   headingLevel?: StepHeadingLevel;
   /** The step's fields, shown while it is current or in error, or always in an open list. */
   children?: ReactNode;
 };
-
-function assertStep(props: StepProps, level: StepHeadingLevel): void {
-  if (!props.title.trim()) throw new RangeError('Step title must not be empty');
-  if (!(stepStatuses as readonly unknown[]).includes(props.status))
-    throw new RangeError(`Unknown Step status: ${String(props.status)}`);
-  if (!stepHeadingLevels.includes(level))
-    throw new RangeError('Step headingLevel must be 2, 3 or 4');
-  if (props.onEdit && !props.editLabel?.trim())
-    throw new RangeError('Step onEdit needs an editLabel');
-  if (props.skippedReason !== undefined && !props.skippedReason.trim())
-    throw new RangeError('Step skippedReason must not be empty');
-}
 
 /**
  * Moves focus to the heading when the step becomes current from a folded
@@ -90,42 +86,63 @@ function useFocusWhenOpened(
  * and, by status, its fields (current, error) or one folded line (a done
  * step's summary and Edit; an upcoming or skipped step's title alone). In
  * an open list every step shows its fields, inside a region named by its
- * title.
+ * title. An open step's `titleDetail` is muted words beside its title,
+ * outside the heading.
  */
 export function Step(props: StepProps) {
   const place = useContext(StepPlaceContext);
   if (!place) throw new RangeError('Step must be a child of Steps');
   const level = props.headingLevel ?? place.headingLevel;
   assertStep(props, level);
-  const { status, title, summary, onEdit, editLabel, skippedReason, children } =
-    props;
+  const {
+    status,
+    title,
+    summary,
+    onEdit,
+    editLabel,
+    skippedReason,
+    titleDetail,
+    children,
+  } = props;
   const heading = useRef<HTMLHeadingElement>(null);
   const titleId = useId();
   const editId = useId();
+  const detailId = useId();
   useFocusWhenOpened(status, heading, place.focusClaimRef, place.open);
 
   const Heading = `h${level}` as 'h2' | 'h3' | 'h4';
   const reason = status === 'skipped' ? skippedReason : undefined;
   const word = stepStatusWord(status, place.labels, reason !== undefined);
   const done = status === 'done';
+  const shownOpen = place.open || isOpenStep(status);
+  const detail = shownOpen ? titleDetail : undefined;
+  const headingElement = (
+    <Heading ref={heading} className="sw-steps-title" tabIndex={-1}>
+      {/* Two calls so the props narrow: a word, or a reason, never both. */}
+      {word === null ? (
+        <StepTitleWords
+          reason={reason}
+          title={title}
+          titleId={titleId}
+          word={null}
+        />
+      ) : (
+        <StepTitleWords title={title} titleId={titleId} word={word} />
+      )}
+    </Heading>
+  );
   const header = (
     <div className="sw-steps-header">
       <span aria-hidden="true" className="sw-steps-marker">
         {status === 'error' ? '!' : done ? null : place.number}
       </span>
-      <Heading ref={heading} className="sw-steps-title" tabIndex={-1}>
-        {/* Two calls so the props narrow: a word, or a reason, never both. */}
-        {word === null ? (
-          <StepTitleWords
-            reason={reason}
-            title={title}
-            titleId={titleId}
-            word={null}
-          />
-        ) : (
-          <StepTitleWords title={title} titleId={titleId} word={word} />
-        )}
-      </Heading>
+      <StepTitleLine
+        detail={detail}
+        detailId={detailId}
+        hasDetail={titleDetail !== undefined}
+      >
+        {headingElement}
+      </StepTitleLine>
       {done && summary ? (
         <span className="sw-steps-summary">{summary}</span>
       ) : null}
@@ -143,8 +160,7 @@ export function Step(props: StepProps) {
       ) : null}
     </div>
   );
-  const shown =
-    (place.open || isOpenStep(status)) && Children.toArray(children).length > 0;
+  const shown = shownOpen && Children.toArray(children).length > 0;
   const content = (
     <>
       {header}
@@ -157,7 +173,11 @@ export function Step(props: StepProps) {
       className={cx('sw-steps-item', `sw-steps-item-${status}`)}
     >
       {place.open ? (
-        <section aria-labelledby={titleId} className="sw-steps-region">
+        <section
+          aria-describedby={detail ? detailId : undefined}
+          aria-labelledby={titleId}
+          className="sw-steps-region"
+        >
           {content}
         </section>
       ) : (
