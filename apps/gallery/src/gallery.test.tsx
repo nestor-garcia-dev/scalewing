@@ -13,6 +13,20 @@ import { catalog, catalogGroups } from './catalog.js';
 import { themeStorageKey } from './theme-preference.js';
 import { paletteStorageKey } from './palette-preference.js';
 
+/** A catalog section by its id; fails the test when it is missing. */
+function sectionOf(id: string): HTMLElement {
+  const section = document.getElementById(id);
+  if (!section) throw new Error(`No catalog section #${id}`);
+  return section;
+}
+
+/** The gallery's own header, which holds the scheme and palette controls. */
+function header(): HTMLElement {
+  const [banner] = screen.getAllByRole('banner');
+  if (!banner) throw new Error('No gallery header');
+  return banner;
+}
+
 describe('gallery', () => {
   beforeEach(() => {
     window.localStorage.clear();
@@ -65,11 +79,15 @@ describe('gallery', () => {
       catalog.length + 2,
     );
 
-    const habitat = screen.getByLabelText('Habitat');
+    // Labelled controls are looked for in their own section or the header:
+    // jsdom walks the whole document for each labelable element's `labels`,
+    // so a label query over the whole catalog costs elements × nodes.
+    const fieldSection = within(sectionOf('field'));
+    const habitat = fieldSection.getByLabelText('Habitat');
     expect(habitat.tagName).toBe('SELECT');
     expect(document.querySelector(`label[for="${habitat.id}"]`)).not.toBeNull();
 
-    const disabledField = screen.getByLabelText('Disabled control');
+    const disabledField = fieldSection.getByLabelText('Disabled control');
     expect(disabledField).toHaveProperty('disabled', true);
 
     const layoutLink = screen.getByRole('link', {
@@ -191,7 +209,7 @@ describe('gallery', () => {
   it('applies a named palette from the header control', () => {
     render(<App />);
 
-    fireEvent.change(screen.getByLabelText('Palette'), {
+    fireEvent.change(within(header()).getByLabelText('Palette'), {
       target: { value: 'cerulean' },
     });
 
