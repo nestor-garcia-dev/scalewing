@@ -1,0 +1,5 @@
+---
+'@scalewing/react': patch
+---
+
+`Steps`: a folded step's heading reads "The site, Done", not "The site , Done" (checked against Chromium's accessibility tree; the name is one text box, so there are no two boxes to space apart). Its name is now one visually hidden line (the title, a comma and the status word) and the drawn title is `aria-hidden` on its own box; the step's region and its Edit button are still named by the drawn title, and nothing drawn changes. A current step, and a skipped step showing its reason, are unchanged. The heading's text content now holds the title twice (drawn, then in the spoken line), so a test reading a folded heading's `textContent` or finding its title with a pattern (`getByText(/The site/)`) finds both: query headings by role and name (`getByRole('heading', { name: 'The site, Done' })`). Copying a folded heading, or finding its title in the page, meets the words twice too. No new classes, tokens or dependencies. Request: `docs/requests/teisoro-steps-status-words.md`.

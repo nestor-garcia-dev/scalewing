@@ -47,7 +47,8 @@ test('Steps opens steps in order, folds done ones and moves focus to the step th
   await expect(
     statuses.getByRole('heading', {
       level: 3,
-      name: /^Upcoming\s*, Not started$/,
+      name: 'Upcoming, Not started',
+      exact: true,
     }),
   ).toBeVisible();
 

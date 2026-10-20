@@ -22,6 +22,7 @@ import {
   stepTakesFocus,
 } from './step-status.js';
 import { StepPlaceContext } from './steps-context.js';
+import { StepTitleWords } from './StepTitleWords.js';
 
 export type StepProps = {
   status: StepStatus;
@@ -113,14 +114,17 @@ export function Step(props: StepProps) {
         {status === 'error' ? '!' : done ? null : place.number}
       </span>
       <Heading ref={heading} className="sw-steps-title" tabIndex={-1}>
-        <span id={titleId}>{title}</span>
-        {reason ? (
-          <>
-            {' '}
-            <span className="sw-steps-reason">{reason}</span>
-          </>
-        ) : null}
-        {word ? <span className="sw-sr-only">, {word}</span> : null}
+        {/* Two calls so the props narrow: a word, or a reason, never both. */}
+        {word === null ? (
+          <StepTitleWords
+            reason={reason}
+            title={title}
+            titleId={titleId}
+            word={null}
+          />
+        ) : (
+          <StepTitleWords title={title} titleId={titleId} word={word} />
+        )}
       </Heading>
       {done && summary ? (
         <span className="sw-steps-summary">{summary}</span>

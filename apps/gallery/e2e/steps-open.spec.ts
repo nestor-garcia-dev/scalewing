@@ -64,7 +64,10 @@ test('Steps open shows every step as a region and only its marker follows the st
   );
   await expect(site).toBeFocused();
   await expect(
-    survey.getByRole('heading', { name: /^The count\s*, Not started$/ }),
+    survey.getByRole('heading', {
+      name: 'The count, Not started',
+      exact: true,
+    }),
   ).toBeVisible();
   // The greyed step's title stays muted at the open size.
   if (testInfo.project.name !== 'forced-colors') {

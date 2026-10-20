@@ -4,6 +4,7 @@ import { afterEach, describe, expect, it } from 'vitest';
 import { Step, Steps, type StepStatus } from './components/Steps.js';
 import { cssStepsClasses } from './css/css-steps.js';
 import { utilityClassCatalog } from './css/stylesheet.js';
+import { expectHeadingNames } from './heading-names.test-support.js';
 
 afterEach(() => cleanup());
 
@@ -64,9 +65,7 @@ describe('Steps open', () => {
     expect(
       items.map((item) => item.querySelector('.sw-steps-marker')!.textContent),
     ).toEqual(['', '2', '3', '!']);
-    expect(
-      screen.getAllByRole('heading', { level: 2 }).map((h) => h.textContent),
-    ).toEqual([
+    expectHeadingNames(2, [
       'The site, Done',
       'The count',
       'Nests, Not started',
