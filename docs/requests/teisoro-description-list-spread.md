@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: released in `@scalewing/react` 1.43.0 (PR #207; accepted 2026-10-19; Teisoro F-014-S07 "Scalewing fidelity", task 2630; the gap Teisoro F-014-S04 task 2615 found on the training board TrainingReader; plan approval under the owner's F-014 delegation of 2026-10-19).
+Status: merged, shipping in `@scalewing/react` 1.43.1 (tagged as 1.43.0, which was never published; PR #207; accepted 2026-10-19; Teisoro F-014-S07 "Scalewing fidelity", task 2630; the gap Teisoro F-014-S04 task 2615 found on the training board TrainingReader; plan approval under the owner's F-014 delegation of 2026-10-19).
 Renderer: react
 Missing surface: a web `DescriptionList` whose details sit at their rows' end, beside their terms at every width.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: the reader's "Managers only" box lists a document's facts (Section, Topic, Kind, Languages, Who can see it) with each term at the row's start and its value right-aligned at the row's end, divided by hairlines, in a narrow side column. `DescriptionList` puts the details in a column beside the terms (and under them below `md`), so they start mid-row. Rows of `Inline justify="between"` would lose the `dl` semantics and the hairlines.

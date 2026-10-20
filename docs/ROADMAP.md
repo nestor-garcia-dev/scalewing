@@ -85,9 +85,11 @@ Teisoro F-014-S07, release T2 "training fidelity", one PR each:
 (`teisoro-description-list-spread.md`, #207); `FilterChips` option
 `tone="warning"` (`teisoro-filter-chip-tone.md`, #208); and
 `FilterChipsRow`, chip groups that wrap or scroll sideways together
-(`teisoro-filter-chips-row.md`, #209). Released in `@scalewing/react`
-1.43.0. Next: Teisoro pins 1.43.0 in F-014-S07 (task 2630) and applies
-the new options in Training.
+(`teisoro-filter-chips-row.md`, #209). Tagged as 1.43.0, which was never published
+(its release validation's gallery test timed out, fixed in #211);
+shipping in `@scalewing/react` 1.43.1 with the words box's rule scoped
+to truncated rows (the release PR follows). Next: Teisoro pins 1.43.1 in F-014-S07 (task 2630)
+and applies the new options in Training.
 
 Teisoro F-011-S02, release R1 "guided-form core": web `Stepper`
 (#113), `DenominationGrid` entry rows (#114), `Steps` / `Step` (#115)

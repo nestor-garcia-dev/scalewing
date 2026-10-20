@@ -92,8 +92,18 @@ describe('ListRow truncate', () => {
       '.sw-list-row-truncate .sw-list-row-unread { flex: none; }',
     );
     expect(css).toContain(
-      '.sw-list-row-title-text,\n.sw-list-row-truncate .sw-list-row-detail {\n  min-width: 0;\n  overflow: hidden;\n  overflow-wrap: normal;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n}',
+      '.sw-list-row-truncate .sw-list-row-title-text,\n.sw-list-row-truncate .sw-list-row-detail {\n  min-width: 0;\n  overflow: hidden;\n  overflow-wrap: normal;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n}',
     );
+    // Every selector that names the words box is scoped to truncated rows.
+    const selectors = css
+      .split('}')
+      .map((block) => block.slice(0, block.lastIndexOf('{')))
+      .flatMap((list) => list.split(','))
+      .map((selector) => selector.slice(selector.lastIndexOf('{') + 1).trim())
+      .filter((selector) => selector.includes('sw-list-row-title-text'));
+    expect(selectors.length).toBeGreaterThan(0);
+    for (const selector of selectors)
+      expect(selector.startsWith('.sw-list-row-truncate ')).toBe(true);
     expect(utilityClassCatalog()).toEqual(
       expect.arrayContaining([
         'sw-list-row-truncate',
