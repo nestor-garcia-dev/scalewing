@@ -10,7 +10,10 @@ import {
 } from '@scalewing/react';
 import { useState } from 'react';
 
+import { Glyph } from '../glyph.js';
 import { Section } from '../layout/Section.js';
+
+const dots = 'M3 8h.01M8 8h.01M13 8h.01';
 
 export function ActionMenuSection() {
   const [lastAction, setLastAction] = useState('None yet');
@@ -19,7 +22,7 @@ export function ActionMenuSection() {
   return (
     <Section
       id="action-menu"
-      purpose="ActionMenu holds independent commands. Select chooses a value; ActionMenu does not. The caller supplies localized names, icons, and callbacks. Focus returns to the trigger before a command runs, so a dialog opened from the menu hands focus back to it on close. The menu opens a small gap below its trigger (above it near the bottom of the screen), keeps clear of the screen edges, and lines up with the trigger's end when the trigger ends a row. align end lines it up with the trigger's end even where the start would fit, so a menu from the end of a card stays over that card. On a touch screen the trigger is at least 44 px square and each command 44 px tall. A long command wraps inside the screen. header puts a non-interactive block above the commands, such as the station a ranger is working from: muted, set off by a hairline, outside the arrow keys, and read as the menu's description when it opens. An item's lang marks a label in another language, such as English on a Spanish page. An item's detail is its current value at the end with a chevron, such as Language Español, read in its name; separatorBefore sets a command, such as leaving, apart with a hairline. triggerAppearance text draws the trigger as its words and a chevron with no outline, such as a name that opens an account menu."
+      purpose="ActionMenu holds independent commands. Select chooses a value; ActionMenu does not. The caller supplies localized names, icons, and callbacks. Focus returns to the trigger before a command runs, so a dialog opened from the menu hands focus back to it on close. The menu opens a small gap below its trigger (above it near the bottom of the screen), keeps clear of the screen edges, and lines up with the trigger's end when the trigger ends a row. align end lines it up with the trigger's end even where the start would fit, so a menu from the end of a card stays over that card. On a touch screen the trigger is at least 44 px square and each command 44 px tall. A long command wraps inside the screen. header puts a non-interactive block above the commands, such as the station a ranger is working from: muted, set off by a hairline, outside the arrow keys, and read as the menu's description when it opens. An item's lang marks a label in another language, such as English on a Spanish page. An item's detail is its current value at the end with a chevron, such as Language Español, read in its name; separatorBefore sets a command, such as leaving, apart with a hairline. triggerAppearance text draws the trigger as its words and a chevron with no outline, such as a name that opens an account menu; icon draws the trigger glyph alone in a round quiet button with no chevron, such as a row's ••• menu, named by its label."
       title="ActionMenu"
       usage={`<ActionMenu
   label="Sighting actions"
@@ -95,6 +98,32 @@ export function ActionMenuSection() {
             label="Ranger account, signed out"
             trigger="Signed out"
             triggerAppearance="text"
+          />
+          <ActionMenu
+            align="end"
+            items={[
+              {
+                id: 'open-guide',
+                label: 'Open',
+                onSelect: () => setLastAction('Open Owl box 4'),
+              },
+              {
+                id: 'archive-guide',
+                label: 'Archive…',
+                destructive: true,
+                onSelect: () => setLastAction('Archive Owl box 4'),
+              },
+            ]}
+            label="More for Owl box 4"
+            trigger={<Glyph path={dots} />}
+            triggerAppearance="icon"
+          />
+          <ActionMenu
+            disabled
+            items={[]}
+            label="More for Owl box 5, unavailable"
+            trigger={<Glyph path={dots} />}
+            triggerAppearance="icon"
           />
         </Inline>
         <Inline gap={3} lang="es">
