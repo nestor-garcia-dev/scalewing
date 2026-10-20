@@ -196,14 +196,25 @@ test('Table maxHeight without a total shades its own bottom edge', async ({
   const region = page.getByRole('group', { name: 'Sites in their own scroll' });
   await region.scrollIntoViewIfNeeded();
   await expect(region).toHaveClass(/sw-scroll-more-bottom/);
+  // The rows read below are this named table's.
+  await expect(table).toBeVisible();
 
-  // Six compact rows under the header, the seventh past the bottom.
-  const edges = await regionEdges(region);
-  const rows = table.locator('tbody tr');
-  const sixth = (await rows.nth(5).boundingBox())!;
-  expect(sixth.y + sixth.height).toBeLessThanOrEqual(edges.bottom + 1);
-  const seventh = (await rows.nth(6).boundingBox())!;
-  expect(seventh.y).toBeGreaterThanOrEqual(edges.bottom - 1);
+  // Six compact rows under the header, the seventh past the bottom. The
+  // rows and the region's bottom are read in one synchronous read (one
+  // layout): the page can still settle by a fraction of a pixel after the
+  // region scrolls into view, which once put separate measurements 0.59 px
+  // apart and left the seventh row 1.09 px short of the bottom.
+  const { bottom, sixthEnd, seventhStart } = await region.evaluate((node) => {
+    const rows = node.querySelectorAll('tbody tr');
+    const box = node.getBoundingClientRect();
+    return {
+      bottom: box.top + node.clientTop + node.clientHeight,
+      sixthEnd: rows[5]!.getBoundingClientRect().bottom,
+      seventhStart: rows[6]!.getBoundingClientRect().top,
+    };
+  });
+  expect(sixthEnd).toBeLessThanOrEqual(bottom + 1);
+  expect(seventhStart).toBeGreaterThanOrEqual(bottom - 1);
 
   const shade = () =>
     region.evaluate((node) => getComputedStyle(node).backgroundImage);
