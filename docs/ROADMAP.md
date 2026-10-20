@@ -103,8 +103,9 @@ each: `ListRow` `titleLang`, a title in another language than the page's
 (`teisoro-list-row-title-lang.md`, #218); a folded `Step`'s status word
 read without a stray space (`teisoro-steps-status-words.md`, #219); `Step`
 `titleDetail`, muted words beside an open step's title
-(`teisoro-step-title-detail.md`). Next: `Article` `contentLang`, then the
-release.
+(`teisoro-step-title-detail.md`, #220); `Article` `contentLang`, the title
+and body in another language than the page's
+(`teisoro-article-content-lang.md`). Next: the release.
 
 Teisoro F-011-S02, release R1 "guided-form core": web `Stepper`
 (#113), `DenominationGrid` entry rows (#114), `Steps` / `Step` (#115)

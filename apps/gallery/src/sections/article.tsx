@@ -31,7 +31,7 @@ export function ArticleSection() {
   return (
     <Section
       id="article"
-      purpose="Article is a page that reads like a post, on a card at the reading width: an optional cover photo edge to edge across the top (3:1, 2:1 on a phone, with its alt words), an eyebrow with the consumer's actions at its row's end (such as a language switch), the title in heading type (an h1 on its own page; h2 or h3 under other headings), a muted meta line, a hairline and the body. It is an article landmark named by its title. The body is the consumer's own content: paragraphs, Markdown it draws, anything."
+      purpose="Article is a page that reads like a post, on a card at the reading width: an optional cover photo edge to edge across the top (3:1, 2:1 on a phone, with its alt words), an eyebrow with the consumer's actions at its row's end (such as a language switch), the title in heading type (an h1 on its own page; h2 or h3 under other headings), a muted meta line, a hairline and the body. It is an article landmark named by its title. The body is the consumer's own content: paragraphs, Markdown it draws, anything. contentLang marks the title and the body as another language than the page's, such as a guide only in Spanish on an English page; the eyebrow, meta line and actions stay the app's words."
       title="Article"
       usage={`<Article
   cover={{ src: cover.url, alt: cover.alt }}
@@ -41,6 +41,14 @@ export function ArticleSection() {
   actions={<SegmentedControl aria-label="Language" variant="raised" … />}
 >
   <Stack gap={4}>{paragraphs}</Stack>
+</Article>
+
+<Article
+  contentLang="es"
+  eyebrow="Field guide · Only in Spanish"
+  title="Cómo distinguir una garza de una garceta"
+>
+  {paragraphs}
 </Article>`}
     >
       <Stack gap={5}>
@@ -82,6 +90,18 @@ export function ArticleSection() {
           <Text>
             Plovers are nesting on the east trail until the end of the month.
             Use the boardwalk instead.
+          </Text>
+        </Article>
+        <Article
+          contentLang="es"
+          eyebrow="Field guide · Only in Spanish"
+          meta="Ranger 2 · Oct 18 · 2 min read"
+          title="Cómo distinguir una garza de una garceta"
+          titleAs="h3"
+        >
+          <Text>
+            La garza es gris y vuela con el cuello recogido; la garceta es
+            blanca y tiene las patas negras con los dedos amarillos.
           </Text>
         </Article>
       </Stack>
