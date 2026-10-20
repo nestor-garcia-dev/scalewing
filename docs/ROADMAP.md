@@ -105,7 +105,9 @@ read without a stray space (`teisoro-steps-status-words.md`, #219); `Step`
 `titleDetail`, muted words beside an open step's title
 (`teisoro-step-title-detail.md`, #220); `Article` `contentLang`, the title
 and body in another language than the page's
-(`teisoro-article-content-lang.md`). Next: the release.
+(`teisoro-article-content-lang.md`, #221). Released in `@scalewing/react`
+1.45.0. Next: Teisoro pins 1.45.0 in its task 2628 (F-014-S06) and applies
+the new options in Training.
 
 Teisoro F-011-S02, release R1 "guided-form core": web `Stepper`
 (#113), `DenominationGrid` entry rows (#114), `Steps` / `Step` (#115)

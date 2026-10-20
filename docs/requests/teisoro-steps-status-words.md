@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: accepted 2026-10-20 (Teisoro F-014-S06 "Acceptance and UX check", task 2628; the gap its UX review heard on Training's add and edit forms; plan approval under the owner's F-014 delegation of 2026-10-19).
+Status: released in `@scalewing/react` 1.45.0 (PR #219; accepted 2026-10-20; Teisoro F-014-S06 "Acceptance and UX check", task 2628; the gap its UX review heard on Training's add and edit forms; plan approval under the owner's F-014 delegation of 2026-10-19).
 Renderer: react
 Missing surface: none new; a fix to `Step`'s heading name.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: a folded step's heading ends in a visually hidden status word, and Chrome computes its name as "Qué vas a agregar , Listo", a space before the comma, because the hidden box (`sw-sr-only`, absolutely positioned) is laid out as a block and the name computation puts a space around a block. Screen readers read the heading list and focus announcements with the stray pause, and Teisoro's specs match the name with `\s*,`. The heading is `Step`'s own markup, so the consumer cannot change it.

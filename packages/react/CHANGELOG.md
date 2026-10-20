@@ -1,5 +1,17 @@
 # @scalewing/react
 
+## 1.45.0
+
+### Minor Changes
+
+- 4170f23: `Article` `contentLang`: the language of the title and the body (a BCP 47 tag such as `es`) when it is not the page's, set as `lang` on the title's heading and the body's box only, never the eyebrow, meta line, actions or cover, which are the app's words (WCAG 3.1.2). The article's name is unchanged. A blank `contentLang` throws a `RangeError`. No new classes, tokens or dependencies. Request: `docs/requests/teisoro-article-content-lang.md`.
+- fada31f: `ListRow` `titleLang`: the title's language (a BCP 47 tag such as `es`) when it is not the page's, set as `lang` on the title's box only (its words and the wordless unread dot), never the detail, value, tag or unread words (WCAG 3.1.2). A pressable row's name and description are unchanged; it works with `truncate`. A blank `titleLang` throws a `RangeError`. No new classes, tokens or dependencies. Request: `docs/requests/teisoro-list-row-title-lang.md`.
+- 8ed264e: `Step` `titleDetail`: muted words after an open step's title, on its line, such as "Optional" or "Wetlands done · Woodlands empty", at the label size and body weight in the muted colour, a space-2 after the title on its baseline or on their own line under it where they do not fit. Drawn while the step is open (current, error, or any step of `Steps open`), outside the heading, so the heading and the region keep the title's name; an open list's region is described by the words. A blank `titleDetail` throws a `RangeError`. New classes `sw-steps-title-line` and `sw-steps-title-detail`. No new tokens, no new dependency. Request: `docs/requests/teisoro-step-title-detail.md`.
+
+### Patch Changes
+
+- 54907b3: `Steps`: a folded step's heading reads "The site, Done", not "The site , Done" (checked against Chromium's accessibility tree; the name is one text box, so there are no two boxes to space apart). Its name is now one visually hidden line (the title, a comma and the status word) and the drawn title is `aria-hidden` on its own box; the step's region and its Edit button are still named by the drawn title, and nothing drawn changes. A current step, and a skipped step showing its reason, are unchanged. The heading's text content now holds the title twice (drawn, then in the spoken line), so a test reading a folded heading's `textContent` or finding its title with a pattern (`getByText(/The site/)`) finds both: query headings by role and name (`getByRole('heading', { name: 'The site, Done' })`). Copying a folded heading, or finding its title in the page, meets the words twice too. No new classes, tokens or dependencies. Request: `docs/requests/teisoro-steps-status-words.md`.
+
 ## 1.44.0
 
 ### Minor Changes

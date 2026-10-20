@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: accepted 2026-10-20 (Teisoro F-014-S06 "Acceptance and UX check", task 2628; the fidelity gap its review found on the training boards TrainingAdd and TrainingWrite; plan approval under the owner's F-014 delegation of 2026-10-19).
+Status: released in `@scalewing/react` 1.45.0 (PR #220; accepted 2026-10-20; Teisoro F-014-S06 "Acceptance and UX check", task 2628; the fidelity gap its review found on the training boards TrainingAdd and TrainingWrite; plan approval under the owner's F-014 delegation of 2026-10-19).
 Renderer: react
 Missing surface: muted words after an open `Step`'s title, on the title's line.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: Teisoro's add and edit forms are `Steps open` (its `GuidedForm`). The boards draw muted words beside some steps' titles: "A note" with "Optional" (TrainingAdd), "The page" with "English done · Español empty" (TrainingWrite), a 14 px regular muted line on the title's baseline 8 px after it. `Step` takes its `title` as a string and draws the header itself; its only muted words are a skipped step's `skippedReason`, which shows on skipped steps only and is part of the heading. Teisoro owns no CSS and cannot place words in `Step`'s header row.
