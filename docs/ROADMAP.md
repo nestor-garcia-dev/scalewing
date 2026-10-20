@@ -78,6 +78,11 @@ line under a done step, so it needed no change. Released in
 `@scalewing/react` 1.42.0. Next: Teisoro pins 1.42.0 in F-014-S04; its pin
 stays at 1.41.0 until then.
 
+Teisoro F-014-S07, release T2 "training fidelity", one PR each:
+`ListRow` `truncate`, a title and detail cut to one line each
+(`teisoro-list-row-truncate.md`). Next: the other fidelity surfaces, then
+the release.
+
 Teisoro F-011-S02, release R1 "guided-form core": web `Stepper`
 (#113), `DenominationGrid` entry rows (#114), `Steps` / `Step` (#115)
 and `ActionBar` `summary` (#116), released in `@scalewing/react` 1.27.0.

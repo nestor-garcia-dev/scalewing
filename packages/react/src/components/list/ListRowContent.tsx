@@ -28,12 +28,15 @@ export type ListRowContentProps = {
   /** The unread words; the dot shows while they are given. */
   unreadLabel?: string;
   tag?: ReactNode;
+  /** One line each for the title and detail, cut with "…", the words in a tooltip. */
+  truncate: boolean;
 };
 
 /**
  * A list row's parts in reading order: the hidden leading mark, the title
  * (with the unread dot and its hidden words) over its detail, the value
- * over its detail, the tag, then the chevron or check.
+ * over its detail, the tag, then the chevron or check. A truncated row
+ * sets its title's words in their own box, so the "…" never hides the dot.
  */
 export function ListRowContent({
   id,
@@ -49,6 +52,7 @@ export function ListRowContent({
   accessory,
   unreadLabel,
   tag,
+  truncate,
 }: ListRowContentProps) {
   return (
     <>
@@ -66,7 +70,13 @@ export function ListRowContent({
           )}
           id={`${id}-title`}
         >
-          {title}
+          {truncate ? (
+            <span className="sw-list-row-title-text" title={title}>
+              {title}
+            </span>
+          ) : (
+            title
+          )}
           {unreadLabel === undefined ? null : (
             <span aria-hidden="true" className="sw-list-row-unread" />
           )}
@@ -77,7 +87,11 @@ export function ListRowContent({
           </span>
         )}
         {detail ? (
-          <span className="sw-list-row-detail" id={`${id}-detail`}>
+          <span
+            className="sw-list-row-detail"
+            id={`${id}-detail`}
+            title={truncate ? detail : undefined}
+          >
             {detail}
           </span>
         ) : null}

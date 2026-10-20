@@ -80,6 +80,13 @@ export type ListRowProps = {
    * `ActionMenu` of the row's own actions. It needs its own name.
    */
   action?: ReactNode;
+  /**
+   * Keeps the title and the detail on one line each, cut with "…" where
+   * they do not fit, for a long list read at a glance; the full words stay
+   * in the row's name and description, and in a `title` tooltip. The
+   * value, its detail and the tag keep their words whole.
+   */
+  truncate?: boolean;
   /** `none` hides the chevron of a pressable row that acts in place. */
   accessory?: 'chevron' | 'none';
   /**
@@ -93,7 +100,8 @@ export type ListRowProps = {
  * One row of a `ListGroup`: it opens something (`onPress` or `href`, with
  * a chevron, the whole row pressing), picks one option in place
  * (`selected`), or only states something (neither). `unread` marks it new,
- * `tag` adds a status before its end, and `action` a control beside it.
+ * `tag` adds a status before its end, `action` a control beside it, and
+ * `truncate` keeps its title and detail to one line each.
  */
 export function ListRow({
   title,
@@ -114,6 +122,7 @@ export function ListRow({
   unreadLabel,
   tag,
   action,
+  truncate = false,
   'aria-label': ariaLabel,
 }: ListRowProps) {
   const pressable = onPress !== undefined || href !== undefined;
@@ -143,6 +152,7 @@ export function ListRow({
       title={title}
       titleAppearance={titleAppearance}
       tone={tone}
+      truncate={truncate}
       unreadLabel={unread ? unreadLabel : undefined}
       value={value}
       valueBadge={valueBadge}
@@ -154,6 +164,7 @@ export function ListRow({
     'sw-list-row',
     pressable && 'sw-list-row-pressable',
     disabled && 'sw-list-row-disabled',
+    truncate && 'sw-list-row-truncate',
   );
   const naming = rowNaming(id, {
     'aria-label': ariaLabel,
