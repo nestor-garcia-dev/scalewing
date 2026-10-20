@@ -1,6 +1,21 @@
 # @scalewing/react
 
+## 1.44.0
+
+### Minor Changes
+
+- 2af39a5: `ActionMenu` `triggerAppearance="icon"`: the consumer's `trigger` glyph alone in a round quiet button as wide as it is tall (the sm control height, 44 px on a coarse pointer), muted with no fill, outline or chevron, the text colour on the quiet fill on hover and while open; named by `label`, for a row's own ••• menu. An icon trigger without a glyph throws a `RangeError`. New class `sw-action-menu-trigger-icon`; `actionMenuTriggerAppearances` gains `icon`. No new tokens, no new dependency. Request: `docs/requests/teisoro-action-menu-icon-trigger.md`.
+- d4647b8: `sw-container-reading`: a utility class that centres a column at the reading width (`--sw-reading-max`, 46rem, `Article`'s), as `sw-container` does at the container width, and full width below it; for a form or text that reads better narrower than the page. No new tokens, no new dependency. Request: `docs/requests/teisoro-container-reading.md`.
+- f426251: `FileField` `value.preview`: the address of a small image of a chosen photo, such as an object URL the consumer made from the `File`, drawn as a decorative 3:2 thumbnail (a space-8 by a space-6, cropped to fill, at the small radius) before the file's name in place of `icon`. A blank preview throws a `RangeError`. New class `sw-file-field-preview`. No new tokens, no new dependency. Request: `docs/requests/teisoro-file-field-preview.md`.
+- 7da3f25: `sw-font-mono`: a utility class that sets an element, or a native text control such as a `Field`'s `textarea`, in the platform's monospace face (`ui-monospace, monospace`, the generic CSS names only, so no face is chosen) at the size it already has, outranking the canvas's text control rules. For words read as typed code or marks, such as a Markdown source being written. No new tokens, no new dependency. Request: `docs/requests/teisoro-font-mono.md`.
+
+### Patch Changes
+
+- 68be1ea: `ListRow` `truncate`: the one-line rule for the title's words box (`sw-list-row-title-text`) is scoped to truncated rows (`.sw-list-row-truncate .sw-list-row-title-text`), as the detail's already was; a truncated row looks the same. Found while validating 1.43.0, which was not published: its changes ship in this release.
+
 ## 1.43.0
+
+Not published: its release validation failed before publication (a gallery test timed out, fixed in #211). These changes first ship in 1.44.0.
 
 ### Minor Changes
 

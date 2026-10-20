@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: accepted 2026-10-20 (Teisoro F-014-S07 "Scalewing fidelity", task 2630; the gap Teisoro F-014-S05 task 2620 found on the training boards TrainingAdd and TrainingWrite; plan approval under the owner's F-014 delegation of 2026-10-19).
+Status: released in `@scalewing/react` 1.44.0 (PR #216; accepted 2026-10-20; Teisoro F-014-S07 "Scalewing fidelity", task 2630; the gap Teisoro F-014-S05 task 2620 found on the training boards TrainingAdd and TrainingWrite; plan approval under the owner's F-014 delegation of 2026-10-19).
 Renderer: react
 Missing surface: a centred column narrower than the page's container, for a form.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: the add and write forms are one column, centred at 800 px with 32 px of padding (736 px of content, which is `--sw-reading-max`, 46rem), while the page around them is the 1120 px container. Teisoro centres its pages with the public `sw-container` class (72rem); it has no narrower measure, and Teisoro owns no CSS to cap a width.

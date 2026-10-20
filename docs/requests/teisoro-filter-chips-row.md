@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: merged, shipping in `@scalewing/react` 1.43.1 (tagged as 1.43.0, which was never published; PR #209; accepted 2026-10-20; Teisoro F-014-S07 "Scalewing fidelity", task 2630; the gap Teisoro F-014-S04 task 2615 found on the training boards Main, TrainingSection, PhoneTraining and PhoneSection; plan approval under the owner's F-014 delegation of 2026-10-19).
+Status: released in `@scalewing/react` 1.44.0 (tagged as 1.43.0 first, which was never published; PR #209; accepted 2026-10-20; Teisoro F-014-S07 "Scalewing fidelity", task 2630; the gap Teisoro F-014-S04 task 2615 found on the training boards Main, TrainingSection, PhoneTraining and PhoneSection; plan approval under the owner's F-014 delegation of 2026-10-19).
 Renderer: react
 Missing surface: two web `FilterChips` groups that wrap or scroll sideways together on one row, one set apart at the row's end.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: the Library's chips are the kinds (one choice) and, for managers, "Missing a translation" at the row's end, a toggle of another kind (a checkbox that narrows any kind). On a phone the boards scroll them sideways as one strip. In Teisoro they are two groups in an `Inline`: the kinds scroll in their own box and Missing a translation drops to its own line, at the next line's start rather than its end. `Inline` cannot scroll, and a scrolling `FilterChips` scrolls only its own chips.

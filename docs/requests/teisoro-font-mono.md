@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: accepted 2026-10-20 (Teisoro F-014-S07 "Scalewing fidelity", task 2630; the gap Teisoro F-014-S05 task 2620 found on the training board TrainingWrite; plan approval under the owner's F-014 delegation of 2026-10-19).
+Status: released in `@scalewing/react` 1.44.0 (PR #213; accepted 2026-10-20; Teisoro F-014-S07 "Scalewing fidelity", task 2630; the gap Teisoro F-014-S05 task 2620 found on the training board TrainingWrite; plan approval under the owner's F-014 delegation of 2026-10-19).
 Renderer: react
 Missing surface: a text control in a monospace face.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: the page editor's text box on TrainingWrite holds a Markdown source (`# Title`, `**bold**`, lists), drawn in a monospace face so its marks line up and read as marks. Every Scalewing text control takes the page's sans face from the canvas, and Teisoro owns no CSS to change it.

@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: merged, shipping in `@scalewing/react` 1.43.1 (tagged as 1.43.0, which was never published; PR #206; accepted 2026-10-19; Teisoro F-014-S07 "Scalewing fidelity", task 2630; the gap Teisoro F-014-S04 task 2615 found on the training boards Main, TrainingCashierEs, PhoneTraining and PhoneSection; plan approval under the owner's F-014 delegation of 2026-10-19).
+Status: released in `@scalewing/react` 1.44.0 (tagged as 1.43.0 first, which was never published; PR #206; accepted 2026-10-19; Teisoro F-014-S07 "Scalewing fidelity", task 2630; the gap Teisoro F-014-S04 task 2615 found on the training boards Main, TrainingCashierEs, PhoneTraining and PhoneSection; plan approval under the owner's F-014 delegation of 2026-10-19).
 Renderer: react
 Missing surface: a web `ListRow` whose title and detail stay on one line each, cut with "…".
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: the training boards' document rows end a long title and a long grey line in "…" on one line, so a section card of four rows stays four lines tall and the New dot stays beside the title. `ListRow` wraps both (`overflow-wrap: anywhere`), so a long Spanish title takes two or three lines on a phone. Teisoro owns no CSS, so it cannot cut the words itself, and composing the row by hand would copy ListRow's layout, naming and hover rules.
