@@ -16,36 +16,55 @@ test('DescriptionList pairs terms in one column, divides rows and stacks on a ph
   await expect(terms).toHaveText(['Wetland', 'Old-growth forest', 'Dunes']);
   await expect(details).toHaveCount(3);
 
-  const termBoxes = await Promise.all(
-    [0, 1, 2].map(async (index) => (await terms.nth(index).boundingBox())!),
-  );
-  const detailBoxes = await Promise.all(
-    [0, 1, 2].map(async (index) => (await details.nth(index).boundingBox())!),
-  );
-  // Every term starts one column and every detail the next.
-  for (const box of termBoxes) expect(box.x).toBe(termBoxes[0].x);
-  for (const box of detailBoxes) expect(box.x).toBe(detailBoxes[0].x);
-  const items = list.locator('.sw-description-item');
-  if (testInfo.project.name === 'mobile-es') {
-    // Below md each term sits over its detail.
-    for (const [index, term] of termBoxes.entries()) {
-      expect(detailBoxes[index].x).toBe(term.x);
-      expect(detailBoxes[index].y).toBeGreaterThanOrEqual(term.y + term.height);
+  // Every box is read in one synchronous evaluate: sections higher on the
+  // page (images, a PDF) load and move the list while separate reads run.
+  const rows = await list.evaluate((node) => {
+    // A cell, or its first line, that draws no box reads as null and fails.
+    const shown = (element: Element | null) =>
+      element && element.getClientRects().length > 0
+        ? element.getBoundingClientRect()
+        : null;
+    const cell = (element: Element | null) => {
+      const box = shown(element);
+      if (!box || box.width === 0 || box.height === 0) return null;
+      return {
+        x: box.x,
+        y: box.y,
+        width: box.width,
+        height: box.height,
+        firstLineY: shown(element?.firstElementChild ?? null)?.y ?? null,
+      };
+    };
+    return Array.from(
+      node.querySelectorAll('.sw-description-item'),
+      (item) => ({
+        term: cell(item.querySelector('dt')),
+        detail: cell(item.querySelector('dd')),
+      }),
+    );
+  });
+  expect(rows).toHaveLength(3);
+  const [first] = rows;
+  for (const { term, detail } of rows) {
+    if (!term || !detail || !first?.term || !first.detail)
+      throw new Error('Every term and detail draws a box.');
+    // Every term starts one column and every detail the next.
+    expect(term.x).toBe(first.term.x);
+    expect(detail.x).toBe(first.detail.x);
+    if (testInfo.project.name === 'mobile-es') {
+      // Below md each term sits over its detail.
+      expect(detail.x).toBe(term.x);
+      expect(detail.y).toBeGreaterThanOrEqual(term.y + term.height);
+    } else {
+      // Side by side, each row aligned to its top.
+      expect(detail.x).toBeGreaterThan(term.x + term.width);
+      expect(detail.y).toBe(term.y);
+      // The term's first line is level with its detail's first line.
+      expect(term.firstLineY).not.toBeNull();
+      expect(term.firstLineY).toBe(detail.firstLineY);
     }
-  } else {
-    // Side by side, each row aligned to its top.
-    for (const [index, term] of termBoxes.entries()) {
-      expect(detailBoxes[index].x).toBeGreaterThan(term.x + term.width);
-      expect(detailBoxes[index].y).toBe(term.y);
-    }
-    // The term's first line is level with its detail's first line.
-    const firstLine = async (cell: typeof terms) =>
-      (await cell.locator(':scope > *').first().boundingBox())!.y;
-    for (const index of [0, 1, 2])
-      expect(await firstLine(terms.nth(index))).toBe(
-        await firstLine(details.nth(index)),
-      );
   }
+  const items = list.locator('.sw-description-item');
   // A hairline between rows, none above the first.
   await expect(items.nth(0)).toHaveCSS('border-top-width', '0px');
   await expect(items.nth(1)).toHaveCSS('border-top-width', '1px');
