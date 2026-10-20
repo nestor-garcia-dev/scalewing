@@ -2,6 +2,7 @@ import {
   Card,
   DescriptionItem,
   DescriptionList,
+  Grid,
   Inline,
   Stack,
   Text,
@@ -21,48 +22,87 @@ const habitats = [
   { term: 'Dunes', finding: 'No survey', note: null, lines: [] },
 ] as const;
 
+/** A field station's facts, each detail at its row's end. */
+const station = [
+  { term: 'Habitat', detail: 'Wetland' },
+  { term: 'Reserve', detail: 'North marsh' },
+  { term: 'Species', detail: 'Herons and egrets' },
+  { term: 'Field guides', detail: 'English and Spanish' },
+  {
+    term: 'Who can visit',
+    detail: 'Every ranger, and the volunteer counters on weekends',
+  },
+] as const;
+
 export function DescriptionListSection() {
   return (
     <Section
       id="description-list"
-      purpose="DescriptionList pairs terms with what each says, one per row: the term in a start column as wide as the widest term (up to 40%), the detail beside it, a hairline between rows, and every row aligned to its top. Below md a term sits over its detail. The terms and details are your own Text, so the list sets only the layout; each child of a term or a detail is its own line, so a detail may hold several."
+      purpose="DescriptionList pairs terms with what each says, one per row: the term in a start column as wide as the widest term (up to 40%), the detail beside it, a hairline between rows, and every row aligned to its top. Below md a term sits over its detail. layout spread instead sets each detail at its row's end, beside its term at every width, for a short box of facts. The terms and details are your own Text, so the list sets only the layout; each child of a term or a detail is its own line, so a detail may hold several."
       title="DescriptionList"
       usage={`<DescriptionList>
   <DescriptionItem term={<Text variant="caption" color="muted">Wetland</Text>}>
     <Text variant="caption">12 herons</Text>
   </DescriptionItem>
+</DescriptionList>
+
+<DescriptionList layout="spread">
+  <DescriptionItem term={<Text color="muted">Habitat</Text>}>
+    <Text>Wetland</Text>
+  </DescriptionItem>
 </DescriptionList>`}
     >
-      <Card padding={4}>
-        <DescriptionList>
-          {habitats.map((habitat) => (
-            <DescriptionItem
-              key={habitat.term}
-              term={
-                <Text variant="caption" color="muted">
-                  {habitat.term}
-                </Text>
-              }
-            >
-              <Stack gap={1}>
-                <Inline align="start" gap={2} wrap>
-                  <Text variant="data">{habitat.finding}</Text>
-                  {habitat.note ? (
-                    <Text variant="caption" color="muted">
-                      {habitat.note}
-                    </Text>
-                  ) : null}
-                </Inline>
-                {habitat.lines.map((line) => (
-                  <Text key={line} variant="caption" color="muted">
-                    {line}
+      <Stack gap={4}>
+        <Card padding={4}>
+          <DescriptionList>
+            {habitats.map((habitat) => (
+              <DescriptionItem
+                key={habitat.term}
+                term={
+                  <Text variant="caption" color="muted">
+                    {habitat.term}
                   </Text>
+                }
+              >
+                <Stack gap={1}>
+                  <Inline align="start" gap={2} wrap>
+                    <Text variant="data">{habitat.finding}</Text>
+                    {habitat.note ? (
+                      <Text variant="caption" color="muted">
+                        {habitat.note}
+                      </Text>
+                    ) : null}
+                  </Inline>
+                  {habitat.lines.map((line) => (
+                    <Text key={line} variant="caption" color="muted">
+                      {line}
+                    </Text>
+                  ))}
+                </Stack>
+              </DescriptionItem>
+            ))}
+          </DescriptionList>
+        </Card>
+        <Grid columns={3} columnsBelow={{ md: 1 }} gap={4}>
+          <Card aria-labelledby="description-list-station" padding={4}>
+            <Stack gap={2}>
+              <Text as="h3" id="description-list-station" variant="label">
+                Field station
+              </Text>
+              <DescriptionList layout="spread">
+                {station.map((fact) => (
+                  <DescriptionItem
+                    key={fact.term}
+                    term={<Text color="muted">{fact.term}</Text>}
+                  >
+                    <Text>{fact.detail}</Text>
+                  </DescriptionItem>
                 ))}
-              </Stack>
-            </DescriptionItem>
-          ))}
-        </DescriptionList>
-      </Card>
+              </DescriptionList>
+            </Stack>
+          </Card>
+        </Grid>
+      </Stack>
     </Section>
   );
 }

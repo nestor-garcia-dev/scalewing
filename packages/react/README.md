@@ -790,6 +790,8 @@ const { headings, omissions } = inspectMarkdown(page.body, {
 
 `DescriptionList` pairs terms with what each says, one `DescriptionItem` per row: a `dl` whose items each group a `dt` (`term`) with its `dd` (`children`). From `md` up the term sits in a start column as wide as the widest term, up to 40% of the list, and the detail beside it; every row aligns to its top, so a term and its detail's first line start level, and a hairline divides the rows, with no space above the first row or below the last. Below `md` each term sits over its detail. The list sets only the layout: pass your own `Text` for the term and the detail. Each child of a term or a detail is its own line with its own line height (a column), as wide as its content unless it sets its own width (a `Progress` fills the detail; a `Field` keeps its input's width): wrap inline content, such as words and a link on one line, in one element such as an `Inline`. Long unbreakable words wrap inside their column. A `dl` has no ARIA role, so name a list with a visible heading, and `aria-labelledby` on the `section` around it, rather than an `aria-label` on the list.
 
+`layout="spread"` (opt-in; the default is `columns`) sets each row on its own two columns at every width, for a short box of facts such as a side panel's details: the term at the row's start, as wide as its words up to half the row, and the detail at the row's end, its lines end-aligned. The hairlines, padding and top alignment are the same, and a phone keeps each term beside its detail. An unknown `layout` throws a `RangeError`; `descriptionListLayouts` lists the layouts.
+
 ```tsx
 <DescriptionList>
   <DescriptionItem

@@ -394,9 +394,11 @@ export type {
 export {
   DescriptionItem,
   DescriptionList,
+  descriptionListLayouts,
 } from './components/DescriptionList.js';
 export type {
   DescriptionItemProps,
+  DescriptionListLayout,
   DescriptionListProps,
 } from './components/DescriptionList.js';
 
