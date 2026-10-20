@@ -5,6 +5,10 @@ import {
   cssListRowTrailingClasses,
   listRowTrailingClassCatalog,
 } from './css-list-row-trailing.js';
+import {
+  cssListRowTruncateClasses,
+  listRowTruncateClassCatalog,
+} from './css-list-row-truncate.js';
 import { blockEdgeShadeRules, scrollRegionRules } from './css-scroll-region.js';
 
 const label = typographyVariants.label;
@@ -82,7 +86,9 @@ ${boundedRules()}
 
 ${cssListRowClasses()}
 
-${cssListRowTrailingClasses()}`;
+${cssListRowTrailingClasses()}
+
+${cssListRowTruncateClasses()}`;
 }
 
 export function listClassCatalog(): string[] {
@@ -96,5 +102,6 @@ export function listClassCatalog(): string[] {
     'sw-list-group-footer',
     ...listRowClassCatalog(),
     ...listRowTrailingClassCatalog(),
+    ...listRowTruncateClassCatalog(),
   ];
 }
