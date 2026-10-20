@@ -98,6 +98,11 @@ F-014-S05's fidelity check then asked for four more, one PR each:
 `@scalewing/react` 1.44.0. Next: Teisoro pins 1.44.0 in its task 2630
 (F-014-S07) and applies the new options in Training.
 
+Teisoro F-014-S06, release T3 "training acceptance" (task 2628), one PR
+each: `ListRow` `titleLang`, a title in another language than the page's
+(`teisoro-list-row-title-lang.md`). Next: `Step` status words read without
+a stray space, then `Step` `titleDetail`, then the release.
+
 Teisoro F-011-S02, release R1 "guided-form core": web `Stepper`
 (#113), `DenominationGrid` entry rows (#114), `Steps` / `Step` (#115)
 and `ActionBar` `summary` (#116), released in `@scalewing/react` 1.27.0.

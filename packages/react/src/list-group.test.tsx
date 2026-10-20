@@ -14,6 +14,7 @@ import { generateStylesheet, utilityClassCatalog } from './css/stylesheet.js';
 import {
   assertListGroup,
   assertListRow,
+  type ListRowInput,
   listRowAccessory,
 } from './list-options.js';
 
@@ -271,6 +272,7 @@ describe('ListRow', () => {
     vi.spyOn(console, 'error').mockImplementation(() => undefined);
     const base = {
       title: 'Row',
+      titleLang: undefined,
       tone: 'default',
       titleAppearance: 'strong',
       valueTone: undefined,
@@ -280,7 +282,9 @@ describe('ListRow', () => {
       valueBadge: undefined,
       selected: undefined,
       pressable: false,
-    } as const;
+      unread: false,
+      unreadLabel: undefined,
+    } as const satisfies ListRowInput;
     expect(() => assertListRow({ ...base, title: ' ' })).toThrow(
       'ListRow title must be non-empty text',
     );

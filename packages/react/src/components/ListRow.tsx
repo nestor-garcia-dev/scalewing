@@ -19,6 +19,13 @@ import { rowNaming } from './list/row-naming.js';
 
 export type ListRowProps = {
   title: string;
+  /**
+   * The title's language (a BCP 47 tag such as `es`) when it is not the
+   * page's, such as a document's Spanish title on an English screen (WCAG
+   * 3.1.2): `lang` on the title's box only (its words and the wordless
+   * unread dot), never the detail, value, tag or unread words.
+   */
+  titleLang?: string;
   /** A muted line under the title. */
   detail?: string;
   /** A figure or word at the row's end, such as "+$1.48". */
@@ -100,11 +107,13 @@ export type ListRowProps = {
  * One row of a `ListGroup`: it opens something (`onPress` or `href`, with
  * a chevron, the whole row pressing), picks one option in place
  * (`selected`), or only states something (neither). `unread` marks it new,
- * `tag` adds a status before its end, `action` a control beside it, and
- * `truncate` keeps its title and detail to one line each.
+ * `tag` adds a status before its end, `action` a control beside it,
+ * `truncate` keeps its title and detail to one line each, and `titleLang`
+ * marks a title in another language than the page's.
  */
 export function ListRow({
   title,
+  titleLang,
   detail,
   value,
   valueDetail,
@@ -128,6 +137,7 @@ export function ListRow({
   const pressable = onPress !== undefined || href !== undefined;
   assertListRow({
     title,
+    titleLang,
     tone,
     titleAppearance,
     valueTone,
@@ -151,6 +161,7 @@ export function ListRow({
       tag={tag}
       title={title}
       titleAppearance={titleAppearance}
+      titleLang={titleLang}
       tone={tone}
       truncate={truncate}
       unreadLabel={unread ? unreadLabel : undefined}

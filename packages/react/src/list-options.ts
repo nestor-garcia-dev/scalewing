@@ -83,6 +83,7 @@ export function listMaxHeightStyle(
 
 export type ListRowInput = {
   title: string;
+  titleLang: string | undefined;
   tone: unknown;
   titleAppearance: unknown;
   valueTone: unknown;
@@ -97,16 +98,18 @@ export type ListRowInput = {
 };
 
 /**
- * Fails closed on a ListRow it cannot draw: an empty title or value, an
- * unknown tone, title appearance, value tone, badge tone or accessory, a
- * `valueDetail`, `valueTone` or `valueBadge` with no value, a value both
- * toned and a badge, `selected` on a row that is not a button or link
- * (its check would be a state nothing can read), or an unread row with no
- * words for its dot (a colour alone says nothing).
+ * Fails closed on a ListRow it cannot draw: an empty title, titleLang or
+ * value, an unknown tone, title appearance, value tone, badge tone or
+ * accessory, a `valueDetail`, `valueTone` or `valueBadge` with no value, a
+ * value both toned and a badge, `selected` on a row that is not a button or
+ * link (its check would be a state nothing can read), or an unread row with
+ * no words for its dot (a colour alone says nothing).
  */
 export function assertListRow(input: ListRowInput): void {
   if (isBlank(input.title))
     throw new RangeError('ListRow title must be non-empty text');
+  if (input.titleLang !== undefined && isBlank(input.titleLang))
+    throw new RangeError('ListRow titleLang must be a non-empty language tag');
   if (!isOneOf(listRowTones, input.tone))
     throw new RangeError(`Unknown ListRow tone: ${String(input.tone)}`);
   if (!isOneOf(listRowTitleAppearances, input.titleAppearance))
