@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: accepted 2026-10-20 (Teisoro F-014-S07 "Scalewing fidelity", task 2630; the gap Teisoro F-014-S04 task 2615 found on the training boards Main, TrainingSection, PhoneTraining and PhoneSection; plan approval under the owner's F-014 delegation of 2026-10-19).
+Status: released in `@scalewing/react` 1.43.0 (PR #208; accepted 2026-10-20; Teisoro F-014-S07 "Scalewing fidelity", task 2630; the gap Teisoro F-014-S04 task 2615 found on the training boards Main, TrainingSection, PhoneTraining and PhoneSection; plan approval under the owner's F-014 delegation of 2026-10-19).
 Renderer: react
 Missing surface: a web `FilterChips` chip in a warning tone.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: the Library's and a section's chips end, for managers, in "Missing a translation · 2", drawn on an amber tint with amber words, so a manager sees at a glance that documents need a translation. Every `FilterChips` chip is the same glass chip, and Teisoro owns no CSS to tint one.

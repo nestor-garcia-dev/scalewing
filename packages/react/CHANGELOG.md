@@ -1,5 +1,14 @@
 # @scalewing/react
 
+## 1.43.0
+
+### Minor Changes
+
+- 38a1715: `DescriptionList` `layout`: `columns` (the default, unchanged) or `spread`, each row's term at its start and its detail at its end, end-aligned, side by side at every width, for a short box of facts. New class `sw-description-list-spread`, new exports `descriptionListLayouts` and `DescriptionListLayout`; an unknown layout throws a `RangeError`. No new tokens, no new dependency. Request: `docs/requests/teisoro-description-list-spread.md`.
+- 76ae2b4: `FilterChips` option `tone`: `neutral` (the default, unchanged) or `warning`, which draws that chip, while it is not chosen, in the warning tint with its words and count in the warning ink (a warning `Notice`'s, 4.5:1 in every palette and scheme); chosen it is the accent and at a zero count quiet, like every chip. New class `sw-filter-chip-warning`, new exports `filterChipTones` and `FilterChipTone`; an unknown tone throws a `RangeError`. No new tokens, no new dependency. Request: `docs/requests/teisoro-filter-chip-tone.md`.
+- 49f90af: `FilterChipsRow`: several `FilterChips` groups on one row, each keeping its own name, choices and Tab stops, an optional `end` group at the row's end (at its own line's end when the row wraps), and `overflow` `wrap` (the default) or `scroll`, where every group's chips stay on one row that scrolls sideways together inside the row's own box, never the page, a group's own scroll giving way. New classes `sw-filter-chips-row`, `sw-filter-chips-row-end`, `sw-filter-chips-row-scroll`; new exports `FilterChipsRow` and `FilterChipsRowProps`; an unknown overflow throws a `RangeError`. The private slot check `hasSlot` moved from the list rows to `components/slot.ts`, shared by both. No new tokens, no new dependency. Request: `docs/requests/teisoro-filter-chips-row.md`.
+- a6c790c: `ListRow` `truncate`: opt-in, keeps the title and the detail line to one line each, cut with "…" where they do not fit; the unread dot follows the cut words, the whole words stay in the row's name, description and a `title` tooltip, and the value, tag and action keep their words whole. New classes `sw-list-row-truncate` and `sw-list-row-title-text`. Rows without it are unchanged. No new tokens, no new dependency. Request: `docs/requests/teisoro-list-row-truncate.md`.
+
 ## 1.42.0
 
 ### Minor Changes
