@@ -33,6 +33,7 @@ import { descriptionListClassCatalog } from './css-description-list.js';
 import { tabsClassCatalog } from './css-tabs.js';
 import { responsiveClassCatalog } from './css-responsive.js';
 import { filterChipsClassCatalog } from './css-filter-chips.js';
+import { fontMonoClassCatalog } from './css-font-mono.js';
 import { gridClassCatalog } from './css-grid.js';
 import { gridSpanClassCatalog } from './css-grid-span.js';
 import { denominationGridClassCatalog } from './css-denomination-grid.js';
@@ -137,6 +138,7 @@ export function utilityClassCatalog(): string[] {
     ...descriptionListClassCatalog(),
     ...tabsClassCatalog(),
     ...filterChipsClassCatalog(),
+    ...fontMonoClassCatalog(),
     ...gridClassCatalog(),
     ...gridSpanClassCatalog(),
     ...denominationGridClassCatalog(),

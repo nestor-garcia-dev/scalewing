@@ -87,9 +87,14 @@ Teisoro F-014-S07, release T2 "training fidelity", one PR each:
 `FilterChipsRow`, chip groups that wrap or scroll sideways together
 (`teisoro-filter-chips-row.md`, #209). Tagged as 1.43.0, which was never published
 (its release validation's gallery test timed out, fixed in #211);
-shipping in `@scalewing/react` 1.43.1 with the words box's rule scoped
-to truncated rows (the release PR follows). Next: Teisoro pins 1.43.1 in F-014-S07 (task 2630)
-and applies the new options in Training.
+shipping with the words box's rule scoped to truncated rows (#212).
+Teisoro F-014-S05's fidelity check then asked for four more, one PR
+each in the same release: `sw-font-mono`, the monospace face for a
+Markdown source (`teisoro-font-mono.md`); `ActionMenu`
+`triggerAppearance="icon"`, `FileField` image previews and a reading-width
+column, each in this release. Next: the release, then
+Teisoro pins it in F-014-S07 (task 2630) and applies the new options in
+Training.
 
 Teisoro F-011-S02, release R1 "guided-form core": web `Stepper`
 (#113), `DenominationGrid` entry rows (#114), `Steps` / `Step` (#115)
