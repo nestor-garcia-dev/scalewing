@@ -16,6 +16,8 @@ export type ListRowContentProps = {
   /** Prefixes the ids that name and describe a pressable row. */
   id: string;
   title: string;
+  /** The title's language when it is not the page's; on its words only. */
+  titleLang?: string;
   detail?: string;
   value?: string;
   valueDetail?: string;
@@ -37,10 +39,13 @@ export type ListRowContentProps = {
  * (with the unread dot and its hidden words) over its detail, the value
  * over its detail, the tag, then the chevron or check. A truncated row
  * sets its title's words in their own box, so the "…" never hides the dot.
+ * `titleLang` goes on the title's box, which holds its words and the
+ * wordless dot only; the unread words after it stay in the page's language.
  */
 export function ListRowContent({
   id,
   title,
+  titleLang,
   detail,
   value,
   valueDetail,
@@ -69,6 +74,7 @@ export function ListRowContent({
             tone === 'danger' && 'sw-list-row-title-danger',
           )}
           id={`${id}-title`}
+          lang={titleLang}
         >
           {truncate ? (
             <span className="sw-list-row-title-text" title={title}>

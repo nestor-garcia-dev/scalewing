@@ -844,6 +844,8 @@ A row can also carry three trailing parts. `unread` marks it new for the person,
 
 `truncate` (opt-in) keeps a row's title and its detail line to one line each, cut with "…" where they do not fit, for a long list read at a glance such as a shelf of documents. The title's words sit in their own box, so the unread dot follows the cut words and is never hidden; the whole words stay in the row's name and description and in a `title` tooltip on the words and the detail. The value, its detail, the tag and the action keep their words whole. A tooltip needs a pointer, so on a touch screen or from the keyboard the cut words are whole only in what the row opens and in what assistive technology reads; keep `truncate` for rows that open their whole content, or whose words a person does not need in full to choose.
 
+`titleLang` (opt-in) is the title's language, a BCP 47 tag such as `es`, when it is not the page's, such as a document's Spanish title in a list on an English page (WCAG 3.1.2, Language of Parts). It sets `lang` on the title's box, which holds the title's words and the wordless unread dot, so a screen reader speaks the title in that language and the browser hyphenates and shapes it as such; the detail, the value and its detail, the tag, the unread words and the action stay in the page's language (give a tag its own `lang` inside it if it needs one). A pressable row's name and description are unchanged: the title is still read first. It works with `truncate` (the words box sits inside the marked title) and on every kind of row. A blank `titleLang` throws a `RangeError`.
+
 ```tsx
 <ListRow
   leading={

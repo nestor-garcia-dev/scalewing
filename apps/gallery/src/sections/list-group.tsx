@@ -34,7 +34,7 @@ export function ListGroupSection() {
   return (
     <Section
       id="list-group"
-      purpose="ListGroup is rows in one list with hairlines between them: a bordered panel of its own, or plain rows inside a Card (variant plain, with a hairline above the first row too). A ListRow has a title, an optional muted detail line, an optional value at its end (valueTone colours it, warning included for a figure that needs a look, valueBadge draws it as a Badge such as a status, valueDetail adds a muted line under it) and an optional leading mark, hidden from assistive technology. With onPress or href the whole row is the button or link, named by its title and value and described by its detail lines, with a chevron; selected makes it a choice with a check; without either it only states something. titleAppearance plain sets the title at the body weight. maxHeight bounds the list to a count of rows that scroll inside its own named region, shading an edge with more past it, and footer stays pinned under them, such as a total. unread marks a row new with an accent dot after its title, read as unreadLabel; tag puts a short status such as a Badge before the row's end, describing it; action holds a control such as an ActionMenu after the row, outside its press area. truncate keeps the title and the detail to one line each, ending in an ellipsis, the whole words still in the row's name, description and tooltip."
+      purpose="ListGroup is rows in one list with hairlines between them: a bordered panel of its own, or plain rows inside a Card (variant plain, with a hairline above the first row too). A ListRow has a title, an optional muted detail line, an optional value at its end (valueTone colours it, warning included for a figure that needs a look, valueBadge draws it as a Badge such as a status, valueDetail adds a muted line under it) and an optional leading mark, hidden from assistive technology. With onPress or href the whole row is the button or link, named by its title and value and described by its detail lines, with a chevron; selected makes it a choice with a check; without either it only states something. titleAppearance plain sets the title at the body weight. maxHeight bounds the list to a count of rows that scroll inside its own named region, shading an edge with more past it, and footer stays pinned under them, such as a total. unread marks a row new with an accent dot after its title, read as unreadLabel; tag puts a short status such as a Badge before the row's end, describing it; action holds a control such as an ActionMenu after the row, outside its press area. truncate keeps the title and the detail to one line each, ending in an ellipsis, the whole words still in the row's name, description and tooltip. titleLang marks a title in another language than the page's, such as a Spanish guide's on an English page, on the title's box (its words and the wordless unread dot), never its detail, tag or unread words."
       title="ListGroup"
       usage={`<Card>
   <Text as="h3" variant="label" id="look">Worth a look</Text>
@@ -58,6 +58,13 @@ export function ListGroupSection() {
       value={night.change} valueTone={night.tone} onPress={() => open(night)} />
   ))}
 </ListGroup>
+
+<ListRow
+  title="Coro de ranas"
+  titleLang="es"
+  tag={<Badge>Only in Spanish</Badge>}
+  href="/guides/frog"
+/>
 
 <ListRow
   title="Owl pellets"

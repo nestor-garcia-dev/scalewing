@@ -22,6 +22,7 @@ const guides = [
     detail: 'Guide · 2 pages · Oct 16',
     unread: true,
     only: undefined,
+    lang: undefined,
     glyph: feather,
   },
   {
@@ -30,6 +31,7 @@ const guides = [
     detail: 'Guide · 1 page · Oct 16',
     unread: true,
     only: 'Only in English',
+    lang: undefined,
     glyph: feather,
   },
   {
@@ -38,13 +40,15 @@ const guides = [
     detail: 'Course · 16 pages · Sep 24',
     unread: false,
     only: 'Only in Spanish',
+    lang: 'es',
     glyph: book,
   },
 ] as const;
 
 /**
  * ListRow's unread dot, tag and action: field guides, the new ones marked,
- * a language tag, and each row's own menu beside it.
+ * a language tag, and each row's own menu beside it. The Spanish guide's
+ * title carries `titleLang`, its words in another language than the page's.
  */
 export function ListRowTrailingExample({
   onOpen,
@@ -92,6 +96,7 @@ export function ListRowTrailingExample({
               onPress={() => onOpen(guide.title)}
               tag={guide.only ? <Badge>{guide.only}</Badge> : undefined}
               title={guide.title}
+              titleLang={guide.lang}
               unread={guide.unread}
               unreadLabel="New"
             />
