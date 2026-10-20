@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: accepted 2026-10-19 (Teisoro F-014-S03 "Scalewing: file picker, PDF viewer, Markdown view, blue count", task 2610; the training library inventory's row 12 and §2; plan approval under the owner's F-014 delegation of 2026-10-19).
+Status: released in `@scalewing/react` 1.42.0 (PR #201; accepted 2026-10-19; Teisoro F-014-S03 "Scalewing: file picker, PDF viewer, Markdown view, blue count", task 2610; the training library inventory's row 12 and §2; plan approval under the owner's F-014 delegation of 2026-10-19).
 Renderer: react
 Missing surface: `DocumentViewer`, a PDF drawn one page at a time from its bytes.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: the training readers show the provider's compliance PDFs inside Teisoro, on a counter computer, a tablet and a phone: one page at a time with 48-point page arrows, "Page 1 of 2", fit width, pinch to zoom, pages drawn as they arrive, and "This PDF couldn't be shown" with Try again and Download PDF. A browser's own PDF viewer (an `iframe` or `object`) needs a URL, draws its own toolbar with download and print, behaves differently on every phone (iOS shows the first page only, many Android browsers download instead), and cannot be styled. Drawing pages needs a PDF renderer.

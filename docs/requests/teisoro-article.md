@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: accepted 2026-10-19 (Teisoro F-014-S03 "Scalewing: file picker, PDF viewer, Markdown view, blue count", task 2610; the training library inventory's row 15 and §2; plan approval under the owner's F-014 delegation of 2026-10-19).
+Status: released in `@scalewing/react` 1.42.0 (PR #202; accepted 2026-10-19; Teisoro F-014-S03 "Scalewing: file picker, PDF viewer, Markdown view, blue count", task 2610; the training library inventory's row 15 and §2; plan approval under the owner's F-014 delegation of 2026-10-19).
 Renderer: react
 Missing surface: `Article`, a page that reads like a post.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: the Procedure board and the phone reader draw a training page as a post: a cover photo edge to edge across the top of the card, then, inset, the eyebrow ("Store procedure · Services › Check cashing") with the English · Español switch at its row's end, the title at the app's heading size, the byline ("Manager 1 · Oct 16 · 4 min read"), a hairline and the body, at a reading width. `Card` pads everything, so the photo cannot reach its edges, and Teisoro writes no CSS to round the photo's corners, fix its ratio or cap the reading width.

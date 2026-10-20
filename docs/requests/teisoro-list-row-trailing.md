@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: accepted 2026-10-19 (Teisoro F-014-S03 "Scalewing: file picker, PDF viewer, Markdown view, blue count", task 2610; the training library inventory's row 7 and §2; plan approval under the owner's F-014 delegation of 2026-10-19).
+Status: released in `@scalewing/react` 1.42.0 (PR #199; accepted 2026-10-19; Teisoro F-014-S03 "Scalewing: file picker, PDF viewer, Markdown view, blue count", task 2610; the training library inventory's row 7 and §2; plan approval under the owner's F-014 delegation of 2026-10-19).
 Renderer: react
 Missing surface: three trailing parts of a web `ListRow`: an unread dot after its title, a tag before its end, and an action outside its press area.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: every list on the training boards is a document row: its kind's mark, its title with a blue dot while the person has not opened it, a grey line, an "Only in English" tag when one language exists, and a ••• menu of the document's own commands. The row opens the document, so it is a `ListRow` link; the menu is a button, which cannot sit inside the link, and `ListRow` has no place for a second control, a dot or a tag. Composing the row by hand in Teisoro would copy ListRow's layout, naming and hover CSS.
