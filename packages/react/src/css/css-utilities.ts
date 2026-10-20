@@ -58,6 +58,10 @@ const layoutRules: Record<(typeof layoutClassNames)[number], string> = {
   'sw-full-width': '.sw-full-width { width: 100%; }',
   'sw-container':
     '.sw-container { width: 100%; max-width: var(--sw-container-max); margin-inline: auto; }',
+  // A narrower centred column at the reading width (Article's), for a
+  // form or text that reads better than it would across the container.
+  'sw-container-reading':
+    '.sw-container-reading { width: 100%; max-width: var(--sw-reading-max); margin-inline: auto; }',
   'sw-sr-only': `.sw-sr-only { ${visuallyHiddenDeclarations} }`,
   'sw-align-start': '.sw-align-start { align-items: flex-start; }',
   'sw-align-center': '.sw-align-center { align-items: center; }',
