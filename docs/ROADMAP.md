@@ -100,8 +100,9 @@ F-014-S05's fidelity check then asked for four more, one PR each:
 
 Teisoro F-014-S06, release T3 "training acceptance" (task 2628), one PR
 each: `ListRow` `titleLang`, a title in another language than the page's
-(`teisoro-list-row-title-lang.md`). Next: `Step` status words read without
-a stray space, then `Step` `titleDetail`, then the release.
+(`teisoro-list-row-title-lang.md`, #218); a folded `Step`'s status word
+read without a stray space (`teisoro-steps-status-words.md`). Next: `Step`
+`titleDetail`, `Article` `contentLang`, then the release.
 
 Teisoro F-011-S02, release R1 "guided-form core": web `Stepper`
 (#113), `DenominationGrid` entry rows (#114), `Steps` / `Step` (#115)

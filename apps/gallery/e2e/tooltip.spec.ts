@@ -1,4 +1,6 @@
-import { expect, test, type Page } from '@playwright/test';
+import { expect, test } from '@playwright/test';
+
+import { chromiumNaming } from './chromium-naming.js';
 
 test('Tooltip supports hover, focus, Escape, blur, and touch without replacing the trigger name', async ({
   page,
@@ -93,25 +95,6 @@ test('Tooltip disabled keeps the trigger mounted without a tooltip or descriptio
   // The same button, not a new one, so a focused trigger would keep its focus.
   expect(await before.evaluate((element) => element.isConnected)).toBe(true);
 });
-
-/**
- * Chromium's own accessible name and description of the button `find`
- * returns in the page, not Playwright's computation.
- */
-async function chromiumNaming(page: Page, find: string) {
-  const cdp = await page.context().newCDPSession(page);
-  const { result } = await cdp.send('Runtime.evaluate', { expression: find });
-  if (!result.objectId) throw new Error(`${find} found nothing`);
-  const { nodes } = await cdp.send('Accessibility.getPartialAXTree', {
-    fetchRelatives: false,
-    objectId: result.objectId,
-  });
-  await cdp.detach();
-  return {
-    description: nodes[0]?.description?.value ?? '',
-    name: nodes[0]?.name?.value ?? '',
-  };
-}
 
 // The range map's anchor reads "Range map" whether the words are its
 // tooltip's or the button's own.

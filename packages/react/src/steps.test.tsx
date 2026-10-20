@@ -17,6 +17,7 @@ import {
 } from './components/steps/step-status.js';
 import { cssStepsClasses } from './css/css-steps.js';
 import { generateStylesheet, utilityClassCatalog } from './css/stylesheet.js';
+import { expectHeadingNames } from './heading-names.test-support.js';
 
 afterEach(() => cleanup());
 
@@ -91,9 +92,11 @@ describe('Steps semantics', () => {
     expect(
       items.map((item) => item.querySelector('.sw-steps-marker')!.textContent),
     ).toEqual(['1', '2', '3']);
-    expect(
-      screen.getAllByRole('heading', { level: 2 }).map((h) => h.textContent),
-    ).toEqual(['The site', 'Nests, Not started', 'Review, Not started']);
+    expectHeadingNames(2, [
+      'The site',
+      'Nests, Not started',
+      'Review, Not started',
+    ]);
     for (const marker of document.querySelectorAll('.sw-steps-marker'))
       expect(marker.getAttribute('aria-hidden')).toBe('true');
   });
@@ -148,12 +151,8 @@ describe('Steps semantics', () => {
         <Step headingLevel={4} status="upcoming" title="Nidos" />
       </Steps>,
     );
-    expect(screen.getByRole('heading', { level: 3 }).textContent).toBe(
-      'El sitio, Hecho',
-    );
-    expect(screen.getByRole('heading', { level: 4 }).textContent).toBe(
-      'Nidos, Pendiente',
-    );
+    expectHeadingNames(3, ['El sitio, Hecho']);
+    expectHeadingNames(4, ['Nidos, Pendiente']);
   });
 });
 
