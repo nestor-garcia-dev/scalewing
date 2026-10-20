@@ -36,6 +36,7 @@ import { cssMultiSelectClasses } from './css-multi-select.js';
 import { cssSplitClasses } from './css-split.js';
 import { cssSwitchClasses } from './css-switch.js';
 import { cssTextClasses } from './css-text.js';
+import { cssFontMonoClasses } from './css-font-mono.js';
 import { cssSpinnerClasses } from './css-spinner.js';
 import { cssProgressClasses } from './css-progress.js';
 import { cssNoticeClasses } from './css-notice.js';
@@ -135,6 +136,8 @@ ${cssPopupHostRules()}
 }
 
 ${cssTextClasses()}
+
+${cssFontMonoClasses()}
 
 ${cssButtonClasses()}
 
