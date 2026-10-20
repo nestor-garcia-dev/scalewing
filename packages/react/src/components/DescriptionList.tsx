@@ -1,6 +1,15 @@
 import { type HTMLAttributes, type ReactNode } from 'react';
 
 import { cx } from '../class-names.js';
+import {
+  assertDescriptionListLayout,
+  type DescriptionListLayout,
+} from './description-list-layout.js';
+
+export {
+  descriptionListLayouts,
+  type DescriptionListLayout,
+} from './description-list-layout.js';
 
 export type DescriptionListProps = Omit<
   HTMLAttributes<HTMLDListElement>,
@@ -8,21 +17,38 @@ export type DescriptionListProps = Omit<
 > & {
   /** The list's `DescriptionItem`s. */
   children: ReactNode;
+  /**
+   * `columns` (the default): the terms in a start column and the details
+   * beside them, each term over its detail below `md`. `spread`: each
+   * row's term at its start and its detail at its end, end-aligned, side
+   * by side at every width, for a short box of facts.
+   */
+  layout?: DescriptionListLayout;
 };
 
 /**
  * Terms and what each one says, one item per row: the term in a start
  * column as wide as the widest term (up to 40% of the list), the detail
  * beside it, a hairline between rows, every row aligned to its top. Below
- * the layout breakpoint (`md`) each term sits over its detail.
+ * the layout breakpoint (`md`) each term sits over its detail. `spread`
+ * sets each detail at its row's end instead, beside its term at every width.
  */
 export function DescriptionList({
   children,
   className,
+  layout = 'columns',
   ...rest
 }: DescriptionListProps) {
+  assertDescriptionListLayout(layout);
   return (
-    <dl className={cx('sw-description-list', className)} {...rest}>
+    <dl
+      className={cx(
+        'sw-description-list',
+        layout === 'spread' && 'sw-description-list-spread',
+        className,
+      )}
+      {...rest}
+    >
       {children}
     </dl>
   );

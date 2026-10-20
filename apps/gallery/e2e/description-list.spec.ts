@@ -10,7 +10,9 @@ test('DescriptionList pairs terms in one column, divides rows and stacks on a ph
       await page.evaluate(() => matchMedia('(forced-colors: active)').matches),
     ).toBe(true);
   }
-  const list = page.locator('#description-list dl');
+  const list = page.locator(
+    '#description-list dl:not(.sw-description-list-spread)',
+  );
   const terms = list.locator('dt');
   const details = list.locator('dd');
   await expect(terms).toHaveText(['Wetland', 'Old-growth forest', 'Dunes']);
@@ -72,4 +74,71 @@ test('DescriptionList pairs terms in one column, divides rows and stacks on a ph
   await page
     .locator('#description-list')
     .screenshot({ path: testInfo.outputPath('description-list.png') });
+});
+
+test('DescriptionList spread sets each detail at its row’s end, beside its term on a phone too', async ({
+  page,
+}, testInfo) => {
+  await page.goto('/#description-list');
+  const station = page.getByRole('region', { name: 'Field station' });
+  const list = station.locator('dl.sw-description-list-spread');
+  await expect(list.locator('dt')).toHaveText([
+    'Habitat',
+    'Reserve',
+    'Species',
+    'Field guides',
+    'Who can visit',
+  ]);
+  // One synchronous read, as above: content higher on the page can move it.
+  const read = await list.evaluate((node) => {
+    const box = (element: Element | null) => {
+      const rect = element?.getBoundingClientRect();
+      return rect ? { x: rect.x, y: rect.y, right: rect.right } : null;
+    };
+    const first = node.querySelector('.sw-description-item');
+    return {
+      right: node.getBoundingClientRect().right,
+      gap: first ? Number.parseFloat(getComputedStyle(first).columnGap) : 0,
+      rows: Array.from(
+        node.querySelectorAll('.sw-description-item'),
+        (item) => ({
+          term: box(item.querySelector('dt')),
+          detail: box(item.querySelector('dd')),
+          words: box(item.querySelector('dd')?.firstElementChild ?? null),
+          wordsLines: (() => {
+            const words = item.querySelector('dd')?.firstElementChild;
+            if (!words) return 0;
+            const line = Number.parseFloat(getComputedStyle(words).lineHeight);
+            return Math.round(words.getBoundingClientRect().height / line);
+          })(),
+          align: getComputedStyle(item.querySelector('dd') ?? item).textAlign,
+        }),
+      ),
+    };
+  });
+  expect(read.rows).toHaveLength(5);
+  // The list's space-4 between a term and its detail.
+  expect(read.gap).toBe(16);
+  for (const { term, detail, words, align } of read.rows) {
+    if (!term || !detail || !words)
+      throw new Error('Every term and detail draws a box.');
+    // Side by side at every width, a space-4 apart, the detail's words
+    // ending at the row's end.
+    expect(detail.x - term.right).toBeGreaterThanOrEqual(read.gap - 0.5);
+    expect(detail.y).toBe(term.y);
+    expect(Math.abs(words.right - read.right)).toBeLessThan(1);
+    expect(align).toBe('end');
+  }
+  if (testInfo.project.name === 'mobile-es') {
+    // A long detail wraps in its own column on a phone, still beside its term.
+    const last = read.rows.at(-1);
+    expect(last?.wordsLines).toBeGreaterThan(1);
+    expect(last?.words?.y).toBe(last?.term?.y);
+  }
+  const items = list.locator('.sw-description-item');
+  await expect(items.nth(0)).toHaveCSS('border-top-width', '0px');
+  await expect(items.nth(1)).toHaveCSS('border-top-width', '1px');
+  await list.screenshot({
+    path: testInfo.outputPath('description-list-spread.png'),
+  });
 });
