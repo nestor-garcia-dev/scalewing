@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: accepted 2026-10-19 (Teisoro F-014-S03 "Scalewing: file picker, PDF viewer, Markdown view, blue count", task 2610; the training library inventory's row 18 and §2; plan approval under the owner's F-014 delegation of 2026-10-19).
+Status: released in `@scalewing/react` 1.42.0 (PR #200; accepted 2026-10-19; Teisoro F-014-S03 "Scalewing: file picker, PDF viewer, Markdown view, blue count", task 2610; the training library inventory's row 18 and §2; plan approval under the owner's F-014 delegation of 2026-10-19).
 Renderer: react
 Missing surface: `FileField`, one file chosen with the system picker or dropped on the field.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: the training boards' Add, the add-a-language sheet and the page editor's cover photo choose a file: an empty field that says "Choose a PDF", the chosen file's name with a line about it ("4 pages · 1.6 MB · opens fine") and "Choose another", and a refused file's error. `Field` wraps a native `<input type="file">`, which draws the browser's own button and "No file chosen" (user-agent chrome the visual language rules out), takes no drop, and cannot show the consumer's line about the file.

@@ -73,7 +73,10 @@ Teisoro F-014-S03, release T1 "training library" (`@scalewing/react`
 `action` (`teisoro-list-row-trailing.md`, #199), `FileField`
 (`teisoro-file-field.md`, #200), `DocumentViewer` (`teisoro-document-viewer.md`, #201),
 `Article` (`teisoro-article.md`, #202) and `MarkdownView`
-(`teisoro-markdown-view.md`). Next: Teisoro pins 1.42.0 in F-014-S04.
+(`teisoro-markdown-view.md`, #203). `Steps open` already draws the success
+line under a done step, so it needed no change. Released in
+`@scalewing/react` 1.42.0. Next: Teisoro pins 1.42.0 in F-014-S04; its pin
+stays at 1.41.0 until then.
 
 Teisoro F-011-S02, release R1 "guided-form core": web `Stepper`
 (#113), `DenominationGrid` entry rows (#114), `Steps` / `Step` (#115)

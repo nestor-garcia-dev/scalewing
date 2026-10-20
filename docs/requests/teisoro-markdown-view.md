@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: accepted 2026-10-19 (Teisoro F-014-S03 "Scalewing: file picker, PDF viewer, Markdown view, blue count", task 2610; the training library inventory's rows 15 and 19 and §2; the training documents contract §7; plan approval under the owner's F-014 delegation of 2026-10-19).
+Status: released in `@scalewing/react` 1.42.0 (PR #203; accepted 2026-10-19; Teisoro F-014-S03 "Scalewing: file picker, PDF viewer, Markdown view, blue count", task 2610; the training library inventory's rows 15 and 19 and §2; the training documents contract §7; plan approval under the owner's F-014 delegation of 2026-10-19).
 Renderer: react
 Missing surface: `MarkdownView`, a safe subset of Markdown drawn in Scalewing's type, and `inspectMarkdown`, what it shows in headings and what it leaves out.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: managers write or paste training pages in Markdown (Teisoro keeps the text as written, up to 50,000 characters a language). The page reader draws paragraphs, headings, lists, bold, italic, links, photos with captions and a highlighted box in the app's type, with "On this page" built from the headings; the editor shows a live preview and lists what will not be shown before saving. Drawing that needs a Markdown parser and a renderer that can never turn the text into HTML, scripts, outside images or `javascript:` links.

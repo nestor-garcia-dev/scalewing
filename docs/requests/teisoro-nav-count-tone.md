@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: accepted 2026-10-19 (Teisoro F-014-S03 "Scalewing: file picker, PDF viewer, Markdown view, blue count", task 2610; the training library inventory's row 1 and §2; plan approval under the owner's F-014 delegation of 2026-10-19).
+Status: released in `@scalewing/react` 1.42.0 (PR #198; accepted 2026-10-19; Teisoro F-014-S03 "Scalewing: file picker, PDF viewer, Markdown view, blue count", task 2610; the training library inventory's row 1 and §2; plan approval under the owner's F-014 delegation of 2026-10-19).
 Renderer: react
 Missing surface: a second colour for `NavCount`, the accent, for a count that is news rather than work.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: the training boards put Training in the top bar with a blue count, what was added since the person last opened it (Teisoro F-014 D-7). `NavCount` is always the danger pill, which says "overdue" next to Tasks; a new document is not overdue. Drawing a blue pill in Teisoro would copy the count pill's CSS.

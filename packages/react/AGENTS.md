@@ -7,7 +7,7 @@ Follow the root `AGENTS.md`. On conflict, the root wins.
 1. This package renders to the DOM. Do not import `react-native`, Expo, or `@scalewing/react-native`.
 2. Components stay thin. Visual values come from `@scalewing/tokens` or generated classes. The generators, class catalog, class-name helpers, and breakpoint token live in `src/css` (ADR 0010).
 3. Consumers must import `@scalewing/react/styles.css` explicitly. Do not inject the stylesheet as a hidden side effect of component imports.
-4. React is a peer dependency.
+4. React is a peer dependency. The runtime dependencies are `@scalewing/tokens`, `pdfjs-dist` (DocumentViewer) and `markdown-it` (MarkdownView), as the root `AGENTS.md` lists them.
 5. Prefer semantic HTML (`section`, `p`, headings, `button`, `a`, `label`) and preserve refs.
 6. Public class names stay in the generated `sw-*` catalog.
 7. Add tests for class mapping, theme switching, and accessibility of composed examples.

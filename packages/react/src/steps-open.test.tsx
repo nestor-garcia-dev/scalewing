@@ -156,4 +156,12 @@ describe('Steps open CSS', () => {
       /\.sw-steps-region \{\n {2}display: flex;\n {2}flex-direction: column;\n {2}gap: var\(--sw-space-4\);/,
     );
   });
+
+  it('draws the line under a done step in the success colour, an open list too', () => {
+    expect(css).toMatch(
+      /\.sw-steps-item-done:not\(:last-child\)::after \{\n {2}background: var\(--sw-color-success\);\n\}/,
+    );
+    // No open-list rule repaints the line.
+    expect(css).not.toMatch(/\.sw-steps-open[^{]*::after/);
+  });
 });
