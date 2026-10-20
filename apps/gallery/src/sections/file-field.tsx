@@ -1,5 +1,5 @@
 import { FileField, type FileFieldValue, Stack, Text } from '@scalewing/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { Glyph } from '../glyph.js';
 import { Section } from '../layout/Section.js';
@@ -25,13 +25,51 @@ function describe(file: File): string {
   return `${size(file.size)} · ready`;
 }
 
+/**
+ * A cover photo shown as a thumbnail: the consumer makes an object URL when
+ * a photo is chosen and revokes it when another is chosen or the field goes.
+ */
+function CoverPhotoField() {
+  const [photo, setPhoto] = useState<{ file: File; preview: string } | null>(
+    null,
+  );
+  // Made in the handler, not during render; revoked when replaced or gone.
+  useEffect(
+    () => () => {
+      if (photo) URL.revokeObjectURL(photo.preview);
+    },
+    [photo],
+  );
+  return (
+    <FileField
+      accept="image/jpeg,image/png"
+      changeLabel="Choose another"
+      chooseLabel="Choose a photo"
+      description="Optional. A JPEG or PNG of the habitat"
+      label="Cover photo"
+      onChange={(file) =>
+        setPhoto({ file, preview: URL.createObjectURL(file) })
+      }
+      value={
+        photo
+          ? {
+              name: photo.file.name,
+              detail: size(photo.file.size),
+              preview: photo.preview,
+            }
+          : null
+      }
+    />
+  );
+}
+
 export function FileFieldSection() {
   const [guide, setGuide] = useState<FileFieldValue | null>(null);
   const [error, setError] = useState<string | undefined>();
   return (
     <Section
       id="file-field"
-      purpose="FileField is one file, chosen with the system picker or dropped on the field. Empty, it is a wide zone that opens the picker (dropLabel adds words for a pointer that can drag); chosen, it shows the file's name and a detail line the consumer writes, with a button to choose another. It has Field's label, description and error. It hands the File to onChange and shows what the consumer passes back as value: it never reads or uploads the file, and a dropped file is not filtered by accept, so the consumer checks it and says why in error."
+      purpose="FileField is one file, chosen with the system picker or dropped on the field. Empty, it is a wide zone that opens the picker (dropLabel adds words for a pointer that can drag); chosen, it shows the file's name and a detail line the consumer writes, with a button to choose another. It has Field's label, description and error. It hands the File to onChange and shows what the consumer passes back as value: it never reads or uploads the file, and a dropped file is not filtered by accept, so the consumer checks it and says why in error. A value's preview, an image address the consumer makes from a chosen photo, draws a thumbnail before its name in place of the icon."
       title="FileField"
       usage={`<FileField
   label="Field guide"
@@ -94,6 +132,7 @@ export function FileFieldSection() {
           labelVisuallyHidden
           onChange={() => undefined}
         />
+        <CoverPhotoField />
         <FileField
           changeLabel="Choose another"
           chooseLabel="Choose a PDF"

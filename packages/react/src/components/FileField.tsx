@@ -17,6 +17,13 @@ export type FileFieldValue = {
   name: string;
   /** A muted line under the name, such as "4 pages · 1.6 MB". */
   detail?: string;
+  /**
+   * The address of a small image of a chosen photo, such as an object URL
+   * the consumer made from the `File` (and revokes): drawn as a thumbnail
+   * before the name in place of `icon`, hidden from assistive technology,
+   * so the name says which file it is.
+   */
+  preview?: string;
 };
 
 export type FileFieldProps = {
@@ -43,7 +50,10 @@ export type FileFieldProps = {
   changeLabel: string;
   /** Muted words after `chooseLabel` for a fine pointer, such as "or drop it here". */
   dropLabel?: string;
-  /** A consumer mark before the chosen file's name (Lucide), hidden from assistive technology. */
+  /**
+   * A consumer mark before the chosen file's name (Lucide), hidden from
+   * assistive technology; not drawn when `value.preview` is set.
+   */
   icon?: ReactNode;
   disabled?: boolean;
   /** Prefixes the ids the field gives its parts (its button is `${id}-button`). */
@@ -60,11 +70,24 @@ function hasMark(icon: ReactNode): boolean {
   );
 }
 
+/** Before a chosen file's name: its photo's thumbnail, else the consumer's mark. */
+function ChosenMark({ icon, preview }: { icon: ReactNode; preview?: string }) {
+  if (preview !== undefined)
+    return <img alt="" className="sw-file-field-preview" src={preview} />;
+  if (!hasMark(icon)) return null;
+  return (
+    <span aria-hidden="true" className="sw-file-field-icon">
+      {icon}
+    </span>
+  );
+}
+
 /**
  * One file chosen by a press or dropped on the field: empty, a wide zone
- * that opens the system picker; chosen, the file's name and detail with a
- * button to choose another. It hands the `File` to the consumer and shows
- * what the consumer passes back as `value`; it never reads or uploads it.
+ * that opens the system picker; chosen, the file's name and detail (after
+ * a thumbnail for a photo with a `preview`) with a button to choose
+ * another. It hands the `File` to the consumer and shows what the
+ * consumer passes back as `value`; it never reads or uploads it.
  */
 export function FileField({
   label,
@@ -153,11 +176,7 @@ export function FileField({
         />
         {chosen ? (
           <>
-            {!hasMark(icon) ? null : (
-              <span aria-hidden="true" className="sw-file-field-icon">
-                {icon}
-              </span>
-            )}
+            <ChosenMark icon={icon} preview={value.preview} />
             <span className="sw-file-field-file">
               <span className="sw-file-field-name" id={ids.name}>
                 {value.name}

@@ -248,3 +248,58 @@ test('FileField is one Tab stop, and Enter presses the zone, clicking its input'
     section.getByRole('button', { name: 'Field guide Choose another' }),
   ).toBeFocused();
 });
+
+// A 3×2 PNG, so the thumbnail's crop has something to fill.
+const photo = {
+  name: 'heron-reeds.png',
+  mimeType: 'image/png',
+  buffer: Buffer.from(
+    'iVBORw0KGgoAAAANSUhEUgAAAAMAAAACCAIAAAASFvFNAAAAEklEQVR4nGNgYGD4z8DAwMAAAAwAAX9/wOcAAAAASUVORK5CYII=',
+    'base64',
+  ),
+};
+
+test('FileField draws a chosen photo’s thumbnail before its name', async ({
+  page,
+}, testInfo) => {
+  await page.goto('/#file-field');
+  const section = page.locator('#file-field');
+  const chooser = page.waitForEvent('filechooser');
+  await section
+    .getByRole('button', { name: /^Cover photo Choose a photo/ })
+    .click();
+  await (await chooser).setFiles(photo);
+  const change = section.getByRole('button', {
+    name: 'Cover photo Choose another',
+  });
+  await expect(change).toHaveAccessibleDescription(
+    /^heron-reeds\.png \d+ B Optional/,
+  );
+  const thumbnail = section.locator('img.sw-file-field-preview');
+  await expect(thumbnail).toHaveAttribute('alt', '');
+  await expect(thumbnail).toHaveAttribute('src', /^blob:/);
+  // Loaded, 48 by 32, cropped to fill, before the name on its row.
+  await expect
+    .poll(() =>
+      thumbnail.evaluate(
+        (node: HTMLImageElement) => node.complete && node.naturalWidth,
+      ),
+    )
+    .toBe(3);
+  const [box, name] = await Promise.all([
+    thumbnail.boundingBox(),
+    thumbnail.locator('xpath=following-sibling::*[1]/*[1]').boundingBox(),
+  ]);
+  expect(box && name).toBeTruthy();
+  if (box && name) {
+    expect(box.width).toBe(48);
+    expect(box.height).toBe(32);
+    expect(box.x + box.width).toBeLessThan(name.x);
+  }
+  await expect(thumbnail).toHaveCSS('object-fit', 'cover');
+  // It is not an image to assistive technology: the name says which file.
+  await expect(section.getByRole('img')).toHaveCount(0);
+  await thumbnail
+    .locator('xpath=..')
+    .screenshot({ path: testInfo.outputPath('file-field-preview.png') });
+});
