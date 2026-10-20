@@ -36,6 +36,14 @@ export type ArticleProps = Omit<
   actions?: ReactNode;
   /** The card look, as `Card`'s. */
   variant?: CardVariant;
+  /**
+   * The language of the title and the body (a BCP 47 tag such as `es`)
+   * when it is not the page's, such as a document shown in Spanish on an
+   * English screen (WCAG 3.1.2): `lang` on the title's heading and the
+   * body only, never the eyebrow, meta line, actions or cover, which are
+   * the app's own words.
+   */
+  contentLang?: string;
   /** The article's body, under a hairline. */
   children?: ReactNode;
 };
@@ -49,9 +57,22 @@ function hasContent(node: ReactNode): boolean {
   );
 }
 
-function assertArticle({ title, titleAs, cover, variant }: ArticleProps) {
+function assertArticle({
+  title,
+  titleAs,
+  cover,
+  variant,
+  contentLang,
+}: ArticleProps) {
   if (typeof title !== 'string' || title.trim() === '')
     throw new RangeError('Article title must be non-empty text');
+  if (
+    contentLang !== undefined &&
+    (typeof contentLang !== 'string' || contentLang.trim() === '')
+  )
+    throw new RangeError(
+      'Article contentLang must be a non-empty language tag',
+    );
   if (titleAs !== undefined && !articleTitleElements.includes(titleAs))
     throw new RangeError(`Unknown Article titleAs: ${String(titleAs)}`);
   if (variant !== undefined && !cardVariants.includes(variant))
@@ -71,8 +92,9 @@ function assertArticle({ title, titleAs, cover, variant }: ArticleProps) {
  * cover photo edge to edge across the top, then the eyebrow (with the
  * consumer's actions at its row's end), the title in heading type, the
  * muted meta line, a hairline, and the body. The article is named by its
- * title (an `aria-labelledby` you pass replaces that). The ref is the
- * `article` element.
+ * title (an `aria-labelledby` you pass replaces that). `contentLang` marks
+ * the title and the body as another language than the page's. The ref is
+ * the `article` element.
  */
 export const Article = forwardRef<HTMLElement, ArticleProps>(
   function Article(props, ref) {
@@ -85,6 +107,7 @@ export const Article = forwardRef<HTMLElement, ArticleProps>(
       cover,
       actions,
       variant = 'glass',
+      contentLang,
       children,
       className,
       ...rest
@@ -117,6 +140,7 @@ export const Article = forwardRef<HTMLElement, ArticleProps>(
               as={titleAs}
               className="sw-article-title"
               id={titleId}
+              lang={contentLang}
               variant="heading"
             >
               {title}
@@ -127,7 +151,9 @@ export const Article = forwardRef<HTMLElement, ArticleProps>(
           </header>
           <Separator decorative />
           {hasContent(children) ? (
-            <div className="sw-article-content">{children}</div>
+            <div className="sw-article-content" lang={contentLang}>
+              {children}
+            </div>
           ) : null}
         </div>
       </article>
