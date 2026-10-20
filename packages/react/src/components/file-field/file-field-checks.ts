@@ -6,8 +6,8 @@ function isBlank(text: unknown): boolean {
 
 /**
  * Fails closed on a FileField it cannot name or show: an empty label,
- * choose or change words, a blank drop hint, or a chosen file with no name
- * or a blank detail.
+ * choose or change words, a blank drop hint, or a chosen file with no name,
+ * a blank detail or a blank preview address.
  */
 export function assertFileField(props: {
   label: string;
@@ -26,4 +26,6 @@ export function assertFileField(props: {
     throw new RangeError('FileField value name must be non-empty text');
   if (props.value.detail !== undefined && isBlank(props.value.detail))
     throw new RangeError('FileField value detail must be non-empty text');
+  if (props.value.preview !== undefined && isBlank(props.value.preview))
+    throw new RangeError('FileField value preview must be an image address');
 }

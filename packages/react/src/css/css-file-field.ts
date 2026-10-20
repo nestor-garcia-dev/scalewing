@@ -111,7 +111,10 @@ function zoneRules(): string {
 
 /*
  * The chosen file: the mark, then the name over its detail (at least four
- * space-8 wide before the button wraps under it), then the button.
+ * space-8 wide before the button wraps under it), then the button. A
+ * photo's preview takes the mark's place: a 3:2 thumbnail a space-8 wide
+ * and a space-6 tall, cropped to fill, at the small radius, on the subtle
+ * fill while it loads.
  */
 function fileRules(): string {
   return `.sw-file-field-icon {
@@ -119,6 +122,16 @@ function fileRules(): string {
   color: var(--sw-color-muted);
   display: flex;
   flex: none;
+}
+
+.sw-file-field-preview {
+  background: var(--sw-color-subtle);
+  border-radius: var(--sw-radius-sm);
+  display: block;
+  flex: none;
+  height: var(--sw-space-6);
+  object-fit: cover;
+  width: var(--sw-space-8);
 }
 
 .sw-file-field-file {
@@ -181,6 +194,7 @@ export function fileFieldClassCatalog(): string[] {
     'sw-file-field-choose',
     'sw-file-field-drop',
     'sw-file-field-icon',
+    'sw-file-field-preview',
     'sw-file-field-file',
     'sw-file-field-name',
     'sw-file-field-detail',
