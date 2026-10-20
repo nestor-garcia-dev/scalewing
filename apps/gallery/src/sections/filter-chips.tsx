@@ -13,6 +13,7 @@ export function FilterChipsSection() {
   const [saved, setSaved] = useState('');
   const [nights, setNights] = useState('all');
   const [watchDays, setWatchDays] = useState<string[]>(['fri', 'sat']);
+  const [unchecked, setUnchecked] = useState<string[]>([]);
   const options = [
     { value: 'all', label: 'All sightings', count: sightings },
     { value: 'forest', label: 'Forest canopy records', count: 18 },
@@ -29,7 +30,7 @@ export function FilterChipsSection() {
   return (
     <Section
       id="filter-chips"
-      purpose="FilterChips keeps long single-choice filter sets visible. Native radios supply arrow and Space behavior; options wrap on narrow screens. An optional count renders as a tabular chicklet after the label, and a zero count quiets the chip until it is selected: a muted label on no fill, never faded. value '' is nothing chosen yet; required marks the label and each radio, and error puts a message under the chips (a polite live region), marks the group invalid and edges every chip in danger; aria-describedby adds a hint. requiredMark hidden leaves out the label's mark while each radio stays required; the hint says it in words. labelVisuallyHidden keeps the label as the group's name without drawing it; countAppearance inline writes the count in the chip's words after a middle dot; overflow scroll keeps one row that scrolls sideways inside its own box; multiple turns several chips on at once as checkboxes, value a list."
+      purpose="FilterChips keeps long single-choice filter sets visible. Native radios supply arrow and Space behavior; options wrap on narrow screens. An optional count renders as a tabular chicklet after the label, and a zero count quiets the chip until it is selected: a muted label on no fill, never faded. value '' is nothing chosen yet; required marks the label and each radio, and error puts a message under the chips (a polite live region), marks the group invalid and edges every chip in danger; aria-describedby adds a hint. requiredMark hidden leaves out the label's mark while each radio stays required; the hint says it in words. labelVisuallyHidden keeps the label as the group's name without drawing it; countAppearance inline writes the count in the chip's words after a middle dot; overflow scroll keeps one row that scrolls sideways inside its own box; multiple turns several chips on at once as checkboxes, value a list. An option's tone warning draws a chip that is not chosen in the warning tint and ink, for a choice that shows what needs a look; its words say why, and chosen it is the accent and at a zero count quiet, like every chip."
       title="FilterChips"
       usage={`<FilterChips
   label="Sighting filters"
@@ -54,6 +55,17 @@ export function FilterChipsSection() {
   value={watchDays}
   onChange={setWatchDays}
   options={[{ value: 'fri', label: 'Fri' }]}
+/>
+
+<FilterChips
+  label="Camera traps to check"
+  labelVisuallyHidden
+  multiple
+  value={unchecked}
+  onChange={setUnchecked}
+  options={[
+    { value: 'unchecked', label: 'Not checked this week', count: 2, tone: 'warning' },
+  ]}
 />`}
     >
       <Stack gap={3}>
@@ -122,6 +134,28 @@ export function FilterChipsSection() {
           ]}
           overflow="scroll"
           value={nights}
+        />
+        <FilterChips
+          countAppearance="inline"
+          label="Camera traps to check"
+          labelVisuallyHidden
+          multiple
+          onChange={setUnchecked}
+          options={[
+            {
+              value: 'unchecked',
+              label: 'Not checked this week',
+              count: 2,
+              tone: 'warning',
+            },
+            {
+              value: 'flooded',
+              label: 'Flooded since the storm',
+              count: 0,
+              tone: 'warning',
+            },
+          ]}
+          value={unchecked}
         />
         <FilterChips
           label="Watch days"

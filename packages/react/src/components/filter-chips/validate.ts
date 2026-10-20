@@ -3,6 +3,7 @@ import {
   filterChipCountAppearances,
   type FilterChipsProps,
   filterChipsOverflows,
+  filterChipTones,
 } from './options.js';
 
 function isCount(count: number | undefined): boolean {
@@ -17,9 +18,9 @@ function chosenValues(props: FilterChipsProps): readonly string[] {
 /**
  * Fails closed on chips it cannot draw: an empty label, no options, blank
  * or repeated values, a chosen value that is no option, a count that is
- * not a whole number from 0, an unknown count appearance or overflow, and
- * a multiple choice asked to be required or given a value that is not a
- * list.
+ * not a whole number from 0, an unknown chip tone, count appearance or
+ * overflow, and a multiple choice asked to be required or given a value
+ * that is not a list.
  */
 export function assertFilterChips(props: FilterChipsProps): void {
   const { label, options } = props;
@@ -50,6 +51,15 @@ export function assertFilterChips(props: FilterChipsProps): void {
     );
   if (options.some((option) => !isCount(option.count)))
     throw new RangeError('count must be a non-negative integer');
+  const unknownTone = options.find(
+    (option) =>
+      option.tone !== undefined &&
+      !(filterChipTones as readonly unknown[]).includes(option.tone),
+  );
+  if (unknownTone)
+    throw new RangeError(
+      `Unknown FilterChips option tone: ${String(unknownTone.tone)}`,
+    );
   const countAppearance = props.countAppearance ?? 'figure';
   if (
     !(filterChipCountAppearances as readonly unknown[]).includes(
