@@ -2,7 +2,7 @@ import { type ReactNode, useContext } from 'react';
 
 import { cx } from '../../class-names.js';
 import { ListRowContainer } from './list-row-container.js';
-import { hasSlot } from './row-slot.js';
+import { hasSlot } from '../slot.js';
 
 /**
  * A row's list item: an `li` in a ListGroup's list, a `div` elsewhere. A

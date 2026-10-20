@@ -13,7 +13,7 @@
  * scrolled into view by the browser. The scrollbar stays, thin, so a
  * pointer without a sideways wheel can still reach the last chip.
  */
-const ringReach =
+export const ringReach =
   'calc(var(--sw-focus-ring-width) + var(--sw-focus-ring-offset))';
 
 export function cssFilterChipsLayoutClasses(): string {

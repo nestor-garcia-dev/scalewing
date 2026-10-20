@@ -1,6 +1,6 @@
 import { type ReactNode } from 'react';
 
-import { hasSlot } from './row-slot.js';
+import { hasSlot } from '../slot.js';
 
 function ids(...parts: (string | false)[]): string | undefined {
   const joined = parts.filter(Boolean).join(' ');

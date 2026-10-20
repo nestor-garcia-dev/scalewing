@@ -1036,6 +1036,41 @@ An option's `tone` (`filterChipTones`, `FilterChipTone`; default `"neutral"`) se
 />
 ```
 
+`FilterChipsRow` lays several `FilterChips` groups on one row, for filters that need more than one kind of choice, such as kinds (one choice) and a toggle that narrows them (a checkbox). Each group keeps its own name, choices and Tab stops; the row is a plain `div` that lays them out a space-2 apart, their chips level along the bottom (an error under one group lifts its chips above the others'). `end` sets a group apart at the row's end, and at its own line's end when the row wraps. `overflow` (`"wrap"` by default, or `"scroll"`) wraps the groups onto more lines, or keeps every group's chips on one row that scrolls sideways together inside the row's own box, never the page, the focus ring unclipped and a focused chip scrolled into view; inside a scrolling row a group's own `overflow` gives way, and a group is as wide as its chips, so a drawn label or an `error` wraps under them. An empty `end` draws nothing; an unknown `overflow` throws a `RangeError`.
+
+```tsx
+<FilterChipsRow
+  overflow="scroll"
+  end={
+    <FilterChips
+      label="Not translated"
+      labelVisuallyHidden
+      multiple
+      countAppearance="inline"
+      value={untranslated}
+      onChange={setUntranslated}
+      options={[
+        {
+          value: 'untranslated',
+          label: 'Not translated',
+          count: 2,
+          tone: 'warning',
+        },
+      ]}
+    />
+  }
+>
+  <FilterChips
+    label="Kinds"
+    labelVisuallyHidden
+    countAppearance="inline"
+    value={kind}
+    onChange={setKind}
+    options={kinds}
+  />
+</FilterChipsRow>
+```
+
 `DateField` is a controlled date-only field that draws its own calendar. Supply `value`, `min`, and `max` as valid `YYYY-MM-DD` dates; use an empty `value` for a blank field. Its callback returns a date-only string or an empty string, without timezone conversion. Invalid serialized dates and inverted bounds throw; a value outside the bounds remains visible with invalid styling. `required` marks the label with the same `aria-hidden` asterisk as `Field` and sets the entry's native `required`. Its label is drawn as `Field`'s (the same label words and mark inside a `<label>` that keeps the canvas type), so its label row and its gap to the entry match a `Field` beside it. For a blank required field, supply `error` when form validation runs to show the message and invalid styling.
 
 `DateField` `entry="calendar"` (opt-in; `dateFieldEntries`, default `"typed"`) is a day picked, never typed, such as a hire date: one neutral `Button` shaped as a field's control (the small radius, sized to its words on one line at the column's start) holding the calendar glyph and the chosen day in the locale's medium style ("Oct 6, 2026"), or `labels.chooseDate` while the field is empty (pass "Choose a day"). It opens the same calendar, which picks, steps by month and year, picks today and, on an optional field, clears. It is named by the label and its words ("Hire date Choose a day"), described by the `description` and `error`, and a label press opens it too. A button has no required state or text to check, so `required` draws the label's mark and says `labels.required` ("Required") after its name, the form's own check supplies `error`, and the danger edge marks it while `error` is set or the value is outside `min`/`max`. A button cannot be `aria-invalid`, so pass an `error` for a value outside the bounds too: the edge alone is colour only. A long day or `chooseDate` in a narrow column ends in an ellipsis; its name keeps the whole words. An unknown `entry` throws a `RangeError`.

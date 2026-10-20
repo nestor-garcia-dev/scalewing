@@ -83,8 +83,9 @@ Teisoro F-014-S07, release T2 "training fidelity", one PR each:
 (`teisoro-list-row-truncate.md`, #206); `DescriptionList`
 `layout="spread"`, each detail at its row's end
 (`teisoro-description-list-spread.md`, #207); `FilterChips` option
-`tone="warning"` (`teisoro-filter-chip-tone.md`). Next: the last
-fidelity surface, then the release.
+`tone="warning"` (`teisoro-filter-chip-tone.md`, #208); and
+`FilterChipsRow`, chip groups that wrap or scroll sideways together
+(`teisoro-filter-chips-row.md`). Next: the release.
 
 Teisoro F-011-S02, release R1 "guided-form core": web `Stepper`
 (#113), `DenominationGrid` entry rows (#114), `Steps` / `Step` (#115)
