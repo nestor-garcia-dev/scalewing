@@ -1,10 +1,21 @@
 import { type RequiredMark } from '../FieldLabelText.js';
 
+/**
+ * A chip's colour while it is not chosen: `neutral` (the default), the
+ * glass chip; `warning`, the warning tint with its words in the warning
+ * ink, for a choice that shows what needs a look ("Missing a
+ * translation"). Its words must say so; the tint only draws the eye. A
+ * chosen chip is the accent, whatever its tone.
+ */
+export const filterChipTones = ['neutral', 'warning'] as const;
+export type FilterChipTone = (typeof filterChipTones)[number];
+
 export type FilterChipOption = {
   value: string;
   label: string;
   count?: number;
   disabled?: boolean;
+  tone?: FilterChipTone;
 };
 
 /**

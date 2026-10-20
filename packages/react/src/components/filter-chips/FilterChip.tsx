@@ -62,6 +62,7 @@ export function FilterChip({
       className={cx(
         'sw-filter-chip',
         option.count === 0 && 'sw-filter-chip-quiet',
+        option.tone === 'warning' && 'sw-filter-chip-warning',
       )}
     >
       <input

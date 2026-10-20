@@ -438,10 +438,12 @@ export {
   FilterChips,
   filterChipCountAppearances,
   filterChipsOverflows,
+  filterChipTones,
 } from './components/FilterChips.js';
 export type {
   FilterChipCountAppearance,
   FilterChipOption,
   FilterChipsOverflow,
   FilterChipsProps,
+  FilterChipTone,
 } from './components/FilterChips.js';

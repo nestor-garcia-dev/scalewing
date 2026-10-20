@@ -997,6 +997,8 @@ A strip row with `entry` makes its counts editable: each column holds a `Stepper
 
 `FilterChips` options for chips that sit above a list, all opt-in: `labelVisuallyHidden` keeps `label` as the group's name without drawing it, for chips whose words and place already say what they filter; `countAppearance="inline"` (`filterChipCountAppearances`, default `"figure"`) writes the count in the chip's own words after a middle dot ("Open · 3"), the dot hidden so the name reads "Open 3"; `overflow="scroll"` (`filterChipsOverflows`, default `"wrap"`) keeps the chips on one row that scrolls sideways inside its own box, never the page, each chip on one line, a focused chip scrolled into view and the focus ring unclipped. `multiple` turns several chips on at once, such as the days of a week: each chip is a native checkbox and its own Tab stop, `value` is a list of the chosen values (empty for none) and `onChange` receives every chosen value in the options' order. A multiple group cannot be `required` (nothing makes a checkbox group required); say what is needed in `error`. A value that is no option, a multiple `value` that is not a list, `required` with `multiple`, or an unknown count appearance or overflow throws a `RangeError`.
 
+An option's `tone` (`filterChipTones`, `FilterChipTone`; default `"neutral"`) set to `"warning"` draws that chip, while it is not chosen, in the warning tint with its words and count in the warning ink (a warning `Notice`'s fill and words, 4.5:1 in every palette and scheme), for a choice that shows what needs a look, such as documents missing a translation. Its words must say why; the tint only draws the eye. Chosen, it is the accent like every chip; with a zero count it is quiet like every chip; it keeps the chips' hairline, so an `error`'s danger edge still shows; forced colours draw it as every chip. An unknown tone throws a `RangeError`.
+
 ```tsx
 <FilterChips
   label="Nocturnal surveys"
@@ -1019,6 +1021,17 @@ A strip row with `entry` makes its counts editable: each column holds a `Stepper
   options={[
     { value: 'fri', label: 'Fri' },
     { value: 'sat', label: 'Sat' },
+  ]}
+/>
+
+<FilterChips
+  label="Camera traps to check"
+  labelVisuallyHidden
+  multiple
+  value={unchecked}
+  onChange={setUnchecked}
+  options={[
+    { value: 'unchecked', label: 'Not checked this week', count: 2, tone: 'warning' },
   ]}
 />
 ```

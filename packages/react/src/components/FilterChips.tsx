@@ -13,10 +13,12 @@ import { assertFilterChips } from './filter-chips/validate.js';
 export {
   filterChipCountAppearances,
   filterChipsOverflows,
+  filterChipTones,
   type FilterChipCountAppearance,
   type FilterChipOption,
   type FilterChipsOverflow,
   type FilterChipsProps,
+  type FilterChipTone,
 } from './filter-chips/options.js';
 
 /** The values a change leaves on, in the options' order. */

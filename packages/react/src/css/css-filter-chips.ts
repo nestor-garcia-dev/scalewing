@@ -1,6 +1,10 @@
 import { typographyVariants } from '@scalewing/tokens';
 
 import {
+  cssFilterChipToneClasses,
+  filterChipToneClassCatalog,
+} from './css-filter-chip-tones.js';
+import {
   cssFilterChipsLayoutClasses,
   filterChipsLayoutClassCatalog,
 } from './css-filter-chips-layout.js';
@@ -132,6 +136,8 @@ export function cssFilterChipsClasses(): string {
 
 ${cssFilterChipsLayoutClasses()}
 
+${cssFilterChipToneClasses()}
+
 @media (forced-colors: active) {
   .sw-filter-chip-face { background: Canvas; border-color: CanvasText; color: CanvasText; }
   .sw-filter-chips-error { color: Mark; }
@@ -155,5 +161,6 @@ export function filterChipsClassCatalog(): string[] {
     'sw-filter-chip-quiet',
     'sw-filter-chips-error',
     ...filterChipsLayoutClassCatalog(),
+    ...filterChipToneClassCatalog(),
   ];
 }
