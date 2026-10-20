@@ -6,7 +6,7 @@ import { ActionMenu } from './components/ActionMenu.js';
 import { Badge } from './components/Badge.js';
 import { ListGroup } from './components/ListGroup.js';
 import { ListRow } from './components/ListRow.js';
-import { hasSlot } from './components/list/row-slot.js';
+import { hasSlot } from './components/slot.js';
 import { generateStylesheet, utilityClassCatalog } from './css/stylesheet.js';
 
 afterEach(() => {

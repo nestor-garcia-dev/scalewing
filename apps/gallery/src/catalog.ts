@@ -19,6 +19,7 @@ import { ArticleSection } from './sections/article.js';
 import { MarkdownViewSection } from './sections/markdown-view.js';
 import { ResponsiveVisibilitySection } from './sections/responsive-visibility.js';
 import { FilterChipsSection } from './sections/filter-chips.js';
+import { FilterChipsRowSection } from './sections/filter-chips-row.js';
 import { DenominationGridSection } from './sections/denomination-grid.js';
 import { type ComponentType } from 'react';
 
@@ -198,6 +199,12 @@ export const catalog = [
     label: 'FilterChips',
     group: 'controls',
     Section: FilterChipsSection,
+  },
+  {
+    id: 'filter-chips-row',
+    label: 'FilterChipsRow',
+    group: 'controls',
+    Section: FilterChipsRowSection,
   },
   {
     id: 'separator',

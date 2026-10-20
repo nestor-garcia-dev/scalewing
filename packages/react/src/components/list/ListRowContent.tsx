@@ -10,7 +10,7 @@ import {
   type ListRowValueTone,
 } from '../../list-options.js';
 import { ListRowAccessoryMark } from './ListRowAccessoryMark.js';
-import { hasSlot } from './row-slot.js';
+import { hasSlot } from '../slot.js';
 
 export type ListRowContentProps = {
   /** Prefixes the ids that name and describe a pressable row. */

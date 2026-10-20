@@ -440,6 +440,8 @@ export {
   filterChipsOverflows,
   filterChipTones,
 } from './components/FilterChips.js';
+export { FilterChipsRow } from './components/FilterChipsRow.js';
+export type { FilterChipsRowProps } from './components/FilterChipsRow.js';
 export type {
   FilterChipCountAppearance,
   FilterChipOption,

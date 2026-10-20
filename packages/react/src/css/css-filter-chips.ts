@@ -8,6 +8,10 @@ import {
   cssFilterChipsLayoutClasses,
   filterChipsLayoutClassCatalog,
 } from './css-filter-chips-layout.js';
+import {
+  cssFilterChipsRowClasses,
+  filterChipsRowClassCatalog,
+} from './css-filter-chips-row.js';
 
 const label = typographyVariants.label;
 const data = typographyVariants.data;
@@ -138,6 +142,8 @@ ${cssFilterChipsLayoutClasses()}
 
 ${cssFilterChipToneClasses()}
 
+${cssFilterChipsRowClasses()}
+
 @media (forced-colors: active) {
   .sw-filter-chip-face { background: Canvas; border-color: CanvasText; color: CanvasText; }
   .sw-filter-chips-error { color: Mark; }
@@ -162,5 +168,6 @@ export function filterChipsClassCatalog(): string[] {
     'sw-filter-chips-error',
     ...filterChipsLayoutClassCatalog(),
     ...filterChipToneClassCatalog(),
+    ...filterChipsRowClassCatalog(),
   ];
 }
