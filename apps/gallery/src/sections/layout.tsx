@@ -5,6 +5,7 @@ import { Section } from '../layout/Section.js';
 
 const sampleLayoutClasses = [
   'sw-container',
+  'sw-container-reading',
   'sw-full-width',
   'sw-grow',
   'sw-wrap',
@@ -16,7 +17,7 @@ export function LayoutSection() {
   return (
     <Section
       id="layout"
-      purpose="Box is a semantic layout shell. Stack is a column. Inline is a row. Spacing step 4 is 16px, not 4px. border draws a solid hairline; border dashed marks a space to fill in by hand, such as a blank on a printed form."
+      purpose="Box is a semantic layout shell. Stack is a column. Inline is a row. Spacing step 4 is 16px, not 4px. border draws a solid hairline; border dashed marks a space to fill in by hand, such as a blank on a printed form. The sw-container class centres a page's column at the container width, and sw-container-reading at the narrower reading width, for a form or text."
       title="Layout"
       usage={`<Stack gap={3}>
   <Inline gap={2} justify="between">
@@ -64,6 +65,14 @@ export function LayoutSection() {
             </Box>
           </Inline>
         </Stack>
+        <Box className="sw-container-reading" data-testid="layout-reading">
+          <Box border padding={3} radius="sm">
+            <Text variant="caption">
+              sw-container-reading: a centred column at the reading width, for a
+              form such as a ranger&apos;s sighting report
+            </Text>
+          </Box>
+        </Box>
         <Inline align="center" gap={2} justify="between" wrap>
           <Text variant="label">Inline between, align center</Text>
           <Text color="muted" variant="caption">

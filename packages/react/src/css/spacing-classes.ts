@@ -49,6 +49,7 @@ export const layoutClassNames = [
   'sw-grow',
   'sw-full-width',
   'sw-container',
+  'sw-container-reading',
   'sw-sr-only',
   'sw-align-start',
   'sw-align-center',
