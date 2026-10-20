@@ -1,5 +1,9 @@
 import { typographyVariants } from '@scalewing/tokens';
 import { checkStrokeIn } from './chevron.js';
+import {
+  cssStepsTitleDetailClasses,
+  stepsTitleDetailClassCatalog,
+} from './css-steps-title-detail.js';
 
 const body = typographyVariants.body;
 const caption = typographyVariants.caption;
@@ -75,8 +79,8 @@ function forcedColorRules(): string {
 
 /**
  * The one-page vertical stepper: an ordered list of glass panels a small
- * gap apart. Each has a header line (marker, title, and on a done step its
- * summary and Edit) and, while open (current or error), a body indented to
+ * gap apart. Each has a header line (marker, title, an open step's muted
+ * words beside it, and on a done step its summary and Edit) and, while open (current or error), a body indented to
  * the title. An open step's title is the title variant; a folded one's is
  * body size at label weight, muted ahead of the form or skipped. In an
  * open list (`sw-steps-open`) every step is open: each panel takes the open
@@ -196,6 +200,8 @@ export function cssStepsClasses(): string {
   min-width: 0;
 }
 
+${cssStepsTitleDetailClasses()}
+
 ${markerRules()}
 
 ${connectorRules()}
@@ -221,5 +227,6 @@ export function stepsClassCatalog(): string[] {
     'sw-steps-edit',
     'sw-steps-body',
     'sw-steps-region',
+    ...stepsTitleDetailClassCatalog(),
   ];
 }

@@ -11,6 +11,7 @@ import {
 import { useState } from 'react';
 
 import { Section } from '../layout/Section.js';
+import { StepsTitleDetailExample } from './steps-title-detail.js';
 
 const stepCount = 3;
 
@@ -137,7 +138,7 @@ export function StepsSection() {
   return (
     <Section
       id="steps"
-      purpose="Steps is a one-page vertical stepper: a form's Step panels in order, numbered by their place and joined by a line. The current step is open with its fields; a done step folds to one line with its summary and an Edit button named by its title; steps ahead are greyed; an error step stays open with a ! marker; a skipped step shows its reason. When a folded step opens, focus moves to its heading. Heading level and the status words assistive technology hears come from Steps (English by default). With open, every step shows its fields as a region named by its title; only the markers follow each status, and focus never moves on its own."
+      purpose="Steps is a one-page vertical stepper: a form's Step panels in order, numbered by their place and joined by a line. The current step is open with its fields; a done step folds to one line with its summary and an Edit button named by its title; steps ahead are greyed; an error step stays open with a ! marker; a skipped step shows its reason. When a folded step opens, focus moves to its heading. Heading level and the status words assistive technology hears come from Steps (English by default). With open, every step shows its fields as a region named by its title; only the markers follow each status, and focus never moves on its own. titleDetail is muted words beside an open step's title, such as Optional, outside the heading: the region keeps the title as its name and is described by them."
       title="Steps"
       usage={`<Steps aria-label="Heron survey">
   <Step status="done" title="The site" summary="North marsh"
@@ -148,11 +149,13 @@ export function StepsSection() {
 <Steps aria-label="Wader count" open>
   <Step status="done" title="The site">{fields}</Step>
   <Step status="current" title="The count">{fields}</Step>
+  <Step status="upcoming" title="A note" titleDetail="Optional">{fields}</Step>
 </Steps>`}
     >
       <Stack gap={5}>
         <SurveySteps />
         <OpenSurveySteps />
+        <StepsTitleDetailExample />
         <Steps aria-label="Every status" headingLevel={3}>
           <Step
             editLabel="Edit"
