@@ -15,7 +15,7 @@ export function cssListRowTruncateClasses(): string {
 
 .sw-list-row-truncate .sw-list-row-unread { flex: none; }
 
-.sw-list-row-title-text,
+.sw-list-row-truncate .sw-list-row-title-text,
 .sw-list-row-truncate .sw-list-row-detail {
   min-width: 0;
   overflow: hidden;
