@@ -112,8 +112,10 @@ the new options in Training.
 Teisoro F-014-S06, release T4 "the last training gaps" (task 2632), the
 four gaps its acceptance review deferred, one PR each: `Select`
 `aria-labelledby`, a select named by the page's words, read once
-(`teisoro-select-labelledby.md`). Next: `ListGroup` tiles, `FileField`
-`compact` with its own Remove, `Button` `width="full"`, then the release.
+(`teisoro-select-labelledby.md`, #224); `Button` `width="full"`, an Edit
+filling the row beside a ••• menu (`teisoro-button-full-width.md`). Next:
+`ListGroup` tiles, `FileField` `compact` with its own Remove, then the
+release.
 
 Teisoro F-011-S02, release R1 "guided-form core": web `Stepper`
 (#113), `DenominationGrid` entry rows (#114), `Steps` / `Step` (#115)
