@@ -281,6 +281,22 @@ A `Button`'s own children are laid out in a row one token gap apart (spacing ste
 
 On the web, `variant="neutral"` is a quiet grey fill (the muted color at 16 %, the fill of an open menu row) with its words in the text color and no border: an action beside the primary that should not draw the eye, such as a sheet's Cancel. It is web only (`webButtonVariants`; the shared `buttonVariants` in `@scalewing/tokens` and React Native do not have it). `disabledAppearance="neutral"` (default `"faded"`) draws a disabled button on that grey with its words in the muted color at 48 % (about #AEAEAE on the grey) and full opacity, whatever its variant, instead of fading its own fill (a disabled accent reads as a paler accent); a `ghost` button, which has no fill, still fades. The button is still a disabled `button`; forced colors draw it as any disabled button. An unknown `disabledAppearance` throws a `RangeError`.
 
+`Button` `width` is `'content'` (the default: as wide as its words) or `'full'`: the button fills its container's inline size in a `Stack`, a `Grid` cell or any column, and in an `Inline` row takes the space its siblings leave, as a full `Select` does, so an Edit beside a ••• `ActionMenu` fills the row and the menu keeps its own square at the end. The row rule holds for a `Button` that is a direct child of the `Inline`; wrapped in another box it fills that box instead. In a wrapping `Inline` (`wrap`) a full button grows from its words' width and moves to a line of its own when the row runs out, rather than shrinking past its words. Inside a `ButtonGroup` it is not needed: the group already stacks its buttons full width below `md`. The words stay centred. An unknown width throws a `RangeError`. The class is `sw-button-full`.
+
+```tsx
+<Inline gap={2}>
+  <Button variant="neutral" width="full" onPress={edit}>
+    Edit
+  </Button>
+  <ActionMenu
+    label="More for Heron log"
+    items={items}
+    trigger={<Dots />}
+    triggerAppearance="icon"
+  />
+</Inline>
+```
+
 A `Button` with `aria-disabled="true"` (not `disabled`) looks disabled, faded or, with `disabledAppearance="neutral"`, on the neutral grey, with `GrayText` in forced colors, yet stays a focusable, pressable `button`: its `onPress` still runs, so a submit pressed while off can take the person to what is missing. Its look alone does not say what is missing: a press while off should show the message of the first thing to fix. Use `disabled` when a press should do nothing.
 
 A `Button` that toggles something passes `aria-pressed`. The pressed button gets a 2 px accent ring outside its fill, past a 2 px gap in `--sw-color-background`, so the ring meets only the page and keeps the accent's contrast on the canvas (4.5:1 or more in every palette, at least the 3:1 a state indicator needs) whatever its `variant` or fill. A focused pressed button moves its focus outline out past the ring. In forced colors, which drop shadows, the pressed button keeps the forced button colors, so its label and any glyph or badge inside it stay readable, and draws the same ring and its own border in the system highlight (`Highlight`); nothing opts out of forced colors. An unpressed button is drawn at full strength, so its label keeps its contrast. To make the choice stand out further, give the pressed button `primary` and the others `secondary`.

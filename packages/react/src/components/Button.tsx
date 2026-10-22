@@ -5,6 +5,11 @@ import {
   buttonDisabledAppearances,
   type WebButtonVariant,
 } from '../css/css-button.js';
+import {
+  type ButtonWidth,
+  buttonWidthClass,
+  buttonWidths,
+} from '../css/css-button-width.js';
 import { forwardRef, type ButtonHTMLAttributes, type ReactNode } from 'react';
 
 import { cx } from '../class-names.js';
@@ -13,7 +18,7 @@ import { tabStop } from '../tab-stop.js';
 /** The web variants: the shared tiers plus `neutral`. */
 export type ButtonVariant = WebButtonVariant;
 
-export type { ButtonDisabledAppearance, ButtonSize };
+export type { ButtonDisabledAppearance, ButtonSize, ButtonWidth };
 
 export type ButtonProps = Omit<
   ButtonHTMLAttributes<HTMLButtonElement>,
@@ -35,6 +40,12 @@ export type ButtonProps = Omit<
    * whatever its variant (a ghost button still fades).
    */
   disabledAppearance?: ButtonDisabledAppearance;
+  /**
+   * `content` (default) is as wide as the words; `full` fills the
+   * container, and in an Inline row the space its siblings leave, such as
+   * an Edit beside a ••• menu.
+   */
+  width?: ButtonWidth;
 };
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
@@ -49,6 +60,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       tabIndex,
       type = 'button',
       variant = 'primary',
+      width = 'content',
       ...rest
     },
     ref,
@@ -61,11 +73,14 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       throw new RangeError(
         `Unknown Button disabledAppearance: ${String(disabledAppearance)}`,
       );
+    if (!(buttonWidths as readonly unknown[]).includes(width))
+      throw new RangeError(`Unknown Button width: ${String(width)}`);
     return (
       <button
         ref={ref}
         className={cx(
           ...buttonClassNames({ size, variant, disabledAppearance }),
+          buttonWidthClass(width),
           className,
         )}
         disabled={disabled}

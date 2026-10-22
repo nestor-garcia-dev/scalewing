@@ -11,6 +11,10 @@ import {
   buttonGroupAttachedClassCatalog,
   cssButtonGroupAttachedClasses,
 } from './css-button-group-attached.js';
+import {
+  buttonWidthClassCatalog,
+  cssButtonWidthClasses,
+} from './css-button-width.js';
 import { quietFill } from './quiet-fill.js';
 
 const label = typographyVariants.label;
@@ -172,6 +176,7 @@ ${disabledNeutralRules()}
 ${pressedRules()}
 ${ariaDisabledForcedRules()}
 ${sizeRules()}
+${cssButtonWidthClasses()}
 ${groupRules()}
 
 ${cssButtonGroupAttachedClasses()}`;
@@ -205,6 +210,7 @@ export function buttonClassCatalog(): string[] {
     ...webButtonVariants.map((variant) => `sw-button-${variant}`),
     'sw-button-disabled-neutral',
     ...buttonSizes.map((size) => `sw-button-${size}`),
+    ...buttonWidthClassCatalog(),
     'sw-button-group',
     ...buttonGroupJustifies.map((name) => `sw-button-group-${name}`),
     ...buttonGroupAttachedClassCatalog(),

@@ -196,7 +196,9 @@ export {
   type ButtonProps,
   type ButtonSize,
   type ButtonVariant,
+  type ButtonWidth,
 } from './components/Button.js';
+export { buttonWidths } from './css/css-button-width.js';
 export {
   buttonDisabledAppearances,
   webButtonVariants,
