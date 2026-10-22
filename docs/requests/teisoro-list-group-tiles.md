@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: accepted 2026-10-22 (Teisoro F-014-S06 "Acceptance and UX check", task 2632; a gap its acceptance review deferred, D-116, on the training board Main; plan approval under the owner's F-014 delegation of 2026-10-19 and the owner's 2026-10-22 go-ahead for the deferred gaps).
+Status: released in `@scalewing/react` 1.46.0 (PR #226; accepted 2026-10-22; Teisoro F-014-S06 "Acceptance and UX check", task 2632; a gap its acceptance review deferred, D-116, on the training board Main; plan approval under the owner's F-014 delegation of 2026-10-19 and the owner's 2026-10-22 go-ahead for the deferred gaps).
 Renderer: react
 Missing surface: one `ListGroup` whose rows are laid out as tiles in columns.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: the Library board draws New for you as a strip of up to three tiles across (each a white rounded panel holding one document's row), stacking one a row on a phone. A `ListGroup` is one panel with its rows stacked; Teisoro draws the strip as a `Grid` of three one-row `ListGroup`s, so a screen reader meets three lists of one item instead of one list of three ("list, 3 items"), and the strip's heading names none of them. Teisoro owns no CSS and cannot lay a list's items out in columns.

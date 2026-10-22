@@ -117,7 +117,9 @@ filling the row beside a ••• menu (`teisoro-button-full-width.md`, #225);
 `ListGroup` `variant="tiles"`, one list laid out as tiles
 (`teisoro-list-group-tiles.md`, #226); `FileField` `compact` and
 `onRemove`, a chosen photo on one row with its own Remove
-(`teisoro-file-field-compact.md`). Next: the release.
+(`teisoro-file-field-compact.md`, #227). Released in `@scalewing/react`
+1.46.0. Next: Teisoro pins 1.46.0 in its task 2632 (F-014-S06) and applies
+the new options in Training and its ChoiceTrack.
 
 Teisoro F-011-S02, release R1 "guided-form core": web `Stepper`
 (#113), `DenominationGrid` entry rows (#114), `Steps` / `Step` (#115)

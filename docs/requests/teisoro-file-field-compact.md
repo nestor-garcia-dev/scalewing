@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: accepted 2026-10-22 (Teisoro F-014-S06 "Acceptance and UX check", task 2632; a gap its acceptance review deferred, D-116, on the training board TrainingWrite; plan approval under the owner's F-014 delegation of 2026-10-19 and the owner's 2026-10-22 go-ahead for the deferred gaps).
+Status: released in `@scalewing/react` 1.46.0 (PR #227; accepted 2026-10-22; Teisoro F-014-S06 "Acceptance and UX check", task 2632; a gap its acceptance review deferred, D-116, on the training board TrainingWrite; plan approval under the owner's F-014 delegation of 2026-10-19 and the owner's 2026-10-22 go-ahead for the deferred gaps).
 Renderer: react
 Missing surface: a `FileField` at a text field's height whose chosen file has its own Remove.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: the page editor's board draws the cover photo beside the page's title, one 44 px row at the title field's height: a 48 × 32 thumbnail and the file's name. A chosen `FileField` is a taller row (name over detail and a "Choose another" button), and it has no way to remove the file, so Teisoro draws a separate ghost "Remove the cover photo" button under the field, a second row the board does not have. Teisoro owns no CSS and cannot shrink the field or put a button inside its frame.

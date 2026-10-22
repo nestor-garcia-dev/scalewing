@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: accepted 2026-10-22 (Teisoro F-014-S06 "Acceptance and UX check", task 2632; a gap its acceptance review deferred, D-116, on the training board TrainingProcedure; plan approval under the owner's F-014 delegation of 2026-10-19 and the owner's 2026-10-22 go-ahead for the deferred gaps).
+Status: released in `@scalewing/react` 1.46.0 (PR #225; accepted 2026-10-22; Teisoro F-014-S06 "Acceptance and UX check", task 2632; a gap its acceptance review deferred, D-116, on the training board TrainingProcedure; plan approval under the owner's F-014 delegation of 2026-10-19 and the owner's 2026-10-22 go-ahead for the deferred gaps).
 Renderer: react
 Missing surface: a `Button` that fills its row beside a sibling, or its column.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: on Teisoro's page reader the board draws Edit as a grey button filling the row under the details box, with the ••• menu, a 44 px square, at the row's end. `Button` is always as wide as its words and `Inline` has no way to let one child grow; Teisoro owns no CSS, so Edit stays a short button at the row's start with the menu beside it.
