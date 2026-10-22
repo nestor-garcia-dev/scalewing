@@ -115,8 +115,9 @@ four gaps its acceptance review deferred, one PR each: `Select`
 (`teisoro-select-labelledby.md`, #224); `Button` `width="full"`, an Edit
 filling the row beside a ••• menu (`teisoro-button-full-width.md`, #225);
 `ListGroup` `variant="tiles"`, one list laid out as tiles
-(`teisoro-list-group-tiles.md`). Next: `FileField` `compact` with its own
-Remove, then the release.
+(`teisoro-list-group-tiles.md`, #226); `FileField` `compact` and
+`onRemove`, a chosen photo on one row with its own Remove
+(`teisoro-file-field-compact.md`). Next: the release.
 
 Teisoro F-011-S02, release R1 "guided-form core": web `Stepper`
 (#113), `DenominationGrid` entry rows (#114), `Steps` / `Step` (#115)

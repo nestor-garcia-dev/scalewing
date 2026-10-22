@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 
 import { Glyph } from '../glyph.js';
 import { Section } from '../layout/Section.js';
+import { CompactCoverExample } from './file-field-compact.js';
 
 const page = 'M4 2h5l3 3v9H4zM9 2v3h3';
 const limit = 2 * 1024 * 1024;
@@ -69,7 +70,7 @@ export function FileFieldSection() {
   return (
     <Section
       id="file-field"
-      purpose="FileField is one file, chosen with the system picker or dropped on the field. Empty, it is a wide zone that opens the picker (dropLabel adds words for a pointer that can drag); chosen, it shows the file's name and a detail line the consumer writes, with a button to choose another. It has Field's label, description and error. It hands the File to onChange and shows what the consumer passes back as value: it never reads or uploads the file, and a dropped file is not filtered by accept, so the consumer checks it and says why in error. A value's preview, an image address the consumer makes from a chosen photo, draws a thumbnail before its name in place of the icon."
+      purpose="FileField is one file, chosen with the system picker or dropped on the field. Empty, it is a wide zone that opens the picker (dropLabel adds words for a pointer that can drag); chosen, it shows the file's name and a detail line the consumer writes, with a button to choose another. It has Field's label, description and error. It hands the File to onChange and shows what the consumer passes back as value: it never reads or uploads the file, and a dropped file is not filtered by accept, so the consumer checks it and says why in error. A value's preview, an image address the consumer makes from a chosen photo, draws a thumbnail before its name in place of the icon. onRemove with removeLabel adds Remove beside a chosen file. compact draws the field at a text field's height for a form row: the thumbnail and the name, cut to one line, are the button that chooses another, and Remove ends the row."
       title="FileField"
       usage={`<FileField
   label="Field guide"
@@ -86,6 +87,17 @@ export function FileFieldSection() {
     setError(problem);
     setGuide(problem ? null : { name: file.name, detail: describe(file) });
   }}
+/>
+
+<FileField
+  label="Guide cover"
+  compact
+  chooseLabel="Choose a photo"
+  changeLabel="Choose another"
+  removeLabel="Remove"
+  value={cover}
+  onChange={choose}
+  onRemove={() => setCover(null)}
 />`}
     >
       <Stack gap={5}>
@@ -133,6 +145,7 @@ export function FileFieldSection() {
           onChange={() => undefined}
         />
         <CoverPhotoField />
+        <CompactCoverExample />
         <FileField
           changeLabel="Choose another"
           chooseLabel="Choose a PDF"

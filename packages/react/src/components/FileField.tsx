@@ -4,9 +4,9 @@ import { type ChangeEvent, type ReactNode, useId, useRef } from 'react';
 
 import { cx } from '../class-names.js';
 import { tabStop } from '../tab-stop.js';
-import { Button } from './Button.js';
 import { FieldErrorRegion } from './FieldErrorRegion.js';
 import { FieldLabelText } from './FieldLabelText.js';
+import { ChosenFileCompact, ChosenFileRow } from './file-field/ChosenFile.js';
 import { assertFileField } from './file-field/file-field-checks.js';
 import { useFileDrop } from './file-field/use-file-drop.js';
 import { useSwapFocus } from './file-field/use-swap-focus.js';
@@ -56,37 +56,31 @@ export type FileFieldProps = {
    */
   icon?: ReactNode;
   disabled?: boolean;
+  /**
+   * The field at a text field's height, for a form row beside other
+   * fields: empty, one button with `chooseLabel`; chosen, the file's mark
+   * and its name cut to one line, pressed to choose another (named by
+   * `label` and `changeLabel`), the detail read but not drawn. Default
+   * false: the wide zone, and the chosen row with its change button.
+   */
+  compact?: boolean;
+  /**
+   * Called by Remove, drawn beside a chosen file when set with
+   * `removeLabel`: the consumer clears `value`. Set both or neither.
+   */
+  onRemove?: () => void;
+  /** Remove's words, such as "Remove"; named with `label` ("Remove Cover photo"). */
+  removeLabel?: string;
   /** Prefixes the ids the field gives its parts (its button is `${id}-button`). */
   id?: string;
 };
-
-/** Whether the consumer passed a mark to draw (not empty JSX). */
-function hasMark(icon: ReactNode): boolean {
-  return (
-    icon !== undefined &&
-    icon !== null &&
-    icon !== '' &&
-    typeof icon !== 'boolean'
-  );
-}
-
-/** Before a chosen file's name: its photo's thumbnail, else the consumer's mark. */
-function ChosenMark({ icon, preview }: { icon: ReactNode; preview?: string }) {
-  if (preview !== undefined)
-    return <img alt="" className="sw-file-field-preview" src={preview} />;
-  if (!hasMark(icon)) return null;
-  return (
-    <span aria-hidden="true" className="sw-file-field-icon">
-      {icon}
-    </span>
-  );
-}
 
 /**
  * One file chosen by a press or dropped on the field: empty, a wide zone
  * that opens the system picker; chosen, the file's name and detail (after
  * a thumbnail for a photo with a `preview`) with a button to choose
- * another. It hands the `File` to the consumer and shows what the
+ * another, and Remove with `onRemove`. `compact` draws both at a text
+ * field's height. It hands the `File` to the consumer and shows what the
  * consumer passes back as `value`; it never reads or uploads it.
  */
 export function FileField({
@@ -102,9 +96,20 @@ export function FileField({
   dropLabel,
   icon,
   disabled = false,
+  compact = false,
+  onRemove,
+  removeLabel,
   id,
 }: FileFieldProps) {
-  assertFileField({ label, chooseLabel, changeLabel, dropLabel, value });
+  assertFileField({
+    label,
+    chooseLabel,
+    changeLabel,
+    dropLabel,
+    value,
+    onRemove,
+    removeLabel,
+  });
   const ownId = useId();
   const baseId = id ?? ownId;
   const inputRef = useRef<HTMLInputElement>(null);
@@ -127,11 +132,17 @@ export function FileField({
     detail: `${baseId}-detail`,
     hint: `${baseId}-hint`,
     error: `${baseId}-error`,
+    remove: `${baseId}-remove`,
   };
+  const compactChosen = compact && chosen;
   // The error is in the button's description and the polite region; the
   // button role takes no aria-invalid.
+  // Compact and chosen, the button holds the file's name: it is named by
+  // the label and its hidden change words, the name only describing it.
   const naming = {
-    'aria-labelledby': `${ids.label} ${ids.button}`,
+    'aria-labelledby': compactChosen
+      ? `${ids.label} ${ids.button}-words`
+      : `${ids.label} ${ids.button}`,
     'aria-describedby':
       [
         chosen && ids.name,
@@ -144,6 +155,11 @@ export function FileField({
     id: ids.button,
   };
   const open = () => inputRef.current?.click();
+  const remove =
+    onRemove !== undefined && removeLabel !== undefined
+      ? { label: removeLabel, onRemove }
+      : null;
+  const ChosenFile = compact ? ChosenFileCompact : ChosenFileRow;
 
   return (
     <Stack
@@ -157,6 +173,7 @@ export function FileField({
         className={cx(
           'sw-file-field-frame',
           chosen ? 'sw-file-field-chosen' : 'sw-file-field-empty',
+          compact && 'sw-file-field-compact',
           drop.dragging && 'sw-file-field-dragging',
           disabled && 'sw-file-field-disabled',
         )}
@@ -175,29 +192,17 @@ export function FileField({
           type="file"
         />
         {chosen ? (
-          <>
-            <ChosenMark icon={icon} preview={value.preview} />
-            <span className="sw-file-field-file">
-              <span className="sw-file-field-name" id={ids.name}>
-                {value.name}
-              </span>
-              {value.detail ? (
-                <span className="sw-file-field-detail" id={ids.detail}>
-                  {value.detail}
-                </span>
-              ) : null}
-            </span>
-            <Button
-              {...naming}
-              disabled={disabled}
-              disabledAppearance="neutral"
-              onPress={open}
-              ref={buttonRef}
-              variant="neutral"
-            >
-              {changeLabel}
-            </Button>
-          </>
+          <ChosenFile
+            buttonRef={buttonRef}
+            changeLabel={changeLabel}
+            disabled={disabled}
+            icon={icon}
+            ids={ids}
+            naming={naming}
+            onChange={open}
+            remove={remove}
+            value={value}
+          />
         ) : (
           <button
             {...naming}

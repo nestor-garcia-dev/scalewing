@@ -148,7 +148,11 @@ test('FileField shows a chosen file, an error and a disabled field, light and da
   );
   // The long name wraps inside the row; the button stays whole at its end.
   const [row, button] = await Promise.all([
-    section.locator('.sw-file-field-chosen').boundingBox(),
+    section
+      .locator('.sw-file-field-chosen', {
+        hasText: 'wetland-survey-map-north-marsh-2026.pdf',
+      })
+      .boundingBox(),
     map.boundingBox(),
   ]);
   expect(row && button).toBeTruthy();
@@ -165,33 +169,32 @@ test('FileField shows a chosen file, an error and a disabled field, light and da
     name: 'Migration report Choose a PDF',
   });
   await expect(season).toBeDisabled();
-  await expect(section.locator('.sw-file-field-disabled')).toHaveCSS(
-    'border-top-style',
-    'dashed',
-  );
+  // The Migration report's frame (the compact example has one too).
+  const disabledFrame = section.locator('.sw-file-field-disabled', {
+    has: page.getByRole('button', { name: 'Migration report Choose a PDF' }),
+  });
+  await expect(disabledFrame).toHaveCSS('border-top-style', 'dashed');
   // A file dropped on the disabled field is refused: the browser keeps it.
-  const refused = await section
-    .locator('.sw-file-field-disabled')
-    .evaluate((frame) => {
-      const transfer = new DataTransfer();
-      transfer.items.add(new File(['%PDF-1.7'], 'report.pdf'));
-      const send = (type: string) =>
-        frame.dispatchEvent(
-          new DragEvent(type, {
-            bubbles: true,
-            cancelable: true,
-            dataTransfer: transfer,
-          }),
-        );
-      send('dragenter');
-      const over = send('dragover');
-      const drop = send('drop');
-      return {
-        over,
-        drop,
-        tinted: frame.classList.contains('sw-file-field-dragging'),
-      };
-    });
+  const refused = await disabledFrame.evaluate((frame) => {
+    const transfer = new DataTransfer();
+    transfer.items.add(new File(['%PDF-1.7'], 'report.pdf'));
+    const send = (type: string) =>
+      frame.dispatchEvent(
+        new DragEvent(type, {
+          bubbles: true,
+          cancelable: true,
+          dataTransfer: transfer,
+        }),
+      );
+    send('dragenter');
+    const over = send('dragover');
+    const drop = send('drop');
+    return {
+      over,
+      drop,
+      tinted: frame.classList.contains('sw-file-field-dragging'),
+    };
+  });
   expect(refused).toEqual({ over: false, drop: false, tinted: false });
 
   if (testInfo.project.name === 'forced-colors') return;

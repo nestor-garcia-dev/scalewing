@@ -1,0 +1,19 @@
+Scalewing request from Teisoro.
+
+Status: accepted 2026-10-22 (Teisoro F-014-S06 "Acceptance and UX check", task 2632; a gap its acceptance review deferred, D-116, on the training board TrainingWrite; plan approval under the owner's F-014 delegation of 2026-10-19 and the owner's 2026-10-22 go-ahead for the deferred gaps).
+Renderer: react
+Missing surface: a `FileField` at a text field's height whose chosen file has its own Remove.
+Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: the page editor's board draws the cover photo beside the page's title, one 44 px row at the title field's height: a 48 × 32 thumbnail and the file's name. A chosen `FileField` is a taller row (name over detail and a "Choose another" button), and it has no way to remove the file, so Teisoro draws a separate ghost "Remove the cover photo" button under the field, a second row the board does not have. Teisoro owns no CSS and cannot shrink the field or put a button inside its frame.
+Existing surface this might already be: `FileField` (`value.preview` from 1.44.0 draws the thumbnail; the change button); `Field` (a native file input cannot show a thumbnail or be styled).
+Workaround I almost used: a `Button` beside the field for Remove, which is what Teisoro has now: a row of its own, outside the field and not tied to its label.
+Teisoro use: `training/PageEditor`'s cover photo (both languages' tabs, in the add and edit forms and the language page).
+Proposed API: `compact?: boolean`; `onRemove?: () => void` with `removeLabel?: string`.
+
+## Accepted API (2026-10-22)
+
+- `onRemove` and `removeLabel`, together: Remove beside a chosen file. In the full field a neutral `Button` after the change button (both in `sw-file-field-actions` at the row's end); in a compact one a ghost `sm` button ending the row. Named by its words and the field's label (`aria-labelledby` its own id and the label's: "Remove Cover photo"). It calls `onRemove`; the consumer clears `value`, and the field's focus keeping moves focus to the empty field's button. Not drawn while the field is empty; disabled with the field (`sw-file-field-remove`; the compact ghost one fades, as the disabled row does).
+- `compact` (default false), class `sw-file-field-compact` on the frame: the md control height. Empty, the zone's words at its start with a smaller padding. Chosen, one `button` (`sw-file-field-pick`, the field's button id and focus ring inside the frame) holding the thumbnail or mark and the name (body weight, one line, ellipsis); it is named by the label and the visually hidden `changeLabel` words and described by the name and detail (the detail visually hidden). No change button beside it.
+- Refused with a `RangeError`: `onRemove` without `removeLabel` or the other way round, blank `removeLabel`.
+- A field with neither renders exactly as before. No new tokens or dependencies.
+
+Evidence: `file-field-compact.test.tsx` (the compact row: the pick button's name, description and classes, the hidden detail, Remove named with the label and calling `onRemove`, the picker opened from the row, the empty compact zone, no Remove while empty, both disabled; Remove in the full field after the change button; focus to the empty field after Remove; the refusals; the generated rules); gallery "FileField" (`#file-field-compact`: Guide cover beside Guide title); `apps/gallery/e2e/file-field-compact.spec.ts` on desktop-en, mobile-es and forced-colors (the field the title field's height empty and chosen, the thumbnail, cut name and Remove on one row inside the frame, beside the title at 1280 and under it at 390, the row's accessibility tree, Remove by keyboard leaving focus on the empty field, no sideways scroll; a disabled compact row and its Remove both off and faded alike), with `file-field.spec.ts` passing (its chosen-row and disabled-frame locators scoped to their own fields, as the section now holds a second of each).
