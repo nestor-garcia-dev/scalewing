@@ -144,6 +144,23 @@ A disabled native text control (`<input>`, `<select>` or `<textarea>` on the can
 
 `FileField` is one file chosen with the system picker or dropped on the field, with `Field`'s `label` (above it, or hidden with `labelVisuallyHidden`), `description` and `error` (a polite live region in place of the hint, the frame's edge in the danger color, `Mark` in forced colors). Empty, it is one wide zone on the subtle fill, a button named by the label and `chooseLabel` ("Field guide Choose a PDF"), with `dropLabel` ("or drop it here") muted after it where the pointer can drag (left out on a coarse pointer). Chosen (`value={{ name, detail? }}`), it shows the consumer's `icon` (hidden from assistive technology), the file's name over the muted `detail` and a neutral button named by the label and `changeLabel`, described by the name and detail. Either button opens the picker (the native input is hidden and out of the Tab order, its `accept` the list the picker offers); `onChange` receives the `File` chosen or dropped, the first of several, and when a choice or a drop swaps the zone and the chosen row while focus is in the field, focus moves to the button now there (focus the person moved elsewhere is never taken back). A file dragged over the field draws the accent edge and tint, its words in the text color. It never reads, checks or uploads the file, and a dropped file is not filtered by `accept`: check what you receive (type, size, its header) and say why in `error`, keeping the earlier `value` or none. `disabled` blocks the picker, refuses a dropped file and dashes the frame. `id` prefixes the ids of the field's parts. An empty `label`, `chooseLabel` or `changeLabel`, a blank `dropLabel`, or a `value` with no name or a blank detail throws a `RangeError`.
 
+`FileField` `onRemove` with `removeLabel` (set both or neither) adds Remove beside a chosen file: a neutral button after the change button in the full field (the two together at the row's end), named by its words and the label ("Remove Cover photo"), so two fields' Removes are told apart. It calls `onRemove`, and the consumer clears `value`; focus then moves to the empty field's button. Nothing is removed while the field is empty, and `disabled` disables it too. A lone `onRemove` or `removeLabel`, or blank `removeLabel` words, throws a `RangeError`.
+
+`FileField` `compact` draws the field at a text field's height (the md control, 44 px) for a form row beside other fields, such as a cover photo beside a title. Empty, the zone holds the choose words at its start. Chosen, the row is one button, the thumbnail (or the mark) and the file's name in the body weight cut to one line with an ellipsis, named by the label and `changeLabel` ("Cover photo Choose another") and described by the name and `detail` (read, not drawn); Remove, a quiet ghost button, ends the row. The label, description and error are as in the full field.
+
+```tsx
+<FileField
+  label="Cover photo"
+  compact
+  chooseLabel="Choose a photo"
+  changeLabel="Choose another"
+  removeLabel="Remove"
+  value={cover}
+  onChange={choose}
+  onRemove={() => setCover(null)}
+/>
+```
+
 A chosen photo can show itself: `value.preview` is the address of a small image of it, such as an object URL the consumer made from the `File` (and revokes when another is chosen), drawn as a 3:2 thumbnail (a space-8 wide, a space-6 tall, cropped to fill, at the small radius) before the name in place of `icon`. It is decorative (`alt=""`): the name beside it says which file it is. A blank `preview` throws a `RangeError`.
 
 ```tsx

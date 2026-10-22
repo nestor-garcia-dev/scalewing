@@ -1,6 +1,10 @@
 import { typographyVariants } from '@scalewing/tokens';
 
 import { disabledControlSurface } from './css-document.js';
+import {
+  cssFileFieldCompactClasses,
+  fileFieldCompactClassCatalog,
+} from './css-file-field-compact.js';
 import { coarsePointerQuery, touchTarget } from './touch-target.js';
 
 const label = typographyVariants.label;
@@ -179,6 +183,8 @@ ${zoneRules()}
 
 ${fileRules()}
 
+${cssFileFieldCompactClasses()}
+
 ${forcedColorRules()}`;
 }
 
@@ -198,5 +204,6 @@ export function fileFieldClassCatalog(): string[] {
     'sw-file-field-file',
     'sw-file-field-name',
     'sw-file-field-detail',
+    ...fileFieldCompactClassCatalog(),
   ];
 }
