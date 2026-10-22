@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: accepted 2026-10-22 (Teisoro F-014-S06 "Acceptance and UX check", task 2632; a gap its acceptance review deferred, D-116; plan approval under the owner's F-014 delegation of 2026-10-19 and the owner's 2026-10-22 go-ahead for the deferred gaps).
+Status: released in `@scalewing/react` 1.46.0 (PR #224; accepted 2026-10-22; Teisoro F-014-S06 "Acceptance and UX check", task 2632; a gap its acceptance review deferred, D-116; plan approval under the owner's F-014 delegation of 2026-10-19 and the owner's 2026-10-22 go-ahead for the deferred gaps).
 Renderer: react
 Missing surface: a `Select` named by words the page already draws, without a label of its own.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: Teisoro's `ChoiceTrack` is a short choice in every guided form (a payment's How, a check's deposit, a training document's kind and language). From `md` up it is a raised `SegmentedControl` named by the page's visible label through `aria-labelledby`; below `md` the same choice is a `Select`, which needs a `label`, so Teisoro passes the same words with `labelVisuallyHidden`. On a phone a screen reader then reads the page's label, then the select's hidden label (the same words again), then the combobox named by it: the label twice. `Select` draws its label itself and takes no `aria-labelledby`, so Teisoro cannot point it at the words it already shows.
