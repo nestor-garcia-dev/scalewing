@@ -178,6 +178,18 @@ A chosen photo can show itself: `value.preview` is the address of a small image 
 
 `Select` is a labeled listbox menu: supply `label`, `options` (`value` and `label`), a controlled `value` and `onChange`; `size="xs"` and `labelVisuallyHidden` are for toolbar chrome, and `action` is a last listbox command that never becomes the value. The closed trigger matches `Field`: its text is centred in the control, it ends in the `Accordion` chevron, and it is as wide as its longest option (as a native select is), so it keeps its width when the value changes; past the available width the label ellipsizes. The option labels that size it are drawn by CSS from `data-label`, so the trigger's text content and accessible value are only the current label. Its label is drawn as `Field`'s (the same label words and mark inside a `<label>` that keeps the canvas type), so a `Select` beside a `Field` lines up at the label and the control.
 
+`Select` `aria-labelledby`, in place of `label`, names the select by words the page already draws, such as a label above a choice that is a `SegmentedControl` on a wide screen and a `Select` on a phone. The select then draws no label of its own, hidden or shown, so a screen reader meets the words once (as the page's text, then as the combobox's name) instead of the page's words followed by the select's hidden copy of them; the open list is named by the same words. `required` still sets `aria-required` but draws no mark, since the page owns the words. `label` and `aria-labelledby` are exclusive: a blank `label` with no `aria-labelledby`, a blank `aria-labelledby`, or `aria-labelledby` with `label`, `labelVisuallyHidden` or `requiredMark` throws a `RangeError`. The id must name an element in the page while the select is shown: a missing one leaves the select unnamed, which neither the types nor the select can check.
+
+```tsx
+<Text as="span" id="den-habitat" variant="label">Den habitat</Text>
+<Select
+  aria-labelledby="den-habitat"
+  value={habitat}
+  onChange={setHabitat}
+  options={habitats}
+/>
+```
+
 `Select` `placeholder` shows in the closed trigger, in the muted color, while `value` matches no option (such as `''`); it is not an option, is never selected in the list and never becomes the value, and it counts toward the trigger's width. `required` marks the label with `Field`'s `aria-hidden` asterisk and sets `aria-required` on the trigger. `error` renders a message under the control (`sw-field-error`), links it by `aria-describedby`, sets `aria-invalid` and the danger border; like `Field`'s it is announced politely from a live region that is always there, never as an alert, and an empty string is no error. A blank `placeholder` throws a `RangeError`.
 
 ```tsx

@@ -9,7 +9,7 @@ import {
   Stack,
   Text,
 } from '@scalewing/react';
-import { useState } from 'react';
+import { useId, useState } from 'react';
 
 import { Section } from '../layout/Section.js';
 import { sampleHabitats, sampleHabitatsArabic } from '../sample-copy.js';
@@ -50,11 +50,13 @@ export function SelectSection() {
   const [cellHabitat, setCellHabitat] = useState('forest');
   const [arabicHabitat, setArabicHabitat] = useState('forest');
   const [toolbarFilter, setToolbarFilter] = useState('all');
+  const [denHabitat, setDenHabitat] = useState('forest');
+  const denHabitatId = useId();
 
   return (
     <Section
       id="select"
-      purpose="Select is a labeled listbox menu painted with the canvas. Field wraps a native OS picker; that open list cannot be themed. action is a last command in the list; it does not become the value. width full fills the container instead of sizing to the longest option. Its label row matches Field's, so a Select beside a text field lines up."
+      purpose="Select is a labeled listbox menu painted with the canvas. Field wraps a native OS picker; that open list cannot be themed. action is a last command in the list; it does not become the value. aria-labelledby names it by words the page already draws, such as a label above a choice that is a segmented track on a wide screen, and the select then draws no label of its own, so a screen reader reads the name once. width full fills the container instead of sizing to the longest option. Its label row matches Field's, so a Select beside a text field lines up."
       title="Select"
       usage={`<Select
   label="Watch range"
@@ -72,6 +74,14 @@ export function SelectSection() {
   value={reason}
   onChange={setReason}
   options={reasons}
+/>
+
+<Text as="span" id="den-habitat" variant="label">Den habitat</Text>
+<Select
+  aria-labelledby="den-habitat"
+  value={habitat}
+  onChange={setHabitat}
+  options={habitats}
 />
 
 <Select
@@ -125,6 +135,22 @@ export function SelectSection() {
           keeps its width when the value changes. The open list is glass, not
           the operating system menu. action is the last option and stays a
           command.
+        </Text>
+        <Stack gap={1}>
+          <Text as="span" id={denHabitatId} variant="label">
+            Den habitat
+          </Text>
+          <Select
+            aria-labelledby={denHabitatId}
+            onChange={setDenHabitat}
+            options={sampleHabitats}
+            value={denHabitat}
+          />
+        </Stack>
+        <Text color="muted" variant="caption">
+          Named by the page: the words above are the page's own, and the select,
+          named by them with aria-labelledby, draws no label, so they are read
+          once.
         </Text>
         <Grid columns={3} columnsBelow={{ md: 1 }} gap={3}>
           <Stack gap={3}>
