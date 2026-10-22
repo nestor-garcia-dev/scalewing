@@ -318,6 +318,8 @@ describe('ListRow', () => {
         labelledBy: undefined,
         variant: 'plain',
         maxHeight: { rows: 1 },
+        tileColumns: undefined,
+        hasFooter: false,
       }),
     ).not.toThrow();
     expect(() => render(<ListRow title="" />)).toThrow(

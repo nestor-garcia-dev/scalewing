@@ -5,14 +5,17 @@ import {
   listRowValueTones,
   type ListRowValueTone,
 } from './css/css-list-row.js';
+import { listTileColumnCounts } from './css/css-list-tiles.js';
 import { isOneOf } from './is-one-of.js';
 
 /**
  * `panel` (the default) is one bordered panel on the surface; `plain`
  * draws no panel and a hairline above the first row too, for rows inside
- * a surface that already has one, such as a Card.
+ * a surface that already has one, such as a Card; `tiles` lays the rows
+ * out as tiles, each its own panel, in equal columns (one a row below
+ * `md`).
  */
-export const listGroupVariants = ['panel', 'plain'] as const;
+export const listGroupVariants = ['panel', 'plain', 'tiles'] as const;
 export type ListGroupVariant = (typeof listGroupVariants)[number];
 
 /**
@@ -44,21 +47,38 @@ export type ListGroupInput = {
   labelledBy: string | undefined;
   variant: unknown;
   maxHeight: ListGroupMaxHeight | undefined;
+  tileColumns: unknown;
+  hasFooter: boolean;
 };
 
 /**
  * Fails closed on a ListGroup it cannot draw: an unknown variant, a
- * `maxHeight` that is not a whole row count from 1, or a bounded list with
- * no name (its scroll region is a keyboard stop and must say what it holds).
+ * `maxHeight` that is not a whole row count from 1, a bounded list with
+ * no name (its scroll region is a keyboard stop and must say what it
+ * holds), `tileColumns` other than 2, 3 or 4 or on a list that is not
+ * tiles, or tiles with `maxHeight` or a `footer` (tiles neither scroll as
+ * rows nor add up to a total).
  */
 export function assertListGroup({
   label,
   labelledBy,
   variant,
   maxHeight,
+  tileColumns,
+  hasFooter,
 }: ListGroupInput): void {
   if (!isOneOf(listGroupVariants, variant))
     throw new RangeError(`Unknown ListGroup variant: ${String(variant)}`);
+  if (tileColumns !== undefined) {
+    if (variant !== 'tiles')
+      throw new RangeError('ListGroup tileColumns needs variant="tiles"');
+    if (!(listTileColumnCounts as readonly unknown[]).includes(tileColumns))
+      throw new RangeError(
+        `ListGroup tileColumns must be 2, 3 or 4: ${String(tileColumns)}`,
+      );
+  }
+  if (variant === 'tiles' && (maxHeight !== undefined || hasFooter))
+    throw new RangeError('A ListGroup of tiles takes no maxHeight or footer');
   if (maxHeight === undefined) return;
   const rows: unknown =
     typeof maxHeight === 'object' && maxHeight !== null

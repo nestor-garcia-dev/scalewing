@@ -87,6 +87,10 @@ export {
   type ListRowTone,
   type ListRowValueTone,
 } from './list-options.js';
+export {
+  listTileColumnCounts,
+  type ListGroupTileColumns,
+} from './css/css-list-tiles.js';
 export { Checkbox, type CheckboxProps } from './components/Checkbox.js';
 export {
   Spinner,

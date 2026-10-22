@@ -11,6 +11,7 @@ import { useState } from 'react';
 import { Glyph } from '../glyph.js';
 import { Section } from '../layout/Section.js';
 import { colonyNights } from './list-group-data.js';
+import { ListGroupTilesExample } from './list-group-tiles.js';
 import { ListRowTrailingExample } from './list-row-trailing.js';
 import { ListRowTruncateExample } from './list-row-truncate.js';
 
@@ -34,7 +35,7 @@ export function ListGroupSection() {
   return (
     <Section
       id="list-group"
-      purpose="ListGroup is rows in one list with hairlines between them: a bordered panel of its own, or plain rows inside a Card (variant plain, with a hairline above the first row too). A ListRow has a title, an optional muted detail line, an optional value at its end (valueTone colours it, warning included for a figure that needs a look, valueBadge draws it as a Badge such as a status, valueDetail adds a muted line under it) and an optional leading mark, hidden from assistive technology. With onPress or href the whole row is the button or link, named by its title and value and described by its detail lines, with a chevron; selected makes it a choice with a check; without either it only states something. titleAppearance plain sets the title at the body weight. maxHeight bounds the list to a count of rows that scroll inside its own named region, shading an edge with more past it, and footer stays pinned under them, such as a total. unread marks a row new with an accent dot after its title, read as unreadLabel; tag puts a short status such as a Badge before the row's end, describing it; action holds a control such as an ActionMenu after the row, outside its press area. truncate keeps the title and the detail to one line each, ending in an ellipsis, the whole words still in the row's name, description and tooltip. titleLang marks a title in another language than the page's, such as a Spanish guide's on an English page, on the title's box (its words and the wordless unread dot), never its detail, tag or unread words."
+      purpose="ListGroup is rows in one list with hairlines between them: a bordered panel of its own, or plain rows inside a Card (variant plain, with a hairline above the first row too). A ListRow has a title, an optional muted detail line, an optional value at its end (valueTone colours it, warning included for a figure that needs a look, valueBadge draws it as a Badge such as a status, valueDetail adds a muted line under it) and an optional leading mark, hidden from assistive technology. With onPress or href the whole row is the button or link, named by its title and value and described by its detail lines, with a chevron; selected makes it a choice with a check; without either it only states something. titleAppearance plain sets the title at the body weight. maxHeight bounds the list to a count of rows that scroll inside its own named region, shading an edge with more past it, and footer stays pinned under them, such as a total. unread marks a row new with an accent dot after its title, read as unreadLabel; tag puts a short status such as a Badge before the row's end, describing it; action holds a control such as an ActionMenu after the row, outside its press area. truncate keeps the title and the detail to one line each, ending in an ellipsis, the whole words still in the row's name, description and tooltip. titleLang marks a title in another language than the page's, such as a Spanish guide's on an English page, on the title's box (its words and the wordless unread dot), never its detail, tag or unread words. variant tiles lays the same list's rows out as tiles, each its own panel, tileColumns (2, 3 or 4, default 3) across from md up and one a row below it."
       title="ListGroup"
       usage={`<Card>
   <Text as="h3" variant="label" id="look">Worth a look</Text>
@@ -47,6 +48,13 @@ export function ListGroupSection() {
     />
   </ListGroup>
 </Card>
+
+<ListGroup aria-labelledby="arrivals" variant="tiles">
+  {arrivals.map((arrival) => (
+    <ListRow key={arrival.id} title={arrival.title} detail={arrival.detail}
+      href={arrival.href} truncate accessory="none" />
+  ))}
+</ListGroup>
 
 <ListGroup
   aria-label="Nights"
@@ -85,6 +93,7 @@ export function ListGroupSection() {
 />`}
     >
       <Stack gap={5}>
+        <ListGroupTilesExample onOpen={setOpened} />
         <ListRowTrailingExample onOpen={setOpened} />
         <ListRowTruncateExample onOpen={setOpened} />
         <Card padding={4}>
