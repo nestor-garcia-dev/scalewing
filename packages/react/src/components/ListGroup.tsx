@@ -4,6 +4,10 @@ import { forwardRef, type ReactNode } from 'react';
 
 import { cx } from '../class-names.js';
 import {
+  type ListGroupTileColumns,
+  listTileColumnsClass,
+} from '../css/css-list-tiles.js';
+import {
   assertListGroup,
   listMaxHeightStyle,
   type ListGroupMaxHeight,
@@ -20,9 +24,13 @@ export type ListGroupProps = {
   'aria-labelledby'?: string;
   /**
    * `panel` (the default) is one bordered panel; `plain` draws no panel
-   * and a hairline above the first row too, for rows inside a Card.
+   * and a hairline above the first row too, for rows inside a Card;
+   * `tiles` sets each row on a panel of its own, in `tileColumns` equal
+   * columns from `md` up and one a row below it, still one list.
    */
   variant?: ListGroupVariant;
+  /** How many tiles share a row from `md` up (`tiles` only): 2, 3 (default) or 4. */
+  tileColumns?: ListGroupTileColumns;
   /**
    * Bounds the list to a row count of its own region, `{ rows }` rows of a
    * title and one detail line, where the rest scroll; the region is a named
@@ -40,8 +48,8 @@ export type ListGroupProps = {
 
 /**
  * Rows in one list (`ul`, its list role kept) with hairlines between them:
- * a panel of its own, or plain rows inside a surface. The ref reaches the
- * outer box.
+ * a panel of its own, or plain rows inside a surface; or the same list's
+ * rows as tiles, each a panel. The ref reaches the outer box.
  */
 export const ListGroup = forwardRef<HTMLDivElement, ListGroupProps>(
   function ListGroup(
@@ -50,6 +58,7 @@ export const ListGroup = forwardRef<HTMLDivElement, ListGroupProps>(
       'aria-label': label,
       'aria-labelledby': labelledBy,
       variant = 'panel',
+      tileColumns,
       maxHeight,
       footer,
       className,
@@ -57,7 +66,14 @@ export const ListGroup = forwardRef<HTMLDivElement, ListGroupProps>(
     },
     ref,
   ) {
-    assertListGroup({ label, labelledBy, variant, maxHeight });
+    assertListGroup({
+      label,
+      labelledBy,
+      variant,
+      maxHeight,
+      tileColumns,
+      hasFooter: footer !== undefined,
+    });
     const list = (
       <ul
         aria-label={label}
@@ -73,7 +89,12 @@ export const ListGroup = forwardRef<HTMLDivElement, ListGroupProps>(
     );
     return (
       <div
-        className={cx('sw-list-group', `sw-list-group-${variant}`, className)}
+        className={cx(
+          'sw-list-group',
+          `sw-list-group-${variant}`,
+          variant === 'tiles' && listTileColumnsClass(tileColumns ?? 3),
+          className,
+        )}
         id={id}
         ref={ref}
       >

@@ -9,6 +9,10 @@ import {
   cssListRowTruncateClasses,
   listRowTruncateClassCatalog,
 } from './css-list-row-truncate.js';
+import {
+  cssListTilesClasses,
+  listTilesClassCatalog,
+} from './css-list-tiles.js';
 import { blockEdgeShadeRules, scrollRegionRules } from './css-scroll-region.js';
 
 const label = typographyVariants.label;
@@ -88,7 +92,9 @@ ${cssListRowClasses()}
 
 ${cssListRowTrailingClasses()}
 
-${cssListRowTruncateClasses()}`;
+${cssListRowTruncateClasses()}
+
+${cssListTilesClasses()}`;
 }
 
 export function listClassCatalog(): string[] {
@@ -100,6 +106,7 @@ export function listClassCatalog(): string[] {
     'sw-list-group-plain',
     'sw-list-group-scroll',
     'sw-list-group-footer',
+    ...listTilesClassCatalog(),
     ...listRowClassCatalog(),
     ...listRowTrailingClassCatalog(),
     ...listRowTruncateClassCatalog(),
