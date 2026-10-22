@@ -11,6 +11,10 @@ import {
   FieldLabelText,
   type RequiredMark,
 } from './FieldLabelText.js';
+import {
+  assertSelectNaming,
+  type SelectNaming,
+} from './select/select-naming.js';
 import { SelectListbox } from './select/SelectListbox.js';
 import { SelectValue } from './select/SelectValue.js';
 import { useSelectList } from './select/use-select-list.js';
@@ -31,10 +35,10 @@ export type SelectAction = {
   onPress: () => void;
 };
 
-export type SelectProps = {
+export type { SelectNaming };
+
+export type SelectProps = SelectNaming & {
   action?: SelectAction;
-  label: string;
-  labelVisuallyHidden?: boolean;
   onChange: (value: string) => void;
   options: readonly SelectOption[];
   size?: FieldSize;
@@ -44,7 +48,10 @@ export type SelectProps = {
    * (such as ''). It is not an option and never becomes the value.
    */
   placeholder?: string;
-  /** Marks the label as Field does and sets `aria-required`. */
+  /**
+   * Marks the label as Field does and sets `aria-required` (named by
+   * `aria-labelledby`, only `aria-required`: the page draws the words).
+   */
   required?: boolean;
   /**
    * `hidden` leaves out the label's " *" while the control stays required
@@ -66,21 +73,24 @@ export type SelectProps = {
 export function Select({
   action,
   label,
-  labelVisuallyHidden = false,
+  labelVisuallyHidden,
+  'aria-labelledby': labelledBy,
   onChange,
   options,
   size = 'md',
   value,
   placeholder,
   required = false,
-  requiredMark = 'visible',
+  requiredMark,
   error,
   width = 'content',
 }: SelectProps) {
-  assertRequiredMark(requiredMark);
+  assertSelectNaming({ label, labelVisuallyHidden, labelledBy, requiredMark });
+  assertRequiredMark(requiredMark ?? 'visible');
   if (placeholder !== undefined && !placeholder.trim())
     throw new RangeError('placeholder must not be empty');
-  const labelId = useId();
+  const ownLabelId = useId();
+  const labelId = labelledBy ?? ownLabelId;
   const triggerId = useId();
   const listId = useId();
   const optionIdPrefix = useId();
@@ -110,19 +120,22 @@ export function Select({
         error && 'sw-select-invalid',
       )}
     >
-      <Stack gap={labelVisuallyHidden ? 0 : 1}>
+      <Stack gap={label === undefined || labelVisuallyHidden ? 0 : 1}>
+        {/* Named by the page's words (aria-labelledby): no label at all. */}
         {/* Field's label words and mark inside a label that keeps the
             canvas type, so the label row and its gap to the trigger match a
             Field beside it (the label row was 5 px shorter). */}
-        <label htmlFor={triggerId} id={labelId}>
-          <FieldLabelText
-            label={label}
-            required={required}
-            requiredMark={requiredMark}
-            size={size}
-            visuallyHidden={labelVisuallyHidden}
-          />
-        </label>
+        {label === undefined ? null : (
+          <label htmlFor={triggerId} id={labelId}>
+            <FieldLabelText
+              label={label}
+              required={required}
+              requiredMark={requiredMark ?? 'visible'}
+              size={size}
+              visuallyHidden={labelVisuallyHidden ?? false}
+            />
+          </label>
+        )}
         <div className="sw-select-control">
           <button
             aria-activedescendant={

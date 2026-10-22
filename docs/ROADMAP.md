@@ -109,6 +109,12 @@ and body in another language than the page's
 1.45.0. Next: Teisoro pins 1.45.0 in its task 2628 (F-014-S06) and applies
 the new options in Training.
 
+Teisoro F-014-S06, release T4 "the last training gaps" (task 2632), the
+four gaps its acceptance review deferred, one PR each: `Select`
+`aria-labelledby`, a select named by the page's words, read once
+(`teisoro-select-labelledby.md`). Next: `ListGroup` tiles, `FileField`
+`compact` with its own Remove, `Button` `width="full"`, then the release.
+
 Teisoro F-011-S02, release R1 "guided-form core": web `Stepper`
 (#113), `DenominationGrid` entry rows (#114), `Steps` / `Step` (#115)
 and `ActionBar` `summary` (#116), released in `@scalewing/react` 1.27.0.
