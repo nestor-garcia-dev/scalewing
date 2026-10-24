@@ -1,0 +1,5 @@
+---
+'@scalewing/react': minor
+---
+
+`CommandPalette` and `CommandPaletteTrigger`. CommandPalette is a search over the product on the top layer: a modal dialog near the window's top holding a field (an ARIA combobox) over an always-open listbox of grouped results the consumer filters from `query`; ↑/↓ move the active row (wrapping, the Enter key cap on it), Enter or a press asks to close and then runs the item; Escape, a press outside or the shortcut again close it and focus returns to where it was. A polite status says `countText`, `emptyText` or `loadingText`; `hint` is a footer line; `shortcut="mod+k"` listens for ⌘K (Apple) or Ctrl+K, left alone in another text field. CommandPaletteTrigger is the search-looking pill with a key hint that opens it, or its glyph alone with `compact`. 44 px targets on a coarse pointer and forced colours covered. New classes `sw-command-palette*`; invalid words, groups or items throw a `RangeError`. No new tokens or dependencies. Request: `docs/requests/futmas-command-palette.md`.
