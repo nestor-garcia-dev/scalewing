@@ -5,6 +5,9 @@ export const glyphTileSizes = ['sm', 'md', 'lg'] as const;
 /** `sm` 24, `md` 28 (the xs control height), `lg` 32. */
 export type GlyphTileSize = (typeof glyphTileSizes)[number];
 
+/** The most letters a tile holds, such as a three-letter crest ("NSL"). */
+export const glyphTileLetterLimit = 3;
+
 const tileSide: Record<GlyphTileSize, string> = {
   sm: 'var(--sw-space-5)',
   md: 'var(--sw-control-xs-min-height)',
@@ -24,7 +27,7 @@ function sizeRules(): string {
   return Object.entries(tileSide)
     .map(
       ([size, side]) =>
-        `.sw-glyph-tile-${size} { height: ${side}; width: ${side}; }`,
+        `.sw-glyph-tile-${size} { --sw-glyph-tile-side: ${side}; height: ${side}; width: ${side}; }`,
     )
     .join('\n');
 }
@@ -54,6 +57,28 @@ export function cssGlyphTileClasses(): string {
   width: var(--sw-space-4);
 }
 
+/*
+ * Letters in place of a glyph: one line, centred, weight 600, the line as
+ * tall as the letters, sized from the tile's side rather than the text
+ * round it, so they fit at every size: one letter at half the side, two
+ * at 0.42 of it, three at a third, tightened a little, so even a wide
+ * trio ("WMW") fits inside the smallest tile.
+ */
+.sw-glyph-tile-text {
+  font-weight: 600;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.sw-glyph-tile-text-1 { font-size: calc(var(--sw-glyph-tile-side) / 2); }
+
+.sw-glyph-tile-text-2 { font-size: calc(var(--sw-glyph-tile-side) * 0.42); }
+
+.sw-glyph-tile-text-3 {
+  font-size: calc(var(--sw-glyph-tile-side) / 3);
+  letter-spacing: -0.02em;
+}
+
 ${hueRules()}
 
 ${sizeRules()}
@@ -68,5 +93,9 @@ export function glyphTileClassCatalog(): string[] {
     'sw-glyph-tile',
     ...categoricalColorKeys.map((key) => `sw-glyph-tile-${key}`),
     ...glyphTileSizes.map((size) => `sw-glyph-tile-${size}`),
+    'sw-glyph-tile-text',
+    'sw-glyph-tile-text-1',
+    'sw-glyph-tile-text-2',
+    'sw-glyph-tile-text-3',
   ];
 }

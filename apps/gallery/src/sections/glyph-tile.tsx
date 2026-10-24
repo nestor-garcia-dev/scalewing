@@ -27,14 +27,16 @@ export function GlyphTileSection() {
   return (
     <Section
       id="glyph-tile"
-      purpose="GlyphTile is a small rounded square in a categorical colour holding the consumer's glyph in white: the mark of a kind beside its name. The hues (green, blue, orange, purple, teal, rose, and neutral) come from @scalewing/tokens and tell kinds apart without meaning; each keeps a white glyph at 3:1. It is decorative, so the visible name beside it carries the meaning. Sizes sm 24, md 28 and lg 32."
+      purpose="GlyphTile is a small rounded square in a categorical colour holding the consumer's glyph in white: the mark of a kind beside its name. The hues (green, blue, orange, purple, teal, rose, and neutral) come from @scalewing/tokens and tell kinds apart without meaning; each keeps a white glyph at 3:1. It is decorative, so the visible name beside it carries the meaning. Sizes sm 24, md 28 and lg 32. It may hold up to three letters in place of a glyph, such as a station's initials: the letters are sized from the tile, not the text round it (one at half its side, two at 0.42, three at a third), so every count fits every size, even a wide trio in the smallest tile."
       title="GlyphTile"
       usage={`<Inline gap={2} align="center">
   <GlyphTile hue="teal"><Waves /></GlyphTile>
   <Text>Reef</Text>
 </Inline>
 
-<GlyphTile hue="neutral" size="lg"><Plus /></GlyphTile>`}
+<GlyphTile hue="neutral" size="lg"><Plus /></GlyphTile>
+
+<GlyphTile hue="blue" size="sm">NSL</GlyphTile>`}
     >
       <Stack gap={4}>
         {(['sm', 'md', 'lg'] as const).map((size) => (
@@ -53,6 +55,30 @@ export function GlyphTileSection() {
                 <Glyph grid={24} path={leaf} size={24} />
               </GlyphTile>
               <Text>{habitat.name}</Text>
+            </Inline>
+          ))}
+        </Stack>
+        <Stack gap={2}>
+          {(['sm', 'md', 'lg'] as const).map((size) => (
+            <Inline
+              align="center"
+              data-testid={`glyph-letters-${size}`}
+              gap={2}
+              key={size}
+            >
+              <GlyphTile hue="neutral" size={size}>
+                H
+              </GlyphTile>
+              <GlyphTile hue="teal" size={size}>
+                HM
+              </GlyphTile>
+              <GlyphTile hue="blue" size={size}>
+                NSL
+              </GlyphTile>
+              <GlyphTile hue="purple" size={size}>
+                WMW
+              </GlyphTile>
+              <Text variant="caption">Station initials, {size}</Text>
             </Inline>
           ))}
         </Stack>
