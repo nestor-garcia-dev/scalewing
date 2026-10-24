@@ -1,5 +1,6 @@
 import { ActionMenuSection } from './sections/action-menu.js';
 import { CommandPaletteSection } from './sections/command-palette.js';
+import { BandSection } from './sections/band.js';
 import { ContextSwitcherSection } from './sections/context-switcher.js';
 import { FileFieldSection } from './sections/file-field.js';
 import { DocumentViewerSection } from './sections/document-viewer.js';
@@ -221,6 +222,7 @@ export const catalog = [
     group: 'controls',
     Section: FilterChipsRowSection,
   },
+  { id: 'band', label: 'Band', group: 'layout', Section: BandSection },
   {
     id: 'separator',
     label: 'Separator',
