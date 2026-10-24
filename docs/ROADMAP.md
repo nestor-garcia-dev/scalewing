@@ -132,8 +132,9 @@ request and PR against main.
 
 Teisoro F-017-S02, release S1 "the public site's frame" (Teisoro task
 2705), one PR each: tokens `inverse` and `onInverse`, a dark band's
-colours (`teisoro-inverse-colors.md`); then the React `Band`, `SiteFooter`
-and `SiteHeader`. Next: release `@scalewing/tokens` and
+colours (`teisoro-inverse-colors.md`, #233); the React `Band`, a
+full-width page band with the dark inverse one (`teisoro-band.md`); then
+`ButtonLink`, `SiteFooter` and `SiteHeader`. Next: release `@scalewing/tokens` and
 `@scalewing/react` minors; Teisoro pins both in task 2705.
 
 Teisoro F-011-S02, release R1 "guided-form core": web `Stepper`

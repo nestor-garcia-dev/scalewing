@@ -31,6 +31,7 @@ import { glyphTileClassCatalog } from './css-glyph-tile.js';
 import { tooltipClassCatalog } from './css-tooltip.js';
 import { infoTipClassCatalog } from './css-info-tip.js';
 import { separatorClassCatalog } from './css-separator.js';
+import { bandClassCatalog } from './css-band.js';
 import { statTileClassCatalog } from './css-stat-tile.js';
 import { descriptionListClassCatalog } from './css-description-list.js';
 import { tabsClassCatalog } from './css-tabs.js';
@@ -142,6 +143,7 @@ export function utilityClassCatalog(): string[] {
     ...tooltipClassCatalog(),
     ...infoTipClassCatalog(),
     ...separatorClassCatalog(),
+    ...bandClassCatalog(),
     ...statTileClassCatalog(),
     ...descriptionListClassCatalog(),
     ...tabsClassCatalog(),
