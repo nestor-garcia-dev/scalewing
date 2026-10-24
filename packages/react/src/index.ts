@@ -310,6 +310,16 @@ export {
   type NavCountTone,
 } from './components/NavCount.js';
 export {
+  FixtureGroup,
+  type FixtureGroupProps,
+} from './components/FixtureGroup.js';
+export {
+  FixtureRow,
+  type FixtureRowProps,
+  type FixtureSide,
+  type FixtureStatus,
+} from './components/FixtureRow.js';
+export {
   CommandPalette,
   commandPaletteShortcuts,
   type CommandPaletteGroup,

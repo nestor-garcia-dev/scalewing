@@ -123,9 +123,9 @@ ${trigger}:focus-visible {
 }
 
 /*
- * The appearances: \`framed\` the field's glass fill inside the border
- * hairline; \`pill\` the same hairline on the surface, fully rounded, at
- * label weight; \`icon\` a round button as wide as it is tall, the glyph
+ * The appearances: `framed` the field's glass fill inside the border
+ * hairline; `pill` the same hairline on the surface, fully rounded, at
+ * label weight; `icon` a round button as wide as it is tall, the glyph
  * centred and muted, no chevron. Two classes, so each outranks the base.
  */
 function appearanceRules(): string {

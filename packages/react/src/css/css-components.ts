@@ -11,6 +11,7 @@ import { cssDateRangeClasses } from './css-date-range.js';
 import { cssFileFieldClasses } from './css-file-field.js';
 import { cssArticleClasses } from './css-article.js';
 import { cssDocumentViewerClasses } from './css-document-viewer.js';
+import { cssFixtureClasses } from './css-fixture.js';
 import { cssListClasses } from './css-list.js';
 import { cssMarkdownClasses } from './css-markdown.js';
 import { cssCountPillClasses } from './css-count-pill.js';
@@ -166,6 +167,8 @@ ${cssCalendarButtonClasses()}
 ${cssDateRangeClasses()}
 
 ${cssListClasses()}
+
+${cssFixtureClasses()}
 
 ${cssFileFieldClasses()}
 

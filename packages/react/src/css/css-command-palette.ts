@@ -121,7 +121,7 @@ function frameRules(): string {
 
 /*
  * A result: its mark, its label over its muted detail, and on the active
- * row (\`aria-selected\`, the arrow keys' or the pointer's) the quiet fill
+ * row (`aria-selected`, the arrow keys' or the pointer's) the quiet fill
  * and the Enter key cap at the end. The sm control height, 44 px on a
  * coarse pointer. On the fill the detail moves toward the text colour to
  * keep 4.5:1. Forced colours draw the active row in Highlight.
@@ -189,8 +189,8 @@ function itemRules(): string {
 
 /*
  * CommandPalette and CommandPaletteTrigger (see components/CommandPalette.tsx):
- * the trigger is \`css-command-palette-trigger.ts\`, the shared key cap
- * \`css-command-palette-key.ts\`.
+ * the trigger is `css-command-palette-trigger.ts`, the shared key cap
+ * `css-command-palette-key.ts`.
  */
 export function cssCommandPaletteClasses(): string {
   return `${cssCommandPaletteKeyClasses()}
