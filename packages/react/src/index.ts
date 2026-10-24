@@ -98,6 +98,12 @@ export {
   type SpinnerSize,
 } from './components/Spinner.js';
 export {
+  Skeleton,
+  skeletonVariants,
+  type SkeletonProps,
+  type SkeletonVariant,
+} from './components/Skeleton.js';
+export {
   GlyphTile,
   glyphTileSizes,
   type GlyphTileHue,

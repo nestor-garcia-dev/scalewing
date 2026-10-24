@@ -26,6 +26,7 @@ import {
   Checkbox,
   RadioGroup,
   SectionNav,
+  Skeleton,
   Spinner,
   Pagination,
   Progress,
@@ -816,6 +817,13 @@ import workerSrc from '@scalewing/react/document-viewer-worker?worker&url';
 The consumer needs no PDF.js dependency of its own. With another bundler, build `@scalewing/react/document-viewer-worker` as a module worker (`new Worker(url, { type: 'module' })`) and pass the built file's URL. `pdfjs-dist` has an optional native canvas for Node (`@napi-rs/canvas`, 28 to 35 MB per platform) that a browser never loads; a pnpm consumer can skip it with `ignoredOptionalDependencies`. `pdfjs-dist` asks for Node 22.13 or later.
 
 `Spinner` shows indeterminate loading in small, medium, or large sizes. Supply localized `label` for the one announced status in a loading region. Use `decorative` on additional indicators beside that status so screen readers do not hear the same message repeatedly. Reduced motion leaves a static accented ring.
+
+`Skeleton` is grey placeholder bars where content is loading, in place of a spinner for a card or a list that is coming: a polite status named by `label` ("Loading this week's games"), read once, its bars hidden from assistive technology. `variant="lines"` (default, `skeletonVariants`) draws `lines` bars of text (1 to 6, 3 by default) with ragged ends, the last of several shorter; `variant="rows"` draws `lines` list rows, a mark and a bar at the 44 px row height with hairlines between. The bars are the quiet grey fill and pulse gently, still under reduced motion; forced colours draw their edges. Put one Skeleton where each loading block will be, at its width. Each Skeleton announces its label once as it appears, so several at once are several announcements: keep one named status per loading region (other placeholders in that region can wait for it), or accept that each is read. Removing a Skeleton announces nothing, so say "loaded" another way if it matters (a heading the content brings, or a status of your own). Blank words, `lines` outside 1–6 or an unknown `variant` throw a `RangeError`.
+
+```tsx
+<Skeleton label="Loading this week's sightings" />
+<Skeleton label="Loading rangers" variant="rows" lines={4} />
+```
 
 `GlyphTile` is a small rounded square in a categorical colour with the consumer's glyph in white: the mark of a kind beside its name, such as a service in a list. `hue` is one of the `@scalewing/tokens` categorical colours (`green`, `blue`, `orange`, `purple`, `teal`, `rose`, or `neutral`); which kind takes which hue is yours. `size` is `sm` (24), `md` (28, the default) or `lg` (32); the glyph is drawn at spacing step 4 in white, which keeps 3:1 on every fill; pass the SVG (a Lucide component) as the tile's direct child, since only a direct-child SVG is sized. It is always `aria-hidden`, so put the kind's name in visible text beside it. An unknown `hue` or `size` throws a `RangeError`.
 

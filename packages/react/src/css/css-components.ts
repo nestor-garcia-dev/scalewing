@@ -40,6 +40,7 @@ import { cssSplitClasses } from './css-split.js';
 import { cssSwitchClasses } from './css-switch.js';
 import { cssTextClasses } from './css-text.js';
 import { cssFontMonoClasses } from './css-font-mono.js';
+import { cssSkeletonClasses } from './css-skeleton.js';
 import { cssSpinnerClasses } from './css-spinner.js';
 import { cssProgressClasses } from './css-progress.js';
 import { cssNoticeClasses } from './css-notice.js';
@@ -220,6 +221,8 @@ ${cssActionBarClasses()}
 ${cssSwitchClasses()}
 
 ${cssSpinnerClasses()}
+
+${cssSkeletonClasses()}
 
 ${cssProgressClasses()}
 
