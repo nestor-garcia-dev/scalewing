@@ -1,0 +1,72 @@
+import { Stack, Text } from '@scalewing/react';
+
+import { appShellFrameQuery } from '../frames/app-shell-frame.js';
+import { Section } from '../layout/Section.js';
+
+const frames = [
+  {
+    id: 'laptop',
+    title: 'Full sidebar, a 1366 by 680 laptop window',
+    caption: 'From 75rem: the full sidebar, 1366 × 680',
+  },
+  {
+    id: 'landscape',
+    title: 'Icon rail, an iPad in landscape',
+    caption: 'From lg to 75rem: the rail, 1180 × 820',
+  },
+  {
+    id: 'portrait',
+    title: 'Top bar and menu drawer, an iPad in portrait',
+    caption: 'Below lg: the bar and its drawer, 820 × 1180',
+  },
+] as const;
+
+export function AppShellSection() {
+  const src = `?${appShellFrameQuery}`;
+  return (
+    <Section
+      id="app-shell"
+      purpose="AppShell is a web workspace's frame: a pinned side navigation of grouped destinations beside the page, which is main and scrolls with the document. From 75rem the sidebar is full: the header (a workspace switcher), the groups under muted captions, each destination's glyph, label and count pill, and the footer (the account), sticky at the window's height with only the list scrolling; the current destination takes a quiet fill. From lg to 75rem it is a rail of glyphs: labels hidden but still each link's name and shown in a tooltip, a count as the pill on the glyph, groups split by hairlines, railHeader and railFooter in place of the header and footer. Below lg a sticky top bar holds the menu button, the title and barEnd; the menu opens the same header, navigation and footer in a modal drawer from the inline start that Escape, a press outside, its close button or choosing a destination closes, focus returning to the menu button. onNavigate takes a plain press for a client router. Each frame below is the shell alone in an iframe at a device's window size, drawn at two fifths."
+      title="AppShell"
+      usage={`<AppShell
+  navLabel="Field station"
+  groups={[
+    { id: 'field', items: [{ id: 'today', label: 'Today', href: '/today', icon: <CalendarIcon />, current: 'page' }] },
+    { id: 'reserves', label: 'Reserves', items: [
+      { id: 'wetlands', label: 'Wetlands', href: '/wetlands', icon: <WavesIcon />, count: 3, countLabel: '3 sightings to check' },
+    ] },
+  ]}
+  onNavigate={(item) => navigate(item.href)}
+  header={<StationMenu />}
+  railHeader={<StationTile />}
+  footer={<AccountMenu />}
+  barTitle={<Text variant="label">Heron Marsh</Text>}
+  menuIcon={<MenuIcon />}
+  labels={{ openMenu: 'Open menu', closeMenu: 'Close menu' }}
+>
+  {page}
+</AppShell>`}
+    >
+      <Stack gap={3}>
+        <div className="gallery-shell-frames">
+          {frames.map((frame) => (
+            <Stack gap={2} key={frame.id}>
+              <div
+                className={`gallery-shell-frame gallery-shell-frame-${frame.id}`}
+              >
+                <iframe loading="lazy" src={src} title={frame.title} />
+              </div>
+              <Text color="muted" variant="caption">
+                {frame.caption}
+              </Text>
+            </Stack>
+          ))}
+        </div>
+        <Text color="muted" variant="caption">
+          Open the gallery with {src} after its address to see the field station
+          full size, and resize the window.
+        </Text>
+      </Stack>
+    </Section>
+  );
+}

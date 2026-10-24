@@ -10,6 +10,11 @@ import {
 } from '../css/css-section-nav-filled.js';
 import { tabStop } from '../tab-stop.js';
 import { plainPress } from './link-press.js';
+import {
+  assertNavItems,
+  navItemAriaCurrent,
+  type NavItemCurrent,
+} from './nav-items.js';
 
 export type { SectionNavAppearance };
 export { sectionNavAppearances } from '../css/css-section-nav-filled.js';
@@ -22,7 +27,7 @@ export type SectionNavItem = {
    * `page` when the item is this page, `location` (or `true`) when the page
    * is inside the item's section, such as a detail page under its list.
    */
-  current?: 'page' | 'location' | boolean;
+  current?: NavItemCurrent;
   /** A decorative glyph before the label. */
   icon?: ReactNode;
   /**
@@ -64,38 +69,6 @@ export type SectionNavProps = AccessibleName & {
   appearance?: SectionNavAppearance;
 };
 
-function ariaCurrent(
-  current: SectionNavItem['current'],
-): 'page' | 'location' | 'true' | undefined {
-  if (current === true) return 'true';
-  return current || undefined;
-}
-
-function assertItems(items: readonly SectionNavItem[]) {
-  if (items.some((item) => !item.id.trim() || !item.label.trim()))
-    throw new RangeError('SectionNav items need nonempty ids and labels');
-  if (new Set(items.map((item) => item.id)).size !== items.length)
-    throw new RangeError('SectionNav items need unique ids');
-  if (
-    items.some(
-      (item) =>
-        item.count !== undefined &&
-        (!Number.isInteger(item.count) || item.count < 0),
-    )
-  )
-    throw new RangeError('SectionNav item counts are whole numbers from 0');
-  if (
-    items.some(
-      (item) =>
-        item.countLabel !== undefined &&
-        (!item.countLabel.trim() || item.count === undefined),
-    )
-  )
-    throw new RangeError(
-      'SectionNav item countLabel is nonempty and comes with a count',
-    );
-}
-
 function assertBreakpoint(verticalFrom: Breakpoint | undefined) {
   if (verticalFrom !== undefined && !breakpoints.includes(verticalFrom))
     throw new RangeError(
@@ -116,7 +89,7 @@ export function SectionNav({
   verticalFrom,
   ...label
 }: SectionNavProps) {
-  assertItems(items);
+  assertNavItems('SectionNav', items);
   assertBreakpoint(verticalFrom);
   assertSectionNavAppearance(appearance);
   return (
@@ -132,7 +105,7 @@ export function SectionNav({
         {items.map((item) => (
           <li key={item.id}>
             <a
-              aria-current={ariaCurrent(item.current)}
+              aria-current={navItemAriaCurrent(item.current)}
               className="sw-section-nav-link"
               href={item.href}
               tabIndex={tabStop}

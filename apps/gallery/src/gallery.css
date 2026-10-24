@@ -141,3 +141,49 @@
 .gallery-phone-frame {
   max-width: 22.5rem;
 }
+
+/* AppShell frames: the shell rendered alone (?frame=app-shell) in an
+   iframe at a device's window size, drawn at two fifths so three fit. */
+.gallery-shell-frames {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sw-space-4);
+  overflow-x: auto;
+}
+
+.gallery-shell-frame {
+  --gallery-frame-scale: 0.4;
+  border: 1px solid var(--sw-color-border);
+  border-radius: var(--sw-radius-sm);
+  flex: none;
+  height: calc(var(--gallery-frame-height) * var(--gallery-frame-scale));
+  overflow: hidden;
+  width: calc(var(--gallery-frame-width) * var(--gallery-frame-scale));
+}
+
+.gallery-shell-frame iframe {
+  border: 0;
+  display: block;
+  height: var(--gallery-frame-height);
+  transform: scale(var(--gallery-frame-scale));
+  transform-origin: 0 0;
+  width: var(--gallery-frame-width);
+}
+
+/* A 1366 x 680 laptop window: the full sidebar. */
+.gallery-shell-frame-laptop {
+  --gallery-frame-width: 85.375rem;
+  --gallery-frame-height: 42.5rem;
+}
+
+/* An iPad in landscape, 1180 x 820: the rail. */
+.gallery-shell-frame-landscape {
+  --gallery-frame-width: 73.75rem;
+  --gallery-frame-height: 51.25rem;
+}
+
+/* An iPad in portrait, 820 x 1180: the bar and its drawer. */
+.gallery-shell-frame-portrait {
+  --gallery-frame-width: 51.25rem;
+  --gallery-frame-height: 73.75rem;
+}

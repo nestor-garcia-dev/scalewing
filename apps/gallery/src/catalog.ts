@@ -25,6 +25,7 @@ import { type ComponentType } from 'react';
 
 import { AccordionSection } from './sections/accordion.js';
 import { AppHeaderSection } from './sections/app-header.js';
+import { AppShellSection } from './sections/app-shell.js';
 import { BadgeSection } from './sections/badge.js';
 import { BarChartSection } from './sections/bar-chart.js';
 import { ChartLegendSection } from './sections/chart-legend.js';
@@ -353,6 +354,12 @@ export const catalog = [
     label: 'SectionNav',
     group: 'chrome',
     Section: SectionNavSection,
+  },
+  {
+    id: 'app-shell',
+    label: 'AppShell',
+    group: 'chrome',
+    Section: AppShellSection,
   },
   { id: 'link', label: 'Link', group: 'chrome', Section: LinkSection },
 ] as const satisfies ReadonlyArray<CatalogItem>;

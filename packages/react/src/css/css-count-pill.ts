@@ -1,20 +1,44 @@
 import { typographyVariants } from '@scalewing/tokens';
 
+import { toneTintFill, toneTintInk } from './tone-tint.js';
+
 const caption = typographyVariants.caption;
 
-/** The counts drawn as the pill: SectionNav's and a Nav word's. */
-const pills = ['sw-section-nav-count', 'sw-nav-count'] as const;
+/** The counts drawn as the pill: SectionNav's, a Nav word's and AppShell's. */
+const pills = [
+  'sw-section-nav-count',
+  'sw-nav-count',
+  'sw-app-shell-count',
+] as const;
 
-/** NavCount's news tone, a modifier of its pill. */
-const accentPill = 'sw-nav-count-accent';
+/** The pills that take a tone modifier: NavCount's and AppShell's item count. */
+const tonedPills = ['sw-nav-count', 'sw-app-shell-count'] as const;
+
+/** The tones other than the pill's own danger. */
+const pillTones = ['accent', 'warning'] as const;
+
+/** A toned pill's modifier class, such as `sw-nav-count-warning`. */
+export function countToneClass(
+  pill: (typeof tonedPills)[number],
+  tone: (typeof pillTones)[number],
+): string {
+  return `${pill}-${tone}`;
+}
+
+function tonedSelector(tone: (typeof pillTones)[number]): string {
+  return tonedPills
+    .map((pill) => `[data-theme] .${pill}.${countToneClass(pill, tone)}`)
+    .join(',\n');
+}
 
 /*
  * A count after a destination's words (a number waiting there, such as
  * tasks to do) is a filled pill: the danger colour with its on-colour
  * figures (4.5:1 in every palette, as a danger Button's label), caption
  * size at weight 700, a space-5 less space-1 (20) high and at least as
- * wide. Forced colours draw its edge. SectionNav's item count and Nav's
- * NavCount share it, so an area's count reads the same in both.
+ * wide. Forced colours draw its edge. SectionNav's item count, Nav's
+ * NavCount and AppShell's item count share it, so an area's count reads
+ * the same in each.
  */
 export function cssCountPillClasses(): string {
   const selector = pills.map((name) => `[data-theme] .${name}`).join(',\n');
@@ -37,14 +61,24 @@ export function cssCountPillClasses(): string {
 }
 
 /*
- * NavCount's \`tone="accent"\`: a count that is news, not work waiting (what
- * was added since the person last looked), is the accent fill with its
- * on-colour figures (4.5:1 in every palette, as a primary Button's label).
- * One class more specific than the pill, so it wins in any order.
+ * \`tone="accent"\` (NavCount, an AppShell item's \`countTone\`): a count that
+ * is news, not work waiting (what was added since the person last looked),
+ * is the accent fill with its on-colour figures (4.5:1 in every palette, as
+ * a primary Button's label). \`tone="warning"\`: work that needs the person
+ * but is not urgent is amber, the warning tint with the warning ink (a
+ * warning Notice's, 4.5:1 on the tint in every palette) inside the warning
+ * edge a warning Badge draws. One class more specific than the pill, so
+ * each wins in any order.
  */
-[data-theme] .sw-nav-count.${accentPill} {
+${tonedSelector('accent')} {
   background: var(--sw-color-accent);
   color: var(--sw-color-onAccent);
+}
+
+${tonedSelector('warning')} {
+  background: ${toneTintFill('warning')};
+  border: 1px solid var(--sw-color-warning);
+  color: ${toneTintInk('warning')};
 }
 
 /*
@@ -68,5 +102,10 @@ export function cssCountPillClasses(): string {
 }
 
 export function countPillClassCatalog(): string[] {
-  return [...pills, accentPill];
+  return [
+    ...pills,
+    ...tonedPills.flatMap((pill) =>
+      pillTones.map((tone) => countToneClass(pill, tone)),
+    ),
+  ];
 }

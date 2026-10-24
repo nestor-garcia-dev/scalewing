@@ -1,8 +1,12 @@
 import { cx } from '../class-names.js';
+import { countToneClass } from '../css/css-count-pill.js';
 import { isOneOf } from '../is-one-of.js';
 
-/** The pill's colours: `danger` for work waiting, `accent` for news. */
-export const navCountTones = ['danger', 'accent'] as const;
+/**
+ * The pill's colours: `danger` for work waiting, `accent` for news,
+ * `warning` for work that needs the person but is not urgent.
+ */
+export const navCountTones = ['danger', 'accent', 'warning'] as const;
 export type NavCountTone = (typeof navCountTones)[number];
 
 export type NavCountProps = {
@@ -21,8 +25,11 @@ export type NavCountProps = {
   /**
    * The pill's colour. `danger` (the default) is work waiting there, such
    * as tasks to do; `accent` is news, such as what was added since the
-   * person last looked, where nothing is overdue. Give an accent count a
-   * `countLabel` ("3 new"), so its words, not its colour, say it is news.
+   * person last looked, where nothing is overdue; `warning` is amber, work
+   * that needs the person but is not urgent ("needs you"): the warning
+   * tint with the warning ink (4.5:1 in every palette) inside a warning
+   * edge. Give an accent or warning count a `countLabel` ("3 new", "2 to
+   * confirm"), so its words, not its colour, say what it is.
    * Place either tone on a neutral or ghost destination: a filled one of
    * the same colour would hide it.
    */
@@ -52,7 +59,8 @@ function assertNavCount({ count, countLabel, tone }: NavCountProps) {
  * Button: `<a href="/tasks">Tasks<NavCount count={8} /></a>`. It is the
  * pill SectionNav's item count draws, and it is part of the destination's
  * accessible name, as there. `tone="accent"` draws it in the accent colour,
- * for news rather than work.
+ * for news rather than work; `tone="warning"` in amber, for work that needs
+ * the person but is not urgent.
  */
 export function NavCount({
   count,
@@ -71,7 +79,7 @@ export function NavCount({
         aria-hidden={countLabel ? true : undefined}
         className={cx(
           'sw-nav-count',
-          tone === 'accent' && 'sw-nav-count-accent',
+          tone !== 'danger' && countToneClass('sw-nav-count', tone),
         )}
       >
         {count}
