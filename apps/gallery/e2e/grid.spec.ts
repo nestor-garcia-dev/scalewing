@@ -87,3 +87,36 @@ test('Grid align end keeps two inputs level when one label wraps', async ({
   }
   await survey.screenshot({ path: testInfo.outputPath('grid-align-end.png') });
 });
+
+test('a fitted Grid holds as many columns as its width fits, one on a phone', async ({
+  page,
+}, testInfo) => {
+  await page.goto('/#grid');
+  const habitats = page
+    .locator('#grid')
+    .getByRole('region', { name: 'Habitats' });
+  const columns = await habitats.evaluate(
+    (element) =>
+      getComputedStyle(element).gridTemplateColumns.split(' ').length,
+  );
+  const { gap, minimum, width } = await habitats.evaluate((element) => {
+    const style = getComputedStyle(element);
+    const rem = parseFloat(getComputedStyle(document.documentElement).fontSize);
+    return {
+      gap: parseFloat(style.columnGap),
+      minimum: 15 * rem,
+      width: element.clientWidth,
+    };
+  });
+  const cards = await habitats.locator(':scope > *').count();
+  // As many 15rem columns as fit with the gap, never fewer than one; auto-fit
+  // drops the empty tracks past the last card.
+  const fits = Math.max(1, Math.floor((width + gap) / (minimum + gap)));
+  expect(columns).toBe(Math.min(fits, cards));
+  if (testInfo.project.name === 'mobile-es') expect(columns).toBe(1);
+  else expect(columns).toBeGreaterThan(1);
+  const overflow = await page.evaluate(
+    () => document.documentElement.scrollWidth - window.innerWidth,
+  );
+  expect(overflow).toBeLessThanOrEqual(0);
+});

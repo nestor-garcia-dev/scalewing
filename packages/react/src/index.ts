@@ -481,8 +481,8 @@ export type {
   DescriptionListProps,
 } from './components/DescriptionList.js';
 
-export { Grid } from './components/Grid.js';
-export type { GridColumns, GridProps } from './components/Grid.js';
+export { Grid, gridFits } from './components/Grid.js';
+export type { GridColumns, GridFit, GridProps } from './components/Grid.js';
 export type { GridColumnSpan } from './css/css-grid-span.js';
 export type { ColumnSpanProps } from './column-span-classes.js';
 export {

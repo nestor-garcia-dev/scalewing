@@ -15,7 +15,7 @@ export function GridSection() {
   return (
     <Section
       id="grid"
-      purpose="Grid lays children out in equal-width columns. Choose one to four columns, or six for a wide count row, a gap step, and optionally fewer columns below the md breakpoint so tiles and cards stay readable on a phone. A direct child can take columnSpan to cover several columns, so three columns with a two-column form give a two-to-one page; a span never exceeds the columns the grid has at the current width, so the same page stacks on a phone. align sets where each child sits in its row: end keeps two inputs level when one label wraps."
+      purpose="Grid lays children out in equal-width columns. Choose one to four columns, or six for a wide count row, a gap step, and optionally fewer columns below the md breakpoint so tiles and cards stay readable on a phone. A direct child can take columnSpan to cover several columns, so three columns with a two-column form give a two-to-one page; a span never exceeds the columns the grid has at the current width, so the same page stacks on a phone. align sets where each child sits in its row: end keeps two inputs level when one label wraps. fit (narrow, medium or wide) fits as many columns as the grid's width holds at that minimum instead of a fixed count, one on a phone."
       title="Grid"
       usage={`<Grid columns={3} columnsBelow={{ md: 2 }} gap={2}>
   <Button variant="secondary" onPress={logSighting}>Log a sighting</Button>
@@ -26,6 +26,10 @@ export function GridSection() {
 <Grid columns={3} columnsBelow={{ md: 1 }} gap={4}>
   <Stack columnSpan={2} gap={3}>{sightingForm}</Stack>
   <Card variant="outlined">{habitatLookup}</Card>
+</Grid>
+
+<Grid fit="narrow" gap={3}>
+  {habitats.map((habitat) => <Card key={habitat.id}>…</Card>)}
 </Grid>
 
 <Grid align="end" columns={2} gap={3}>
@@ -107,6 +111,25 @@ export function GridSection() {
           <Field label="Eggs">
             <input defaultValue="3" inputMode="numeric" name="nest-eggs" />
           </Field>
+        </Grid>
+        <Grid aria-label="Habitats" as="section" fit="narrow" gap={3}>
+          {[
+            ['Wetland', 'Herons and rails in the reeds.'],
+            ['Forest', 'Owls and woodpeckers at dusk.'],
+            ['Meadow', 'Larks over the long grass.'],
+            ['Coast', 'Terns along the shingle.'],
+          ].map(([habitat, note]) => (
+            <Card key={habitat} padding={4}>
+              <Stack gap={1}>
+                <Text as="h3" variant="label">
+                  {habitat}
+                </Text>
+                <Text color="muted" variant="caption">
+                  {note}
+                </Text>
+              </Stack>
+            </Card>
+          ))}
         </Grid>
         <Grid aria-label="Full-width action" columns={1} gap={2}>
           <Button onPress={() => undefined} variant="secondary">

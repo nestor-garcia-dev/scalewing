@@ -5,7 +5,7 @@ import { Box } from './components/Box.js';
 import { Button } from './components/Button.js';
 import { Card } from './components/Card.js';
 import { Field } from './components/Field.js';
-import { Grid } from './components/Grid.js';
+import { Grid, gridFits } from './components/Grid.js';
 import { Stack } from './components/Stack.js';
 import { columnSpanClassNames } from './column-span-classes.js';
 import { cssGridClasses, gridClassCatalog } from './css/css-grid.js';
@@ -100,6 +100,58 @@ describe('Grid', () => {
     );
   });
 
+  it('fits columns to its width at a named minimum', () => {
+    render(
+      <Grid data-testid="grid" fit="medium" gap={4}>
+        cell
+      </Grid>,
+    );
+    expect(screen.getByTestId('grid').className).toBe(
+      'sw-grid sw-grid-fit-medium sw-gap-4',
+    );
+    const css = cssGridClasses();
+    expect(css).toContain(
+      '.sw-grid-fit-narrow { grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr)); }',
+    );
+    expect(css).toContain(
+      '.sw-grid-fit-medium { grid-template-columns: repeat(auto-fit, minmax(min(100%, 16.25rem), 1fr)); }',
+    );
+    expect(css).toContain(
+      '.sw-grid-fit-wide { grid-template-columns: repeat(auto-fit, minmax(min(100%, 18.75rem), 1fr)); }',
+    );
+    expect(gridFits).toEqual(['narrow', 'medium', 'wide']);
+  });
+
+  it('gives each child of a fitted grid one column, whatever its span', () => {
+    const css = cssGridSpanClasses();
+    expect(css).toContain(
+      ':where(.sw-grid-fit-wide) > .sw-grid-span-3 { grid-column: auto; }',
+    );
+    expect(
+      css.indexOf(':where(.sw-grid-fit-narrow) > .sw-grid-span-2'),
+    ).toBeGreaterThan(css.indexOf('.sw-grid-span-6 { grid-column: span 6; }'));
+  });
+
+  it('rejects an unknown fit, and a fit with fixed columns', () => {
+    expect(() => render(<Grid fit={'tiny' as never}>cell</Grid>)).toThrow(
+      'Unknown Grid fit: tiny',
+    );
+    expect(() =>
+      render(
+        <Grid columns={2} fit="wide">
+          cell
+        </Grid>,
+      ),
+    ).toThrow(RangeError);
+    expect(() =>
+      render(
+        <Grid columnsBelow={{ md: 1 }} fit="wide">
+          cell
+        </Grid>,
+      ),
+    ).toThrow(RangeError);
+  });
+
   it('rejects column counts outside the bounded catalog', () => {
     expect(() => render(<Grid columns={5 as never}>cell</Grid>)).toThrow(
       RangeError,
@@ -134,6 +186,9 @@ describe('Grid', () => {
       'sw-grid-cols-below-md-3',
       'sw-grid-cols-below-md-4',
       'sw-grid-cols-below-md-6',
+      'sw-grid-fit-narrow',
+      'sw-grid-fit-medium',
+      'sw-grid-fit-wide',
     ]);
   });
 });

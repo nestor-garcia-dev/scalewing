@@ -1193,6 +1193,16 @@ A row can also carry three trailing parts. `unread` marks it new for the person,
 
 `Grid` places children in one to four (or six) equal-width columns with a token `gap` step. `columnsBelow={{ md: 2 }}` drops to fewer columns below the `md` breakpoint so tiles and stat cards stay readable on a phone. It accepts every `Box` prop.
 
+`fit` (`narrow` 15rem, `medium` 16.25rem, `wide` 18.75rem) fits the columns to the grid's width instead of a fixed count: as many columns as fit at that minimum, sharing the row, and one column when the grid is narrower than it, so a row of cards reflows on a tablet and stacks on a phone with no breakpoint. A fitted grid takes no `columns` or `columnsBelow` (either throws a `RangeError`, as an unknown `fit` does); keep `columnSpan` for fixed-column grids. `gridFits` lists the names.
+
+```tsx
+<Grid fit="narrow" gap={4}>
+  {habitats.map((habitat) => (
+    <Card key={habitat.id}>…</Card>
+  ))}
+</Grid>
+```
+
 Every `Box`-based component (`Box`, `Stack`, `Inline`, `Card`, `Grid`, …) takes `columnSpan` (1, 2, 3, 4 or 6) to cover several columns of the `Grid` it sits in directly, through the generated `sw-grid-span-*` classes. A span is capped at the columns the grid has at the current width, so it never adds an implicit column, and `columnsBelow` still decides the phone layout. A form about twice the width of a side panel, stacking below `md`:
 
 ```tsx
