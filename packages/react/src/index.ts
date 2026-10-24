@@ -424,6 +424,18 @@ export type {
   VisibilityBreakpoint,
 } from './css/breakpoints.js';
 export { breakpointQuery } from './css/breakpoints.js';
+export {
+  Band,
+  bandElements,
+  bandTones,
+  bandWidths,
+} from './components/Band.js';
+export type {
+  BandElement,
+  BandProps,
+  BandTone,
+  BandWidth,
+} from './components/Band.js';
 export { Separator } from './components/Separator.js';
 export type {
   SeparatorOrientation,

@@ -32,6 +32,7 @@ import {
   Tooltip,
   InfoTip,
   Separator,
+  Band,
   DescriptionList,
   DescriptionItem,
   ListGroup,
@@ -960,6 +961,16 @@ const { headings, omissions } = inspectMarkdown(page.body, {
 ```
 
 `Separator` divides sections with a token-colored line. It is horizontal by default; use `orientation="vertical"` in a flex row. Set `decorative` when the line only supports layout so assistive technology ignores it.
+
+`Band` is a full-width stretch of the page in one fill, its content in a centred column with the page gutter (16 px, 24 px from `md`): a site's footer, one dark closing section, a grey strip between white ones. `tone` is `surface`, `subtle` or `inverse`, the dark band (`--sw-color-inverse`, which a brand moves with a theme overlay such as `colors: { inverse: '#0B2038' }`). Inside the inverse band the theme's words, muted words, hairlines, subtle fill, accent and `onAccent` read on the dark fill, so `Text`, a filled `Card`, a primary `Button` and the focus ring need no band-aware variant; every plain link, a quiet one included, takes the band's words with a half-strength underline. The `surface` band is the cards' fill (white in light), so it stands apart from a grouped or dark page. `width` is `container` (default) or `reading`; `as` is `section` (default), `div`, `aside` or `footer`; `paddingY` (default 8), `paddingTop` and `paddingBottom` take spacing steps. Name a `section` band with `aria-labelledby` on its heading. An unknown tone, width or element throws a `RangeError`.
+
+```tsx
+<Band tone="inverse" aria-labelledby="closing-title">
+  <Text id="closing-title" variant="title">
+    Count with us
+  </Text>
+</Band>
+```
 
 `DescriptionList` pairs terms with what each says, one `DescriptionItem` per row: a `dl` whose items each group a `dt` (`term`) with its `dd` (`children`). From `md` up the term sits in a start column as wide as the widest term, up to 40% of the list, and the detail beside it; every row aligns to its top, so a term and its detail's first line start level, and a hairline divides the rows, with no space above the first row or below the last. Below `md` each term sits over its detail. The list sets only the layout: pass your own `Text` for the term and the detail. Each child of a term or a detail is its own line with its own line height (a column), as wide as its content unless it sets its own width (a `Progress` fills the detail; a `Field` keeps its input's width): wrap inline content, such as words and a link on one line, in one element such as an `Inline`. Long unbreakable words wrap inside their column. A `dl` has no ARIA role, so name a list with a visible heading, and `aria-labelledby` on the `section` around it, rather than an `aria-label` on the list.
 
