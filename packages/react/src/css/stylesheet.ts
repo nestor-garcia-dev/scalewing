@@ -33,6 +33,7 @@ import { infoTipClassCatalog } from './css-info-tip.js';
 import { separatorClassCatalog } from './css-separator.js';
 import { bandClassCatalog } from './css-band.js';
 import { siteFooterClassCatalog } from './css-site-footer.js';
+import { siteHeaderClassCatalog } from './css-site-header.js';
 import { statTileClassCatalog } from './css-stat-tile.js';
 import { descriptionListClassCatalog } from './css-description-list.js';
 import { tabsClassCatalog } from './css-tabs.js';
@@ -148,6 +149,7 @@ export function utilityClassCatalog(): string[] {
     ...separatorClassCatalog(),
     ...bandClassCatalog(),
     ...siteFooterClassCatalog(),
+    ...siteHeaderClassCatalog(),
     ...statTileClassCatalog(),
     ...descriptionListClassCatalog(),
     ...tabsClassCatalog(),

@@ -36,6 +36,7 @@ import {
   Separator,
   Band,
   SiteFooter,
+  SiteHeader,
   DescriptionList,
   DescriptionItem,
   ListGroup,
@@ -989,6 +990,30 @@ const { headings, omissions } = inspectMarkdown(page.body, {
     Count with us
   </Text>
 </Band>
+```
+
+`SiteHeader` is a public site's header. Supply `brand` (such as a logo linked to the home page), `navLabel` and `items` (`{ id, label, href, current? }`, `current` as SectionNav's: `page`, `location` or `true` sets `aria-current`), `labels` (`openMenu`, `closeMenu`) and the decorative `menuIcon` and `closeIcon` glyphs. From `lg` the bar shows the brand, the destinations as a row of links (the current one at label weight over a bar in the words' colour, a thick underline in forced colours) and `actions` at its end, such as a language switch, Sign in (`Box as="a" link="quiet"`) and a `ButtonLink`. Below `lg` it shows the brand, `compactActions` and a menu button that opens, under the bar over the rest of the window, the destinations as large rows (the current one in the accent) and `menuActions` at the panel's foot, such as full-width `ButtonLink`s. The menu is a native `details`, so it opens and closes by touch, click and keyboard with no script, as a page rendered on the server needs; its `summary` is the button, named `openMenu` or `closeMenu` by its state. Script adds Escape (focus back on the button), and closes it when a link in it is chosen, focus leaves it, a press lands outside it, or the window widens to `lg`; nothing traps focus. A page rendered on the server has the no-script menu until it hydrates; a site that never hydrates keeps it, which still opens and closes. The bar is 56 px tall below `lg` and 72 px from it, on the solid surface with a hairline under it; `sticky` (default `true`) keeps it at the window's top. No items, blank or repeated ids, blank labels or hrefs, or a blank `navLabel` or menu label throw a `RangeError`.
+
+```tsx
+<SiteHeader
+  brand={<a href="/">Wetland Trust</a>}
+  navLabel="Main"
+  items={[{ id: 'marsh', label: 'Marsh', href: '/marsh', current: 'page' }]}
+  actions={<ButtonLink href="/contact">Contact the rangers</ButtonLink>}
+  compactActions={
+    <a href="/es" lang="es" hrefLang="es">
+      Español
+    </a>
+  }
+  menuActions={
+    <ButtonLink href="/contact" width="full">
+      Contact the rangers
+    </ButtonLink>
+  }
+  labels={{ openMenu: 'Open the menu', closeMenu: 'Close the menu' }}
+  menuIcon={<MenuIcon />}
+  closeIcon={<CloseIcon />}
+/>
 ```
 
 `SiteFooter` is a public site's footer on the dark inverse band (`Band tone="inverse"`, so a brand moves it with a theme overlay of `inverse`). Supply `brand` (such as a logo for a dark background), an optional `tagline`, and `groups`: each `{ id, label, links }` is a `nav` named by its label, which shows above its links (hidden from assistive technology, since the `nav` already carries it). Each link is `{ id, label, href, current?, lang?, hrefLang? }`; `lang` and `hrefLang` pass through to the link unchecked; `current` sets `aria-current="page"` and draws it in the band's words at label weight, the others in its muted words, underlined on hover and focus. `legal` and `end` fill the bottom row past a hairline, such as the copyright and a language switch. Below `md` the brand takes the full width and the groups two columns; from `md` the brand and the groups share one spread row. Links get the 44 px target on a coarse pointer. Put it last in the page's `body` (outside a `section` or `article`) so it is the page's `contentinfo` landmark. No groups, a group with no links, blank or repeated ids, blank labels or a blank `href` throw a `RangeError`.
