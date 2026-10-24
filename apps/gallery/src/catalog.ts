@@ -1,6 +1,7 @@
 import { ActionMenuSection } from './sections/action-menu.js';
 import { CommandPaletteSection } from './sections/command-palette.js';
 import { BandSection } from './sections/band.js';
+import { HeroSection } from './sections/hero.js';
 import { SiteFooterSection } from './sections/site-footer.js';
 import { SiteHeaderSection } from './sections/site-header.js';
 import { ContextSwitcherSection } from './sections/context-switcher.js';
@@ -247,6 +248,7 @@ export const catalog = [
     Section: FilterChipsRowSection,
   },
   { id: 'band', label: 'Band', group: 'layout', Section: BandSection },
+  { id: 'hero', label: 'Hero', group: 'layout', Section: HeroSection },
   {
     id: 'separator',
     label: 'Separator',
