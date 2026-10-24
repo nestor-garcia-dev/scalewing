@@ -8,6 +8,7 @@ import {
 import { chartToneClassCatalog } from './chart-tones.js';
 import { actionBarClassCatalog } from './css-action-bar.js';
 import { actionMenuClassCatalog } from './css-action-menu.js';
+import { commandPaletteClassCatalog } from './css-command-palette.js';
 import { contextSwitcherClassCatalog } from './css-context-switcher.js';
 import { accordionClassCatalog } from './css-accordion.js';
 import { switchClassCatalog } from './css-switch.js';
@@ -116,6 +117,7 @@ export function utilityClassCatalog(): string[] {
     ...selectClassCatalog(),
     ...actionMenuClassCatalog(),
     ...contextSwitcherClassCatalog(),
+    ...commandPaletteClassCatalog(),
     ...multiSelectClassCatalog(),
     ...comboboxClassCatalog(),
     ...actionBarClassCatalog(),

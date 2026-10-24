@@ -1,4 +1,5 @@
 import { ActionMenuSection } from './sections/action-menu.js';
+import { CommandPaletteSection } from './sections/command-palette.js';
 import { ContextSwitcherSection } from './sections/context-switcher.js';
 import { FileFieldSection } from './sections/file-field.js';
 import { DocumentViewerSection } from './sections/document-viewer.js';
@@ -176,6 +177,12 @@ export const catalog = [
     label: 'ContextSwitcher',
     group: 'controls',
     Section: ContextSwitcherSection,
+  },
+  {
+    id: 'command-palette',
+    label: 'CommandPalette',
+    group: 'controls',
+    Section: CommandPaletteSection,
   },
   { id: 'switch', label: 'Switch', group: 'controls', Section: SwitchSection },
   {

@@ -303,6 +303,18 @@ export {
   type NavCountTone,
 } from './components/NavCount.js';
 export {
+  CommandPalette,
+  commandPaletteShortcuts,
+  type CommandPaletteGroup,
+  type CommandPaletteItem,
+  type CommandPaletteProps,
+  type CommandPaletteShortcut,
+} from './components/CommandPalette.js';
+export {
+  CommandPaletteTrigger,
+  type CommandPaletteTriggerProps,
+} from './components/CommandPaletteTrigger.js';
+export {
   ContextSwitcher,
   contextSwitcherTriggerAppearances,
   contextSwitcherWidths,
