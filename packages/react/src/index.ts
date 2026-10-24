@@ -438,6 +438,7 @@ export {
   type ThemeProviderProps,
 } from './theme/ThemeProvider.js';
 export { themeCanvases, type ThemeCanvas } from './css/css-canvas-grouped.js';
+export { themeFrames, type ThemeFrame } from './css/css-theme-frame.js';
 
 export { utilityClassCatalog } from './css/stylesheet.js';
 export type { VisibilityProps } from './visibility-classes.js';

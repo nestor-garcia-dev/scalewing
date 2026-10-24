@@ -21,6 +21,7 @@ import {
   assertThemeCanvas,
   type ThemeCanvas,
 } from '../css/css-canvas-grouped.js';
+import { assertThemeFrame, type ThemeFrame } from '../css/css-theme-frame.js';
 
 const ThemeContext = createContext<Theme | null>(null);
 
@@ -37,6 +38,14 @@ export type ThemeProviderProps = {
    * colours keep it. An unknown value throws a `RangeError`.
    */
   canvas?: ThemeCanvas;
+  /**
+   * `none` (default) leaves the children in the document's flow; `site`
+   * (opt-in) makes the themed root a public site's page: a column at least
+   * the window's height whose last child (the footer) sits at its foot, so
+   * a short page's footer meets the window's foot. An unknown value throws
+   * a `RangeError`.
+   */
+  frame?: ThemeFrame;
   children: ReactNode;
 };
 
@@ -75,9 +84,11 @@ export function ThemeProvider({
   palette,
   colors,
   canvas = 'default',
+  frame = 'none',
   children,
 }: ThemeProviderProps) {
   assertThemeCanvas(canvas);
+  assertThemeFrame(frame);
   const [systemScheme, setSystemScheme] =
     useState<ColorScheme>(schemeFromMedia);
 
@@ -106,6 +117,7 @@ export function ThemeProvider({
     <ThemeContext.Provider value={theme}>
       <div
         data-canvas={canvas === 'default' ? undefined : canvas}
+        data-frame={frame === 'none' ? undefined : frame}
         data-palette={palette}
         data-theme={theme.colorScheme}
         style={themeCssVars(theme)}

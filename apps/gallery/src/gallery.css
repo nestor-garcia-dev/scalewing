@@ -101,6 +101,12 @@
   border-radius: var(--sw-radius-sm);
 }
 
+/* The frame demo's stand-in for the window: the nested themed root keeps
+   this height, as a page's root keeps the window's. */
+.gallery-frame-demo > [data-theme][data-frame] {
+  min-height: 18rem;
+}
+
 .gallery-truncate-demo {
   max-width: 12rem;
 }
