@@ -23,6 +23,7 @@ import { markdownClassCatalog } from './css-markdown.js';
 import { countPillClassCatalog } from './css-count-pill.js';
 import { checkboxClassCatalog } from './css-checkbox.js';
 import { radioGroupClassCatalog } from './css-radio-group.js';
+import { skeletonClassCatalog } from './css-skeleton.js';
 import { spinnerClassCatalog } from './css-spinner.js';
 import { progressClassCatalog } from './css-progress.js';
 import { noticeClassCatalog } from './css-notice.js';
@@ -137,6 +138,7 @@ export function utilityClassCatalog(): string[] {
     ...checkboxClassCatalog(),
     ...radioGroupClassCatalog(),
     ...spinnerClassCatalog(),
+    ...skeletonClassCatalog(),
     ...progressClassCatalog(),
     ...noticeClassCatalog(),
     ...glyphTileClassCatalog(),
