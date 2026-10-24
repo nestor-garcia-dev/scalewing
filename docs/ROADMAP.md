@@ -138,8 +138,10 @@ full-width page band with the dark inverse one (`teisoro-band.md`, #235);
 `SiteFooter`, a public site's footer on the dark band
 (`teisoro-site-footer.md`, #238); `SiteHeader`, a public site's header
 with a menu that works with no script (`teisoro-site-header.md`).
-Next: release `@scalewing/tokens` and `@scalewing/react` minors;
-Teisoro pins both in task 2705.
+Released in `@scalewing/tokens` 1.6.0 and `@scalewing/react` 1.48.0
+(which also ships FutMas's merged W2 pieces: `AppShell` `pageBar`,
+`ContextSwitcher`, `CommandPalette` and `Skeleton`). Next: Teisoro pins
+both in task 2705.
 
 Teisoro F-011-S02, release R1 "guided-form core": web `Stepper`
 (#113), `DenominationGrid` entry rows (#114), `Steps` / `Step` (#115)
