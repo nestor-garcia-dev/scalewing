@@ -20,8 +20,8 @@
  * 6. `sheetGrabber`: a bottom sheet's grabber, inside its dialog, over the
  *    banded title band that sticks under it.
  * 7. `popup`: a popup outside any lifted surface (Select list, ActionMenu
- *    list, MultiSelect panel, Combobox list, Tooltip, the DateField and CalendarButton
- *    calendar) over everything in the page.
+ *    list, ContextSwitcher popup, MultiSelect panel, Combobox list, Tooltip,
+ *    the DateField and CalendarButton calendar) over everything in the page.
  *
  * Dialog and Toast sit on the browser's top layer, above all of these.
  */
@@ -66,6 +66,9 @@ const openPopups = [
   // Combobox's list. Rendered only while open; on the top layer where the
   // popover API exists.
   '.sw-combobox-popup',
+  // ContextSwitcher's popup. Rendered only while open; on the top layer
+  // where the popover API exists.
+  '.sw-context-switcher-popup',
   '.sw-tooltip:not([hidden])',
   // DateField, CalendarButton and DateRangeButton share it. Rendered only
   // while open; on the top layer where the popover API exists.

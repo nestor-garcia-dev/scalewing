@@ -187,3 +187,8 @@
   --gallery-frame-width: 51.25rem;
   --gallery-frame-height: 73.75rem;
 }
+
+/* A sidebar-wide column for the ContextSwitcher section's full-width trigger. */
+.gallery-switcher-column {
+  width: 15rem;
+}

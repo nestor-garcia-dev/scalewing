@@ -9,6 +9,7 @@ import {
   Accordion,
   ActionBar,
   ActionMenu,
+  ContextSwitcher,
   AppShell,
   BarChart,
   ChartLegend,
@@ -111,7 +112,7 @@ Import the CSS once at the application entry. Do not copy it into your source tr
 </Field>
 ```
 
-Every press control and link takes an explicit `tabindex="0"`: `Button` (and the controls built on it, `CalendarButton` and `InfoTip`), `Box as="a"` with an `href`, `SectionNav` links, `AppShell` links and its menu and close buttons, the `Select`, `MultiSelect` and `ActionMenu` triggers, `SegmentedControl` items (every item, as outside Safari: its arrow keys change the value, not the focus, so it is not a roving group), `DateField`'s calendar button and month steps, a search `Field`'s clear button, a `Table`'s sort and `TableCell onPress` buttons, `Checkbox`, `Switch`, and the checked radio of a `RadioGroup` or `FilterChips` (the first enabled one while none is; the others keep no `tabindex`, so each browser's arrow-key group rule stands). Safari's default (its "Press Tab to highlight each item" setting off) leaves a button, a link, a checkbox and a radio out of the Tab order unless it carries one, so a Safari user would Tab past them; the explicit `0` gives them the order every other browser already does. A `tabIndex` you pass wins, and controls that are deliberately no tab stop keep their `-1`: a `Stepper`'s − and +, and a roving item (a `Tabs` tab, a menu item, a calendar day) other than the current one. A `<summary>` is already in Safari's order and takes none.
+Every press control and link takes an explicit `tabindex="0"`: `Button` (and the controls built on it, `CalendarButton` and `InfoTip`), `Box as="a"` with an `href`, `SectionNav` links, `AppShell` links and its menu and close buttons, the `Select`, `MultiSelect`, `ActionMenu` and `ContextSwitcher` triggers (and a `ContextSwitcher`'s listbox while it holds focus), `SegmentedControl` items (every item, as outside Safari: its arrow keys change the value, not the focus, so it is not a roving group), `DateField`'s calendar button and month steps, a search `Field`'s clear button, a `Table`'s sort and `TableCell onPress` buttons, `Checkbox`, `Switch`, and the checked radio of a `RadioGroup` or `FilterChips` (the first enabled one while none is; the others keep no `tabindex`, so each browser's arrow-key group rule stands). Safari's default (its "Press Tab to highlight each item" setting off) leaves a button, a link, a checkbox and a radio out of the Tab order unless it carries one, so a Safari user would Tab past them; the explicit `0` gives them the order every other browser already does. A `tabIndex` you pass wins, and controls that are deliberately no tab stop keep their `-1`: a `Stepper`'s − and +, and a roving item (a `Tabs` tab, a menu item, a calendar day) other than the current one. A `<summary>` is already in Safari's order and takes none.
 
 An element a script focuses, such as a notice or a card announced after a save, takes the same accent focus ring as the canvas's links and native controls, 2 px past its edge (`--sw-focus-ring-width` and `--sw-focus-ring-offset`), instead of the browser's outline. Give it `tabIndex={-1}`, so it takes focus from a script but is no tab stop, and put the focus on the whole card rather than its text, so the ring goes round it clear of the words; a `Box` round the card with the card's `radius` makes the ring follow its corners. As with the browser's own outline, the ring shows only when focus is visible (`:focus-visible`): after a keyboard press, not after a mouse press. The rule has zero specificity, so a component's own ring always wins.
 
@@ -332,6 +333,39 @@ A `Button` that toggles something passes `aria-pressed`. The pressed button gets
 `ActionMenu` `header` is a non-interactive block above the commands, such as who is signed in: each child a line of its own, in the caption size and the muted color, set off by a hairline. It sits outside the `role="menu"` element and the arrow keys, and is the menu's description (`aria-describedby`), read as the menu opens; `null`, `false` and `''` are no header. An item's `lang` (a BCP 47 tag) marks its label as another language than the page's, such as "English" on a Spanish page (WCAG 3.1.2).
 
 `ActionMenu` `triggerAppearance="text"` (opt-in; default `"framed"`, `actionMenuTriggerAppearances`) draws the trigger as its words (`trigger`, or `label`) in label type at medium weight in the text color, with the shared muted chevron pointing down after them and no fill or outline; the quiet grey fill shows on hover and while the menu is open. It is the sm control height (the 44 px target on a coarse pointer). Name the trigger with `label` as before, and include the words shown in it (WCAG 2.5.3, so voice control can say them): a person's name that opens their account menu takes a `label` such as "Account, Ada Okafor". The trigger's words are one flex item (mixed inline content keeps its spaces), then the chevron. Forced colors draw its border in the system's border color, the chevron in CanvasText, and an open trigger's border in Highlight. An unknown value throws a `RangeError`.
+
+`ContextSwitcher` is a button showing the context in use, such as a workspace, a competition or a season, that opens a popup to switch it. `label` says what is switched ("Season"); `trigger` is what the button shows, usually the current context (words, or a mark and words on two lines); the button is named by both ("Season Fall 2026", the visible words in the name). `groups` is a list of `{ id, label?, options }`, each option `{ id, label, detail?, icon?, badge?: { label, tone }, count?, countLabel?, countTone? }`: a decorative mark, the label over a muted detail, a status `Badge`, and the shared count pill (`NavCount`'s tones), all read in the option's name, a `countLabel` in place of the number; a `count` of 0 shows no pill, as `NavCount`'s. `currentId` is the option in use, checked and `aria-selected`. The popup is a non-modal dialog named by `label` on the top layer, placed as `ActionMenu`'s list is (`align` `"start"` or `"end"`), Focus moves into it: to the `filter` field when there is one (`{ label, placeholder?, emptyText, minOptions? }`, a combobox that narrows the options by label or detail, case and accents ignored, shows and announces `emptyText` when nothing is left, and appears only from `minOptions` options, 0 by default), else to the listbox. ↓ and ↑ move the active row and Enter chooses it; in the listbox Home and End go to the ends, letters jump by typeahead and Space chooses. Choosing closes the popup, puts focus back on the trigger, then calls `onSelect(option)`; the current option only closes it. `actions` (`{ id, label, icon?, onSelect }`) are commands in a footer under a hairline, reached with Tab, that close the popup and return focus to the trigger before they run. Escape closes it with focus on the trigger (and stops there, so an `AppShell` drawer round it stays open); a press outside or Tab out of it (or Shift+Tab back to the trigger) closes it where focus went. Focus leaving the window (another app, a browser tab) leaves it open until the next press. A press on the popup's caption, padding or a row keeps focus in the field or the listbox, so the keys keep working; Enter while an input method composes is the method's. The popup is at least 15rem and never narrower than the trigger, capped by the viewport, and follows the trigger's width while open. `triggerAppearance` is `"framed"` (default, the outlined control), `"text"` (words and a chevron, no fill until hovered or open), `"pill"` (a rounded outlined pill at label weight) or `"icon"` (a glyph alone in a round quiet button, no chevron, named by `label` and the current option's label, for a rail); `width="full"` fills the column, such as a sidebar's top. The trigger, options and commands are 44 px on a coarse pointer; forced colours draw the active row in `Highlight`. Keep state shared by several copies (an `AppShell` header and its rail, for instance) in your own component. Blank words, empty or duplicate groups, options or actions, a bad count, badge or tone, a `currentId` that names no option, a trigger that draws nothing, and an unknown `triggerAppearance`, `width` or `align` throw a `RangeError`.
+
+```tsx
+<ContextSwitcher
+  label="Season"
+  trigger={season.label}
+  triggerAppearance="pill"
+  groups={[
+    {
+      id: 'seasons',
+      options: [
+        {
+          id: 'spring-27',
+          label: 'Spring 2027',
+          badge: { label: 'Draft', tone: 'neutral' },
+        },
+        {
+          id: 'autumn-26',
+          label: 'Autumn 2026',
+          detail: 'Current',
+          badge: { label: 'Live', tone: 'success' },
+        },
+      ],
+    },
+  ]}
+  currentId={season.id}
+  onSelect={(option) => setSeason(option)}
+  actions={[
+    { id: 'new', label: 'Start a new season', onSelect: openNewSeason },
+  ]}
+/>
+```
 
 `triggerAppearance="icon"` (opt-in) draws the `trigger` glyph alone in a round quiet button, as wide as it is tall (the sm control height, 44 px on a coarse pointer), in the muted colour with no fill, outline or chevron; it turns to the text colour on the quiet fill on hover and while the menu is open. Use it for a row's own ••• menu, named by `label` ("More for Heron calls"); the glyph says nothing on its own. An icon trigger without a `trigger` glyph throws a `RangeError`. Forced colors draw it in ButtonText with its kept border, Highlight while open.
 

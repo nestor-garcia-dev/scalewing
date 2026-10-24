@@ -1,11 +1,12 @@
 import {
-  ActionMenu,
   AppShell,
   type AppShellNavGroup,
   type NavCountTone,
   Badge,
   Button,
   Card,
+  ContextSwitcher,
+  type ContextSwitcherGroup,
   Grid,
   Inline,
   Stack,
@@ -91,9 +92,15 @@ const sightings = [
   'Great crested grebe',
 ];
 
-const stationMenu = [
-  { id: 'heron', label: 'Heron Marsh station', onSelect: () => undefined },
-  { id: 'pine', label: 'Pine Ridge station', onSelect: () => undefined },
+const stations: ContextSwitcherGroup[] = [
+  {
+    id: 'stations',
+    label: 'Stations you run',
+    options: [
+      { id: 'heron', label: 'Heron Marsh', detail: 'Warden' },
+      { id: 'pine', label: 'Pine Ridge', detail: 'Ranger' },
+    ],
+  },
 ];
 
 /**
@@ -103,6 +110,10 @@ const stationMenu = [
  */
 export function AppShellFrame() {
   const [current, setCurrent] = useState('wetlands');
+  // Shared by the sidebar's, the rail's and the drawer's switchers.
+  const [stationId, setStationId] = useState('heron');
+  const station =
+    stations[0]!.options.find((option) => option.id === stationId)?.label ?? '';
   const groups = destinations(current);
   const title =
     groups.flatMap((group) => group.items).find((item) => item.id === current)
@@ -114,14 +125,18 @@ export function AppShellFrame() {
       palette={readPalettePreference()}
     >
       <AppShell
-        barTitle={<Text variant="label">Heron Marsh</Text>}
+        barTitle={<Text variant="label">{station}</Text>}
         footer={<Text variant="caption">Ranger Amaru Quispe</Text>}
         groups={groups}
         header={
-          <ActionMenu
-            items={stationMenu}
-            label="Heron Marsh station"
+          <ContextSwitcher
+            currentId={stationId}
+            groups={stations}
+            label="Station"
+            onSelect={(option) => setStationId(option.id)}
+            trigger={station}
             triggerAppearance="text"
+            width="full"
           />
         }
         labels={{ openMenu: 'Open menu', closeMenu: 'Close menu' }}
@@ -143,9 +158,11 @@ export function AppShellFrame() {
           </>
         }
         railHeader={
-          <ActionMenu
-            items={stationMenu}
-            label="Stations"
+          <ContextSwitcher
+            currentId={stationId}
+            groups={stations}
+            label="Station"
+            onSelect={(option) => setStationId(option.id)}
             trigger={<Glyph path={glyphs.station} size={18} />}
             triggerAppearance="icon"
           />

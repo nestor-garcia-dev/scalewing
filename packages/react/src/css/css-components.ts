@@ -1,6 +1,7 @@
 import { cssChartToneClasses } from './chart-tones.js';
 import { cssActionBarClasses } from './css-action-bar.js';
 import { cssActionMenuClasses } from './css-action-menu.js';
+import { cssContextSwitcherClasses } from './css-context-switcher.js';
 import { cssAccordionClasses } from './css-accordion.js';
 import { cssButtonClasses } from './css-button.js';
 import { cssCalendarButtonClasses } from './css-calendar-button.js';
@@ -205,6 +206,8 @@ ${cssAccordionClasses()}
 ${cssSelectClasses()}
 
 ${cssActionMenuClasses()}
+
+${cssContextSwitcherClasses()}
 
 ${cssComboboxClasses()}
 ${cssMultiSelectClasses()}

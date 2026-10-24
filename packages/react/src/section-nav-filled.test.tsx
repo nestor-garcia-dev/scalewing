@@ -150,13 +150,13 @@ describe('SectionNav filled CSS', () => {
   it('draws the count as the shared danger pill and keeps both in forced colours', () => {
     // SectionNav's count, Nav's NavCount and AppShell's count share one pill.
     expect(css).toMatch(
-      /\[data-theme\] \.sw-section-nav-count,\n\[data-theme\] \.sw-nav-count,\n\[data-theme\] \.sw-app-shell-count \{[^}]*background: var\(--sw-color-danger\);[^}]*color: var\(--sw-color-onDanger\);[^}]*font-weight: 700;/,
+      /\[data-theme\] \.sw-section-nav-count,\n\[data-theme\] \.sw-nav-count,\n\[data-theme\] \.sw-app-shell-count,\n\[data-theme\] \.sw-context-switcher-count \{[^}]*background: var\(--sw-color-danger\);[^}]*color: var\(--sw-color-onDanger\);[^}]*font-weight: 700;/,
     );
     expect(css).toMatch(
       /forced-colors: active\) \{\n {2}\[data-theme\] \.sw-section-nav\.sw-section-nav-filled \.sw-section-nav-link\[aria-current\] \{ border-color: Highlight; \}\n\}/,
     );
     expect(css).toContain(
-      '@media (forced-colors: active) {\n  [data-theme] .sw-section-nav-count,\n  [data-theme] .sw-nav-count,\n  [data-theme] .sw-app-shell-count { border: 1px solid CanvasText; }\n}',
+      '@media (forced-colors: active) {\n  [data-theme] .sw-section-nav-count,\n  [data-theme] .sw-nav-count,\n  [data-theme] .sw-app-shell-count,\n  [data-theme] .sw-context-switcher-count { border: 1px solid CanvasText; }\n}',
     );
   });
 });

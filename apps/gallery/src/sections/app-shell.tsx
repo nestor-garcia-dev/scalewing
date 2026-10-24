@@ -26,7 +26,7 @@ export function AppShellSection() {
   return (
     <Section
       id="app-shell"
-      purpose="AppShell is a web workspace's frame: a pinned side navigation of grouped destinations beside the page, which is main and scrolls with the document. From 75rem the sidebar is full: the header (a workspace switcher), the groups under muted captions, each destination's glyph, label and count pill, and the footer (the account), sticky at the window's height with only the list scrolling; the current destination takes a quiet fill. From lg to 75rem it is a rail of glyphs: labels hidden but still each link's name and shown in a tooltip, a count as the pill on the glyph, groups split by hairlines, railHeader and railFooter in place of the header and footer. Below lg a sticky top bar holds the menu button, the title and barEnd; the menu opens the same header, navigation and footer in a modal drawer from the inline start that Escape, a press outside, its close button or choosing a destination closes, focus returning to the menu button. onNavigate takes a plain press for a client router. pageBar is a band at the top of main on every layout (the census and its status here), on the solid surface with a hairline under it, sticky under the top bar below lg and at the window's top from lg. menuCount puts the shared count pill on the menu button, read in its name (Open menu, 5 need you), in menuCountTone's colour. header and railHeader may hold a switcher's trigger (the station menu, a glyph alone in the rail); its popup opens on the top layer, unclipped by the sidebar or the drawer. Each frame below is the shell alone in an iframe at a device's window size, drawn at two fifths."
+      purpose="AppShell is a web workspace's frame: a pinned side navigation of grouped destinations beside the page, which is main and scrolls with the document. From 75rem the sidebar is full: the header (a workspace switcher), the groups under muted captions, each destination's glyph, label and count pill, and the footer (the account), sticky at the window's height with only the list scrolling; the current destination takes a quiet fill. From lg to 75rem it is a rail of glyphs: labels hidden but still each link's name and shown in a tooltip, a count as the pill on the glyph, groups split by hairlines, railHeader and railFooter in place of the header and footer. Below lg a sticky top bar holds the menu button, the title and barEnd; the menu opens the same header, navigation and footer in a modal drawer from the inline start that Escape, a press outside, its close button or choosing a destination closes, focus returning to the menu button. onNavigate takes a plain press for a client router. pageBar is a band at the top of main on every layout (the census and its status here), on the solid surface with a hairline under it, sticky under the top bar below lg and at the window's top from lg. menuCount puts the shared count pill on the menu button, read in its name (Open menu, 5 need you), in menuCountTone's colour. header and railHeader may hold a switcher's trigger (the station ContextSwitcher, a glyph alone in the rail); its popup opens on the top layer, unclipped by the sidebar or the drawer. Each frame below is the shell alone in an iframe at a device's window size, drawn at two fifths."
       title="AppShell"
       usage={`<AppShell
   navLabel="Field station"
@@ -37,8 +37,8 @@ export function AppShellSection() {
     ] },
   ]}
   onNavigate={(item) => navigate(item.href)}
-  header={<StationMenu />}
-  railHeader={<StationMenu compact />}
+  header={<StationSwitcher />}
+  railHeader={<StationSwitcher compact />}
   footer={<AccountMenu />}
   pageBar={<CensusBar />}
   barTitle={<Text variant="label">Heron Marsh</Text>}

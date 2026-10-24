@@ -68,7 +68,7 @@ describe('AppShell CSS', () => {
     expect(css).toContain(
       '[data-theme] .sw-app-shell-link[aria-current] { border-color: Highlight; color: CanvasText; }',
     );
-    expect(css).toMatch(/\[data-theme\] \.sw-app-shell-count \{/);
+    expect(css).toMatch(/\[data-theme\] \.sw-app-shell-count,\n/);
     expect(rule('.sw-app-shell-group-label')).not.toContain('text-transform');
   });
 
