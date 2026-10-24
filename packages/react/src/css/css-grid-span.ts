@@ -4,6 +4,8 @@ import {
   gridColumnCounts,
   gridColumnsBelowClass,
   gridColumnsClass,
+  gridFitClass,
+  gridFits,
 } from './css-grid.js';
 
 /** A child spans one of the same bounded counts a `Grid` can have. */
@@ -48,6 +50,14 @@ export function cssGridSpanClasses(): string {
       capRule(gridColumnsClass(columns), columns, span),
     ),
   );
+  // A fitted grid's column count follows its width, so a span there would
+  // add implicit columns: its children each take one column.
+  const fitted = gridFits.flatMap((fit) =>
+    widerSpans(1).map(
+      (span) =>
+        `:where(.${gridFitClass(fit)}) > .${gridSpanClass(span)} { grid-column: auto; }`,
+    ),
+  );
   // Below a breakpoint every span wider than one is restated for the phone
   // column count, which also undoes a desktop cap when that count is larger.
   const below = breakpoints.map(
@@ -63,7 +73,7 @@ ${gridColumnCounts
 }`,
   );
 
-  return [...spans, ...caps, ...below].join('\n');
+  return [...spans, ...caps, ...fitted, ...below].join('\n');
 }
 
 export function gridSpanClassCatalog(): string[] {

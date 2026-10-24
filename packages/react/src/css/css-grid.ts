@@ -8,6 +8,25 @@ export const gridColumnCounts = [1, 2, 3, 4, 6] as const;
 
 export type GridColumns = (typeof gridColumnCounts)[number];
 
+/**
+ * A fitted grid's narrowest column: as many columns as fit the grid's width
+ * at this minimum, each stretched to share the row, and one column when
+ * the grid is narrower than the minimum.
+ */
+export const gridFitWidths = {
+  narrow: '15rem',
+  medium: '16.25rem',
+  wide: '18.75rem',
+} as const;
+
+export type GridFit = keyof typeof gridFitWidths;
+
+export const gridFits = Object.keys(gridFitWidths) as GridFit[];
+
+export function gridFitClass(fit: GridFit): string {
+  return `sw-grid-fit-${fit}`;
+}
+
 export function gridColumnsClass(columns: GridColumns): string {
   return `sw-grid-cols-${columns}`;
 }
@@ -39,7 +58,12 @@ ${gridColumnCounts
 }`,
   );
 
-  return [base, ...columns, ...below].join('\n');
+  const fitted = gridFits.map(
+    (fit) =>
+      `.${gridFitClass(fit)} { grid-template-columns: repeat(auto-fit, minmax(min(100%, ${gridFitWidths[fit]}), 1fr)); }`,
+  );
+
+  return [base, ...columns, ...below, ...fitted].join('\n');
 }
 
 export function gridClassCatalog(): string[] {
@@ -49,5 +73,6 @@ export function gridClassCatalog(): string[] {
     ...breakpoints.flatMap((breakpoint) =>
       gridColumnCounts.map((count) => gridColumnsBelowClass(breakpoint, count)),
     ),
+    ...gridFits.map(gridFitClass),
   ];
 }
