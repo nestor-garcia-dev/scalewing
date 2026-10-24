@@ -5,6 +5,7 @@ import { cssCommandPaletteClasses } from './css-command-palette.js';
 import { cssContextSwitcherClasses } from './css-context-switcher.js';
 import { cssAccordionClasses } from './css-accordion.js';
 import { cssButtonClasses } from './css-button.js';
+import { cssButtonLinkClasses } from './css-button-link.js';
 import { cssCalendarButtonClasses } from './css-calendar-button.js';
 import { cssDateRangeClasses } from './css-date-range.js';
 import { cssFileFieldClasses } from './css-file-field.js';
@@ -144,6 +145,8 @@ ${cssTextClasses()}
 ${cssFontMonoClasses()}
 
 ${cssButtonClasses()}
+
+${cssButtonLinkClasses()}
 
 ${cssCheckboxClasses()}
 
