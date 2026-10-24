@@ -34,6 +34,7 @@ import { tooltipClassCatalog } from './css-tooltip.js';
 import { infoTipClassCatalog } from './css-info-tip.js';
 import { separatorClassCatalog } from './css-separator.js';
 import { bandClassCatalog } from './css-band.js';
+import { screenPreviewClassCatalog } from './css-screen-preview.js';
 import { heroClassCatalog } from './css-hero.js';
 import { siteFooterClassCatalog } from './css-site-footer.js';
 import { siteHeaderClassCatalog } from './css-site-header.js';
@@ -153,6 +154,7 @@ export function utilityClassCatalog(): string[] {
     ...infoTipClassCatalog(),
     ...separatorClassCatalog(),
     ...bandClassCatalog(),
+    ...screenPreviewClassCatalog(),
     ...heroClassCatalog(),
     ...siteFooterClassCatalog(),
     ...siteHeaderClassCatalog(),

@@ -160,7 +160,8 @@ Teisoro F-017-S03, release S2 "the public site's pages" (Teisoro task
 2710), one PR each: typography `hero`, `headline` and `lead`
 (`teisoro-showcase-type.md`, #246); Grid `fit`, columns fitted to the
 grid's width (`teisoro-grid-fit.md`, #248); `Hero`, a public page's
-opening (`teisoro-hero.md`). Next: `ScreenPreview`; then release
+opening (`teisoro-hero.md`, #250); `ScreenPreview`, a drawn stand-in
+for an app's screen (`teisoro-screen-preview.md`). Next: release
 `@scalewing/tokens` and `@scalewing/react` minors for Teisoro to pin.
 
 Teisoro F-011-S02, release R1 "guided-form core": web `Stepper`
