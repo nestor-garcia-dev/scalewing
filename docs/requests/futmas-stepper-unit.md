@@ -1,6 +1,6 @@
 Scalewing request from FutMas.
 
-Status: accepted 2026-10-24, for `@scalewing/react` 1.49.0 (FutMas F-010 "web administration foundation", the first league setup's counts; the owner approved the F-010 canvas v15 and the whole feature on 2026-10-24, with standing approval for Scalewing changes, PRs, merges and publishing).
+Status: released in `@scalewing/react` 1.49.0 (PR #245; accepted 2026-10-24; FutMas F-010 "web administration foundation", the first league setup's counts; the owner approved the F-010 canvas v15 and the whole feature on 2026-10-24, with standing approval for Scalewing changes, PRs, merges and publishing).
 Renderer: react
 Missing surface: `Stepper` `unit`, a short muted word after the count inside the Stepper ("90 min", "7 players").
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: the count is the Stepper's own input; a word placed beside the Stepper sits outside its frame, after +, and is not read with the value. FutMas owns no CSS to draw it inside.

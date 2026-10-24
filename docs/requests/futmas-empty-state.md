@@ -1,6 +1,6 @@
 Scalewing request from FutMas.
 
-Status: accepted 2026-10-24, for `@scalewing/react` 1.49.0 (FutMas F-010 "web administration foundation": the empty Teams page, C5EmptyTeams, and the empty Seasons list, C2Seasons; the owner approved the F-010 canvas v15 and the whole feature on 2026-10-24, with standing approval for Scalewing changes, PRs, merges and publishing).
+Status: released in `@scalewing/react` 1.49.0 (PR #247; accepted 2026-10-24; FutMas F-010 "web administration foundation": the empty Teams page, C5EmptyTeams, and the empty Seasons list, C2Seasons; the owner approved the F-010 canvas v15 and the whole feature on 2026-10-24, with standing approval for Scalewing changes, PRs, merges and publishing).
 Renderer: react
 Missing surface: `EmptyState`, a centred panel where a list or a page has nothing yet: a decorative glyph, a title, a muted line and the actions that fill it.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: `Box border="dashed"` draws the edge, but FutMas owns no CSS for the glyph's quiet square (the subtle fill in the muted colour, the glyph sized inside it), a readable measure for centred words, a wrapping centred actions row, or 44 px buttons on touch; composing it per page would drift between the Teams, Seasons, Venues and Admins pages.
