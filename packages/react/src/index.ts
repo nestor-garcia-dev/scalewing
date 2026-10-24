@@ -303,6 +303,13 @@ export {
   type NavCountTone,
 } from './components/NavCount.js';
 export {
+  AppShell,
+  type AppShellLabels,
+  type AppShellNavGroup,
+  type AppShellNavItem,
+  type AppShellProps,
+} from './components/AppShell.js';
+export {
   SectionNav,
   sectionNavAppearances,
   type SectionNavAppearance,

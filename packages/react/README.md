@@ -9,6 +9,7 @@ import {
   Accordion,
   ActionBar,
   ActionMenu,
+  AppShell,
   BarChart,
   ChartLegend,
   ColumnChart,
@@ -110,7 +111,7 @@ Import the CSS once at the application entry. Do not copy it into your source tr
 </Field>
 ```
 
-Every press control and link takes an explicit `tabindex="0"`: `Button` (and the controls built on it, `CalendarButton` and `InfoTip`), `Box as="a"` with an `href`, `SectionNav` links, the `Select`, `MultiSelect` and `ActionMenu` triggers, `SegmentedControl` items (every item, as outside Safari: its arrow keys change the value, not the focus, so it is not a roving group), `DateField`'s calendar button and month steps, a search `Field`'s clear button, a `Table`'s sort and `TableCell onPress` buttons, `Checkbox`, `Switch`, and the checked radio of a `RadioGroup` or `FilterChips` (the first enabled one while none is; the others keep no `tabindex`, so each browser's arrow-key group rule stands). Safari's default (its "Press Tab to highlight each item" setting off) leaves a button, a link, a checkbox and a radio out of the Tab order unless it carries one, so a Safari user would Tab past them; the explicit `0` gives them the order every other browser already does. A `tabIndex` you pass wins, and controls that are deliberately no tab stop keep their `-1`: a `Stepper`'s − and +, and a roving item (a `Tabs` tab, a menu item, a calendar day) other than the current one. A `<summary>` is already in Safari's order and takes none.
+Every press control and link takes an explicit `tabindex="0"`: `Button` (and the controls built on it, `CalendarButton` and `InfoTip`), `Box as="a"` with an `href`, `SectionNav` links, `AppShell` links and its menu and close buttons, the `Select`, `MultiSelect` and `ActionMenu` triggers, `SegmentedControl` items (every item, as outside Safari: its arrow keys change the value, not the focus, so it is not a roving group), `DateField`'s calendar button and month steps, a search `Field`'s clear button, a `Table`'s sort and `TableCell onPress` buttons, `Checkbox`, `Switch`, and the checked radio of a `RadioGroup` or `FilterChips` (the first enabled one while none is; the others keep no `tabindex`, so each browser's arrow-key group rule stands). Safari's default (its "Press Tab to highlight each item" setting off) leaves a button, a link, a checkbox and a radio out of the Tab order unless it carries one, so a Safari user would Tab past them; the explicit `0` gives them the order every other browser already does. A `tabIndex` you pass wins, and controls that are deliberately no tab stop keep their `-1`: a `Stepper`'s − and +, and a roving item (a `Tabs` tab, a menu item, a calendar day) other than the current one. A `<summary>` is already in Safari's order and takes none.
 
 An element a script focuses, such as a notice or a card announced after a save, takes the same accent focus ring as the canvas's links and native controls, 2 px past its edge (`--sw-focus-ring-width` and `--sw-focus-ring-offset`), instead of the browser's outline. Give it `tabIndex={-1}`, so it takes focus from a script but is no tab stop, and put the focus on the whole card rather than its text, so the ring goes round it clear of the words; a `Box` round the card with the card's `radius` makes the ring follow its corners. As with the browser's own outline, the ring shows only when focus is visible (`:focus-visible`): after a keyboard press, not after a mouse press. The rule has zero specificity, so a component's own ring always wins.
 
@@ -517,7 +518,7 @@ An option's optional `description` (a `ReactNode`) is secondary text for that op
 
 `appearance="words"` (opt-in; default `"default"`, `navAppearances`) draws every destination, a link or a `Button` of any variant, as plain words: no fill, border or underline, label type, the others in the muted color at medium weight and the current one (`aria-current`, not `"false"`) in the text color at label weight. A Button keeps its size, padding, touch target and focus ring; hover lifts a destination to the text color where the pointer can hover, never a disabled one. The current mark is color and weight, so each destination's words must be visible: a glyph-only destination has no weight to change (keep `default` for a glyph rail). Forced colors draw the current one's border in Highlight and underline its words. An unknown value throws a `RangeError`.
 
-`NavCount` puts a count after a destination's words, such as the tasks waiting in an area: place it inside the link or `Button`, after its words (`<a href="/tasks">Tasks<NavCount count={8} /></a>`). It is the pill `SectionNav`'s item `count` draws (the danger color with its on-color figures, an edge in forced colors), a space-2 after the words in a link or a Button, the link keeping its siblings' height, and it is read as part of the destination's name ("Tasks 8"). `count` is a whole number; 0 shows nothing. `countLabel` says what it means in your words ("8 tasks to do"): it is read in place of the bare number ("Tasks 8 tasks to do") and the pill is hidden from assistive technology. `tone="accent"` (default `"danger"`, `navCountTones`) draws the pill in the accent color with its on-color figures, for a count that is news rather than work waiting, such as what was added since the person last looked; its size, spacing and name are the same. Give an accent count a `countLabel` ("3 new") so its words, not its color, say it is news, and place either tone on a neutral or ghost destination, never a filled one of the same color. A count that is not a whole number from 0, a blank `countLabel` or an unknown `tone` throws a `RangeError`.
+`NavCount` puts a count after a destination's words, such as the tasks waiting in an area: place it inside the link or `Button`, after its words (`<a href="/tasks">Tasks<NavCount count={8} /></a>`). It is the pill `SectionNav`'s item `count` draws (the danger color with its on-color figures, an edge in forced colors), a space-2 after the words in a link or a Button, the link keeping its siblings' height, and it is read as part of the destination's name ("Tasks 8"). `count` is a whole number; 0 shows nothing. `countLabel` says what it means in your words ("8 tasks to do"): it is read in place of the bare number ("Tasks 8 tasks to do") and the pill is hidden from assistive technology. `tone="accent"` (default `"danger"`, `navCountTones`) draws the pill in the accent color with its on-color figures, for a count that is news rather than work waiting, such as what was added since the person last looked; its size, spacing and name are the same. `tone="warning"` draws it in amber, for work that needs the person but is not urgent ("needs you"): the warning tint with the warning ink (a warning `Notice`'s, 4.5:1 in every palette) inside a warning edge. Give an accent or warning count a `countLabel` ("3 new", "2 to confirm") so its words, not its color, say what it is, and place either tone on a neutral or ghost destination, never a filled one of the same color. A count that is not a whole number from 0, a blank `countLabel` or an unknown `tone` throws a `RangeError`.
 
 ```tsx
 <Nav appearance="words" aria-label="Areas">
@@ -547,6 +548,62 @@ An option's optional `description` (a `ReactNode`) is secondary text for that op
   onNavigate={(item) => navigate(item.href)}
   verticalFrom="md"
 />
+```
+
+`AppShell` is a web workspace's frame: a pinned side navigation of grouped destinations beside the page, which it renders in `main` and which scrolls with the document (`main` is never its own scroll box). `groups` is a list of `{ id, label?, items }`; each item is `{ id, label, href, icon, count?, countLabel?, countTone?, current? }` with `SectionNav`'s rules for `current`, `count` and `countLabel` (the same shared count pill, read in the link's name), `countTone` one of `NavCount`'s tones (`danger` by default, `warning` for amber, `accent`; it needs a `count`), and `icon`, the consumer's decorative glyph, is required because the rail shows nothing else. `navLabel` names the navigation (and the drawer). `onNavigate` takes a plain press for a client router, as `SectionNav`'s does: the item, after the browser's navigation is prevented; a modifier or middle press keeps the browser's behaviour.
+
+The layout follows the window, with generated media queries only. From 75rem (1200 px, an internal width of the component, not a public breakpoint) the sidebar is 15rem on the solid surface with a hairline at its end, sticky at the top at the viewport's height: `header` (a workspace switcher such as an `ActionMenu`), the groups (a group's `label` is a small muted caption naming its list), `footer` (the account menu) under a hairline; only the nav scrolls, and only when it is taller than the window. Each destination shows its glyph, label and count; the current one takes `SectionNav filled`'s quiet fill at the label weight; a coarse pointer gets 44 px rows. From `lg` (64rem) to 75rem it is a rail of glyphs, the 44 px target wide: labels are visually hidden but stay in each link's name and show in a `Tooltip` on hover or keyboard focus, a count is the pill on the glyph's corner, group captions become hairlines, and `railHeader`/`railFooter` replace `header`/`footer` (none is drawn without them). Below `lg` there is no sidebar: a sticky `AppHeader appearance="bar"` holds an icon-only ghost menu button (`menuIcon`, named `labels.openMenu`), `barTitle` and `barEnd`. The menu opens a modal drawer on the top layer from the inline start (the end in right-to-left), sliding in unless reduced motion is asked for, with a close button named `labels.closeMenu` where the menu button was, then `header`, the nav and `footer`. Escape, a press outside, the close button or a plain press on a destination close it; after the first three focus returns to the menu button, while a chosen destination leaves focus to the page it moves to. A window widened past `lg` closes it too. `header` and `footer` render in the sidebar and again in the open drawer (and `railHeader`/`railFooter` beside them in the hidden sidebar), so a slot's content can be mounted twice at once with separate state: give it no fixed DOM `id` (use `useId`), and keep state that must survive opening the menu, such as a selection, in your own component. Forced colours draw the links as `LinkText`, the current one with a `Highlight` edge. A blank `navLabel` or menu label, no groups, an empty or duplicate group id, a blank group label, an empty group, an empty or duplicate item id (across groups), an empty label, a missing icon (or one that draws nothing: a boolean, `''` or `0`), a `count` that is not a whole number from 0, a blank `countLabel` or one without a `count`, and an unknown `countTone` or one without a `count` throw a `RangeError`.
+
+```tsx
+<AppShell
+  navLabel="Field station"
+  groups={[
+    {
+      id: 'field',
+      items: [
+        {
+          id: 'today',
+          label: 'Today',
+          href: '/today',
+          icon: <CalendarDays />,
+          current: 'page',
+        },
+      ],
+    },
+    {
+      id: 'reserves',
+      label: 'Reserves',
+      items: [
+        {
+          id: 'wetlands',
+          label: 'Wetlands',
+          href: '/wetlands',
+          icon: <Waves />,
+          count: 3,
+          countLabel: '3 sightings to check',
+        },
+        {
+          id: 'forests',
+          label: 'Forests',
+          href: '/forests',
+          icon: <Trees />,
+          count: 2,
+          countLabel: '2 to confirm',
+          countTone: 'warning',
+        },
+      ],
+    },
+  ]}
+  onNavigate={(item) => navigate(item.href)}
+  header={<StationMenu />}
+  railHeader={<StationTile />}
+  footer={<AccountMenu />}
+  barTitle={<Text variant="label">Heron Marsh</Text>}
+  menuIcon={<Menu />}
+  labels={{ openMenu: 'Open menu', closeMenu: 'Close menu' }}
+>
+  <Box padding={5}>{page}</Box>
+</AppShell>
 ```
 
 ```tsx

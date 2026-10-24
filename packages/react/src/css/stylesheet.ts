@@ -56,6 +56,7 @@ import { segmentedClassCatalog } from './css-segmented.js';
 import { tableClassCatalog } from './css-table.js';
 import { chromeClassCatalog } from './css-chrome.js';
 import { sectionNavClassCatalog } from './css-section-nav.js';
+import { appShellClassCatalog } from './css-app-shell.js';
 import { dialogClassCatalog } from './css-dialog.js';
 import { dialogBandedClassCatalog } from './css-dialog-banded.js';
 import { dialogFrameClassCatalog } from './css-dialog-frame.js';
@@ -104,6 +105,7 @@ export function utilityClassCatalog(): string[] {
     ...paginationClassCatalog(),
     ...chromeClassCatalog(),
     ...sectionNavClassCatalog(),
+    ...appShellClassCatalog(),
     ...dialogClassCatalog(),
     ...dialogFrameClassCatalog(),
     ...dialogBandedClassCatalog(),

@@ -10,6 +10,7 @@ import { generateStylesheet, utilityClassCatalog } from './css/stylesheet.js';
 import {
   forEveryTheme,
   glassOverBackground,
+  tintOver,
 } from './every-theme.test-support.js';
 
 afterEach(() => cleanup());
@@ -126,12 +127,12 @@ describe('NavCount', () => {
         .getByRole('link', { name: 'Alerts 2' })
         .querySelector('.sw-nav-count')?.className,
     ).toBe('sw-nav-count');
-    expect(navCountTones).toEqual(['danger', 'accent']);
+    expect(navCountTones).toEqual(['danger', 'accent', 'warning']);
   });
 
   it('fills the accent pill from the accent colour with its on-colour figures', () => {
     expect(generateStylesheet()).toContain(
-      '[data-theme] .sw-nav-count.sw-nav-count-accent {\n  background: var(--sw-color-accent);\n  color: var(--sw-color-onAccent);\n}',
+      '[data-theme] .sw-nav-count.sw-nav-count-accent,\n[data-theme] .sw-app-shell-count.sw-app-shell-count-accent {\n  background: var(--sw-color-accent);\n  color: var(--sw-color-onAccent);\n}',
     );
   });
 
@@ -154,11 +155,42 @@ describe('NavCount', () => {
     });
   });
 
+  it('draws a warning pill in amber for work that needs the person', () => {
+    render(
+      <Nav appearance="words" aria-label="Areas">
+        <Box as="a" href="#scores">
+          Scores
+          <NavCount count={2} countLabel="2 to confirm" tone="warning" />
+        </Box>
+      </Nav>,
+    );
+    const pill = screen
+      .getByRole('link', { name: 'Scores 2 to confirm' })
+      .querySelector('.sw-nav-count');
+    expect(pill?.className).toBe('sw-nav-count sw-nav-count-warning');
+    expect(generateStylesheet()).toContain(
+      '[data-theme] .sw-nav-count.sw-nav-count-warning,\n[data-theme] .sw-app-shell-count.sw-app-shell-count-warning {\n  background: color-mix(in srgb, var(--sw-color-warning) 10%, var(--sw-color-surface));\n  border: 1px solid var(--sw-color-warning);\n  color: color-mix(in srgb, var(--sw-color-warning) 70%, var(--sw-color-text));\n}',
+    );
+  });
+
+  it('keeps the warning pill’s figures at 4.5:1 on its tint and its edge apart from the page in every palette', () => {
+    forEveryTheme((colors, label) => {
+      const fill = tintOver(colors.warning, 0.1, colors.surface);
+      const ink = tintOver(colors.warning, 0.7, colors.text);
+      expect(contrastRatio(ink, fill), label).toBeGreaterThanOrEqual(4.5);
+      expect(
+        contrastRatio(colors.warning, colors.surface),
+        label,
+      ).toBeGreaterThanOrEqual(3);
+      expect(colors.warning).not.toBe(colors.danger);
+    });
+  });
+
   it('refuses an unknown tone', () => {
     vi.spyOn(console, 'error').mockImplementation(() => undefined);
-    expect(() =>
-      render(<NavCount count={3} tone={'warning' as never} />),
-    ).toThrow('Unknown NavCount tone: warning');
+    expect(() => render(<NavCount count={3} tone={'info' as never} />)).toThrow(
+      'Unknown NavCount tone: info',
+    );
     expect(() => render(<NavCount count={3} tone={null as never} />)).toThrow(
       'Unknown NavCount tone: null',
     );
@@ -169,6 +201,7 @@ describe('NavCount', () => {
       expect.arrayContaining([
         'sw-nav-count',
         'sw-nav-count-accent',
+        'sw-nav-count-warning',
         'sw-section-nav-count',
       ]),
     );
