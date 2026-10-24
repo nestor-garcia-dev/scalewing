@@ -1,6 +1,6 @@
 # Teisoro: a page band
 
-Status: implemented, pending release, for the next `@scalewing/react` minor.
+Status: released in `@scalewing/react` 1.48.0 (with `@scalewing/tokens` 1.6.0).
 
 Scalewing request from Teisoro.
 

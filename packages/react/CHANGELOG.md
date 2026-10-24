@@ -1,5 +1,67 @@
 # @scalewing/react
 
+## 1.48.0
+
+### Minor Changes
+
+- a4b524c: `AppShell` gains `pageBar`, a band at the top of `main` on every layout (the solid surface with a hairline under it and the page's inline padding, its children a wrapping row with space between them), sticky under the compact top bar below `lg` (the shell measures the bar and sets `--sw-app-shell-bar-height`, falling back to its usual height) and at the window's top from `lg`; and `menuCount`, `menuCountLabel` and `menuCountTone`, the shared count pill on the compact bar's menu button, read in its name after a comma ("Open menu, 6 need you"). `header` and `railHeader` are documented as hosts for an interactive switcher trigger, whose popup opens on the top layer. `AppHeader` accepts a `ref` for its `header`. New class `sw-app-shell-page-bar`; an invalid menu count, a blank label, an unknown tone or a label or tone without a count throws a `RangeError`. No new tokens or dependencies. Request: `docs/requests/futmas-app-shell-page-bar.md`.
+- 0d789a6: `Band`: a full-width stretch of the page in one fill, its content in a
+  centred column with the page gutter (16 px, 24 px from `md`), for a site's
+  footer, one dark closing section or a grey strip.
+
+  - `tone`: `surface` (the cards' fill), `subtle` or `inverse`, the dark band
+    (`--sw-color-inverse`, which a brand moves with a theme overlay). Inside
+    the inverse band the theme's words, muted words, hairlines, subtle fill,
+    accent and `onAccent` read on the dark fill, so `Text`, a filled `Card`,
+    a primary `Button` and the focus ring need no variant; every plain link
+    takes the band's words with a half-strength underline.
+  - `width` `container` or `reading`; `as` `section`, `div`, `aside` or
+    `footer`; `paddingY` (default 8), `paddingTop`, `paddingBottom`.
+  - Forced colours outline the inverse band.
+
+  New classes `sw-band`, `sw-band-inner`, `sw-band-<tone>`,
+  `sw-band-inner-<width>`; an unknown tone, width or element throws a
+  `RangeError`. Needs `@scalewing/tokens` with `inverse` and `onInverse`. No
+  new dependencies. Request: `docs/requests/teisoro-band.md`.
+
+- 54adbbf: `ButtonLink`: a link drawn as a `Button`, for a destination that reads as
+  an action (a site's Contact us or Sign in). An `<a href>` with the
+  Button's `variant`, `size` and `width`, so it opens like any link and works
+  on a page rendered with no script; it keeps its variant's words over the
+  canvas link colour, hover included. `aria-current="page"` marks the
+  current page with the pressed button's ring (a Highlight border in forced
+  colours). New class `sw-button-link`; an unknown variant, size or width
+  throws a `RangeError`. No new tokens or dependencies. Request:
+  `docs/requests/teisoro-button-link.md`.
+- a4bb2f5: `CommandPalette` and `CommandPaletteTrigger`. CommandPalette is a search over the product on the top layer: a modal dialog near the window's top holding a field (an ARIA combobox) over an always-open listbox of grouped results the consumer filters from `query`; ↑/↓ move the active row (wrapping, the Enter key cap on it), Enter or a press asks to close and then runs the item; Escape, a press outside or the shortcut again close it and focus returns to where it was. A polite status says `countText`, `emptyText` or `loadingText`; `hint` is a footer line; `shortcut="mod+k"` listens for ⌘K (Apple) or Ctrl+K, left alone in another text field. CommandPaletteTrigger is the search-looking pill with a key hint that opens it, or its glyph alone with `compact`. 44 px targets on a coarse pointer and forced colours covered. New classes `sw-command-palette*`; invalid words, groups or items throw a `RangeError`. No new tokens or dependencies. Request: `docs/requests/futmas-command-palette.md`.
+- ff103a2: `ContextSwitcher`: a button showing the context in use (a workspace, a competition, a season) that opens a non-modal popup on the top layer to switch it: an optional filter field (an ARIA combobox that narrows the options by label or detail, case and accents ignored, its empty words shown and announced), the options in groups as a listbox (each with a mark, a detail, a status `Badge` and the shared count pill, all read in its name; the current one checked and `aria-selected`), and footer commands. Arrow keys, Enter, Home/End and typeahead in the listbox; Escape closes it with focus back on the trigger; a press outside or focus leaving closes it. `triggerAppearance` `framed` (default), `text`, `pill` or `icon` (a glyph alone, named by the label and the current option); `width="full"` fills a sidebar's top; `align` start or end. 44 px targets on a coarse pointer, right-to-left and forced colours covered. New classes `sw-context-switcher*` (its count joins the shared pill as `sw-context-switcher-count`); invalid groups, options, words or props throw a `RangeError`. No new tokens or dependencies. Request: `docs/requests/futmas-context-switcher.md`.
+- 1321a50: `SiteFooter`: a public site's footer on the dark inverse band. `brand`,
+  an optional `tagline`, `groups` of links (each a `nav` named by its label,
+  the label shown above its links; a link's `current`, `lang` and
+  `hrefLang`), and a bottom row past a hairline with `legal` at its start and
+  `end` (such as a language switch) at its end. Links are the band's muted
+  words, the current one its words at label weight, underlined on hover and
+  focus, 44 px on a coarse pointer. Two columns of groups below `md`, one
+  spread row from `md`. New classes `sw-site-footer*`; no groups, an empty
+  group, blank or repeated ids, blank labels or a blank `href` throw a
+  `RangeError`. No new tokens or dependencies. Request:
+  `docs/requests/teisoro-site-footer.md`.
+- 987e0ef: `SiteHeader`: a public site's header. The brand; from `lg` the main
+  destinations as a row of links (the current one at label weight over a
+  bar) and `actions` at the bar's end; below `lg` `compactActions` and a menu
+  button that opens the destinations as large rows and `menuActions` under
+  the bar over the window. The menu is a native `details`, so it opens and
+  closes by touch, click and keyboard with no script (a server-rendered
+  page); script adds Escape (focus back on the button) and closes it when a
+  link is chosen, focus leaves it, a press lands outside it or the window
+  widens to `lg`. Forced colours draw the current bar as a thick underline. Nothing traps focus. `labels`
+  (`openMenu`, `closeMenu`) name the button by its state; `menuIcon` and
+  `closeIcon` are its glyph slots; `sticky` (default `true`). New classes
+  `sw-site-header*`; no items, blank or repeated ids, blank labels or hrefs,
+  or blank names throw a `RangeError`. No new tokens or dependencies.
+  Request: `docs/requests/teisoro-site-header.md`.
+- e82df4e: `Skeleton`: grey placeholder bars where content is loading, in place of a page spinner. A polite status named by `label` (read once), the bars hidden; `variant="lines"` (default) is 1–6 bars of text with ragged ends, the last shorter, and `variant="rows"` is list rows (a mark and a bar, 44 px, hairlines between). The bars pulse gently and stay still under reduced motion; forced colours keep their edges. New classes `sw-skeleton*`; blank words, `lines` outside 1–6 or an unknown variant throw a `RangeError`. No new tokens or dependencies. Request: `docs/requests/futmas-skeleton.md`.
+
 ## 1.47.0
 
 ### Minor Changes
