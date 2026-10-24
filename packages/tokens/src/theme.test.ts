@@ -87,6 +87,51 @@ describe('contrast', () => {
     ).toBeGreaterThanOrEqual(4.5);
   });
 
+  it('keeps the inverse band dark with its words at 4.5:1 in both schemes', () => {
+    for (const theme of [lightTheme, darkTheme]) {
+      expect(
+        contrastRatio(theme.colors.onInverse, theme.colors.inverse),
+      ).toBeGreaterThanOrEqual(4.5);
+      // Dark in either scheme: the band's words are the light ones.
+      expect(contrastRatio(theme.colors.onInverse, '#000000')).toBeGreaterThan(
+        contrastRatio(theme.colors.inverse, '#000000'),
+      );
+    }
+    expect(
+      contrastRatio(lightTheme.colors.inverse, lightTheme.colors.background),
+    ).toBeGreaterThanOrEqual(4.5);
+  });
+
+  it('rejects an invalid band colour as it does every key', () => {
+    expect(() =>
+      createTheme({ colorScheme: 'light', colors: { inverse: 'navy' } }),
+    ).toThrow(/Invalid color for inverse/);
+    expect(() =>
+      createTheme({ colorScheme: 'dark', colors: { onInverse: '' } }),
+    ).toThrow(/Invalid color for onInverse/);
+  });
+
+  it('keeps the default band words at 4.5:1 on a dark brand band', () => {
+    for (const inverse of ['#0B2038', '#14213D', '#3B0A45']) {
+      const theme = createTheme({ colorScheme: 'light', colors: { inverse } });
+      expect(
+        contrastRatio(theme.colors.onInverse, theme.colors.inverse),
+      ).toBeGreaterThanOrEqual(4.5);
+    }
+  });
+
+  it('overlays a brand band colour and keeps the default words', () => {
+    const theme = createTheme({
+      colorScheme: 'light',
+      colors: { inverse: '#0B2038' },
+    });
+    expect(theme.colors.inverse).toBe('#0B2038');
+    expect(theme.colors.onInverse).toBe(lightTheme.colors.onInverse);
+    expect(
+      contrastRatio(theme.colors.onInverse, theme.colors.inverse),
+    ).toBeGreaterThanOrEqual(4.5);
+  });
+
   it('keeps button label colors at 4.5:1 on accent and danger', () => {
     expect(
       contrastRatio(lightTheme.colors.onAccent, lightTheme.colors.accent),
