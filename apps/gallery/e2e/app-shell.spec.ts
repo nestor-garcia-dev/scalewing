@@ -85,8 +85,8 @@ test('AppShell is an icon rail with tooltips on an iPad in landscape', async ({
   expect(link.width).toBeGreaterThanOrEqual(43);
   // The rail's header replaces the full one.
   await expect(
-    page.getByRole('button', { name: /Heron Marsh station/ }),
-  ).toBeHidden();
+    page.getByRole('button', { name: 'Station Heron Marsh', exact: true }),
+  ).toHaveCount(1);
   // Hover shows the label.
   await forests.hover();
   await expect(page.getByRole('tooltip', { name: 'Forests' })).toBeVisible();
@@ -169,10 +169,10 @@ test('AppShell pins its page bar at the top from lg, beside the sidebar', async 
   );
   expect(fill).not.toMatch(/rgba\(.*, 0\)|transparent/);
   // The header's switcher opens its menu over the page.
-  await page.getByRole('button', { name: /Heron Marsh station/ }).click();
-  await expect(page.getByRole('menu')).toBeVisible();
+  await page.getByRole('button', { name: 'Station Heron Marsh' }).click();
+  await expect(page.getByRole('dialog', { name: 'Station' })).toBeVisible();
   await expect(
-    page.getByRole('menuitem', { name: 'Pine Ridge station' }),
+    page.getByRole('option', { name: 'Pine Ridge Ranger' }),
   ).toBeInViewport();
 });
 
@@ -180,16 +180,18 @@ test('AppShell rail header holds a switcher whose menu the rail does not clip', 
   page,
 }) => {
   await open(page, 1180, 820);
-  const trigger = page.getByRole('button', { name: 'Stations' });
+  const trigger = page.getByRole('button', { name: 'Station Heron Marsh' });
   await expect(trigger).toBeVisible();
   await trigger.click();
-  const menu = page.getByRole('menu');
+  const menu = page.getByRole('dialog', { name: 'Station' });
   await expect(menu).toBeVisible();
   const box = (await menu.boundingBox())!;
+  // Never as narrow as the 44 px glyph: the popup keeps its 15rem.
+  expect(Math.round(box.width)).toBeGreaterThanOrEqual(240);
   const rail = (await page.locator('.sw-app-shell-sidebar').boundingBox())!;
   expect(box.x + box.width).toBeGreaterThan(rail.x + rail.width);
   await expect(
-    page.getByRole('menuitem', { name: 'Pine Ridge station' }),
+    page.getByRole('option', { name: 'Pine Ridge Ranger' }),
   ).toBeInViewport();
   await page.keyboard.press('Escape');
   await expect(trigger).toBeFocused();
@@ -218,12 +220,23 @@ test('AppShell sticks its page bar under the top bar and counts on the menu belo
   // The drawer's header switcher opens its menu over the drawer.
   await menu.click();
   const drawer = page.getByRole('dialog', { name: 'Field station' });
-  await drawer.getByRole('button', { name: /Heron Marsh station/ }).click();
+  await drawer.getByRole('button', { name: 'Station Heron Marsh' }).click();
   await expect(
-    page.getByRole('menuitem', { name: 'Pine Ridge station' }),
+    page.getByRole('option', { name: 'Pine Ridge Ranger' }),
   ).toBeVisible();
+  // A press on the caption keeps the keys working, and Escape closes only
+  // the switcher.
+  await page.getByText('Stations you run').click();
+  await page.keyboard.press('ArrowDown');
+  await expect(
+    page.getByRole('option', { name: 'Pine Ridge Ranger' }),
+  ).toHaveAttribute('data-active', 'true');
   await page.keyboard.press('Escape');
+  await expect(page.getByRole('option')).toHaveCount(0);
   await expect(drawer).toBeVisible();
+  await expect(
+    drawer.getByRole('button', { name: 'Station Heron Marsh' }),
+  ).toBeFocused();
 });
 
 test('AppShell mirrors the menu count in right-to-left', async ({ page }) => {

@@ -132,7 +132,7 @@ describe('NavCount', () => {
 
   it('fills the accent pill from the accent colour with its on-colour figures', () => {
     expect(generateStylesheet()).toContain(
-      '[data-theme] .sw-nav-count.sw-nav-count-accent,\n[data-theme] .sw-app-shell-count.sw-app-shell-count-accent {\n  background: var(--sw-color-accent);\n  color: var(--sw-color-onAccent);\n}',
+      '[data-theme] .sw-nav-count.sw-nav-count-accent,\n[data-theme] .sw-app-shell-count.sw-app-shell-count-accent,\n[data-theme] .sw-context-switcher-count.sw-context-switcher-count-accent {\n  background: var(--sw-color-accent);\n  color: var(--sw-color-onAccent);\n}',
     );
   });
 
@@ -169,7 +169,7 @@ describe('NavCount', () => {
       .querySelector('.sw-nav-count');
     expect(pill?.className).toBe('sw-nav-count sw-nav-count-warning');
     expect(generateStylesheet()).toContain(
-      '[data-theme] .sw-nav-count.sw-nav-count-warning,\n[data-theme] .sw-app-shell-count.sw-app-shell-count-warning {\n  background: color-mix(in srgb, var(--sw-color-warning) 10%, var(--sw-color-surface));\n  border: 1px solid var(--sw-color-warning);\n  color: color-mix(in srgb, var(--sw-color-warning) 70%, var(--sw-color-text));\n}',
+      '[data-theme] .sw-nav-count.sw-nav-count-warning,\n[data-theme] .sw-app-shell-count.sw-app-shell-count-warning,\n[data-theme] .sw-context-switcher-count.sw-context-switcher-count-warning {\n  background: color-mix(in srgb, var(--sw-color-warning) 10%, var(--sw-color-surface));\n  border: 1px solid var(--sw-color-warning);\n  color: color-mix(in srgb, var(--sw-color-warning) 70%, var(--sw-color-text));\n}',
     );
   });
 

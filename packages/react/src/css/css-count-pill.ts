@@ -4,15 +4,23 @@ import { toneTintFill, toneTintInk } from './tone-tint.js';
 
 const caption = typographyVariants.caption;
 
-/** The counts drawn as the pill: SectionNav's, a Nav word's and AppShell's. */
+/**
+ * The counts drawn as the pill: SectionNav's, a Nav word's, AppShell's and
+ * a ContextSwitcher option's.
+ */
 const pills = [
   'sw-section-nav-count',
   'sw-nav-count',
   'sw-app-shell-count',
+  'sw-context-switcher-count',
 ] as const;
 
-/** The pills that take a tone modifier: NavCount's and AppShell's item count. */
-const tonedPills = ['sw-nav-count', 'sw-app-shell-count'] as const;
+/** The pills that take a tone modifier: all but SectionNav's. */
+const tonedPills = [
+  'sw-nav-count',
+  'sw-app-shell-count',
+  'sw-context-switcher-count',
+] as const;
 
 /** The tones other than the pill's own danger. */
 const pillTones = ['accent', 'warning'] as const;

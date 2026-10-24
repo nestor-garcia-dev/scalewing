@@ -303,6 +303,19 @@ export {
   type NavCountTone,
 } from './components/NavCount.js';
 export {
+  ContextSwitcher,
+  contextSwitcherTriggerAppearances,
+  contextSwitcherWidths,
+  type ContextSwitcherAction,
+  type ContextSwitcherBadge,
+  type ContextSwitcherFilter,
+  type ContextSwitcherGroup,
+  type ContextSwitcherOption,
+  type ContextSwitcherProps,
+  type ContextSwitcherTriggerAppearance,
+  type ContextSwitcherWidth,
+} from './components/ContextSwitcher.js';
+export {
   AppShell,
   type AppShellLabels,
   type AppShellNavGroup,
