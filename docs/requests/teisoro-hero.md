@@ -1,6 +1,6 @@
 # Teisoro: a public page's opening
 
-Status: implemented, pending release, for the next `@scalewing/react` minor.
+Status: released in `@scalewing/react` 1.49.0 (PR #250).
 
 Scalewing request from Teisoro.
 

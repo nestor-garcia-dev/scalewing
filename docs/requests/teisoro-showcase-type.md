@@ -1,6 +1,6 @@
 # Teisoro: a public page's type sizes
 
-Status: implemented, pending release, for the next `@scalewing/tokens` and `@scalewing/react` minors.
+Status: released in `@scalewing/tokens` 1.7.0 and `@scalewing/react` 1.49.0 (PR #246).
 
 Scalewing request from Teisoro.
 
