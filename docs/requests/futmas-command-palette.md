@@ -1,6 +1,6 @@
 Scalewing request from FutMas.
 
-Status: accepted 2026-10-24 (FutMas F-010-S09 "desktop shell and league overview", release W2 "the league frame"; the owner approved the F-010 canvas v15 and the whole feature on 2026-10-24, with standing approval for Scalewing changes, PRs, merges and publishing). To ship in `@scalewing/react` 1.48.0.
+Status: released in `@scalewing/react` 1.48.0 (PR #234; accepted 2026-10-24; FutMas F-010-S09 "desktop shell and league overview", release W2 "the league frame"; the owner approved the F-010 canvas v15 and the whole feature on 2026-10-24, with standing approval for Scalewing changes, PRs, merges and publishing).
 Renderer: react
 Missing surface: `CommandPalette`, a top-layer search over the product (a field over an always-open grouped listbox of results, ⌘K / Ctrl+K from anywhere), and `CommandPaletteTrigger`, the search-looking button with a key hint that opens it.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: `Dialog` plus `Combobox` does not make one. The combobox's list is a popover that opens and closes on its own, and Escape empties its input instead of closing the dialog; there is no item glyph, no Enter hint and no global shortcut. FutMas owns no CSS, so it cannot style a `<kbd>` key hint, a search-looking trigger or the results band.

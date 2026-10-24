@@ -30,7 +30,7 @@ export function SkeletonSection() {
           </Card>
           <Card padding={4}>
             <Stack gap={3}>
-              <Text variant="title">Rangers</Text>
+              <Text variant="title">On duty</Text>
               <Skeleton label="Loading rangers" lines={4} variant="rows" />
             </Stack>
           </Card>

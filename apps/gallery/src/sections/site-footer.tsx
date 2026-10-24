@@ -23,7 +23,7 @@ export function SiteFooterSection() {
           </Text>
         }
         end={
-          <a href="#site-footer" hrefLang="es" lang="es">
+          <a href="#site-footer" hrefLang="es" lang="es" tabIndex={0}>
             Español
           </a>
         }

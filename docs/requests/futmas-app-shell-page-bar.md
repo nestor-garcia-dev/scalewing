@@ -1,6 +1,6 @@
 Scalewing request from FutMas.
 
-Status: accepted 2026-10-24 (FutMas F-010-S09 "desktop shell and league overview", release W2 "the league frame"; the owner approved the F-010 canvas v15 and the whole feature on 2026-10-24, with standing approval for Scalewing changes, PRs, merges and publishing). To ship in `@scalewing/react` 1.48.0.
+Status: released in `@scalewing/react` 1.48.0 (PR #231; accepted 2026-10-24; FutMas F-010-S09 "desktop shell and league overview", release W2 "the league frame"; the owner approved the F-010 canvas v15 and the whole feature on 2026-10-24, with standing approval for Scalewing changes, PRs, merges and publishing).
 Renderer: react
 Missing surface: three additions to `AppShell`: a sticky `pageBar` band at the top of `main`, a count on the compact bar's menu button (`menuCount`, `menuCountLabel`, `menuCountTone`), and documented support for an interactive switcher trigger in `header`/`railHeader`.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: the league overview's season bar (the competition and season pickers, the search) must stay pinned while the page scrolls (FutMas's fit rule: the page's main job fits 1366×768 and only long lists scroll). FutMas may not write sticky CSS or media queries, and `AppHeader sticky` inside `main` sticks at `top: 0`, where below `lg` it slides under AppShell's own sticky top bar. The menu button takes only `menuIcon` and `labels`, so the portrait layout's "a top bar with a menu (Inbox count)" has nowhere to draw or read the count.

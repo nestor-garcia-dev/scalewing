@@ -1,6 +1,6 @@
 Scalewing request from FutMas.
 
-Status: accepted 2026-10-24 (FutMas F-010-S09 "desktop shell and league overview", release W2 "the league frame"; the owner approved the F-010 canvas v15 and the whole feature on 2026-10-24, with standing approval for Scalewing changes, PRs, merges and publishing). To ship in `@scalewing/react` 1.48.0.
+Status: released in `@scalewing/react` 1.48.0 (PR #236; accepted 2026-10-24; FutMas F-010-S09 "desktop shell and league overview", release W2 "the league frame"; the owner approved the F-010 canvas v15 and the whole feature on 2026-10-24, with standing approval for Scalewing changes, PRs, merges and publishing).
 Renderer: react
 Missing surface: `Skeleton`, grey placeholder bars where content is loading.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: FutMas owns no CSS, so it cannot draw grey bars, pulse them or still them under reduced motion; a `Box` has no fill other than the background or surface.

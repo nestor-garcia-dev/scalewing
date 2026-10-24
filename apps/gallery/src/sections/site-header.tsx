@@ -28,15 +28,17 @@ export function SiteHeaderSection() {
         <SiteHeader
           actions={
             <>
-              <a href="#site-header" hrefLang="es" lang="es">
+              <a href="#site-header" hrefLang="es" lang="es" tabIndex={0}>
                 Español
               </a>
-              <a href="#site-header">Sign in</a>
+              <a href="#site-header" tabIndex={0}>
+                Sign in
+              </a>
               <ButtonLink href="#site-header">Contact the rangers</ButtonLink>
             </>
           }
           brand={
-            <a href="#site-header">
+            <a href="#site-header" tabIndex={0}>
               <Text as="span" variant="title">
                 Wetland Trust
               </Text>
@@ -44,7 +46,7 @@ export function SiteHeaderSection() {
           }
           closeIcon={<Glyph path={closePath} size={22} />}
           compactActions={
-            <a href="#site-header" hrefLang="es" lang="es">
+            <a href="#site-header" hrefLang="es" lang="es" tabIndex={0}>
               Español
             </a>
           }

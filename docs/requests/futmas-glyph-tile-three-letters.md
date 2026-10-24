@@ -1,6 +1,6 @@
 Scalewing request from FutMas.
 
-Status: accepted 2026-10-24 (FutMas F-010-S09 "desktop shell and league overview", release W2 "the league frame"; the owner approved the F-010 canvas v15 and the whole feature on 2026-10-24, with standing approval for Scalewing changes, PRs, merges and publishing). To ship in `@scalewing/react` 1.48.0.
+Status: released in `@scalewing/react` 1.48.0 (PR #243; accepted 2026-10-24; FutMas F-010-S09 "desktop shell and league overview", release W2 "the league frame"; the owner approved the F-010 canvas v15 and the whole feature on 2026-10-24, with standing approval for Scalewing changes, PRs, merges and publishing).
 Renderer: react
 Missing surface: `GlyphTile` holding up to three letters (a league's or a team's initials, "NSL") that fit the tile at every size.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: GlyphTile sizes only a direct-child SVG; words inherit the text size round the tile, so "NSL" (and even "HM") at a 15–17 px label overflows the 24 px `sm` tile and is clipped in the AppShell rail, the sidebar and FixtureRow marks. FutMas owns no CSS to shrink them.
