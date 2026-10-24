@@ -1,6 +1,7 @@
 import { ActionMenuSection } from './sections/action-menu.js';
 import { CommandPaletteSection } from './sections/command-palette.js';
 import { BandSection } from './sections/band.js';
+import { SiteFooterSection } from './sections/site-footer.js';
 import { ContextSwitcherSection } from './sections/context-switcher.js';
 import { FileFieldSection } from './sections/file-field.js';
 import { DocumentViewerSection } from './sections/document-viewer.js';
@@ -384,6 +385,12 @@ export const catalog = [
     label: 'SectionNav',
     group: 'chrome',
     Section: SectionNavSection,
+  },
+  {
+    id: 'site-footer',
+    label: 'SiteFooter',
+    group: 'chrome',
+    Section: SiteFooterSection,
   },
   {
     id: 'app-shell',
