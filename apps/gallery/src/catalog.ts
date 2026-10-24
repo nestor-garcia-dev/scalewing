@@ -16,6 +16,7 @@ import { CheckboxSection } from './sections/checkbox.js';
 import { RadioGroupSection } from './sections/radio-group.js';
 import { SpinnerSection } from './sections/spinner.js';
 import { SkeletonSection } from './sections/skeleton.js';
+import { EmptyStateSection } from './sections/empty-state.js';
 import { ProgressSection } from './sections/progress.js';
 import { NoticeSection } from './sections/notice.js';
 import { GlyphTileSection } from './sections/glyph-tile.js';
@@ -208,6 +209,12 @@ export const catalog = [
     label: 'Skeleton',
     group: 'controls',
     Section: SkeletonSection,
+  },
+  {
+    id: 'empty-state',
+    label: 'EmptyState',
+    group: 'controls',
+    Section: EmptyStateSection,
   },
   {
     id: 'progress',

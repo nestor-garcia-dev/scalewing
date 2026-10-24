@@ -39,6 +39,7 @@ import {
   SiteHeader,
   DescriptionList,
   DescriptionItem,
+  EmptyState,
   FixtureGroup,
   FixtureRow,
   ListGroup,
@@ -838,6 +839,24 @@ The consumer needs no PDF.js dependency of its own. With another bundler, build 
 ```tsx
 <Skeleton label="Loading this week's sightings" />
 <Skeleton label="Loading rangers" variant="rows" lines={4} />
+```
+
+`EmptyState` is where a list or a page has nothing yet: a centred panel on the surface with a dashed hairline edge (the md radius) that fills its column, so it sits in a page column or inside a `Card`. `title` (required) says what is empty ("No teams in Spring 2027 yet"), a heading at `titleAs` (`emptyStateTitleElements`: `"h2"` by default in a page, `"h3"` inside a card under its own heading) in title type. `description` is a muted line under it, usually what to do next. `icon` is a decorative glyph (Lucide in your app) in a quiet subtle-fill square over the title, hidden from assistive technology. `actions` are the ways out, such as a primary and a neutral `Button`, in a centred row that wraps (a 44 px target on a touch screen). The panel is a plain `div`, not a landmark or a live region: if it replaces a list after a person's action, say so yourself. An empty slot (nothing, an empty Fragment or array, or blank words) draws no box. Inside a bordered `Card` (the default glass or `outlined`) the dashed edge sits just inside the card's own hairline and reads as a double edge: where the empty panel is the card's whole content, use it in place of the card, or in an `elevated` or `filled` Card, which draw no hairline. Forced colours keep the dashed edge. A blank `title` or `description` or an unknown `titleAs` throws a `RangeError`.
+
+```tsx
+<EmptyState
+  icon={<Users />}
+  title="No nests counted yet"
+  description="Bring back last spring's nests, or paste a list."
+  actions={
+    <>
+      <Button onPress={copy}>Copy last spring's 12 nests</Button>
+      <Button variant="neutral" onPress={paste}>
+        Paste a list
+      </Button>
+    </>
+  }
+/>
 ```
 
 `GlyphTile` is a small rounded square in a categorical colour with the consumer's glyph in white: the mark of a kind beside its name, such as a service in a list. `hue` is one of the `@scalewing/tokens` categorical colours (`green`, `blue`, `orange`, `purple`, `teal`, `rose`, or `neutral`); which kind takes which hue is yours. `size` is `sm` (24), `md` (28, the default) or `lg` (32); the glyph is drawn at spacing step 4 in white, which keeps 3:1 on every fill; pass the SVG (a Lucide component) as the tile's direct child, since only a direct-child SVG is sized. It is always `aria-hidden`, so put the kind's name in visible text beside it. An unknown `hue` or `size` throws a `RangeError`. It may hold up to three letters in place of the glyph, such as initials (`<GlyphTile hue="neutral" size="sm">NSL</GlyphTile>`): words given as its children are drawn in one line at weight 600 and sized from the tile, not the text round it (one letter at half its side, two at 0.42, three at a third), so they fit every size; blank words or more than three letters throw a `RangeError`.

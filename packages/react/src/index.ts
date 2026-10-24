@@ -104,6 +104,12 @@ export {
   type SkeletonVariant,
 } from './components/Skeleton.js';
 export {
+  EmptyState,
+  emptyStateTitleElements,
+  type EmptyStateProps,
+  type EmptyStateTitleElement,
+} from './components/EmptyState.js';
+export {
   GlyphTile,
   glyphTileSizes,
   type GlyphTileHue,

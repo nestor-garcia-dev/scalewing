@@ -43,6 +43,7 @@ import { cssSwitchClasses } from './css-switch.js';
 import { cssTextClasses } from './css-text.js';
 import { cssFontMonoClasses } from './css-font-mono.js';
 import { cssSkeletonClasses } from './css-skeleton.js';
+import { cssEmptyStateClasses } from './css-empty-state.js';
 import { cssSpinnerClasses } from './css-spinner.js';
 import { cssProgressClasses } from './css-progress.js';
 import { cssNoticeClasses } from './css-notice.js';
@@ -238,6 +239,8 @@ ${cssSwitchClasses()}
 ${cssSpinnerClasses()}
 
 ${cssSkeletonClasses()}
+
+${cssEmptyStateClasses()}
 
 ${cssProgressClasses()}
 

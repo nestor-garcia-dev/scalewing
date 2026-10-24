@@ -25,6 +25,7 @@ import { countPillClassCatalog } from './css-count-pill.js';
 import { checkboxClassCatalog } from './css-checkbox.js';
 import { radioGroupClassCatalog } from './css-radio-group.js';
 import { skeletonClassCatalog } from './css-skeleton.js';
+import { emptyStateClassCatalog } from './css-empty-state.js';
 import { spinnerClassCatalog } from './css-spinner.js';
 import { progressClassCatalog } from './css-progress.js';
 import { noticeClassCatalog } from './css-notice.js';
@@ -143,6 +144,7 @@ export function utilityClassCatalog(): string[] {
     ...radioGroupClassCatalog(),
     ...spinnerClassCatalog(),
     ...skeletonClassCatalog(),
+    ...emptyStateClassCatalog(),
     ...progressClassCatalog(),
     ...noticeClassCatalog(),
     ...glyphTileClassCatalog(),
