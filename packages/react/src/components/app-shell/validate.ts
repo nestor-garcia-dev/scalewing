@@ -35,18 +35,65 @@ function assertGroups(groups: AppShellProps['groups']): void {
 }
 
 /**
- * Fails closed on the shell's words, its groups and their items (ids unique
- * across every group, each with an icon, which is all the rail shows).
+ * Fails closed on the menu button's count: a whole number from 0, a
+ * nonempty label and a known tone, each of the last two with a count.
+ */
+function assertMenuCount({
+  menuCount,
+  menuCountLabel,
+  menuCountTone,
+}: Pick<
+  AppShellProps,
+  'menuCount' | 'menuCountLabel' | 'menuCountTone'
+>): void {
+  if (
+    menuCount !== undefined &&
+    (!Number.isInteger(menuCount) || menuCount < 0)
+  )
+    throw new RangeError(
+      `AppShell menuCount must be a whole number from 0: ${String(menuCount)}`,
+    );
+  if (menuCountLabel !== undefined && isBlank(menuCountLabel))
+    throw new RangeError('AppShell menuCountLabel must be nonempty');
+  if (menuCountTone !== undefined && !isOneOf(navCountTones, menuCountTone))
+    throw new RangeError(
+      `AppShell menuCountTone must be one of ${navCountTones.join(', ')}`,
+    );
+  if (
+    menuCount === undefined &&
+    (menuCountLabel !== undefined || menuCountTone !== undefined)
+  )
+    throw new RangeError(
+      'AppShell menuCountLabel and menuCountTone come with a menuCount',
+    );
+}
+
+/**
+ * Fails closed on the shell's words, the menu's count, its groups and
+ * their items (ids unique across every group, each with an icon, which is
+ * all the rail shows).
  */
 export function assertAppShellProps({
   groups,
   labels,
+  menuCount,
+  menuCountLabel,
+  menuCountTone,
   navLabel,
-}: Pick<AppShellProps, 'groups' | 'labels' | 'navLabel'>): void {
+}: Pick<
+  AppShellProps,
+  | 'groups'
+  | 'labels'
+  | 'menuCount'
+  | 'menuCountLabel'
+  | 'menuCountTone'
+  | 'navLabel'
+>): void {
   if (isBlank(navLabel))
     throw new RangeError('AppShell navLabel must be nonempty');
   if (isBlank(labels?.openMenu) || isBlank(labels?.closeMenu))
     throw new RangeError('AppShell labels openMenu and closeMenu are nonempty');
+  assertMenuCount({ menuCount, menuCountLabel, menuCountTone });
   assertGroups(groups);
   const items = groups.flatMap((group) => group.items);
   assertNavItems('AppShell', items);

@@ -68,6 +68,9 @@ export type AppShellProps = {
   onNavigate?: (item: AppShellNavItem) => void;
   /**
    * The sidebar's top, such as a workspace switcher; also the drawer's.
+   * It may hold an interactive trigger (an `ActionMenu`, a `ContextSwitcher`):
+   * its popup opens on the top layer, so the sidebar and the drawer never
+   * clip it.
    * While the drawer is open it is mounted twice (the sidebar's copy is
    * hidden), so each copy keeps its own state: put no fixed DOM `id` in it
    * (use `useId`), and keep state that must be shared in the consumer.
@@ -76,7 +79,11 @@ export type AppShellProps = {
   header?: ReactNode;
   /** The sidebar's bottom, such as the account menu; also the drawer's (see `header`). */
   footer?: ReactNode;
-  /** A compact `header` for the rail. Left out, the rail shows none. */
+  /**
+   * A compact `header` for the rail, such as a workspace switcher drawn as
+   * its glyph alone (an icon trigger named by its label). Left out, the
+   * rail shows none.
+   */
   railHeader?: ReactNode;
   /** A compact `footer` for the rail. Left out, the rail shows none. */
   railFooter?: ReactNode;
@@ -86,6 +93,34 @@ export type AppShellProps = {
   barEnd?: ReactNode;
   /** The consumer's glyph for the menu button (Scalewing has no icon catalog). */
   menuIcon: ReactNode;
+  /**
+   * How many things wait behind the menu, such as an inbox: the shared
+   * count pill on the menu button's top end corner, below `lg`, read in
+   * its name after `labels.openMenu` and a comma ("Open menu, 6"). A whole
+   * number; 0 (or none) shows no pill.
+   */
+  menuCount?: number;
+  /**
+   * What the menu's count means, in the consumer's words ("6 need you"):
+   * read in the name in place of the bare number ("Open menu, 6 need you").
+   * Needs `menuCount`.
+   */
+  menuCountLabel?: string;
+  /**
+   * The menu pill's colour, NavCount's tones: `danger` (the default),
+   * `warning` (amber) for work that needs the person but is not urgent,
+   * `accent` for news. Needs `menuCount`.
+   */
+  menuCountTone?: NavCountTone;
+  /**
+   * A band at the top of `main` on every layout, such as the page's
+   * context pickers and search: the solid surface with a hairline under it
+   * and the page's inline padding (space-4 below `lg`, space-6 from it),
+   * its children laid out in a wrapping row with space between them. It is
+   * sticky: under the compact top bar below `lg`, at the window's top
+   * from `lg` up. It scrolls with nothing else; keep it to one row.
+   */
+  pageBar?: ReactNode;
   labels: AppShellLabels;
   /** The page, rendered in `main`. */
   children: ReactNode;

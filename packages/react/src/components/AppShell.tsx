@@ -1,15 +1,16 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { type CSSProperties, useEffect, useRef, useState } from 'react';
 
 import { breakpointQuery } from '../css/breakpoints.js';
 import { appShellWideQuery } from '../css/css-app-shell.js';
-import { AppHeader } from './AppHeader.js';
+import { appShellBarHeightVariable } from '../css/css-app-shell-page-bar.js';
+import { AppShellBar } from './app-shell/AppShellBar.js';
 import { AppShellDrawer } from './app-shell/AppShellDrawer.js';
 import { AppShellSidebar } from './app-shell/AppShellSidebar.js';
 import { type AppShellProps } from './app-shell/types.js';
 import { assertAppShellProps } from './app-shell/validate.js';
-import { Button } from './Button.js';
+import { useElementHeight } from './use-element-height.js';
 import { useMediaQuery } from './use-media-query.js';
 
 export type {
@@ -27,8 +28,9 @@ const fromLg = breakpointQuery('from', 'lg');
  * From 75rem the sidebar is full (glyphs, labels, counts and group
  * captions); from `lg` to 75rem it is a rail of glyphs with tooltips; below
  * `lg` a sticky top bar's menu button opens the same navigation in a modal
- * drawer from the inline start. Invalid groups, items or words throw a
- * `RangeError`.
+ * drawer from the inline start, its button optionally carrying a count.
+ * `pageBar` is a sticky band at the top of `main` on every layout. Invalid
+ * groups, items, counts or words throw a `RangeError`.
  */
 export function AppShell({
   barEnd,
@@ -38,20 +40,41 @@ export function AppShell({
   groups,
   header,
   labels,
+  menuCount,
+  menuCountLabel,
+  menuCountTone,
   menuIcon,
   navLabel,
   onNavigate,
+  pageBar,
   railFooter,
   railHeader,
 }: AppShellProps) {
-  assertAppShellProps({ groups, labels, navLabel });
+  assertAppShellProps({
+    groups,
+    labels,
+    menuCount,
+    menuCountLabel,
+    menuCountTone,
+    navLabel,
+  });
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef<HTMLButtonElement>(null);
+  const barRef = useRef<HTMLElement>(null);
   // Set by a dismissal (Escape, a press outside, the close button): only
   // that hands focus back to the menu button.
   const refocusRef = useRef(false);
   const sidebarShown = useMediaQuery(fromLg, false);
   const wide = useMediaQuery(appShellWideQuery, false);
+  // A page bar sticks under the compact bar, however tall its end controls
+  // make it; the generated CSS falls back to the bar's usual height.
+  const hasPageBar =
+    pageBar !== undefined && pageBar !== null && pageBar !== false;
+  const barHeight = useElementHeight(barRef, hasPageBar);
+  const shellStyle =
+    barHeight === null
+      ? undefined
+      : ({ [appShellBarHeightVariable]: `${barHeight}px` } as CSSProperties);
 
   // The drawer belongs to the bar, which is gone from `lg` up: a window
   // widened while it is open closes it.
@@ -67,25 +90,20 @@ export function AppShell({
   }, [menuOpen]);
 
   return (
-    <div className="sw-app-shell">
-      <AppHeader appearance="bar" className="sw-app-shell-bar" padding={2}>
-        <Button
-          ref={menuRef}
-          aria-expanded={menuOpen}
-          aria-haspopup="dialog"
-          aria-label={labels.openMenu}
-          className="sw-app-shell-menu"
-          onPress={() => setMenuOpen(true)}
-          size="sm"
-          variant="ghost"
-        >
-          <span aria-hidden="true" className="sw-app-shell-icon">
-            {menuIcon}
-          </span>
-        </Button>
-        <div className="sw-app-shell-bar-title">{barTitle}</div>
-        {barEnd ? <div className="sw-app-shell-bar-end">{barEnd}</div> : null}
-      </AppHeader>
+    <div className="sw-app-shell" style={shellStyle}>
+      <AppShellBar
+        barEnd={barEnd}
+        barRef={barRef}
+        barTitle={barTitle}
+        menuCount={menuCount}
+        menuCountLabel={menuCountLabel}
+        menuCountTone={menuCountTone}
+        menuIcon={menuIcon}
+        menuOpen={menuOpen}
+        menuRef={menuRef}
+        onOpenMenu={() => setMenuOpen(true)}
+        openMenuLabel={labels.openMenu}
+      />
       <AppShellSidebar
         footer={footer}
         groups={groups}
@@ -96,7 +114,12 @@ export function AppShell({
         railFooter={railFooter}
         railHeader={railHeader}
       />
-      <main className="sw-app-shell-main">{children}</main>
+      <main className="sw-app-shell-main">
+        {hasPageBar ? (
+          <div className="sw-app-shell-page-bar">{pageBar}</div>
+        ) : null}
+        {children}
+      </main>
       <AppShellDrawer
         closeLabel={labels.closeMenu}
         footer={footer}

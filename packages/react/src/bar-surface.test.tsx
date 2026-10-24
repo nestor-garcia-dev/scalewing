@@ -1,4 +1,5 @@
 import { cleanup, render, screen } from '@testing-library/react';
+import { createRef } from 'react';
 import { afterEach, describe, expect, it } from 'vitest';
 
 import { AppHeader, type AppHeaderAppearance } from './components/AppHeader.js';
@@ -30,6 +31,13 @@ describe('Box border bottom', () => {
 });
 
 describe('AppHeader appearance', () => {
+  it('forwards a ref to its header element', () => {
+    const ref = createRef<HTMLElement>();
+    render(<AppHeader ref={ref}>Brand</AppHeader>);
+    expect(ref.current).toBe(screen.getByRole('banner'));
+    expect(ref.current?.tagName).toBe('HEADER');
+  });
+
   it('keeps the glass card by default', () => {
     render(<AppHeader>Brand</AppHeader>);
     expect(screen.getByRole('banner').className).toBe(

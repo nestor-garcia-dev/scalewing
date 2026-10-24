@@ -13,8 +13,8 @@
  *    its popup can only paint as high as the surface does; lifting the surface
  *    over the ActionBar keeps an open list tappable where the bar would cover
  *    it, and over the next surface in the flow.
- * 5. `topChrome`: the sticky AppHeader or sticky Tabs strip (and a banded
- *    Dialog's title band, inside its dialog), over a lifted
+ * 5. `topChrome`: the sticky AppHeader, sticky Tabs strip or AppShell page
+ *    bar (and a banded Dialog's title band, inside its dialog), over a lifted
  *    surface that scrolls up under it (the header is the page's way back, the
  *    strip its way between sections, and a popup opens downward).
  * 6. `sheetGrabber`: a bottom sheet's grabber, inside its dialog, over the

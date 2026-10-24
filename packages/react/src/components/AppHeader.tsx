@@ -1,5 +1,7 @@
 'use client';
 
+import { type Ref } from 'react';
+
 import { cx } from '../class-names.js';
 import {
   type AppHeaderAppearance,
@@ -11,6 +13,8 @@ import { Box, type BoxProps } from './Box.js';
 export { appHeaderAppearances, type AppHeaderAppearance };
 
 export type AppHeaderProps = Omit<BoxProps, 'as'> & {
+  /** The `header` element, such as for measuring the bar. */
+  ref?: Ref<HTMLElement>;
   sticky?: boolean;
   /**
    * `bar` draws the header as a full-width band of the solid surface with

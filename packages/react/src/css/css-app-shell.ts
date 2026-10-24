@@ -8,6 +8,10 @@ import {
   cssAppShellNavClasses,
   cssAppShellRailNavRules,
 } from './css-app-shell-nav.js';
+import {
+  appShellPageBarClassCatalog,
+  cssAppShellPageBarClasses,
+} from './css-app-shell-page-bar.js';
 import { iconButtonRules } from './css-icon-button.js';
 
 /*
@@ -126,7 +130,8 @@ ${cssAppShellRailNavRules('    ')}
 /*
  * AppShell: a workspace frame with a pinned side navigation (see
  * components/AppShell.tsx). The links, groups and the rail's nav are
- * `css-app-shell-nav.ts`; the menu drawer is `css-app-shell-drawer.ts`.
+ * `css-app-shell-nav.ts`; the page bar and the menu's count are
+ * `css-app-shell-page-bar.ts`; the menu drawer is `css-app-shell-drawer.ts`.
  */
 export function cssAppShellClasses(): string {
   return `${barRules()}
@@ -142,6 +147,8 @@ export function cssAppShellClasses(): string {
 }
 
 ${cssAppShellNavClasses()}
+
+${cssAppShellPageBarClasses()}
 
 ${sidebarRules()}
 
@@ -162,6 +169,7 @@ export function appShellClassCatalog(): string[] {
     'sw-app-shell-header',
     'sw-app-shell-footer',
     ...appShellNavClassCatalog(),
+    ...appShellPageBarClassCatalog(),
     ...appShellDrawerClassCatalog(),
   ];
 }

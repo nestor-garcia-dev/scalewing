@@ -22,7 +22,7 @@ test('AppShell is a full pinned sidebar in a 1366 x 680 laptop window', async ({
   await open(page, 1366, 680);
   const nav = page.getByRole('navigation', { name: 'Field station' });
   await expect(nav).toBeVisible();
-  await expect(page.getByRole('button', { name: 'Open menu' })).toBeHidden();
+  await expect(page.getByRole('button', { name: /^Open menu/ })).toBeHidden();
   const sidebar = page.locator('.sw-app-shell-sidebar');
   const box = (await sidebar.boundingBox())!;
   expect(Math.round(box.width)).toBe(240);
@@ -102,7 +102,7 @@ test('AppShell is a top bar with a menu drawer on an iPad in portrait', async ({
 }, testInfo) => {
   await open(page, 820, 1180);
   await expect(page.locator('.sw-app-shell-sidebar')).toBeHidden();
-  const menu = page.getByRole('button', { name: 'Open menu' });
+  const menu = page.getByRole('button', { name: 'Open menu, 5 need you' });
   await expect(menu).toBeVisible();
   await menu.click();
   const drawer = page.getByRole('dialog', { name: 'Field station' });
@@ -135,9 +135,104 @@ test('AppShell mirrors its drawer in right-to-left', async ({ page }) => {
   await page.evaluate(() =>
     document.documentElement.setAttribute('dir', 'rtl'),
   );
-  await page.getByRole('button', { name: 'Open menu' }).click();
+  await page.getByRole('button', { name: /^Open menu/ }).click();
   const box = (await page
     .getByRole('dialog', { name: 'Field station' })
     .boundingBox())!;
   expect(Math.round(box.x + box.width)).toBe(820);
+});
+
+async function scrollPage(page: Page) {
+  await page.mouse.move(700, 600);
+  await page.mouse.wheel(0, 700);
+  await expect
+    .poll(() => page.evaluate(() => window.scrollY))
+    .toBeGreaterThan(100);
+}
+
+test('AppShell pins its page bar at the top from lg, beside the sidebar', async ({
+  page,
+}) => {
+  await open(page, 1366, 680);
+  const band = page.locator('.sw-app-shell-page-bar');
+  await expect(band.getByText('Spring census')).toBeVisible();
+  const main = (await page.getByRole('main').boundingBox())!;
+  const before = (await band.boundingBox())!;
+  expect(before.y).toBe(0);
+  expect(before.x).toBe(main.x);
+  expect(before.width).toBe(main.width);
+  await scrollPage(page);
+  expect((await band.boundingBox())!.y).toBe(0);
+  // Solid, so the page does not show through it.
+  const fill = await band.evaluate(
+    (node) => getComputedStyle(node).backgroundColor,
+  );
+  expect(fill).not.toMatch(/rgba\(.*, 0\)|transparent/);
+  // The header's switcher opens its menu over the page.
+  await page.getByRole('button', { name: /Heron Marsh station/ }).click();
+  await expect(page.getByRole('menu')).toBeVisible();
+  await expect(
+    page.getByRole('menuitem', { name: 'Pine Ridge station' }),
+  ).toBeInViewport();
+});
+
+test('AppShell rail header holds a switcher whose menu the rail does not clip', async ({
+  page,
+}) => {
+  await open(page, 1180, 820);
+  const trigger = page.getByRole('button', { name: 'Stations' });
+  await expect(trigger).toBeVisible();
+  await trigger.click();
+  const menu = page.getByRole('menu');
+  await expect(menu).toBeVisible();
+  const box = (await menu.boundingBox())!;
+  const rail = (await page.locator('.sw-app-shell-sidebar').boundingBox())!;
+  expect(box.x + box.width).toBeGreaterThan(rail.x + rail.width);
+  await expect(
+    page.getByRole('menuitem', { name: 'Pine Ridge station' }),
+  ).toBeInViewport();
+  await page.keyboard.press('Escape');
+  await expect(trigger).toBeFocused();
+});
+
+test('AppShell sticks its page bar under the top bar and counts on the menu below lg', async ({
+  page,
+}, testInfo) => {
+  await open(page, 820, 1180);
+  const bar = page.locator('.sw-app-shell-bar');
+  const band = page.locator('.sw-app-shell-page-bar');
+  const barBox = (await bar.boundingBox())!;
+  expect((await band.boundingBox())!.y).toBeCloseTo(barBox.height, 0);
+  await scrollPage(page);
+  expect((await bar.boundingBox())!.y).toBe(0);
+  expect((await band.boundingBox())!.y).toBeCloseTo(barBox.height, 0);
+  // The pill sits on the menu button's top end corner.
+  const menu = page.getByRole('button', { name: 'Open menu, 5 need you' });
+  const pill = (await menu.locator('.sw-app-shell-count').boundingBox())!;
+  const button = (await menu.boundingBox())!;
+  expect(pill.x + pill.width).toBeGreaterThan(button.x + button.width);
+  expect(pill.y).toBeLessThan(button.y);
+  await page.screenshot({
+    path: testInfo.outputPath('app-shell-page-bar.png'),
+  });
+  // The drawer's header switcher opens its menu over the drawer.
+  await menu.click();
+  const drawer = page.getByRole('dialog', { name: 'Field station' });
+  await drawer.getByRole('button', { name: /Heron Marsh station/ }).click();
+  await expect(
+    page.getByRole('menuitem', { name: 'Pine Ridge station' }),
+  ).toBeVisible();
+  await page.keyboard.press('Escape');
+  await expect(drawer).toBeVisible();
+});
+
+test('AppShell mirrors the menu count in right-to-left', async ({ page }) => {
+  await open(page, 820, 1180);
+  await page.evaluate(() =>
+    document.documentElement.setAttribute('dir', 'rtl'),
+  );
+  const menu = page.getByRole('button', { name: /^Open menu/ });
+  const pill = (await menu.locator('.sw-app-shell-count').boundingBox())!;
+  const button = (await menu.boundingBox())!;
+  expect(pill.x).toBeLessThan(button.x);
 });
