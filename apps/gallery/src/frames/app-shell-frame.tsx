@@ -3,9 +3,11 @@ import {
   AppShell,
   type AppShellNavGroup,
   type NavCountTone,
+  Badge,
+  Button,
   Card,
-  GlyphTile,
   Grid,
+  Inline,
   Stack,
   StatTile,
   Text,
@@ -123,13 +125,30 @@ export function AppShellFrame() {
           />
         }
         labels={{ openMenu: 'Open menu', closeMenu: 'Close menu' }}
+        menuCount={5}
+        menuCountLabel="5 need you"
+        menuCountTone="warning"
         menuIcon={<Glyph path={glyphs.menu} size={18} />}
         navLabel="Field station"
         onNavigate={(item) => setCurrent(item.id)}
+        pageBar={
+          <>
+            <Inline gap={2}>
+              <Text variant="label">Spring census</Text>
+              <Badge tone="success">Live</Badge>
+            </Inline>
+            <Button onPress={() => undefined} size="sm" variant="neutral">
+              Export sightings
+            </Button>
+          </>
+        }
         railHeader={
-          <GlyphTile hue="teal" size="lg">
-            <Glyph path={glyphs.station} />
-          </GlyphTile>
+          <ActionMenu
+            items={stationMenu}
+            label="Stations"
+            trigger={<Glyph path={glyphs.station} size={18} />}
+            triggerAppearance="icon"
+          />
         }
       >
         <Stack gap={4} padding={5}>
