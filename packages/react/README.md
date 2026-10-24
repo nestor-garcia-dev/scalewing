@@ -35,6 +35,7 @@ import {
   InfoTip,
   Separator,
   Band,
+  Hero,
   SiteFooter,
   SiteHeader,
   DescriptionList,
@@ -1034,6 +1035,18 @@ const { headings, omissions } = inspectMarkdown(page.body, {
   labels={{ openMenu: 'Open the menu', closeMenu: 'Close the menu' }}
   menuIcon={<MenuIcon />}
   closeIcon={<CloseIcon />}
+/>
+```
+
+`Hero` is a public page's opening, a `section` named by its title: an optional `eyebrow` (muted label words), the `title` (the page's one `h1`, in the `hero` size), an optional `lead` (the `lead` size) and `actions` (links or buttons in a wrapping row, stacked to the full width below `md`), with an optional `media` picture. From `md` the picture keeps its own width at the row's end and the words take the rest; below `md` it sits centred under the words. With no picture the words keep the reading width (`--sw-reading-max`). Put it in the page's column (`sw-container`); it sets no gutter or fill of its own. The title always names the section (`aria-labelledby` is not a prop). Leave out `actions` or `media` rather than passing an empty fragment, which keeps its row or column. A blank `title` throws a `RangeError`.
+
+```tsx
+<Hero
+  eyebrow="For birdwatchers"
+  title="Every heron counted."
+  lead="The north marsh in every season, from the hide to the shore."
+  actions={<ButtonLink href="/visit">Plan a visit</ButtonLink>}
+  media={<img alt="The heron hide at dawn" src="/hide.jpg" />}
 />
 ```
 

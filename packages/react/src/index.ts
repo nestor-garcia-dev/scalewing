@@ -465,6 +465,8 @@ export type {
   SiteHeaderLabels,
   SiteHeaderProps,
 } from './components/SiteHeader.js';
+export { Hero } from './components/Hero.js';
+export type { HeroProps } from './components/Hero.js';
 export { SiteFooter } from './components/SiteFooter.js';
 export type {
   SiteFooterGroup,
