@@ -85,6 +85,16 @@ The accent does not keep 4.5:1 on the grey in every palette, so keep links and a
 </ThemeProvider>
 ```
 
+`frame="site"` (opt-in; `themeFrames`, default `"none"`) makes the themed node a public site's page: a column at least the window's height (the canvas already keeps that height) whose last child is pushed to its foot, so a page shorter than the window still has its footer at the window's foot. It writes `data-frame="site"` on the themed node. Put the header, `main` and footer as the provider's direct children, the footer last: anything rendered after it as a direct child (a live region, a toast host) would take the footer's place at the foot, so put those inside `main`. An unknown frame throws a `RangeError`.
+
+```tsx
+<ThemeProvider frame="site" colorScheme="light">
+  <SiteHeader … />
+  <main>…</main>
+  <SiteFooter … />
+</ThemeProvider>
+```
+
 ```html
 <div class="sw-padding-top-4 sw-padding-x-4"></div>
 ```

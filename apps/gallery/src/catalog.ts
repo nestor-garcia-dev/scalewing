@@ -45,6 +45,7 @@ import { DataBarSection } from './sections/data-bar.js';
 import { ButtonGroupSection } from './sections/button-group.js';
 import { ButtonSection } from './sections/button.js';
 import { CanvasSection } from './sections/canvas.js';
+import { ThemeFrameSection } from './sections/theme-frame.js';
 import { CardSection } from './sections/card.js';
 import { DialogSection } from './sections/dialog.js';
 import { ToastSection } from './sections/toast.js';
@@ -103,6 +104,12 @@ export const catalog = [
     label: 'Canvas',
     group: 'foundations',
     Section: CanvasSection,
+  },
+  {
+    id: 'theme-frame',
+    label: 'ThemeProvider frame',
+    group: 'foundations',
+    Section: ThemeFrameSection,
   },
   {
     id: 'palettes',

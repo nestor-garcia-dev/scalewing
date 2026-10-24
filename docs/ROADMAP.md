@@ -171,8 +171,10 @@ grid's width (`teisoro-grid-fit.md`, #248); `Hero`, a public page's
 opening (`teisoro-hero.md`, #250). These three released early in
 `@scalewing/tokens` 1.7.0 and `@scalewing/react` 1.49.0 with FutMas's
 setup pieces (above). Then `ScreenPreview`, a drawn stand-in for an
-app's screen (`teisoro-screen-preview.md`, #251). Next: the next
-`@scalewing/react` minor for Teisoro to pin.
+app's screen (`teisoro-screen-preview.md`, #251), and `ThemeProvider`
+`frame="site"`, a short page's footer at the window's foot
+(`teisoro-site-frame.md`). Next: the next `@scalewing/react` minor for
+Teisoro to pin.
 
 Teisoro F-011-S02, release R1 "guided-form core": web `Stepper`
 (#113), `DenominationGrid` entry rows (#114), `Steps` / `Step` (#115)
