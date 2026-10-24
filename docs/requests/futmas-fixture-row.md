@@ -1,6 +1,6 @@
 Scalewing request from FutMas.
 
-Status: accepted 2026-10-24 (FutMas F-010-S09 "desktop shell and league overview", release W2 "the league frame"; the owner approved the F-010 canvas v15 and the whole feature on 2026-10-24, with standing approval for Scalewing changes, PRs, merges and publishing). To ship in `@scalewing/react` 1.48.0.
+Status: released in `@scalewing/react` 1.48.0 (PR #241; accepted 2026-10-24; FutMas F-010-S09 "desktop shell and league overview", release W2 "the league frame"; the owner approved the F-010 canvas v15 and the whole feature on 2026-10-24, with standing approval for Scalewing changes, PRs, merges and publishing).
 Renderer: react
 Missing surface: `FixtureRow`, one pairing of two sides with the time or score between them, and `FixtureGroup`, the caption over a run of them (a date, a venue).
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: the home side ends at the centre and the away side starts from it, and the centres line up down a run whatever the names; `Grid` has only equal columns and no alignment by side, `ListRow` is title, detail and value and cannot centre a kickoff between two names. FutMas owns no CSS.

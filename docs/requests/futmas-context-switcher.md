@@ -1,6 +1,6 @@
 Scalewing request from FutMas.
 
-Status: accepted 2026-10-24 (FutMas F-010-S09 "desktop shell and league overview", release W2 "the league frame"; the owner approved the F-010 canvas v15 and the whole feature on 2026-10-24, with standing approval for Scalewing changes, PRs, merges and publishing). To ship in `@scalewing/react` 1.48.0.
+Status: released in `@scalewing/react` 1.48.0 (PR #232; accepted 2026-10-24; FutMas F-010-S09 "desktop shell and league overview", release W2 "the league frame"; the owner approved the F-010 canvas v15 and the whole feature on 2026-10-24, with standing approval for Scalewing changes, PRs, merges and publishing).
 Renderer: react
 Missing surface: `ContextSwitcher`, a button showing the context in use that opens a popup to switch it: an optional filter field, the options in groups as a listbox (the current one checked), and commands in a footer.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: the popup is a positioned top-layer surface with a keyboard model (a listbox with an active row, typeahead, a combobox filter over it, Escape back to the trigger) that FutMas cannot build from primitives without its own CSS and focus code.

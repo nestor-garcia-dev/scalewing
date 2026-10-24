@@ -23,7 +23,11 @@ export function BandSection() {
               Two mornings at the north hide, binoculars provided.
             </Text>
             <Text>
-              Read the <a href="#band">field guide</a> before you come.
+              Read the{' '}
+              <a href="#band" tabIndex={0}>
+                field guide
+              </a>{' '}
+              before you come.
             </Text>
             <Box>
               <Button onPress={() => undefined}>Sign up for a morning</Button>

@@ -127,8 +127,22 @@ with a pinned sidebar, an icon rail and a top bar with a menu drawer
 `AppShell` item's `countTone`, an amber count for work that needs the
 person (`futmas-nav-count-warning.md`), together in #229. Released in
 `@scalewing/react` 1.47.0. Next: FutMas pins 1.47.0 in its F-010 admin
-web frame; then `GlyphTile` initials for league and team crests, its own
-request and PR against main.
+web frame; then `GlyphTile` initials for league and team crests (done in
+W2, below).
+
+FutMas F-010-S09, release W2 "the league frame", one PR each: `AppShell`
+`pageBar` and the menu's count (`futmas-app-shell-page-bar.md`, #231);
+`ContextSwitcher`, a button that switches the context in use
+(`futmas-context-switcher.md`, #232); `CommandPalette` and
+`CommandPaletteTrigger`, a ⌘K search (`futmas-command-palette.md`, #234);
+`Skeleton`, placeholder bars while content loads (`futmas-skeleton.md`,
+#236); `FixtureRow` and `FixtureGroup`, pairings with their centres lined
+up (`futmas-fixture-row.md`, #241); `GlyphTile` holding up to three
+letters for crests (`futmas-glyph-tile-three-letters.md`, #243). Box
+`orderBelow` was dropped (FutMas no longer needs it). Released in
+`@scalewing/react` 1.48.0 with Teisoro's S1, on `@scalewing/tokens` 1.6.0.
+Next: FutMas pins react 1.48.0 and tokens 1.6.0 in F-010-S09; then the
+`TableRow` rule for the playoff cut line when S17 needs it.
 
 Teisoro F-017-S02, release S1 "the public site's frame" (Teisoro task
 2705), one PR each: tokens `inverse` and `onInverse`, a dark band's
@@ -139,9 +153,8 @@ full-width page band with the dark inverse one (`teisoro-band.md`, #235);
 (`teisoro-site-footer.md`, #238); `SiteHeader`, a public site's header
 with a menu that works with no script (`teisoro-site-header.md`).
 Released in `@scalewing/tokens` 1.6.0 and `@scalewing/react` 1.48.0
-(which also ships FutMas's merged W2 pieces: `AppShell` `pageBar`,
-`ContextSwitcher`, `CommandPalette` and `Skeleton`). Next: Teisoro pins
-both in task 2705.
+(which also ships FutMas's W2 pieces, below). Next: Teisoro pins both in
+task 2705.
 
 Teisoro F-011-S02, release R1 "guided-form core": web `Stepper`
 (#113), `DenominationGrid` entry rows (#114), `Steps` / `Step` (#115)
