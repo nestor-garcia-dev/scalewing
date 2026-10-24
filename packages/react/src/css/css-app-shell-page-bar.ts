@@ -21,11 +21,11 @@ function barHeightFallback(control: string): string {
 const fromLg = breakpointQuery('from', 'lg');
 
 /*
- * \`pageBar\`: a band at the top of \`main\` on every layout, the solid
+ * `pageBar`: a band at the top of `main` on every layout, the solid
  * surface with a hairline under it and the page's inline padding (space-4,
- * space-6 from \`lg\`), its children a wrapping row with space between them.
- * Sticky on the top chrome's layer: under the compact bar below \`lg\`, at
- * the window's top from \`lg\`, where the bar is gone. Reduce Transparency
+ * space-6 from `lg`), its children a wrapping row with space between them.
+ * Sticky on the top chrome's layer: under the compact bar below `lg`, at
+ * the window's top from `lg`, where the bar is gone. Reduce Transparency
  * needs nothing (it is already solid); forced colours keep the hairline.
  */
 function pageBarRules(): string {
@@ -59,7 +59,7 @@ function pageBarRules(): string {
 }
 
 /*
- * \`menuCount\`: the shared count pill (\`sw-app-shell-count\`, its tones
+ * `menuCount`: the shared count pill (`sw-app-shell-count`, its tones
  * included) on the menu button's top end corner, over the glyph's edge as
  * on a rail glyph, mirrored in right-to-left.
  */

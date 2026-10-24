@@ -200,8 +200,8 @@ function optionRules(): string {
 
 /*
  * ContextSwitcher (see components/ContextSwitcher.tsx): the trigger is
- * \`css-context-switcher-trigger.ts\`; its count joins the shared pill
- * (\`css-count-pill.ts\`).
+ * `css-context-switcher-trigger.ts`; its count joins the shared pill
+ * (`css-count-pill.ts`).
  */
 export function cssContextSwitcherClasses(): string {
   return `${cssContextSwitcherTriggerClasses()}

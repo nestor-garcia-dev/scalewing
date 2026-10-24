@@ -59,6 +59,7 @@ import { SegmentedControlSection } from './sections/segmented-control.js';
 import { StatTileSection } from './sections/stat-tile.js';
 import { DescriptionListSection } from './sections/description-list.js';
 import { ListGroupSection } from './sections/list-group.js';
+import { FixtureRowSection } from './sections/fixture-row.js';
 import { TabsSection } from './sections/tabs.js';
 import { SelectSection } from './sections/select.js';
 import { MultiSelectSection } from './sections/multi-select.js';
@@ -318,6 +319,12 @@ export const catalog = [
     label: 'ListGroup',
     group: 'data',
     Section: ListGroupSection,
+  },
+  {
+    id: 'fixture-row',
+    label: 'FixtureRow',
+    group: 'data',
+    Section: FixtureRowSection,
   },
   {
     id: 'document-viewer',
