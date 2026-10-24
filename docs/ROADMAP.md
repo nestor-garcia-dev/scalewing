@@ -156,6 +156,12 @@ Released in `@scalewing/tokens` 1.6.0 and `@scalewing/react` 1.48.0
 (which also ships FutMas's W2 pieces, below). Next: Teisoro pins both in
 task 2705.
 
+Teisoro F-017-S03, release S2 "the public site's pages" (Teisoro task
+2710), one PR each: typography `hero`, `headline` and `lead`
+(`teisoro-showcase-type.md`). Next: Grid `fit`, `Hero` and
+`ScreenPreview`; then release `@scalewing/tokens` and `@scalewing/react`
+minors for Teisoro to pin.
+
 Teisoro F-011-S02, release R1 "guided-form core": web `Stepper`
 (#113), `DenominationGrid` entry rows (#114), `Steps` / `Step` (#115)
 and `ActionBar` `summary` (#116), released in `@scalewing/react` 1.27.0.

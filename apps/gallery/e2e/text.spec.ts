@@ -58,3 +58,25 @@ test('an authored margin on Text still wins over the reset', async ({
     await hidden.evaluate((node) => getComputedStyle(node).marginTop),
   ).toBe('-1px');
 });
+
+test("a public page's sizes step down on a phone", async ({
+  page,
+}, testInfo) => {
+  await page.goto('/#text');
+  const section = page.locator('#text');
+  const size = (variant: string) =>
+    section
+      .locator(`.sw-text-${variant}`)
+      .first()
+      .evaluate((node) => getComputedStyle(node).fontSize);
+  const phone = testInfo.project.name === 'mobile-es';
+  expect(await size('hero')).toBe(phone ? '36px' : '56px');
+  expect(await size('headline')).toBe(phone ? '26px' : '36px');
+  expect(await size('lead')).toBe(phone ? '17px' : '20px');
+  await expect(
+    section.getByRole('heading', { level: 1, name: 'hero' }),
+  ).toBeVisible();
+  await expect(
+    section.getByRole('heading', { level: 2, name: 'headline' }),
+  ).toBeVisible();
+});
