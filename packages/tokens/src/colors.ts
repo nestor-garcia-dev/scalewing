@@ -18,6 +18,8 @@ export const semanticColorKeys = [
   'success',
   'warning',
   'border',
+  'inverse',
+  'onInverse',
 ] as const;
 
 export type SemanticColorKey = (typeof semanticColorKeys)[number];
@@ -44,6 +46,10 @@ const lightBase: Omit<ColorTokens, 'accentSubtle'> = {
   success: '#087443',
   warning: '#B54708',
   border: '#D2D2D7',
+  // A dark band in either scheme (a site footer, one closing section): near
+  // black under the light page, a step above the black dark page.
+  inverse: '#1D1D1F',
+  onInverse: '#FFFFFF',
 };
 
 const darkBase: Omit<ColorTokens, 'accentSubtle'> = {
@@ -63,6 +69,8 @@ const darkBase: Omit<ColorTokens, 'accentSubtle'> = {
   success: '#5BE0A0',
   warning: '#FDB022',
   border: '#3A3A3C',
+  inverse: '#2C2C2E',
+  onInverse: '#F5F5F7',
 };
 
 // A quiet fill tinted with the accent; it follows `accent` and `surface`

@@ -19,8 +19,14 @@ function textPreviewStyle(color: SemanticColorKey): {
   if (color === 'onDanger') {
     return { backgroundColor: 'var(--sw-color-danger)' };
   }
+  if (color === 'onInverse') {
+    return { backgroundColor: 'var(--sw-color-inverse)' };
+  }
   if (color === 'background' || color === 'surface' || color === 'border') {
     return { backgroundColor: 'var(--sw-color-text)' };
+  }
+  if (color === 'inverse') {
+    return { backgroundColor: 'var(--sw-color-onInverse)' };
   }
   return {};
 }

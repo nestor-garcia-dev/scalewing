@@ -130,6 +130,12 @@ person (`futmas-nav-count-warning.md`), together in #229. Released in
 web frame; then `GlyphTile` initials for league and team crests, its own
 request and PR against main.
 
+Teisoro F-017-S02, release S1 "the public site's frame" (Teisoro task
+2705), one PR each: tokens `inverse` and `onInverse`, a dark band's
+colours (`teisoro-inverse-colors.md`); then the React `Band`, `SiteFooter`
+and `SiteHeader`. Next: release `@scalewing/tokens` and
+`@scalewing/react` minors; Teisoro pins both in task 2705.
+
 Teisoro F-011-S02, release R1 "guided-form core": web `Stepper`
 (#113), `DenominationGrid` entry rows (#114), `Steps` / `Step` (#115)
 and `ActionBar` `summary` (#116), released in `@scalewing/react` 1.27.0.
