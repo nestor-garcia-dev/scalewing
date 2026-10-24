@@ -35,6 +35,7 @@ import {
   InfoTip,
   Separator,
   Band,
+  SiteFooter,
   DescriptionList,
   DescriptionItem,
   ListGroup,
@@ -988,6 +989,28 @@ const { headings, omissions } = inspectMarkdown(page.body, {
     Count with us
   </Text>
 </Band>
+```
+
+`SiteFooter` is a public site's footer on the dark inverse band (`Band tone="inverse"`, so a brand moves it with a theme overlay of `inverse`). Supply `brand` (such as a logo for a dark background), an optional `tagline`, and `groups`: each `{ id, label, links }` is a `nav` named by its label, which shows above its links (hidden from assistive technology, since the `nav` already carries it). Each link is `{ id, label, href, current?, lang?, hrefLang? }`; `lang` and `hrefLang` pass through to the link unchecked; `current` sets `aria-current="page"` and draws it in the band's words at label weight, the others in its muted words, underlined on hover and focus. `legal` and `end` fill the bottom row past a hairline, such as the copyright and a language switch. Below `md` the brand takes the full width and the groups two columns; from `md` the brand and the groups share one spread row. Links get the 44 px target on a coarse pointer. Put it last in the page's `body` (outside a `section` or `article`) so it is the page's `contentinfo` landmark. No groups, a group with no links, blank or repeated ids, blank labels or a blank `href` throw a `RangeError`.
+
+```tsx
+<SiteFooter
+  brand={<img alt="Wetland Trust" src="/logo-white.svg" />}
+  tagline="Counting birds since 1990."
+  groups={[
+    {
+      id: 'visit',
+      label: 'Visit',
+      links: [{ id: 'marsh', label: 'North marsh', href: '/marsh' }],
+    },
+  ]}
+  legal="© Wetland Trust"
+  end={
+    <a href="/es" lang="es" hrefLang="es">
+      Español
+    </a>
+  }
+/>
 ```
 
 `DescriptionList` pairs terms with what each says, one `DescriptionItem` per row: a `dl` whose items each group a `dt` (`term`) with its `dd` (`children`). From `md` up the term sits in a start column as wide as the widest term, up to 40% of the list, and the detail beside it; every row aligns to its top, so a term and its detail's first line start level, and a hairline divides the rows, with no space above the first row or below the last. Below `md` each term sits over its detail. The list sets only the layout: pass your own `Text` for the term and the detail. Each child of a term or a detail is its own line with its own line height (a column), as wide as its content unless it sets its own width (a `Progress` fills the detail; a `Field` keeps its input's width): wrap inline content, such as words and a link on one line, in one element such as an `Inline`. Long unbreakable words wrap inside their column. A `dl` has no ARIA role, so name a list with a visible heading, and `aria-labelledby` on the `section` around it, rather than an `aria-label` on the list.
