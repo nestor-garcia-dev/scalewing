@@ -2,9 +2,11 @@ import { describe, expect, it } from 'vitest';
 
 import {
   assertStepperBounds,
+  assertStepperUnit,
   readStepperEntry,
   stepperMoves,
   stepperText,
+  stepperValueText,
 } from './stepper-count.js';
 
 const counts = { min: 0, max: 10, step: 1 };
@@ -89,5 +91,25 @@ describe('stepper entry', () => {
   it('writes a count as plain digits and none as an empty box', () => {
     expect(stepperText(12)).toBe('12');
     expect(stepperText(null)).toBe('');
+  });
+});
+
+describe('stepper unit', () => {
+  it('takes no unit or a word, and refuses a blank one', () => {
+    expect(() => assertStepperUnit(undefined)).not.toThrow();
+    expect(() => assertStepperUnit('min')).not.toThrow();
+    expect(() => assertStepperUnit('')).toThrow(RangeError);
+    expect(() => assertStepperUnit('  ')).toThrow(RangeError);
+  });
+
+  it('reads the count with its unit unless the consumer says it in words', () => {
+    expect(stepperValueText(90, 'min', undefined)).toBe('90 min');
+    expect(stepperValueText(11, ' players ', undefined)).toBe('11 players');
+    expect(stepperValueText(90, 'min', 'Ninety minutes')).toBe(
+      'Ninety minutes',
+    );
+    expect(stepperValueText(null, 'min', undefined)).toBeUndefined();
+    expect(stepperValueText(4, undefined, undefined)).toBeUndefined();
+    expect(stepperValueText(4, undefined, '4 herons')).toBe('4 herons');
   });
 });

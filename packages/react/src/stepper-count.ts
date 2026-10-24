@@ -72,3 +72,24 @@ export function readStepperEntry(
 export function stepperText(value: number | null): string {
   return value === null ? '' : String(value);
 }
+
+/** A consumer bug: a unit, when given, is a word to show after the count. */
+export function assertStepperUnit(unit: string | undefined): void {
+  if (unit !== undefined && unit.trim() === '')
+    throw new RangeError('Stepper unit must not be blank');
+}
+
+/**
+ * The count in words for assistive technology: the consumer's own words
+ * when given, otherwise the count and its unit ("90 min"), or nothing extra
+ * (the bare count is `aria-valuenow`) when there is no unit or no count.
+ */
+export function stepperValueText(
+  value: number | null,
+  unit: string | undefined,
+  valueText: string | undefined,
+): string | undefined {
+  if (valueText !== undefined) return valueText;
+  if (unit === undefined || value === null) return undefined;
+  return `${value} ${unit.trim()}`;
+}

@@ -12,12 +12,15 @@ import {
 import { cx } from '../class-names.js';
 import {
   assertStepperBounds,
+  assertStepperUnit,
   readStepperEntry,
   stepperMoves,
   stepperText,
+  stepperValueText,
 } from '../stepper-count.js';
 import { FieldErrorRegion } from './FieldErrorRegion.js';
 import { FieldLabelText } from './FieldLabelText.js';
+import { StepperCountFrame } from './stepper/StepperCountFrame.js';
 
 /** `fixed` sizes the count for a few digits; `full` fills its container, such as a table cell. */
 export type StepperWidth = 'fixed' | 'full';
@@ -60,8 +63,18 @@ export type StepperProps = {
   disabled?: boolean;
   /** Readable and focusable, never changed: the buttons are hidden and keep their room. */
   readOnly?: boolean;
-  /** Says the count in words for assistive technology (`aria-valuetext`), such as "12 straps". */
+  /**
+   * Says the count in words for assistive technology (`aria-valuetext`),
+   * such as "12 straps". It wins over the count and `unit` read together.
+   */
   valueText?: string;
+  /**
+   * A short muted word after the count, inside its frame, such as "min".
+   * Without `valueText` the count is read with it ("90 min"), word for
+   * word: a unit that changes with the count ("players") reads "1 players",
+   * so pass `valueText` with the right form ("1 player"). Not blank.
+   */
+  unit?: string;
   /**
    * Ids of elements that describe the count, such as the value it adds up
    * to; read before an `error`'s message.
@@ -106,6 +119,7 @@ export const Stepper = forwardRef<HTMLInputElement, StepperProps>(
       disabled = false,
       readOnly = false,
       valueText,
+      unit,
       'aria-describedby': describedBy,
       placeholder,
       name,
@@ -116,6 +130,7 @@ export const Stepper = forwardRef<HTMLInputElement, StepperProps>(
   ) {
     const bounds = { min, max, step };
     assertStepperBounds(bounds);
+    assertStepperUnit(unit);
     if (!stepperLimitAppearances.includes(limitAppearance))
       throw new RangeError(
         `Unknown Stepper limitAppearance: ${String(limitAppearance)}`,
@@ -214,35 +229,37 @@ export const Stepper = forwardRef<HTMLInputElement, StepperProps>(
           >
             <span aria-hidden="true">{'−'}</span>
           </button>
-          <input
-            ref={ref}
-            aria-describedby={
-              [describedBy?.trim() || null, invalid ? errorId : null]
-                .filter((id) => id !== null)
-                .join(' ') || undefined
-            }
-            aria-invalid={invalid || undefined}
-            aria-valuemax={Number.isFinite(max) ? max : undefined}
-            aria-valuemin={min}
-            aria-valuenow={value ?? undefined}
-            aria-valuetext={valueText}
-            autoComplete="off"
-            className="sw-stepper-input"
-            disabled={disabled}
-            id={inputId}
-            // iOS's numeric pad has no minus key, so a range below zero takes
-            // the text keyboard.
-            inputMode={allowsNegative ? 'text' : 'numeric'}
-            name={name}
-            onBlur={() => setDraft(null)}
-            onChange={onType}
-            onKeyDown={onKeyDown}
-            placeholder={placeholder}
-            readOnly={readOnly}
-            role="spinbutton"
-            type="text"
-            value={text}
-          />
+          <StepperCountFrame unit={unit}>
+            <input
+              ref={ref}
+              aria-describedby={
+                [describedBy?.trim() || null, invalid ? errorId : null]
+                  .filter((id) => id !== null)
+                  .join(' ') || undefined
+              }
+              aria-invalid={invalid || undefined}
+              aria-valuemax={Number.isFinite(max) ? max : undefined}
+              aria-valuemin={min}
+              aria-valuenow={value ?? undefined}
+              aria-valuetext={stepperValueText(value, unit, valueText)}
+              autoComplete="off"
+              className="sw-stepper-input"
+              disabled={disabled}
+              id={inputId}
+              // iOS's numeric pad has no minus key, so a range below zero takes
+              // the text keyboard.
+              inputMode={allowsNegative ? 'text' : 'numeric'}
+              name={name}
+              onBlur={() => setDraft(null)}
+              onChange={onType}
+              onKeyDown={onKeyDown}
+              placeholder={placeholder}
+              readOnly={readOnly}
+              role="spinbutton"
+              type="text"
+              value={text}
+            />
+          </StepperCountFrame>
           <button
             aria-controls={inputId}
             aria-label={incrementLabel}

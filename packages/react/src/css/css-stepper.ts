@@ -1,6 +1,10 @@
 import { typographyVariants } from '@scalewing/tokens';
 
 import { changedTintLayer } from './css-field-changed.js';
+import {
+  cssStepperUnitClasses,
+  stepperUnitClassCatalog,
+} from './css-stepper-unit.js';
 
 const body = typographyVariants.body;
 const label = typographyVariants.label;
@@ -121,7 +125,9 @@ ${input} {
 
 .sw-stepper-full input.sw-stepper-input { inline-size: 100%; }
 
-${stateRules()}`;
+${stateRules()}
+
+${cssStepperUnitClasses()}`;
 }
 
 export function stepperClassCatalog(): string[] {
@@ -135,5 +141,6 @@ export function stepperClassCatalog(): string[] {
     'sw-stepper-changed',
     'sw-stepper-readonly',
     'sw-stepper-limit-plain',
+    ...stepperUnitClassCatalog(),
   ];
 }
