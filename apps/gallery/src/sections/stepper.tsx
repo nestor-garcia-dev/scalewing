@@ -46,12 +46,29 @@ function NestCount() {
   );
 }
 
+/** A time with a unit that says why a long one is wrong. */
+function NestTime() {
+  const [value, setValue] = useState<number | null>(50);
+  return (
+    <Stepper
+      {...buttonNames}
+      error={
+        value !== null && value > 40 ? 'Eggs cool after 40 min.' : undefined
+      }
+      label="Time off the nest"
+      onChange={setValue}
+      unit="min"
+      value={value}
+    />
+  );
+}
+
 export function StepperSection() {
   return (
     <Section
       id="stepper"
       purpose={
-        'Stepper is a whole-number count changed with − and + or typed: one tab stop (a spin button that ArrowUp and ArrowDown step), with the buttons as pointer targets beside it. − stops at min and + at max; an empty box counts as min. Typed counts are reported as typed, even past max, so the page can say why in error; the box refuses anything but digits. The count is a few digits wide, or fills a table cell with width="full". limitAppearance="plain" keeps − at min and + at max in their usual look instead of faded; they stay disabled.'
+        'Stepper is a whole-number count changed with − and + or typed: one tab stop (a spin button that ArrowUp and ArrowDown step), with the buttons as pointer targets beside it. − stops at min and + at max; an empty box counts as min. Typed counts are reported as typed, even past max, so the page can say why in error; the box refuses anything but digits. The count is a few digits wide, or fills a table cell with width="full". limitAppearance="plain" keeps − at min and + at max in their usual look instead of faded; they stay disabled. unit is a short muted word after the count inside its frame ("90 min"), read with the count unless valueText says it.'
       }
       title="Stepper"
       usage={`<Stepper
@@ -83,6 +100,25 @@ export function StepperSection() {
             placeholder="0"
           />
         </Inline>
+        <Inline align="start" gap={5} wrap>
+          <Count
+            initial={90}
+            label="Flight time"
+            max={240}
+            step={5}
+            unit="min"
+          />
+          <Count
+            initial={null}
+            label="Chicks"
+            max={12}
+            placeholder="0"
+            unit="chicks"
+          />
+          <Count changed initial={45} label="Dive time, suggested" unit="min" />
+          <Count disabled initial={6} label="Roost, locked" unit="hours" />
+          <NestTime />
+        </Inline>
         <Stack gap={2}>
           <Text color="muted" variant="caption">
             {'width="full" with a hidden label, as in a table cell'}
@@ -92,6 +128,13 @@ export function StepperSection() {
             label="Spoonbills"
             labelVisuallyHidden
             placeholder="0"
+            width="full"
+          />
+          <Count
+            initial={30}
+            label="Spoonbill feeding time"
+            labelVisuallyHidden
+            unit="min"
             width="full"
           />
         </Stack>
