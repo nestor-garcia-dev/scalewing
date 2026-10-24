@@ -1,6 +1,6 @@
 import { categoricalColors } from '@scalewing/tokens';
 import { cleanup, render } from '@testing-library/react';
-import { afterEach, describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import {
   GlyphTile,
@@ -74,7 +74,7 @@ describe('GlyphTile CSS', () => {
       '.sw-glyph-tile-orange { --sw-glyph-tile-fill: var(--sw-categorical-orange); }',
     );
     expect(css).toContain(
-      '.sw-glyph-tile-md { height: var(--sw-control-xs-min-height); width: var(--sw-control-xs-min-height); }',
+      '.sw-glyph-tile-md { --sw-glyph-tile-side: var(--sw-control-xs-min-height); height: var(--sw-control-xs-min-height); width: var(--sw-control-xs-min-height); }',
     );
     expect(css).toContain(
       '.sw-glyph-tile { border: 1px solid CanvasText; color: CanvasText; }',
@@ -93,5 +93,77 @@ describe('GlyphTile CSS', () => {
     const dark = css.slice(start, css.indexOf('\n}', start));
     for (const [key, value] of Object.entries(categoricalColors.dark))
       expect(dark).toContain(`--sw-categorical-${key}: ${value};`);
+  });
+});
+
+describe('GlyphTile letters', () => {
+  it('draws one to three letters sized by their count', () => {
+    const { container } = render(
+      <>
+        <GlyphTile hue="teal">H</GlyphTile>
+        <GlyphTile hue="teal">{' HM '}</GlyphTile>
+        <GlyphTile hue="blue" size="sm">
+          NSL
+        </GlyphTile>
+        <GlyphTile hue="blue">{7}</GlyphTile>
+      </>,
+    );
+    const texts = [...container.querySelectorAll('.sw-glyph-tile-text')];
+    expect(texts.map((text) => [text.className, text.textContent])).toEqual([
+      ['sw-glyph-tile-text sw-glyph-tile-text-1', 'H'],
+      ['sw-glyph-tile-text sw-glyph-tile-text-2', 'HM'],
+      ['sw-glyph-tile-text sw-glyph-tile-text-3', 'NSL'],
+      ['sw-glyph-tile-text sw-glyph-tile-text-1', '7'],
+    ]);
+  });
+
+  it('leaves a glyph as it is', () => {
+    const { container } = render(
+      <GlyphTile hue="teal">
+        <svg />
+      </GlyphTile>,
+    );
+    expect(container.querySelector('.sw-glyph-tile-text')).toBeNull();
+  });
+
+  it.each([['NSLX'], [' '], ['']])('refuses the words %j', (words) => {
+    vi.spyOn(console, 'error').mockImplementation(() => undefined);
+    expect(() => render(<GlyphTile hue="teal">{words}</GlyphTile>)).toThrow(
+      new RangeError(`GlyphTile letters are 1 to 3 characters: ${words}`),
+    );
+    vi.restoreAllMocks();
+  });
+
+  it('counts a number by its digits: 0 draws, four digits throw', () => {
+    const { container } = render(<GlyphTile hue="teal">{0}</GlyphTile>);
+    expect(container.querySelector('.sw-glyph-tile-text-1')?.textContent).toBe(
+      '0',
+    );
+    vi.spyOn(console, 'error').mockImplementation(() => undefined);
+    expect(() => render(<GlyphTile hue="teal">{12345}</GlyphTile>)).toThrow(
+      new RangeError('GlyphTile letters are 1 to 3 characters: 12345'),
+    );
+    vi.restoreAllMocks();
+  });
+
+  it('counts a letter outside the basic plane as one', () => {
+    const { container } = render(<GlyphTile hue="rose">{'𝔸𝔹𝔺'}</GlyphTile>);
+    expect(container.querySelector('.sw-glyph-tile-text-3')).not.toBeNull();
+  });
+
+  it('sizes the letters from the tile side', () => {
+    const css = generateStylesheet();
+    expect(css).toContain(
+      '.sw-glyph-tile-sm { --sw-glyph-tile-side: var(--sw-space-5); height: var(--sw-space-5); width: var(--sw-space-5); }',
+    );
+    expect(css).toContain(
+      '.sw-glyph-tile-text-1 { font-size: calc(var(--sw-glyph-tile-side) / 2); }',
+    );
+    expect(css).toContain(
+      '.sw-glyph-tile-text-3 {\n  font-size: calc(var(--sw-glyph-tile-side) / 3);',
+    );
+    expect(utilityClassCatalog()).toEqual(
+      expect.arrayContaining(['sw-glyph-tile-text', 'sw-glyph-tile-text-3']),
+    );
   });
 });
