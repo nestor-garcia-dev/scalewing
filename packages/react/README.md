@@ -1181,7 +1181,7 @@ A row can also carry three trailing parts. `unread` marks it new for the person,
 
 `--sw-color-accentSubtle` is the accent tint from `@scalewing/tokens`: a quiet fill behind accent text or glyphs that keeps 4.5:1. The stylesheet and every palette file set it, and a palette that moves the accent or surface retints it.
 
-`Text` steps `display` and `heading` down to the compact token sizes below the `md` breakpoint; consumers do not size type per viewport.
+`Text` steps `hero`, `display`, `headline`, `heading` and `lead` down to the compact token sizes below the `md` breakpoint; consumers do not size type per viewport. `hero` (an `h1`), `headline` (an `h2`) and `lead` (a `p`) are a public page's sizes: its one opening title, its section titles and the sentence under them; an app's screens keep `display` and `heading`.
 
 `sw-container-reading` centres a column at the reading width (`--sw-reading-max`, 46rem, `Article`'s), as `sw-container` centres a page's column at the container width (72rem): `width: 100%`, the max width and auto inline margins, full width below it. Use it for a form or text that reads better narrower than the page, such as an open form of one column. As with `sw-container`, the width is the content box's, so put padding or a border on a child.
 

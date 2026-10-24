@@ -23,6 +23,27 @@ describe('spacingClassNames', () => {
 });
 
 describe('layout components', () => {
+  it('renders the showcase sizes as a page title, a section title and a paragraph', () => {
+    render(
+      <>
+        <Text variant="hero">Every heron counted</Text>
+        <Text variant="headline">The north marsh</Text>
+        <Text variant="lead">Where the birds rest in winter.</Text>
+      </>,
+    );
+    expect(
+      screen.getByRole('heading', { level: 1, name: 'Every heron counted' })
+        .className,
+    ).toBe('sw-text-hero');
+    expect(
+      screen.getByRole('heading', { level: 2, name: 'The north marsh' })
+        .className,
+    ).toBe('sw-text-headline');
+    const lead = screen.getByText('Where the birds rest in winter.');
+    expect(lead.tagName).toBe('P');
+    expect(lead.className).toBe('sw-text-lead');
+  });
+
   it('maps Text align to a generated alignment class and leaves it off by default', () => {
     render(
       <>

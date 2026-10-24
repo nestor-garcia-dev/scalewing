@@ -35,7 +35,7 @@ export function TextSection() {
   return (
     <Section
       id="text"
-      purpose="Text maps variant to generated sw-text-* classes and semantic color to CSS variables. Below the md breakpoint, display and heading step down to their compact sizes. Alignment and truncation are opt-in. Text keeps none of the browser's paragraph or heading margins, so the gap of the Stack or Inline around it alone sets the spacing."
+      purpose="Text maps variant to generated sw-text-* classes and semantic color to CSS variables. Below the md breakpoint, hero, display, headline, heading and lead step down to their compact sizes; hero, headline and lead are a public page's opening title, section titles and the sentence under them. Alignment and truncation are opt-in. Text keeps none of the browser's paragraph or heading margins, so the gap of the Stack or Inline around it alone sets the spacing."
       title="Text"
       usage={`<Text variant="title" color="accent">Snow leopard</Text>`}
     >

@@ -147,15 +147,27 @@ describe('generated CSS', () => {
     );
   });
 
-  it('steps display and heading down below the md breakpoint from the compact tokens', () => {
+  it('steps the titles and the lead down below the md breakpoint from the compact tokens', () => {
     expect(css).toContain(
-      '@media not all and (min-width: 48rem) {\n  .sw-text-display { font-size: 32px; line-height: 38px; letter-spacing: -0.6px; }\n  .sw-text-heading { font-size: 24px; line-height: 30px; letter-spacing: -0.4px; }\n}',
+      '@media not all and (min-width: 48rem) {\n  .sw-text-hero { font-size: 36px; line-height: 40px; letter-spacing: -0.7px; }\n  .sw-text-display { font-size: 32px; line-height: 38px; letter-spacing: -0.6px; }\n  .sw-text-headline { font-size: 26px; line-height: 30px; letter-spacing: -0.4px; }\n  .sw-text-heading { font-size: 24px; line-height: 30px; letter-spacing: -0.4px; }\n  .sw-text-lead { font-size: 17px; line-height: 25px; letter-spacing: -0.2px; }\n}',
+    );
+  });
+
+  it('draws the showcase sizes from the tokens', () => {
+    expect(css).toContain(
+      '.sw-text-hero { font-family: var(--sw-font-sans); font-size: 56px; line-height: 60px; font-weight: 700; letter-spacing: -1.7px; }',
+    );
+    expect(css).toContain(
+      '.sw-text-headline { font-family: var(--sw-font-sans); font-size: 36px; line-height: 40px; font-weight: 700; letter-spacing: -0.7px; }',
+    );
+    expect(css).toContain(
+      '.sw-text-lead { font-family: var(--sw-font-sans); font-size: 20px; line-height: 29px; font-weight: 400; letter-spacing: -0.3px; }',
     );
   });
 
   it('resets the browser margins of every Text variant at zero specificity', () => {
     expect(css).toContain(
-      ':where(.sw-text-display, .sw-text-heading, .sw-text-title, .sw-text-body, .sw-text-label, .sw-text-caption, .sw-text-data) { margin: 0; }',
+      ':where(.sw-text-hero, .sw-text-display, .sw-text-headline, .sw-text-heading, .sw-text-title, .sw-text-lead, .sw-text-body, .sw-text-label, .sw-text-caption, .sw-text-data) { margin: 0; }',
     );
     // An authored margin, such as the visually hidden utility's, still wins.
     expect(css).toContain('.sw-sr-only { position: absolute;');

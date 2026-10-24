@@ -30,7 +30,10 @@ const defaultElement: Record<TypographyVariant, TextElement> = {
   data: 'span',
   display: 'h1',
   heading: 'h2',
+  headline: 'h2',
+  hero: 'h1',
   label: 'span',
+  lead: 'p',
   title: 'h3',
 };
 
