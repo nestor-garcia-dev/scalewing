@@ -7,6 +7,7 @@ import { DocumentViewerSection } from './sections/document-viewer.js';
 import { SwitchSection } from './sections/switch.js';
 import { ActionBarSection } from './sections/action-bar.js';
 import { DateFieldSection } from './sections/date-field.js';
+import { ButtonLinkSection } from './sections/button-link.js';
 import { CalendarButtonSection } from './sections/calendar-button.js';
 import { DateRangeButtonSection } from './sections/date-range-button.js';
 import { CheckboxSection } from './sections/checkbox.js';
@@ -121,6 +122,12 @@ export const catalog = [
     Section: AccordionSection,
   },
   { id: 'button', label: 'Button', group: 'controls', Section: ButtonSection },
+  {
+    id: 'button-link',
+    label: 'ButtonLink',
+    group: 'controls',
+    Section: ButtonLinkSection,
+  },
   {
     id: 'button-group',
     label: 'ButtonGroup',

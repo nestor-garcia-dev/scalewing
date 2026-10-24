@@ -49,6 +49,7 @@ import { boxBorderClassCatalog } from './css-box-border.js';
 import { boxLinkClassCatalog } from './css-box-link.js';
 import { cssComponentClasses } from './css-components.js';
 import { buttonClassCatalog } from './css-button.js';
+import { buttonLinkClassCatalog } from './css-button-link.js';
 import { barChartClassCatalog } from './css-bar-chart.js';
 import { chartLegendClassCatalog } from './css-chart-legend.js';
 import { chartPlotClassCatalog } from './css-chart-plot.js';
@@ -96,6 +97,7 @@ export function utilityClassCatalog(): string[] {
     'sw-tabular',
     ...Object.keys(typographyVariants).map((name) => `sw-text-${name}`),
     ...buttonClassCatalog(),
+    ...buttonLinkClassCatalog(),
     ...dataClassCatalog(),
     ...segmentedClassCatalog(),
     ...tableClassCatalog(),

@@ -208,6 +208,7 @@ export {
   type ButtonVariant,
   type ButtonWidth,
 } from './components/Button.js';
+export { ButtonLink, type ButtonLinkProps } from './components/ButtonLink.js';
 export { buttonWidths } from './css/css-button-width.js';
 export {
   buttonDisabledAppearances,
