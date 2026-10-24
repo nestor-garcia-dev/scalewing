@@ -173,8 +173,8 @@ opening (`teisoro-hero.md`, #250). These three released early in
 setup pieces (above). Then `ScreenPreview`, a drawn stand-in for an
 app's screen (`teisoro-screen-preview.md`, #251), and `ThemeProvider`
 `frame="site"`, a short page's footer at the window's foot
-(`teisoro-site-frame.md`). Next: the next `@scalewing/react` minor for
-Teisoro to pin.
+(`teisoro-site-frame.md`, #252), released in `@scalewing/react` 1.50.0.
+Next: Teisoro pins react 1.50.0 and tokens 1.7.0 in task 2710.
 
 Teisoro F-011-S02, release R1 "guided-form core": web `Stepper`
 (#113), `DenominationGrid` entry rows (#114), `Steps` / `Step` (#115)

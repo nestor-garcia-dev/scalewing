@@ -1,6 +1,6 @@
 # Teisoro: a site page whose footer meets the window's foot
 
-Status: implemented, pending release, for the next `@scalewing/react` minor.
+Status: released in `@scalewing/react` 1.50.0 (PR #252).
 
 Scalewing request from Teisoro.
 

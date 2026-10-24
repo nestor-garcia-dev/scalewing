@@ -1,6 +1,6 @@
 # Teisoro: a drawn stand-in for an app's screen
 
-Status: implemented, pending release, for the next `@scalewing/react` minor.
+Status: released in `@scalewing/react` 1.50.0 (PR #251).
 
 Scalewing request from Teisoro.
 
