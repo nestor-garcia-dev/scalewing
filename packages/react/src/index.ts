@@ -453,6 +453,18 @@ export type {
   BandTone,
   BandWidth,
 } from './components/Band.js';
+export { SiteHeader } from './components/SiteHeader.js';
+export type {
+  SiteHeaderItem,
+  SiteHeaderLabels,
+  SiteHeaderProps,
+} from './components/SiteHeader.js';
+export { SiteFooter } from './components/SiteFooter.js';
+export type {
+  SiteFooterGroup,
+  SiteFooterLink,
+  SiteFooterProps,
+} from './components/SiteFooter.js';
 export { Separator } from './components/Separator.js';
 export type {
   SeparatorOrientation,

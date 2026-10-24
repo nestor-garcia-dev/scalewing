@@ -51,6 +51,8 @@ import { cssTooltipClasses } from './css-tooltip.js';
 import { cssInfoTipClasses } from './css-info-tip.js';
 import { cssSeparatorClasses } from './css-separator.js';
 import { cssBandClasses } from './css-band.js';
+import { cssSiteFooterClasses } from './css-site-footer.js';
+import { cssSiteHeaderClasses } from './css-site-header.js';
 import { cssStatTileClasses } from './css-stat-tile.js';
 import { cssDescriptionListClasses } from './css-description-list.js';
 import { cssTabsClasses } from './css-tabs.js';
@@ -199,6 +201,10 @@ ${cssChromeClasses()}
 ${cssSectionNavClasses()}
 
 ${cssBandClasses()}
+
+${cssSiteFooterClasses()}
+
+${cssSiteHeaderClasses()}
 
 ${cssAppShellClasses()}
 

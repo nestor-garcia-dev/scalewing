@@ -1,6 +1,6 @@
 # Teisoro: a dark band colour
 
-Status: implemented, pending release, for the next `@scalewing/tokens` minor (web variables `--sw-color-inverse` and `--sw-color-onInverse` with the next `@scalewing/react` minor, through its caret dependency).
+Status: released in `@scalewing/tokens` 1.6.0 (web variables `--sw-color-inverse` and `--sw-color-onInverse` with the next `@scalewing/react` minor, through its caret dependency).
 
 Scalewing request from Teisoro.
 
