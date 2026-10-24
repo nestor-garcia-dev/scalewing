@@ -136,8 +136,10 @@ colours (`teisoro-inverse-colors.md`, #233); the React `Band`, a
 full-width page band with the dark inverse one (`teisoro-band.md`, #235);
 `ButtonLink`, a link drawn as a Button (`teisoro-button-link.md`, #237);
 `SiteFooter`, a public site's footer on the dark band
-(`teisoro-site-footer.md`); then `SiteHeader`. Next: release `@scalewing/tokens` and
-`@scalewing/react` minors; Teisoro pins both in task 2705.
+(`teisoro-site-footer.md`, #238); `SiteHeader`, a public site's header
+with a menu that works with no script (`teisoro-site-header.md`).
+Next: release `@scalewing/tokens` and `@scalewing/react` minors;
+Teisoro pins both in task 2705.
 
 Teisoro F-011-S02, release R1 "guided-form core": web `Stepper`
 (#113), `DenominationGrid` entry rows (#114), `Steps` / `Step` (#115)
