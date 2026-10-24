@@ -20,6 +20,7 @@ import {
   DataBar,
   Box,
   Button,
+  ButtonLink,
   CalendarButton,
   DateRangeButton,
   Card,
@@ -304,6 +305,15 @@ A `Button`'s own children are laid out in a row one token gap apart (spacing ste
 On the web, `variant="neutral"` is a quiet grey fill (the muted color at 16 %, the fill of an open menu row) with its words in the text color and no border: an action beside the primary that should not draw the eye, such as a sheet's Cancel. It is web only (`webButtonVariants`; the shared `buttonVariants` in `@scalewing/tokens` and React Native do not have it). `disabledAppearance="neutral"` (default `"faded"`) draws a disabled button on that grey with its words in the muted color at 48 % (about #AEAEAE on the grey) and full opacity, whatever its variant, instead of fading its own fill (a disabled accent reads as a paler accent); a `ghost` button, which has no fill, still fades. The button is still a disabled `button`; forced colors draw it as any disabled button. An unknown `disabledAppearance` throws a `RangeError`.
 
 `Button` `width` is `'content'` (the default: as wide as its words) or `'full'`: the button fills its container's inline size in a `Stack`, a `Grid` cell or any column, and in an `Inline` row takes the space its siblings leave, as a full `Select` does, so an Edit beside a ••• `ActionMenu` fills the row and the menu keeps its own square at the end. The row rule holds for a `Button` that is a direct child of the `Inline`; wrapped in another box it fills that box instead. In a wrapping `Inline` (`wrap`) a full button grows from its words' width and moves to a line of its own when the row runs out, rather than shrinking past its words. Inside a `ButtonGroup` it is not needed: the group already stacks its buttons full width below `md`. The words stay centred. An unknown width throws a `RangeError`. The class is `sw-button-full`.
+
+`ButtonLink` is a link drawn as a `Button`, for a destination that reads as an action, such as a site's Contact us or Sign in: an `<a href>` with the Button's `variant` (default `primary`), `size` (default `md`) and `width`, so it opens like any link (a new tab, a page rendered with no script) and keeps its variant's words over the canvas link colour, hover included. `aria-current="page"` marks the one that is the current page with the pressed button's ring (a Highlight border in forced colours). A link has no disabled state: render none instead. Use `Button` for a press that does something on the page. An unknown variant, size or width throws a `RangeError`; the class is `sw-button-link` beside the Button's own.
+
+```tsx
+<ButtonLink href="/contact">Contact the rangers</ButtonLink>
+<ButtonLink href="/sign-in" variant="neutral">
+  Sign in
+</ButtonLink>
+```
 
 ```tsx
 <Inline gap={2}>
