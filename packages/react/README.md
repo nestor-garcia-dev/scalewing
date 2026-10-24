@@ -36,6 +36,10 @@ import {
   Separator,
   Band,
   Hero,
+  ScreenPreview,
+  PreviewGroup,
+  PreviewRow,
+  PreviewTiles,
   SiteFooter,
   SiteHeader,
   DescriptionList,
@@ -1048,6 +1052,23 @@ const { headings, omissions } = inspectMarkdown(page.body, {
   actions={<ButtonLink href="/visit">Plan a visit</ButtonLink>}
   media={<img alt="The heron hide at dawn" src="/hide.jpg" />}
 />
+```
+
+`ScreenPreview` is a drawn stand-in for an app's screen on a public page, until a real screenshot replaces it: a `figure` whose screen is one image (`role="img"`) named by `label`, its alternative text, so a screen reader hears that sentence instead of the rows; an optional `caption` shows under it as the `figcaption`. An optional `eyebrow` and `title` head the screen. Its content is `PreviewGroup`s of `PreviewRow`s (`label` at the start, `value` at the end in tabular numerals; `kind` `plain`, `total` in bold past a hairline, `note` a small label over its words, `filled` on the quiet fill, or `alert` on the danger tint) and `PreviewTiles` (`items` of `{ id, label, value }`, three to a row on a phone, six from `md`). `frame="card"` (default) is a surface card whose groups are parted by hairlines; `frame="device"` draws a 20rem phone from `md` (a bezel in the text colour round a quiet screen with a surface header and each group a card) and the card below `md`. A blank `label`, an unknown `frame` or `kind`, no tiles, or a blank or repeated tile id throws a `RangeError`.
+
+```tsx
+<ScreenPreview
+  frame="device"
+  label="Today's census: 14 herons, 6 egrets, 20 birds in all"
+  eyebrow="Census · Today"
+  title="Birds on the marsh"
+  caption="A photo of the real board goes here."
+>
+  <PreviewGroup>
+    <PreviewRow label="Grey herons" value="14" />
+    <PreviewRow kind="total" label="All birds" value="20" />
+  </PreviewGroup>
+</ScreenPreview>
 ```
 
 `SiteFooter` is a public site's footer on the dark inverse band (`Band tone="inverse"`, so a brand moves it with a theme overlay of `inverse`). Supply `brand` (such as a logo for a dark background), an optional `tagline`, and `groups`: each `{ id, label, links }` is a `nav` named by its label, which shows above its links (hidden from assistive technology, since the `nav` already carries it). Each link is `{ id, label, href, current?, lang?, hrefLang? }`; `lang` and `hrefLang` pass through to the link unchecked; `current` sets `aria-current="page"` and draws it in the band's words at label weight, the others in its muted words, underlined on hover and focus. `legal` and `end` fill the bottom row past a hairline, such as the copyright and a language switch. Below `md` the brand takes the full width and the groups two columns; from `md` the brand and the groups share one spread row. Links get the 44 px target on a coarse pointer. Put it last in the page's `body` (outside a `section` or `article`) so it is the page's `contentinfo` landmark. No groups, a group with no links, blank or repeated ids, blank labels or a blank `href` throw a `RangeError`.

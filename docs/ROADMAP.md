@@ -170,7 +170,8 @@ Teisoro F-017-S03, release S2 "the public site's pages" (Teisoro task
 grid's width (`teisoro-grid-fit.md`, #248); `Hero`, a public page's
 opening (`teisoro-hero.md`, #250). These three released early in
 `@scalewing/tokens` 1.7.0 and `@scalewing/react` 1.49.0 with FutMas's
-setup pieces (above). Next: `ScreenPreview`; then the next
+setup pieces (above). Then `ScreenPreview`, a drawn stand-in for an
+app's screen (`teisoro-screen-preview.md`, #251). Next: the next
 `@scalewing/react` minor for Teisoro to pin.
 
 Teisoro F-011-S02, release R1 "guided-form core": web `Stepper`
