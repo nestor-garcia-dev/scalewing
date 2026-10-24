@@ -144,6 +144,14 @@ letters for crests (`futmas-glyph-tile-three-letters.md`, #243). Box
 Next: FutMas pins react 1.48.0 and tokens 1.6.0 in F-010-S09; then the
 `TableRow` rule for the playoff cut line when S17 needs it.
 
+FutMas F-010, the first league setup, one PR each: `Stepper` `unit`, a
+short muted word after the count read in its value text
+(`futmas-stepper-unit.md`, #245); `EmptyState`, a centred dashed panel
+where a list or a page has nothing yet (`futmas-empty-state.md`, #247).
+Released in `@scalewing/react` 1.49.0 on `@scalewing/tokens` 1.7.0 (which
+also ship Teisoro's type sizes, Grid `fit` and `Hero`, below). Next: FutMas pins react 1.49.0 and
+tokens 1.7.0 in F-010.
+
 Teisoro F-017-S02, release S1 "the public site's frame" (Teisoro task
 2705), one PR each: tokens `inverse` and `onInverse`, a dark band's
 colours (`teisoro-inverse-colors.md`, #233); the React `Band`, a
@@ -160,9 +168,11 @@ Teisoro F-017-S03, release S2 "the public site's pages" (Teisoro task
 2710), one PR each: typography `hero`, `headline` and `lead`
 (`teisoro-showcase-type.md`, #246); Grid `fit`, columns fitted to the
 grid's width (`teisoro-grid-fit.md`, #248); `Hero`, a public page's
-opening (`teisoro-hero.md`, #250); `ScreenPreview`, a drawn stand-in
-for an app's screen (`teisoro-screen-preview.md`). Next: release
-`@scalewing/tokens` and `@scalewing/react` minors for Teisoro to pin.
+opening (`teisoro-hero.md`, #250). These three released early in
+`@scalewing/tokens` 1.7.0 and `@scalewing/react` 1.49.0 with FutMas's
+setup pieces (above). Then `ScreenPreview`, a drawn stand-in for an
+app's screen (`teisoro-screen-preview.md`, #251). Next: the next
+`@scalewing/react` minor for Teisoro to pin.
 
 Teisoro F-011-S02, release R1 "guided-form core": web `Stepper`
 (#113), `DenominationGrid` entry rows (#114), `Steps` / `Step` (#115)

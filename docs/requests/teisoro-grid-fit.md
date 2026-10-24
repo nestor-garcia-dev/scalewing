@@ -1,6 +1,6 @@
 # Teisoro: a grid whose columns fit its width
 
-Status: implemented, pending release, for the next `@scalewing/react` minor.
+Status: released in `@scalewing/react` 1.49.0 (PR #248).
 
 Scalewing request from Teisoro.
 
