@@ -121,6 +121,15 @@ filling the row beside a ••• menu (`teisoro-button-full-width.md`, #225);
 1.46.0. Next: Teisoro pins 1.46.0 in its task 2632 (F-014-S06) and applies
 the new options in Training and its ChoiceTrack.
 
+FutMas F-010, release W1 "admin web frame": `AppShell`, a workspace frame
+with a pinned sidebar, an icon rail and a top bar with a menu drawer
+(`futmas-app-shell.md`), and `NavCount` `tone="warning"` with an
+`AppShell` item's `countTone`, an amber count for work that needs the
+person (`futmas-nav-count-warning.md`), together in #229. Released in
+`@scalewing/react` 1.47.0. Next: FutMas pins 1.47.0 in its F-010 admin
+web frame; then `GlyphTile` initials for league and team crests, its own
+request and PR against main.
+
 Teisoro F-011-S02, release R1 "guided-form core": web `Stepper`
 (#113), `DenominationGrid` entry rows (#114), `Steps` / `Step` (#115)
 and `ActionBar` `summary` (#116), released in `@scalewing/react` 1.27.0.

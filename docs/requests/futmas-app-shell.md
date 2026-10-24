@@ -1,6 +1,6 @@
 Scalewing request from FutMas.
 
-Status: accepted 2026-10-24 (FutMas F-010 "admin web", the league managers' desktop admin; the owner approved the F-010 canvas v15 and the whole feature on 2026-10-24, with standing approval for Scalewing changes, PRs and merges).
+Status: released in `@scalewing/react` 1.47.0 (PR #229; accepted 2026-10-24; FutMas F-010 "admin web", the league managers' desktop admin; the owner approved the F-010 canvas v15 and the whole feature on 2026-10-24, with standing approval for Scalewing changes, PRs and merges).
 Renderer: react
 Missing surface: `AppShell`, a web workspace frame: a pinned side navigation of grouped destinations beside the page, an icon rail on a narrower window, and a top bar with a menu drawer on a tablet or phone.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: the frame changes its whole layout at two widths (a sidebar, a rail, a bar with a modal drawer), keeps the sidebar sticky at the viewport's height with only its own list scrolling, and moves the same destinations into a top-layer drawer. FutMas owns no CSS and may not write media queries (`packages/react/AGENTS.md` rule 8), so it cannot build the sidebar, the rail or the drawer from `Box`, `Grid` and `Dialog`. `Box hideBelow`/`hideFrom` toggle regions but cannot pin a sticky full-height column, make labels visually hidden only in a range, or open a drawer from the inline start.

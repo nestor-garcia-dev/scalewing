@@ -1,6 +1,6 @@
 Scalewing request from FutMas.
 
-Status: accepted 2026-10-24 (FutMas F-010 "admin web", with `AppShell`, `docs/requests/futmas-app-shell.md`; FutMas's calm colour rule: amber means "needs you", red is destructive).
+Status: released in `@scalewing/react` 1.47.0 (PR #229; accepted 2026-10-24; FutMas F-010 "admin web", with `AppShell`, `docs/requests/futmas-app-shell.md`; FutMas's calm colour rule: amber means "needs you", red is destructive).
 Renderer: react
 Missing surface: a `warning` tone for the shared count pill: `NavCount` `tone="warning"`, and an `AppShell` item's `countTone`.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: the count pill is always the danger red (or the accent for news). FutMas counts work that needs the league manager, such as scores to confirm, which is not an error or anything destructive; its semantic colour rule draws that amber. A `Badge tone="warning"` is not a count pill and is not read in a destination's name, and FutMas owns no CSS to retint the pill.
