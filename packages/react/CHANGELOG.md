@@ -1,5 +1,12 @@
 # @scalewing/react
 
+## 1.50.0
+
+### Minor Changes
+
+- d707587: `ScreenPreview`: a drawn stand-in for an app's screen on a public page, a `figure` whose screen is one image (`role="img"`) named by `label`, with an optional `eyebrow`, `title` and visible `caption`. `frame="card"` (default) or `"device"`, a 20rem phone from `md` and the card below it. Its content is `PreviewGroup`s of `PreviewRow`s (`kind` `plain`, `total`, `note`, `filled`, `alert`) and `PreviewTiles` (three to a row on a phone, six from `md`). New classes `sw-screen-preview*`, `sw-preview-*`, with `screenPreviewFrames` and `previewRowKinds`; a blank label, an unknown frame or kind, or bad tiles throw a `RangeError`. No new tokens or dependencies. Request: `docs/requests/teisoro-screen-preview.md`.
+- 7a647d3: `ThemeProvider` takes `frame` (`none` by default, or `site`): `site` writes `data-frame="site"` and makes the themed root a column at least the window's height whose last child (the footer) is pushed to its foot, so a short page's footer meets the window's foot. `themeFrames` and `ThemeFrame` list the frames; an unknown one throws a `RangeError`. No new tokens or dependencies. Request: `docs/requests/teisoro-site-frame.md`.
+
 ## 1.49.0
 
 ### Minor Changes
