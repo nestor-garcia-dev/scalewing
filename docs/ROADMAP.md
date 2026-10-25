@@ -178,8 +178,8 @@ Next: Teisoro pins react 1.50.0 and tokens 1.7.0 in task 2710.
 
 FutMas F-010-S19 fix: an xs `Field`'s own text input lost to the canvas's
 `[data-theme]` typed-input rule (md height, inherited type); it now draws at
-the xs size, and the 44 px target on a coarse pointer, for the next
-`@scalewing/react` patch. Next: release it, then FutMas pins it in F-010-S19.
+the xs size, and the 44 px target on a coarse pointer (#272), released in
+`@scalewing/react` 1.59.1. Next: FutMas pins react 1.59.1 in F-010-S19.
 
 FutMas F-010-S22, Spanish, keyboard and screen-reader audit: muted words
 take the text colour on a pressable `FixtureRow`, `ListRow` or `TableRow`'s
