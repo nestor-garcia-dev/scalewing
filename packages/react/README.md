@@ -48,6 +48,8 @@ import {
   EmptyState,
   FixtureGroup,
   FixtureRow,
+  ScheduleGrid,
+  DateToggleCalendar,
   ListGroup,
   ListRow,
   MarkdownView,
@@ -187,7 +189,7 @@ Import the CSS once at the application entry. Do not copy it into your source tr
 </Field>
 ```
 
-Every press control and link takes an explicit `tabindex="0"`: `Button` (and the controls built on it, `CalendarButton` and `InfoTip`), `CommandPaletteTrigger`, `Box as="a"` with an `href`, `SectionNav` links, a link or button `FixtureRow`, `AppShell` links and its menu and close buttons, the `Select`, `MultiSelect`, `ActionMenu` and `ContextSwitcher` triggers, `CommandPaletteTrigger` (and a `ContextSwitcher`'s listbox while it holds focus), `SegmentedControl` items (every item, as outside Safari: its arrow keys change the value, not the focus, so it is not a roving group), `DateField`'s calendar button and month steps, a search `Field`'s clear button, a `Table`'s sort and `TableCell onPress` buttons, `Checkbox`, `Switch`, and the checked radio of a `RadioGroup` or `FilterChips` (the first enabled one while none is; the others keep no `tabindex`, so each browser's arrow-key group rule stands). Safari's default (its "Press Tab to highlight each item" setting off) leaves a button, a link, a checkbox and a radio out of the Tab order unless it carries one, so a Safari user would Tab past them; the explicit `0` gives them the order every other browser already does. A `tabIndex` you pass wins, and controls that are deliberately no tab stop keep their `-1`: a `Stepper`'s − and +, and a roving item (a `Tabs` tab, a menu item, a calendar day) other than the current one. A `<summary>` is already in Safari's order and takes none.
+Every press control and link takes an explicit `tabindex="0"`: `Button` (and the controls built on it, `CalendarButton` and `InfoTip`), `CommandPaletteTrigger`, `Box as="a"` with an `href`, `SectionNav` links, a link or button `FixtureRow`, `AppShell` links and its menu and close buttons, the `Select`, `MultiSelect`, `ActionMenu` and `ContextSwitcher` triggers, `CommandPaletteTrigger` (and a `ContextSwitcher`'s listbox while it holds focus), `SegmentedControl` items (every item, as outside Safari: its arrow keys change the value, not the focus, so it is not a roving group), `DateField`'s calendar button and month steps, a search `Field`'s clear button, a `Table`'s sort and `TableCell onPress` buttons, `Checkbox`, `Switch`, and the checked radio of a `RadioGroup` or `FilterChips` (the first enabled one while none is; the others keep no `tabindex`, so each browser's arrow-key group rule stands). Safari's default (its "Press Tab to highlight each item" setting off) leaves a button, a link, a checkbox and a radio out of the Tab order unless it carries one, so a Safari user would Tab past them; the explicit `0` gives them the order every other browser already does. A `tabIndex` you pass wins, and controls that are deliberately no tab stop keep their `-1`: a `Stepper`'s − and +, and a roving item (a `Tabs` tab, a menu item, a calendar day, a `DateToggleCalendar` day, a `ScheduleGrid` cell) other than the current one. A `<summary>` is already in Safari's order and takes none.
 
 An element a script focuses, such as a notice or a card announced after a save, takes the same accent focus ring as the canvas's links and native controls, 2 px past its edge (`--sw-focus-ring-width` and `--sw-focus-ring-offset`), instead of the browser's outline. Give it `tabIndex={-1}`, so it takes focus from a script but is no tab stop, and put the focus on the whole card rather than its text, so the ring goes round it clear of the words; a `Box` round the card with the card's `radius` makes the ring follow its corners. As with the browser's own outline, the ring shows only when focus is visible (`:focus-visible`): after a keyboard press, not after a mouse press. The rule has zero specificity, so a component's own ring always wins.
 
@@ -1237,6 +1239,79 @@ const { headings, omissions } = inspectMarkdown(page.body, {
     status={{ label: 'Counted', tone: 'success' }}
   />
 </FixtureGroup>
+```
+
+`FixtureRow` `flag` (opt-in, `FixtureFlag`: `{ label, tone? }`) marks an issue at the row's start, such as a clash: a round mark a space-4 across with a "!", in the tone's tint and ink (`warning`, amber, the default, for something that needs the person; `danger`, red), its edge keeping 3:1 on the surface in every palette and the text colour in forced colors. The mark is `aria-hidden` with `label` as its `title` tooltip, and `label` is read first in the row from a visually hidden span ("Can't-play clash Heron Marsh 8:00 Otter Pool"); with `aria-label` it is put before your words with a comma ("Can't-play clash, Heron Marsh vs Otter Pool, 8:00"), so do not repeat it there. From `md` the mark sits on the first line at the row's start, the home side kept clear of it; below `md` it leads the second line, before the details, so it never squeezes the home name (a row with no details gains that line for it). A blank `label` or an unknown `tone` throws a `RangeError`. `action` (opt-in) is a control after the row, such as a small neutral `Button` ("Move", named in your words: `aria-label="Move Heron Marsh vs Otter Pool"`): it is the row's sibling in its list item, outside a link or button row's press area and after it in the Tab order, a press on it never opens the row, and it stays centred on the row's height in the run's last column at every width (from `md` the row's one line, below `md` both lines), so every row's action lines up. Where `:has` is supported the hover fill spans the row and its action. An empty slot draws nothing. The run gains a sixth column for it (`sw-fixture-list` is `minmax(0, 1fr) auto minmax(0, 1fr) auto auto auto`, five below `md`); a row spans every column but the action's. New classes `sw-fixture-row-flagged`, `sw-fixture-flag`, `sw-fixture-flag-mark`, `sw-fixture-flag-warning`, `sw-fixture-flag-danger`, `sw-fixture-item-action` and `sw-fixture-action`.
+
+```tsx
+// move is your own handler, such as opening a Move dialog.
+<FixtureRow
+  home={{ name: 'Heron Marsh' }}
+  away={{ name: 'Pine Ridge' }}
+  center="8:00"
+  meta="Hide 1"
+  flag={{ label: 'Tide clash' }}
+  action={
+    <Button
+      aria-label="Move Heron Marsh vs Pine Ridge"
+      onPress={move}
+      size="sm"
+      variant="neutral"
+    >
+      Move
+    </Button>
+  }
+/>
+```
+
+`ScheduleGrid` is items in a grid of rows (such as times) by columns (such as places), moved between cells. Props: `label` (the grid's name), `columns` and `rows` (`{ id, label }[]`, in order), `rowsLabel` (opt-in, the header over the rows' labels, "Time"; without it that corner is blank and `aria-hidden`), `items` (`{ id, columnId, rowId, label, content }[]`: `label` is the item's name in words, `content` what its card draws; hold no controls in it), `disabledCells` (opt-in, `{ columnId, rowId, reason }[]`: never a target, drawn on the quiet fill with the reason), `canDrop` (opt-in, `(itemId, target) => true | { reason }`, where `target` is `{ kind: 'move', columnId, rowId }` for an empty cell or `{ kind: 'swap', itemId, columnId, rowId }` for another item; omitted, every target is allowed), `onMove(itemId, { columnId, rowId })`, `onSwap(itemId, otherItemId)`, `disabled` (opt-in: nothing can be picked up; the cells still take focus) and `labels` (`Partial<ScheduleGridLabels>`, an `undefined` entry keeping the default; `defaultScheduleGridLabels` holds the English words: `open`, `movingFrom`, `releaseToMove`, `releaseToSwap`, `instructions`, and the announcements `pickedUp(item)`, `moved(item, row, column)`, `swapped(item, other)`, `cancelled(item)`). The grid holds no rules: `canDrop` decides every target and is asked for every cell while an item is carried (keep it cheap), and the grid moves nothing itself: `onMove` and `onSwap` report, and you update `items`. It is a `table` with `role="grid"` named by `label` and described by `labels.instructions` (visually hidden), its column and row headers `th`, and each cell a `gridcell` named by what it holds (the item's `label`, `labels.open` or a disabled cell's reason) and, while an item is carried, what it would do (", Moving from here", ", Release to move here", ", Release to swap", or ", " and the blocked reason); the drawing inside a cell (the card, its words and captions) is `aria-hidden`, so the name is read once. Cells with the same contents share a name, as the headers tell them apart for assistive technology: in a test, find one by its row (`within(getByRole('row', { name: /^10:30/ })).getAllByRole('gridcell')[1]`). The grid is one Tab stop with roving focus: the arrows move by a cell (the horizontal ones swapped in right-to-left), Home and End go to the row's ends and with Control (or ⌘) to the grid's first and last cells. On an item, M or Space picks it up; while carried, the arrows choose the target (the focused cell shows the accent ring and its caption), Enter or Space drops it there and Escape cancels and puts focus back on the item. A mouse drags (a press that moves 4 px; a pen too, where the browser does not pan the page under it): the cell under the pointer is the one hover target, and the release drops it; outside the grid it cancels. Touch never drags, so a finger still scrolls the page: a tap on an item picks it up and a tap on a cell drops it; a tap on its own cell, or a press anywhere outside the grid, cancels. A mouse may use the same press-then-press path (WCAG 2.5.7). Dropping on an empty allowed cell calls `onMove`, on another allowed item `onSwap`, on its own cell cancels; a blocked or disabled target is refused with its reason announced (a key or tap carry keeps the item to try elsewhere, a drag ends). Each step (picked up, moved, swapped, cancelled, refused) is said in a polite `role="status"` live region inside the grid, a repeat said again. While an item is carried its own cell takes a dashed edge and "Moving from here", every cell `canDrop` blocks shows its reason in the warning ink with a warning edge (an open one on the warning tint), the target has the accent ring (an open one on the accent tint), and disabled cells keep their grey look; only open cells are filled, so an item's card stays on the surface its words were made for. Columns share the width equally, each at least the `md` table column (8rem), the rows' labels the `sm` one; when they do not fit, the grid scrolls sideways inside its own box, never the page. Cells are at least 44 px plus a space-3 high. Forced colors keep every edge (a blocked one dotted) and draw rings in Highlight. Classes `sw-schedule-grid*` (see the catalog). A blank `label`, `rowsLabel` or word in `labels`, a message in `labels` that is not a function, no columns or rows, a blank or repeated id or label, an item or disabled cell outside the grid, two items in one cell, a cell disabled twice, a disabled cell that holds an item or has no reason, or a `canDrop` reason that is blank throws a `RangeError`.
+
+```tsx
+// TalkCard, napping, move and swap are your own component and functions.
+<ScheduleGrid
+  label="Sunday talks by habitat"
+  columns={[
+    { id: 'otter', label: 'Otter Pool' },
+    { id: 'heron', label: 'Heron Marsh' },
+  ]}
+  rows={[
+    { id: '9', label: '9:00' },
+    { id: '10', label: '10:30' },
+  ]}
+  rowsLabel="Time"
+  items={[
+    {
+      id: 'otters',
+      columnId: 'otter',
+      rowId: '10',
+      label: 'Otter feeding',
+      content: <TalkCard />,
+    },
+  ]}
+  disabledCells={[
+    { columnId: 'heron', rowId: '10', reason: 'Closed for mowing' },
+  ]}
+  canDrop={(itemId, target) =>
+    napping(itemId, target) ? { reason: 'Otters nap before 10:30' } : true
+  }
+  onMove={(itemId, slot) => move(itemId, slot)}
+  onSwap={(itemId, otherId) => swap(itemId, otherId)}
+/>
+```
+
+`DateToggleCalendar` is month grids where each day that can be toggled is a toggle button, such as the days off in a season. Props: `label` (names its `group`), `min` and `max` (`YYYY-MM-DD`: the first and last day that can be toggled; the months shown run from `min`'s month to `max`'s, at most 24), `value` (the days on, `YYYY-MM-DD`, in any order) and `onChange` (the days on after a press, sorted and without repeats), `isDateDisabled` (opt-in, `(date) => boolean`, days between the bounds that cannot be toggled, such as days with no games), `toggledLabel` (opt-in, words read after a day that is on, "day off"), `locale` (a BCP 47 tag; by default the nearest `lang`, then en-US), `weekStartsOn` (0 Sunday, the default, or 1 Monday) and `disabled` (opt-in: the days keep focus, `aria-disabled`, and presses change nothing). Each month is a `grid` named by its title ("April 2027") with weekday column headers; a day that can be toggled is a `button` with `aria-pressed`, named by its full date ("Sunday, April 4, 2027", then ", day off" while on); a day outside the bounds or disabled is its muted number in a `gridcell` that is `aria-disabled` and named by its date, not a control; neighbouring months' days are blank. The whole calendar is one Tab stop: the first day on, else the first day that can be toggled, then wherever focus last was. The arrows move between days that can be toggled, skipping the rest: left and right to the previous or next one (swapped in right-to-left), up and down by weeks to the nearest one on the same weekday; Home and End go to the month's first and last, PageUp and PageDown to the first of the nearest earlier or later month that has one; a key at an edge does nothing and keeps the page still. Space and Enter toggle (the native button). A day is DateField's 44 px round square: a day that is on takes the accent fill and onAccent figures at weight 600 (Highlight in forced colors), hover the quiet fill on a day that is off. The months sit side by side in as many columns as fit, each seven days wide, and stack on a phone. Classes `sw-date-toggle*`. A blank `label` or `toggledLabel`, a bound or value that is not a `YYYY-MM-DD` date, `min` after `max`, more than 24 months, or an unknown `weekStartsOn` throws a `RangeError`.
+
+```tsx
+// surveyDays (a Set of YYYY-MM-DD days that can be toggled), daysOff and setDaysOff are your own.
+<DateToggleCalendar
+  label="Survey days off"
+  min="2027-03-28"
+  max="2027-06-27"
+  isDateDisabled={(date) => !surveyDays.has(date)}
+  toggledLabel="day off"
+  value={daysOff}
+  onChange={setDaysOff}
+/>
 ```
 
 A row can also carry three trailing parts. `unread` marks it new for the person, such as a document they have not opened: an accent dot after the title's last word (drawn as a border, so forced colors keep it in the text color), hidden from assistive technology, and `unreadLabel` (required while `unread`, such as "New") is read after the title, in a pressable row's name ("Heron calls New"). `tag` is a short status before the row's end, such as a `Badge` ("Only in English"), centred on the row and never wrapped; a pressable row is described by it after its detail lines. `action` is a control after the row and outside its press area, such as an `ActionMenu` of the row's own commands named by the consumer ("More for Heron calls"): it is the row's sibling in the list item, centred on the row, after it in the Tab order, and a press on it never opens the row; it keeps the row's end inset (a space-4 in a panel or outside a ListGroup, none in a plain list), and where `:has` is supported the hover fill spans the row and its control. An empty slot (`undefined`, `null`, `false` or `''`, as conditional JSX gives) draws nothing, for `leading` too. Pair `action` with `accessory="none"` when the row's own chevron would sit beside it. An unread row without `unreadLabel`, or a blank one, throws a `RangeError`. An `aria-label` replaces the whole name, unread words included.

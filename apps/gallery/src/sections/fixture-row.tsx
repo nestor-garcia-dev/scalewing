@@ -1,4 +1,5 @@
 import {
+  Button,
   FixtureGroup,
   FixtureRow,
   GlyphTile,
@@ -32,13 +33,15 @@ const dunes = side('Bayside Dunes with a long station name', 'orange');
 
 export function FixtureRowSection() {
   const [opened, setOpened] = useState('None yet');
+  const [moving, setMoving] = useState('None yet');
 
   return (
     <Section
       id="fixture-row"
-      purpose="FixtureRow is one pairing between two sides, such as two stations' teams counting together: the home side's name ending at the centre with its mark beside it, the centre (a kickoff time in a grey chip, or a score in bold figures, both tabular), the away side starting from it, then meta and a status Badge at the end. A FixtureGroup heads a run of them (a day, a place) and names their list; the rows share one grid, so every centre lines up down the run. Below md the meta and status move under the sides; metaHideBelow leaves the meta out below md or lg. With href or onPress the whole row is a link or a button with a chevron (aria-label names it in your words); a plain press on a link with onPress is handed to a client router. Names wrap; right-to-left mirrors the sides."
+      purpose="FixtureRow is one pairing between two sides, such as two stations' teams counting together: the home side's name ending at the centre with its mark beside it, the centre (a kickoff time in a grey chip, or a score in bold figures, both tabular), the away side starting from it, then meta and a status Badge at the end. A FixtureGroup heads a run of them (a day, a place) and names their list; the rows share one grid, so every centre lines up down the run. Below md the meta and status move under the sides; metaHideBelow leaves the meta out below md or lg. With href or onPress the whole row is a link or a button with a chevron (aria-label names it in your words); a plain press on a link with onPress is handed to a client router. flag marks an issue at the row's start (amber by default; red with tone danger, as on Hide flooded): a round mark whose label is its tooltip and is read before the row's name. action is a control after the row, such as a small neutral Move button, outside the row's press area and its own Tab stop; it stays on the row's first line at every width. Names wrap; right-to-left mirrors the sides."
       title="FixtureRow"
-      usage={`<FixtureGroup title="Sunday 25 October · North meadow hides">
+      usage={`// Crest and openMove are your own component and handler.
+<FixtureGroup title="Sunday 25 October · North meadow hides">
   <FixtureRow
     home={{ name: 'Heron Marsh', mark: <Crest /> }}
     away={{ name: 'Otter Pool', mark: <Crest /> }}
@@ -46,6 +49,17 @@ export function FixtureRowSection() {
     meta="Hide 1"
     href="/counts/1"
     aria-label="Heron Marsh with Otter Pool, 8:00, Hide 1"
+  />
+  <FixtureRow
+    home={{ name: 'Heron Marsh' }}
+    away={{ name: 'Pine Ridge' }}
+    center="8:00"
+    flag={{ label: 'Tide clash' }}
+    action={
+      <Button aria-label="Move Heron Marsh vs Pine Ridge" onPress={openMove} size="sm" variant="neutral">
+        Move
+      </Button>
+    }
   />
 </FixtureGroup>`}
     >
@@ -87,8 +101,55 @@ export function FixtureRowSection() {
           />
           <FixtureRow away={dunes} center="6–6" centerKind="score" home={fen} />
         </FixtureGroup>
+        <FixtureGroup title="Monday 26 October · Reed bed">
+          <FixtureRow
+            action={
+              <Button
+                aria-label="Move Heron Marsh vs Pine Ridge"
+                onPress={() => setMoving('Heron Marsh vs Pine Ridge')}
+                size="sm"
+                variant="neutral"
+              >
+                Move
+              </Button>
+            }
+            away={pine}
+            center="8:00"
+            flag={{ label: 'Tide clash' }}
+            home={heron}
+            meta="Hide 1"
+          />
+          <FixtureRow
+            action={
+              <Button
+                aria-label="Move Otter Pool vs Bittern Fen"
+                onPress={() => setMoving('Otter Pool vs Bittern Fen')}
+                size="sm"
+                variant="neutral"
+              >
+                Move
+              </Button>
+            }
+            aria-label="Otter Pool vs Bittern Fen, 9:15, Hide 2"
+            away={fen}
+            center="9:15"
+            home={otter}
+            meta="Hide 2"
+            onPress={() => setOpened('Otter Pool with Bittern Fen')}
+          />
+          <FixtureRow
+            away={dunes}
+            center="10:30"
+            flag={{ label: 'Hide flooded', tone: 'danger' }}
+            home={pine}
+            meta="Hide 3"
+          />
+        </FixtureGroup>
         <Text color="muted" role="status" variant="caption">
           Last opened: {opened}
+        </Text>
+        <Text color="muted" role="status" variant="caption">
+          Last moved: {moving}
         </Text>
       </Stack>
     </Section>

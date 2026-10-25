@@ -13,8 +13,10 @@ function rule(selector: string, from = 0): string {
 describe('FixtureRow CSS', () => {
   it('lines rows up on one grid, each row a subgrid', () => {
     expect(rule('.sw-fixture-list')).toContain(
-      'grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) auto auto;',
+      'grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) auto auto auto;',
     );
+    // The row spans every column but the action's.
+    expect(css).toContain('.sw-fixture-row {\n  grid-column: 1 / -2;\n}');
     expect(rule('.sw-fixture-item,\n.sw-fixture-row')).toContain(
       'grid-template-columns: subgrid;',
     );
@@ -51,6 +53,46 @@ describe('FixtureRow CSS', () => {
     );
   });
 
+  it('puts the action in the last column, outside the row, on its first line', () => {
+    const action = rule('\n.sw-fixture-action');
+    expect(action).toContain('grid-column: -2 / -1;');
+    expect(action).toContain('grid-row: 1;');
+    expect(action).toContain('padding-inline-end: var(--sw-space-2);');
+    expect(css).toContain(
+      '.sw-fixture-item-action:has(> .sw-fixture-row-pressable:hover) {',
+    );
+    const narrow = css.indexOf(
+      '@media not all and (min-width: 48rem) {\n  .sw-fixture-list {',
+    );
+    expect(rule('  .sw-fixture-list', narrow)).toContain(
+      'grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) auto auto;',
+    );
+  });
+
+  it('draws the flag at the home side start in its tone, CanvasText in forced colours', () => {
+    const flag = rule('\n.sw-fixture-flag');
+    expect(flag).toContain('grid-column: 1;');
+    expect(flag).toContain('justify-self: start;');
+    expect(rule('.sw-fixture-row-flagged .sw-fixture-team-home')).toContain(
+      'padding-inline-start: calc(var(--sw-space-4) + var(--sw-space-2));',
+    );
+    // Below md it leads the details' line instead.
+    expect(css).toContain('  .sw-fixture-flag { grid-row: 2; }');
+    const mark = rule('\n.sw-fixture-flag-mark');
+    expect(mark).toContain('border: 1px solid currentColor;');
+    expect(mark).toContain('height: var(--sw-space-4);');
+    expect(css).toContain(".sw-fixture-flag-mark::after { content: '!'; }");
+    expect(rule('.sw-fixture-flag-warning .sw-fixture-flag-mark')).toContain(
+      'background: color-mix(in srgb, var(--sw-color-warning) 10%, var(--sw-color-surface));',
+    );
+    expect(rule('.sw-fixture-flag-danger .sw-fixture-flag-mark')).toContain(
+      'color: color-mix(in srgb, var(--sw-color-danger) 70%, var(--sw-color-text));',
+    );
+    expect(css).toContain(
+      '.sw-fixture-flag .sw-fixture-flag-mark { color: CanvasText; }',
+    );
+  });
+
   it('falls back to a grid per row without subgrid', () => {
     const fallback = css.indexOf(
       '@supports not (grid-template-columns: subgrid) {',
@@ -59,6 +101,9 @@ describe('FixtureRow CSS', () => {
     expect(rule('  .sw-fixture-item', fallback)).toContain('display: block;');
     expect(rule('  .sw-fixture-row', fallback)).toContain(
       'grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) auto auto;',
+    );
+    expect(rule('  .sw-fixture-item-action', fallback)).toContain(
+      'display: flex;',
     );
   });
 
@@ -81,6 +126,9 @@ describe('FixtureRow CSS', () => {
         'sw-fixture-list',
         'sw-fixture-row',
         'sw-fixture-center-score',
+        'sw-fixture-flag-warning',
+        'sw-fixture-flag-danger',
+        'sw-fixture-action',
       ]),
     );
     expect(new Set(catalog).size).toBe(catalog.length);

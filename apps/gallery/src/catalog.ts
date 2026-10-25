@@ -68,6 +68,8 @@ import { StatTileSection } from './sections/stat-tile.js';
 import { DescriptionListSection } from './sections/description-list.js';
 import { ListGroupSection } from './sections/list-group.js';
 import { FixtureRowSection } from './sections/fixture-row.js';
+import { ScheduleGridSection } from './sections/schedule-grid.js';
+import { DateToggleCalendarSection } from './sections/date-toggle-calendar.js';
 import { TabsSection } from './sections/tabs.js';
 import { SelectSection } from './sections/select.js';
 import { MultiSelectSection } from './sections/multi-select.js';
@@ -334,6 +336,12 @@ export const catalog = [
     Section: CalendarButtonSection,
   },
   {
+    id: 'date-toggle-calendar',
+    label: 'DateToggleCalendar',
+    group: 'controls',
+    Section: DateToggleCalendarSection,
+  },
+  {
     id: 'date-range-button',
     label: 'DateRangeButton',
     group: 'controls',
@@ -370,6 +378,12 @@ export const catalog = [
     label: 'FixtureRow',
     group: 'data',
     Section: FixtureRowSection,
+  },
+  {
+    id: 'schedule-grid',
+    label: 'ScheduleGrid',
+    group: 'data',
+    Section: ScheduleGridSection,
   },
   {
     id: 'document-viewer',

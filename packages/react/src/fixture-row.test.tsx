@@ -167,6 +167,92 @@ describe('FixtureRow', () => {
     expect(onPress).toHaveBeenCalledTimes(1);
   });
 
+  it('reads a flag first, draws its mark with a tooltip, amber by default', () => {
+    const { container } = renderRow({
+      flag: { label: "Can't-play clash" },
+      meta: 'Field 1',
+    });
+    const item = screen.getByRole('listitem');
+    expect(item.textContent).toBe(
+      "Can't-play clash Heron Marsh 8:00 Otter Pool Field 1",
+    );
+    const flag = container.querySelector('.sw-fixture-flag')!;
+    expect(flag.className).toBe('sw-fixture-flag sw-fixture-flag-warning');
+    // The flag is the row's first item, before the home side.
+    expect(flag.parentElement!.className).toBe(
+      'sw-fixture-row sw-fixture-row-flagged',
+    );
+    expect(flag.parentElement!.firstElementChild).toBe(flag);
+    expect(flag.nextElementSibling!.className).toContain(
+      'sw-fixture-team-home',
+    );
+    const mark = flag.querySelector('.sw-fixture-flag-mark')!;
+    expect(mark.getAttribute('aria-hidden')).toBe('true');
+    expect(mark.getAttribute('title')).toBe("Can't-play clash");
+    expect(flag.querySelector('.sw-sr-only')!.textContent).toBe(
+      "Can't-play clash",
+    );
+  });
+
+  it('puts a flag before the name of a pressable row, and before its aria-label', () => {
+    renderRow({ flag: { label: 'Clash', tone: 'danger' }, onPress: vi.fn() });
+    expect(
+      screen.getByRole('button', {
+        name: /^Clash ?Heron Marsh ?8:00 ?Otter Pool$/,
+      }),
+    ).toBeTruthy();
+    cleanup();
+    renderRow({
+      flag: { label: 'Clash' },
+      href: '/g/1',
+      'aria-label': 'Heron Marsh vs Otter Pool, 8:00',
+    });
+    expect(
+      screen.getByRole('link', {
+        name: 'Clash, Heron Marsh vs Otter Pool, 8:00',
+      }),
+    ).toBeTruthy();
+  });
+
+  it('draws an action after the row, outside its button, as its own control', () => {
+    const onPress = vi.fn();
+    const onMove = vi.fn();
+    renderRow({
+      action: (
+        <button onClick={onMove} type="button">
+          Move Heron Marsh vs Otter Pool
+        </button>
+      ),
+      meta: 'Field 1',
+      onPress,
+    });
+    const item = screen.getByRole('listitem');
+    expect(item.className).toBe('sw-fixture-item sw-fixture-item-action');
+    const row = screen.getByRole('button', { name: /^Heron Marsh/ });
+    const move = screen.getByRole('button', {
+      name: 'Move Heron Marsh vs Otter Pool',
+    });
+    expect(row.contains(move)).toBe(false);
+    expect(move.parentElement!.className).toBe('sw-fixture-action');
+    expect(move.parentElement!.parentElement).toBe(item);
+    fireEvent.click(move);
+    expect(onMove).toHaveBeenCalledTimes(1);
+    expect(onPress).not.toHaveBeenCalled();
+  });
+
+  it('draws an action beside a statement row, and nothing for an empty one', () => {
+    const { container } = renderRow({
+      action: <button type="button">Move</button>,
+    });
+    expect(
+      container.querySelector('div.sw-fixture-row + .sw-fixture-action'),
+    ).not.toBeNull();
+    cleanup();
+    const again = renderRow({ action: null });
+    expect(again.container.querySelector('.sw-fixture-action')).toBeNull();
+    expect(screen.getByRole('listitem').className).toBe('sw-fixture-item');
+  });
+
   it.each<[string, Partial<FixtureRowProps>, string]>([
     [
       'a home side without a name',
@@ -203,6 +289,16 @@ describe('FixtureRow', () => {
       'a status without words',
       { status: { label: '', tone: 'success' } },
       'FixtureRow status needs a label and one of neutral, accent, success, danger, warning',
+    ],
+    [
+      'a flag without words',
+      { flag: { label: ' ' } },
+      'FixtureRow flag needs a label and one of warning, danger',
+    ],
+    [
+      'an unknown flag tone',
+      { flag: { label: 'Clash', tone: 'info' as never } },
+      'FixtureRow flag needs a label and one of warning, danger',
     ],
     [
       'a blank address',

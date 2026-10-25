@@ -3,6 +3,14 @@ import { typographyVariants } from '@scalewing/tokens';
 import { breakpointQuery } from './breakpoints.js';
 import { chevronStrokeIn } from './chevron.js';
 import { quietFill } from './quiet-fill.js';
+import {
+  cssFixtureActionClasses,
+  fixtureActionClassCatalog,
+} from './css-fixture-action.js';
+import {
+  cssFixtureFlagClasses,
+  fixtureFlagClassCatalog,
+} from './css-fixture-flag.js';
 import { touchTarget } from './touch-target.js';
 
 const caption = typographyVariants.caption;
@@ -13,15 +21,17 @@ export const fixtureCenterKinds = ['time', 'score'] as const;
 /** `time` is a kickoff time in a grey chip; `score` is bold figures. */
 export type FixtureCenterKind = (typeof fixtureCenterKinds)[number];
 
+export { fixtureFlagTones, type FixtureFlagTone } from './css-fixture-flag.js';
+
 const belowMd = breakpointQuery('below', 'md');
 
 /*
  * The run: one grid whose columns are the home side, the centre, the away
- * side, the end (details and status) and the chevron. Each item and its
- * row are subgrids of it, so every row's centre and end line up down the
- * run. The space between the columns is the centre's, the end's and the
- * chevron's own margin, so a run with no end or chevron keeps no gap for
- * them.
+ * side, the end (details and status), the chevron and the action. Each
+ * item is a subgrid of it, and its row a subgrid of every column but the
+ * action's, so every row's centre, end and action line up down the run.
+ * The space between the columns is the centre's, the end's, the chevron's
+ * and the action's own margin, so a run with none of them keeps no gap.
  */
 function listRules(): string {
   return `.sw-fixture-group {
@@ -41,7 +51,7 @@ function listRules(): string {
 
 .sw-fixture-list {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) auto auto;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) auto auto auto;
   list-style: none;
   margin: 0;
   padding: 0;
@@ -52,6 +62,10 @@ function listRules(): string {
   display: grid;
   grid-column: 1 / -1;
   grid-template-columns: subgrid;
+}
+
+.sw-fixture-row {
+  grid-column: 1 / -2;
 }
 
 .sw-fixture-item {
@@ -114,6 +128,7 @@ function rowRules(): string {
   align-items: center;
   display: flex;
   gap: var(--sw-space-2);
+  grid-row: 1;
   min-width: 0;
 }
 
@@ -141,6 +156,7 @@ function rowRules(): string {
 .sw-fixture-center {
   font-variant-numeric: tabular-nums;
   grid-column: 2;
+  grid-row: 1;
   margin-inline: var(--sw-space-3);
   justify-self: center;
   white-space: nowrap;
@@ -201,7 +217,7 @@ function rowRules(): string {
 function narrowRules(): string {
   return `@media ${belowMd} {
   .sw-fixture-list {
-    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) auto;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) auto auto;
   }
 
   .sw-fixture-end {
@@ -215,6 +231,7 @@ function narrowRules(): string {
     grid-column: 4;
     grid-row: 1 / span 2;
   }
+
 }`;
 }
 
@@ -249,7 +266,11 @@ ${rowRules()}
 
 ${narrowRules()}
 
-${fallbackRules()}`;
+${fallbackRules()}
+
+${cssFixtureFlagClasses()}
+
+${cssFixtureActionClasses()}`;
 }
 
 export function fixtureClassCatalog(): string[] {
@@ -269,5 +290,7 @@ export function fixtureClassCatalog(): string[] {
     ...fixtureCenterKinds.map((kind) => `sw-fixture-center-${kind}`),
     'sw-fixture-end',
     'sw-fixture-chevron',
+    ...fixtureFlagClassCatalog(),
+    ...fixtureActionClassCatalog(),
   ];
 }
