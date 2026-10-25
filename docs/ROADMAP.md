@@ -180,8 +180,8 @@ FutMas F-010-S22, Spanish, keyboard and screen-reader audit: muted words
 take the text colour on a pressable `FixtureRow`, `ListRow` or `TableRow`'s
 quiet fill (gap 1, 4.14:1 before); `LiveRegion`, a status line that
 announces reliably (gap 2); `AppShell` `skipLink` (gap 3); `Select`
-`disabled` (gap 4) (`futmas-row-hover-live-region-skip-link.md`), for the
-next `@scalewing/react` minor. Next: release it, then FutMas pins it in
+`disabled` (gap 4) (`futmas-row-hover-live-region-skip-link.md`), in one PR (#270),
+released in `@scalewing/react` 1.59.0. Next: FutMas pins react 1.59.0 in
 F-010-S22. Follow-ups: `ScheduleGrid`'s own polite status could move onto
 `LiveRegion`; toned words (success, danger, accent) on the quiet fill fall
 under 4.5:1 in some palettes, a palette-wide question for tokens.

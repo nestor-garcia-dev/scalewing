@@ -1,6 +1,6 @@
 Scalewing request from FutMas.
 
-Status: implemented for the next `@scalewing/react` minor (accepted 2026-10-25; FutMas F-010-S22 "Spanish, keyboard and screen-reader audit", Scalewing gaps 1 to 4; standing owner approval).
+Status: implemented for `@scalewing/react` 1.59.0 (accepted 2026-10-25; FutMas F-010-S22 "Spanish, keyboard and screen-reader audit", Scalewing gaps 1 to 4; standing owner approval).
 Renderer: react
 Missing surface: muted words that keep 4.5:1 on a pressable row's hover fill, a live region primitive that announces reliably, a skip link in `AppShell`, and a disabled `Select`. A fix to `FixtureRow`, `ListRow` and `TableRow pressable`, a new `LiveRegion`, and extensions of `AppShell` and `Select`.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: the hover fill and the muted colour are Scalewing's, and the consumer's guard forbids overriding styles; `Text aria-live` mounted with its words is often not read and cannot repeat the same words, and Scalewing has no visually hidden text for apps; `AppShell` puts 10 to 16 destinations before `main` on every page with no way to add a first link before them (`SiteHeader` has `skipLink`, `AppShell` did not); `Select` has no `disabled`, so a control that does nothing still looks and reads as usable.
