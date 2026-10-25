@@ -19,6 +19,8 @@ import { fileFieldClassCatalog } from './css-file-field.js';
 import { articleClassCatalog } from './css-article.js';
 import { documentViewerClassCatalog } from './css-document-viewer.js';
 import { fixtureClassCatalog } from './css-fixture.js';
+import { scheduleGridClassCatalog } from './css-schedule-grid.js';
+import { dateToggleClassCatalog } from './css-date-toggle.js';
 import { listClassCatalog } from './css-list.js';
 import { markdownClassCatalog } from './css-markdown.js';
 import { countPillClassCatalog } from './css-count-pill.js';
@@ -140,6 +142,8 @@ export function utilityClassCatalog(): string[] {
     ...dateRangeClassCatalog(),
     ...listClassCatalog(),
     ...fixtureClassCatalog(),
+    ...scheduleGridClassCatalog(),
+    ...dateToggleClassCatalog(),
     ...fileFieldClassCatalog(),
     ...articleClassCatalog(),
     ...documentViewerClassCatalog(),

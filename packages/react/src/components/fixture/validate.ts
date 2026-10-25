@@ -1,6 +1,6 @@
 import { visibilityBreakpoints } from '../../css/breakpoints.js';
 import { badgeTones } from '../../css/css-data.js';
-import { fixtureCenterKinds } from '../../css/css-fixture.js';
+import { fixtureCenterKinds, fixtureFlagTones } from '../../css/css-fixture.js';
 import { isOneOf } from '../../is-one-of.js';
 import { type FixtureRowProps } from './types.js';
 
@@ -11,13 +11,15 @@ function isBlank(words: unknown): boolean {
 /**
  * Fails closed on a row it cannot name or draw: a side without a name, a
  * blank centre, an unknown centre kind or breakpoint, a status with blank
- * words or an unknown tone, a blank address or `aria-label`, or an
+ * words or an unknown tone, a flag with blank words or an unknown tone, a
+ * blank address or `aria-label`, or an
  * `aria-label` on a row that is neither a link nor a button.
  */
 export function assertFixtureRow({
   away,
   center,
   centerKind,
+  flag,
   home,
   href,
   metaHideBelow,
@@ -46,6 +48,14 @@ export function assertFixtureRow({
   )
     throw new RangeError(
       `${name} status needs a label and one of ${badgeTones.join(', ')}`,
+    );
+  if (
+    flag !== undefined &&
+    (isBlank(flag?.label) ||
+      (flag.tone !== undefined && !isOneOf(fixtureFlagTones, flag.tone)))
+  )
+    throw new RangeError(
+      `${name} flag needs a label and one of ${fixtureFlagTones.join(', ')}`,
     );
   if (href !== undefined && isBlank(href))
     throw new RangeError(`${name} href must be nonempty when given`);

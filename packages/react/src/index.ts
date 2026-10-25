@@ -345,9 +345,26 @@ export {
 export {
   FixtureRow,
   type FixtureRowProps,
+  type FixtureFlag,
   type FixtureSide,
   type FixtureStatus,
 } from './components/FixtureRow.js';
+export {
+  defaultScheduleGridLabels,
+  ScheduleGrid,
+  type ScheduleGridAxisEntry,
+  type ScheduleGridDisabledCell,
+  type ScheduleGridDropCheck,
+  type ScheduleGridItem,
+  type ScheduleGridLabels,
+  type ScheduleGridProps,
+  type ScheduleGridSlot,
+  type ScheduleGridTarget,
+} from './components/ScheduleGrid.js';
+export {
+  DateToggleCalendar,
+  type DateToggleCalendarProps,
+} from './components/DateToggleCalendar.js';
 export {
   CommandPalette,
   commandPaletteShortcuts,

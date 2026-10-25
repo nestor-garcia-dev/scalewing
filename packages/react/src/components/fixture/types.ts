@@ -2,7 +2,10 @@ import { type MouseEvent, type ReactNode } from 'react';
 
 import { type VisibilityBreakpoint } from '../../css/breakpoints.js';
 import { type BadgeTone } from '../../css/css-data.js';
-import { type FixtureCenterKind } from '../../css/css-fixture.js';
+import {
+  type FixtureCenterKind,
+  type FixtureFlagTone,
+} from '../../css/css-fixture.js';
 
 /** One side of a fixture: its name and an optional decorative mark (a crest). */
 export type FixtureSide = {
@@ -13,6 +16,17 @@ export type FixtureSide = {
 
 /** A status after the row's details, such as "Final" or "To confirm". */
 export type FixtureStatus = { label: string; tone: BadgeTone };
+
+/**
+ * An issue marker at the row's start, such as a clash: an amber (or red)
+ * mark whose `label` is read before the row's name and shown as the mark's
+ * tooltip.
+ */
+export type FixtureFlag = {
+  label: string;
+  /** `warning` (default) is amber, for something that needs the person; `danger` is red. */
+  tone?: FixtureFlagTone;
+};
 
 export type FixtureRowProps = {
   home: FixtureSide;
@@ -29,6 +43,14 @@ export type FixtureRowProps = {
   /** Hides `meta` below this breakpoint (`md` or `lg`), such as a field a phone leaves out. */
   metaHideBelow?: VisibilityBreakpoint;
   status?: FixtureStatus;
+  /** A named issue marker at the row's start, on the home side. */
+  flag?: FixtureFlag;
+  /**
+   * A control after the row, such as a small neutral `Button` ("Move"):
+   * outside the row's link or button, so it is its own target and Tab
+   * stop. Name it in your words ("Move Heron Marsh vs Otter Pool").
+   */
+  action?: ReactNode;
   /** Makes the whole row a link to this address. */
   href?: string;
   /**
@@ -39,7 +61,8 @@ export type FixtureRowProps = {
   /**
    * The row's name when it is a link or a button, in the consumer's words
    * ("Heron Marsh with Otter Pool, 8:00"); without it the
-   * name is what the row shows, in order.
+   * name is what the row shows, in order. A `flag`'s label is put before
+   * these words (", " between them).
    */
   'aria-label'?: string;
 };
