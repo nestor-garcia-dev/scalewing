@@ -479,6 +479,24 @@ describe('Field', () => {
   });
 });
 
+describe('xs text controls', () => {
+  it('outranks the canvas typed-input rule, and grows to 44 px on a coarse pointer', () => {
+    const css = generateStylesheet();
+    const xs = "[data-theme] .sw-field-xs > :is(input[type='text']";
+    const rule = css.slice(css.indexOf(`${xs}`));
+    expect(rule.slice(0, rule.indexOf('}'))).toContain(
+      'min-height: var(--sw-control-xs-min-height);',
+    );
+    // [data-theme] + class + :is(element[attr]) beats [data-theme] :is(...).
+    expect(css.indexOf(xs)).toBeGreaterThan(
+      css.indexOf("[data-theme] :is(input[type='text']"),
+    );
+    expect(css).toMatch(
+      /@media \(pointer: coarse\) \{\n {2}\[data-theme\] \.sw-field-xs > :is\([^{]*\) \{\n {4}min-height: var\(--sw-control-md-min-height\);/,
+    );
+  });
+});
+
 describe('disabled text controls', () => {
   const css = generateStylesheet();
   // The canvas rule for a disabled native text control, read from the
