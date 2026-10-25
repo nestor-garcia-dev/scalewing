@@ -195,8 +195,8 @@ FutMas F-010-S22 audit fixes: `GlyphTile` letters were text on a fill
 that keeps white at only 3:1 (neutral crests 3.26:1, axe serious on every
 FutMas page); a tile holding letters now mixes its fill 25 % toward black
 (5:1 or more on every fill), and `Stepper`'s − and + are the 44 px touch
-target both ways on a coarse pointer (32 px wide before), for the next
-`@scalewing/react` patch. Next: release it, then FutMas pins it in
+target both ways on a coarse pointer (32 px wide before), released in
+`@scalewing/react` 1.59.2 (#274). Next: FutMas pins react 1.59.2 in
 F-010-S22. Follow-ups from the same audit (not built): a visually hidden
 text primitive (`Text visuallyHidden`) for spoken alternatives such as a
 result letter's "Won 3–1", and a 44 px hit area for text links (`Box
