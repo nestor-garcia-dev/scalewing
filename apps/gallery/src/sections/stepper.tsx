@@ -63,12 +63,42 @@ function NestTime() {
   );
 }
 
+/** A count saved as you go: one save per finished entry, never per digit. */
+function SavedCount() {
+  const [value, setValue] = useState<number | null>(30);
+  const [saves, setSaves] = useState<(number | null)[]>([]);
+  const last = saves.at(-1);
+  const lastWords =
+    last === null || last === undefined ? 'empty' : `${last} min`;
+  const status =
+    saves.length === 0
+      ? 'Nothing saved yet'
+      : `Saved ${saves.length} ${saves.length === 1 ? 'time' : 'times'}, last ${lastWords}`;
+  return (
+    <Stack gap={2}>
+      <Stepper
+        {...buttonNames}
+        label="Feeding time, saved as you go"
+        max={90}
+        min={10}
+        onChange={setValue}
+        onCommit={(next) => setSaves((done) => [...done, next])}
+        unit="min"
+        value={value}
+      />
+      <Text color="muted" role="status" variant="caption">
+        {status}
+      </Text>
+    </Stack>
+  );
+}
+
 export function StepperSection() {
   return (
     <Section
       id="stepper"
       purpose={
-        'Stepper is a whole-number count changed with − and + or typed: one tab stop (a spin button that ArrowUp and ArrowDown step), with the buttons as pointer targets beside it. − stops at min and + at max; an empty box counts as min. Typed counts are reported as typed, even past max, so the page can say why in error; the box refuses anything but digits. The count is a few digits wide, or fills a table cell with width="full". limitAppearance="plain" keeps − at min and + at max in their usual look instead of faded; they stay disabled. unit is a short muted word after the count inside its frame ("90 min"), read with the count unless valueText says it.'
+        'Stepper is a whole-number count changed with − and + or typed: one tab stop (a spin button that ArrowUp and ArrowDown step), with the buttons as pointer targets beside it. − stops at min and + at max; an empty box counts as min. Typed counts are reported as typed, even past max, so the page can say why in error; the box refuses anything but digits. The count is a few digits wide, or fills a table cell with width="full". limitAppearance="plain" keeps − at min and + at max in their usual look instead of faded; they stay disabled. unit is a short muted word after the count inside its frame ("90 min"), read with the count unless valueText says it. onCommit gives the finished count once per entry, for a page that saves as you go: on blur, on Enter, and 600 ms (commitDelay) after the last − / + press or step key, never per typed digit and never for an unchanged count.'
       }
       title="Stepper"
       usage={`<Stepper
@@ -79,6 +109,18 @@ export function StepperSection() {
   decrementLabel="One less"
   incrementLabel="One more"
   placeholder="0"
+/>
+
+<Stepper
+  label="Feeding time"
+  value={minutes}
+  onChange={setMinutes}
+  onCommit={save}
+  min={10}
+  max={90}
+  unit="min"
+  decrementLabel="One less"
+  incrementLabel="One more"
 />`}
     >
       <Stack gap={5}>
@@ -119,6 +161,7 @@ export function StepperSection() {
           <Count disabled initial={6} label="Roost, locked" unit="hours" />
           <NestTime />
         </Inline>
+        <SavedCount />
         <Stack gap={2}>
           <Text color="muted" variant="caption">
             {'width="full" with a hidden label, as in a table cell'}

@@ -124,9 +124,13 @@ describe('gallery', () => {
 
     for (const link of screen.getAllByRole('link')) {
       expect(link.tagName).toBe('A');
-      if (link.closest('.sw-markdown')) {
-        // MarkdownView's sample links leave the gallery only for the
-        // reserved example.org, in a new tab without an opener.
+      if (
+        link.closest('.sw-markdown') ||
+        link.querySelector('.sw-link-external-mark')
+      ) {
+        // MarkdownView's sample links and external Box links leave the
+        // gallery only for the reserved example.org, in a new tab without
+        // an opener.
         expect(link.getAttribute('href')).toMatch(
           /^(https:\/\/example\.org\/|mailto:[^@]+@example\.org$)/,
         );

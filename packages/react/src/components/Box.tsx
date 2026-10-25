@@ -17,6 +17,11 @@ import {
   type ColumnSpanProps,
 } from '../column-span-classes.js';
 import { spacingClassNames, type SpacingProps } from '../spacing-classes.js';
+import {
+  assertBoxExternal,
+  externalLinkContent,
+  externalLinkRel,
+} from './box/external-link.js';
 import { tabStop } from '../tab-stop.js';
 import {
   visibilityClassNames,
@@ -61,6 +66,19 @@ export type BoxProps = SpacingProps &
      * text lighter than 600. Only for `as="a"`; an unknown value throws.
      */
     link?: BoxLink;
+    /**
+     * A `Box as="a"` that opens in a new tab: it sets `target="_blank"`,
+     * adds `noopener noreferrer` to `rel`, draws a decorative arrow (↗)
+     * after its words and reads `newTabLabel` after its name. Only for
+     * `as="a"`; it needs `newTabLabel`.
+     */
+    external?: boolean;
+    /**
+     * The hidden words read after an external link's name, in your
+     * language, such as "(opens in a new tab)". Required with `external`,
+     * refused without it.
+     */
+    newTabLabel?: string;
   };
 
 export type BoxBorder = BoxBorderValue;
@@ -71,11 +89,14 @@ export const Box = forwardRef<HTMLElement, BoxProps>(function Box(
     as = 'div',
     background,
     border,
+    children,
     className,
     columnSpan,
+    external,
     hideBelow,
     hideFrom,
     link,
+    newTabLabel,
     padding,
     paddingBottom,
     paddingLeft,
@@ -84,13 +105,18 @@ export const Box = forwardRef<HTMLElement, BoxProps>(function Box(
     paddingX,
     paddingY,
     radius,
+    rel,
     style,
     tabIndex,
+    target,
     ...rest
   },
   ref,
 ) {
   assertBoxLink(link, as);
+  assertBoxExternal({ as, external, newTabLabel });
+  // assertBoxExternal has made sure an external link has its words.
+  const opensNewTab = external === true && newTabLabel !== undefined;
   const Component = as;
   // A link with a destination is a tab stop in Safari too (see tabStop).
   const linkTabStop =
@@ -124,6 +150,10 @@ export const Box = forwardRef<HTMLElement, BoxProps>(function Box(
       }}
       tabIndex={tabIndex ?? linkTabStop}
       {...rest}
-    />
+      rel={opensNewTab ? externalLinkRel(rel) : rel}
+      target={opensNewTab ? '_blank' : target}
+    >
+      {opensNewTab ? externalLinkContent(children, newTabLabel) : children}
+    </Component>
   );
 });
