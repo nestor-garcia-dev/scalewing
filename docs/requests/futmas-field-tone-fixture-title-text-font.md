@@ -1,6 +1,6 @@
 Scalewing request from FutMas.
 
-Status: implemented for the next `@scalewing/react` minor (accepted 2026-10-25; FutMas F-010-S19 "Roster requests and pasted players" gap 1, F-010-S20 "Team games, scores and scorers" gap 1, F-010-S21 "Can't-play times and team code" gap 1: the F1 Roster, F3b/F3c score sheet and F5 Team code boards; standing owner approval).
+Status: implemented for `@scalewing/react` 1.58.0 (accepted 2026-10-25; FutMas F-010-S19 "Roster requests and pasted players" gap 1, F-010-S20 "Team games, scores and scorers" gap 1, F-010-S21 "Can't-play times and team code" gap 1: the F1 Roster, F3b/F3c score sheet and F5 Team code boards; standing owner approval).
 Renderer: react
 Missing surface: a warning hint on a field that is not an error, a fixture group whose caption is not drawn, and monospace `Text`. Extensions of `Field`, `FixtureGroup` and `Text`.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: `Field`'s `description` is always muted and `error` is red and invalid, so an amber "also wears 7" beside a shirt number must be a separate `Text` whose id the consumer threads into the input's `aria-describedby`; `FixtureGroup` always draws its required `title`, which repeats a sheet header that already names the game and day, and a `FixtureRow` must sit in a group's list; the mono face exists (`sw-font-mono`) but no `Text` prop exposes it, and a class name from outside breaks the consumer's Scalewing guard.
