@@ -188,8 +188,8 @@ marketing site's UX review, in one PR: `SiteHeader` `skipLink`, the
 document's scroll padding clearing a sticky `SiteHeader`, the compact
 actions hidden while the menu is open, and `SiteFooter` bottom-row links
 at the touch target on a coarse pointer
-(`teisoro-site-chrome-follow-ups.md`). Next: the next `@scalewing/react`
-minor for Teisoro to pin.
+(`teisoro-site-chrome-follow-ups.md`, #256), released in
+`@scalewing/react` 1.52.0. Next: Teisoro pins react 1.52.0 in task 2725.
 
 Teisoro F-011-S02, release R1 "guided-form core": web `Stepper`
 (#113), `DenominationGrid` entry rows (#114), `Steps` / `Step` (#115)
