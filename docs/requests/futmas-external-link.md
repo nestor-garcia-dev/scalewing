@@ -1,6 +1,6 @@
 Scalewing request from FutMas.
 
-Status: accepted for `@scalewing/react` 1.54.0 (2026-10-25; FutMas F-010-S14 "Venues" gap 1: "Check it on Google Maps" opens a new tab; standing owner approval).
+Status: implemented for `@scalewing/react` 1.54.0 (accepted 2026-10-25; FutMas F-010-S14 "Venues" gap 1: "Check it on Google Maps" opens a new tab; standing owner approval).
 Renderer: react
 Missing surface: a link that opens in a new tab with a cue for sighted and screen-reader users. An extension of `Box as="a"`.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: `Box as="a"` takes `href`, `target` and `rel`, but has no new-tab cue, and FutMas cannot draw a glyph or hidden words without its own CSS (no `style=`, no stylesheet).
