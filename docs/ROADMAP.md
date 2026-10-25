@@ -180,7 +180,8 @@ FutMas F-010-S17, inbox, scores, score sheet and standings: `FixtureRow`
 `score`, two score boxes typed by keyboard in place of the centre, and
 `detail`, a part under the row for a reason field; `TableRow`
 `rule="after"`, the cut under the last playoff place
-(`futmas-fixture-row-score.md`), for `@scalewing/react` 1.57.0. Next:
+(`futmas-fixture-row-score.md`), in one PR (#266), released in
+`@scalewing/react` 1.57.0. Next:
 FutMas pins react 1.57.0 in F-010-S17.
 
 FutMas F-010-S16, postpone, new times and republish: `FixtureRow`
