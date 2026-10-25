@@ -1,4 +1,4 @@
-import { type MouseEvent, type ReactNode } from 'react';
+import { type MouseEvent, type ReactNode, type Ref } from 'react';
 
 import { type VisibilityBreakpoint } from '../../css/breakpoints.js';
 import { type BadgeTone } from '../../css/css-data.js';
@@ -41,14 +41,68 @@ export type FixtureSelect = {
   disabled?: boolean;
 };
 
+/** Which side's score box: the home side's (first) or the away side's. */
+export type FixtureScoreSide = 'home' | 'away';
+
+/** One side's score box. */
+export type FixtureScoreBox = {
+  /** The box's digits, as typed ("" while empty); at most two. */
+  value: string;
+  /** Names the box, such as the side's name ("Heron Marsh"); not drawn. */
+  label: string;
+  /** The box's input, such as to focus it after a save. */
+  ref?: Ref<HTMLInputElement>;
+  /**
+   * Marks this box invalid. Without it, an `error` marks both boxes;
+   * `false` keeps this one unmarked, such as the box that is filled when
+   * the other is empty.
+   */
+  invalid?: boolean;
+};
+
+/**
+ * Two score boxes in the row's middle, typed by keyboard: the home side's
+ * and the away side's, digits only, in a group named by `label`.
+ */
+export type FixtureScore = {
+  /** Names the boxes' group ("Score, Heron Marsh v Otter Pool"); not drawn. */
+  label: string;
+  home: FixtureScoreBox;
+  away: FixtureScoreBox;
+  /** A box's digits changed: non-digits are dropped before this is called. */
+  onChange: (side: FixtureScoreSide, value: string) => void;
+  /** Enter in either box: record the score. */
+  onSubmit: () => void;
+  /** Escape in either box: put the boxes back, such as to the saved score. */
+  onCancel?: () => void;
+  /** Both boxes shown and locked, such as a game not played yet. */
+  disabled?: boolean;
+  /**
+   * What is wrong ("Type both scores."): said politely under the row in the
+   * danger ink, describing both boxes, which are marked invalid (see
+   * `FixtureScoreBox.invalid`). Empty or absent, nothing is shown.
+   */
+  error?: string;
+};
+
 export type FixtureRowProps = {
   home: FixtureSide;
   away: FixtureSide;
-  /** What sits between the sides: a kickoff time ("8:00") or a score ("2–1"). */
-  center: string;
+  /**
+   * What sits between the sides: a kickoff time ("8:00") or a score
+   * ("2–1"). Required unless `score` takes its place.
+   */
+  center?: string;
+  /**
+   * Score boxes between the sides in place of `center`, for typing a
+   * score: on a row that is not a link or a button (the boxes are their
+   * own controls). Works with `flag`, `select`, `action` and `detail`.
+   */
+  score?: FixtureScore;
   /**
    * `time` (default) draws the centre as a small grey chip; `score` as
-   * bold figures. Both are tabular, so the rows' centres line up.
+   * bold figures. Both are tabular, so the rows' centres line up. It
+   * styles `center`, so leave it out with `score`.
    */
   centerKind?: FixtureCenterKind;
   /** Details at the row's end, such as the field; under the sides below `md`. */
@@ -70,6 +124,13 @@ export type FixtureRowProps = {
    * `action`, `href` and `onPress`.
    */
   select?: FixtureSelect;
+  /**
+   * A full-width part under the row, such as a reason field while a score
+   * is changed: in the row's list item, outside its link or button, lined
+   * up with the home side's start (after `select`'s box) and reaching the
+   * action's end.
+   */
+  detail?: ReactNode;
   /** Makes the whole row a link to this address. */
   href?: string;
   /**

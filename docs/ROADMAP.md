@@ -176,6 +176,13 @@ app's screen (`teisoro-screen-preview.md`, #251), and `ThemeProvider`
 (`teisoro-site-frame.md`, #252), released in `@scalewing/react` 1.50.0.
 Next: Teisoro pins react 1.50.0 and tokens 1.7.0 in task 2710.
 
+FutMas F-010-S17, inbox, scores, score sheet and standings: `FixtureRow`
+`score`, two score boxes typed by keyboard in place of the centre, and
+`detail`, a part under the row for a reason field; `TableRow`
+`rule="after"`, the cut under the last playoff place
+(`futmas-fixture-row-score.md`), for `@scalewing/react` 1.57.0. Next:
+FutMas pins react 1.57.0 in F-010-S17.
+
 FutMas F-010-S16, postpone, new times and republish: `FixtureRow`
 `select`, a leading checkbox for the match day's games
 (`futmas-fixture-row-select.md`), with the 1.55.0 review's follow-ups:

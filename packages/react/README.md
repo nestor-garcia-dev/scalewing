@@ -776,7 +776,7 @@ The layout follows the window, with generated media queries only. From 75rem (12
 
 A header `TableCell` (`as="th"`) with `sort` (`'ascending'`, `'descending'` or `'none'`) and `onSort` is its column's sort control: its children become a button in the header's own style with a chevron (before the name in a `numeric` or end-aligned column), and the cell carries `aria-sort` only while it is the sorted column. `sort` on a data cell, or one of the two without the other, throws a `TypeError`. `Table` `layout="fixed"` (default `auto`) sizes the columns from the header row alone, so a filter that hides a row moves no column, and `verticalAlign="top"` (default `middle`) starts every cell of a tall row on its first line. `TableCell` `width` is `min` (an auto table's column takes the least room its content allows, on one line; set it on each cell of the column) or a size, `xs` to `xl` (4, 6, 8, 12 and 16 rem); in a fixed table a column without a width shares what is left, so leave one column, such as a description, unsized. The HTML `width` attribute is not accepted. Unknown values throw a `RangeError`.
 
-A ledger read across as well as down takes `Table` `columnRules` (a hairline at the inline start of every cell after a row's first, mirrored right to left) and `TableCell` `tone` (`success`, `danger`, `muted` or `accent`: the cell's text in the theme colour, as `Text color` uses it; never the only signal, so keep the sign or the words). `TableRow` `variant="sub"` (default `"default"`) sets a row under the one above, as a batch's items: its row header, a `TableCell as="th" scope="row"`, is indented a `space-6` step with a guide bar at the indent (a sub row without a row header is not indented). `TableRow` `variant="total"` is a total mid-table, such as a subtotal the rows above add up to before the table goes on: its cells at weight 600 under a 2 px rule across its top (the cells' own collapsed top border, so forced colors keep it), as a `TableFooter` total is drawn, with no fill, so accent text in it keeps the contrast it has on the table's own surface. Name it with a row header and keep it in the body, after the rows it adds up (not the body's first row under a pinned header, whose rule would sit on its own); a cell's `tone` keeps its colour, and `struck` works on it. Its cells are all at weight 600, so a quiet link or a `TableCell onPress` action in it is no longer set apart by weight: keep a total row's name plain text (a `TableFooter` row is the same). `TableRow` `struck` keeps a voided row on the record: the subtle fill and the text muted and struck through, toned cells included; it works with any variant. A line-through is not read aloud, so say why in the row, such as a `Badge` "Voided": a Badge in a line of text is not struck, but one that is itself a flex item (a direct child of `Inline`) is, so put it in the title's line. A row header in the body or footer (`th scope="row"`) reads as body text. An unknown `tone` or `variant` throws a `RangeError`.
+A ledger read across as well as down takes `Table` `columnRules` (a hairline at the inline start of every cell after a row's first, mirrored right to left) and `TableCell` `tone` (`success`, `danger`, `muted` or `accent`: the cell's text in the theme colour, as `Text color` uses it; never the only signal, so keep the sign or the words). `TableRow` `variant="sub"` (default `"default"`) sets a row under the one above, as a batch's items: its row header, a `TableCell as="th" scope="row"`, is indented a `space-6` step with a guide bar at the indent (a sub row without a row header is not indented). `TableRow` `variant="total"` is a total mid-table, such as a subtotal the rows above add up to before the table goes on: its cells at weight 600 under a 2 px rule across its top (the cells' own collapsed top border, so forced colors keep it), as a `TableFooter` total is drawn, with no fill, so accent text in it keeps the contrast it has on the table's own surface. Name it with a row header and keep it in the body, after the rows it adds up (not the body's first row under a pinned header, whose rule would sit on its own); a cell's `tone` keeps its colour, and `struck` works on it. Its cells are all at weight 600, so a quiet link or a `TableCell onPress` action in it is no longer set apart by weight: keep a total row's name plain text (a `TableFooter` row is the same). `TableRow` `struck` keeps a voided row on the record: the subtle fill and the text muted and struck through, toned cells included; it works with any variant. A line-through is not read aloud, so say why in the row, such as a `Badge` "Voided": a Badge in a line of text is not struck, but one that is itself a flex item (a direct child of `Inline`) is, so put it in the title's line. A row header in the body or footer (`th scope="row"`) reads as body text. `TableRow` `rule="after"` (opt-in, `TableRowRule`; `tableRowRules` lists the values) draws a rule under the row, such as the cut under the last playoff place: its cells' bottom border 2 px in the muted grey, stronger than the 1 px hairlines between rows (3:1 on the surface) without a colour's meaning, kept in `CanvasText` in forced colors and resolved over the next row's top by the collapsed-border model. The row's words, weight and fill are unchanged and the line is not read aloud, so say what it means in words beside the table ("The line under 4th place marks the playoff places"). It works with any variant, `struck` and `selected`; class `sw-table-row-rule-after`. An unknown `tone`, `variant` or `rule` throws a `RangeError`.
 
 `Table` `stickyHeader` pins the header: the whole `TableHeader` as one group, every row in it (the column headings and any row under them, such as a running total) with all its cells, `th` and `td`, each row under the one above, on the glass with its row and column rules. `true` (default) pins it to the top of the table's own scroll region, `false` lets it scroll away, and `'page'` pins it to the page's top as the page scrolls. With `'page'`, while the table fits its width its region stops being a scroll box (`sw-table-sticky-page`), so the header stays in view under any sticky `AppHeader` (which covers it); a table wider than its region scrolls sideways in it and pins inside it. Use it for a long table whose last row, such as a non-sticky `TableFooter` total, should scroll with the rows. An unknown value throws a `RangeError`.
 
@@ -1286,6 +1286,47 @@ const { headings, omissions } = inspectMarkdown(page.body, {
     >
       Pick a time
     </Button>
+  }
+/>
+```
+
+`FixtureRow` `score` (opt-in, `FixtureScore`) puts two score boxes between the sides in place of `center`, for typing a result: `{ label, home, away, onChange(side, value), onSubmit(), onCancel?(), disabled?, error? }`, each box a `FixtureScoreBox` `{ value, label, ref?, invalid? }`. The boxes sit in a `role="group"` named by `label` ("Score, Heron Marsh v Otter Pool"), each a text input named by its own `label` (the side's name), home first, with a hidden en dash between them; none of those words is drawn, so name them in the consumer's language. Each box is `inputmode="numeric"`, `pattern="[0-9]*"`, `maxLength` 2 and `autocomplete="off"`; typed or pasted non-digits are dropped before `onChange` is called with the side (`'home'` or `'away'`) and the box's digits, and a change that keeps the same digits is not reported. Focus selects a box's text, so a typed score replaces it. Enter in either box calls `onSubmit` (not while an IME composition is open) and Escape calls `onCancel`, which should put the boxes back, such as to the saved score (Escape is prevented then, so an enclosing `Dialog` stays open; without `onCancel` it is left alone). `disabled` shows both boxes locked, with the canvas's disabled look. `error` ("Type both scores.") is said under the row in a polite live region in caption type and the danger ink, from the home side's start; it describes both boxes (`aria-describedby`) and marks them `aria-invalid` with a danger edge (`Mark` in forced colors), and a box's `invalid` (`true` or `false`) overrides that for the box, so a filled box can stay unmarked; an empty `error` shows nothing. `ref` reaches a box's input, such as to focus the home box of the row a link opened or the next game's after a save. The boxes are squares the sm control height (32 px) on a fine pointer, so the row keeps its 44 px height, and the 44 px touch target on a coarse one; below `md` their margin is a space-2 step. A row with `score` is never a link or a button (its boxes are their own controls), and it works with `flag`, `select`, `action`, `meta`, `status` and `detail`; the Tab order is the select, the home box, the away box, anything in `detail`, then the action. On a touch screen the numeric keypad may have no Return key (iOS), so give touch users a visible action, such as a small neutral "Record score" `Button` in `action`. With neither `center` nor `score`, with both, with `centerKind` beside `score`, with `href` or `onPress` beside `score`, or with a score lacking a nonempty `label`, boxes with a string `value` and a nonempty `label`, an `onChange` or an `onSubmit` (or with an `onCancel` that is not a function or an `error` that is not a string), it throws a `RangeError`. `center` is optional when `score` is given. New types `FixtureScore`, `FixtureScoreBox`, `FixtureScoreSide`; new classes `sw-fixture-score`, `sw-fixture-score-box`, `sw-fixture-score-dash`, `sw-fixture-score-error`.
+
+`FixtureRow` `detail` (opt-in, `ReactNode`) is a full-width part under the row, such as a reason field while an official score is changed: in the row's list item after the row (and after a score's message), outside a link or button row's press area, and before the action in the Tab order (so a reason field comes before a Record button), spanning the run's columns from the home side's start (after a `select`'s box) to the action's end, with the row's inline padding and a space-2 step below. An empty slot draws nothing. New classes `sw-fixture-item-below` (an item with a score or a detail) and `sw-fixture-detail`.
+
+```tsx
+// tally, missing, change, record, reset, reason, setReason and homeBox are your own.
+<FixtureRow
+  home={{ name: 'Heron Marsh' }}
+  away={{ name: 'Otter Pool' }}
+  score={{
+    label: 'Score, Heron Marsh v Otter Pool',
+    home: { value: tally.home, label: 'Heron Marsh', ref: homeBox },
+    away: { value: tally.away, label: 'Otter Pool' },
+    onChange: change,
+    onSubmit: record,
+    onCancel: reset,
+    error: missing ? 'Type both scores.' : undefined,
+  }}
+  meta="Changing the official 0–0"
+  action={
+    <Button
+      aria-label="Record Heron Marsh vs Otter Pool"
+      onPress={record}
+      size="sm"
+      variant="neutral"
+    >
+      Record score
+    </Button>
+  }
+  detail={
+    <Field label="Reason" labelVisuallyHidden>
+      <input
+        onChange={(event) => setReason(event.currentTarget.value)}
+        placeholder="Why?"
+        value={reason}
+      />
+    </Field>
   }
 />
 ```
