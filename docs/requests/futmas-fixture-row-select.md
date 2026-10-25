@@ -1,6 +1,6 @@
 Scalewing request from FutMas.
 
-Status: accepted for `@scalewing/react` 1.56.0 (2026-10-25; FutMas F-010-S16 "Postpone, new times and republish" gap 1: the D6 board's tick-and-untick rows for postponing a match day; standing owner approval).
+Status: implemented for `@scalewing/react` 1.56.0 (accepted 2026-10-25; FutMas F-010-S16 "Postpone, new times and republish" gap 1: the D6 board's tick-and-untick rows for postponing a match day; standing owner approval).
 Renderer: react
 Missing surface: a selectable fixture row, plus four follow-ups from the 1.55.0 review. An extension of `FixtureRow`, with fixes to `FixtureRow`, `ScheduleGrid` and `DateToggleCalendar`.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: `FixtureRow` has no leading control; a `Checkbox` needs a visible label and FutMas cannot place it inside the row's grid without its own CSS; `TableSelectCell` belongs to `Table`, which would change the rows' look between browsing and selecting.

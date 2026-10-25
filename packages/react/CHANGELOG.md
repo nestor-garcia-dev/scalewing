@@ -1,5 +1,11 @@
 # @scalewing/react
 
+## 1.56.0
+
+### Minor Changes
+
+- 384520b: `FixtureRow` `select` (opt-in, `{ label, checked, onCheckedChange, disabled? }`): a leading checkbox with its label visually hidden, before the row and outside its press area, in the run's new first column (`sw-fixture-list` is now `auto minmax(0, 1fr) auto minmax(0, 1fr) auto auto auto`, six below `md`; the row spans `2 / -2`); the standard 24 px box, 44 px on a coarse pointer; works with `flag`, `action`, `href` and `onPress`. New type `FixtureSelect`; new classes `sw-fixture-item-select`, `sw-fixture-select`, `sw-fixture-row-flag-inline`. Fixes: below `md` a flagged row with no details' line keeps its flag inline; `ScheduleGrid` `labels.pickedUp` receives the input as a second argument (`ScheduleGridCarryMode`: `keyboard`, `tap`, `drag`; one-argument functions you pass still work, but a call to `defaultScheduleGridLabels.pickedUp` now needs the mode) and the default words fit it; a key or tap carry is cancelled when focus leaves the grid (a press on a header keeps focus and the carry); a drag release handled before the pick-up renders no longer leaves the item held; `DateToggleCalendar` `onChange` drops `value` entries outside `min`–`max` or on disabled days.
+
 ## 1.55.0
 
 ### Minor Changes
