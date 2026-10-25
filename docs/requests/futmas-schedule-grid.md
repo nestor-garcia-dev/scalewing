@@ -1,6 +1,6 @@
 Scalewing request from FutMas.
 
-Status: accepted for `@scalewing/react` 1.55.0 (2026-10-25; FutMas F-010-S15 "Build, review and publish the schedule" gap 2: the review grid, games by time and field, drag to move and drop to swap; standing owner approval).
+Status: implemented for `@scalewing/react` 1.55.0 (accepted 2026-10-25; FutMas F-010-S15 "Build, review and publish the schedule" gap 2: the review grid, games by time and field, drag to move and drop to swap; standing owner approval).
 Renderer: react
 Missing surface: a schedule grid, items moved between cells by drag, keys or presses. A new component, `ScheduleGrid`.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: `Table` is a static table with no cell focus model, pointer drag, drop targets, blocked cells or announcements, and WCAG 2.5.7 needs a non-drag path built in; a product-side grid would hand-write focus, drag and CSS.

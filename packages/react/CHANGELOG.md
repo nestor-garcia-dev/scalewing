@@ -1,5 +1,11 @@
 # @scalewing/react
 
+## 1.55.0
+
+### Minor Changes
+
+- 81c0b16: `FixtureRow` `flag` (`{ label, tone? }`, amber `warning` by default or `danger`) and `action` (opt-in): a named issue mark at the row's start, read first (and before an `aria-label`), on the first line from `md` and leading the details' line below it; and a control after the row, outside its press area, lined up in the run's new last column at every width. New types `FixtureFlag`; new classes `sw-fixture-row-flagged`, `sw-fixture-flag`, `sw-fixture-flag-mark`, `sw-fixture-flag-warning`, `sw-fixture-flag-danger`, `sw-fixture-item-action`, `sw-fixture-action`. The fixture list's grid gains a sixth (`auto`) column, empty without actions. New `ScheduleGrid`: items in a grid of rows by columns, moved by mouse or pen drag with one hover target (drop on another item to swap), by a tap then a tap on touch, or by keys (roving focus, M or Space to pick up, arrows, Enter to drop, Escape to cancel); `canDrop` decides every target (`true` or `{ reason }`), `disabledCells` are never targets, each with its reason; polite announcements in English by default (`labels`, `defaultScheduleGridLabels`); classes `sw-schedule-grid*`. New `DateToggleCalendar`: month grids from `min` to `max` whose days toggle (`aria-pressed`), with `isDateDisabled`, `toggledLabel`, `locale`, `weekStartsOn` and `disabled`, one Tab stop and keys that skip days that cannot be toggled; classes `sw-date-toggle*`. Requests: `docs/requests/futmas-fixture-row-action-flag.md`, `docs/requests/futmas-schedule-grid.md`, `docs/requests/futmas-date-toggle-calendar.md`.
+
 ## 1.54.0
 
 ### Minor Changes
