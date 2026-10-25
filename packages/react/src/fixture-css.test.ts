@@ -13,10 +13,10 @@ function rule(selector: string, from = 0): string {
 describe('FixtureRow CSS', () => {
   it('lines rows up on one grid, each row a subgrid', () => {
     expect(rule('.sw-fixture-list')).toContain(
-      'grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) auto auto auto;',
+      'grid-template-columns: auto minmax(0, 1fr) auto minmax(0, 1fr) auto auto auto;',
     );
-    // The row spans every column but the action's.
-    expect(css).toContain('.sw-fixture-row {\n  grid-column: 1 / -2;\n}');
+    // The row spans every column but the select's and the action's.
+    expect(css).toContain('.sw-fixture-row {\n  grid-column: 2 / -2;\n}');
     expect(rule('.sw-fixture-item,\n.sw-fixture-row')).toContain(
       'grid-template-columns: subgrid;',
     );
@@ -59,13 +59,48 @@ describe('FixtureRow CSS', () => {
     expect(action).toContain('grid-row: 1;');
     expect(action).toContain('padding-inline-end: var(--sw-space-2);');
     expect(css).toContain(
-      '.sw-fixture-item-action:has(> .sw-fixture-row-pressable:hover) {',
+      ':is(.sw-fixture-item-action, .sw-fixture-item-select):has(> .sw-fixture-row-pressable:hover) {',
     );
     const narrow = css.indexOf(
       '@media not all and (min-width: 48rem) {\n  .sw-fixture-list {',
     );
     expect(rule('  .sw-fixture-list', narrow)).toContain(
-      'grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) auto auto;',
+      'grid-template-columns: auto minmax(0, 1fr) auto minmax(0, 1fr) auto auto;',
+    );
+  });
+
+  it('puts the select in the first column, outside the row, its box a 44 px target on touch', () => {
+    const select = rule('\n.sw-fixture-select');
+    expect(select).toContain('grid-column: 1;');
+    expect(select).toContain('grid-row: 1;');
+    expect(select).toContain('align-self: center;');
+    expect(select).toContain('padding-inline-start: var(--sw-space-2);');
+    expect(css).toContain(
+      '@media (pointer: coarse) {\n  .sw-fixture-select { padding-inline-start: 0; }\n}',
+    );
+    // The box is Checkbox's hidden-label control, which grows on a coarse pointer.
+    const coarse = css.indexOf(
+      '@media (pointer: coarse) {\n  .sw-checkbox-label-hidden {',
+    );
+    expect(coarse).toBeGreaterThan(0);
+    expect(rule('  .sw-checkbox-label-hidden', coarse)).toContain(
+      'min-height: var(--sw-control-md-min-height);',
+    );
+    expect(rule('  .sw-checkbox-label-hidden', coarse)).toContain(
+      'min-width: var(--sw-control-md-min-height);',
+    );
+  });
+
+  it('keeps a flag inline below md when the row has no details line there', () => {
+    const narrow = css.indexOf('  .sw-fixture-flag { grid-row: 2; }');
+    const inline = css.indexOf(
+      '  .sw-fixture-row-flag-inline .sw-fixture-flag { grid-row: 1; }',
+    );
+    expect(inline).toBeGreaterThan(narrow);
+    expect(
+      rule('  .sw-fixture-row-flag-inline .sw-fixture-team-home', narrow),
+    ).toContain(
+      'padding-inline-start: calc(var(--sw-space-4) + var(--sw-space-2));',
     );
   });
 
@@ -105,6 +140,9 @@ describe('FixtureRow CSS', () => {
     expect(rule('  .sw-fixture-item-action', fallback)).toContain(
       'display: flex;',
     );
+    expect(rule('  .sw-fixture-item-select', fallback)).toContain(
+      'display: flex;',
+    );
   });
 
   it('marks presses and forced colours', () => {
@@ -129,6 +167,9 @@ describe('FixtureRow CSS', () => {
         'sw-fixture-flag-warning',
         'sw-fixture-flag-danger',
         'sw-fixture-action',
+        'sw-fixture-select',
+        'sw-fixture-item-select',
+        'sw-fixture-row-flag-inline',
       ]),
     );
     expect(new Set(catalog).size).toBe(catalog.length);

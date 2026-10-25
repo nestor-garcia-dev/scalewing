@@ -63,7 +63,11 @@ ${fixtureFlagTones
 }`;
 }
 
-/* Below `md` the flag leads the details' line; after the row's narrow rules. */
+/*
+ * Below `md` the flag leads the details' line; after the row's narrow
+ * rules. A row with no details' line there (no status, and no meta or one
+ * hidden below md) keeps the flag inline on its first line instead.
+ */
 function flagNarrowRules(): string {
   return `@media ${belowMd} {
   .sw-fixture-flag { grid-row: 2; }
@@ -71,6 +75,12 @@ function flagNarrowRules(): string {
   .sw-fixture-row-flagged .sw-fixture-team-home { padding-inline-start: 0; }
 
   .sw-fixture-row-flagged .sw-fixture-end {
+    padding-inline-start: calc(var(--sw-space-4) + var(--sw-space-2));
+  }
+
+  .sw-fixture-row-flag-inline .sw-fixture-flag { grid-row: 1; }
+
+  .sw-fixture-row-flag-inline .sw-fixture-team-home {
     padding-inline-start: calc(var(--sw-space-4) + var(--sw-space-2));
   }
 }`;
@@ -86,6 +96,7 @@ ${flagNarrowRules()}`;
 export function fixtureFlagClassCatalog(): string[] {
   return [
     'sw-fixture-row-flagged',
+    'sw-fixture-row-flag-inline',
     'sw-fixture-flag',
     'sw-fixture-flag-mark',
     ...fixtureFlagTones.map((tone) => `sw-fixture-flag-${tone}`),

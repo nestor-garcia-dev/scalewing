@@ -346,6 +346,7 @@ export {
   FixtureRow,
   type FixtureRowProps,
   type FixtureFlag,
+  type FixtureSelect,
   type FixtureSide,
   type FixtureStatus,
 } from './components/FixtureRow.js';
@@ -353,6 +354,7 @@ export {
   defaultScheduleGridLabels,
   ScheduleGrid,
   type ScheduleGridAxisEntry,
+  type ScheduleGridCarryMode,
   type ScheduleGridDisabledCell,
   type ScheduleGridDropCheck,
   type ScheduleGridItem,

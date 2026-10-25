@@ -135,6 +135,17 @@ describe('DateToggleCalendar', () => {
     expect(onChange).toHaveBeenCalledWith(['2027-04-04', '2027-05-02']);
   });
 
+  it('drops value entries outside min–max or on disabled days from onChange', () => {
+    const { onChange } = renderCalendar({
+      // Before min, after max, a Monday (disabled), and a day that stays.
+      value: ['2027-03-21', '2027-06-06', '2027-04-05', '2027-05-02'],
+    });
+    fireEvent.click(screen.getByRole('button', { name: /April 4/ }));
+    expect(onChange).toHaveBeenLastCalledWith(['2027-04-04', '2027-05-02']);
+    fireEvent.click(screen.getByRole('button', { name: /May 2,/ }));
+    expect(onChange).toHaveBeenLastCalledWith([]);
+  });
+
   it('moves focus between enabled days across months with the keys', () => {
     renderCalendar();
     const first = screen.getByRole('button', { name: /March 28/ });

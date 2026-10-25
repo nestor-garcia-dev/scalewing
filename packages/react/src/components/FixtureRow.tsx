@@ -6,10 +6,12 @@ import { cx } from '../class-names.js';
 import { hideClass } from '../css/breakpoints.js';
 import { tabStop } from '../tab-stop.js';
 import { Badge } from './Badge.js';
+import { Checkbox } from './Checkbox.js';
 import { useFixtureList } from './fixture/fixture-list-context.js';
 import {
   type FixtureFlag,
   type FixtureRowProps,
+  type FixtureSelect,
   type FixtureSide,
 } from './fixture/types.js';
 import { assertFixtureRow } from './fixture/validate.js';
@@ -19,6 +21,7 @@ import { hasSlot } from './slot.js';
 export type {
   FixtureFlag,
   FixtureRowProps,
+  FixtureSelect,
   FixtureSide,
   FixtureStatus,
 } from './fixture/types.js';
@@ -39,6 +42,21 @@ function Flag({ flag }: { flag: FixtureFlag }) {
       />
       <span className="sw-sr-only">{flag.label}</span>
     </span>
+  );
+}
+
+/** The leading checkbox: a Checkbox with its label visually hidden. */
+function Select({ select }: { select: FixtureSelect }) {
+  return (
+    <div className="sw-fixture-select">
+      <Checkbox
+        checked={select.checked}
+        disabled={select.disabled ?? false}
+        label={select.label}
+        labelVisuallyHidden
+        onCheckedChange={select.onCheckedChange}
+      />
+    </div>
   );
 }
 
@@ -63,8 +81,8 @@ function Side({ side, place }: { side: FixtureSide; place: 'home' | 'away' }) {
  * kickoff time or score in the middle, the away side starting from it, then
  * the details and a status at the end (under the sides below `md`). With
  * `href` or `onPress` the whole row is a link or a button with a chevron.
- * `flag` marks an issue at the row's start; `action` is a control after the
- * row, outside its press area.
+ * `flag` marks an issue at the row's start; `select` is a checkbox before
+ * the row and `action` a control after it, both outside its press area.
  * Invalid words or props throw a `RangeError`.
  */
 export function FixtureRow(props: FixtureRowProps) {
@@ -81,16 +99,22 @@ export function FixtureRow(props: FixtureRowProps) {
     meta,
     metaHideBelow,
     onPress,
+    select,
     status,
     'aria-label': ariaLabel,
   } = props;
   const hasMeta = hasSlot(meta);
   const pressable = href !== undefined || onPress !== undefined;
   const hasAction = hasSlot(action);
+  // Below md the end is a second line; with nothing on it (no status, and
+  // meta absent or hidden below md) the flag stays on the first line.
+  const endShownNarrow =
+    status !== undefined || (hasMeta && metaHideBelow === undefined);
   const rowClass = cx(
     'sw-fixture-row',
     pressable && 'sw-fixture-row-pressable',
     flag && 'sw-fixture-row-flagged',
+    flag && !endShownNarrow && 'sw-fixture-row-flag-inline',
   );
   const name =
     ariaLabel !== undefined && flag ? `${flag.label}, ${ariaLabel}` : ariaLabel;
@@ -174,8 +198,13 @@ export function FixtureRow(props: FixtureRowProps) {
 
   return (
     <li
-      className={cx('sw-fixture-item', hasAction && 'sw-fixture-item-action')}
+      className={cx(
+        'sw-fixture-item',
+        select && 'sw-fixture-item-select',
+        hasAction && 'sw-fixture-item-action',
+      )}
     >
+      {select ? <Select select={select} /> : null}
       {row}
       {hasAction ? <span className="sw-fixture-action">{action}</span> : null}
     </li>

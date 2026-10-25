@@ -12,7 +12,8 @@ function isBlank(words: unknown): boolean {
  * Fails closed on a row it cannot name or draw: a side without a name, a
  * blank centre, an unknown centre kind or breakpoint, a status with blank
  * words or an unknown tone, a flag with blank words or an unknown tone, a
- * blank address or `aria-label`, or an
+ * blank address or `aria-label`, a `select` without a label, a boolean
+ * `checked` or an `onCheckedChange`, or an
  * `aria-label` on a row that is neither a link nor a button.
  */
 export function assertFixtureRow({
@@ -24,6 +25,7 @@ export function assertFixtureRow({
   href,
   metaHideBelow,
   onPress,
+  select,
   status,
   'aria-label': ariaLabel,
 }: FixtureRowProps): void {
@@ -56,6 +58,15 @@ export function assertFixtureRow({
   )
     throw new RangeError(
       `${name} flag needs a label and one of ${fixtureFlagTones.join(', ')}`,
+    );
+  if (
+    select !== undefined &&
+    (isBlank(select?.label) ||
+      typeof select.checked !== 'boolean' ||
+      typeof select.onCheckedChange !== 'function')
+  )
+    throw new RangeError(
+      `${name} select needs a label, checked and onCheckedChange`,
     );
   if (href !== undefined && isBlank(href))
     throw new RangeError(`${name} href must be nonempty when given`);

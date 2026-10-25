@@ -176,6 +176,15 @@ app's screen (`teisoro-screen-preview.md`, #251), and `ThemeProvider`
 (`teisoro-site-frame.md`, #252), released in `@scalewing/react` 1.50.0.
 Next: Teisoro pins react 1.50.0 and tokens 1.7.0 in task 2710.
 
+FutMas F-010-S16, postpone, new times and republish: `FixtureRow`
+`select`, a leading checkbox for the match day's games
+(`futmas-fixture-row-select.md`), with the 1.55.0 review's follow-ups:
+`ScheduleGrid` pick-up words by input, carries cancelled when focus
+leaves and a fast drag release; the `FixtureRow` flag inline on a phone
+row with no details' line; `DateToggleCalendar` `onChange` keeping only
+days that can be toggled, for `@scalewing/react` 1.56.0. Next: FutMas
+pins react 1.56.0 in F-010-S16.
+
 FutMas F-010-S15, build, review and publish the schedule: `FixtureRow`
 `flag` and `action`, a named clash mark and a Move button
 (`futmas-fixture-row-action-flag.md`), `ScheduleGrid`, games by time and

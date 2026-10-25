@@ -1,10 +1,14 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useLayoutEffect, useRef, useState } from 'react';
 
 import { cellStatus, type GridModel, type GridPosition } from './grid-model.js';
-import { type ScheduleGridLabels, type ScheduleGridProps } from './types.js';
+import {
+  type ScheduleGridCarryMode,
+  type ScheduleGridLabels,
+  type ScheduleGridProps,
+} from './types.js';
 
 /** How an item is being carried: by keys, by a press then a press, or by a drag. */
-export type CarryMode = 'keyboard' | 'tap' | 'drag';
+export type CarryMode = ScheduleGridCarryMode;
 
 export type Carry = { itemId: string; mode: CarryMode };
 
@@ -20,7 +24,9 @@ type CarryOptions = Pick<
  * The carried item and what picking up, dropping and cancelling do: the
  * consumer's `canDrop` decides each drop, `onMove` or `onSwap` reports it,
  * and each step is announced. A carry ends when its item leaves the grid
- * or the grid is disabled.
+ * or the grid is disabled. Drops and cancels read the carry from a ref set
+ * as it changes, so a release handled before React commits the pick-up
+ * still ends it.
  */
 export function useScheduleCarry({
   canDrop,
@@ -32,7 +38,12 @@ export function useScheduleCarry({
   onSwap,
   rows,
 }: CarryOptions) {
-  const [held, setHeld] = useState<Carry | null>(null);
+  const [held, setHeldState] = useState<Carry | null>(null);
+  const heldRef = useRef<Carry | null>(null);
+  const setHeld = useCallback((next: Carry | null) => {
+    heldRef.current = next;
+    setHeldState(next);
+  }, []);
   const [announcement, setAnnouncement] = useState<Announcement>({
     text: '',
     id: 0,
@@ -43,7 +54,20 @@ export function useScheduleCarry({
   // A carry that ended because the grid was disabled or its item left
   // stays ended: re-enabling never resumes it (state adjusted while
   // rendering, as React recommends over an effect).
-  if (held !== null && carry === null) setHeld(null);
+  if (held !== null && carry === null) setHeldState(null);
+  useLayoutEffect(() => {
+    const live = heldRef.current;
+    if (live !== null && (disabled || !model.itemById(live.itemId)))
+      heldRef.current = null;
+  });
+
+  /** The live carry, current even before a render commits it. */
+  const current = useCallback((): Carry | null => {
+    const live = heldRef.current;
+    return live !== null && !disabled && model.itemById(live.itemId)
+      ? live
+      : null;
+  }, [disabled, model]);
 
   const announce = useCallback((text: string) => {
     setAnnouncement((last) => ({ text, id: last.id + 1 }));
@@ -54,25 +78,27 @@ export function useScheduleCarry({
       const item = model.itemById(itemId);
       if (disabled || !item) return;
       setHeld({ itemId, mode });
-      announce(labels.pickedUp(item.label));
+      announce(labels.pickedUp(item.label, mode));
     },
-    [announce, disabled, labels, model],
+    [announce, disabled, labels, model, setHeld],
   );
 
   /** Puts the item back; returns where it is, for focus. */
   const cancel = useCallback((): GridPosition | undefined => {
-    if (!carry) return undefined;
+    const live = current();
     setHeld(null);
-    announce(labels.cancelled(model.itemById(carry.itemId)!.label));
-    return model.positionOf(carry.itemId);
-  }, [announce, carry, labels, model]);
+    if (!live) return undefined;
+    announce(labels.cancelled(model.itemById(live.itemId)!.label));
+    return model.positionOf(live.itemId);
+  }, [announce, current, labels, model, setHeld]);
 
   /** Drops on a cell: moves, swaps, cancels on its own cell, or says why not. */
   const drop = useCallback(
     (position: GridPosition) => {
-      if (!carry) return;
-      const item = model.itemById(carry.itemId)!;
-      const status = cellStatus(model, carry.itemId, position, canDrop);
+      const live = current();
+      if (!live) return;
+      const item = model.itemById(live.itemId)!;
+      const status = cellStatus(model, live.itemId, position, canDrop);
       if (status.kind === 'source') {
         cancel();
         return;
@@ -80,7 +106,7 @@ export function useScheduleCarry({
       if (status.kind === 'blocked') {
         announce(status.reason);
         // A refused drag ends; keys and presses keep the item to try again.
-        if (carry.mode === 'drag') setHeld(null);
+        if (live.mode === 'drag') setHeld(null);
         return;
       }
       setHeld(null);
@@ -103,13 +129,14 @@ export function useScheduleCarry({
       announce,
       canDrop,
       cancel,
-      carry,
       columns,
+      current,
       labels,
       model,
       onMove,
       onSwap,
       rows,
+      setHeld,
     ],
   );
 

@@ -8,7 +8,9 @@ import {
   useRef,
   useState,
   type CSSProperties,
+  type FocusEvent,
   type KeyboardEvent,
+  type MouseEvent,
 } from 'react';
 
 import { cx } from '../class-names.js';
@@ -28,6 +30,7 @@ import { assertScheduleGrid } from './schedule-grid/validate.js';
 export { defaultScheduleGridLabels } from './schedule-grid/labels.js';
 export type {
   ScheduleGridAxisEntry,
+  ScheduleGridCarryMode,
   ScheduleGridDisabledCell,
   ScheduleGridDropCheck,
   ScheduleGridItem,
@@ -41,7 +44,8 @@ export type {
  * Items in a grid of rows (such as times) by columns (such as fields),
  * moved between cells: a mouse drag with one hover target, a press then a
  * press (touch), or keys (M or Space picks up, arrows choose, Enter drops,
- * Escape cancels). Dropping on another item swaps the two. The consumer's
+ * Escape cancels). A carry by keys or presses is cancelled when focus or a
+ * press leaves the grid. Dropping on another item swaps the two. The consumer's
  * `canDrop` decides every target; each step is announced politely. Invalid
  * props throw a `RangeError`.
  */
@@ -113,6 +117,23 @@ export function ScheduleGrid(props: ScheduleGridProps) {
     return () => document.removeEventListener('pointerdown', onDown);
   }, [cancel, carry]);
 
+  // Focus leaving the grid puts a key or press carry back; the window
+  // losing focus (another app, a devtools click) does not.
+  function onBlur(event: FocusEvent<HTMLTableElement>) {
+    if (!carry || carry.mode === 'drag') return;
+    const next = event.relatedTarget;
+    if (next instanceof Node && event.currentTarget.contains(next)) return;
+    if (next === null && !document.hasFocus()) return;
+    cancel();
+  }
+
+  // A press on a header (not focusable) keeps focus where it is, so it
+  // never reads as focus leaving the grid and a carry survives it.
+  function onMouseDown(event: MouseEvent<HTMLTableElement>) {
+    if (!(event.target as Element).closest('[role="gridcell"]'))
+      event.preventDefault();
+  }
+
   function onKeyDown(event: KeyboardEvent<HTMLTableElement>) {
     const position = cellPositionOf(event.target);
     if (!position) return;
@@ -156,7 +177,9 @@ export function ScheduleGrid(props: ScheduleGridProps) {
         aria-describedby={instructionsId}
         aria-label={label}
         className="sw-schedule-grid-table"
+        onBlur={onBlur}
         onKeyDown={onKeyDown}
+        onMouseDown={onMouseDown}
         ref={tableRef}
         role="grid"
         style={
