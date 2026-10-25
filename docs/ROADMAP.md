@@ -179,8 +179,8 @@ Next: Teisoro pins react 1.50.0 and tokens 1.7.0 in task 2710.
 FutMas F-010-S14, venues and season rules: `Box as="a" external` with
 `newTabLabel`, a link that opens a new tab with an arrow and hidden words
 (`futmas-external-link.md`), and `Stepper onCommit` with `commitDelay`,
-one save per finished entry (`futmas-stepper-commit.md`), in one PR, for
-`@scalewing/react` 1.54.0. Next: FutMas pins react 1.54.0 in F-010-S14.
+one save per finished entry (`futmas-stepper-commit.md`), in one PR (#260),
+released in `@scalewing/react` 1.54.0. Next: FutMas pins react 1.54.0 in F-010-S14.
 
 FutMas F-010-S13, teams and pasted teams: a table select column
 (`Checkbox labelVisuallyHidden` and `indeterminate`, `TableSelectCell`;

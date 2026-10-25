@@ -1,6 +1,6 @@
 Scalewing request from FutMas.
 
-Status: accepted for `@scalewing/react` 1.54.0 (2026-10-25; FutMas F-010-S14 "Rules saving" gap 2: season rules save as you go, one PUT per finished entry; standing owner approval).
+Status: implemented for `@scalewing/react` 1.54.0 (accepted 2026-10-25; FutMas F-010-S14 "Rules saving" gap 2: season rules save as you go, one PUT per finished entry; standing owner approval).
 Renderer: react
 Missing surface: a Stepper callback for a finished entry. An extension of `Stepper`.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: `onChange` fires on every typed digit (and with empty or out-of-range counts), so saving on change sends a request per keystroke; `Stepper` has no blur or commit prop, and the − / + presses keep focus in place, so a wrapper's blur never sees them.
