@@ -1,26 +1,28 @@
 import { typographyVariants } from '@scalewing/tokens';
 
-import { breakpointQuery } from './breakpoints.js';
+import { cssSiteHeaderAnchorRules } from './css-site-header-anchors.js';
+import { cssSiteHeaderSkipLinkRules } from './css-site-header-skip-link.js';
 import { quietFill } from './quiet-fill.js';
+import {
+  siteHeaderBarMaxWidth,
+  siteHeaderCompactHeight as compactHeight,
+  siteHeaderGutter,
+  siteHeaderGutterQuery,
+  siteHeaderWideHeight as wideHeight,
+  siteHeaderWideQuery as wide,
+} from './site-header-geometry.js';
 import { zIndex } from './stacking.js';
 
 const label = typographyVariants.label;
 const title = typographyVariants.title;
-
-/** The bar's height: 56 px on a phone, 72 px from `lg`. */
-const compactHeight =
-  'calc(var(--sw-control-md-min-height) + var(--sw-space-3))';
-const wideHeight =
-  'calc(var(--sw-control-md-min-height) + var(--sw-space-5) + var(--sw-space-1))';
-
-const wide = breakpointQuery('from', 'lg');
 
 /*
  * The bar: the solid surface with a hairline under it, its content in the
  * page container with the page gutter. Below `lg` it holds the brand, the
  * compact actions and the menu button; from `lg` the brand, the
  * destinations (the current one at label weight over a bar in the words'
- * colour, as tall as the bar) and the actions, spread apart.
+ * colour, as tall as the bar) and the actions, spread apart. The compact
+ * actions' box adds no layout of its own (`display: contents`).
  */
 function barRules(): string {
   return `.sw-site-header {
@@ -45,9 +47,9 @@ function barRules(): string {
   gap: var(--sw-space-5);
   justify-content: space-between;
   margin-inline: auto;
-  max-width: calc(var(--sw-container-max) + 2 * var(--sw-space-5));
+  max-width: ${siteHeaderBarMaxWidth};
   min-height: var(--sw-site-header-height);
-  padding-inline: var(--sw-space-4);
+  padding-inline: ${siteHeaderGutter.compact};
 }
 
 .sw-site-header-brand {
@@ -65,6 +67,10 @@ function barRules(): string {
   align-items: center;
   display: flex;
   gap: var(--sw-space-1);
+}
+
+.sw-site-header-compact-actions {
+  display: contents;
 }
 
 .sw-site-header-list {
@@ -108,8 +114,8 @@ function barRules(): string {
   gap: var(--sw-space-4);
 }
 
-@media ${breakpointQuery('from', 'md')} {
-  .sw-site-header-bar { padding-inline: var(--sw-space-5); }
+@media ${siteHeaderGutterQuery} {
+  .sw-site-header-bar { padding-inline: ${siteHeaderGutter.wide}; }
 }
 
 @media ${wide} {
@@ -126,11 +132,17 @@ function barRules(): string {
  * open, the other pair hidden so only one is read), and its panel lies
  * under the bar over the rest of the window, the destinations as large
  * rows with hairlines and the menu's actions at the panel's foot. It
- * scrolls on its own when the window is short.
+ * scrolls on its own when the window is short. While it is open the bar's
+ * compact actions step aside, since the menu holds its own actions, so the
+ * bar shows only the brand and the close button.
  */
 function menuRules(): string {
   return `.sw-site-header-menu > summary {
   list-style: none;
+}
+
+.sw-site-header-compact:has(> .sw-site-header-menu[open]) > .sw-site-header-compact-actions {
+  display: none;
 }
 
 .sw-site-header-menu > summary::-webkit-details-marker {
@@ -223,6 +235,10 @@ export function cssSiteHeaderClasses(): string {
 
 ${menuRules()}
 
+${cssSiteHeaderSkipLinkRules()}
+
+${cssSiteHeaderAnchorRules()}
+
 /*
  * Forced colours drop box shadows, so the current destination's bar is a
  * thick underline there.
@@ -258,6 +274,8 @@ export function siteHeaderClassCatalog(): string[] {
     'sw-site-header-nav',
     'sw-site-header-actions',
     'sw-site-header-compact',
+    'sw-site-header-compact-actions',
+    'sw-site-header-skip-link',
     'sw-site-header-list',
     'sw-site-header-link',
     'sw-site-header-menu',

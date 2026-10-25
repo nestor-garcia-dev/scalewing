@@ -183,6 +183,14 @@ and every `Button` size the 44 px target on a coarse pointer
 `@scalewing/react` 1.51.0 on `@scalewing/tokens` 1.7.0. Next: FutMas pins
 react 1.51.0 in F-010-S12.
 
+Teisoro F-017 acceptance (task 2725), site chrome follow-ups from the
+marketing site's UX review, in one PR: `SiteHeader` `skipLink`, the
+document's scroll padding clearing a sticky `SiteHeader`, the compact
+actions hidden while the menu is open, and `SiteFooter` bottom-row links
+at the touch target on a coarse pointer
+(`teisoro-site-chrome-follow-ups.md`). Next: the next `@scalewing/react`
+minor for Teisoro to pin.
+
 Teisoro F-011-S02, release R1 "guided-form core": web `Stepper`
 (#113), `DenominationGrid` entry rows (#114), `Steps` / `Step` (#115)
 and `ActionBar` `summary` (#116), released in `@scalewing/react` 1.27.0.
