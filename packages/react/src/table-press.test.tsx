@@ -368,6 +368,13 @@ describe('pressable row styles', () => {
   .sw-table-row-press:hover .sw-table-action {
     text-decoration-line: underline;
   }
+`);
+    // On the fill, muted cells and muted words in the cells read as text.
+    expect(css).toContain(`.sw-table-row-press:hover > :is(td, th) * {
+  --sw-color-muted: var(--sw-color-text);
+}`);
+    expect(css).toContain(`.sw-table-row-press:hover > .sw-table-tone-muted {
+  color: var(--sw-color-text);
 }`);
     expect(css).toContain(`.sw-table-row-press:active > :is(td, th),
 .sw-table-row-press:has(:focus-visible) > :is(td, th) {

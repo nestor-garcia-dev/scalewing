@@ -63,6 +63,13 @@ export type SelectProps = SelectNaming & {
   /** A validation message under the control, wired as Field's error is. */
   error?: string;
   /**
+   * Turns the control off, as `Button`'s `disabled`: the trigger is a
+   * native disabled button (out of the Tab order, read as dimmed, faded),
+   * its list cannot open (an open one closes) and `onChange` is never
+   * called. Say why it is off in the page's words. Default `false`.
+   */
+  disabled?: boolean;
+  /**
    * `full` makes the field, its trigger and its open list fill the
    * container's inline size; the chosen label still ellipsizes past it.
    * Default `content`.
@@ -75,6 +82,7 @@ export function Select({
   label,
   labelVisuallyHidden,
   'aria-labelledby': labelledBy,
+  disabled = false,
   onChange,
   options,
   size = 'md',
@@ -109,6 +117,8 @@ export function Select({
     setHighlight,
     setOpen,
   } = useSelectList({ action, onChange, options, rootRef, value });
+  // A control turned off while its list is open closes it.
+  if (disabled && open) setOpen(false);
 
   return (
     <div
@@ -149,6 +159,7 @@ export function Select({
             aria-labelledby={labelId}
             aria-required={required || undefined}
             className="sw-select-trigger"
+            disabled={disabled}
             id={triggerId}
             onBlur={(event) => {
               const next = event.relatedTarget;

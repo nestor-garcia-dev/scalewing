@@ -1,6 +1,6 @@
 import { typographyVariants } from '@scalewing/tokens';
 
-import { quietFill } from './quiet-fill.js';
+import { mutedReadsAsText, quietFill } from './quiet-fill.js';
 
 const row = '.sw-table-row-press';
 const action = '.sw-table-action';
@@ -9,12 +9,25 @@ const action = '.sw-table-action';
  * A pressable row: the pointer cursor over all of it, and the quiet fill
  * on its cells while it is hovered (on a pointer that hovers), pressed, or
  * while its action has keyboard focus, so a keyboard user sees the row the
- * focused name belongs to. The fill sits under the cells' text, so text,
- * muted text and toned figures keep their contrast as on any quiet-filled
- * row (an open menu's). Its action is underlined with it, so the row reads
- * as that one action. Forced colours drop fills, so the row is outlined in
- * the system highlight instead.
+ * focused name belongs to. Muted words fall under 4.5:1 on that fill, so
+ * a muted cell and the muted parts inside every cell take the text colour
+ * while it shows (`mutedReadsAsText`; the cell paints the fill, so its own
+ * colour is set, not the token). Its action is underlined with it, so the
+ * row reads as that one action. Forced colours drop fills, so the row is
+ * outlined in the system highlight instead.
  */
+const hovered = `${row}:hover`;
+const held = [`${row}:active`, `${row}:has(:focus-visible)`];
+
+/* A filled row's muted cells and the muted parts inside its cells read as text. */
+function mutedCellRules(rows: readonly string[]): string {
+  return `${mutedReadsAsText(rows.map((filled) => `${filled} > :is(td, th) *`))}
+
+${rows.map((filled) => `${filled} > .sw-table-tone-muted`).join(',\n')} {
+  color: var(--sw-color-text);
+}`;
+}
+
 function pressableRowRules(): string {
   return `${row} {
   cursor: pointer;
@@ -28,12 +41,16 @@ function pressableRowRules(): string {
   ${row}:hover ${action} {
     text-decoration-line: underline;
   }
+
+  ${mutedCellRules([hovered])}
 }
 
 ${row}:active > :is(td, th),
 ${row}:has(:focus-visible) > :is(td, th) {
   background: ${quietFill};
 }
+
+${mutedCellRules(held)}
 
 @media (forced-colors: active) {
   ${row}:hover,

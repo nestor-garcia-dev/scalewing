@@ -190,7 +190,8 @@ describe('FixtureRow CSS', () => {
     expect(rule('.sw-fixture-score-error:not(:empty)')).toContain(
       'padding-block-end: var(--sw-space-2);',
     );
-    const detail = rule('.sw-fixture-detail');
+    // Its own rule at the line's start, not the hover rule that ends in it.
+    const detail = rule('\n.sw-fixture-detail');
     expect(detail).toContain('grid-column: 2 / -1;');
     expect(detail).toContain('grid-row: 3;');
     expect(detail).toContain('padding: 0 var(--sw-space-2) var(--sw-space-2);');

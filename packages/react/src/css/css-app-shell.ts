@@ -12,6 +12,10 @@ import {
   appShellPageBarClassCatalog,
   cssAppShellPageBarClasses,
 } from './css-app-shell-page-bar.js';
+import {
+  appShellSkipLinkClassCatalog,
+  cssAppShellSkipLinkRules,
+} from './css-app-shell-skip-link.js';
 import { iconButtonRules } from './css-icon-button.js';
 
 /*
@@ -131,7 +135,8 @@ ${cssAppShellRailNavRules('    ')}
  * AppShell: a workspace frame with a pinned side navigation (see
  * components/AppShell.tsx). The links, groups and the rail's nav are
  * `css-app-shell-nav.ts`; the page bar and the menu's count are
- * `css-app-shell-page-bar.ts`; the menu drawer is `css-app-shell-drawer.ts`.
+ * `css-app-shell-page-bar.ts`; the menu drawer is `css-app-shell-drawer.ts`;
+ * the skip link is `css-app-shell-skip-link.ts`.
  */
 export function cssAppShellClasses(): string {
   return `${barRules()}
@@ -152,7 +157,9 @@ ${cssAppShellPageBarClasses()}
 
 ${sidebarRules()}
 
-${cssAppShellDrawerClasses()}`;
+${cssAppShellDrawerClasses()}
+
+${cssAppShellSkipLinkRules()}`;
 }
 
 export function appShellClassCatalog(): string[] {
@@ -171,5 +178,6 @@ export function appShellClassCatalog(): string[] {
     ...appShellNavClassCatalog(),
     ...appShellPageBarClassCatalog(),
     ...appShellDrawerClassCatalog(),
+    ...appShellSkipLinkClassCatalog(),
   ];
 }

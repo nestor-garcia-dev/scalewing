@@ -69,9 +69,9 @@ function assertMenuCount({
 }
 
 /**
- * Fails closed on the shell's words, the menu's count, its groups and
- * their items (ids unique across every group, each with an icon, which is
- * all the rail shows).
+ * Fails closed on the shell's words (a skip link's too), the menu's count,
+ * its groups and their items (ids unique across every group, each with an
+ * icon, which is all the rail shows).
  */
 export function assertAppShellProps({
   groups,
@@ -80,6 +80,7 @@ export function assertAppShellProps({
   menuCountLabel,
   menuCountTone,
   navLabel,
+  skipLink,
 }: Pick<
   AppShellProps,
   | 'groups'
@@ -88,11 +89,14 @@ export function assertAppShellProps({
   | 'menuCountLabel'
   | 'menuCountTone'
   | 'navLabel'
+  | 'skipLink'
 >): void {
   if (isBlank(navLabel))
     throw new RangeError('AppShell navLabel must be nonempty');
   if (isBlank(labels?.openMenu) || isBlank(labels?.closeMenu))
     throw new RangeError('AppShell labels openMenu and closeMenu are nonempty');
+  if (skipLink != null && isBlank(skipLink.label))
+    throw new RangeError('AppShell skipLink needs a nonempty label');
   assertMenuCount({ menuCount, menuCountLabel, menuCountTone });
   assertGroups(groups);
   const items = groups.flatMap((group) => group.items);
