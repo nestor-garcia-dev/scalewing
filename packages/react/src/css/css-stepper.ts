@@ -1,6 +1,7 @@
 import { typographyVariants } from '@scalewing/tokens';
 
 import { changedTintLayer } from './css-field-changed.js';
+import { coarsePointerQuery, touchTarget } from './touch-target.js';
 import {
   cssStepperUnitClasses,
   stepperUnitClassCatalog,
@@ -55,8 +56,8 @@ function stateRules(): string {
  * digits wide by default, the track at its own width even under a wider label
  * or message (`5ch` plus its padding, so its width never follows
  * its value), or fills its container with `sw-stepper-full`. The buttons are
- * spacing step 6 wide on the subtle fill and every part is the `md` control
- * height.
+ * spacing step 6 wide on the subtle fill (the 44 px touch target on a coarse
+ * pointer) and every part is the `md` control height.
  */
 export function cssStepperClasses(): string {
   return `.sw-stepper {
@@ -124,6 +125,17 @@ ${input} {
 }
 
 .sw-stepper-full input.sw-stepper-input { inline-size: 100%; }
+
+/* A coarse pointer gets the full touch target: − and + as wide as they are tall. */
+@media ${coarsePointerQuery} {
+  .sw-stepper-track {
+    grid-template-columns: ${touchTarget} auto ${touchTarget};
+  }
+
+  .sw-stepper-full .sw-stepper-track {
+    grid-template-columns: ${touchTarget} minmax(0, 1fr) ${touchTarget};
+  }
+}
 
 ${stateRules()}
 

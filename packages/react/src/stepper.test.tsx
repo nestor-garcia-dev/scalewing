@@ -345,6 +345,22 @@ describe('Stepper CSS', () => {
     expect(css).not.toMatch(/#[0-9a-f]{3,6}\b/i);
   });
 
+  it('widens − and + to the 44 px touch target on a coarse pointer, after the fine-pointer track', () => {
+    const coarse = css.indexOf('@media (pointer: coarse) {');
+    expect(coarse).toBeGreaterThan(
+      css.indexOf(
+        'grid-template-columns: var(--sw-space-6) auto var(--sw-space-6);',
+      ),
+    );
+    const rule = css.slice(coarse, css.indexOf('\n}\n', coarse));
+    expect(rule).toContain(
+      'grid-template-columns: var(--sw-control-md-min-height) auto var(--sw-control-md-min-height);',
+    );
+    expect(rule).toContain(
+      'grid-template-columns: var(--sw-control-md-min-height) minmax(0, 1fr) var(--sw-control-md-min-height);',
+    );
+  });
+
   it('beats the canvas text-input rule at equal specificity and keeps forced-color borders', () => {
     expect(css).toContain('[data-theme] input.sw-stepper-input {');
     expect(css).toContain(
