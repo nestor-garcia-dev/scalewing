@@ -182,7 +182,8 @@ FutMas F-010-S16, postpone, new times and republish: `FixtureRow`
 `ScheduleGrid` pick-up words by input, carries cancelled when focus
 leaves and a fast drag release; the `FixtureRow` flag inline on a phone
 row with no details' line; `DateToggleCalendar` `onChange` keeping only
-days that can be toggled, for `@scalewing/react` 1.56.0. Next: FutMas
+days that can be toggled, in one PR (#264),
+released in `@scalewing/react` 1.56.0. Next: FutMas
 pins react 1.56.0 in F-010-S16.
 
 FutMas F-010-S15, build, review and publish the schedule: `FixtureRow`
