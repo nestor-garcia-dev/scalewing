@@ -1,4 +1,10 @@
-import { categoricalColors } from '@scalewing/tokens';
+import {
+  categoricalColorKeys,
+  categoricalColors,
+  contrastRatio,
+  onCategorical,
+  parseHexColor,
+} from '@scalewing/tokens';
 import { cleanup, render } from '@testing-library/react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
@@ -7,7 +13,19 @@ import {
   type GlyphTileHue,
   type GlyphTileSize,
 } from './components/GlyphTile.js';
+import { glyphTileLetterDarken } from './css/css-glyph-tile.js';
 import { generateStylesheet, utilityClassCatalog } from './css/stylesheet.js';
+
+/** `color-mix(in srgb, fill, black N%)`, as the browser mixes it. */
+function towardBlack(fill: string, amount: number): string {
+  return `#${parseHexColor(fill)
+    .map((channel) =>
+      Math.round(channel * (1 - amount))
+        .toString(16)
+        .padStart(2, '0'),
+    )
+    .join('')}`;
+}
 
 afterEach(() => cleanup());
 
@@ -97,6 +115,27 @@ describe('GlyphTile CSS', () => {
 });
 
 describe('GlyphTile letters', () => {
+  it('darkens a tile holding letters so white letters keep 4.5:1 on every fill', () => {
+    const css = generateStylesheet();
+    expect(css).toContain(
+      `.sw-glyph-tile:has(> .sw-glyph-tile-text) {\n  background: color-mix(in srgb, var(--sw-glyph-tile-fill), black 25%);\n}`,
+    );
+    for (const scheme of ['light', 'dark'] as const)
+      for (const key of categoricalColorKeys) {
+        const fill = categoricalColors[scheme][key];
+        // As it is, a fill is only a glyph background (3:1), not text's.
+        const letters = contrastRatio(
+          onCategorical,
+          towardBlack(fill, glyphTileLetterDarken),
+        );
+        expect(letters, `${scheme} ${key}`).toBeGreaterThanOrEqual(4.5);
+      }
+    // The neutral crest FutMas draws: 3.26:1 before, 5.35:1 after.
+    expect(
+      contrastRatio(onCategorical, categoricalColors.light.neutral),
+    ).toBeLessThan(4.5);
+  });
+
   it('draws one to three letters sized by their count', () => {
     const { container } = render(
       <>

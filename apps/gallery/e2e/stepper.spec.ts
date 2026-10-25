@@ -116,3 +116,20 @@ test('Stepper limitAppearance plain keeps − unfaded at min, still disabled', a
       .getByRole('button', { name: 'One less' }),
   ).toHaveCSS('opacity', forced ? '1' : '0.4');
 });
+
+test('− and + are the 44 px touch target both ways on a coarse pointer', async ({
+  page,
+}, testInfo) => {
+  await page.goto('/#stepper');
+  const group = page.locator('#stepper').getByRole('group', { name: 'Herons' });
+  const coarse = await page.evaluate(
+    () => matchMedia('(pointer: coarse)').matches,
+  );
+  expect(coarse).toBe(testInfo.project.name === 'mobile-es');
+  for (const name of ['One less', 'One more']) {
+    const box = (await group.getByRole('button', { name }).boundingBox())!;
+    expect(box.height).toBeGreaterThanOrEqual(44);
+    if (coarse) expect(box.width).toBeGreaterThanOrEqual(44);
+    else expect(Math.round(box.width)).toBe(32);
+  }
+});

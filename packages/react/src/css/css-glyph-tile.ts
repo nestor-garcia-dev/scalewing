@@ -8,6 +8,15 @@ export type GlyphTileSize = (typeof glyphTileSizes)[number];
 /** The most letters a tile holds, such as a three-letter crest ("NSL"). */
 export const glyphTileLetterLimit = 3;
 
+/**
+ * How far a tile holding letters mixes its fill toward black. Letters are
+ * text (WCAG 1.4.3, 4.5:1), and the categorical fills keep a white glyph at
+ * only 3:1 (neutral 3.26:1, orange 3.06:1): a 25 % mix keeps white letters
+ * at 5:1 or more on every fill in both schemes (orange, the lightest after
+ * the mix, 5.08:1). A glyph keeps the fill as it is.
+ */
+export const glyphTileLetterDarken = 0.25;
+
 const tileSide: Record<GlyphTileSize, string> = {
   sm: 'var(--sw-space-5)',
   md: 'var(--sw-control-xs-min-height)',
@@ -35,7 +44,8 @@ function sizeRules(): string {
 /*
  * A rounded square in a categorical fill with the consumer's glyph centred
  * in white, sized to spacing step 4 whatever the glyph's own size. It is
- * decoration: the words beside it carry the meaning. Forced colors drop the
+ * decoration: the words beside it carry the meaning. Letters still have to
+ * be readable text, so a tile holding them takes a deeper fill. Forced colors drop the
  * fill, so a border keeps the tile's shape and the glyph takes the text
  * color.
  */
@@ -80,6 +90,11 @@ export function cssGlyphTileClasses(): string {
 }
 
 ${hueRules()}
+
+/* Letters are text: the fill darkens just enough for 4.5:1 (glyphTileLetterDarken). */
+.sw-glyph-tile:has(> .sw-glyph-tile-text) {
+  background: color-mix(in srgb, var(--sw-glyph-tile-fill), black ${glyphTileLetterDarken * 100}%);
+}
 
 ${sizeRules()}
 

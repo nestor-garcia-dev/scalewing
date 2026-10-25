@@ -191,6 +191,17 @@ F-010-S22. Follow-ups: `ScheduleGrid`'s own polite status could move onto
 `LiveRegion`; toned words (success, danger, accent) on the quiet fill fall
 under 4.5:1 in some palettes, a palette-wide question for tokens.
 
+FutMas F-010-S22 audit fixes: `GlyphTile` letters were text on a fill
+that keeps white at only 3:1 (neutral crests 3.26:1, axe serious on every
+FutMas page); a tile holding letters now mixes its fill 25 % toward black
+(5:1 or more on every fill), and `Stepper`'s − and + are the 44 px touch
+target both ways on a coarse pointer (32 px wide before), for the next
+`@scalewing/react` patch. Next: release it, then FutMas pins it in
+F-010-S22. Follow-ups from the same audit (not built): a visually hidden
+text primitive (`Text visuallyHidden`) for spoken alternatives such as a
+result letter's "Won 3–1", and a 44 px hit area for text links (`Box
+as="a"`) on a coarse pointer.
+
 FutMas F-010-S19, S20 and S21, roster, team games and team code: `Field`
 `descriptionTone="warning"`, an amber hint that is not an error;
 `FixtureGroup` `titleHidden`, a list name without a drawn caption; `Text`
