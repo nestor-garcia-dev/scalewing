@@ -1,6 +1,6 @@
 'use client';
 
-import { type CSSProperties, useEffect, useRef, useState } from 'react';
+import { type CSSProperties, useEffect, useId, useRef, useState } from 'react';
 
 import { breakpointQuery } from '../css/breakpoints.js';
 import { appShellWideQuery } from '../css/css-app-shell.js';
@@ -8,6 +8,7 @@ import { appShellBarHeightVariable } from '../css/css-app-shell-page-bar.js';
 import { AppShellBar } from './app-shell/AppShellBar.js';
 import { AppShellDrawer } from './app-shell/AppShellDrawer.js';
 import { AppShellSidebar } from './app-shell/AppShellSidebar.js';
+import { SkipToMain } from './app-shell/SkipToMain.js';
 import { type AppShellProps } from './app-shell/types.js';
 import { assertAppShellProps } from './app-shell/validate.js';
 import { useElementHeight } from './use-element-height.js';
@@ -18,6 +19,7 @@ export type {
   AppShellNavGroup,
   AppShellNavItem,
   AppShellProps,
+  AppShellSkipLink,
 } from './app-shell/types.js';
 
 const fromLg = breakpointQuery('from', 'lg');
@@ -29,8 +31,9 @@ const fromLg = breakpointQuery('from', 'lg');
  * captions); from `lg` to 75rem it is a rail of glyphs with tooltips; below
  * `lg` a sticky top bar's menu button opens the same navigation in a modal
  * drawer from the inline start, its button optionally carrying a count.
- * `pageBar` is a sticky band at the top of `main` on every layout. Invalid
- * groups, items, counts or words throw a `RangeError`.
+ * `pageBar` is a sticky band at the top of `main` on every layout, and
+ * `skipLink` a first link that moves focus to `main`. Invalid groups,
+ * items, counts or words throw a `RangeError`.
  */
 export function AppShell({
   barEnd,
@@ -49,6 +52,7 @@ export function AppShell({
   pageBar,
   railFooter,
   railHeader,
+  skipLink,
 }: AppShellProps) {
   assertAppShellProps({
     groups,
@@ -57,10 +61,13 @@ export function AppShell({
     menuCountLabel,
     menuCountTone,
     navLabel,
+    skipLink,
   });
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef<HTMLButtonElement>(null);
   const barRef = useRef<HTMLElement>(null);
+  const mainRef = useRef<HTMLElement>(null);
+  const mainId = useId();
   // Set by a dismissal (Escape, a press outside, the close button): only
   // that hands focus back to the menu button.
   const refocusRef = useRef(false);
@@ -91,6 +98,9 @@ export function AppShell({
 
   return (
     <div className="sw-app-shell" style={shellStyle}>
+      {skipLink ? (
+        <SkipToMain label={skipLink.label} mainId={mainId} mainRef={mainRef} />
+      ) : null}
       <AppShellBar
         barEnd={barEnd}
         barRef={barRef}
@@ -114,7 +124,13 @@ export function AppShell({
         railFooter={railFooter}
         railHeader={railHeader}
       />
-      <main className="sw-app-shell-main">
+      {/* A skip link's target: named and focusable only with one. */}
+      <main
+        ref={mainRef}
+        className="sw-app-shell-main"
+        id={skipLink ? mainId : undefined}
+        tabIndex={skipLink ? -1 : undefined}
+      >
         {hasPageBar ? (
           <div className="sw-app-shell-page-bar">{pageBar}</div>
         ) : null}

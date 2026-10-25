@@ -176,6 +176,16 @@ app's screen (`teisoro-screen-preview.md`, #251), and `ThemeProvider`
 (`teisoro-site-frame.md`, #252), released in `@scalewing/react` 1.50.0.
 Next: Teisoro pins react 1.50.0 and tokens 1.7.0 in task 2710.
 
+FutMas F-010-S22, Spanish, keyboard and screen-reader audit: muted words
+take the text colour on a pressable `FixtureRow`, `ListRow` or `TableRow`'s
+quiet fill (gap 1, 4.14:1 before); `LiveRegion`, a status line that
+announces reliably (gap 2); `AppShell` `skipLink` (gap 3); `Select`
+`disabled` (gap 4) (`futmas-row-hover-live-region-skip-link.md`), for the
+next `@scalewing/react` minor. Next: release it, then FutMas pins it in
+F-010-S22. Follow-ups: `ScheduleGrid`'s own polite status could move onto
+`LiveRegion`; toned words (success, danger, accent) on the quiet fill fall
+under 4.5:1 in some palettes, a palette-wide question for tokens.
+
 FutMas F-010-S19, S20 and S21, roster, team games and team code: `Field`
 `descriptionTone="warning"`, an amber hint that is not an error;
 `FixtureGroup` `titleHidden`, a list name without a drawn caption; `Text`

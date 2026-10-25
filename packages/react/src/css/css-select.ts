@@ -128,6 +128,17 @@ export function cssSelectClasses(): string {
   .sw-select-invalid .sw-select-trigger { border-color: Mark; }
 }
 
+/* Off: faded as a disabled Button is; forced colours grey its frame, words and chevron. */
+.sw-select-trigger:disabled {
+  cursor: not-allowed;
+  opacity: var(--sw-disabled-opacity);
+}
+
+@media (forced-colors: active) {
+  .sw-select-trigger:disabled { border-color: GrayText; color: GrayText; }
+  .sw-select-trigger:disabled::after { border-color: GrayText; }
+}
+
 .sw-select-list {
   background: var(--sw-glass-fill);
   border: 1px solid var(--sw-glass-border);

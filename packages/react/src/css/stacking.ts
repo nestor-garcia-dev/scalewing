@@ -19,7 +19,9 @@
  *    strip its way between sections, and a popup opens downward).
  * 6. `sheetGrabber`: a bottom sheet's grabber, inside its dialog, over the
  *    banded title band that sticks under it.
- * 7. `popup`: a popup outside any lifted surface (Select list, ActionMenu
+ * 7. `skipLink`: AppShell's skip link while it has focus, fixed over the
+ *    top chrome and the sidebar (a popup is never open while it has focus).
+ * 8. `popup`: a popup outside any lifted surface (Select list, ActionMenu
  *    list, ContextSwitcher popup, MultiSelect panel, Combobox list, Tooltip,
  *    the DateField and CalendarButton calendar) over everything in the page.
  *
@@ -32,6 +34,7 @@ export const stackingOrder = {
   popupHost: 4,
   topChrome: 5,
   sheetGrabber: 6,
+  skipLink: 7,
   popup: 10,
 } as const;
 

@@ -2,7 +2,7 @@ import { typographyVariants } from '@scalewing/tokens';
 
 import { breakpointQuery } from './breakpoints.js';
 import { chevronStrokeIn } from './chevron.js';
-import { quietFill } from './quiet-fill.js';
+import { mutedReadsAsText, quietFill } from './quiet-fill.js';
 import {
   cssFixtureActionClasses,
   fixtureActionClassCatalog,
@@ -44,7 +44,8 @@ const belowMd = breakpointQuery('below', 'md');
  * colour, the quiet fill on hover and an inset accent ring, with the
  * shared chevron at the end. The sides' names are label type at weight 500
  * and wrap; the home side ends at the centre (its mark nearest it), the
- * away side starts from it, mirrored in right-to-left.
+ * away side starts from it, mirrored in right-to-left. On the hover fill
+ * its muted parts take the text colour (`mutedReadsAsText`).
  */
 function rowRules(): string {
   return `.sw-fixture-row {
@@ -71,6 +72,8 @@ function rowRules(): string {
 
 @media (hover: hover) {
   .sw-fixture-row-pressable:hover { background: ${quietFill}; }
+
+  ${mutedReadsAsText(['.sw-fixture-row-pressable:hover *'])}
 }
 
 .sw-fixture-row-pressable:focus { outline: none; }

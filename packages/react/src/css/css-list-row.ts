@@ -3,7 +3,7 @@ import { typographyVariants } from '@scalewing/tokens';
 import { checkStrokeIn, chevronStrokeIn } from './chevron.js';
 import { chartColorMix, chartInkMixes } from './chart-tones.js';
 import { tableCellTones } from './css-table-ledger.js';
-import { quietFill } from './quiet-fill.js';
+import { mutedReadsAsText, quietFill } from './quiet-fill.js';
 import { coarsePointerQuery, touchTarget } from './touch-target.js';
 
 const label = typographyVariants.label;
@@ -20,7 +20,8 @@ function onTitleLine(size: string): string {
  * detail at the end, then the chevron or check, each lined up with the
  * title's first line. A pressable row is the whole button or link: a
  * quiet fill under the pointer, the focus ring inside its edge, 44 px on a
- * coarse pointer. Plain rows (inside a Card) have no inline padding.
+ * coarse pointer. Plain rows (inside a Card) have no inline padding. On
+ * the fill its muted parts take the text colour (`mutedReadsAsText`).
  */
 function rowRules(): string {
   return `.sw-list-row {
@@ -48,9 +49,13 @@ function rowRules(): string {
 
 @media (hover: hover) {
   .sw-list-row-pressable:hover:not(.sw-list-row-disabled) { background: ${quietFill}; }
+
+  ${mutedReadsAsText(['.sw-list-row-pressable:hover:not(.sw-list-row-disabled) *'])}
 }
 
 .sw-list-row-pressable:active:not(.sw-list-row-disabled) { background: ${quietFill}; }
+
+${mutedReadsAsText(['.sw-list-row-pressable:active:not(.sw-list-row-disabled) *'])}
 
 .sw-list-row-pressable:focus { outline: none; }
 

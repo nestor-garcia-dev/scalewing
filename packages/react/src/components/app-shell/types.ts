@@ -55,6 +55,16 @@ export type AppShellLabels = {
   closeMenu: string;
 };
 
+/**
+ * A "skip to main content" link, the shell's first focusable element:
+ * hidden until it has focus, it moves focus to the shell's `main` (which
+ * the shell names with its own id), past the navigation.
+ */
+export type AppShellSkipLink = {
+  /** Its words, in the page's language ("Skip to main content"). */
+  label: string;
+};
+
 export type AppShellProps = {
   /** The navigation landmark's name, also the drawer's. */
   navLabel: string;
@@ -122,6 +132,14 @@ export type AppShellProps = {
    */
   pageBar?: ReactNode;
   labels: AppShellLabels;
+  /**
+   * A skip link before everything else in the shell: shown at the window's
+   * top start while it has focus, a press moves focus to `main` (given an
+   * id and `tabindex="-1"`, without changing the address), so a keyboard
+   * user passes the navigation's destinations (WCAG 2.4.1). Left out, the
+   * shell draws none.
+   */
+  skipLink?: AppShellSkipLink;
   /** The page, rendered in `main`. */
   children: ReactNode;
 };

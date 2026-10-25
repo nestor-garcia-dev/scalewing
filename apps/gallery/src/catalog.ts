@@ -21,6 +21,8 @@ import { DialogEndSection } from './sections/dialog-end.js';
 import { RadioGroupSection } from './sections/radio-group.js';
 import { SpinnerSection } from './sections/spinner.js';
 import { SkeletonSection } from './sections/skeleton.js';
+import { LiveRegionSection } from './sections/live-region.js';
+import { SelectDisabledSection } from './sections/select-disabled.js';
 import { EmptyStateSection } from './sections/empty-state.js';
 import { ProgressSection } from './sections/progress.js';
 import { NoticeSection } from './sections/notice.js';
@@ -184,6 +186,12 @@ export const catalog = [
   { id: 'steps', label: 'Steps', group: 'controls', Section: StepsSection },
   { id: 'select', label: 'Select', group: 'controls', Section: SelectSection },
   {
+    id: 'select-disabled',
+    label: 'Select disabled',
+    group: 'controls',
+    Section: SelectDisabledSection,
+  },
+  {
     id: 'combobox',
     label: 'Combobox',
     group: 'controls',
@@ -225,6 +233,12 @@ export const catalog = [
     label: 'Skeleton',
     group: 'controls',
     Section: SkeletonSection,
+  },
+  {
+    id: 'live-region',
+    label: 'LiveRegion',
+    group: 'controls',
+    Section: LiveRegionSection,
   },
   {
     id: 'empty-state',

@@ -157,6 +157,7 @@ export function AppShellFrame() {
             </Button>
           </>
         }
+        skipLink={{ label: 'Skip to main content' }}
         railHeader={
           <ContextSwitcher
             currentId={stationId}
