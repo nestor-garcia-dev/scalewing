@@ -176,6 +176,13 @@ app's screen (`teisoro-screen-preview.md`, #251), and `ThemeProvider`
 (`teisoro-site-frame.md`, #252), released in `@scalewing/react` 1.50.0.
 Next: Teisoro pins react 1.50.0 and tokens 1.7.0 in task 2710.
 
+FutMas F-010-S19, S20 and S21, roster, team games and team code: `Field`
+`descriptionTone="warning"`, an amber hint that is not an error;
+`FixtureGroup` `titleHidden`, a list name without a drawn caption; `Text`
+`font="mono"`, the monospace face for a join code
+(`futmas-field-tone-fixture-title-text-font.md`), for the next
+`@scalewing/react` minor. Next: FutMas pins it in F-010-S19.
+
 FutMas F-010-S17, inbox, scores, score sheet and standings: `FixtureRow`
 `score`, two score boxes typed by keyboard in place of the centre, and
 `detail`, a part under the row for a reason field; `TableRow`

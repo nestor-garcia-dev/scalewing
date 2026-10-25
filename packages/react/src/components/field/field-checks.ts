@@ -1,7 +1,8 @@
 import { isValidElement, type KeyboardEvent } from 'react';
 
 import { assertFieldWidth } from '../../css/css-field-width.js';
-import type { FieldProps } from '../Field.js';
+import { assertFieldDescriptionTone } from './FieldDescription.js';
+import type { FieldProps } from './field-props.js';
 
 export const fieldVariants = ['outlined', 'search'] as const;
 export type FieldVariant = (typeof fieldVariants)[number];
@@ -23,13 +24,14 @@ export type FieldControlProps = {
 };
 
 /**
- * Fails closed on a Field it cannot draw: an unknown variant or width,
- * search props on an outlined field, and a search field without its clear
- * button, its handler or one controlled native input.
+ * Fails closed on a Field it cannot draw: an unknown variant, width or
+ * description tone, search props on an outlined field, and a search field
+ * without its clear button, its handler or one controlled native input.
  */
 export function assertFieldProps(props: FieldProps, child: unknown): void {
-  const { variant = 'outlined' } = props;
+  const { variant = 'outlined', descriptionTone = 'muted' } = props;
   assertFieldWidth(props.width);
+  assertFieldDescriptionTone(descriptionTone);
   if (!fieldVariants.includes(variant))
     throw new RangeError(`Unknown Field variant: ${String(variant)}`);
   if (variant !== 'search') {

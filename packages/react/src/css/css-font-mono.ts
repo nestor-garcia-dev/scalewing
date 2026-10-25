@@ -10,7 +10,8 @@ export const monospaceFamilies = 'ui-monospace, monospace';
 
 /*
  * Monospace text, for words read as typed code or marks (a Markdown source
- * being written), at the size the text already has. It outranks the
+ * being written, or a code set with `Text font="mono"`), at the size the
+ * text already has; it outranks a Text variant's sans family. It outranks the
  * canvas's text controls, which take the page's family, so a `textarea` or
  * a text input can take it too.
  */
