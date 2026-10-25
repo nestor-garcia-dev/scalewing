@@ -4,6 +4,10 @@ import {
   dialogAppearances,
 } from '../../css/css-dialog-banded.js';
 import {
+  type DialogPlacement,
+  dialogPlacements,
+} from '../../css/css-dialog-end.js';
+import {
   type ThemeCanvas,
   themeCanvases,
 } from '../../css/css-canvas-grouped.js';
@@ -40,12 +44,14 @@ export type DialogChecks = {
   canvas: ThemeCanvas;
   sheetBelow: Breakpoint | undefined;
   sheetGrabber: boolean;
+  placement: DialogPlacement;
 };
 
 export function assertDialogProps({
   appearance,
   canvas,
   description,
+  placement,
   role,
   sheetBelow,
   sheetGrabber,
@@ -55,6 +61,7 @@ export function assertDialogProps({
   oneOf(dialogSizes, size, 'size');
   oneOf(dialogAppearances, appearance, 'appearance');
   oneOf(themeCanvases, canvas, 'canvas');
+  oneOf(dialogPlacements, placement, 'placement');
   if (role !== undefined) oneOf(dialogRoles, role, 'role');
   if (
     description !== undefined &&

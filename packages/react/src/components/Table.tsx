@@ -27,6 +27,10 @@ export {
   type TableRowProps,
   type TableRowVariant,
 } from './table/TableRow.js';
+export {
+  TableSelectCell,
+  type TableSelectCellProps,
+} from './table/TableSelectCell.js';
 export type { TableCellTone } from '../css/css-table-ledger.js';
 export { tableCellTones, tableRowVariants } from '../css/css-table-ledger.js';
 export type {

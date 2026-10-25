@@ -35,6 +35,7 @@ import { cssDialogBandedClasses } from './css-dialog-banded.js';
 import { cssDialogFrameClasses } from './css-dialog-frame.js';
 import { cssDialogCanvasClasses } from './css-dialog-canvas.js';
 import { cssDialogGrabberClasses } from './css-dialog-grabber.js';
+import { cssDialogEndClasses } from './css-dialog-end.js';
 import { cssComboboxClasses } from './css-combobox.js';
 import { cssSelectClasses } from './css-select.js';
 import { cssMultiSelectClasses } from './css-multi-select.js';
@@ -225,6 +226,8 @@ ${cssDialogBandedClasses()}
 ${cssDialogCanvasClasses()}
 
 ${cssDialogGrabberClasses()}
+
+${cssDialogEndClasses()}
 
 ${cssAccordionClasses()}
 
