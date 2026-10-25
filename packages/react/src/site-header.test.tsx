@@ -79,7 +79,9 @@ describe('SiteHeader', () => {
       container.querySelector('.sw-site-header-actions')?.textContent,
     ).toBe('Sign in');
     expect(
-      container.querySelector('.sw-site-header-compact > a')?.textContent,
+      container.querySelector(
+        '.sw-site-header-compact > .sw-site-header-compact-actions > a',
+      )?.textContent,
     ).toBe('Español');
     expect(
       container.querySelector('.sw-site-header-menu-actions')?.textContent,
@@ -226,6 +228,39 @@ describe('SiteHeader', () => {
     expect(
       container.querySelector('.sw-site-header-compact')?.children,
     ).toHaveLength(1);
+    expect(
+      container.querySelector('.sw-site-header-compact-actions'),
+    ).toBeNull();
+  });
+
+  it('puts the skip link first, before every other focusable element', () => {
+    const { container } = render(
+      header({ skipLink: { label: 'Skip to content', href: '#main' } }),
+    );
+    const banner = screen.getByRole('banner');
+    const skip = screen.getByRole('link', { name: 'Skip to content' });
+    expect(banner.firstElementChild).toBe(skip);
+    expect(skip.className).toBe('sw-site-header-skip-link');
+    expect(skip.getAttribute('href')).toBe('#main');
+    expect(skip.getAttribute('tabindex')).toBe('0');
+    expect(container.querySelector('a, button, summary')).toBe(skip);
+  });
+
+  it('draws no skip link without the prop', () => {
+    const { container } = render(header());
+    expect(container.querySelector('.sw-site-header-skip-link')).toBeNull();
+    expect(screen.getByRole('banner').firstElementChild?.className).toBe(
+      'sw-site-header-bar',
+    );
+  });
+
+  it('renders the skip link on the server', () => {
+    const html = renderToString(
+      header({ skipLink: { label: 'Skip to content', href: '#main' } }),
+    );
+    expect(html).toContain(
+      '<header class="sw-site-header sw-site-header-sticky"><a class="sw-site-header-skip-link" href="#main" tabindex="0">Skip to content</a>',
+    );
   });
 
   it.each([
@@ -255,6 +290,22 @@ describe('SiteHeader', () => {
     [
       { labels: { openMenu: 'Open', closeMenu: ' ' } },
       'SiteHeader labels need nonempty openMenu and closeMenu',
+    ],
+    [
+      { skipLink: { label: ' ', href: '#main' } },
+      'SiteHeader skipLink needs a nonempty label',
+    ],
+    [
+      { skipLink: { label: 'Skip to content', href: '/main' } },
+      'SiteHeader skipLink href must be a fragment such as #main',
+    ],
+    [
+      { skipLink: { label: 'Skip to content', href: '#' } },
+      'SiteHeader skipLink href must be a fragment such as #main',
+    ],
+    [
+      { skipLink: { label: 'Skip to content', href: '/page#main' } },
+      'SiteHeader skipLink href must be a fragment such as #main',
     ],
   ] as const)('throws on invalid props (%#)', (props, message) => {
     expect(() => render(header(props))).toThrow(message);
@@ -312,7 +363,46 @@ describe('SiteHeader CSS', () => {
         'sw-site-header-menu',
         'sw-site-header-panel',
         'sw-site-header-link',
+        'sw-site-header-compact-actions',
+        'sw-site-header-skip-link',
       ]),
+    );
+  });
+
+  it('hides the compact actions while the menu is open, without a box of their own otherwise', () => {
+    expect(css).toContain(
+      '.sw-site-header-compact-actions {\n  display: contents;\n}',
+    );
+    expect(css).toContain(
+      '.sw-site-header-compact:has(> .sw-site-header-menu[open]) > .sw-site-header-compact-actions {\n  display: none;\n}',
+    );
+  });
+
+  it('pads the document’s scroll past a sticky bar and a gap at each width', () => {
+    expect(css).toContain(
+      'html:has(.sw-site-header-sticky) {\n  scroll-padding-top: calc(calc(var(--sw-control-md-min-height) + var(--sw-space-3)) + 1px + var(--sw-space-3));\n}',
+    );
+    expect(css).toContain(
+      '@media (min-width: 64rem) {\n  html:has(.sw-site-header-sticky) {\n    scroll-padding-top: calc(calc(var(--sw-control-md-min-height) + var(--sw-space-5) + var(--sw-space-1)) + 1px + var(--sw-space-3));\n  }\n}',
+    );
+    expect(css).not.toMatch(/html:has\(\.sw-site-header\)/);
+  });
+
+  it('hides the skip link until it has focus, then lays it over the bar’s start with the ring', () => {
+    expect(css).toContain(
+      '.sw-site-header-skip-link:not(:focus) { position: absolute; width: 1px; height: 1px;',
+    );
+    expect(css).toContain(
+      '[data-theme] .sw-site-header-skip-link:focus {\n  min-height: var(--sw-control-md-min-height);\n  outline: var(--sw-focus-ring-width) solid var(--sw-color-accent);',
+    );
+    expect(css).toContain(
+      '  background: var(--sw-color-surface);\n  border-radius: var(--sw-radius-pill);',
+    );
+    expect(css).toContain(
+      '  inset-inline-start: calc(max(0px, (100% - calc(var(--sw-container-max) + 2 * var(--sw-space-5))) / 2) + var(--sw-space-4));',
+    );
+    expect(css).toContain(
+      '@media (min-width: 48rem) {\n  .sw-site-header-skip-link { inset-inline-start: calc(max(0px, (100% - calc(var(--sw-container-max) + 2 * var(--sw-space-5))) / 2) + var(--sw-space-5)); }\n}',
     );
   });
 });

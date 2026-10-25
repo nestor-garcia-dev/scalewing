@@ -62,6 +62,9 @@ test('SiteFooter draws named link groups on the dark band, two columns on a phon
     expect(Math.round(legalBox.x)).toBe(Math.round(visitBox.x));
     const link = visit.getByRole('link', { name: 'North marsh' });
     expect((await link.boundingBox())!.height).toBeGreaterThanOrEqual(44);
+    // The bottom row's language switch is the same touch target.
+    const end = footer.getByRole('link', { name: 'Español' });
+    expect((await end.boundingBox())!.height).toBeGreaterThanOrEqual(44);
   } else {
     expect(Math.round(trustBox.y)).toBe(Math.round(visitBox.y));
     expect(Math.round(legalBox.y)).toBe(Math.round(visitBox.y));

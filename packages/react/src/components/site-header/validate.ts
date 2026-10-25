@@ -1,16 +1,18 @@
 import { assertNavItems } from '../nav-items.js';
-import { type SiteHeaderProps } from './types.js';
+import { type SiteHeaderProps, type SiteHeaderSkipLink } from './types.js';
 
 /**
  * Fails closed on the header's words and destinations: no items, blank or
- * repeated ids, blank labels or hrefs, and a blank navigation name or menu
- * button name.
+ * repeated ids, blank labels or hrefs, a blank navigation name or menu
+ * button name, and a skip link with blank words or an address that is not
+ * a fragment on the page.
  */
 export function assertSiteHeaderProps({
   items,
   labels,
   navLabel,
-}: Pick<SiteHeaderProps, 'items' | 'labels' | 'navLabel'>): void {
+  skipLink,
+}: Pick<SiteHeaderProps, 'items' | 'labels' | 'navLabel' | 'skipLink'>): void {
   if (items.length === 0)
     throw new RangeError('SiteHeader needs at least one item');
   assertNavItems('SiteHeader', items);
@@ -21,5 +23,15 @@ export function assertSiteHeaderProps({
   if (!labels.openMenu.trim() || !labels.closeMenu.trim())
     throw new RangeError(
       'SiteHeader labels need nonempty openMenu and closeMenu',
+    );
+  if (skipLink) assertSkipLink(skipLink);
+}
+
+function assertSkipLink({ href, label }: SiteHeaderSkipLink): void {
+  if (!label.trim())
+    throw new RangeError('SiteHeader skipLink needs a nonempty label');
+  if (!/^#\S+$/.test(href))
+    throw new RangeError(
+      'SiteHeader skipLink href must be a fragment such as #main',
     );
 }

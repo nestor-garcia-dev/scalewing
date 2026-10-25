@@ -475,6 +475,7 @@ export type {
   SiteHeaderItem,
   SiteHeaderLabels,
   SiteHeaderProps,
+  SiteHeaderSkipLink,
 } from './components/SiteHeader.js';
 export {
   ScreenPreview,

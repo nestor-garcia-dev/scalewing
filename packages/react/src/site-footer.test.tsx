@@ -242,4 +242,10 @@ describe('SiteFooter CSS', () => {
       ]),
     );
   });
+
+  it('gives a bottom-row link the same touch target on a coarse pointer', () => {
+    expect(css).toContain(
+      '@media (pointer: coarse) {\n  [data-theme] .sw-band-inverse a.sw-site-footer-link {\n    align-items: center;\n    min-height: var(--sw-control-md-min-height);\n  }\n\n  [data-theme] .sw-band-inverse :is(.sw-site-footer-legal, .sw-site-footer-end) > a:not(.sw-button) {\n    align-items: center;\n    display: inline-flex;\n    justify-content: center;\n    min-height: var(--sw-control-md-min-height);\n  }',
+    );
+  });
 });

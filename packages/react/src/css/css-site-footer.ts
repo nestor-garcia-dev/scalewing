@@ -28,7 +28,10 @@ function type(
  * win by coming after it (`cssSiteFooterClasses` follows `cssBandClasses`;
  * a test holds the order).
  * Below `md` the brand spans two columns of groups; from `md` the brand
- * and the groups share one wrapping row, spread apart.
+ * and the groups share one wrapping row, spread apart. On a coarse pointer
+ * the group links and a link that is all of a bottom-row slot (`legal` or
+ * `end`, such as a language switch) are the 44 px touch target; a link
+ * inside running legal words stays inline.
  */
 export function cssSiteFooterClasses(): string {
   return `.sw-site-footer-top {
@@ -124,6 +127,13 @@ export function cssSiteFooterClasses(): string {
 @media ${coarsePointerQuery} {
   [data-theme] .sw-band-inverse a.sw-site-footer-link {
     align-items: center;
+    min-height: ${touchTarget};
+  }
+
+  [data-theme] .sw-band-inverse :is(.sw-site-footer-legal, .sw-site-footer-end) > a:not(.sw-button) {
+    align-items: center;
+    display: inline-flex;
+    justify-content: center;
     min-height: ${touchTarget};
   }
 

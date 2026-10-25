@@ -10,9 +10,10 @@ export function SiteHeaderSection() {
   return (
     <Section
       id="site-header"
-      purpose="SiteHeader is a public site's header: the brand, the main destinations as a row of links from lg (the current one marked) and the bar's actions; below lg the compact actions and a menu button whose menu lists the destinations and the menu's actions under the bar. The menu is a native details, so it opens and closes with no script; script adds Escape and closes it when a link is chosen or focus leaves it. Narrow the window to see the menu."
+      purpose="SiteHeader is a public site's header: the brand, the main destinations as a row of links from lg (the current one marked) and the bar's actions; below lg the compact actions and a menu button whose menu lists the destinations and the menu's actions under the bar; while the menu is open the compact actions step aside. The menu is a native details, so it opens and closes with no script; script adds Escape and closes it when a link is chosen or focus leaves it. An optional skip link comes first, hidden until it has focus: press Tab into the header to see it. While a sticky header is on the page, in-page jumps land below the bar. Narrow the window to see the menu."
       title="SiteHeader"
       usage={`<SiteHeader
+  skipLink={{ label: 'Skip to content', href: '#main' }}
   brand={<a href="/">Wetland Trust</a>}
   navLabel="Main"
   items={[{ id: 'marsh', label: 'Marsh', href: '/marsh', current: 'page' }]}
@@ -74,11 +75,18 @@ export function SiteHeaderSection() {
           }
           menuIcon={<Glyph path={menuPath} size={22} />}
           navLabel="Main"
+          skipLink={{ label: 'Skip to content', href: '#site-header-content' }}
           sticky={false}
         />
-        <Text color="muted" variant="caption">
+        <Text
+          color="muted"
+          id="site-header-content"
+          tabIndex={-1}
+          variant="caption"
+        >
           The gallery keeps this header in the page flow (sticky=false); a
-          site's header sticks to the window's top.
+          site's header sticks to the window's top, and the page's scroll
+          padding then clears it. The skip link jumps here.
         </Text>
       </Stack>
     </Section>

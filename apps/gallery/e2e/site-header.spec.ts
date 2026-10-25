@@ -142,3 +142,72 @@ test('SiteHeader’s menu opens and closes with script off', async ({
   await expect(details).not.toHaveAttribute('open');
   await context.close();
 });
+
+test('SiteHeader’s skip link is hidden until focused, then shows over the bar’s start and jumps to its target', async ({
+  page,
+}) => {
+  await page.goto('/#site-header');
+  const bar = header(page);
+  const skip = bar.getByRole('link', { name: 'Skip to content' });
+  const unfocused = (await skip.boundingBox())!;
+  expect(unfocused.width).toBeLessThanOrEqual(1);
+  expect(unfocused.height).toBeLessThanOrEqual(1);
+
+  // It is the header's first stop: Tab from the brand goes back to it.
+  await bar.getByRole('link', { name: 'Wetland Trust' }).focus();
+  await page.keyboard.press('Shift+Tab');
+  await expect(skip).toBeFocused();
+  const shown = (await skip.boundingBox())!;
+  const barBox = (await bar.boundingBox())!;
+  const brand = (await bar
+    .getByRole('link', { name: 'Wetland Trust' })
+    .boundingBox())!;
+  expect(shown.height).toBeGreaterThanOrEqual(44);
+  expect(shown.y).toBeGreaterThanOrEqual(barBox.y);
+  expect(shown.y + shown.height).toBeLessThanOrEqual(barBox.y + barBox.height);
+  expect(Math.abs(shown.x - brand.x)).toBeLessThanOrEqual(1);
+  expect(
+    await skip.evaluate((link) => getComputedStyle(link).outlineStyle),
+  ).toBe('solid');
+
+  await page.keyboard.press('Enter');
+  await expect(page).toHaveURL(/#site-header-content$/);
+  await expect(page.locator('#site-header-content')).toBeFocused();
+});
+
+test('A sticky SiteHeader pads the document’s scroll past the bar; one in the page flow does not', async ({
+  page,
+}, testInfo) => {
+  await page.goto('/#site-header');
+  const padding = () =>
+    page.evaluate(
+      () => getComputedStyle(document.documentElement).scrollPaddingTop,
+    );
+  expect(await padding()).toBe('auto');
+  // The gallery's header stays in the page flow so the catalog does not
+  // scroll under it; making it sticky here is deliberate.
+  await header(page).evaluate((bar) =>
+    bar.classList.add('sw-site-header-sticky'),
+  );
+  // The bar (56 px, 72 px from lg), its hairline and a 12 px gap.
+  expect(await padding()).toBe(
+    testInfo.project.name === 'mobile-es' ? '69px' : '85px',
+  );
+});
+
+test('SiteHeader hides its compact actions while the menu is open', async ({
+  page,
+}, testInfo) => {
+  test.skip(testInfo.project.name !== 'mobile-es', 'the menu is the phone’s');
+  await page.goto('/#site-header');
+  const bar = header(page);
+  const compact = bar.locator('.sw-site-header-compact-actions');
+  const button = bar.locator('details.sw-site-header-menu > summary');
+  await expect(compact.getByRole('link', { name: 'Español' })).toBeVisible();
+  await button.tap();
+  await expect(compact.getByRole('link', { name: 'Español' })).toBeHidden();
+  await expect(button).toBeVisible();
+  await expect(bar.getByRole('link', { name: 'Wetland Trust' })).toBeVisible();
+  await button.tap();
+  await expect(compact.getByRole('link', { name: 'Español' })).toBeVisible();
+});

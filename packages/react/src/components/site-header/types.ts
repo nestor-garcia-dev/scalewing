@@ -19,6 +19,17 @@ export type SiteHeaderLabels = {
   closeMenu: string;
 };
 
+/**
+ * A "skip to content" link, the header's first focusable element: hidden
+ * until it has focus, then shown at the bar's start.
+ */
+export type SiteHeaderSkipLink = {
+  /** The link's words, such as "Skip to content". */
+  label: string;
+  /** The main content's fragment, such as `#main`. */
+  href: string;
+};
+
 export type SiteHeaderProps = {
   /** The site's mark at the start, such as a logo linked to the home page. */
   brand: ReactNode;
@@ -28,7 +39,10 @@ export type SiteHeaderProps = {
   items: readonly SiteHeaderItem[];
   /** The bar's end from `lg`, such as a language switch, Sign in and a ButtonLink. */
   actions?: ReactNode;
-  /** Beside the menu button below `lg`, such as the language switch. */
+  /**
+   * Beside the menu button below `lg`, such as the language switch. They
+   * step aside while the menu is open, which holds its own `menuActions`.
+   */
   compactActions?: ReactNode;
   /** In the open menu under its links, such as full-width ButtonLinks. */
   menuActions?: ReactNode;
@@ -39,4 +53,6 @@ export type SiteHeaderProps = {
   closeIcon: ReactNode;
   /** Whether the bar sticks to the window's top as the page scrolls (default `true`). */
   sticky?: boolean;
+  /** A "skip to content" link before everything else in the header. */
+  skipLink?: SiteHeaderSkipLink;
 };

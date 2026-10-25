@@ -3,6 +3,7 @@
 import { useRef } from 'react';
 
 import { cx } from '../class-names.js';
+import { tabStop } from '../tab-stop.js';
 import { SiteHeaderLinks } from './site-header/SiteHeaderLinks.js';
 import { type SiteHeaderProps } from './site-header/types.js';
 import { useMenuDismiss } from './site-header/use-menu-dismiss.js';
@@ -12,6 +13,7 @@ export type {
   SiteHeaderItem,
   SiteHeaderLabels,
   SiteHeaderProps,
+  SiteHeaderSkipLink,
 } from './site-header/types.js';
 
 /**
@@ -23,7 +25,10 @@ export type {
  * it opens and closes by touch, click and keyboard with no script, as a
  * page rendered on the server needs; script adds Escape (focus back on the
  * button) and closes it when a link is chosen or focus leaves it. It traps
- * no focus. Invalid items or words throw a `RangeError`.
+ * no focus. While the menu is open the compact actions step aside, so the
+ * bar shows only the brand and the close button. An optional skip link
+ * comes first, hidden until it has focus. Invalid items or words throw a
+ * `RangeError`.
  */
 export function SiteHeader({
   actions,
@@ -35,13 +40,23 @@ export function SiteHeader({
   menuActions,
   menuIcon,
   navLabel,
+  skipLink,
   sticky = true,
 }: SiteHeaderProps) {
-  assertSiteHeaderProps({ items, labels, navLabel });
+  assertSiteHeaderProps({ items, labels, navLabel, skipLink });
   const menuRef = useRef<HTMLDetailsElement>(null);
   useMenuDismiss(menuRef);
   return (
     <header className={cx('sw-site-header', sticky && 'sw-site-header-sticky')}>
+      {skipLink ? (
+        <a
+          className="sw-site-header-skip-link"
+          href={skipLink.href}
+          tabIndex={tabStop}
+        >
+          {skipLink.label}
+        </a>
+      ) : null}
       <div className="sw-site-header-bar">
         <div className="sw-site-header-brand">{brand}</div>
         <SiteHeaderLinks
@@ -53,7 +68,11 @@ export function SiteHeader({
           <div className="sw-site-header-actions">{actions}</div>
         ) : null}
         <div className="sw-site-header-compact">
-          {compactActions}
+          {compactActions ? (
+            <div className="sw-site-header-compact-actions">
+              {compactActions}
+            </div>
+          ) : null}
           <details className="sw-site-header-menu" ref={menuRef}>
             <summary className="sw-site-header-menu-button">
               <span className="sw-site-header-menu-open">
