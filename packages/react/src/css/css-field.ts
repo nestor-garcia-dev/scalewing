@@ -7,6 +7,10 @@ import {
 } from './css-document.js';
 import { cssFieldChangedClasses } from './css-field-changed.js';
 import {
+  cssFieldDescriptionClasses,
+  fieldDescriptionClassCatalog,
+} from './css-field-description.js';
+import {
   cssFieldWidthClasses,
   fieldWidthClassCatalog,
 } from './css-field-width.js';
@@ -90,6 +94,8 @@ export function cssFieldClasses(): string {
 .sw-field-description { color: var(--sw-color-muted); }
 .sw-field-error { color: var(--sw-color-danger); }
 
+${cssFieldDescriptionClasses()}
+
 /* An error region is always rendered as a live region; empty, it leaves the layout (and its gap) but stays in the accessibility tree. */
 .sw-field-error:empty { position: absolute; }
 
@@ -121,6 +127,7 @@ export function fieldClassCatalog(): string[] {
     'sw-field',
     'sw-field-required',
     'sw-field-description',
+    ...fieldDescriptionClassCatalog(),
     'sw-field-error',
     'sw-field-invalid',
     'sw-field-changed',

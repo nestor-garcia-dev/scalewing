@@ -150,6 +150,12 @@ export type FixtureRowProps = {
 export type FixtureGroupProps = {
   /** The run's caption, such as a date and a venue; it names the list. */
   title: string;
+  /**
+   * Keeps `title` as the list's name but does not draw it, for a run whose
+   * heading is already on screen, such as one row in a sheet titled with
+   * the game and its day. Default `false`.
+   */
+  titleHidden?: boolean;
   /** The run's FixtureRows. */
   children: ReactNode;
 };

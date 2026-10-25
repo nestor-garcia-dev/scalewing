@@ -287,7 +287,9 @@ export {
 export type { ToastProps, ToastTone } from './components/Toast.js';
 export {
   Field,
+  fieldDescriptionTones,
   fieldVariants,
+  type FieldDescriptionTone,
   type FieldProps,
   type FieldSize,
   type FieldVariant,
@@ -477,8 +479,10 @@ export {
 } from './components/Table.js';
 export {
   Text,
+  textFonts,
   type TextAlign,
   type TextElement,
+  type TextFont,
   type TextProps,
 } from './components/Text.js';
 export {

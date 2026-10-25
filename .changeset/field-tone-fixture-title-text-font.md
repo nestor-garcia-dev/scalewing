@@ -1,0 +1,5 @@
+---
+'@scalewing/react': minor
+---
+
+`Field` `descriptionTone` (opt-in, `FieldDescriptionTone`, `fieldDescriptionTones`: `'muted'` default, `'warning'`): a warning description in the warning colour after a small `aria-hidden` alert glyph, for a hint that needs the person but is not an error; it stays in the control's `aria-describedby`, sets no `aria-invalid` and no danger border, gives way to `error`, and takes `CanvasText` in forced colors. `FixtureGroup` `titleHidden` (opt-in): the title still names the list (`aria-labelledby`) but is not drawn, for a group whose heading is already on screen. `Text` `font` (opt-in, `TextFont`, `textFonts`: `'sans'` default, `'mono'`): the platform's monospace face through the generated `sw-font-mono` class at the variant's size, weight and colour, for a code read character by character. Unknown tones and fonts throw a `RangeError`. New classes `sw-field-description-warning`, `sw-field-description-glyph`. `FieldProps` now lives in `components/field/field-props.ts` and is still exported from the package root.

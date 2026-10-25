@@ -1,13 +1,6 @@
 'use client';
 
-import { type SpacingStep } from '@scalewing/tokens';
-import {
-  cloneElement,
-  isValidElement,
-  useId,
-  type KeyboardEvent,
-  type ReactNode,
-} from 'react';
+import { cloneElement, isValidElement, useId, type KeyboardEvent } from 'react';
 
 import {
   type AdornedControlAria,
@@ -15,12 +8,10 @@ import {
   FieldAdornment,
 } from './FieldAdornment.js';
 import { FieldErrorRegion } from './FieldErrorRegion.js';
-import {
-  assertRequiredMark,
-  FieldLabelText,
-  type RequiredMark,
-} from './FieldLabelText.js';
-import { type FieldWidth, fieldWidthClass } from '../css/css-field-width.js';
+import { assertRequiredMark, FieldLabelText } from './FieldLabelText.js';
+import { fieldWidthClass } from '../css/css-field-width.js';
+import { FieldDescription } from './field/FieldDescription.js';
+import { type FieldProps } from './field/field-props.js';
 import { SearchFrame } from './field/SearchFrame.js';
 import {
   assertFieldProps,
@@ -31,77 +22,12 @@ import {
 } from './field/field-checks.js';
 import { Stack } from './Stack.js';
 
-export type FieldSize = 'xs' | 'md';
-
 export { fieldVariants, type FieldVariant };
-
-export type FieldProps = {
-  children: ReactNode;
-  gap?: SpacingStep;
-  label: string;
-  labelVisuallyHidden?: boolean;
-  size?: FieldSize;
-  description?: string;
-  error?: string;
-  /**
-   * Marks the control invalid (`aria-invalid` and the danger border) without
-   * a message of its own, for a field whose error is shown elsewhere, such
-   * as one message under a group of fields. Point the control's
-   * `aria-describedby` at that message. `error` implies it. Passing
-   * `invalid`, even `false` but not `undefined`, requires one native control
-   * child from the first render.
-   */
-  invalid?: boolean;
-  /**
-   * Marks a value the person changed from a saved one, such as a field in a
-   * correction: the control's border (or an adorned frame's) in the accent
-   * color, thicker than the plain hairline, and its fill tinted with 12 % of
-   * the accent, so a changed field reads apart from the focused one (focus
-   * draws a ring and never tints). The value keeps 4.5:1 on the tint; while
-   * a placeholder shows, the fill stays plain. It is a cue, not the record:
-   * say what it was in `description` ("Was 25"). `invalid` and `error`
-   * win. Like `invalid`, passing it, even `false` but not `undefined`,
-   * requires one native control child from the first render.
-   */
-  changed?: boolean;
-  required?: boolean;
-  /**
-   * `hidden` leaves out the label's " *" while the control stays required
-   * (and announced so); `visible` (default) draws it.
-   * When hidden, say in visible text which fields must be filled; a
-   * placeholder alone is not enough.
-   */
-  requiredMark?: RequiredMark;
-  /** Short text inside the control frame before the value, such as a currency sign. Not part of the value. */
-  prefix?: string;
-  /** Short text inside the control frame after the value, such as a unit. Not part of the value. */
-  suffix?: string;
-  /**
-   * `outlined` (default) is the labelled form field. `search` is a search
-   * box: the label is not drawn (it stays the input's name), a `leading`
-   * glyph sits at the frame's start, the input is `type="search"`, and a
-   * clear button named `clearLabel` shows while the input holds text and
-   * is enabled; it calls `onClear` (set the value to `''`) and puts focus
-   * back in the input. Needs one native `input` child with a `value`.
-   */
-  variant?: FieldVariant;
-  /** A search field's glyph at its start, such as a magnifier; hidden from assistive technology. */
-  leading?: ReactNode;
-  /** A search field's clear button name, such as "Clear search". */
-  clearLabel?: string;
-  /** Called by a search field's clear button; the consumer empties the value. */
-  onClear?: () => void;
-  /**
-   * Caps the control's width at a Table column size (`xs` 4rem, `sm` 6rem,
-   * `md` 8rem, `lg` 12rem, `xl` 16rem), at the start of the column and
-   * never wider than it, so a short value such as a rate or a count does
-   * not stretch across a form. The label and messages keep the column's
-   * width. Left out, the control fills the column. It needs one native
-   * text input, select or textarea child (a `TypeError` otherwise); an
-   * unknown width throws a `RangeError`.
-   */
-  width?: FieldWidth;
-};
+export type { FieldProps, FieldSize } from './field/field-props.js';
+export {
+  fieldDescriptionTones,
+  type FieldDescriptionTone,
+} from './field/FieldDescription.js';
 
 export function Field(props: FieldProps) {
   const {
@@ -111,6 +37,7 @@ export function Field(props: FieldProps) {
     labelVisuallyHidden = false,
     size = 'md',
     description,
+    descriptionTone = 'muted',
     error,
     invalid = false,
     changed = false,
@@ -271,9 +198,9 @@ export function Field(props: FieldProps) {
           not an alert, so a submit that finds several errors does not fire
           several alerts at once. */}
       {description && !error ? (
-        <span className="sw-field-description" id={descriptionId}>
+        <FieldDescription id={descriptionId} tone={descriptionTone}>
           {description}
-        </span>
+        </FieldDescription>
       ) : null}
       <FieldErrorRegion
         className="sw-field-error"

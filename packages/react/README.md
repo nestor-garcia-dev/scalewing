@@ -189,6 +189,21 @@ Import the CSS once at the application entry. Do not copy it into your source tr
 </Field>
 ```
 
+`Field` `descriptionTone="warning"` (default `"muted"`; `fieldDescriptionTones`, `FieldDescriptionTone`) draws the `description` in the warning colour (`--sw-color-warning`, 4.5:1 on the canvas in both schemes) after a small alert glyph a space-4 square (private chrome, `aria-hidden`, centred on its first line), for a hint that needs the person but is not an error, such as a number another row already has. It stays the control's description (`aria-describedby`, after any ids the control already lists) and sets no invalid state: no `aria-invalid`, no danger border, nothing announced. `error` still replaces it on screen, and is the only way to mark the field invalid. In forced colors the words and glyph take `CanvasText` (an error takes `Mark`), so the glyph is the cue. It works at every `size`, including `xs` in a table cell. An unknown tone throws a `RangeError`. New classes `sw-field-description-warning`, `sw-field-description-glyph`.
+
+```tsx
+<Field
+  description={twin ? `${twin} also wears ${band}` : undefined}
+  descriptionTone="warning"
+  label={`Band number for ${bird}`}
+  labelVisuallyHidden
+  size="xs"
+  width="xs"
+>
+  <input inputMode="numeric" value={band} onChange={setBand} />
+</Field>
+```
+
 Every press control and link takes an explicit `tabindex="0"`: `Button` (and the controls built on it, `CalendarButton` and `InfoTip`), `CommandPaletteTrigger`, `Box as="a"` with an `href`, `SectionNav` links, a link or button `FixtureRow`, `AppShell` links and its menu and close buttons, the `Select`, `MultiSelect`, `ActionMenu` and `ContextSwitcher` triggers, `CommandPaletteTrigger` (and a `ContextSwitcher`'s listbox while it holds focus), `SegmentedControl` items (every item, as outside Safari: its arrow keys change the value, not the focus, so it is not a roving group), `DateField`'s calendar button and month steps, a search `Field`'s clear button, a `Table`'s sort and `TableCell onPress` buttons, `Checkbox`, `Switch`, and the checked radio of a `RadioGroup` or `FilterChips` (the first enabled one while none is; the others keep no `tabindex`, so each browser's arrow-key group rule stands). Safari's default (its "Press Tab to highlight each item" setting off) leaves a button, a link, a checkbox and a radio out of the Tab order unless it carries one, so a Safari user would Tab past them; the explicit `0` gives them the order every other browser already does. A `tabIndex` you pass wins, and controls that are deliberately no tab stop keep their `-1`: a `Stepper`'s − and +, and a roving item (a `Tabs` tab, a menu item, a calendar day, a `DateToggleCalendar` day, a `ScheduleGrid` cell) other than the current one. A `<summary>` is already in Safari's order and takes none.
 
 An element a script focuses, such as a notice or a card announced after a save, takes the same accent focus ring as the canvas's links and native controls, 2 px past its edge (`--sw-focus-ring-width` and `--sw-focus-ring-offset`), instead of the browser's outline. Give it `tabIndex={-1}`, so it takes focus from a script but is no tab stop, and put the focus on the whole card rather than its text, so the ring goes round it clear of the words; a `Box` round the card with the card's `radius` makes the ring follow its corners. As with the browser's own outline, the ring shows only when focus is visible (`:focus-visible`): after a keyboard press, not after a mouse press. The rule has zero specificity, so a component's own ring always wins.
@@ -1241,6 +1256,15 @@ const { headings, omissions } = inspectMarkdown(page.body, {
 </FixtureGroup>
 ```
 
+`FixtureGroup` `titleHidden` (opt-in, default `false`) keeps `title` as the list's name (`aria-labelledby`) but does not draw the caption: it moves to a visually hidden element (`sw-sr-only`) out of the layout, so the first row starts where the caption would. Use it when the heading above already says what the caption would, such as one result in a sheet titled with the pairing and the day; the title is still required and still must be nonblank.
+
+```tsx
+<Text as="h3" variant="title">Heron Marsh vs Otter Pool</Text>
+<FixtureGroup title="Heron Marsh vs Otter Pool, Sunday 25 October" titleHidden>
+  <FixtureRow home={{ name: 'Heron Marsh' }} away={{ name: 'Otter Pool' }} center="14–9" centerKind="score" />
+</FixtureGroup>
+```
+
 `FixtureRow` `flag` (opt-in, `FixtureFlag`: `{ label, tone? }`) marks an issue at the row's start, such as a clash: a round mark a space-4 across with a "!", in the tone's tint and ink (`warning`, amber, the default, for something that needs the person; `danger`, red), its edge keeping 3:1 on the surface in every palette and the text colour in forced colors. The mark is `aria-hidden` with `label` as its `title` tooltip, and `label` is read first in the row from a visually hidden span ("Can't-play clash Heron Marsh 8:00 Otter Pool"); with `aria-label` it is put before your words with a comma ("Can't-play clash, Heron Marsh vs Otter Pool, 8:00"), so do not repeat it there. From `md` the mark sits on the first line at the row's start, the home side kept clear of it; below `md` it leads the second line, before the details, so it never squeezes the home name. A row with nothing on that line below `md` (no `status`, and no `meta` or one hidden below `md` by `metaHideBelow`) keeps the mark inline on its first line instead, as from `md` (class `sw-fixture-row-flag-inline`), rather than gaining a line that holds only the flag. A blank `label` or an unknown `tone` throws a `RangeError`. `action` (opt-in) is a control after the row, such as a small neutral `Button` ("Move", named in your words: `aria-label="Move Heron Marsh vs Otter Pool"`): it is the row's sibling in its list item, outside a link or button row's press area and after it in the Tab order, a press on it never opens the row, and it stays centred on the row's height in the run's last column at every width (from `md` the row's one line, below `md` both lines), so every row's action lines up. Where `:has` is supported the hover fill spans the row and its action. An empty slot draws nothing. The run has a column for it at the end, and one for `select` at the start (`sw-fixture-list` is `auto minmax(0, 1fr) auto minmax(0, 1fr) auto auto auto`, six below `md`); a row spans every column but those two (`grid-column: 2 / -2`), and an `auto` column no row uses takes no space. New classes `sw-fixture-row-flagged`, `sw-fixture-flag`, `sw-fixture-flag-mark`, `sw-fixture-flag-warning`, `sw-fixture-flag-danger`, `sw-fixture-item-action` and `sw-fixture-action`.
 
 ```tsx
@@ -1460,6 +1484,8 @@ A row can also carry three trailing parts. `unread` marks it new for the person,
 `Text` has no margin of its own. Its default `p` and `h1`–`h4` elements drop the browser's block margins, so the `gap` of the `Stack` or `Inline` around it alone sets the spacing; put more space in that `gap`, not in a margin. The reset has zero specificity (`:where(.sw-text-*)`), so an authored margin, such as `sw-sr-only` or a consumer class, still applies.
 
 `Text` takes an optional `align` (`start`, `center`, `end`) mapped to generated `sw-text-align-*` classes, for a heading that must stay centered when it wraps.
+
+`Text` `font="mono"` (default `"sans"`; `textFonts`, `TextFont`) sets the words in the platform's monospace face through the generated `sw-font-mono` class (`ui-monospace, monospace`, the generic names only, so each platform draws its own), keeping the variant's size, weight, letter spacing and `color`, for a code read or typed character by character, such as a join code: `<Text variant="headline" font="mono">R8M 3TW</Text>`. The face is fixed-width, so figures and letters line up; the text stays selectable. An unknown font throws a `RangeError`.
 
 `Grid` places children in one to four (or six) equal-width columns with a token `gap` step. `columnsBelow={{ md: 2 }}` drops to fewer columns below the `md` breakpoint so tiles and stat cards stay readable on a phone. It accepts every `Box` prop.
 
