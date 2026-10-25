@@ -38,6 +38,10 @@ test('DateToggleCalendar toggles days with a press and with keys', async ({
   if (project === 'forced-colors')
     await expect(on).toHaveCSS('forced-color-adjust', 'none');
 
+  // The stored day before min is drawn nowhere and dropped by the next press.
+  await expect(
+    section.getByText('Days off: 2027-03-21, 2027-04-18'),
+  ).toBeVisible();
   await off.click();
   await expect(
     group.getByRole('button', { name: 'Sunday, April 4, 2027, day off' }),

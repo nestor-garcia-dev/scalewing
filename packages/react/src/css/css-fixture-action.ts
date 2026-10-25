@@ -4,7 +4,7 @@ import { quietFill } from './quiet-fill.js';
  * The action sits after the row in its own column, centred on the row's
  * height, outside the row's press area, keeping the row's end padding
  * after it. Where :has() is supported the hover fill spans the whole item,
- * so the row and its action read as one line.
+ * so the row, its select and its action read as one line.
  */
 function actionRules(): string {
   return `.sw-fixture-action {
@@ -18,11 +18,11 @@ function actionRules(): string {
 
 @supports selector(:has(*)) {
   @media (hover: hover) {
-    .sw-fixture-item-action:has(> .sw-fixture-row-pressable:hover) {
+    :is(.sw-fixture-item-action, .sw-fixture-item-select):has(> .sw-fixture-row-pressable:hover) {
       background: ${quietFill};
     }
 
-    .sw-fixture-item-action > .sw-fixture-row-pressable:hover {
+    :is(.sw-fixture-item-action, .sw-fixture-item-select) > .sw-fixture-row-pressable:hover {
       background: transparent;
     }
   }

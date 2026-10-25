@@ -28,6 +28,19 @@ export type FixtureFlag = {
   tone?: FixtureFlagTone;
 };
 
+/**
+ * A leading checkbox that chooses the row, such as games picked to
+ * postpone: its own control before the home side, outside the row's link
+ * or button. `label` names it, not drawn ("Select Heron Marsh vs Otter
+ * Pool").
+ */
+export type FixtureSelect = {
+  label: string;
+  checked: boolean;
+  onCheckedChange: (checked: boolean) => void;
+  disabled?: boolean;
+};
+
 export type FixtureRowProps = {
   home: FixtureSide;
   away: FixtureSide;
@@ -51,6 +64,12 @@ export type FixtureRowProps = {
    * stop. Name it in your words ("Move Heron Marsh vs Otter Pool").
    */
   action?: ReactNode;
+  /**
+   * A leading checkbox before the row, outside its press area: the
+   * standard 24 px box, a 44 px target on a coarse pointer. Works with `flag`,
+   * `action`, `href` and `onPress`.
+   */
+  select?: FixtureSelect;
   /** Makes the whole row a link to this address. */
   href?: string;
   /**

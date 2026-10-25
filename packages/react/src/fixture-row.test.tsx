@@ -253,6 +253,109 @@ describe('FixtureRow', () => {
     expect(screen.getByRole('listitem').className).toBe('sw-fixture-item');
   });
 
+  it('draws a named checkbox before the row, outside its link, toggling', () => {
+    const onPress = vi.fn();
+    const onCheckedChange = vi.fn();
+    renderRow({
+      href: '/games/1',
+      onPress,
+      select: {
+        checked: false,
+        label: 'Select Heron Marsh vs Otter Pool',
+        onCheckedChange,
+      },
+    });
+    const item = screen.getByRole('listitem');
+    expect(item.className).toBe('sw-fixture-item sw-fixture-item-select');
+    const box = screen.getByRole('checkbox', {
+      name: 'Select Heron Marsh vs Otter Pool',
+    });
+    const link = screen.getByRole('link');
+    expect(link.contains(box)).toBe(false);
+    const select = item.firstElementChild as HTMLElement;
+    expect(select.className).toBe('sw-fixture-select');
+    expect(select.contains(box)).toBe(true);
+    expect(select.nextElementSibling).toBe(link);
+    expect(box.closest('label')!.className).toBe(
+      'sw-checkbox-label sw-checkbox-label-hidden',
+    );
+    fireEvent.click(box);
+    expect(onCheckedChange).toHaveBeenCalledWith(true);
+    expect(onPress).not.toHaveBeenCalled();
+  });
+
+  it('shows the checked state and refuses a press while disabled', () => {
+    const onCheckedChange = vi.fn();
+    renderRow({
+      select: {
+        checked: true,
+        disabled: true,
+        label: 'Select Heron Marsh vs Otter Pool',
+        onCheckedChange,
+      },
+    });
+    const box = screen.getByRole<HTMLInputElement>('checkbox');
+    expect(box.checked).toBe(true);
+    expect(box.disabled).toBe(true);
+    fireEvent.click(box);
+    expect(onCheckedChange).not.toHaveBeenCalled();
+  });
+
+  it('puts the select, the flagged row and the action in order on one item', () => {
+    const onMove = vi.fn();
+    renderRow({
+      action: (
+        <button onClick={onMove} type="button">
+          Pick a time
+        </button>
+      ),
+      flag: { label: 'Postponed' },
+      onPress: vi.fn(),
+      select: {
+        checked: true,
+        label: 'Select Heron Marsh vs Otter Pool',
+        onCheckedChange: vi.fn(),
+      },
+    });
+    const item = screen.getByRole('listitem');
+    expect(item.className).toBe(
+      'sw-fixture-item sw-fixture-item-select sw-fixture-item-action',
+    );
+    expect(
+      Array.from(item.children).map((child) => child.className.split(' ')[0]),
+    ).toEqual(['sw-fixture-select', 'sw-fixture-row', 'sw-fixture-action']);
+    expect(
+      screen.getByRole('button', { name: /^Postponed ?Heron Marsh/ }),
+    ).toBeTruthy();
+    fireEvent.click(screen.getByRole('button', { name: 'Pick a time' }));
+    expect(onMove).toHaveBeenCalledTimes(1);
+  });
+
+  it.each<[string, Partial<FixtureRowProps>, boolean]>([
+    ['no meta or status', {}, true],
+    ['meta hidden below md', { meta: 'Field 1', metaHideBelow: 'md' }, true],
+    ['meta hidden below lg', { meta: 'Field 1', metaHideBelow: 'lg' }, true],
+    ['meta shown', { meta: 'Field 1' }, false],
+    [
+      'a status',
+      {
+        meta: 'Field 1',
+        metaHideBelow: 'md',
+        status: { label: 'Moved', tone: 'warning' },
+      },
+      false,
+    ],
+  ])('keeps the flag inline below md with %s: %s', (_, props, inline) => {
+    renderRow({ flag: { label: 'Clash' }, ...props });
+    const row = screen.getByRole('listitem').firstElementChild!;
+    expect(row.classList.contains('sw-fixture-row-flag-inline')).toBe(inline);
+  });
+
+  it('marks no inline flag on a row without a flag', () => {
+    renderRow();
+    expect(document.querySelector('.sw-fixture-row-flag-inline')).toBeNull();
+  });
+
   it.each<[string, Partial<FixtureRowProps>, string]>([
     [
       'a home side without a name',
@@ -299,6 +402,35 @@ describe('FixtureRow', () => {
       'an unknown flag tone',
       { flag: { label: 'Clash', tone: 'info' as never } },
       'FixtureRow flag needs a label and one of warning, danger',
+    ],
+    [
+      'a select without a label',
+      {
+        select: { label: ' ', checked: false, onCheckedChange: () => {} },
+      },
+      'FixtureRow select needs a label, checked and onCheckedChange',
+    ],
+    [
+      'a select without checked',
+      {
+        select: {
+          label: 'Select',
+          checked: undefined as never,
+          onCheckedChange: () => {},
+        },
+      },
+      'FixtureRow select needs a label, checked and onCheckedChange',
+    ],
+    [
+      'a select without onCheckedChange',
+      {
+        select: {
+          label: 'Select',
+          checked: false,
+          onCheckedChange: undefined as never,
+        },
+      },
+      'FixtureRow select needs a label, checked and onCheckedChange',
     ],
     [
       'a blank address',

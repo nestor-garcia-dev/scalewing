@@ -21,7 +21,9 @@ export type { DateToggleCalendarProps } from './date-toggle/types.js';
  * Month grids from `min`'s month to `max`'s, where each day that can be
  * toggled is a toggle button, such as days off in a season. One Tab stop;
  * the arrow keys move between days that can be toggled, skipping the rest.
- * Invalid props throw a `RangeError`.
+ * `onChange` hands back only days that can be toggled: `value` entries
+ * outside `min`–`max` or on a disabled day are dropped. Invalid props throw
+ * a `RangeError`.
  */
 export function DateToggleCalendar(props: DateToggleCalendarProps) {
   assertDateToggleCalendar(props);
@@ -99,7 +101,9 @@ export function DateToggleCalendar(props: DateToggleCalendarProps) {
           locale={locale}
           month={month}
           onFocusDate={setChosenFocus}
-          onToggle={(date) => onChange(toggleDate(value, date))}
+          onToggle={(date) =>
+            onChange(toggleDate(value, date).filter(isEnabled))
+          }
           toggled={toggled}
           toggledLabel={toggledLabel}
           weekStartsOn={weekStartsOn}

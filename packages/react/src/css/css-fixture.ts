@@ -11,6 +11,10 @@ import {
   cssFixtureFlagClasses,
   fixtureFlagClassCatalog,
 } from './css-fixture-flag.js';
+import {
+  cssFixtureSelectClasses,
+  fixtureSelectClassCatalog,
+} from './css-fixture-select.js';
 import { touchTarget } from './touch-target.js';
 
 const caption = typographyVariants.caption;
@@ -26,12 +30,13 @@ export { fixtureFlagTones, type FixtureFlagTone } from './css-fixture-flag.js';
 const belowMd = breakpointQuery('below', 'md');
 
 /*
- * The run: one grid whose columns are the home side, the centre, the away
- * side, the end (details and status), the chevron and the action. Each
- * item is a subgrid of it, and its row a subgrid of every column but the
- * action's, so every row's centre, end and action line up down the run.
- * The space between the columns is the centre's, the end's, the chevron's
- * and the action's own margin, so a run with none of them keeps no gap.
+ * The run: one grid whose columns are the select, the home side, the
+ * centre, the away side, the end (details and status), the chevron and the
+ * action. Each item is a subgrid of it, and its row a subgrid of every
+ * column but the select's and the action's, so every row's centre, end and
+ * action line up down the run. The space between the columns is the
+ * centre's, the end's, the chevron's, the select's and the action's own
+ * margin, so a run with none of them keeps no gap.
  */
 function listRules(): string {
   return `.sw-fixture-group {
@@ -51,7 +56,7 @@ function listRules(): string {
 
 .sw-fixture-list {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) auto auto auto;
+  grid-template-columns: auto minmax(0, 1fr) auto minmax(0, 1fr) auto auto auto;
   list-style: none;
   margin: 0;
   padding: 0;
@@ -65,7 +70,7 @@ function listRules(): string {
 }
 
 .sw-fixture-row {
-  grid-column: 1 / -2;
+  grid-column: 2 / -2;
 }
 
 .sw-fixture-item {
@@ -217,7 +222,7 @@ function rowRules(): string {
 function narrowRules(): string {
   return `@media ${belowMd} {
   .sw-fixture-list {
-    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) auto auto;
+    grid-template-columns: auto minmax(0, 1fr) auto minmax(0, 1fr) auto auto;
   }
 
   .sw-fixture-end {
@@ -270,6 +275,8 @@ ${fallbackRules()}
 
 ${cssFixtureFlagClasses()}
 
+${cssFixtureSelectClasses()}
+
 ${cssFixtureActionClasses()}`;
 }
 
@@ -291,6 +298,7 @@ export function fixtureClassCatalog(): string[] {
     'sw-fixture-end',
     'sw-fixture-chevron',
     ...fixtureFlagClassCatalog(),
+    ...fixtureSelectClassCatalog(),
     ...fixtureActionClassCatalog(),
   ];
 }

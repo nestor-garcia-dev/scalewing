@@ -1,4 +1,14 @@
-import { type ScheduleGridLabels } from './types.js';
+import {
+  type ScheduleGridCarryMode,
+  type ScheduleGridLabels,
+} from './types.js';
+
+const pickedUpNext: Record<ScheduleGridCarryMode, string> = {
+  keyboard:
+    'Choose a cell with the arrow keys, then press Enter to drop it or Escape to cancel.',
+  tap: 'Press a cell to drop it there, or press outside the grid to cancel.',
+  drag: 'Release it on a cell to drop it there.',
+};
 
 export const defaultScheduleGridLabels: ScheduleGridLabels = {
   open: 'Open',
@@ -7,8 +17,8 @@ export const defaultScheduleGridLabels: ScheduleGridLabels = {
   releaseToSwap: 'Release to swap',
   instructions:
     'To move an item, press M or Space on it, choose a cell with the arrow keys, then press Enter to drop it or Escape to cancel. Dropping it on another item swaps the two.',
-  pickedUp: (item) =>
-    `Picked up ${item}. Choose a cell with the arrow keys, then press Enter to drop it or Escape to cancel.`,
+  pickedUp: (item, mode) =>
+    `Picked up ${item}. ${pickedUpNext[mode] ?? pickedUpNext.keyboard}`,
   moved: (item, row, column) => `Moved ${item} to ${row}, ${column}.`,
   swapped: (item, other) => `Swapped ${item} with ${other}.`,
   cancelled: (item) => `Cancelled. ${item} stays where it was.`,

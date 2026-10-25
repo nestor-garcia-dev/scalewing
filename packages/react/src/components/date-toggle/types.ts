@@ -7,9 +7,16 @@ export type DateToggleCalendarProps = {
   min: string;
   /** The last day that can be toggled (YYYY-MM-DD); the last month shown is its month. */
   max: string;
-  /** The days toggled on (YYYY-MM-DD), in any order. */
+  /**
+   * The days toggled on (YYYY-MM-DD), in any order. Days outside
+   * `min`–`max` or disabled are not drawn, and `onChange` drops them.
+   */
   value: readonly string[];
-  /** The days toggled on after a press, sorted and without repeats. */
+  /**
+   * The days toggled on after a press, sorted and without repeats; only
+   * days that can be toggled (inside `min`–`max` and not disabled), so a
+   * `value` entry outside them is dropped on the next press.
+   */
   onChange: (value: string[]) => void;
   /** Days between `min` and `max` that cannot be toggled, such as days with no games. */
   isDateDisabled?: (date: string) => boolean;

@@ -364,6 +364,187 @@ describe('ScheduleGrid', () => {
     );
   });
 
+  it('words the pick-up for how it was picked up', () => {
+    vi.useFakeTimers();
+    renderGrid();
+    fireEvent.click(cell('Heron count'));
+    expect(status().textContent).toBe(
+      'Picked up Heron count. Press a cell to drop it there, or press outside the grid to cancel.',
+    );
+    fireEvent.pointerDown(document.body);
+    document.elementFromPoint = vi.fn(() => cell('Open'));
+    fireEvent.pointerDown(cell('Otter feeding'), {
+      button: 0,
+      clientX: 10,
+      clientY: 10,
+      pointerId: 1,
+      pointerType: 'mouse',
+    });
+    const move = new MouseEvent('pointermove', { clientX: 40, clientY: 90 });
+    Object.defineProperty(move, 'pointerId', { value: 1 });
+    act(() => {
+      window.dispatchEvent(move);
+    });
+    expect(status().textContent).toBe(
+      'Picked up Otter feeding. Release it on a cell to drop it there.',
+    );
+    const up = new MouseEvent('pointercancel');
+    Object.defineProperty(up, 'pointerId', { value: 1 });
+    act(() => {
+      window.dispatchEvent(up);
+    });
+    vi.useRealTimers();
+  });
+
+  it('hands the input to a two-argument pickedUp', () => {
+    const pickedUp = vi.fn((item: string, mode: string) => `${item} ${mode}`);
+    renderGrid({ labels: { pickedUp } });
+    cell('Otter feeding').focus();
+    fireEvent.keyDown(cell('Otter feeding'), { key: ' ' });
+    expect(status().textContent).toBe('Otter feeding keyboard');
+    fireEvent.keyDown(document.activeElement!, { key: 'Escape' });
+    fireEvent.click(cell('Heron count'));
+    expect(status().textContent).toBe('Heron count tap');
+  });
+
+  it('cancels a key carry when focus leaves the grid, not when the window blurs', () => {
+    const onMove = vi.fn();
+    render(
+      <>
+        <ScheduleGrid
+          columns={columns}
+          items={items}
+          label="Sunday by enclosure"
+          onMove={onMove}
+          onSwap={vi.fn()}
+          rows={rows}
+        />
+        <button type="button">After the grid</button>
+      </>,
+    );
+    cell('Otter feeding').focus();
+    fireEvent.keyDown(cell('Otter feeding'), { key: 'm' });
+    // Moving between cells keeps the carry.
+    fireEvent.keyDown(document.activeElement!, { key: 'ArrowDown' });
+    expect(cell(/Moving from here/)).toBeTruthy();
+    // The window losing focus keeps it.
+    vi.spyOn(document, 'hasFocus').mockReturnValue(false);
+    fireEvent.blur(document.activeElement!, { relatedTarget: null });
+    expect(cell(/Moving from here/)).toBeTruthy();
+    vi.mocked(document.hasFocus).mockReturnValue(true);
+    act(() => screen.getByRole('button', { name: 'After the grid' }).focus());
+    expect(
+      screen.queryByRole('gridcell', { name: /Moving from here/ }),
+    ).toBeNull();
+    expect(status().textContent).toBe(
+      'Cancelled. Otter feeding stays where it was.',
+    );
+    expect(onMove).not.toHaveBeenCalled();
+  });
+
+  it('cancels a press carry when focus moves out of the grid', () => {
+    render(
+      <>
+        <ScheduleGrid
+          columns={columns}
+          items={items}
+          label="Sunday by enclosure"
+          onMove={vi.fn()}
+          onSwap={vi.fn()}
+          rows={rows}
+        />
+        <button type="button">After the grid</button>
+      </>,
+    );
+    cell('Heron count').focus();
+    fireEvent.click(cell('Heron count'));
+    expect(cell(/Moving from here/)).toBeTruthy();
+    act(() => screen.getByRole('button', { name: 'After the grid' }).focus());
+    expect(
+      screen.queryByRole('gridcell', { name: /Moving from here/ }),
+    ).toBeNull();
+  });
+
+  it('keeps a press carry through a press on a header, which keeps focus', () => {
+    const { onMove } = renderGrid({ rowsLabel: 'Time' });
+    cell('Heron count').focus();
+    fireEvent.click(cell('Heron count'));
+    const header = screen.getByRole('rowheader', { name: '10:30' });
+    fireEvent.pointerDown(header);
+    // The press's default (moving focus to the body) is held back.
+    expect(fireEvent.mouseDown(header)).toBe(false);
+    fireEvent.click(header);
+    expect(document.activeElement).toBe(cell(/Moving from here/));
+    expect(
+      fireEvent.mouseDown(screen.getByRole('columnheader', { name: 'Time' })),
+    ).toBe(false);
+    // A press on a cell still focuses it as usual.
+    expect(fireEvent.mouseDown(cell('Open, Release to move here'))).toBe(true);
+    fireEvent.click(cell('Open, Release to move here'));
+    expect(onMove).toHaveBeenCalledWith('b', {
+      columnId: 'otter',
+      rowId: '10',
+    });
+  });
+
+  it('drops a drag whose release comes before the pick-up renders', () => {
+    vi.useFakeTimers();
+    const { onMove } = renderGrid();
+    document.elementFromPoint = vi.fn(() => cell('Open'));
+    fireEvent.pointerDown(cell('Otter feeding'), {
+      button: 0,
+      clientX: 10,
+      clientY: 10,
+      pointerId: 1,
+      pointerType: 'mouse',
+    });
+    const move = new MouseEvent('pointermove', { clientX: 40, clientY: 90 });
+    Object.defineProperty(move, 'pointerId', { value: 1 });
+    const up = new MouseEvent('pointerup', { clientX: 40, clientY: 90 });
+    Object.defineProperty(up, 'pointerId', { value: 1 });
+    // One act: React commits once, after both events.
+    act(() => {
+      window.dispatchEvent(move);
+      window.dispatchEvent(up);
+    });
+    expect(onMove).toHaveBeenCalledWith('a', {
+      columnId: 'otter',
+      rowId: '10',
+    });
+    expect(
+      screen.queryByRole('gridcell', { name: /Moving from here/ }),
+    ).toBeNull();
+    expect(document.querySelector('.sw-schedule-grid-dragging')).toBeNull();
+    vi.useRealTimers();
+  });
+
+  it('puts back a drag released outside before the pick-up renders', () => {
+    vi.useFakeTimers();
+    const { onMove } = renderGrid();
+    document.elementFromPoint = vi.fn(() => document.body);
+    fireEvent.pointerDown(cell('Otter feeding'), {
+      button: 0,
+      clientX: 10,
+      clientY: 10,
+      pointerId: 1,
+      pointerType: 'mouse',
+    });
+    const move = new MouseEvent('pointermove', { clientX: 400, clientY: 900 });
+    Object.defineProperty(move, 'pointerId', { value: 1 });
+    const up = new MouseEvent('pointerup', { clientX: 400, clientY: 900 });
+    Object.defineProperty(up, 'pointerId', { value: 1 });
+    act(() => {
+      window.dispatchEvent(move);
+      window.dispatchEvent(up);
+    });
+    expect(onMove).not.toHaveBeenCalled();
+    expect(
+      screen.queryByRole('gridcell', { name: /Moving from here/ }),
+    ).toBeNull();
+    expect(document.querySelector('.sw-schedule-grid-dragging')).toBeNull();
+    vi.useRealTimers();
+  });
+
   it('takes the consumer’s words', () => {
     renderGrid({
       labels: {

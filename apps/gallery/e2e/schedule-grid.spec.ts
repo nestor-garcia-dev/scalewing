@@ -24,7 +24,9 @@ test('ScheduleGrid moves an item with keys and announces each step', async ({
   const herons = grid.getByRole('gridcell', { name: 'Heron count' });
   await herons.focus();
   await page.keyboard.press('m');
-  await expect(announcement(page)).toHaveText(/^Picked up Heron count\./);
+  await expect(announcement(page)).toHaveText(
+    'Picked up Heron count. Choose a cell with the arrow keys, then press Enter to drop it or Escape to cancel.',
+  );
   await expect(
     grid.getByRole('gridcell', { name: 'Heron count, Moving from here' }),
   ).toBeVisible();
@@ -123,6 +125,9 @@ test('ScheduleGrid drags with a mouse: one hover target, then a swap', async ({
     steps: 8,
   });
   await expect(page.locator('.sw-schedule-grid-dragging')).toHaveCount(1);
+  await expect(announcement(page)).toHaveText(
+    'Picked up Pine marten walk. Release it on a cell to drop it there.',
+  );
   const hovered = grid.getByRole('gridcell', {
     name: 'Heron count, Release to swap',
   });
@@ -158,8 +163,15 @@ test('ScheduleGrid on touch: tap an item, then tap where it goes', async ({
   test.skip(testInfo.project.name !== 'mobile-es', 'Touch only.');
   const grid = await openGrid(page);
   await grid.getByRole('gridcell', { name: 'Bittern listening' }).tap();
-  await expect(announcement(page)).toHaveText(/^Picked up Bittern listening\./);
+  await expect(announcement(page)).toHaveText(
+    'Picked up Bittern listening. Press a cell to drop it there, or press outside the grid to cancel.',
+  );
   const noon = grid.getByRole('row', { name: /^12:00/ });
+  // A tap on a row's label keeps the carry.
+  await noon.getByRole('rowheader').tap();
+  await expect(
+    grid.getByRole('gridcell', { name: /Moving from here/ }),
+  ).toHaveCount(1);
   await noon.getByRole('gridcell').nth(0).tap();
   await expect(announcement(page)).toHaveText(
     'Moved Bittern listening to 12:00, Otter Pool.',
@@ -191,4 +203,99 @@ test('ScheduleGrid picks nothing up while locked', async ({ page }) => {
   await expect(
     grid.getByRole('gridcell', { name: /Moving from here/ }),
   ).toHaveCount(0);
+});
+
+test('ScheduleGrid puts a key carry back when focus leaves the grid', async ({
+  page,
+}) => {
+  const grid = await openGrid(page);
+  await grid.getByRole('gridcell', { name: 'Heron count' }).focus();
+  await page.keyboard.press('m');
+  await page.keyboard.press('ArrowDown');
+  await expect(
+    grid.getByRole('gridcell', { name: 'Heron count, Moving from here' }),
+  ).toBeVisible();
+  await page.keyboard.press('Tab');
+  await expect(grid.locator(':focus')).toHaveCount(0);
+  await expect(announcement(page)).toHaveText(
+    'Cancelled. Heron count stays where it was.',
+  );
+  await expect(
+    grid.getByRole('gridcell', { name: /Moving from here/ }),
+  ).toHaveCount(0);
+  await expect(page.locator('#schedule-grid')).toContainText(
+    'Last change: None yet',
+  );
+});
+
+test('ScheduleGrid says how to drop for a click pick-up, and cancels it on Tab', async ({
+  page,
+}, testInfo) => {
+  test.skip(testInfo.project.name === 'mobile-es', 'Covered by the tap test.');
+  const grid = await openGrid(page);
+  await grid.getByRole('gridcell', { name: 'Bittern listening' }).click();
+  await expect(announcement(page)).toHaveText(
+    'Picked up Bittern listening. Press a cell to drop it there, or press outside the grid to cancel.',
+  );
+  await page.keyboard.press('Shift+Tab');
+  await expect(
+    grid.getByRole('gridcell', { name: /Moving from here/ }),
+  ).toHaveCount(0);
+});
+
+test('ScheduleGrid ends a drag released before its pick-up is drawn', async ({
+  page,
+}, testInfo) => {
+  test.skip(testInfo.project.name === 'mobile-es', 'Touch never drags.');
+  const grid = await openGrid(page);
+  await grid.scrollIntoViewIfNeeded();
+  const martens = grid.getByRole('gridcell', { name: 'Pine marten walk' });
+  const open = grid
+    .getByRole('row', { name: /^10:30/ })
+    .getByRole('gridcell')
+    .nth(1);
+  const from = (await martens.boundingBox())!;
+  const to = (await open.boundingBox())!;
+  // Down, a move past the threshold and the release in one task, so React
+  // has not drawn the pick-up when the release arrives.
+  await page.evaluate(
+    ({ from, to }) => {
+      const at = { x: from.x + from.width / 2, y: from.y + from.height / 2 };
+      const end = { x: to.x + to.width / 2, y: to.y + to.height / 2 };
+      const cell = document.elementFromPoint(at.x, at.y)!;
+      const init = { bubbles: true, pointerId: 41, pointerType: 'mouse' };
+      cell.dispatchEvent(
+        new PointerEvent('pointerdown', {
+          ...init,
+          button: 0,
+          clientX: at.x,
+          clientY: at.y,
+        }),
+      );
+      window.dispatchEvent(
+        new PointerEvent('pointermove', {
+          ...init,
+          clientX: end.x,
+          clientY: end.y,
+        }),
+      );
+      window.dispatchEvent(
+        new PointerEvent('pointerup', {
+          ...init,
+          button: 0,
+          clientX: end.x,
+          clientY: end.y,
+        }),
+      );
+    },
+    { from, to },
+  );
+  await expect(announcement(page)).toHaveText(
+    'Moved Pine marten walk to 10:30, Heron Marsh.',
+  );
+  await expect(open).toHaveAccessibleName('Pine marten walk');
+  await expect(
+    grid.getByRole('gridcell', { name: /Moving from here/ }),
+  ).toHaveCount(0);
+  await expect(page.locator('.sw-schedule-grid-dragging')).toHaveCount(0);
 });

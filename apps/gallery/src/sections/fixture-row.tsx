@@ -34,13 +34,24 @@ const dunes = side('Bayside Dunes with a long station name', 'orange');
 export function FixtureRowSection() {
   const [opened, setOpened] = useState('None yet');
   const [moving, setMoving] = useState('None yet');
+  const [chosen, setChosen] = useState<readonly string[]>([
+    'Heron Marsh vs Otter Pool',
+  ]);
+  const choose = (game: string) => ({
+    checked: chosen.includes(game),
+    label: `Select ${game}`,
+    onCheckedChange: (checked: boolean) =>
+      setChosen((last) =>
+        checked ? [...last, game] : last.filter((one) => one !== game),
+      ),
+  });
 
   return (
     <Section
       id="fixture-row"
-      purpose="FixtureRow is one pairing between two sides, such as two stations' teams counting together: the home side's name ending at the centre with its mark beside it, the centre (a kickoff time in a grey chip, or a score in bold figures, both tabular), the away side starting from it, then meta and a status Badge at the end. A FixtureGroup heads a run of them (a day, a place) and names their list; the rows share one grid, so every centre lines up down the run. Below md the meta and status move under the sides; metaHideBelow leaves the meta out below md or lg. With href or onPress the whole row is a link or a button with a chevron (aria-label names it in your words); a plain press on a link with onPress is handed to a client router. flag marks an issue at the row's start (amber by default; red with tone danger, as on Hide flooded): a round mark whose label is its tooltip and is read before the row's name. action is a control after the row, such as a small neutral Move button, outside the row's press area and its own Tab stop; it stays on the row's first line at every width. Names wrap; right-to-left mirrors the sides."
+      purpose="FixtureRow is one pairing between two sides, such as two stations' teams counting together: the home side's name ending at the centre with its mark beside it, the centre (a kickoff time in a grey chip, or a score in bold figures, both tabular), the away side starting from it, then meta and a status Badge at the end. A FixtureGroup heads a run of them (a day, a place) and names their list; the rows share one grid, so every centre lines up down the run. Below md the meta and status move under the sides; metaHideBelow leaves the meta out below md or lg. With href or onPress the whole row is a link or a button with a chevron (aria-label names it in your words); a plain press on a link with onPress is handed to a client router. flag marks an issue at the row's start (amber by default; red with tone danger, as on Hide flooded): a round mark whose label is its tooltip and is read before the row's name. action is a control after the row, such as a small neutral Move button, outside the row's press area and its own Tab stop; it stays on the row's first line at every width. select is a leading checkbox before the row, such as games chosen to postpone: named by its label (not drawn), outside the row's press area, the standard box with a 44 px target on a coarse pointer, and it works with flag, action, href and onPress. The run's columns are shared, so on a phone a select, marks, a chevron and an action together leave the names little room: these rows leave their marks out. A flagged row with nothing for the details' line below md keeps its flag on the first line. Names wrap; right-to-left mirrors the sides."
       title="FixtureRow"
-      usage={`// Crest and openMove are your own component and handler.
+      usage={`// Crest, openMove, chosen, id and toggle are your own.
 <FixtureGroup title="Sunday 25 October · North meadow hides">
   <FixtureRow
     home={{ name: 'Heron Marsh', mark: <Crest /> }}
@@ -60,6 +71,16 @@ export function FixtureRowSection() {
         Move
       </Button>
     }
+  />
+  <FixtureRow
+    home={{ name: 'Otter Pool' }}
+    away={{ name: 'Bittern Fen' }}
+    center="9:15"
+    select={{
+      label: 'Select Otter Pool vs Bittern Fen',
+      checked: chosen.includes(id),
+      onCheckedChange: (checked) => toggle(id, checked),
+    }}
   />
 </FixtureGroup>`}
     >
@@ -145,6 +166,48 @@ export function FixtureRowSection() {
             meta="Hide 3"
           />
         </FixtureGroup>
+        <FixtureGroup title="Tuesday 27 October · Reed bed">
+          <FixtureRow
+            aria-label="Heron Marsh vs Otter Pool, 8:00"
+            away={{ name: 'Otter Pool' }}
+            center="8:00"
+            home={{ name: 'Heron Marsh' }}
+            meta="Hide 1"
+            onPress={() => setOpened('Heron Marsh with Otter Pool')}
+            select={choose('Heron Marsh vs Otter Pool')}
+          />
+          <FixtureRow
+            action={
+              <Button
+                aria-label="Move Elm Row vs Pine Ridge"
+                onPress={() => setMoving('Elm Row vs Pine Ridge')}
+                size="sm"
+                variant="neutral"
+              >
+                Move
+              </Button>
+            }
+            away={{ name: 'Pine Ridge' }}
+            center="9:15"
+            flag={{ label: 'Tide clash' }}
+            home={{ name: 'Elm Row' }}
+            select={choose('Elm Row vs Pine Ridge')}
+          />
+          <FixtureRow
+            away={{ name: 'Otter Pool' }}
+            center="10:30"
+            home={{ name: 'Bayside Dunes' }}
+            meta="Hide 2"
+            select={{
+              ...choose('Bayside Dunes vs Otter Pool'),
+              disabled: true,
+            }}
+            status={{ label: 'Counted', tone: 'success' }}
+          />
+        </FixtureGroup>
+        <Text color="muted" role="status" variant="caption">
+          Chosen: {chosen.length === 0 ? 'None' : chosen.join(', ')}
+        </Text>
         <Text color="muted" role="status" variant="caption">
           Last opened: {opened}
         </Text>

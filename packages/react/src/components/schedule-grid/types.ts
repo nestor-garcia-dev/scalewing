@@ -26,6 +26,12 @@ export type ScheduleGridTarget =
 /** The consumer's answer for a target: `true` allows it; a reason blocks it. */
 export type ScheduleGridDropCheck = true | { reason: string };
 
+/**
+ * How an item was picked up: by keys, by a press then a press (touch or a
+ * click), or by a mouse or pen drag.
+ */
+export type ScheduleGridCarryMode = 'keyboard' | 'tap' | 'drag';
+
 /** The grid's own words, English by default. */
 export type ScheduleGridLabels = {
   /** An empty cell. */
@@ -38,8 +44,11 @@ export type ScheduleGridLabels = {
   releaseToSwap: string;
   /** How to move an item with keys; the grid's description. */
   instructions: string;
-  /** Announced when an item is picked up. */
-  pickedUp: (item: string) => string;
+  /**
+   * Announced when an item is picked up; `mode` says how, so the words can
+   * fit the input (a one-argument function still works).
+   */
+  pickedUp: (item: string, mode: ScheduleGridCarryMode) => string;
   /** Announced after a move to an empty cell. */
   moved: (item: string, row: string, column: string) => string;
   /** Announced after a swap. */
