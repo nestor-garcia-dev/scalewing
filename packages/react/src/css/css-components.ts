@@ -67,6 +67,7 @@ import { cssDenominationGridClasses } from './css-denomination-grid.js';
 import { cssFieldClasses } from './css-field.js';
 import { cssStepperClasses } from './css-stepper.js';
 import { cssStepsClasses } from './css-steps.js';
+import { cssTaskListClasses } from './css-task-list.js';
 import { cssToastClasses } from './css-toast.js';
 import { cssToastCardClasses } from './css-toast-card.js';
 import { cssBoxBorderClasses } from './css-box-border.js';
@@ -277,6 +278,8 @@ ${cssFieldClasses()}
 ${cssStepperClasses()}
 
 ${cssStepsClasses()}
+
+${cssTaskListClasses()}
 
 ${cssSplitClasses()}
 

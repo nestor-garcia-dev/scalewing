@@ -16,6 +16,7 @@ import {
   cssButtonWidthClasses,
 } from './css-button-width.js';
 import { quietFill } from './quiet-fill.js';
+import { coarsePointerQuery, touchTarget } from './touch-target.js';
 
 const label = typographyVariants.label;
 
@@ -120,13 +121,25 @@ function ariaDisabledForcedRules(): string {
 }`;
 }
 
+/*
+ * Each size's height and side padding for a fine pointer, then the
+ * comfortable touch target (44 px both ways, the md control height) for
+ * every size on a coarse pointer, so an xs or sm Button in a table row or a
+ * checklist is still easy to tap. Its look stays the size's (padding and
+ * type); only the minimum box grows. The coarse rule follows the sizes,
+ * which it outranks only by order.
+ */
 function sizeRules(): string {
-  return buttonSizes
+  const sizes = buttonSizes
     .map((size) => {
       const control = controlScale[size];
       return `.sw-button-${size} { min-height: ${control.minHeight}px; padding-inline: ${control.paddingInline}px; }`;
     })
     .join('\n');
+  return `${sizes}
+@media ${coarsePointerQuery} {
+  .sw-button { min-height: ${touchTarget}; min-width: ${touchTarget}; }
+}`;
 }
 
 /*

@@ -51,6 +51,7 @@ import { scrollRegionClassCatalog } from './css-scroll-region.js';
 import { fieldClassCatalog } from './css-field.js';
 import { stepperClassCatalog } from './css-stepper.js';
 import { stepsClassCatalog } from './css-steps.js';
+import { taskListClassCatalog } from './css-task-list.js';
 import { boxBorderClassCatalog } from './css-box-border.js';
 import { boxLinkClassCatalog } from './css-box-link.js';
 import { cssComponentClasses } from './css-components.js';
@@ -169,6 +170,7 @@ export function utilityClassCatalog(): string[] {
     ...fieldClassCatalog(),
     ...stepperClassCatalog(),
     ...stepsClassCatalog(),
+    ...taskListClassCatalog(),
     ...splitClassCatalog(),
     ...toastClassCatalog(),
     ...toastCardClassCatalog(),

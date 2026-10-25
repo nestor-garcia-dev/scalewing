@@ -52,6 +52,7 @@ import { ToastSection } from './sections/toast.js';
 import { FieldSection } from './sections/field.js';
 import { StepperSection } from './sections/stepper.js';
 import { StepsSection } from './sections/steps.js';
+import { TaskListSection } from './sections/task-list.js';
 import { FoundationsSection } from './sections/foundations.js';
 import { GridSection } from './sections/grid.js';
 import { LayoutSection } from './sections/layout.js';
@@ -230,6 +231,12 @@ export const catalog = [
     label: 'Progress',
     group: 'controls',
     Section: ProgressSection,
+  },
+  {
+    id: 'task-list',
+    label: 'TaskList',
+    group: 'controls',
+    Section: TaskListSection,
   },
   {
     id: 'glyph-tile',

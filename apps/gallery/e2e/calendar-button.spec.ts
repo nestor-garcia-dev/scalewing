@@ -112,7 +112,15 @@ test('CalendarButton closes without a change on Escape and a press outside', asy
 
   await button.click();
   await expect(calendar).toBeVisible();
-  await section.getByRole('heading', { name: 'CalendarButton' }).click();
+  // Press the section heading at a point the calendar does not cover: on a
+  // phone its footer Buttons are 44 px touch targets, so the popover is tall
+  // enough to reach over the heading's middle.
+  const title = section.getByRole('heading', { name: 'CalendarButton' });
+  const titleBox = (await title.boundingBox())!;
+  const calendarBox = (await calendar.boundingBox())!;
+  const pressY = Math.min(titleBox.y + titleBox.height / 2, calendarBox.y - 2);
+  expect(pressY).toBeGreaterThanOrEqual(titleBox.y);
+  await page.mouse.click(titleBox.x + 4, pressY);
   await expect(calendar).toBeHidden();
   await expect(heading).toHaveText('Tuesday, September 22, 2026');
   await expect(

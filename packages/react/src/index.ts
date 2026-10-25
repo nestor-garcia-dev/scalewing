@@ -294,6 +294,16 @@ export {
   type StepStatus,
 } from './components/Steps.js';
 export {
+  defaultTaskListLabels,
+  TaskList,
+  type TaskListActionContext,
+  type TaskListItem,
+  type TaskListLabels,
+  type TaskListProps,
+  type TaskListStatus,
+  taskListStatuses,
+} from './components/TaskList.js';
+export {
   Stepper,
   stepperLimitAppearances,
   type StepperLimitAppearance,
