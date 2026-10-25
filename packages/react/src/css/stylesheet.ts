@@ -74,6 +74,7 @@ import { dialogBandedClassCatalog } from './css-dialog-banded.js';
 import { dialogFrameClassCatalog } from './css-dialog-frame.js';
 import { dialogCanvasClassCatalog } from './css-dialog-canvas.js';
 import { dialogGrabberClassCatalog } from './css-dialog-grabber.js';
+import { dialogEndClassCatalog } from './css-dialog-end.js';
 import { selectClassCatalog } from './css-select.js';
 import { multiSelectClassCatalog } from './css-multi-select.js';
 import { comboboxClassCatalog } from './css-combobox.js';
@@ -124,6 +125,7 @@ export function utilityClassCatalog(): string[] {
     ...dialogBandedClassCatalog(),
     ...dialogCanvasClassCatalog(),
     ...dialogGrabberClassCatalog(),
+    ...dialogEndClassCatalog(),
     ...accordionClassCatalog(),
     ...selectClassCatalog(),
     ...actionMenuClassCatalog(),

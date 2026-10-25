@@ -3,6 +3,7 @@ import { typographyVariants } from '@scalewing/tokens';
 import { chevronStroke } from './chevron.js';
 import { zIndex } from './stacking.js';
 import { quietFill } from './quiet-fill.js';
+import { coarsePointerQuery, touchTarget } from './touch-target.js';
 
 const caption = typographyVariants.caption;
 const label = typographyVariants.label;
@@ -189,6 +190,15 @@ export function cssSelectClasses(): string {
   border-top: 1px solid var(--sw-color-border);
   color: var(--sw-color-accent);
   margin-top: var(--sw-space-1);
+}
+
+/* The comfortable touch target on a coarse pointer, at every size: the
+   trigger and each option are at least 44 px high (the md control height),
+   as every Button is. Type and padding keep the size's; the rule follows
+   the size rules, which it outranks only by order. */
+@media ${coarsePointerQuery} {
+  .sw-select .sw-select-trigger,
+  .sw-select .sw-select-option { min-height: ${touchTarget}; }
 }`;
 }
 

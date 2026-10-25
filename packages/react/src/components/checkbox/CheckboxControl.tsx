@@ -1,4 +1,4 @@
-import { type InputHTMLAttributes } from 'react';
+import { forwardRef, type InputHTMLAttributes } from 'react';
 import { tabStop } from '../../tab-stop.js';
 
 type CheckboxControlProps = Omit<
@@ -11,10 +11,14 @@ type CheckboxControlProps = Omit<
  * generated rules style (`input + .sw-checkbox-mark`). Shared by Checkbox
  * and MultiSelect's rows so the two cannot drift apart.
  */
-export function CheckboxControl({ tabIndex, ...props }: CheckboxControlProps) {
+export const CheckboxControl = forwardRef<
+  HTMLInputElement,
+  CheckboxControlProps
+>(function CheckboxControl({ tabIndex, ...props }, ref) {
   return (
     <span className="sw-checkbox-control">
       <input
+        ref={ref}
         tabIndex={tabIndex ?? tabStop}
         {...props}
         className="sw-checkbox-input"
@@ -23,4 +27,4 @@ export function CheckboxControl({ tabIndex, ...props }: CheckboxControlProps) {
       <span aria-hidden="true" className="sw-checkbox-mark" />
     </span>
   );
-}
+});

@@ -176,6 +176,14 @@ app's screen (`teisoro-screen-preview.md`, #251), and `ThemeProvider`
 (`teisoro-site-frame.md`, #252), released in `@scalewing/react` 1.50.0.
 Next: Teisoro pins react 1.50.0 and tokens 1.7.0 in task 2710.
 
+FutMas F-010-S13, teams and pasted teams: a table select column
+(`Checkbox labelVisuallyHidden` and `indeterminate`, `TableSelectCell`;
+`futmas-table-row-selection.md`), `Dialog placement="end"`
+(`futmas-dialog-side-panel.md`), `PasteRows` (`futmas-paste-rows.md`) and
+every `Select` size the 44 px target on a coarse pointer
+(`futmas-select-touch-target.md`), in one PR, for `@scalewing/react`
+1.53.0. Next: FutMas pins react 1.53.0 in F-010-S13.
+
 FutMas F-010-S12, seasons and league settings: `TaskList`, a setup
 checklist with done, next, todo and waiting tasks (`futmas-task-list.md`),
 and every `Button` size the 44 px target on a coarse pointer

@@ -27,6 +27,10 @@ import {
   tableTotalRowClassCatalog,
 } from './css-table-total-row.js';
 import {
+  cssTableSelectClasses,
+  tableSelectClassCatalog,
+} from './css-table-select.js';
+import {
   cssTablePressClasses,
   tablePressClassCatalog,
 } from './css-table-press.js';
@@ -134,6 +138,8 @@ ${cssTableBoundedClasses()}
 
 ${cssTablePressClasses()}
 
+${cssTableSelectClasses()}
+
 ${selectedRowRules()}`;
 }
 
@@ -155,5 +161,6 @@ export function tableClassCatalog(): string[] {
     ...tablePagePinClassCatalog(),
     ...tableBoundedClassCatalog(),
     ...tablePressClassCatalog(),
+    ...tableSelectClassCatalog(),
   ];
 }

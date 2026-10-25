@@ -13,6 +13,11 @@ import {
 import { type ThemeCanvas } from '../css/css-canvas-grouped.js';
 import { dialogCanvasClass } from '../css/css-dialog-canvas.js';
 import {
+  dialogEndClass,
+  type DialogPlacement,
+  dialogPlacements,
+} from '../css/css-dialog-end.js';
+import {
   dialogGrabberClass,
   dialogHasGrabberClass,
 } from '../css/css-dialog-grabber.js';
@@ -31,6 +36,7 @@ import { Stack } from './Stack.js';
 
 export { dialogAppearances, type DialogAppearance };
 export { dialogSizes, type DialogRole, type DialogSize };
+export { dialogPlacements, type DialogPlacement };
 
 /**
  * The heading level of the dialog's title. It changes only the element (and
@@ -128,6 +134,17 @@ export type DialogProps = Omit<
    * footer stay on the surface. `default` keeps the appearance's fill.
    */
   canvas?: ThemeCanvas;
+  /**
+   * `end` makes the dialog a side panel from md up: the window's full
+   * height at the inline end (the right, the left in right-to-left), its
+   * `size`'s width, square corners and a hairline on its inner edge, with
+   * the same title row, close button, scrolling content and footer pinned
+   * to the bottom edge. Below md it is the centred dialog, or the bottom
+   * sheet with `sheetBelow="md"`. It is the same modal: focus stays inside,
+   * Escape and a backdrop press ask `onClose`, and focus returns to the
+   * opener on close. `center` (the default) is unchanged.
+   */
+  placement?: DialogPlacement;
   children: ReactNode;
 };
 
@@ -149,6 +166,7 @@ export function Dialog({
   onPointerDown,
   onSubmit,
   open,
+  placement = 'center',
   sheetBelow,
   sheetGrabber = false,
   size = 'md',
@@ -161,6 +179,7 @@ export function Dialog({
     appearance,
     canvas,
     description,
+    placement,
     role,
     sheetBelow,
     sheetGrabber,
@@ -200,6 +219,7 @@ export function Dialog({
         appearance === 'banded' && dialogBandedClass,
         canvas === 'grouped' && dialogCanvasClass,
         sheetGrabber && dialogHasGrabberClass,
+        placement === 'end' && dialogEndClass,
         ...spacingClassNames({ padding: 5 }),
         className,
       )}

@@ -1,5 +1,6 @@
 import { typographyVariants } from '@scalewing/tokens';
 import { checkStrokeIn } from './chevron.js';
+import { coarsePointerQuery, touchTarget } from './touch-target.js';
 
 const label = typographyVariants.label;
 const caption = typographyVariants.caption;
@@ -70,6 +71,38 @@ export function cssCheckboxClasses(): string {
 
 .sw-checkbox-input:checked + .sw-checkbox-mark::after { display: block; }
 
+/* The mixed state: the accent fill with a dash in place of the check. */
+.sw-checkbox-input:indeterminate + .sw-checkbox-mark {
+  background: var(--sw-color-accent);
+  border-color: var(--sw-color-accent);
+}
+
+.sw-checkbox-input:indeterminate + .sw-checkbox-mark::after {
+  border-right: 0;
+  display: block;
+  height: 0;
+  inset-block-start: calc(50% - 1px);
+  inset-inline-start: calc(50% - var(--sw-space-3) / 2);
+  transform: none;
+  width: var(--sw-space-3);
+}
+
+/* A visually hidden label: the box alone is the target, its own size on a
+   fine pointer (so a compact table row keeps its height), the 44 px touch
+   target both ways on a coarse one. */
+.sw-checkbox-label-hidden {
+  justify-content: center;
+  min-height: 0;
+  position: relative;
+}
+
+@media ${coarsePointerQuery} {
+  .sw-checkbox-label-hidden {
+    min-height: ${touchTarget};
+    min-width: ${touchTarget};
+  }
+}
+
 .sw-checkbox-input:focus-visible + .sw-checkbox-mark {
   outline: var(--sw-focus-ring-width) solid var(--sw-color-accent);
   outline-offset: var(--sw-focus-ring-offset);
@@ -106,13 +139,13 @@ export function cssCheckboxClasses(): string {
 
 @media (prefers-reduced-transparency: reduce) {
   .sw-checkbox-mark { background: var(--sw-color-surface); }
-  .sw-checkbox-input:checked + .sw-checkbox-mark { background: var(--sw-color-accent); }
+  .sw-checkbox-input:is(:checked, :indeterminate) + .sw-checkbox-mark { background: var(--sw-color-accent); }
 }
 
 @media (forced-colors: active) {
   .sw-checkbox-mark { background: Canvas; border-color: CanvasText; }
-  .sw-checkbox-input:checked + .sw-checkbox-mark { background: Highlight; border-color: Highlight; }
-  .sw-checkbox-input:checked + .sw-checkbox-mark::after { border-color: HighlightText; }
+  .sw-checkbox-input:is(:checked, :indeterminate) + .sw-checkbox-mark { background: Highlight; border-color: Highlight; }
+  .sw-checkbox-input:is(:checked, :indeterminate) + .sw-checkbox-mark::after { border-color: HighlightText; }
   .sw-checkbox-input[aria-invalid='true'] + .sw-checkbox-mark { border-color: CanvasText; }
 }`;
 }
@@ -121,6 +154,7 @@ export function checkboxClassCatalog(): string[] {
   return [
     'sw-checkbox',
     'sw-checkbox-label',
+    'sw-checkbox-label-hidden',
     'sw-checkbox-control',
     'sw-checkbox-input',
     'sw-checkbox-mark',

@@ -93,6 +93,17 @@ export {
 } from './css/css-list-tiles.js';
 export { Checkbox, type CheckboxProps } from './components/Checkbox.js';
 export {
+  PasteRows,
+  type PasteRowsColumn,
+  type PasteRowsProps,
+} from './components/PasteRows.js';
+export {
+  parsePastedRows,
+  type PastedRows,
+  type PastedRowsDelimiter,
+  pastedRowsDelimiters,
+} from './components/paste-rows/parse-pasted-rows.js';
+export {
   Spinner,
   type SpinnerProps,
   type SpinnerSize,
@@ -239,8 +250,10 @@ export { Card, type CardProps, type CardVariant } from './components/Card.js';
 export {
   Dialog,
   dialogAppearances,
+  dialogPlacements,
   dialogSizes,
   type DialogAppearance,
+  type DialogPlacement,
   type DialogProps,
   type DialogRole,
   type DialogSize,
@@ -418,6 +431,7 @@ export {
   TableFooter,
   TableHeader,
   TableRow,
+  TableSelectCell,
   tableCellTones,
   tableRowVariants,
   type TableBodyProps,
@@ -432,6 +446,7 @@ export {
   type TableProps,
   type TableRowProps,
   type TableRowVariant,
+  type TableSelectCellProps,
   type TableSort,
   type TableStickyHeader,
   type TableVerticalAlign,

@@ -15,6 +15,9 @@ import { ButtonLinkSection } from './sections/button-link.js';
 import { CalendarButtonSection } from './sections/calendar-button.js';
 import { DateRangeButtonSection } from './sections/date-range-button.js';
 import { CheckboxSection } from './sections/checkbox.js';
+import { PasteRowsSection } from './sections/paste-rows.js';
+import { TableSelectionSection } from './sections/table-selection.js';
+import { DialogEndSection } from './sections/dialog-end.js';
 import { RadioGroupSection } from './sections/radio-group.js';
 import { SpinnerSection } from './sections/spinner.js';
 import { SkeletonSection } from './sections/skeleton.js';
@@ -337,6 +340,18 @@ export const catalog = [
     Section: DateRangeButtonSection,
   },
   { id: 'dialog', label: 'Dialog', group: 'controls', Section: DialogSection },
+  {
+    id: 'dialog-end',
+    label: 'Dialog side panel',
+    group: 'controls',
+    Section: DialogEndSection,
+  },
+  {
+    id: 'paste-rows',
+    label: 'PasteRows',
+    group: 'controls',
+    Section: PasteRowsSection,
+  },
   { id: 'toast', label: 'Toast', group: 'controls', Section: ToastSection },
   {
     id: 'stat-tile',
@@ -369,6 +384,12 @@ export const catalog = [
     Section: DescriptionListSection,
   },
   { id: 'table', label: 'Table', group: 'data', Section: TableSection },
+  {
+    id: 'table-selection',
+    label: 'Table selection',
+    group: 'data',
+    Section: TableSelectionSection,
+  },
   {
     id: 'pagination',
     label: 'Pagination',
