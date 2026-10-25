@@ -123,6 +123,55 @@ Import the CSS once at the application entry. Do not copy it into your source tr
 </Steps>
 ```
 
+`TaskList` is a setup checklist: an `ol` (with `role="list"`, which Safari drops from a list without bullets) named by `label` holding one row per item of `items`, in order, a hairline between rows. Each item is `{ id, title, detail?, status, action? }` (`TaskListItem`): `status` (`taskListStatuses`: `'done' | 'next' | 'todo' | 'waiting'`, type `TaskListStatus`) draws a 24 px marker hidden from assistive technology, a different shape for each so colour is never the only cue: `done` a check on the success fill, `next` an accent ring round an accent dot, `todo` the grey hairline ring of a step ahead, and `waiting` a lock in the muted colour (waiting is not work that needs the person, so it is grey, not the warning amber). Then the `title` (label type, a waiting task's muted at the body weight), a muted caption `detail` under it, and `action` at the row's end, such as a small `Button`; the marker and the action sit on the row's middle, and on a narrow column an action that would leave the words less than half the row wraps to a line of its own at the row's end. Each title is read with its status word after a comma, as one visually hidden line ("Season, Done"; the drawn title is `aria-hidden`, as in a folded `Step`), then the detail, then the action. The words are English by default (`defaultTaskListLabels`: Done, Next step, To do, Waiting); `labels` (`Partial<TaskListLabels>`) takes yours, any you leave out or pass as `undefined` staying English. A row's text content holds the title twice (drawn, then spoken), so find a task in tests by its spoken line or by role. `action` may be a function given `{ titleId }`, the id of the drawn title, for the action's `aria-describedby` (or its `aria-labelledby` with its own id), so two "Change" buttons are told apart by their tasks out of the list. Scalewing holds no order rules and adds no `aria-current`: you set every status, and which action is the page's primary (the next task's, by convention) and which are `neutral`. On a coarse pointer the row's Buttons are 44 px like every Button, so rows grow. Forced colours draw every ring as a `CanvasText` border (the next one `Highlight`) and keep the check, dot and lock, which are borders. A blank `label`, status word, id, title or `detail`, a repeated id, or an unknown status throws a `RangeError`; an empty `items` draws an empty list. Other `ol` attributes (`className`, `id`, `data-*`, `aria-describedby`) pass through.
+
+```tsx
+<TaskList
+  label="Get the spring survey ready"
+  labels={{
+    done: 'Listo',
+    next: 'Siguiente paso',
+    todo: 'Pendiente',
+    waiting: 'En espera',
+  }}
+  items={[
+    {
+      id: 'site',
+      title: 'The site',
+      detail: 'North marsh',
+      status: 'done',
+      action: ({ titleId }) => (
+        <Button
+          size="sm"
+          variant="neutral"
+          aria-describedby={titleId}
+          onPress={change}
+        >
+          Change
+        </Button>
+      ),
+    },
+    {
+      id: 'count',
+      title: 'The count',
+      detail: 'Count the herons at dawn',
+      status: 'next',
+      action: (
+        <Button size="sm" onPress={count}>
+          Start counting
+        </Button>
+      ),
+    },
+    {
+      id: 'report',
+      title: 'Send the report',
+      detail: 'Needs the count',
+      status: 'waiting',
+    },
+  ]}
+/>
+```
+
 `Select` is a labeled listbox menu when the open list must match the canvas.
 
 `Field` supports optional `description`, `error`, and `required` on one native input, select, or textarea child. It preserves an existing `aria-describedby` and appends a stable ID for the hint, or for the error, which replaces the hint on screen while it is supplied. `error` sets `aria-invalid` and token-owned invalid styling. The error sits in a polite live region (`aria-live="polite"`) that is always rendered, empty while there is no error, so an error that appears while the person types, or after a submit, is announced once, politely, when its text is swapped in; it is never `role="alert"`, so a submit that finds several errors does not fire several assertive alerts at once. Empty, the region takes no room in the layout. The consumer owns validation and localized messages, and after a refused submit it moves focus to the first invalid control (or to one form-level summary). `Checkbox`, `RadioGroup` and `DateField` expose their `error` the same way. `invalid` marks the control invalid the same way (`aria-invalid` and the danger border, `Mark` in forced colors) without a message of its own, for fields whose one error is shown elsewhere, such as a count that adds up to nothing under a group of count fields: point each control's `aria-describedby` at that message so it is read with the field. The field's own polite region stays empty and its `description` stays on screen; `error` implies `invalid`. Passing `invalid`, even `invalid={false}` but not `invalid={undefined}`, needs one native control child and throws a `TypeError` on the first render otherwise, so a form learns it while the fields are valid, not on its first failed submit. `error` keeps its rule: it needs the native control only while it holds a message. `invalid` is `Field`'s only: `DateField`, `Select` and the other controls with `error` do not have it yet.
@@ -326,6 +375,8 @@ A `Button`'s own children are laid out in a row one token gap apart (spacing ste
 On the web, `variant="neutral"` is a quiet grey fill (the muted color at 16 %, the fill of an open menu row) with its words in the text color and no border: an action beside the primary that should not draw the eye, such as a sheet's Cancel. It is web only (`webButtonVariants`; the shared `buttonVariants` in `@scalewing/tokens` and React Native do not have it). `disabledAppearance="neutral"` (default `"faded"`) draws a disabled button on that grey with its words in the muted color at 48 % (about #AEAEAE on the grey) and full opacity, whatever its variant, instead of fading its own fill (a disabled accent reads as a paler accent); a `ghost` button, which has no fill, still fades. The button is still a disabled `button`; forced colors draw it as any disabled button. An unknown `disabledAppearance` throws a `RangeError`.
 
 `Button` `width` is `'content'` (the default: as wide as its words) or `'full'`: the button fills its container's inline size in a `Stack`, a `Grid` cell or any column, and in an `Inline` row takes the space its siblings leave, as a full `Select` does, so an Edit beside a ••• `ActionMenu` fills the row and the menu keeps its own square at the end. The row rule holds for a `Button` that is a direct child of the `Inline`; wrapped in another box it fills that box instead. In a wrapping `Inline` (`wrap`) a full button grows from its words' width and moves to a line of its own when the row runs out, rather than shrinking past its words. Inside a `ButtonGroup` it is not needed: the group already stacks its buttons full width below `md`. The words stay centred. An unknown width throws a `RangeError`. The class is `sw-button-full`.
+
+On a coarse pointer (a phone or a tablet, `(pointer: coarse)`) every `Button`, `ButtonLink` and control built on them is at least 44 × 44 px (the md control height), whatever its `size`: an `xs` or `sm` Button keeps its padding and type but its box grows to the touch target, so a small row action in a table or a checklist is still easy to tap. A fine pointer keeps each size's height (28, 32 and 44 px). Rows holding small Buttons are taller on touch; two layouts keep `min-width: 0` so their Buttons can share a row, a full-width attached `ButtonGroup` below `md` and a `width="full"` Button in an `Inline`, and both keep the 44 px height. Popovers holding small Buttons grow too, such as `DateField`'s calendar with its footer.
 
 `ButtonLink` is a link drawn as a `Button`, for a destination that reads as an action, such as a site's Contact us or Sign in: an `<a href>` with the Button's `variant` (default `primary`), `size` (default `md`) and `width`, so it opens like any link (a new tab, a page rendered with no script) and keeps its variant's words over the canvas link colour, hover included. `aria-current="page"` marks the one that is the current page with the pressed button's ring (a Highlight border in forced colours). A link has no disabled state: render none instead. Use `Button` for a press that does something on the page. An unknown variant, size or width throws a `RangeError`; the class is `sw-button-link` beside the Button's own.
 

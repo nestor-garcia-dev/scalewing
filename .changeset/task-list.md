@@ -1,0 +1,9 @@
+---
+'@scalewing/react': minor
+---
+
+`TaskList`: a setup checklist, an `ol` (`role="list"`) named by `label` with one row per `items` entry (`{ id, title, detail?, status, action? }`): a 24 px status marker hidden from assistive technology (`done` a check on the success fill, `next` an accent ring round a dot, `todo` a grey ring, `waiting` a muted lock), the title, a muted detail line and an optional action at the row's end that wraps under the words on a narrow column. Each title is read with its status word ("Season, Done") as one hidden line; `labels` (`Partial<TaskListLabels>`) replaces the English words (`defaultTaskListLabels`), a word left out or `undefined` staying English. `action` may be a function given `{ titleId }` to describe the action by its task. Exports `TaskList`, `TaskListProps`, `TaskListItem`, `TaskListActionContext`, `TaskListLabels`, `TaskListStatus`, `taskListStatuses`, `defaultTaskListLabels`. New classes `sw-task-list*`; a blank label, word, id, title or detail, a repeated id, or an unknown status throws a `RangeError`. Request: `docs/requests/futmas-task-list.md`.
+
+`Button` (and `ButtonLink` and the controls built on them): on a coarse pointer every size is at least 44 × 44 px, the md control height, so an `xs` or `sm` Button in a table row or a checklist is a comfortable touch target. Padding and type keep the size's; only the minimum box grows, so rows and popovers holding small Buttons are taller on phones and tablets (DateField's calendar footer, Toast's action, a Step's Edit). Two layouts keep `min-width: 0` so they can share a row: a full-width attached `ButtonGroup` below md and a `width="full"` Button in an `Inline`; both keep the 44 px height. A fine pointer is unchanged. Request: `docs/requests/futmas-button-touch-target.md`.
+
+No new tokens or dependencies.
