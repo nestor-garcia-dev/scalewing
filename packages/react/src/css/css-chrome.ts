@@ -4,6 +4,7 @@ import {
   appHeaderBarClassCatalog,
   cssAppHeaderBarClasses,
 } from './css-app-header-bar.js';
+import { typedInputs } from './css-document.js';
 import { cssNavWordsClasses, navWordsClassCatalog } from './css-nav-words.js';
 import { zIndex } from './stacking.js';
 import { coarsePointerQuery, touchTarget } from './touch-target.js';
@@ -77,6 +78,26 @@ ${cssNavWordsClasses()}
   padding-inline-end: calc(
     var(--sw-control-xs-padding-inline) + var(--sw-space-5)
   );
+}
+
+/*
+ * The document canvas sizes every typed input under [data-theme] (0,2,1),
+ * which outranks the xs rule above, so an xs field's own text control
+ * matches it there. Adorned and search inputs sit one level deeper and keep
+ * their frames' rules. On a coarse pointer it is the 44 px touch target.
+ */
+[data-theme] .sw-field-xs > :is(${typedInputs}) {
+  font-size: ${caption.fontSize}px;
+  letter-spacing: ${caption.letterSpacing}px;
+  line-height: ${caption.lineHeight}px;
+  min-height: var(--sw-control-xs-min-height);
+  padding-inline: var(--sw-control-xs-padding-inline);
+}
+
+@media ${coarsePointerQuery} {
+  [data-theme] .sw-field-xs > :is(${typedInputs}) {
+    min-height: ${touchTarget};
+  }
 }`;
 }
 
