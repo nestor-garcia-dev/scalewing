@@ -68,6 +68,7 @@ import { StatTileSection } from './sections/stat-tile.js';
 import { DescriptionListSection } from './sections/description-list.js';
 import { ListGroupSection } from './sections/list-group.js';
 import { FixtureRowSection } from './sections/fixture-row.js';
+import { FixtureRowScoreSection } from './sections/fixture-row-score.js';
 import { ScheduleGridSection } from './sections/schedule-grid.js';
 import { DateToggleCalendarSection } from './sections/date-toggle-calendar.js';
 import { TabsSection } from './sections/tabs.js';
@@ -378,6 +379,12 @@ export const catalog = [
     label: 'FixtureRow',
     group: 'data',
     Section: FixtureRowSection,
+  },
+  {
+    id: 'fixture-row-score',
+    label: 'FixtureRow score',
+    group: 'data',
+    Section: FixtureRowScoreSection,
   },
   {
     id: 'schedule-grid',

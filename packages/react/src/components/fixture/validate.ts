@@ -3,6 +3,7 @@ import { badgeTones } from '../../css/css-data.js';
 import { fixtureCenterKinds, fixtureFlagTones } from '../../css/css-fixture.js';
 import { isOneOf } from '../../is-one-of.js';
 import { type FixtureRowProps } from './types.js';
+import { assertFixtureMiddle } from './validate-score.js';
 
 function isBlank(words: unknown): boolean {
   return typeof words !== 'string' || !words.trim();
@@ -10,15 +11,20 @@ function isBlank(words: unknown): boolean {
 
 /**
  * Fails closed on a row it cannot name or draw: a side without a name, a
- * blank centre, an unknown centre kind or breakpoint, a status with blank
- * words or an unknown tone, a flag with blank words or an unknown tone, a
- * blank address or `aria-label`, a `select` without a label, a boolean
- * `checked` or an `onCheckedChange`, or an
- * `aria-label` on a row that is neither a link nor a button.
+ * middle `assertFixtureMiddle` refuses, an unknown centre kind or
+ * breakpoint, a status with blank words or an unknown tone, a flag with
+ * blank words or an unknown tone, a blank address or `aria-label`, a
+ * `select` without a label, a boolean `checked` or an `onCheckedChange`,
+ * or an `aria-label` on a row that is neither a link nor a button.
  */
-export function assertFixtureRow({
+export function assertFixtureRow(props: FixtureRowProps): void {
+  assertFixtureParts(props);
+  assertFixtureMiddle(props);
+}
+
+/** Everything but the middle: the sides, status, flag, select and names. */
+function assertFixtureParts({
   away,
-  center,
   centerKind,
   flag,
   home,
@@ -32,7 +38,6 @@ export function assertFixtureRow({
   const name = 'FixtureRow';
   if (isBlank(home?.name) || isBlank(away?.name))
     throw new RangeError(`${name} home and away need nonempty names`);
-  if (isBlank(center)) throw new RangeError(`${name} center must be nonempty`);
   if (centerKind !== undefined && !isOneOf(fixtureCenterKinds, centerKind))
     throw new RangeError(
       `${name} centerKind must be one of ${fixtureCenterKinds.join(', ')}`,

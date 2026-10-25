@@ -1,19 +1,18 @@
 'use client';
 
-import { type MouseEvent, type ReactNode } from 'react';
+import { type MouseEvent, type ReactNode, useId } from 'react';
 
 import { cx } from '../class-names.js';
 import { hideClass } from '../css/breakpoints.js';
 import { tabStop } from '../tab-stop.js';
 import { Badge } from './Badge.js';
-import { Checkbox } from './Checkbox.js';
 import { useFixtureList } from './fixture/fixture-list-context.js';
 import {
-  type FixtureFlag,
-  type FixtureRowProps,
-  type FixtureSelect,
-  type FixtureSide,
-} from './fixture/types.js';
+  FixtureScoreBoxes,
+  FixtureScoreError,
+} from './fixture/FixtureScoreBoxes.js';
+import { Flag, Select, Side } from './fixture/row-parts.js';
+import { type FixtureRowProps } from './fixture/types.js';
 import { assertFixtureRow } from './fixture/validate.js';
 import { plainPress } from './link-press.js';
 import { hasSlot } from './slot.js';
@@ -21,60 +20,13 @@ import { hasSlot } from './slot.js';
 export type {
   FixtureFlag,
   FixtureRowProps,
+  FixtureScore,
+  FixtureScoreBox,
+  FixtureScoreSide,
   FixtureSelect,
   FixtureSide,
   FixtureStatus,
 } from './fixture/types.js';
-
-/**
- * The issue marker at the row's start: a drawn mark (its tooltip the
- * label) and the label in hidden words, read first in the row's name.
- */
-function Flag({ flag }: { flag: FixtureFlag }) {
-  return (
-    <span
-      className={`sw-fixture-flag sw-fixture-flag-${flag.tone ?? 'warning'}`}
-    >
-      <span
-        aria-hidden="true"
-        className="sw-fixture-flag-mark"
-        title={flag.label}
-      />
-      <span className="sw-sr-only">{flag.label}</span>
-    </span>
-  );
-}
-
-/** The leading checkbox: a Checkbox with its label visually hidden. */
-function Select({ select }: { select: FixtureSelect }) {
-  return (
-    <div className="sw-fixture-select">
-      <Checkbox
-        checked={select.checked}
-        disabled={select.disabled ?? false}
-        label={select.label}
-        labelVisuallyHidden
-        onCheckedChange={select.onCheckedChange}
-      />
-    </div>
-  );
-}
-
-/** One side: its name, and its mark on the centre's side (hidden). */
-function Side({ side, place }: { side: FixtureSide; place: 'home' | 'away' }) {
-  const mark = hasSlot(side.mark) ? (
-    <span aria-hidden="true" className="sw-fixture-mark">
-      {side.mark}
-    </span>
-  ) : null;
-  return (
-    <span className={`sw-fixture-team sw-fixture-team-${place}`}>
-      {place === 'away' ? mark : null}
-      <span className="sw-fixture-name">{side.name}</span>
-      {place === 'home' ? mark : null}
-    </span>
-  );
-}
 
 /**
  * One fixture in a FixtureGroup: the home side ending at the centre, the
@@ -83,22 +35,27 @@ function Side({ side, place }: { side: FixtureSide; place: 'home' | 'away' }) {
  * `href` or `onPress` the whole row is a link or a button with a chevron.
  * `flag` marks an issue at the row's start; `select` is a checkbox before
  * the row and `action` a control after it, both outside its press area.
- * Invalid words or props throw a `RangeError`.
+ * `score` puts two score boxes in the middle in place of `center`, and
+ * `detail` is a part under the row. Invalid words or props throw a
+ * `RangeError`.
  */
 export function FixtureRow(props: FixtureRowProps) {
   useFixtureList();
   assertFixtureRow(props);
+  const errorId = useId();
   const {
     action,
     away,
     center,
     centerKind = 'time',
+    detail,
     flag,
     home,
     href,
     meta,
     metaHideBelow,
     onPress,
+    score,
     select,
     status,
     'aria-label': ariaLabel,
@@ -106,6 +63,7 @@ export function FixtureRow(props: FixtureRowProps) {
   const hasMeta = hasSlot(meta);
   const pressable = href !== undefined || onPress !== undefined;
   const hasAction = hasSlot(action);
+  const hasDetail = hasSlot(detail);
   // Below md the end is a second line; with nothing on it (no status, and
   // meta absent or hidden below md) the flag stays on the first line.
   const endShownNarrow =
@@ -128,9 +86,13 @@ export function FixtureRow(props: FixtureRowProps) {
         </>
       ) : null}
       <Side place="home" side={home} />{' '}
-      <span className={`sw-fixture-center sw-fixture-center-${centerKind}`}>
-        {center}
-      </span>{' '}
+      {score ? (
+        <FixtureScoreBoxes errorId={errorId} score={score} />
+      ) : (
+        <span className={`sw-fixture-center sw-fixture-center-${centerKind}`}>
+          {center}
+        </span>
+      )}{' '}
       <Side place="away" side={away} />
       {hasMeta || status ? (
         <>
@@ -202,10 +164,13 @@ export function FixtureRow(props: FixtureRowProps) {
         'sw-fixture-item',
         select && 'sw-fixture-item-select',
         hasAction && 'sw-fixture-item-action',
+        (score || hasDetail) && 'sw-fixture-item-below',
       )}
     >
       {select ? <Select select={select} /> : null}
       {row}
+      {score ? <FixtureScoreError error={score.error} id={errorId} /> : null}
+      {hasDetail ? <div className="sw-fixture-detail">{detail}</div> : null}
       {hasAction ? <span className="sw-fixture-action">{action}</span> : null}
     </li>
   );

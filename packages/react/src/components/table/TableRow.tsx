@@ -7,12 +7,14 @@ import {
 
 import { cx } from '../../class-names.js';
 import {
+  assertTableRowRule,
   assertTableRowVariant,
+  type TableRowRule,
   type TableRowVariant,
 } from '../../css/css-table-ledger.js';
 import { rowPressAction } from './row-press.js';
 
-export type { TableRowVariant };
+export type { TableRowRule, TableRowVariant };
 
 export type TableRowProps = HTMLAttributes<HTMLTableRowElement> & {
   selected?: boolean;
@@ -34,6 +36,14 @@ export type TableRowProps = HTMLAttributes<HTMLTableRowElement> & {
    * flex item, a direct child of `Inline`, is). Works with either variant.
    */
   struck?: boolean;
+  /**
+   * `after` draws a rule under the row, 2 px in the muted grey across
+   * every cell, such as the cut under the last playoff place. It is not
+   * colour-coded and is not read aloud: say what it means in words beside
+   * the table ("The line under 4th place marks the playoff places").
+   * Works with any variant.
+   */
+  rule?: TableRowRule;
   /**
    * Makes the whole row a press target for its one action, such as a
    * search result that is picked: the row's first link or button (a
@@ -57,6 +67,7 @@ export const TableRow = forwardRef<HTMLTableRowElement, TableRowProps>(
       className,
       onClick,
       pressable = false,
+      rule,
       selected = false,
       struck = false,
       variant = 'default',
@@ -65,6 +76,7 @@ export const TableRow = forwardRef<HTMLTableRowElement, TableRowProps>(
     ref,
   ) {
     assertTableRowVariant(variant);
+    assertTableRowRule(rule);
     // The click the row hands its action bubbles back to the row; it is
     // the action's, so neither the row nor a consumer onClick takes it.
     const forwarding = useRef(false);
@@ -90,6 +102,7 @@ export const TableRow = forwardRef<HTMLTableRowElement, TableRowProps>(
           variant === 'sub' && 'sw-table-row-sub',
           variant === 'total' && 'sw-table-row-total',
           struck && 'sw-table-row-struck',
+          rule === 'after' && 'sw-table-row-rule-after',
           pressable && 'sw-table-row-press',
           className,
         )}

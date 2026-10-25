@@ -9,6 +9,10 @@ export type TableCellTone = (typeof tableCellTones)[number];
 export const tableRowVariants = ['default', 'sub', 'total'] as const;
 export type TableRowVariant = (typeof tableRowVariants)[number];
 
+/** A rule a row draws: `after`, a line under it, such as a cut. */
+export const tableRowRules = ['after'] as const;
+export type TableRowRule = (typeof tableRowRules)[number];
+
 export function assertTableCellTone(tone: unknown): void {
   if (tone !== undefined && !tableCellTones.includes(tone as TableCellTone))
     throw new RangeError(`Unknown TableCell tone: ${String(tone)}`);
@@ -17,6 +21,11 @@ export function assertTableCellTone(tone: unknown): void {
 export function assertTableRowVariant(variant: unknown): void {
   if (!tableRowVariants.includes(variant as TableRowVariant))
     throw new RangeError(`Unknown TableRow variant: ${String(variant)}`);
+}
+
+export function assertTableRowRule(rule: unknown): void {
+  if (rule !== undefined && !tableRowRules.includes(rule as TableRowRule))
+    throw new RangeError(`Unknown TableRow rule: ${String(rule)}`);
 }
 
 function toneRules(): string {

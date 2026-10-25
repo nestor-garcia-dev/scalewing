@@ -18,6 +18,7 @@ import { Section } from '../layout/Section.js';
 import { TableLayoutExamples } from './table-layout.js';
 import { TableLedgerExample } from './table-ledger.js';
 import { TableFooterExample } from './table-footer.js';
+import { TableRowRuleExample } from './table-row-rule.js';
 import { TableTotalRowExample } from './table-total-row.js';
 import {
   TableBoundedExample,
@@ -272,6 +273,13 @@ export function TableSection() {
           density="compact"
           label="Waders through the day, compact"
         />
+        <Text variant="label">A cut line under a row</Text>
+        <TableRowRuleExample />
+        <Text variant="label">The same cut, compact</Text>
+        <TableRowRuleExample
+          density="compact"
+          label="Nesting sites by nests, compact"
+        />
         <Text variant="label">A pinned total</Text>
         <TableFooterExample />
         <Text variant="label">A table that scrolls inside itself</Text>
@@ -290,10 +298,12 @@ export function TableSection() {
           variant sub under its entry (indenting its row header), variant total
           for a subtotal mid-table (weight 600 under the footer's 2 px rule, no
           fill) and struck for a voided row kept on the record, with a Badge
-          saying why. TableFooter holds a total at weight 600 under a heavier
-          rule; sticky pins it to the bottom edge, to the page while the table
-          fits its width, or to the region of a table bounded by maxHeight,
-          whose rows scroll inside it.
+          saying why. TableRow rule after draws a 2 px muted rule under a row,
+          such as a cut under the last place that goes through; say what it
+          means in words beside the table. TableFooter holds a total at weight
+          600 under a heavier rule; sticky pins it to the bottom edge, to the
+          page while the table fits its width, or to the region of a table
+          bounded by maxHeight, whose rows scroll inside it.
         </Text>
       </Stack>
     </Section>

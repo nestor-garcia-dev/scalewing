@@ -157,6 +157,52 @@ describe('FixtureRow CSS', () => {
     );
   });
 
+  it('draws score boxes as sm squares, the 44 px target on touch, after the canvas', () => {
+    const box = rule('[data-theme] input.sw-fixture-score-box');
+    expect(box).toContain('block-size: var(--sw-control-sm-min-height);');
+    expect(box).toContain('inline-size: var(--sw-control-sm-min-height);');
+    expect(box).toContain('min-height: 0;');
+    expect(box).toContain('font-variant-numeric: tabular-nums;');
+    expect(box).toContain('text-align: center;');
+    expect(css).toContain(
+      '@media (pointer: coarse) {\n  [data-theme] input.sw-fixture-score-box {\n    block-size: var(--sw-control-md-min-height);\n    inline-size: var(--sw-control-md-min-height);',
+    );
+    expect(css).toContain(
+      '@media not all and (min-width: 48rem) {\n  .sw-fixture-score { margin-inline: var(--sw-space-2); }\n}',
+    );
+    // Later than the canvas's text-control rule of the same specificity.
+    expect(
+      css.indexOf('[data-theme] input.sw-fixture-score-box {'),
+    ).toBeGreaterThan(css.indexOf("[data-theme] :is(input[type='text']"));
+    expect(
+      rule("[data-theme] input.sw-fixture-score-box[aria-invalid='true']"),
+    ).toContain('border-color: var(--sw-color-danger);');
+    expect(css).toContain(
+      "[data-theme] input.sw-fixture-score-box[aria-invalid='true'] { border-color: Mark; }",
+    );
+  });
+
+  it('puts the score message and the detail under the row, from the home side to the action', () => {
+    const error = rule('.sw-fixture-score-error');
+    expect(error).toContain('grid-column: 2 / -1;');
+    expect(error).toContain('grid-row: 2;');
+    expect(error).toContain('color: var(--sw-color-danger);');
+    expect(rule('.sw-fixture-score-error:not(:empty)')).toContain(
+      'padding-block-end: var(--sw-space-2);',
+    );
+    const detail = rule('.sw-fixture-detail');
+    expect(detail).toContain('grid-column: 2 / -1;');
+    expect(detail).toContain('grid-row: 3;');
+    expect(detail).toContain('padding: 0 var(--sw-space-2) var(--sw-space-2);');
+    expect(rule('.sw-fixture-item-below > .sw-fixture-row')).toContain(
+      'grid-row: 1;',
+    );
+    expect(css).toContain(
+      // Without subgrid the action stays on the row's line; the parts wrap after it.
+      '.sw-fixture-item-below > :is(.sw-fixture-score-error, .sw-fixture-detail) {\n    flex: 1 0 100%;\n    order: 1;',
+    );
+  });
+
   it('lists its classes once', () => {
     const catalog = utilityClassCatalog();
     expect(catalog).toEqual(
@@ -170,6 +216,12 @@ describe('FixtureRow CSS', () => {
         'sw-fixture-select',
         'sw-fixture-item-select',
         'sw-fixture-row-flag-inline',
+        'sw-fixture-score',
+        'sw-fixture-score-box',
+        'sw-fixture-score-dash',
+        'sw-fixture-score-error',
+        'sw-fixture-item-below',
+        'sw-fixture-detail',
       ]),
     );
     expect(new Set(catalog).size).toBe(catalog.length);
