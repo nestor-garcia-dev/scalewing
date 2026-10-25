@@ -1,6 +1,6 @@
 Scalewing request from FutMas.
 
-Status: accepted for `@scalewing/react` 1.53.0 (2026-10-24; FutMas F-010-S13, board C4 Add teams, the S13 plan's "Scalewing gap list" row 2; standing owner approval).
+Status: implemented for `@scalewing/react` 1.53.0 (accepted 2026-10-24; FutMas F-010-S13, board C4 Add teams, the S13 plan's "Scalewing gap list" row 2; standing owner approval).
 Renderer: react
 Missing surface: a side sheet: `Dialog placement="end"`. An extension of `Dialog`, not a new component.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: `Dialog` is centred or a bottom sheet only, and FutMas cannot position a top-layer dialog.

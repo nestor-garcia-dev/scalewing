@@ -1,6 +1,6 @@
 Scalewing request from FutMas.
 
-Status: accepted for `@scalewing/react` 1.53.0 (2026-10-24; FutMas F-010-S13 "teams and pasted teams", board C3 Teams, the S13 plan's "Scalewing gap list" row 1; standing owner approval for Scalewing changes and releases).
+Status: implemented for `@scalewing/react` 1.53.0 (accepted 2026-10-24; FutMas F-010-S13 "teams and pasted teams", board C3 Teams, the S13 plan's "Scalewing gap list" row 1; standing owner approval for Scalewing changes and releases).
 Renderer: react
 Missing surface: a table select column: `Checkbox` with a visually hidden label and a mixed state, and a `TableSelectCell` that renders it in a header or body cell. An extension of `Checkbox` plus one small Table part.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: `Checkbox` always draws its label and has no mixed state, so a select column cannot be a bare box named "Select Mattapan United", and "Select all" cannot show "some selected". FutMas cannot write CSS for the 44 px touch target.
