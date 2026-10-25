@@ -179,7 +179,7 @@ Next: Teisoro pins react 1.50.0 and tokens 1.7.0 in task 2710.
 FutMas F-010-S12, seasons and league settings: `TaskList`, a setup
 checklist with done, next, todo and waiting tasks (`futmas-task-list.md`),
 and every `Button` size the 44 px target on a coarse pointer
-(`futmas-button-touch-target.md`), in one PR, for
+(`futmas-button-touch-target.md`), in one PR (#254), released in
 `@scalewing/react` 1.51.0 on `@scalewing/tokens` 1.7.0. Next: FutMas pins
 react 1.51.0 in F-010-S12.
 

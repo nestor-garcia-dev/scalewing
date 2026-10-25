@@ -1,6 +1,6 @@
 Scalewing request from FutMas.
 
-Status: implemented for `@scalewing/react` 1.51.0 (accepted 2026-10-24; FutMas F-010-S12, the S12 plan's "Scalewing gap list" row 2; standing owner approval for Scalewing changes and releases).
+Status: released in `@scalewing/react` 1.51.0 (PR #254; accepted 2026-10-24; FutMas F-010-S12, the S12 plan's "Scalewing gap list" row 2; standing owner approval for Scalewing changes and releases).
 Renderer: react
 Missing surface: a 44 px touch target for every `Button` size on a coarse pointer. An extension of `Button`, not a new component.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: C1's checklist actions and Settings' row buttons are `size="sm"` (32 px), the F-010 acceptance criteria ask for 44 px targets on touch, and FutMas cannot write media queries. Scalewing gave 44 px only to icon-only Buttons, Buttons in `Nav`, `EmptyState` and `DateRangeButton`'s actions, not to a plain `sm` Button.

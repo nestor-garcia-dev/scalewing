@@ -1,6 +1,6 @@
 Scalewing request from FutMas.
 
-Status: implemented for `@scalewing/react` 1.51.0 (accepted 2026-10-24; FutMas F-010-S12 "seasons, competitions and league settings": the draft season Overview's checklist, board C1DraftOverview, and the published season's, D5bPublished; reused by S15's publish review; the owner approved the F-010 canvas v15 and the whole feature on 2026-10-24, with standing approval for Scalewing changes, PRs, merges and publishing).
+Status: released in `@scalewing/react` 1.51.0 (PR #254; accepted 2026-10-24; FutMas F-010-S12 "seasons, competitions and league settings": the draft season Overview's checklist, board C1DraftOverview, and the published season's, D5bPublished; reused by S15's publish review; the owner approved the F-010 canvas v15 and the whole feature on 2026-10-24, with standing approval for Scalewing changes, PRs, merges and publishing).
 Renderer: react
 Missing surface: `TaskList`, a setup checklist: tasks in order, each with a status marker, a title, a muted detail and an action at the row's end, and the status said to assistive technology.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: FutMas owns no CSS for the markers (a check on the success fill, an accent ring round a dot, an empty ring, a lock), the row's wrap on a phone, or the hidden status words.
