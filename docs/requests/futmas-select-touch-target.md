@@ -1,6 +1,6 @@
 Scalewing request from FutMas.
 
-Status: accepted for `@scalewing/react` 1.53.0 (2026-10-24; FutMas F-010-S13 "Layouts" row: Select triggers 44 px on a coarse pointer; standing owner approval).
+Status: implemented for `@scalewing/react` 1.53.0 (accepted 2026-10-24; FutMas F-010-S13 "Layouts" row: Select triggers 44 px on a coarse pointer; standing owner approval).
 Renderer: react
 Missing surface: a 44 px touch target for every `Select` size on a coarse pointer, as `Button` got in 1.51.0 (`futmas-button-touch-target.md`). An extension of `Select`.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: the S13 inline division Select and PasteRows' column Selects are `size="xs"` (28 px) and FutMas cannot write media queries.

@@ -1,6 +1,6 @@
 Scalewing request from FutMas.
 
-Status: accepted for `@scalewing/react` 1.53.0 (2026-10-24; FutMas F-010-S13, board C4 Add teams, the S13 plan's "Scalewing gap list" row 3; standing owner approval).
+Status: implemented for `@scalewing/react` 1.53.0 (accepted 2026-10-24; FutMas F-010-S13, board C4 Add teams, the S13 plan's "Scalewing gap list" row 3; standing owner approval).
 Renderer: react
 Missing surface: `PasteRows`, a text area for rows pasted from a spreadsheet with one Select per found column choosing what it means.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: nothing parses pasted rows or maps columns; FutMas would grow its own control.

@@ -181,8 +181,8 @@ FutMas F-010-S13, teams and pasted teams: a table select column
 `futmas-table-row-selection.md`), `Dialog placement="end"`
 (`futmas-dialog-side-panel.md`), `PasteRows` (`futmas-paste-rows.md`) and
 every `Select` size the 44 px target on a coarse pointer
-(`futmas-select-touch-target.md`), in one PR, for `@scalewing/react`
-1.53.0. Next: FutMas pins react 1.53.0 in F-010-S13.
+(`futmas-select-touch-target.md`), in one PR (#258), released in
+`@scalewing/react` 1.53.0. Next: FutMas pins react 1.53.0 in F-010-S13.
 
 FutMas F-010-S12, seasons and league settings: `TaskList`, a setup
 checklist with done, next, todo and waiting tasks (`futmas-task-list.md`),
