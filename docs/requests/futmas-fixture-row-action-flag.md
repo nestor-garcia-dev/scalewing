@@ -1,6 +1,6 @@
 Scalewing request from FutMas.
 
-Status: accepted for `@scalewing/react` 1.55.0 (2026-10-25; FutMas F-010-S15 "Build, review and publish the schedule" gap 1: the review list's Move button and can't-play clash flag; standing owner approval).
+Status: implemented for `@scalewing/react` 1.55.0 (accepted 2026-10-25; FutMas F-010-S15 "Build, review and publish the schedule" gap 1: the review list's Move button and can't-play clash flag; standing owner approval).
 Renderer: react
 Missing surface: a trailing action and a named leading flag on a fixture row. An extension of `FixtureRow`.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: `FixtureRow` has `home`, `away`, `center`, `meta`, `status` and a whole-row `href`/`onPress`, but no control outside the row's press target (D2's "Move") and no leading marker with a spoken name (D2's "Can't-play clash"); the consumer cannot add either without its own CSS on Scalewing's grid.

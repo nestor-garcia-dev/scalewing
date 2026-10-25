@@ -181,8 +181,8 @@ FutMas F-010-S15, build, review and publish the schedule: `FixtureRow`
 (`futmas-fixture-row-action-flag.md`), `ScheduleGrid`, games by time and
 field moved by drag, taps or keys with drop-to-swap and consumer drop
 rules (`futmas-schedule-grid.md`), and `DateToggleCalendar`, days off on
-month grids (`futmas-date-toggle-calendar.md`), in one PR, for
-`@scalewing/react` 1.55.0. Next: FutMas pins react 1.55.0 in F-010-S15.
+month grids (`futmas-date-toggle-calendar.md`), in one PR (#262),
+released in `@scalewing/react` 1.55.0. Next: FutMas pins react 1.55.0 in F-010-S15.
 
 FutMas F-010-S14, venues and season rules: `Box as="a" external` with
 `newTabLabel`, a link that opens a new tab with an arrow and hidden words
