@@ -1,5 +1,11 @@
 # @scalewing/react
 
+## 1.52.0
+
+### Minor Changes
+
+- 03f2e78: Site chrome follow-ups from Teisoro's marketing-site UX review. `SiteHeader` takes an optional `skipLink` (`{ label, href }`, exported as `SiteHeaderSkipLink`): a "skip to content" link that is the header's first focusable element, visually hidden until it has focus, then a pill on the surface with the accent ring laid over the bar's start (`sw-site-header-skip-link`); a blank label or an `href` that is not a `#fragment` throws a `RangeError`. While a sticky `SiteHeader` is on the page, the document's `scroll-padding-top` clears the bar (56 px, 72 px from `lg`), its hairline and a small gap, so `#fragment` links, `:target` and `scrollIntoView` land below the bar; a header with `sticky={false}` changes nothing. Below `lg`, the bar's `compactActions` (now in a `sw-site-header-compact-actions` box with `display: contents`) step aside while the menu is open, since the menu holds its own `menuActions`, leaving the brand and the close button. On a coarse pointer, a plain link that is all of a `SiteFooter` bottom-row slot (`legal` or `end`) gets the 44 px touch target, as the group links have. No new tokens or dependencies. Request: `docs/requests/teisoro-site-chrome-follow-ups.md`.
+
 ## 1.51.0
 
 ### Minor Changes

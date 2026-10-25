@@ -1,6 +1,6 @@
 # Teisoro: site chrome follow-ups (skip link, anchor offset, menu actions, footer touch targets)
 
-Status: implemented, pending release, for the next `@scalewing/react` minor.
+Status: released in `@scalewing/react` 1.52.0 (PR #256).
 
 Scalewing request from Teisoro.
 
