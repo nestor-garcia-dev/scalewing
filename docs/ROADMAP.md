@@ -191,6 +191,13 @@ F-010-S22. Follow-ups: `ScheduleGrid`'s own polite status could move onto
 `LiveRegion`; toned words (success, danger, accent) on the quiet fill fall
 under 4.5:1 in some palettes, a palette-wide question for tokens.
 
+FutMas F-010-S22 audit fixes, fourth patch: forced colours show every
+choice. The chosen `FilterChips` chip keeps its words (Chromium's Canvas
+backplate hid HighlightText), and the plain and filled `SegmentedControl`
+outline their selected item in Highlight as the icon and raised tracks do.
+FutMas's forced-colours captures found both. Released in `@scalewing/react`
+1.59.5. Next: FutMas pins react 1.59.5 in F-010-S22.
+
 FutMas F-010-S22 audit fixes, third patch: focus clear of sticky chrome
 (WCAG 2.4.11). `AppShell` measures its page bar and gives `main`'s contents
 a scroll margin past it (and the compact bar below `lg`); a stuck

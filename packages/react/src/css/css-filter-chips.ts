@@ -147,7 +147,8 @@ ${cssFilterChipsRowClasses()}
 @media (forced-colors: active) {
   .sw-filter-chip-face { background: Canvas; border-color: CanvasText; color: CanvasText; }
   .sw-filter-chips-error { color: Mark; }
-  .sw-filter-chip-input:checked + .sw-filter-chip-face { background: Highlight; border-color: Highlight; color: HighlightText; }
+  /* Chromium paints a Canvas backplate behind text in forced colours; HighlightText on it vanishes. */
+  .sw-filter-chip-input:checked + .sw-filter-chip-face { background: Highlight; border-color: Highlight; color: HighlightText; forced-color-adjust: none; }
   .sw-filter-chip-input:focus-visible + .sw-filter-chip-face { outline-color: Highlight; }
   .sw-filter-chip-count { color: inherit; }
   /* After the checked rule, so every chip, the chosen one too, takes the edge. */
