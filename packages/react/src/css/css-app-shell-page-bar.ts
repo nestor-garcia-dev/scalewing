@@ -9,6 +9,9 @@ import { coarsePointerQuery, touchTarget } from './touch-target.js';
  */
 export const appShellBarHeightVariable = '--sw-app-shell-bar-height';
 
+/** The page bar's measured height, set beside the bar's. */
+export const appShellPageBarHeightVariable = '--sw-app-shell-page-bar-height';
+
 /*
  * The bar's usual height before it is measured (and without script): the
  * sm menu button, or the touch target on a coarse pointer, inside the
@@ -54,6 +57,34 @@ function pageBarRules(): string {
   .sw-app-shell-page-bar {
     padding-inline: var(--sw-space-6);
     top: 0;
+  }
+}
+
+${focusClearRules()}`;
+}
+
+/*
+ * Focus clear of the sticky chrome (WCAG 2.4.11): when the browser scrolls a
+ * focused control into view, it stops a space-2 below the page bar (and the
+ * compact bar over it below `lg`), not under them. The page bar's measured
+ * height falls back to its usual one: an sm control in its space-2 padding
+ * and hairline.
+ */
+function focusClearRules(): string {
+  const pageBar = `var(${appShellPageBarHeightVariable}, ${barHeightFallback('var(--sw-control-sm-min-height)')})`;
+  return `.sw-app-shell-main:has(> .sw-app-shell-page-bar) * {
+  scroll-margin-block-start: calc(var(${appShellBarHeightVariable}, ${barHeightFallback('var(--sw-control-sm-min-height)')}) + ${pageBar} + var(--sw-space-2));
+}
+
+@media ${coarsePointerQuery} {
+  .sw-app-shell-main:has(> .sw-app-shell-page-bar) * {
+    scroll-margin-block-start: calc(var(${appShellBarHeightVariable}, ${barHeightFallback(touchTarget)}) + ${pageBar} + var(--sw-space-2));
+  }
+}
+
+@media ${fromLg} {
+  .sw-app-shell-main:has(> .sw-app-shell-page-bar) * {
+    scroll-margin-block-start: calc(${pageBar} + var(--sw-space-2));
   }
 }`;
 }

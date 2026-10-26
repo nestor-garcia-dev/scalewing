@@ -4,7 +4,10 @@ import { type CSSProperties, useEffect, useId, useRef, useState } from 'react';
 
 import { breakpointQuery } from '../css/breakpoints.js';
 import { appShellWideQuery } from '../css/css-app-shell.js';
-import { appShellBarHeightVariable } from '../css/css-app-shell-page-bar.js';
+import {
+  appShellBarHeightVariable,
+  appShellPageBarHeightVariable,
+} from '../css/css-app-shell-page-bar.js';
 import { AppShellBar } from './app-shell/AppShellBar.js';
 import { AppShellDrawer } from './app-shell/AppShellDrawer.js';
 import { AppShellSidebar } from './app-shell/AppShellSidebar.js';
@@ -78,10 +81,21 @@ export function AppShell({
   const hasPageBar =
     pageBar !== undefined && pageBar !== null && pageBar !== false;
   const barHeight = useElementHeight(barRef, hasPageBar);
+  // The page bar's own height keeps a focused control clear of it when the
+  // browser scrolls it into view (WCAG 2.4.11), however much it wraps.
+  const pageBarRef = useRef<HTMLDivElement>(null);
+  const pageBarHeight = useElementHeight(pageBarRef, hasPageBar);
   const shellStyle =
-    barHeight === null
+    barHeight === null && pageBarHeight === null
       ? undefined
-      : ({ [appShellBarHeightVariable]: `${barHeight}px` } as CSSProperties);
+      : ({
+          ...(barHeight === null
+            ? {}
+            : { [appShellBarHeightVariable]: `${barHeight}px` }),
+          ...(pageBarHeight === null
+            ? {}
+            : { [appShellPageBarHeightVariable]: `${pageBarHeight}px` }),
+        } as CSSProperties);
 
   // The drawer belongs to the bar, which is gone from `lg` up: a window
   // widened while it is open closes it.
@@ -132,7 +146,9 @@ export function AppShell({
         tabIndex={skipLink ? -1 : undefined}
       >
         {hasPageBar ? (
-          <div className="sw-app-shell-page-bar">{pageBar}</div>
+          <div ref={pageBarRef} className="sw-app-shell-page-bar">
+            {pageBar}
+          </div>
         ) : null}
         {children}
       </main>
