@@ -236,6 +236,59 @@ describe('Dialog', () => {
     expect(onClose).not.toHaveBeenCalled();
   });
 
+  it('closes before it unmounts while open, so the browser returns focus, without asking onClose', () => {
+    const onClose = vi.fn();
+    const close = vi.spyOn(HTMLDialogElement.prototype, 'close');
+    function Host({ shown }: { shown: boolean }) {
+      return shown ? (
+        <Dialog open title="Count herons" closeLabel="Close" onClose={onClose}>
+          <Text>Body</Text>
+        </Dialog>
+      ) : null;
+    }
+    const { rerender } = render(<Host shown />);
+    const node = screen.getByRole('dialog');
+    let connected: boolean | null = null;
+    close.mockImplementation(function (this: HTMLDialogElement) {
+      connected = this.isConnected;
+      this.removeAttribute('open');
+      this.dispatchEvent(new Event('close'));
+    });
+    rerender(<Host shown={false} />);
+    expect(close).toHaveBeenCalledTimes(1);
+    // Still in the document when it closes: that is what returns focus.
+    expect(connected).toBe(true);
+    expect(node.isConnected).toBe(false);
+    expect(onClose).not.toHaveBeenCalled();
+  });
+
+  it('does not close again on unmount once it is closed', () => {
+    const close = vi.spyOn(HTMLDialogElement.prototype, 'close');
+    const { rerender, unmount } = render(
+      <Dialog
+        open
+        title="Count herons"
+        closeLabel="Close"
+        onClose={() => undefined}
+      >
+        <Text>Body</Text>
+      </Dialog>,
+    );
+    rerender(
+      <Dialog
+        open={false}
+        title="Count herons"
+        closeLabel="Close"
+        onClose={() => undefined}
+      >
+        <Text>Body</Text>
+      </Dialog>,
+    );
+    expect(close).toHaveBeenCalledTimes(1);
+    unmount();
+    expect(close).toHaveBeenCalledTimes(1);
+  });
+
   it('leaves Escape to a nested control that used it', () => {
     const onClose = vi.fn();
     render(<ControlledDialog onClose={onClose} />);

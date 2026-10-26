@@ -1,5 +1,6 @@
 import {
   useEffect,
+  useLayoutEffect,
   useRef,
   useState,
   type FormEvent,
@@ -110,6 +111,21 @@ export function useDialogCloseRequests({
     if (open && !node.open) node.showModal();
     if (!open && node.open) node.close();
   }, [open, browserCloses]);
+
+  // A consumer that renders the dialog only while it is open unmounts it
+  // instead of passing `open={false}`. Closing it first, while it is still
+  // in the document (a layout cleanup runs before React removes the node),
+  // lets the browser hand focus back to the element that had it when the
+  // dialog opened, as a dialog closed by its prop does. Removed while open,
+  // a modal dialog leaves focus on the body (WCAG 2.4.3).
+  useLayoutEffect(() => {
+    const node = nodeRef.current;
+    return () => {
+      if (!node?.open) return;
+      openRef.current = false;
+      node.close();
+    };
+  }, []);
 
   function handleKeyDown(event: KeyboardEvent<HTMLDialogElement>) {
     onKeyDown?.(event);
