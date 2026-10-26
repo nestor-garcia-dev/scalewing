@@ -191,6 +191,13 @@ F-010-S22. Follow-ups: `ScheduleGrid`'s own polite status could move onto
 `LiveRegion`; toned words (success, danger, accent) on the quiet fill fall
 under 4.5:1 in some palettes, a palette-wide question for tokens.
 
+FutMas F-010-S22 audit fixes, third patch: focus clear of sticky chrome
+(WCAG 2.4.11). `AppShell` measures its page bar and gives `main`'s contents
+a scroll margin past it (and the compact bar below `lg`); a stuck
+`ActionBar` gives the document a bottom scroll padding. FutMas's Tab sweep
+found controls scrolled behind both. Released in `@scalewing/react` 1.59.4.
+Next: FutMas pins react 1.59.4 in F-010-S22.
+
 FutMas F-010-S22 audit fixes, second patch: a `Dialog` unmounted while
 open closes first, so focus returns to its opener (FutMas renders most
 dialogs only while open, and focus fell to the body), and a

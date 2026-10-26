@@ -36,13 +36,15 @@ describe('AppShell pageBar', () => {
     }
   });
 
-  it('sets the compact bar’s measured height on the shell while there is a band', () => {
-    let resize: () => void = () => undefined;
+  it('sets the compact bar’s and the band’s measured heights on the shell while there is a band', () => {
+    // The bar and the band each have an observer.
+    const observers: (() => void)[] = [];
+    const resize = () => observers.forEach((callback) => callback());
     vi.stubGlobal(
       'ResizeObserver',
       class {
         constructor(callback: () => void) {
-          resize = callback;
+          observers.push(callback);
         }
         observe() {}
         disconnect() {}
@@ -57,6 +59,9 @@ describe('AppShell pageBar', () => {
     expect(shell.style.getPropertyValue('--sw-app-shell-bar-height')).toBe(
       '57px',
     );
+    expect(shell.style.getPropertyValue('--sw-app-shell-page-bar-height')).toBe(
+      '57px',
+    );
     height = 0;
     act(() => resize());
     expect(shell.style.getPropertyValue('--sw-app-shell-bar-height')).toBe('');
@@ -68,6 +73,16 @@ describe('AppShell pageBar', () => {
     );
     rerender(<div />);
     vi.restoreAllMocks();
+  });
+
+  it('keeps a focused control clear of the band and the bar when it scrolls into view', () => {
+    const css = generateStylesheet();
+    expect(css).toContain(
+      '.sw-app-shell-main:has(> .sw-app-shell-page-bar) * {\n  scroll-margin-block-start: calc(var(--sw-app-shell-bar-height,',
+    );
+    expect(css).toContain(
+      'scroll-margin-block-start: calc(var(--sw-app-shell-page-bar-height, calc(var(--sw-control-sm-min-height) + 2 * var(--sw-space-2) + 1px)) + var(--sw-space-2));',
+    );
   });
 
   it('measures nothing without a band', () => {

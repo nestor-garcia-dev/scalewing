@@ -32,6 +32,20 @@ export function actionBarStickyClass(
     : 'sw-action-bar-sticky';
 }
 
+/*
+ * While a bar is stuck to the bottom, the document keeps a focused control
+ * clear of it when the browser scrolls it into view (WCAG 2.4.11): the
+ * bar's one-row height (an md control in its space-3 padding and hairline
+ * border), its lift off the edge, and a space-2 gap. A bar that wraps to a
+ * second row is taller than this.
+ */
+export const actionBarClearance =
+  'calc(var(--sw-control-md-min-height) + 2 * var(--sw-space-3) + 2px + 2 * var(--sw-space-2) + env(safe-area-inset-bottom, 0px))';
+
+function clearOf(stickyClass: string, indent: string): string {
+  return `${indent}:root:has(.${stickyClass}) { scroll-padding-block-end: ${actionBarClearance}; }`;
+}
+
 function stickyRules(): string {
   const below = breakpoints
     .map(
@@ -39,12 +53,16 @@ function stickyRules(): string {
   .${actionBarStickyClass(breakpoint)} {
 ${stuckToBottom('    ')}
   }
+
+${clearOf(actionBarStickyClass(breakpoint), '  ')}
 }`,
     )
     .join('\n\n');
   return `.sw-action-bar-sticky {
 ${stuckToBottom('  ')}
 }
+
+${clearOf('sw-action-bar-sticky', '')}
 
 ${below}`;
 }

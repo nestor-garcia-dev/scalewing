@@ -131,6 +131,19 @@ describe('ActionBar', () => {
     expect(rule).toContain('min-width: 0;');
   });
 
+  it('keeps a focused control clear of a stuck bar when the page scrolls to it', () => {
+    const css = generateStylesheet();
+    const clearance =
+      'scroll-padding-block-end: calc(var(--sw-control-md-min-height) + 2 * var(--sw-space-3) + 2px + 2 * var(--sw-space-2) + env(safe-area-inset-bottom, 0px));';
+    expect(css).toContain(`:root:has(.sw-action-bar-sticky) { ${clearance} }`);
+    // A bar sticky below a breakpoint clears only below it.
+    const below = css.indexOf(':root:has(.sw-action-bar-sticky-below-md)');
+    expect(below).toBeGreaterThan(-1);
+    const media = css.slice(css.lastIndexOf('@media', below), below);
+    expect(media).toContain('.sw-action-bar-sticky-below-md {');
+    expect(media).not.toContain('}\n}');
+  });
+
   it('generates a glass bar that clears the safe area when stuck', () => {
     const css = generateStylesheet();
     const catalog = utilityClassCatalog();
