@@ -195,8 +195,8 @@ FutMas F-010-S22 audit fixes, second patch: a `Dialog` unmounted while
 open closes first, so focus returns to its opener (FutMas renders most
 dialogs only while open, and focus fell to the body), and a
 `ContextSwitcher` trigger's muted words read as text on its open or hovered
-quiet fill (4.14:1 before), for the next `@scalewing/react` patch. Next:
-release it, then FutMas pins it in F-010-S22.
+quiet fill (4.14:1 before), released in `@scalewing/react` 1.59.3. Next:
+FutMas pins react 1.59.3 in F-010-S22.
 
 FutMas F-010-S22 audit fixes: `GlyphTile` letters were text on a fill
 that keeps white at only 3:1 (neutral crests 3.26:1, axe serious on every
