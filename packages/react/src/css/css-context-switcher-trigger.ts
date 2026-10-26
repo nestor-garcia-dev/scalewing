@@ -1,7 +1,7 @@
 import { typographyVariants } from '@scalewing/tokens';
 
 import { chevronStroke } from './chevron.js';
-import { quietFill } from './quiet-fill.js';
+import { mutedReadsAsText, quietFill } from './quiet-fill.js';
 import { coarsePointerQuery, touchTarget } from './touch-target.js';
 
 const label = typographyVariants.label;
@@ -110,6 +110,13 @@ ${trigger}[aria-expanded='true'] {
   ${trigger}:hover {
     background: ${quietFill};
   }
+}
+
+/* The consumer's muted words on the quiet fill read as the text colour (4.14:1 before). */
+${mutedReadsAsText([`${trigger}[aria-expanded='true'] *`])}
+
+@media (hover: hover) {
+  ${mutedReadsAsText([`${trigger}:hover *`])}
 }
 
 ${trigger}:focus-visible {

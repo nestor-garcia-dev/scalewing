@@ -191,6 +191,13 @@ F-010-S22. Follow-ups: `ScheduleGrid`'s own polite status could move onto
 `LiveRegion`; toned words (success, danger, accent) on the quiet fill fall
 under 4.5:1 in some palettes, a palette-wide question for tokens.
 
+FutMas F-010-S22 audit fixes, second patch: a `Dialog` unmounted while
+open closes first, so focus returns to its opener (FutMas renders most
+dialogs only while open, and focus fell to the body), and a
+`ContextSwitcher` trigger's muted words read as text on its open or hovered
+quiet fill (4.14:1 before), for the next `@scalewing/react` patch. Next:
+release it, then FutMas pins it in F-010-S22.
+
 FutMas F-010-S22 audit fixes: `GlyphTile` letters were text on a fill
 that keeps white at only 3:1 (neutral crests 3.26:1, axe serious on every
 FutMas page); a tile holding letters now mixes its fill 25 % toward black

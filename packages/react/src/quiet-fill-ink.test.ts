@@ -2,6 +2,7 @@ import { contrastRatio } from '@scalewing/tokens';
 import { describe, expect, it } from 'vitest';
 
 import { groupedCanvasMutedShare } from './css/css-canvas-grouped.js';
+import { cssContextSwitcherTriggerClasses } from './css/css-context-switcher-trigger.js';
 import { cssFixtureClasses } from './css/css-fixture.js';
 import { cssListRowClasses } from './css/css-list-row.js';
 import { cssTablePressClasses } from './css/css-table-press.js';
@@ -86,6 +87,17 @@ describe('Muted words on the quiet fill', () => {
     );
     expect(css).toContain(
       ':is(.sw-fixture-item-action, .sw-fixture-item-select):has(> .sw-fixture-row-pressable:hover) > .sw-fixture-detail {',
+    );
+  });
+
+  it('applies to an open or hovered ContextSwitcher trigger’s words', () => {
+    const css = cssContextSwitcherTriggerClasses();
+    expect(css).toContain(
+      ".sw-context-switcher-trigger[aria-expanded='true'] * {\n  --sw-color-muted: var(--sw-color-text);\n}",
+    );
+    // Hover only where a pointer hovers.
+    expect(css).toMatch(
+      /@media \(hover: hover\) \{\n {2}\.sw-context-switcher-trigger:hover \* \{\n {2}--sw-color-muted: var\(--sw-color-text\);\n\}\n\}/,
     );
   });
 
