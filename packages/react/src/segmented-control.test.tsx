@@ -136,6 +136,18 @@ describe('SegmentedControl invalid outline', () => {
     );
   });
 
+  it("outlines every variant's chosen item in forced colours", () => {
+    // FutMas F-010-S22: the plain and filled tracks lost their choice.
+    const forced = css.slice(
+      css.indexOf(
+        "@media (forced-colors: active) {\n  .sw-segmented[aria-invalid='true']",
+      ),
+    );
+    expect(forced.slice(0, forced.indexOf('\n}'))).toContain(
+      '.sw-segmented-item-selected { outline: 2px solid Highlight; }',
+    );
+  });
+
   it('keeps the outline at 3:1 against the page and surface in every palette and scheme', () => {
     const token = rule![1] as SemanticColorKey;
     forEveryTheme((colors, label) => {

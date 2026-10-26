@@ -110,6 +110,8 @@ function fieldRules(): string {
 
 @media (forced-colors: active) {
   .sw-segmented[aria-invalid='true'] { border-color: Mark; }
+  /* Every variant's chosen item: its surface or accent fill is dropped. */
+  .sw-segmented-item-selected { outline: 2px solid Highlight; }
 }`;
 }
 

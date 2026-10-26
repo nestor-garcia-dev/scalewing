@@ -135,6 +135,14 @@ describe('FilterChips validation CSS', () => {
     );
   });
 
+  it("keeps the chosen chip's words off the forced-colours backplate", () => {
+    // FutMas F-010-S22: Chromium paints a Canvas backplate behind text in
+    // forced colours, so HighlightText words on the chosen chip vanished.
+    expect(css).toContain(
+      '.sw-filter-chip-input:checked + .sw-filter-chip-face { background: Highlight; border-color: Highlight; color: HighlightText; forced-color-adjust: none; }',
+    );
+  });
+
   it('edges the chosen chip too, after its checked rule, in both modes', () => {
     const invalid =
       ".sw-filter-chips[aria-invalid='true'] .sw-filter-chip-face {";
