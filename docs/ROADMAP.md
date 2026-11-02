@@ -181,6 +181,10 @@ FutMas F-010-S19 fix: an xs `Field`'s own text input lost to the canvas's
 the xs size, and the 44 px target on a coarse pointer (#272), released in
 `@scalewing/react` 1.59.1. Next: FutMas pins react 1.59.1 in F-010-S19.
 
+Teisoro F-017 task 2730: `PreviewImage`, a real screenshot inside a
+`ScreenPreview` (`teisoro-preview-image.md`). Next: release it in
+`@scalewing/react`, then Teisoro pins that version in task 2730.
+
 FutMas F-010-S22, Spanish, keyboard and screen-reader audit: muted words
 take the text colour on a pressable `FixtureRow`, `ListRow` or `TableRow`'s
 quiet fill (gap 1, 4.14:1 before); `LiveRegion`, a status line that

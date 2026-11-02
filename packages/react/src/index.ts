@@ -536,6 +536,8 @@ export type {
   ScreenPreviewProps,
 } from './components/ScreenPreview.js';
 export { PreviewGroup } from './components/screen-preview/PreviewGroup.js';
+export { PreviewImage } from './components/screen-preview/PreviewImage.js';
+export type { PreviewImageProps } from './components/screen-preview/PreviewImage.js';
 export {
   PreviewRow,
   previewRowKinds,

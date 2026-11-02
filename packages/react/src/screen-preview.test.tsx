@@ -3,6 +3,7 @@ import { afterEach, describe, expect, it } from 'vitest';
 
 import { ScreenPreview } from './components/ScreenPreview.js';
 import { PreviewGroup } from './components/screen-preview/PreviewGroup.js';
+import { PreviewImage } from './components/screen-preview/PreviewImage.js';
 import { PreviewRow } from './components/screen-preview/PreviewRow.js';
 import { PreviewTiles } from './components/screen-preview/PreviewTiles.js';
 import { generateStylesheet, utilityClassCatalog } from './css/stylesheet.js';
@@ -163,5 +164,45 @@ describe('ScreenPreview', () => {
         'sw-preview-tiles',
       ]),
     );
+  });
+});
+
+describe('PreviewImage', () => {
+  it('draws a screenshot inside the one image the label names, at the screen width', () => {
+    render(
+      <ScreenPreview label="The real board">
+        <PreviewImage height={200} src="/board.png" width={320} />
+      </ScreenPreview>,
+    );
+    const screenImage = screen.getByRole('img', { name: 'The real board' });
+    const picture = screenImage.querySelector('img');
+    expect(picture?.getAttribute('alt')).toBe('');
+    expect(picture?.getAttribute('src')).toBe('/board.png');
+    expect(picture?.getAttribute('width')).toBe('320');
+    expect(picture?.getAttribute('height')).toBe('200');
+    expect(picture?.getAttribute('loading')).toBe('lazy');
+    expect(picture?.className).toBe('sw-preview-image');
+    expect(utilityClassCatalog()).toContain('sw-preview-image');
+    expect(css).toMatch(
+      /\.sw-preview-image \{[^}]*height: auto;[^}]*width: 100%;/,
+    );
+  });
+
+  it('refuses a blank source or a size that is not a whole positive number', () => {
+    expect(() => render(<PreviewImage height={1} src=" " width={1} />)).toThrow(
+      RangeError,
+    );
+    expect(() =>
+      render(<PreviewImage height={0} src="/a.png" width={1} />),
+    ).toThrow(RangeError);
+    expect(() =>
+      render(<PreviewImage height={1} src="/a.png" width={1.5} />),
+    ).toThrow(RangeError);
+    expect(() =>
+      render(<PreviewImage height={Number.NaN} src="/a.png" width={1} />),
+    ).toThrow(RangeError);
+    expect(() =>
+      render(<PreviewImage height={1} src="/a.png" width={-1} />),
+    ).toThrow(RangeError);
   });
 });
