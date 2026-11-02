@@ -1,6 +1,6 @@
 Scalewing request from FutMas.
 
-Status: implemented for FutMas F-010-S28; pending release.
+Status: released in `@scalewing/react` 1.61.0 and `@scalewing/tokens` 1.8.0 for FutMas F-010-S28.
 Renderer: react
 Missing surface: `TabItem` `count`, `countLabel`, `countTone`.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: FutMas's Schedule needs a tab like "Postponed (4)" with an amber count while games need a time.

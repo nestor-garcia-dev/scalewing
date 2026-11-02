@@ -1,6 +1,6 @@
 Scalewing request from FutMas.
 
-Status: implemented for FutMas F-010-S28; pending release.
+Status: released in `@scalewing/react` 1.61.0 and `@scalewing/tokens` 1.8.0 for FutMas F-010-S28.
 Renderer: react
 Missing surface: `Grid rail`.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: FutMas's Build, Review, Standings and Overview pages use `columns={3}` with a span, so a side rail grows with the window (406 px at 1570).

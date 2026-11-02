@@ -1,6 +1,6 @@
 Scalewing request from FutMas.
 
-Status: implemented for FutMas F-010-S28; pending release.
+Status: released in `@scalewing/react` 1.61.0 and `@scalewing/tokens` 1.8.0 for FutMas F-010-S28.
 Renderer: react
 Missing surface: `FixtureGroup sides`.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: The scoreline jumps between views (x about 425, 540 and 710) because the sides are `minmax(0, 1fr)`.

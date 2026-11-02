@@ -202,8 +202,9 @@ desktop primitives. `ThemeProvider density="compact"` on a fine pointer only
 `contentMaxWidth` and `sidebarTone`, `Grid rail`, `FixtureGroup sides`,
 `DescriptionList termWidth`, `FilterChips selectedStyle`, a count on `Tabs`
 and `Text maxLines`. The one change without opting in: a `FilterChips` chip
-lacked `box-sizing: border-box` and is now 44 px, not 54 px. Next: release
-(tokens first, then react), then FutMas pins it.
+lacked `box-sizing: border-box` and is now 44 px, not 54 px. Released in
+`@scalewing/tokens` 1.8.0 and `@scalewing/react` 1.61.0. Next: FutMas pins
+both in F-010-S28.
 
 FutMas's Scores review: `FixtureRow`'s action ends at its column's end, so
 rows with a short action and a long one finish on the same line down a

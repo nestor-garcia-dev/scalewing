@@ -1,6 +1,6 @@
 Scalewing request from FutMas.
 
-Status: implemented for FutMas F-010-S28; pending release.
+Status: released in `@scalewing/react` 1.61.0 and `@scalewing/tokens` 1.8.0 for FutMas F-010-S28.
 Renderer: react
 Missing surface: `Text maxLines`, for a long name in a `ContextSwitcher` trigger.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: A league name of three lines in FutMas's sidebar shifts the nav 20 px, and `truncate` keeps one line only. The trigger is the consumer's own node, so `ContextSwitcher` cannot know which words to clamp.
