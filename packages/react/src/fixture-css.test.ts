@@ -57,6 +57,7 @@ describe('FixtureRow CSS', () => {
     const action = rule('\n.sw-fixture-action');
     expect(action).toContain('grid-column: -2 / -1;');
     expect(action).toContain('grid-row: 1;');
+    expect(action).toContain('justify-content: flex-end;');
     expect(action).toContain('padding-inline-end: var(--sw-space-2);');
     expect(css).toContain(
       ':is(.sw-fixture-item-action, .sw-fixture-item-select):has(> .sw-fixture-row-pressable:hover) {',
