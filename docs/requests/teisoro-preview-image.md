@@ -1,6 +1,6 @@
 # Teisoro: a real screenshot inside a ScreenPreview
 
-Status: implemented in this change; released with the next `@scalewing/react`.
+Status: released in `@scalewing/react` 1.60.0 (PR #282).
 
 Scalewing request from Teisoro.
 
