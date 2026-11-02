@@ -10,7 +10,8 @@ export const breakpoints = Object.keys(breakpointScale) as Breakpoint[];
 /**
  * The breakpoints `hideBelow` and `hideFrom` take: `md`, and `lg` (64rem)
  * for content that fits only from a laptop up, such as a row of labelled
- * destinations a tablet shows as glyphs. The layout props (`columnsBelow`,
+ * destinations a tablet shows as glyphs, and `Grid rail` takes them for a rail
+ * that needs a laptop's room. The other layout props (`columnsBelow`,
  * `stickyBelow`, `verticalFrom`, …) keep the one layout breakpoint.
  */
 export const visibilityBreakpointScale = {

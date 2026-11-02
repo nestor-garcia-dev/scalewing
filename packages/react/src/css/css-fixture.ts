@@ -7,7 +7,10 @@ import {
   cssFixtureActionClasses,
   fixtureActionClassCatalog,
 } from './css-fixture-action.js';
-import { cssFixtureListRules } from './css-fixture-list.js';
+import {
+  cssFixtureListRules,
+  cssFixtureListSidesRules,
+} from './css-fixture-list.js';
 import {
   cssFixtureDetailClasses,
   fixtureDetailClassCatalog,
@@ -236,6 +239,8 @@ ${narrowRules()}
 
 ${fallbackRules()}
 
+${cssFixtureListSidesRules()}
+
 ${cssFixtureFlagClasses()}
 
 ${cssFixtureSelectClasses()}
@@ -252,6 +257,7 @@ export function fixtureClassCatalog(): string[] {
     'sw-fixture-group',
     'sw-fixture-group-title',
     'sw-fixture-list',
+    'sw-fixture-list-sides-fixed',
     'sw-fixture-item',
     'sw-fixture-row',
     'sw-fixture-row-pressable',

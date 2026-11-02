@@ -1,4 +1,5 @@
 import {
+  ActionBar,
   AppShell,
   type AppShellNavGroup,
   type NavCountTone,
@@ -22,6 +23,13 @@ import { readThemePreference } from '../theme-preference.js';
 
 /** The query that renders this frame alone, for the AppShell section's frames. */
 export const appShellFrameQuery = 'frame=app-shell';
+
+/** Adds the desktop options: compact density, a capped page, a subtle sidebar. */
+export const appShellDesktopQuery = 'desktop=1';
+
+function readsDesktop(): boolean {
+  return new URLSearchParams(window.location.search).has('desktop');
+}
 
 const glyphs = {
   today: 'M2 4h12v10H2z M2 7h12 M5 2v3 M11 2v3',
@@ -110,6 +118,7 @@ const stations: ContextSwitcherGroup[] = [
  */
 export function AppShellFrame() {
   const [current, setCurrent] = useState('wetlands');
+  const desktop = readsDesktop();
   // Shared by the sidebar's, the rail's and the drawer's switchers.
   const [stationId, setStationId] = useState('heron');
   const station =
@@ -122,10 +131,12 @@ export function AppShellFrame() {
   return (
     <ThemeProvider
       colorScheme={readThemePreference()}
+      density={desktop ? 'compact' : 'comfortable'}
       palette={readPalettePreference()}
     >
       <AppShell
         barTitle={<Text variant="label">{station}</Text>}
+        contentMaxWidth={desktop ? 'container' : 'none'}
         footer={<Text variant="caption">Ranger Amaru Quispe</Text>}
         groups={groups}
         header={
@@ -157,6 +168,7 @@ export function AppShellFrame() {
             </Button>
           </>
         }
+        sidebarTone={desktop ? 'subtle' : 'surface'}
         skipLink={{ label: 'Skip to main content' }}
         railHeader={
           <ContextSwitcher
@@ -189,6 +201,13 @@ export function AppShellFrame() {
               </Stack>
             </Card>
           ))}
+          {desktop ? (
+            <ActionBar>
+              <Button onPress={() => undefined} variant="neutral">
+                Save the census
+              </Button>
+            </ActionBar>
+          ) : null}
         </Stack>
       </AppShell>
     </ThemeProvider>

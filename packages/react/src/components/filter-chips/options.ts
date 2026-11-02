@@ -1,4 +1,10 @@
+import {
+  filterChipsSelectedStyles,
+  type FilterChipsSelectedStyle,
+} from '../../css/css-filter-chips.js';
 import { type RequiredMark } from '../FieldLabelText.js';
+
+export { filterChipsSelectedStyles, type FilterChipsSelectedStyle };
 
 /**
  * A chip's colour while it is not chosen: `neutral` (the default), the
@@ -81,6 +87,14 @@ export type FilterChipsProps = FilterChipsChoice & {
   requiredMark?: RequiredMark;
   countAppearance?: FilterChipCountAppearance;
   overflow?: FilterChipsOverflow;
+  /**
+   * How a chosen chip looks: `solid` (the default) is the accent fill;
+   * `subtle` is the accent's quiet tint with the accent's ink inside an accent
+   * edge (4.5:1 in every palette), for a page where a chosen filter should
+   * not outweigh the page's primary action. Forced colours draw either in
+   * Highlight.
+   */
+  selectedStyle?: FilterChipsSelectedStyle;
   /**
    * A message under the chips, such as "Pick a reason": a polite live
    * region linked to the group by `aria-describedby`; the group is marked

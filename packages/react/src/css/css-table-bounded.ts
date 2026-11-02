@@ -3,6 +3,7 @@ import { typographyVariants } from '@scalewing/tokens';
 import { cssTableBoundedEdgeClasses } from './css-table-bounded-edges.js';
 import {
   tableCellPadding,
+  tableRowLineVariable,
   tableRuleWidth,
   tableSortMinHeight,
 } from './css-table-metrics.js';
@@ -42,7 +43,8 @@ function heightRules(): string {
   --sw-table-cell-pad: ${tableCellPadding.comfortable.block};
   --sw-table-head-block: 0px;
   --sw-table-foot-rows: 0;
-  max-height: calc((var(--sw-table-max-rows) + var(--sw-table-foot-rows)) * (${body.lineHeight}px + 2 * var(--sw-table-cell-pad) + ${tableRuleWidth}) + var(--sw-table-head-block));
+  ${tableRowLineVariable}: ${body.lineHeight}px;
+  max-height: calc((var(--sw-table-max-rows) + var(--sw-table-foot-rows)) * (var(${tableRowLineVariable}) + 2 * var(--sw-table-cell-pad) + ${tableRuleWidth}) + var(--sw-table-head-block));
 }
 
 .sw-table-bounded:has(> .sw-table-compact) {

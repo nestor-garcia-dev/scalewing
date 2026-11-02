@@ -35,10 +35,11 @@ export function TextSection() {
   return (
     <Section
       id="text"
-      purpose="Text maps variant to generated sw-text-* classes and semantic color to CSS variables. Below the md breakpoint, hero, display, headline, heading and lead step down to their compact sizes; hero, headline and lead are a public page's opening title, section titles and the sentence under them. Alignment and truncation are opt-in. font mono sets the words in the platform's monospace face at the variant's size, for a code read character by character. Text keeps none of the browser's paragraph or heading margins, so the gap of the Stack or Inline around it alone sets the spacing."
+      purpose="Text maps variant to generated sw-text-* classes and semantic color to CSS variables. Below the md breakpoint, hero, display, headline, heading and lead step down to their compact sizes; hero, headline and lead are a public page's opening title, section titles and the sentence under them. Alignment and truncation are opt-in. font mono sets the words in the platform's monospace face at the variant's size, for a code read character by character. Text keeps none of the browser's paragraph or heading margins, so the gap of the Stack or Inline around it alone sets the spacing. maxLines cuts the words after two or three lines without hiding them from assistive technology. bodySm is 15/22/400 reading text for a dense data tool."
       title="Text"
       usage={`<Text variant="title" color="accent">Snow leopard</Text>
-<Text variant="headline" font="mono">R8M 3TW</Text>`}
+<Text variant="headline" font="mono">R8M 3TW</Text>
+<Text maxLines={2} variant="label">{longName}</Text>`}
     >
       <Stack gap={3}>
         <Text align="center" variant="heading">
@@ -78,6 +79,12 @@ export function TextSection() {
           ))}
         </Stack>
         <Box className="gallery-truncate-demo">
+          <Box style={{ maxWidth: '12rem' }}>
+            <Text data-testid="text-max-lines" maxLines={2} variant="label">
+              maxLines cuts a long name after two lines, and assistive
+              technology still reads all of its words.
+            </Text>
+          </Box>
           <Text truncate variant="body">
             Truncated line that should not wrap past the demo width in this row.
           </Text>

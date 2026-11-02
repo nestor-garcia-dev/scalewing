@@ -6,6 +6,8 @@ import {
   gridColumnsClass,
   gridFitClass,
   gridFits,
+  gridRailClass,
+  gridRails,
 } from './css-grid.js';
 
 /** A child spans one of the same bounded counts a `Grid` can have. */
@@ -51,11 +53,16 @@ export function cssGridSpanClasses(): string {
     ),
   );
   // A fitted grid's column count follows its width, so a span there would
-  // add implicit columns: its children each take one column.
-  const fitted = gridFits.flatMap((fit) =>
+  // add implicit columns: its children each take one column. A rail grid's
+  // two columns are not interchangeable, so the same holds there.
+  const oneColumnEach = [
+    ...gridFits.map(gridFitClass),
+    ...gridRails.map(gridRailClass),
+  ];
+  const fitted = oneColumnEach.flatMap((gridClass) =>
     widerSpans(1).map(
       (span) =>
-        `:where(.${gridFitClass(fit)}) > .${gridSpanClass(span)} { grid-column: auto; }`,
+        `:where(.${gridClass}) > .${gridSpanClass(span)} { grid-column: auto; }`,
     ),
   );
   // Below a breakpoint every span wider than one is restated for the phone

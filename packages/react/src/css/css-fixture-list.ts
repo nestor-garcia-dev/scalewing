@@ -1,6 +1,46 @@
 import { typographyVariants } from '@scalewing/tokens';
 
+import { breakpointQuery } from './breakpoints.js';
+
 const caption = typographyVariants.caption;
+
+/**
+ * How a FixtureGroup's sides take the row: `fluid` (the default) share all
+ * of it, so the centre sits in the middle of whatever is left; `fixed` are
+ * at most 16rem each, the end column taking the rest, so the centre sits at
+ * the same place in every run on a page.
+ */
+export const fixtureGroupSides = ['fluid', 'fixed'] as const;
+export type FixtureGroupSides = (typeof fixtureGroupSides)[number];
+
+const fixedSide = 'minmax(0, 16rem)';
+
+/*
+ * The centre's least width in a `fixed` run: an `auto` column alone is as
+ * wide as its widest centre, which differs between a run of scores and a run
+ * of kickoff times and would move the centres apart. This holds either, and
+ * two score boxes, with its margins.
+ */
+const fixedCentre = 'minmax(7rem, auto)';
+
+/*
+ * From \`md\` only: below it the narrow rules' columns stand, the end on a
+ * second line. Without subgrid each row is its own grid of the same fixed
+ * columns, which line up on their own.
+ */
+function fixedSidesRules(): string {
+  return `@media ${breakpointQuery('from', 'md')} {
+  .sw-fixture-list-sides-fixed {
+    grid-template-columns: auto ${fixedSide} ${fixedCentre} ${fixedSide} 1fr auto auto;
+  }
+
+  @supports not (grid-template-columns: subgrid) {
+    .sw-fixture-list-sides-fixed .sw-fixture-row {
+      grid-template-columns: ${fixedSide} ${fixedCentre} ${fixedSide} 1fr auto;
+    }
+  }
+}`;
+}
 
 /*
  * The run: one grid whose columns are the select, the home side, the
@@ -49,4 +89,9 @@ export function cssFixtureListRules(): string {
 .sw-fixture-item {
   border-top: 1px solid var(--sw-color-border);
 }`;
+}
+
+/** After the row's narrow and fallback rules, which `fixed` outranks only from md. */
+export function cssFixtureListSidesRules(): string {
+  return fixedSidesRules();
 }

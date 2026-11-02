@@ -1,5 +1,9 @@
 import { type ReactNode } from 'react';
 
+import {
+  type AppShellContentMaxWidth,
+  type AppShellSidebarTone,
+} from '../../css/css-app-shell.js';
 import { type NavCountTone } from '../NavCount.js';
 import { type NavItemCurrent } from '../nav-items.js';
 
@@ -140,6 +144,20 @@ export type AppShellProps = {
    * shell draws none.
    */
   skipLink?: AppShellSkipLink;
+  /**
+   * Caps the page beside the sidebar: `none` (the default) lets it fill
+   * `main`; `container` centres it at the container width (72rem), so a
+   * sparse table does not stretch on a wide window. `pageBar` stays the full
+   * width of `main`, and a sticky bar in the page keeps sticking, at the
+   * page's width.
+   */
+  contentMaxWidth?: AppShellContentMaxWidth;
+  /**
+   * The sidebar's and the drawer's fill: `surface` (the default) or `subtle`,
+   * a quiet grey that sets the navigation apart from a white page. The words
+   * on it and the current destination keep 4.5:1 in every palette.
+   */
+  sidebarTone?: AppShellSidebarTone;
   /** The page, rendered in `main`. */
   children: ReactNode;
 };

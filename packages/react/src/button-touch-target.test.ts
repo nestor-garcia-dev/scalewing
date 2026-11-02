@@ -24,7 +24,13 @@ describe('Button touch target', () => {
   });
 
   it('keeps the fine-pointer heights of the small sizes', () => {
-    expect(css).toContain('.sw-button-xs { min-height: 28px');
-    expect(css).toContain('.sw-button-sm { min-height: 32px');
+    expect(css).toContain(
+      '.sw-button-xs { min-height: var(--sw-control-xs-min-height); padding-inline: var(--sw-control-xs-padding-inline); }',
+    );
+    expect(css).toContain(
+      '.sw-button-sm { min-height: var(--sw-control-sm-min-height); padding-inline: var(--sw-control-sm-padding-inline); }',
+    );
+    expect(css).toContain('--sw-control-xs-min-height: 28px;');
+    expect(css).toContain('--sw-control-sm-min-height: 32px;');
   });
 });

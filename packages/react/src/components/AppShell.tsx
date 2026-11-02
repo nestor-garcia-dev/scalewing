@@ -2,6 +2,7 @@
 
 import { type CSSProperties, useEffect, useId, useRef, useState } from 'react';
 
+import { cx } from '../class-names.js';
 import { breakpointQuery } from '../css/breakpoints.js';
 import { appShellWideQuery } from '../css/css-app-shell.js';
 import {
@@ -17,6 +18,12 @@ import { assertAppShellProps } from './app-shell/validate.js';
 import { useElementHeight } from './use-element-height.js';
 import { useMediaQuery } from './use-media-query.js';
 
+export {
+  appShellContentMaxWidths,
+  appShellSidebarTones,
+  type AppShellContentMaxWidth,
+  type AppShellSidebarTone,
+} from '../css/css-app-shell.js';
 export type {
   AppShellLabels,
   AppShellNavGroup,
@@ -35,13 +42,15 @@ const fromLg = breakpointQuery('from', 'lg');
  * `lg` a sticky top bar's menu button opens the same navigation in a modal
  * drawer from the inline start, its button optionally carrying a count.
  * `pageBar` is a sticky band at the top of `main` on every layout, and
- * `skipLink` a first link that moves focus to `main`. Invalid groups,
- * items, counts or words throw a `RangeError`.
+ * `skipLink` a first link that moves focus to `main`. `contentMaxWidth`
+ * caps the page and `sidebarTone` sets the sidebar's fill. Invalid groups,
+ * items, counts, words or layout options throw a `RangeError`.
  */
 export function AppShell({
   barEnd,
   barTitle,
   children,
+  contentMaxWidth = 'none',
   footer,
   groups,
   header,
@@ -55,15 +64,18 @@ export function AppShell({
   pageBar,
   railFooter,
   railHeader,
+  sidebarTone = 'surface',
   skipLink,
 }: AppShellProps) {
   assertAppShellProps({
+    contentMaxWidth,
     groups,
     labels,
     menuCount,
     menuCountLabel,
     menuCountTone,
     navLabel,
+    sidebarTone,
     skipLink,
   });
   const [menuOpen, setMenuOpen] = useState(false);
@@ -111,7 +123,13 @@ export function AppShell({
   }, [menuOpen]);
 
   return (
-    <div className="sw-app-shell" style={shellStyle}>
+    <div
+      className={cx(
+        'sw-app-shell',
+        sidebarTone === 'subtle' && 'sw-app-shell-sidebar-subtle',
+      )}
+      style={shellStyle}
+    >
       {skipLink ? (
         <SkipToMain label={skipLink.label} mainId={mainId} mainRef={mainRef} />
       ) : null}
@@ -150,7 +168,11 @@ export function AppShell({
             {pageBar}
           </div>
         ) : null}
-        {children}
+        {contentMaxWidth === 'container' ? (
+          <div className="sw-container">{children}</div>
+        ) : (
+          children
+        )}
       </main>
       <AppShellDrawer
         closeLabel={labels.closeMenu}

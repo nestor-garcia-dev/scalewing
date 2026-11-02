@@ -93,6 +93,13 @@ export function cssTabsClasses(): string {
   color: var(--sw-color-accent);
 }
 
+/* A tab with a count: its label and the shared pill centred, a space-2 apart. */
+.sw-tab-counted {
+  align-items: center;
+  display: inline-flex;
+  gap: var(--sw-space-2);
+}
+
 .sw-tab-panel:focus-visible {
   outline: var(--sw-focus-ring-width) solid var(--sw-color-accent);
   outline-offset: var(--sw-focus-ring-offset);
@@ -114,6 +121,7 @@ export function tabsClassCatalog(): string[] {
     'sw-tabs-sticky',
     'sw-tab',
     'sw-tab-selected',
+    'sw-tab-counted',
     'sw-tab-panel',
   ];
 }

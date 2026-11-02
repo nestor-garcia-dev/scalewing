@@ -15,7 +15,7 @@ export function GridSection() {
   return (
     <Section
       id="grid"
-      purpose="Grid lays children out in equal-width columns. Choose one to four columns, or six for a wide count row, a gap step, and optionally fewer columns below the md breakpoint so tiles and cards stay readable on a phone. A direct child can take columnSpan to cover several columns, so three columns with a two-column form give a two-to-one page; a span never exceeds the columns the grid has at the current width, so the same page stacks on a phone. align sets where each child sits in its row: end keeps two inputs level when one label wraps. fit (narrow, medium or wide) fits as many columns as the grid's width holds at that minimum instead of a fixed count, one on a phone."
+      purpose="Grid lays children out in equal-width columns. Choose one to four columns, or six for a wide count row, a gap step, and optionally fewer columns below the md breakpoint so tiles and cards stay readable on a phone. A direct child can take columnSpan to cover several columns, so three columns with a two-column form give a two-to-one page; a span never exceeds the columns the grid has at the current width, so the same page stacks on a phone. align sets where each child sits in its row: end keeps two inputs level when one label wraps. fit (narrow, medium or wide) fits as many columns as the grid's width holds at that minimum instead of a fixed count, one on a phone. rail is a main column beside a fixed 20rem side rail, stacking below the breakpoint it names."
       title="Grid"
       usage={`<Grid columns={3} columnsBelow={{ md: 2 }} gap={2}>
   <Button variant="secondary" onPress={logSighting}>Log a sighting</Button>
@@ -35,6 +35,11 @@ export function GridSection() {
 <Grid align="end" columns={2} gap={3}>
   <Field label="Nest height above the waterline">…</Field>
   <Field label="Eggs">…</Field>
+</Grid>
+
+<Grid rail="lg" gap={4}>
+  <Stack gap={3}>{sightingLog}</Stack>
+  <Card variant="outlined">{stationSummary}</Card>
 </Grid>`}
     >
       <Stack gap={4}>
@@ -136,6 +141,21 @@ export function GridSection() {
             Start the evening count
           </Button>
         </Grid>
+        <Stack gap={2}>
+          <Text color="muted" variant="caption">
+            rail lg: the first child takes the free space beside a fixed 20rem
+            rail from lg; below it they stack, the main column first. rail takes
+            md or lg, and no columns, columnsBelow or fit.
+          </Text>
+          <Grid data-testid="grid-rail" gap={4} rail="lg">
+            <Card padding={4} variant="outlined">
+              <Text>The sighting log, as wide as the rail leaves it.</Text>
+            </Card>
+            <Card padding={4} variant="outlined">
+              <Text>The station's summary, 20rem.</Text>
+            </Card>
+          </Grid>
+        </Stack>
       </Stack>
     </Section>
   );

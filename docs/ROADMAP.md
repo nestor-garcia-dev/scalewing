@@ -195,6 +195,16 @@ F-010-S22. Follow-ups: `ScheduleGrid`'s own polite status could move onto
 `LiveRegion`; toned words (success, danger, accent) on the quiet fill fall
 under 4.5:1 in some palettes, a palette-wide question for tokens.
 
+FutMas F-010-S28, desktop layout and polish, from its design review: opt-in
+desktop primitives. `ThemeProvider density="compact"` on a fine pointer only
+(md controls 36/14, sm 28/10, xs 24/8, chips 32, Card corners the md radius,
+15/22 reading text through the new `bodySm` token), `PageHeader`, `AppShell`
+`contentMaxWidth` and `sidebarTone`, `Grid rail`, `FixtureGroup sides`,
+`DescriptionList termWidth`, `FilterChips selectedStyle`, a count on `Tabs`
+and `Text maxLines`. The one change without opting in: a `FilterChips` chip
+lacked `box-sizing: border-box` and is now 44 px, not 54 px. Next: release
+(tokens first, then react), then FutMas pins it.
+
 FutMas's Scores review: `FixtureRow`'s action ends at its column's end, so
 rows with a short action and a long one finish on the same line down a
 `FixtureGroup`. The owner asked for it on the Scores page. Released in

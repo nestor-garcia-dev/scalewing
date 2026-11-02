@@ -212,7 +212,8 @@ describe('Table maxHeight CSS', () => {
   --sw-table-cell-pad: ${tableCellPadding.comfortable.block};
   --sw-table-head-block: 0px;
   --sw-table-foot-rows: 0;
-  max-height: calc((var(--sw-table-max-rows) + var(--sw-table-foot-rows)) * (${body}px + 2 * var(--sw-table-cell-pad) + ${tableRuleWidth}) + var(--sw-table-head-block));
+  --sw-table-row-line: ${body}px;
+  max-height: calc((var(--sw-table-max-rows) + var(--sw-table-foot-rows)) * (var(--sw-table-row-line) + 2 * var(--sw-table-cell-pad) + ${tableRuleWidth}) + var(--sw-table-head-block));
 }`);
     expect(css).toContain(
       `.sw-table-bounded:has(> .sw-table > thead) {\n  --sw-table-head-block: calc(${caption}px + 2 * var(--sw-table-cell-pad));\n}`,

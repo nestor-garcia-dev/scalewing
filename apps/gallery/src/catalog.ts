@@ -67,7 +67,10 @@ import { SectionNavSection } from './sections/section-nav.js';
 import { PalettesSection } from './sections/palettes.js';
 import { SegmentedControlSection } from './sections/segmented-control.js';
 import { StatTileSection } from './sections/stat-tile.js';
-import { DescriptionListSection } from './sections/description-list.js';
+import {
+  DescriptionListSection,
+  DescriptionListTermWidthSection,
+} from './sections/description-list.js';
 import { ListGroupSection } from './sections/list-group.js';
 import { FixtureRowSection } from './sections/fixture-row.js';
 import { FixtureRowScoreSection } from './sections/fixture-row-score.js';
@@ -82,6 +85,9 @@ import { TableSection } from './sections/table.js';
 import { PaginationSection } from './sections/pagination.js';
 import { TextSection } from './sections/text.js';
 import { ThemeProviderSection } from './sections/theme-provider.js';
+import { DensitySection } from './sections/density.js';
+import { PageHeaderSection } from './sections/page-header.js';
+import { FixtureGroupSidesSection } from './sections/fixture-group-sides.js';
 
 export const catalogGroups = [
   { id: 'foundations', label: 'Foundations' },
@@ -107,6 +113,12 @@ export const catalog = [
     label: 'ThemeProvider',
     group: 'foundations',
     Section: ThemeProviderSection,
+  },
+  {
+    id: 'density',
+    label: 'ThemeProvider density',
+    group: 'foundations',
+    Section: DensitySection,
   },
   {
     id: 'canvas',
@@ -285,6 +297,12 @@ export const catalog = [
   { id: 'band', label: 'Band', group: 'layout', Section: BandSection },
   { id: 'hero', label: 'Hero', group: 'layout', Section: HeroSection },
   {
+    id: 'page-header',
+    label: 'PageHeader',
+    group: 'layout',
+    Section: PageHeaderSection,
+  },
+  {
     id: 'screen-preview',
     label: 'ScreenPreview',
     group: 'content',
@@ -395,6 +413,12 @@ export const catalog = [
     Section: FixtureRowSection,
   },
   {
+    id: 'fixture-group-sides',
+    label: 'FixtureGroup sides',
+    group: 'data',
+    Section: FixtureGroupSidesSection,
+  },
+  {
     id: 'fixture-row-score',
     label: 'FixtureRow score',
     group: 'data',
@@ -417,6 +441,12 @@ export const catalog = [
     label: 'DescriptionList',
     group: 'data',
     Section: DescriptionListSection,
+  },
+  {
+    id: 'description-list-term-width',
+    label: 'DescriptionList termWidth',
+    group: 'data',
+    Section: DescriptionListTermWidthSection,
   },
   { id: 'table', label: 'Table', group: 'data', Section: TableSection },
   {

@@ -1,3 +1,7 @@
+import {
+  appShellContentMaxWidths,
+  appShellSidebarTones,
+} from '../../css/css-app-shell.js';
 import { isOneOf } from '../../is-one-of.js';
 import { navCountTones } from '../NavCount.js';
 import { assertNavItems } from '../nav-items.js';
@@ -70,27 +74,42 @@ function assertMenuCount({
 
 /**
  * Fails closed on the shell's words (a skip link's too), the menu's count,
- * its groups and their items (ids unique across every group, each with an
- * icon, which is all the rail shows).
+ * its layout options, its groups and their items (ids unique across every
+ * group, each with an icon, which is all the rail shows).
  */
 export function assertAppShellProps({
+  contentMaxWidth,
   groups,
   labels,
   menuCount,
   menuCountLabel,
   menuCountTone,
   navLabel,
+  sidebarTone,
   skipLink,
 }: Pick<
   AppShellProps,
+  | 'contentMaxWidth'
   | 'groups'
   | 'labels'
   | 'menuCount'
   | 'menuCountLabel'
   | 'menuCountTone'
   | 'navLabel'
+  | 'sidebarTone'
   | 'skipLink'
 >): void {
+  if (
+    contentMaxWidth !== undefined &&
+    !isOneOf(appShellContentMaxWidths, contentMaxWidth)
+  )
+    throw new RangeError(
+      `AppShell contentMaxWidth must be one of ${appShellContentMaxWidths.join(', ')}`,
+    );
+  if (sidebarTone !== undefined && !isOneOf(appShellSidebarTones, sidebarTone))
+    throw new RangeError(
+      `AppShell sidebarTone must be one of ${appShellSidebarTones.join(', ')}`,
+    );
   if (isBlank(navLabel))
     throw new RangeError('AppShell navLabel must be nonempty');
   if (isBlank(labels?.openMenu) || isBlank(labels?.closeMenu))

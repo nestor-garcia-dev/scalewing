@@ -63,6 +63,13 @@ const stations: ContextSwitcherGroup[] = [
   },
 ];
 
+const longStationName =
+  'Northern reed beds and salt marsh wader survey station of the lower estuary';
+
+const longNamedStations: ContextSwitcherGroup[] = [
+  { id: 'long-named', options: [{ id: 'long', label: longStationName }] },
+];
+
 const surveys: ContextSwitcherGroup[] = [
   {
     id: 'surveys',
@@ -169,6 +176,37 @@ export function ContextSwitcherSection() {
                       <Stack gap={0}>
                         <Text variant="label">{stationLabel}</Text>
                         <Text variant="caption">Warden</Text>
+                      </Stack>
+                    </>
+                  }
+                  triggerAppearance="text"
+                  width="full"
+                />
+              </div>
+            </Stack>
+          </Card>
+          <Card padding={3}>
+            <Stack gap={2}>
+              <Text color="muted" variant="caption">
+                A long name, Text maxLines 2 in the trigger; the popup and the
+                button's name keep it whole
+              </Text>
+              <div
+                className="gallery-sidebar-top"
+                style={{ maxWidth: '15rem' }}
+              >
+                <ContextSwitcher
+                  currentId="long"
+                  groups={longNamedStations}
+                  label="Station"
+                  onSelect={() => undefined}
+                  trigger={
+                    <>
+                      {crest('orange')}
+                      <Stack as="span" gap={0}>
+                        <Text as="span" maxLines={2} variant="label">
+                          {longStationName}
+                        </Text>
                       </Stack>
                     </>
                   }

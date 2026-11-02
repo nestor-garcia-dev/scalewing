@@ -2,7 +2,6 @@ import {
   type ButtonSize,
   buttonSizes,
   buttonVariants,
-  controlScale,
   typographyVariants,
 } from '@scalewing/tokens';
 
@@ -122,19 +121,20 @@ function ariaDisabledForcedRules(): string {
 }
 
 /*
- * Each size's height and side padding for a fine pointer, then the
- * comfortable touch target (44 px both ways, the md control height) for
- * every size on a coarse pointer, so an xs or sm Button in a table row or a
- * checklist is still easy to tap. Its look stays the size's (padding and
- * type); only the minimum box grows. The coarse rule follows the sizes,
- * which it outranks only by order.
+ * Each size's height and side padding for a fine pointer, from the control
+ * variables (which the compact density restates), then the comfortable
+ * touch target (44 px both ways, the md control height) for every size on a
+ * coarse pointer, so an xs or sm Button in a table row or a checklist is
+ * still easy to tap. Its look stays the size's (padding and type); only the
+ * minimum box grows. The coarse rule follows the sizes, which it outranks
+ * only by order.
  */
 function sizeRules(): string {
   const sizes = buttonSizes
-    .map((size) => {
-      const control = controlScale[size];
-      return `.sw-button-${size} { min-height: ${control.minHeight}px; padding-inline: ${control.paddingInline}px; }`;
-    })
+    .map(
+      (size) =>
+        `.sw-button-${size} { min-height: var(--sw-control-${size}-min-height); padding-inline: var(--sw-control-${size}-padding-inline); }`,
+    )
     .join('\n');
   return `${sizes}
 @media ${coarsePointerQuery} {

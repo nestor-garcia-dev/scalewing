@@ -3,6 +3,7 @@ import {
   filterChipCountAppearances,
   type FilterChipsProps,
   filterChipsOverflows,
+  filterChipsSelectedStyles,
   filterChipTones,
 } from './options.js';
 
@@ -18,8 +19,8 @@ function chosenValues(props: FilterChipsProps): readonly string[] {
 /**
  * Fails closed on chips it cannot draw: an empty label, no options, blank
  * or repeated values, a chosen value that is no option, a count that is
- * not a whole number from 0, an unknown chip tone, count appearance or
- * overflow, and a multiple choice asked to be required or given a value
+ * not a whole number from 0, an unknown chip tone, count appearance,
+ * overflow or selected style, and a multiple choice asked to be required or given a value
  * that is not a list.
  */
 export function assertFilterChips(props: FilterChipsProps): void {
@@ -72,4 +73,11 @@ export function assertFilterChips(props: FilterChipsProps): void {
   const overflow = props.overflow ?? 'wrap';
   if (!(filterChipsOverflows as readonly unknown[]).includes(overflow))
     throw new RangeError(`Unknown FilterChips overflow: ${String(overflow)}`);
+  const selectedStyle = props.selectedStyle ?? 'solid';
+  if (
+    !(filterChipsSelectedStyles as readonly unknown[]).includes(selectedStyle)
+  )
+    throw new RangeError(
+      `Unknown FilterChips selectedStyle: ${String(selectedStyle)}`,
+    );
 }

@@ -18,6 +18,14 @@ import {
 } from './css-app-shell-skip-link.js';
 import { iconButtonRules } from './css-icon-button.js';
 
+/** `container` centres the page beside the sidebar at the container width. */
+export const appShellContentMaxWidths = ['none', 'container'] as const;
+export type AppShellContentMaxWidth = (typeof appShellContentMaxWidths)[number];
+
+/** The sidebar's and the drawer's fill. */
+export const appShellSidebarTones = ['surface', 'subtle'] as const;
+export type AppShellSidebarTone = (typeof appShellSidebarTones)[number];
+
 /*
  * The width from which AppShell's sidebar is full rather than a rail: an
  * internal media query of the component, not a public breakpoint (the
@@ -132,6 +140,19 @@ ${cssAppShellRailNavRules('    ')}
 }
 
 /*
+ * `sidebarTone="subtle"`: the sidebar and the drawer on the subtle fill, a
+ * class more than their own surface rules. The words keep 4.5:1 there in
+ * every palette: the text colour, a group's muted caption, and the text
+ * colour on the current link's fill over the grey (tested in every theme).
+ * Forced colours replace the fill.
+ */
+function sidebarToneRules(): string {
+  return `.sw-app-shell-sidebar-subtle :is(.sw-app-shell-sidebar, .sw-app-shell-drawer) {
+  background: var(--sw-color-subtle);
+}`;
+}
+
+/*
  * AppShell: a workspace frame with a pinned side navigation (see
  * components/AppShell.tsx). The links, groups and the rail's nav are
  * `css-app-shell-nav.ts`; the page bar and the menu's count are
@@ -159,7 +180,9 @@ ${sidebarRules()}
 
 ${cssAppShellDrawerClasses()}
 
-${cssAppShellSkipLinkRules()}`;
+${cssAppShellSkipLinkRules()}
+
+${sidebarToneRules()}`;
 }
 
 export function appShellClassCatalog(): string[] {
@@ -171,6 +194,7 @@ export function appShellClassCatalog(): string[] {
     'sw-app-shell-bar-end',
     'sw-app-shell-main',
     'sw-app-shell-sidebar',
+    'sw-app-shell-sidebar-subtle',
     'sw-app-shell-slot',
     'sw-app-shell-rail-slot',
     'sw-app-shell-header',

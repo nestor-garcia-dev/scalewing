@@ -3,12 +3,16 @@ import { type HTMLAttributes, type ReactNode } from 'react';
 import { cx } from '../class-names.js';
 import {
   assertDescriptionListLayout,
+  assertDescriptionListTermWidth,
   type DescriptionListLayout,
+  type DescriptionListTermWidth,
 } from './description-list-layout.js';
 
 export {
   descriptionListLayouts,
+  descriptionListTermWidths,
   type DescriptionListLayout,
+  type DescriptionListTermWidth,
 } from './description-list-layout.js';
 
 export type DescriptionListProps = Omit<
@@ -24,6 +28,14 @@ export type DescriptionListProps = Omit<
    * by side at every width, for a short box of facts.
    */
   layout?: DescriptionListLayout;
+  /**
+   * A fixed term column in place of one as wide as the widest term, so the
+   * details of several lists on a page start at the same place: `sm` 8rem,
+   * `md` 12rem, `lg` 16rem, from `md` up and never more than half the list
+   * (a longer term wraps). Below `md` a term still sits over its detail.
+   * Only with the `columns` layout.
+   */
+  termWidth?: DescriptionListTermWidth;
 };
 
 /**
@@ -37,14 +49,17 @@ export function DescriptionList({
   children,
   className,
   layout = 'columns',
+  termWidth,
   ...rest
 }: DescriptionListProps) {
   assertDescriptionListLayout(layout);
+  assertDescriptionListTermWidth(termWidth, layout);
   return (
     <dl
       className={cx(
         'sw-description-list',
         layout === 'spread' && 'sw-description-list-spread',
+        termWidth && `sw-description-list-term-${termWidth}`,
         className,
       )}
       {...rest}

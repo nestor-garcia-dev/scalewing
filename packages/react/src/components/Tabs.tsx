@@ -9,11 +9,30 @@ import {
 
 import { type AccessibleName } from '../accessible-name.js';
 import { cx } from '../class-names.js';
+import { NavCount, type NavCountTone } from './NavCount.js';
 import { useScrollOverflow } from './use-scroll-overflow.js';
 
 export type TabItem = {
   id: string;
   label: ReactNode;
+  /**
+   * How many things wait behind the tab: the shared count pill after its
+   * label, read in its name ("Postponed 4"). A whole number; 0 (or none)
+   * shows no pill. For a count that only says how many, with nothing to do,
+   * write it in the `label` ("Postponed (4)").
+   */
+  count?: number;
+  /**
+   * What the count means, in the consumer's words ("4 need a time"): read
+   * in the name in place of the bare number. Needs `count`.
+   */
+  countLabel?: string;
+  /**
+   * The pill's colour, NavCount's tones: `danger` (the default), `warning`
+   * (amber) for work that needs the person but is not urgent, `accent` for
+   * news. Needs `count`.
+   */
+  countTone?: NavCountTone;
 };
 
 export type TabsProps = AccessibleName & {
@@ -51,6 +70,17 @@ export function tabPanelId(tabsId: string, id: string): string {
   return `${tabsId}-panel-${id}`;
 }
 
+/** Fails closed on a count's words or colour with no count to go with them. */
+function assertTabItems(items: readonly TabItem[]): void {
+  for (const item of items) {
+    if (
+      item.count === undefined &&
+      (item.countLabel !== undefined || item.countTone !== undefined)
+    )
+      throw new RangeError('A tab countLabel and countTone come with a count');
+  }
+}
+
 /**
  * A tab strip with `tablist` semantics for the sections of one page. Arrow
  * keys, Home and End move the focus and select at once; the strip scrolls
@@ -67,6 +97,7 @@ export function Tabs({
   value,
   ...labelProps
 }: TabsProps) {
+  assertTabItems(items);
   const tabs = useRef(new Map<string, HTMLButtonElement>());
   const strip = useRef<HTMLDivElement>(null);
   const overflow = useScrollOverflow(strip);
@@ -122,7 +153,11 @@ export function Tabs({
           <button
             aria-controls={tabPanelId(id, item.id)}
             aria-selected={selected}
-            className={cx('sw-tab', selected && 'sw-tab-selected')}
+            className={cx(
+              'sw-tab',
+              selected && 'sw-tab-selected',
+              Boolean(item.count) && 'sw-tab-counted',
+            )}
             id={tabId(id, item.id)}
             key={item.id}
             onClick={() => select(item)}
@@ -138,6 +173,13 @@ export function Tabs({
             type="button"
           >
             {item.label}
+            {item.count !== undefined ? (
+              <NavCount
+                count={item.count}
+                countLabel={item.countLabel}
+                tone={item.countTone}
+              />
+            ) : null}
           </button>
         );
       })}
