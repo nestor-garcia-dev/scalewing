@@ -24,7 +24,7 @@ export type ScreenPreviewProps = Omit<
   title?: ReactNode;
   /** A visible caption under the screen, such as what will replace it. */
   caption?: ReactNode;
-  /** `PreviewGroup`s, `PreviewRow`s and `PreviewTiles`. */
+  /** `PreviewGroup`s, `PreviewRow`s, `PreviewTiles` or a `PreviewImage`. */
   children: ReactNode;
 };
 
@@ -32,7 +32,8 @@ export type ScreenPreviewProps = Omit<
  * A drawn stand-in for an app's screen on a public page: a `figure` whose
  * screen is one image (`role="img"`) named by `label`, so its rows are
  * read as that one sentence, with an optional visible `caption`. Its
- * content is `PreviewGroup`s of `PreviewRow`s and `PreviewTiles`. A blank
+ * content is `PreviewGroup`s of `PreviewRow`s, `PreviewTiles` or a
+ * `PreviewImage` holding a real screenshot. A blank
  * label or an unknown frame throws a `RangeError`.
  */
 export function ScreenPreview({

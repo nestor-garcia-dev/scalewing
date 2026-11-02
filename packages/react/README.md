@@ -39,6 +39,7 @@ import {
   Hero,
   ScreenPreview,
   PreviewGroup,
+  PreviewImage,
   PreviewRow,
   PreviewTiles,
   SiteFooter,
@@ -1175,6 +1176,8 @@ const { headings, omissions } = inspectMarkdown(page.body, {
 ```
 
 `ScreenPreview` is a drawn stand-in for an app's screen on a public page, until a real screenshot replaces it: a `figure` whose screen is one image (`role="img"`) named by `label`, its alternative text, so a screen reader hears that sentence instead of the rows; an optional `caption` shows under it as the `figcaption`. An optional `eyebrow` and `title` head the screen. Its content is `PreviewGroup`s of `PreviewRow`s (`label` at the start, `value` at the end in tabular numerals; `kind` `plain`, `total` in bold past a hairline, `note` a small label over its words, `filled` on the quiet fill, or `alert` on the danger tint) and `PreviewTiles` (`items` of `{ id, label, value }`, three to a row on a phone, six from `md`). `frame="card"` (default) is a surface card whose groups are parted by hairlines; `frame="device"` draws a 20rem phone from `md` (a bezel in the text colour round a quiet screen with a surface header and each group a card) and the card below `md`. A blank `label`, an unknown `frame` or `kind`, no tiles, or a blank or repeated tile id throws a `RangeError`.
+
+When the real screenshot exists, a `PreviewImage` (`src`, `width`, `height`) holds it in the same frame, filling the screen's body with its height following. It is decorative: `label` stays the alternative text.
 
 ```tsx
 <ScreenPreview

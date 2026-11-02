@@ -1,6 +1,7 @@
 import {
   Grid,
   PreviewGroup,
+  PreviewImage,
   PreviewRow,
   PreviewTiles,
   ScreenPreview,
@@ -8,11 +9,15 @@ import {
 
 import { Section } from '../layout/Section.js';
 
+/** A small drawing that stands in for a screenshot. */
+const MARSH =
+  "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 320 200'%3E%3Crect width='320' height='200' fill='%23a7c7a0'/%3E%3Cpath d='M0 150 Q80 90 160 140 T320 120 V200 H0Z' fill='%234f7a55'/%3E%3C/svg%3E";
+
 export function ScreenPreviewSection() {
   return (
     <Section
       id="screen-preview"
-      purpose="ScreenPreview is a drawn stand-in for an app's screen on a public page: a figure whose screen is one image named by its label, with an optional caption. Its rows (PreviewRow: plain, total, note, filled or alert) come in PreviewGroups, and PreviewTiles lay small counts three or six to a row. The device frame draws a phone from md and a plain card on a phone."
+      purpose="ScreenPreview is a drawn stand-in for an app's screen on a public page: a figure whose screen is one image named by its label, with an optional caption. Its rows (PreviewRow: plain, total, note, filled or alert) come in PreviewGroups, and PreviewTiles lay small counts three or six to a row. PreviewImage holds a real screenshot in the same frame. The device frame draws a phone from md and a plain card on a phone."
       title="ScreenPreview"
       usage={`<ScreenPreview
   frame="device"
@@ -65,6 +70,9 @@ export function ScreenPreviewSection() {
           />
           <PreviewRow kind="filled" label="Visitors" value="38" />
           <PreviewRow kind="alert" label="Path" value="Closed after rain" />
+        </ScreenPreview>
+        <ScreenPreview label="A photo of the marsh from the north hide">
+          <PreviewImage height={200} src={MARSH} width={320} />
         </ScreenPreview>
       </Grid>
     </Section>

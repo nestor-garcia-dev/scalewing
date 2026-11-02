@@ -99,6 +99,17 @@ function cardRules(): string {
 }`;
 }
 
+/* A screenshot fills the screen's width; its height follows. */
+function imageRules(): string {
+  return `.sw-preview-image {
+  border-radius: var(--sw-radius-sm);
+  display: block;
+  height: auto;
+  max-width: 100%;
+  width: 100%;
+}`;
+}
+
 function rowRules(): string {
   return `.sw-preview-row {
   display: flex;
@@ -220,7 +231,7 @@ function wideRules(): string {
 }
 
 export function cssScreenPreviewClasses(): string {
-  return [cardRules(), rowRules(), wideRules()].join('\n\n');
+  return [cardRules(), imageRules(), rowRules(), wideRules()].join('\n\n');
 }
 
 export function screenPreviewClassCatalog(): string[] {
@@ -239,6 +250,7 @@ export function screenPreviewClassCatalog(): string[] {
     ...previewRowKinds.map(previewRowKindClass),
     'sw-preview-row-label',
     'sw-preview-row-value',
+    'sw-preview-image',
     'sw-preview-tiles',
     'sw-preview-tile',
     'sw-preview-tile-label',
