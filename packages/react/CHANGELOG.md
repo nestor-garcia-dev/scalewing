@@ -1,5 +1,11 @@
 # @scalewing/react
 
+## 1.60.0
+
+### Minor Changes
+
+- 69e52f9: `PreviewImage`: a real screenshot inside a `ScreenPreview`, at the screen's width with its height following. Decorative, as the preview's `label` names the image (Teisoro F-017 task 2730).
+
 ## 1.59.5
 
 ### Patch Changes
