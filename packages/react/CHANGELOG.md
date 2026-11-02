@@ -1,5 +1,11 @@
 # @scalewing/react
 
+## 1.60.1
+
+### Patch Changes
+
+- 041b845: `FixtureRow`'s action ends at its column's end, so rows with a short action and a long one finish on the same line down a `FixtureGroup`. No API change.
+
 ## 1.60.0
 
 ### Minor Changes
