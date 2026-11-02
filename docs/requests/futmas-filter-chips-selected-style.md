@@ -1,6 +1,6 @@
 Scalewing request from FutMas.
 
-Status: implemented for FutMas F-010-S28; pending release.
+Status: released in `@scalewing/react` 1.61.0 and `@scalewing/tokens` 1.8.0 for FutMas F-010-S28.
 Renderer: react
 Missing surface: `FilterChips selectedStyle`.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: The selected chip is the heaviest blue in FutMas's product, heavier than the primary button beside it.

@@ -1,6 +1,6 @@
 Scalewing request from FutMas.
 
-Status: implemented for FutMas F-010-S28; pending release.
+Status: released in `@scalewing/react` 1.61.0 and `@scalewing/tokens` 1.8.0 for FutMas F-010-S28.
 Renderer: react
 Missing surface: `AppShell contentMaxWidth`.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: At 1570 px FutMas's content is 1266 px wide, so sparse tables stretch and rails reach 406 px. The cap must sit beside the page bar, which the shell owns, without moving it.

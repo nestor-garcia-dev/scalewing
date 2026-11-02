@@ -1,6 +1,6 @@
 Scalewing request from FutMas.
 
-Status: implemented for FutMas F-010-S28; pending release.
+Status: released in `@scalewing/react` 1.61.0 and `@scalewing/tokens` 1.8.0 for FutMas F-010-S28.
 Renderer: react
 Missing surface: `DescriptionList termWidth`.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: `fit-content(40%)` sets each list's values at a different x, as on FutMas's Rules page (462, 394, 981, 997).

@@ -1,6 +1,6 @@
 Scalewing request from FutMas.
 
-Status: implemented for FutMas F-010-S28; pending release.
+Status: released in `@scalewing/react` 1.61.0 and `@scalewing/tokens` 1.8.0 for FutMas F-010-S28.
 Renderer: react
 Missing surface: `ThemeProvider density` (`comfortable` | `compact`), with the fix to `.sw-filter-chip-face`, which lacked `box-sizing: border-box` and measured 54 px.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: FutMas's admin website is a desktop data tool drawn at phone sizes: 44 px controls, 24 px card corners and 17 px reading text carried over from touch. Sizes come from the theme, and products must not restyle them in app CSS.
