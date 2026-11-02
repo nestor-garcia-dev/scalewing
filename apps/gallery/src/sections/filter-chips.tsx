@@ -5,6 +5,7 @@ import { Section } from '../layout/Section.js';
 
 export function FilterChipsSection() {
   const [weather, setWeather] = useState('');
+  const [quietChoice, setQuietChoice] = useState('open');
   const [selected, setSelected] = useState('all');
   const [sightings, setSightings] = useState(42);
   const [changes, setChanges] = useState(0);
@@ -30,7 +31,7 @@ export function FilterChipsSection() {
   return (
     <Section
       id="filter-chips"
-      purpose="FilterChips keeps long single-choice filter sets visible. Native radios supply arrow and Space behavior; options wrap on narrow screens. An optional count renders as a tabular chicklet after the label, and a zero count quiets the chip until it is selected: a muted label on no fill, never faded. value '' is nothing chosen yet; required marks the label and each radio, and error puts a message under the chips (a polite live region), marks the group invalid and edges every chip in danger; aria-describedby adds a hint. requiredMark hidden leaves out the label's mark while each radio stays required; the hint says it in words. labelVisuallyHidden keeps the label as the group's name without drawing it; countAppearance inline writes the count in the chip's words after a middle dot; overflow scroll keeps one row that scrolls sideways inside its own box; multiple turns several chips on at once as checkboxes, value a list. An option's tone warning draws a chip that is not chosen in the warning tint and ink, for a choice that shows what needs a look; its words say why, and chosen it is the accent and at a zero count quiet, like every chip."
+      purpose="FilterChips keeps long single-choice filter sets visible. Native radios supply arrow and Space behavior; options wrap on narrow screens. An optional count renders as a tabular chicklet after the label, and a zero count quiets the chip until it is selected: a muted label on no fill, never faded. value '' is nothing chosen yet; required marks the label and each radio, and error puts a message under the chips (a polite live region), marks the group invalid and edges every chip in danger; aria-describedby adds a hint. requiredMark hidden leaves out the label's mark while each radio stays required; the hint says it in words. labelVisuallyHidden keeps the label as the group's name without drawing it; countAppearance inline writes the count in the chip's words after a middle dot; overflow scroll keeps one row that scrolls sideways inside its own box; multiple turns several chips on at once as checkboxes, value a list. An option's tone warning draws a chip that is not chosen in the warning tint and ink, for a choice that shows what needs a look; its words say why, and chosen it is the accent and at a zero count quiet, like every chip. selectedStyle subtle draws a chosen chip on the accent's quiet tint with the accent's ink inside an accent edge (4.5:1 in every palette), for a page where a chosen filter should not outweigh its primary action; forced colours draw it in Highlight."
       title="FilterChips"
       usage={`<FilterChips
   label="Sighting filters"
@@ -189,6 +190,17 @@ export function FilterChipsSection() {
           required
           requiredMark="hidden"
           value={weather}
+        />
+        <FilterChips
+          label="Sightings, with a quiet chosen chip"
+          onChange={setQuietChoice}
+          options={[
+            { value: 'open', label: 'Open', count: 4 },
+            { value: 'counted', label: 'Counted', count: 12 },
+            { value: 'hidden', label: 'Hidden', count: 0 },
+          ]}
+          selectedStyle="subtle"
+          value={quietChoice}
         />
       </Stack>
     </Section>

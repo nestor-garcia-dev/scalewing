@@ -1,5 +1,6 @@
 import { typographyVariants } from '@scalewing/tokens';
 
+import { toneTintFill, toneTintInk } from './tone-tint.js';
 import {
   cssFilterChipToneClasses,
   filterChipToneClassCatalog,
@@ -16,6 +17,39 @@ import {
 const label = typographyVariants.label;
 const data = typographyVariants.data;
 const caption = typographyVariants.caption;
+
+/**
+ * How a chosen chip looks: `solid` (the default) is the accent fill with its
+ * on-colour words; `subtle` is the accent's quiet tint with the accent's
+ * words inside an accent edge, for a page where the chosen chip should not
+ * outweigh the page's primary action.
+ */
+export const filterChipsSelectedStyles = ['solid', 'subtle'] as const;
+export type FilterChipsSelectedStyle =
+  (typeof filterChipsSelectedStyles)[number];
+
+/*
+ * The compact density's chip height (`--sw-filter-chip-min-height`, set only
+ * there), else the md control's.
+ */
+const chipMinHeight =
+  'var(--sw-filter-chip-min-height, var(--sw-control-md-min-height))';
+
+/*
+ * `selectedStyle="subtle"`. The words are the accent's ink, the accent moved
+ * toward the text colour, a Notice's way with a tint: the bare accent falls
+ * to 4.24:1 on the tint in harvest dark, and the ink keeps 4.5:1 in every
+ * palette. `:where()` holds the rule at the chosen chip's own specificity, so
+ * what follows it wins as it does over the accent fill: an error's danger
+ * edge and the forced colours' Highlight.
+ */
+function selectedSubtleRules(): string {
+  return `:where(.sw-filter-chips-selected-subtle) .sw-filter-chip-input:checked + .sw-filter-chip-face {
+  background: ${toneTintFill('accent')};
+  border-color: var(--sw-color-accent);
+  color: ${toneTintInk('accent')};
+}`;
+}
 
 export function cssFilterChipsClasses(): string {
   return `.sw-filter-chips {
@@ -64,13 +98,14 @@ export function cssFilterChipsClasses(): string {
   background: var(--sw-glass-fill);
   border: 1px solid var(--sw-color-border);
   border-radius: var(--sw-radius-pill);
+  box-sizing: border-box;
   color: var(--sw-color-text);
   display: inline-flex;
   font-family: var(--sw-font-sans);
   font-size: ${label.fontSize}px;
   gap: var(--sw-space-2);
   line-height: ${label.lineHeight}px;
-  min-height: var(--sw-control-md-min-height);
+  min-height: ${chipMinHeight};
   min-width: 0;
   overflow-wrap: anywhere;
   padding: var(--sw-space-1) var(--sw-space-3);
@@ -102,6 +137,8 @@ export function cssFilterChipsClasses(): string {
   border-color: var(--sw-color-accent);
   color: var(--sw-color-onAccent);
 }
+
+${selectedSubtleRules()}
 
 .sw-filter-chip-input:checked + .sw-filter-chip-face .sw-filter-chip-count {
   color: inherit;
@@ -166,6 +203,9 @@ export function filterChipsClassCatalog(): string[] {
     'sw-filter-chip-face',
     'sw-filter-chip-count',
     'sw-filter-chip-quiet',
+    ...filterChipsSelectedStyles
+      .filter((style) => style !== 'solid')
+      .map((style) => `sw-filter-chips-selected-${style}`),
     'sw-filter-chips-error',
     ...filterChipsLayoutClassCatalog(),
     ...filterChipToneClassCatalog(),

@@ -2,6 +2,8 @@ import {
   breakpointQuery,
   breakpoints,
   type Breakpoint,
+  type VisibilityBreakpoint,
+  visibilityBreakpoints,
 } from './breakpoints.js';
 
 export const gridColumnCounts = [1, 2, 3, 4, 6] as const;
@@ -25,6 +27,28 @@ export const gridFits = Object.keys(gridFitWidths) as GridFit[];
 
 export function gridFitClass(fit: GridFit): string {
   return `sw-grid-fit-${fit}`;
+}
+
+/**
+ * A rail grid's breakpoint: from it up, the first column takes the free
+ * space and a fixed rail sits beside it; below it, one column.
+ */
+export type GridRail = VisibilityBreakpoint;
+
+export const gridRails = visibilityBreakpoints;
+
+/* The side rail's width, a named geometry of this layout. */
+const gridRailWidth = '20rem';
+
+export function gridRailClass(rail: GridRail): string {
+  return `sw-grid-rail-${rail}`;
+}
+
+function railRules(rail: GridRail): string {
+  return `.${gridRailClass(rail)} { grid-template-columns: minmax(0, 1fr); }
+@media ${breakpointQuery('from', rail)} {
+  .${gridRailClass(rail)} { grid-template-columns: minmax(0, 1fr) ${gridRailWidth}; }
+}`;
 }
 
 export function gridColumnsClass(columns: GridColumns): string {
@@ -63,7 +87,13 @@ ${gridColumnCounts
       `.${gridFitClass(fit)} { grid-template-columns: repeat(auto-fit, minmax(min(100%, ${gridFitWidths[fit]}), 1fr)); }`,
   );
 
-  return [base, ...columns, ...below, ...fitted].join('\n');
+  return [
+    base,
+    ...columns,
+    ...below,
+    ...fitted,
+    ...gridRails.map(railRules),
+  ].join('\n');
 }
 
 export function gridClassCatalog(): string[] {
@@ -74,5 +104,6 @@ export function gridClassCatalog(): string[] {
       gridColumnCounts.map((count) => gridColumnsBelowClass(breakpoint, count)),
     ),
     ...gridFits.map(gridFitClass),
+    ...gridRails.map(gridRailClass),
   ];
 }

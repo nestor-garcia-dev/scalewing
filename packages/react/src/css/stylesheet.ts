@@ -38,6 +38,7 @@ import { separatorClassCatalog } from './css-separator.js';
 import { bandClassCatalog } from './css-band.js';
 import { screenPreviewClassCatalog } from './css-screen-preview.js';
 import { heroClassCatalog } from './css-hero.js';
+import { pageHeaderClassCatalog } from './css-page-header.js';
 import { siteFooterClassCatalog } from './css-site-footer.js';
 import { siteHeaderClassCatalog } from './css-site-header.js';
 import { statTileClassCatalog } from './css-stat-tile.js';
@@ -84,6 +85,7 @@ import { splitClassCatalog } from './css-split.js';
 import { toastClassCatalog } from './css-toast.js';
 import { toastCardClassCatalog } from './css-toast-card.js';
 import { cssDocumentCanvas } from './css-document.js';
+import { textClampClassCatalog } from './css-text.js';
 import { cssPaletteAttributes } from './css-palettes.js';
 import { cssUtilities } from './css-utilities.js';
 import { cssVariables } from './css-variables.js';
@@ -106,6 +108,7 @@ export function utilityClassCatalog(): string[] {
     'sw-text-align-end',
     'sw-tabular',
     ...Object.keys(typographyVariants).map((name) => `sw-text-${name}`),
+    ...textClampClassCatalog(),
     ...buttonClassCatalog(),
     ...buttonLinkClassCatalog(),
     ...dataClassCatalog(),
@@ -163,6 +166,7 @@ export function utilityClassCatalog(): string[] {
     ...bandClassCatalog(),
     ...screenPreviewClassCatalog(),
     ...heroClassCatalog(),
+    ...pageHeaderClassCatalog(),
     ...siteFooterClassCatalog(),
     ...siteHeaderClassCatalog(),
     ...statTileClassCatalog(),

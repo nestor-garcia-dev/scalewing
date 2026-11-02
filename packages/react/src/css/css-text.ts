@@ -42,6 +42,36 @@ function compactTextVariantRules(): string {
   return `@media ${breakpointQuery('below', 'md')} {\n${rules}\n}`;
 }
 
+/** The most lines a `maxLines` clamp keeps; one line is `truncate`. */
+export const textMaxLines = [2, 3] as const;
+export type TextMaxLines = (typeof textMaxLines)[number];
+
+export function textClampClass(count: TextMaxLines): string {
+  return `sw-text-clamp-${count}`;
+}
+
+/*
+ * `maxLines`: a clamped block. `overflow: hidden` only clips the drawing, so
+ * the clamped words stay in the accessibility tree.
+ */
+function clampRules(): string {
+  return textMaxLines
+    .map(
+      (count) => `.${textClampClass(count)} {
+  -webkit-box-orient: vertical;
+  display: -webkit-box;
+  -webkit-line-clamp: ${count};
+  line-clamp: ${count};
+  overflow: hidden;
+}`,
+    )
+    .join('\n');
+}
+
+export function textClampClassCatalog(): string[] {
+  return textMaxLines.map(textClampClass);
+}
+
 export function cssTextClasses(): string {
   return `.sw-text-align-start { text-align: start; }
 .sw-text-align-center { text-align: center; }
@@ -51,5 +81,7 @@ ${textMarginReset()}
 
 ${textVariantRules()}
 
-${compactTextVariantRules()}`;
+${compactTextVariantRules()}
+
+${clampRules()}`;
 }

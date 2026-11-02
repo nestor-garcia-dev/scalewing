@@ -1,5 +1,32 @@
 import { breakpointQuery } from './breakpoints.js';
 
+/** The fixed term columns of `termWidth`, a named geometry of this list. */
+const termWidths = { sm: '8rem', md: '12rem', lg: '16rem' } as const;
+
+function termWidthClass(width: keyof typeof termWidths): string {
+  return `sw-description-list-term-${width}`;
+}
+
+/*
+ * From `md` only, where the list has a term column at all; below it the
+ * base rule stacks each term over its detail. The column never takes more
+ * than half the list, so a narrow card keeps room for its details.
+ */
+function termWidthRules(): string {
+  const widths = Object.entries(termWidths) as [
+    keyof typeof termWidths,
+    string,
+  ][];
+  return `@media ${breakpointQuery('from', 'md')} {
+${widths
+  .map(
+    ([width, size]) =>
+      `  .${termWidthClass(width)} { grid-template-columns: min(${size}, 50%) minmax(0, 1fr); }`,
+  )
+  .join('\n')}
+}`;
+}
+
 /*
  * A spread list sets each row on its own two columns, at every width: the
  * term fits its words up to half the row at the start, and the detail
@@ -74,6 +101,8 @@ export function cssDescriptionListClasses(): string {
 
 ${spreadRules()}
 
+${termWidthRules()}
+
 @media (forced-colors: active) {
   .sw-description-item + .sw-description-item { border-top-color: CanvasText; }
 }`;
@@ -83,6 +112,9 @@ export function descriptionListClassCatalog(): string[] {
   return [
     'sw-description-list',
     'sw-description-list-spread',
+    ...(Object.keys(termWidths) as (keyof typeof termWidths)[]).map(
+      termWidthClass,
+    ),
     'sw-description-item',
     'sw-description-term',
     'sw-description-detail',

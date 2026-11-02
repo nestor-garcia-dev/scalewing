@@ -13,3 +13,9 @@ export const tableRuleWidth = '1px';
 
 /** The least height of a sortable header's button on a fine pointer. */
 export const tableSortMinHeight = 'var(--sw-control-xs-min-height)';
+
+/**
+ * A bounded table's row line, from which its height is counted; the compact
+ * density restates it with its smaller line.
+ */
+export const tableRowLineVariable = '--sw-table-row-line';

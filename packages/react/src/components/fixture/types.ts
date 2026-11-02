@@ -6,6 +6,7 @@ import {
   type FixtureCenterKind,
   type FixtureFlagTone,
 } from '../../css/css-fixture.js';
+import { type FixtureGroupSides } from '../../css/css-fixture-list.js';
 
 /** One side of a fixture: its name and an optional decorative mark (a crest). */
 export type FixtureSide = {
@@ -156,6 +157,15 @@ export type FixtureGroupProps = {
    * the game and its day. Default `false`.
    */
   titleHidden?: boolean;
+  /**
+   * `fluid` (the default): the sides share the row, so the centre moves with
+   * the run's width. `fixed`: from `md` the sides are at most 16rem each and
+   * the end column takes the rest, its details and action at the row's end,
+   * so the score sits at the same place in every run of the same width on a
+   * page (a run with a `select` starts one box later). Below `md` both are
+   * the same.
+   */
+  sides?: FixtureGroupSides;
   /** The run's FixtureRows. */
   children: ReactNode;
 };

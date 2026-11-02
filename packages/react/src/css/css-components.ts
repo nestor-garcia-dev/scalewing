@@ -57,6 +57,7 @@ import { cssSeparatorClasses } from './css-separator.js';
 import { cssBandClasses } from './css-band.js';
 import { cssScreenPreviewClasses } from './css-screen-preview.js';
 import { cssHeroClasses } from './css-hero.js';
+import { cssPageHeaderClasses } from './css-page-header.js';
 import { cssSiteFooterClasses } from './css-site-footer.js';
 import { cssSiteHeaderClasses } from './css-site-header.js';
 import { cssStatTileClasses } from './css-stat-tile.js';
@@ -74,6 +75,7 @@ import { cssTaskListClasses } from './css-task-list.js';
 import { cssToastClasses } from './css-toast.js';
 import { cssToastCardClasses } from './css-toast-card.js';
 import { cssBoxBorderClasses } from './css-box-border.js';
+import { cssDensityClasses } from './css-density.js';
 import { cssPopupHostRules } from './stacking.js';
 
 /*
@@ -217,6 +219,8 @@ ${cssScreenPreviewClasses()}
 
 ${cssHeroClasses()}
 
+${cssPageHeaderClasses()}
+
 ${cssSiteFooterClasses()}
 
 ${cssSiteHeaderClasses()}
@@ -299,6 +303,8 @@ ${cssToastCardClasses()}
 ${cssResponsiveClasses()}
 
 ${cssBoxBorderClasses()}
+
+${cssDensityClasses()}
 
 ${reducedTransparencyRules()}`;
 }

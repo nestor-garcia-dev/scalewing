@@ -92,7 +92,7 @@ describe('GlyphTile CSS', () => {
       '.sw-glyph-tile-orange { --sw-glyph-tile-fill: var(--sw-categorical-orange); }',
     );
     expect(css).toContain(
-      '.sw-glyph-tile-md { --sw-glyph-tile-side: var(--sw-control-xs-min-height); height: var(--sw-control-xs-min-height); width: var(--sw-control-xs-min-height); }',
+      '.sw-glyph-tile-md { --sw-glyph-tile-side: 28px; height: 28px; width: 28px; }',
     );
     expect(css).toContain(
       '.sw-glyph-tile { border: 1px solid CanvasText; color: CanvasText; }',

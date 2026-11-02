@@ -13,11 +13,13 @@ import { assertFilterChips } from './filter-chips/validate.js';
 export {
   filterChipCountAppearances,
   filterChipsOverflows,
+  filterChipsSelectedStyles,
   filterChipTones,
   type FilterChipCountAppearance,
   type FilterChipOption,
   type FilterChipsOverflow,
   type FilterChipsProps,
+  type FilterChipsSelectedStyle,
   type FilterChipTone,
 } from './filter-chips/options.js';
 
@@ -45,6 +47,7 @@ export function FilterChips(props: FilterChipsProps) {
     requiredMark = 'visible',
     countAppearance = 'figure',
     overflow = 'wrap',
+    selectedStyle = 'solid',
     error,
     'aria-describedby': describedByProp,
   } = props;
@@ -76,6 +79,7 @@ export function FilterChips(props: FilterChipsProps) {
       className={cx(
         'sw-filter-chips',
         overflow === 'scroll' && 'sw-filter-chips-scroll',
+        selectedStyle === 'subtle' && 'sw-filter-chips-selected-subtle',
       )}
     >
       <legend

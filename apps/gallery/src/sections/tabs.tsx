@@ -23,6 +23,18 @@ const notes: Record<HabitatId, string> = {
   desert: 'Fennec fox after dusk; 10 sightings.',
 };
 
+const countedTabs = [
+  { id: 'weeks', label: 'Weeks' },
+  {
+    id: 'held',
+    label: 'Held back',
+    count: 4,
+    countLabel: '4 need a date',
+    countTone: 'warning',
+  },
+  { id: 'counted', label: 'Counted (12)' },
+] as const;
+
 const reserveTabs = [
   { id: 'birds', label: 'Birds' },
   { id: 'mammals', label: 'Mammals' },
@@ -115,11 +127,12 @@ function StickyTabsPage() {
 
 export function TabsSection() {
   const [habitat, setHabitat] = useState<HabitatId>('forest');
+  const [counted, setCounted] = useState('weeks');
 
   return (
     <Section
       id="tabs"
-      purpose="Tabs is the strip for the sections of one page: tablist semantics, an accent underline under the current tab, arrow keys, Home and End to move and select, and sideways scrolling when the labels overflow, with a shade on each edge that has more tabs past it, as a wide Table has (narrow the window to see it). Each tab pairs with a TabPanel. sticky keeps the strip at the top of the viewport while a long panel scrolls under it: a full-bleed band of the page canvas with its hairline, a little see-through over the glass blur, solid under Reduce Transparency. A sticky strip only sticks within its parent, so make it a direct child of the page container that holds the panels and put the side gutter on the title and panels; each tab's 16 px inline padding lines the first label up with a space-4 gutter. Use SegmentedControl for an exclusive choice that changes what a form does, Nav for destinations."
+      purpose="Tabs is the strip for the sections of one page: tablist semantics, an accent underline under the current tab, arrow keys, Home and End to move and select, and sideways scrolling when the labels overflow, with a shade on each edge that has more tabs past it, as a wide Table has (narrow the window to see it). Each tab pairs with a TabPanel. sticky keeps the strip at the top of the viewport while a long panel scrolls under it: a full-bleed band of the page canvas with its hairline, a little see-through over the glass blur, solid under Reduce Transparency. A sticky strip only sticks within its parent, so make it a direct child of the page container that holds the panels and put the side gutter on the title and panels; each tab's 16 px inline padding lines the first label up with a space-4 gutter. Use SegmentedControl for an exclusive choice that changes what a form does, Nav for destinations. count puts the shared count pill after a tab's words, countLabel says in words what it means and countTone sets its colour, warning for amber."
       title="Tabs"
       usage={`<Tabs
   id="habitats"
@@ -164,6 +177,30 @@ export function TabsSection() {
             attribute so a product can keep them mounted or render one at a
             time.
           </Text>
+        </Stack>
+        <Stack gap={3}>
+          <Text color="muted" variant="caption">
+            count: the shared pill after a tab's words, read in its name, with
+            what it means in countLabel. For a count with nothing to do, write
+            it in the label.
+          </Text>
+          <Tabs
+            aria-label="Surveys"
+            id="counted-tabs"
+            items={countedTabs}
+            onChange={setCounted}
+            value={counted}
+          />
+          {countedTabs.map((tab) => (
+            <TabPanel
+              id={tab.id}
+              key={tab.id}
+              tabsId="counted-tabs"
+              value={counted}
+            >
+              <Text variant="caption">{tab.id} surveys go here.</Text>
+            </TabPanel>
+          ))}
         </Stack>
         <Stack gap={3}>
           <Text color="muted" variant="caption">

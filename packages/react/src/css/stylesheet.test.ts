@@ -167,7 +167,7 @@ describe('generated CSS', () => {
 
   it('resets the browser margins of every Text variant at zero specificity', () => {
     expect(css).toContain(
-      ':where(.sw-text-hero, .sw-text-display, .sw-text-headline, .sw-text-heading, .sw-text-title, .sw-text-lead, .sw-text-body, .sw-text-label, .sw-text-caption, .sw-text-data) { margin: 0; }',
+      ':where(.sw-text-hero, .sw-text-display, .sw-text-headline, .sw-text-heading, .sw-text-title, .sw-text-lead, .sw-text-body, .sw-text-bodySm, .sw-text-label, .sw-text-caption, .sw-text-data) { margin: 0; }',
     );
     // An authored margin, such as the visually hidden utility's, still wins.
     expect(css).toContain('.sw-sr-only { position: absolute;');
@@ -255,9 +255,13 @@ describe('generated CSS', () => {
     expect(css).toContain('.sw-button-primary');
     expect(css).toContain('.sw-button-group > * { width: 100%; }');
     expect(css).toContain('--sw-control-md-min-height: 44px');
-    expect(css).toContain('.sw-button-md { min-height: 44px');
+    expect(css).toContain(
+      '.sw-button-md { min-height: var(--sw-control-md-min-height);',
+    );
     expect(css).toContain('--sw-control-xs-min-height: 28px');
-    expect(css).toContain('.sw-button-xs { min-height: 28px');
+    expect(css).toContain(
+      '.sw-button-xs { min-height: var(--sw-control-xs-min-height);',
+    );
     expect(catalog).toContain('sw-button-xs');
   });
 

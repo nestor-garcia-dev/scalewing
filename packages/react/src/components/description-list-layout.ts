@@ -14,3 +14,26 @@ export function assertDescriptionListLayout(layout: unknown): void {
   if (!isOneOf(descriptionListLayouts, layout))
     throw new RangeError(`Unknown DescriptionList layout: ${String(layout)}`);
 }
+
+/**
+ * A fixed term column, so details line up across several lists on a page:
+ * `sm` 8rem, `md` 12rem, `lg` 16rem, from `md` up and never more than half
+ * the list. Only with the `columns` layout.
+ */
+export const descriptionListTermWidths = ['sm', 'md', 'lg'] as const;
+export type DescriptionListTermWidth =
+  (typeof descriptionListTermWidths)[number];
+
+/** Fails closed on a term width the list cannot draw. */
+export function assertDescriptionListTermWidth(
+  termWidth: unknown,
+  layout: DescriptionListLayout,
+): void {
+  if (termWidth === undefined) return;
+  if (!isOneOf(descriptionListTermWidths, termWidth))
+    throw new RangeError(
+      `Unknown DescriptionList termWidth: ${String(termWidth)}`,
+    );
+  if (layout !== 'columns')
+    throw new RangeError('DescriptionList termWidth needs the columns layout');
+}

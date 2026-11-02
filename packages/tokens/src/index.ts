@@ -4,6 +4,8 @@ export {
   type ControlSize,
   buttonSizes,
   buttonVariants,
+  compactControlScale,
+  compactFilterChipMinHeight,
   controlScale,
   disabledOpacity,
   focusRing,

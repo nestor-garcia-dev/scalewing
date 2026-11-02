@@ -44,6 +44,13 @@ export const typographyVariants = {
     fontWeight: 400,
     letterSpacing: -0.2,
   },
+  /** Reading text in a dense data tool: a card's, a table's, a description list's. */
+  bodySm: {
+    fontSize: 15,
+    lineHeight: 22,
+    fontWeight: 400,
+    letterSpacing: -0.2,
+  },
   label: {
     fontSize: 15,
     lineHeight: 20,

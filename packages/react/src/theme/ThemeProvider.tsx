@@ -21,9 +21,13 @@ import {
   assertThemeCanvas,
   type ThemeCanvas,
 } from '../css/css-canvas-grouped.js';
+import { assertThemeDensity, type ThemeDensity } from '../css/css-density.js';
 import { assertThemeFrame, type ThemeFrame } from '../css/css-theme-frame.js';
 
 const ThemeContext = createContext<Theme | null>(null);
+
+/** The density of the ThemeProvider around this one. */
+const DensityContext = createContext<ThemeDensity>('comfortable');
 
 export type ThemeProviderProps = {
   colorScheme?: ColorScheme | 'system';
@@ -46,6 +50,17 @@ export type ThemeProviderProps = {
    * a `RangeError`.
    */
   frame?: ThemeFrame;
+  /**
+   * `comfortable` (default) draws today's touch-sized controls. `compact`
+   * (opt-in) is a desktop data tool's scale, on a fine pointer only (a touch
+   * screen keeps its 44 px targets): md controls 36 px high with 14 px side
+   * padding, sm 28/10, xs 24/8, FilterChips 32 px, Card corners at the md
+   * radius, and 15/22 reading text in a Card, a Table and a DescriptionList
+   * and for everything that inherits the root's type. It reaches everything
+   * inside: a ThemeProvider nested in a compact one is compact too. An
+   * unknown value throws a `RangeError`.
+   */
+  density?: ThemeDensity;
   children: ReactNode;
 };
 
@@ -85,10 +100,14 @@ export function ThemeProvider({
   colors,
   canvas = 'default',
   frame = 'none',
+  density = 'comfortable',
   children,
 }: ThemeProviderProps) {
   assertThemeCanvas(canvas);
   assertThemeFrame(frame);
+  assertThemeDensity(density);
+  const resolvedDensity =
+    useContext(DensityContext) === 'compact' ? 'compact' : density;
   const [systemScheme, setSystemScheme] =
     useState<ColorScheme>(schemeFromMedia);
 
@@ -115,15 +134,18 @@ export function ThemeProvider({
 
   return (
     <ThemeContext.Provider value={theme}>
-      <div
-        data-canvas={canvas === 'default' ? undefined : canvas}
-        data-frame={frame === 'none' ? undefined : frame}
-        data-palette={palette}
-        data-theme={theme.colorScheme}
-        style={themeCssVars(theme)}
-      >
-        {children}
-      </div>
+      <DensityContext.Provider value={resolvedDensity}>
+        <div
+          data-canvas={canvas === 'default' ? undefined : canvas}
+          data-density={resolvedDensity === 'compact' ? 'compact' : undefined}
+          data-frame={frame === 'none' ? undefined : frame}
+          data-palette={palette}
+          data-theme={theme.colorScheme}
+          style={themeCssVars(theme)}
+        >
+          {children}
+        </div>
+      </DensityContext.Provider>
     </ThemeContext.Provider>
   );
 }

@@ -14,7 +14,10 @@ if (!root) {
 
 // The AppShell section shows its frame in iframes of three widths: that
 // query renders the frame alone, at the iframe's width.
-const frame = window.location.search.slice(1) === appShellFrameQuery;
+const frame = window.location.search
+  .slice(1)
+  .split('&')
+  .includes(appShellFrameQuery);
 
 createRoot(root).render(
   <StrictMode>{frame ? <AppShellFrame /> : <App />}</StrictMode>,

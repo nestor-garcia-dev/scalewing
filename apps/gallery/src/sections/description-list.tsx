@@ -106,3 +106,44 @@ export function DescriptionListSection() {
     </Section>
   );
 }
+
+export function DescriptionListTermWidthSection() {
+  return (
+    <Section
+      id="description-list-term-width"
+      purpose="DescriptionList termWidth fixes the term column to a named width from md, so the details of several lists on a page line up: sm 8rem, md 12rem, lg 16rem, never more than half the list, a longer term wrapping. Below md a term sits over its detail. Only with the columns layout."
+      title="DescriptionList termWidth"
+      usage={`<DescriptionList termWidth="md">
+  <DescriptionItem term={<Text color="muted">Habitat</Text>}>
+    <Text>Wetland</Text>
+  </DescriptionItem>
+</DescriptionList>`}
+    >
+      <Stack gap={2}>
+        <Text color="muted" variant="caption">
+          termWidth md: a fixed 12rem term column (sm 8rem, lg 16rem, never more
+          than half the list), so the details of these two lists start at the
+          same place.
+        </Text>
+        <Grid columns={2} columnsBelow={{ md: 1 }} gap={4}>
+          <Card padding={4} variant="outlined">
+            <DescriptionList data-testid="term-width-a" termWidth="md">
+              <DescriptionItem term={<Text color="muted">Habitat</Text>}>
+                <Text>Wetland</Text>
+              </DescriptionItem>
+            </DescriptionList>
+          </Card>
+          <Card padding={4} variant="outlined">
+            <DescriptionList data-testid="term-width-b" termWidth="md">
+              <DescriptionItem
+                term={<Text color="muted">Who can visit on weekends</Text>}
+              >
+                <Text>Every ranger</Text>
+              </DescriptionItem>
+            </DescriptionList>
+          </Card>
+        </Grid>
+      </Stack>
+    </Section>
+  );
+}

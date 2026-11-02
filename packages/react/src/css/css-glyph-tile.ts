@@ -1,4 +1,4 @@
-import { categoricalColorKeys } from '@scalewing/tokens';
+import { categoricalColorKeys, controlScale } from '@scalewing/tokens';
 
 export const glyphTileSizes = ['sm', 'md', 'lg'] as const;
 
@@ -17,9 +17,13 @@ export const glyphTileLetterLimit = 3;
  */
 export const glyphTileLetterDarken = 0.25;
 
+/*
+ * `md` reads the token, not the variable: a tile holds up to three letters,
+ * which a compact density's smaller xs control would crowd.
+ */
 const tileSide: Record<GlyphTileSize, string> = {
   sm: 'var(--sw-space-5)',
-  md: 'var(--sw-control-xs-min-height)',
+  md: `${controlScale.xs.minHeight}px`,
   lg: 'var(--sw-space-6)',
 };
 

@@ -348,7 +348,9 @@ export {
 } from './components/NavCount.js';
 export {
   FixtureGroup,
+  fixtureGroupSides,
   type FixtureGroupProps,
+  type FixtureGroupSides,
 } from './components/FixtureGroup.js';
 export {
   FixtureRow,
@@ -405,6 +407,10 @@ export {
 } from './components/ContextSwitcher.js';
 export {
   AppShell,
+  appShellContentMaxWidths,
+  appShellSidebarTones,
+  type AppShellContentMaxWidth,
+  type AppShellSidebarTone,
   type AppShellLabels,
   type AppShellNavGroup,
   type AppShellNavItem,
@@ -487,9 +493,11 @@ export {
 export {
   Text,
   textFonts,
+  textMaxLines,
   type TextAlign,
   type TextElement,
   type TextFont,
+  type TextMaxLines,
   type TextProps,
 } from './components/Text.js';
 export {
@@ -499,6 +507,7 @@ export {
 } from './theme/ThemeProvider.js';
 export { themeCanvases, type ThemeCanvas } from './css/css-canvas-grouped.js';
 export { themeFrames, type ThemeFrame } from './css/css-theme-frame.js';
+export { themeDensities, type ThemeDensity } from './css/css-density.js';
 
 export { utilityClassCatalog } from './css/stylesheet.js';
 export type { VisibilityProps } from './visibility-classes.js';
@@ -553,6 +562,11 @@ export type {
 } from './components/screen-preview/PreviewTiles.js';
 export { Hero } from './components/Hero.js';
 export type { HeroProps } from './components/Hero.js';
+export { PageHeader } from './components/PageHeader.js';
+export type {
+  PageHeaderBack,
+  PageHeaderProps,
+} from './components/PageHeader.js';
 export { SiteFooter } from './components/SiteFooter.js';
 export type {
   SiteFooterGroup,
@@ -568,15 +582,22 @@ export {
   DescriptionItem,
   DescriptionList,
   descriptionListLayouts,
+  descriptionListTermWidths,
 } from './components/DescriptionList.js';
 export type {
   DescriptionItemProps,
   DescriptionListLayout,
   DescriptionListProps,
+  DescriptionListTermWidth,
 } from './components/DescriptionList.js';
 
-export { Grid, gridFits } from './components/Grid.js';
-export type { GridColumns, GridFit, GridProps } from './components/Grid.js';
+export { Grid, gridFits, gridRails } from './components/Grid.js';
+export type {
+  GridColumns,
+  GridFit,
+  GridProps,
+  GridRail,
+} from './components/Grid.js';
 export type { GridColumnSpan } from './css/css-grid-span.js';
 export type { ColumnSpanProps } from './column-span-classes.js';
 export {
@@ -611,6 +632,7 @@ export {
   FilterChips,
   filterChipCountAppearances,
   filterChipsOverflows,
+  filterChipsSelectedStyles,
   filterChipTones,
 } from './components/FilterChips.js';
 export { FilterChipsRow } from './components/FilterChipsRow.js';
@@ -620,5 +642,6 @@ export type {
   FilterChipOption,
   FilterChipsOverflow,
   FilterChipsProps,
+  FilterChipsSelectedStyle,
   FilterChipTone,
 } from './components/FilterChips.js';

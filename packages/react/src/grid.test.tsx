@@ -189,6 +189,8 @@ describe('Grid', () => {
       'sw-grid-fit-narrow',
       'sw-grid-fit-medium',
       'sw-grid-fit-wide',
+      'sw-grid-rail-md',
+      'sw-grid-rail-lg',
     ]);
   });
 });
