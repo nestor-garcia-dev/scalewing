@@ -3,9 +3,11 @@ import { mutedReadsAsText, quietFill } from './quiet-fill.js';
 /*
  * The action sits after the row in its own column, centred on the row's
  * height, outside the row's press area, keeping the row's end padding
- * after it. Where :has() is supported the hover fill spans the whole item,
- * so the row, its select and its action read as one line; a detail under
- * the row is on that fill too, so its muted words take the text colour.
+ * after it. It ends at the column's end, so a short action on one row and
+ * a long one on the next finish on the same line. Where :has() is supported
+ * the hover fill spans the whole item, so the row, its select and its action
+ * read as one line; a detail under the row is on that fill too, so its muted
+ * words take the text colour.
  */
 function actionRules(): string {
   return `.sw-fixture-action {
@@ -14,6 +16,7 @@ function actionRules(): string {
   display: inline-flex;
   grid-column: -2 / -1;
   grid-row: 1;
+  justify-content: flex-end;
   padding-inline-end: var(--sw-space-2);
 }
 

@@ -195,6 +195,11 @@ F-010-S22. Follow-ups: `ScheduleGrid`'s own polite status could move onto
 `LiveRegion`; toned words (success, danger, accent) on the quiet fill fall
 under 4.5:1 in some palettes, a palette-wide question for tokens.
 
+FutMas's Scores review: `FixtureRow`'s action ends at its column's end, so
+rows with a short action and a long one finish on the same line down a
+`FixtureGroup`. The owner asked for it on the Scores page. Next: release,
+then FutMas pins it in F-010-S27.
+
 FutMas F-010-S22 audit fixes, fourth patch: forced colours show every
 choice. The chosen `FilterChips` chip keeps its words (Chromium's Canvas
 backplate hid HighlightText), and the plain and filled `SegmentedControl`
