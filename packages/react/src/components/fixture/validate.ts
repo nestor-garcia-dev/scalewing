@@ -3,11 +3,7 @@ import { badgeTones } from '../../css/css-data.js';
 import { fixtureCenterKinds, fixtureFlagTones } from '../../css/css-fixture.js';
 import { isOneOf } from '../../is-one-of.js';
 import { type FixtureRowProps } from './types.js';
-import { assertFixtureMiddle } from './validate-score.js';
-
-function isBlank(words: unknown): boolean {
-  return typeof words !== 'string' || !words.trim();
-}
+import { assertFixtureMiddle, isBlank } from './validate-score.js';
 
 /**
  * Fails closed on a row it cannot name or draw: a side without a name, a

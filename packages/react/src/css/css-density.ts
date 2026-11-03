@@ -36,6 +36,7 @@ const compactRoot = "[data-theme][data-density='compact']";
  */
 const statedBodyControls = [
   '.sw-date-field-input',
+  '.sw-fixture-card-name',
   '.sw-fixture-score-box',
   '.sw-segmented-filled .sw-segmented-item',
   '.sw-stepper-input',

@@ -72,6 +72,7 @@ import {
   DescriptionListTermWidthSection,
 } from './sections/description-list.js';
 import { ListGroupSection } from './sections/list-group.js';
+import { FixtureCardSection } from './sections/fixture-card.js';
 import { FixtureRowSection } from './sections/fixture-row.js';
 import { FixtureRowScoreSection } from './sections/fixture-row-score.js';
 import { ScheduleGridSection } from './sections/schedule-grid.js';
@@ -423,6 +424,12 @@ export const catalog = [
     label: 'FixtureRow score',
     group: 'data',
     Section: FixtureRowScoreSection,
+  },
+  {
+    id: 'fixture-card',
+    label: 'FixtureCard',
+    group: 'data',
+    Section: FixtureCardSection,
   },
   {
     id: 'schedule-grid',

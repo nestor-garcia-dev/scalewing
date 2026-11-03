@@ -347,6 +347,11 @@ export {
   type NavCountTone,
 } from './components/NavCount.js';
 export {
+  FixtureCard,
+  type FixtureCardProps,
+  type FixtureCardSide,
+} from './components/FixtureCard.js';
+export {
   FixtureGroup,
   fixtureGroupSides,
   type FixtureGroupProps,

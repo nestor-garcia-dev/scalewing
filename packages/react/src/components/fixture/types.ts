@@ -148,6 +148,34 @@ export type FixtureRowProps = {
   'aria-label'?: string;
 };
 
+/** One side of a FixtureCard. */
+export type FixtureCardSide = {
+  name: string;
+  /** Muted words under the name, such as a side's form or a walkover. */
+  note?: ReactNode;
+};
+
+export type FixtureCardProps = {
+  home: FixtureCardSide;
+  away: FixtureCardSide;
+  /**
+   * The score boxes, one at each side's end. `label` names the card's group;
+   * `error` is said under the sides.
+   */
+  score: FixtureScore;
+  /**
+   * The start of the top line, such as the day: caption size in the muted
+   * ink. A coloured `Text` inside it keeps its own colour.
+   */
+  meta?: ReactNode;
+  /** The end of the top line, such as an icon `ActionMenu`. */
+  menu?: ReactNode;
+  /** Under the sides in a wrapping row, such as small neutral `Button`s. */
+  actions?: ReactNode;
+  /** Under the actions, such as a save message: no type of its own, so give it a `Text`. */
+  detail?: ReactNode;
+};
+
 export type FixtureGroupProps = {
   /** The run's caption, such as a date and a venue; it names the list. */
   title: string;

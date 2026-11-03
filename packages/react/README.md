@@ -47,6 +47,7 @@ import {
   DescriptionList,
   DescriptionItem,
   EmptyState,
+  FixtureCard,
   FixtureGroup,
   FixtureRow,
   ScheduleGrid,
@@ -1294,6 +1295,43 @@ When the real screenshot exists, a `PreviewImage` (`src`, `width`, `height`) hol
 <FixtureGroup title="Heron Marsh vs Otter Pool, Sunday 25 October" titleHidden>
   <FixtureRow home={{ name: 'Heron Marsh' }} away={{ name: 'Otter Pool' }} center="14–9" centerKind="score" />
 </FixtureGroup>
+```
+
+`FixtureCard` is one pairing as a small vertical scorecard, for a narrow column where `FixtureRow`'s boxes in the row's middle cannot fit. It draws no edge, fill or radius: it sits inside a `Card`, and you separate several with your own divider. It needs no `FixtureGroup`. `home` and `away` (`{ name, note? }`) are stacked, each name in body at weight 500 with its `note` under it in muted caption, and that side's score box at the end, the boxes in one column. Names wrap and never truncate. `score` is `FixtureRow`'s `FixtureScore`, with the same boxes and keys (digits only, selected on focus, Enter calls `onSubmit`, Escape calls `onCancel`, 32 px on a fine pointer, 44 px on a coarse one) and the same polite `error` line, here under the sides; the root is a group named by `score.label`. `meta` (caption size in the muted ink; a coloured `Text` inside it keeps its colour) and `menu` make a top line, drawn only with one of them; `actions` is a wrapping row under the sides and `detail` is under the actions with no type of its own, so give it a `Text`. A blank name or score label throws a `RangeError`.
+
+```tsx
+<Card padding={4}>
+  <Stack gap={3}>
+    <FixtureCard
+      meta="Sun, Oct 18"
+      menu={
+        <ActionMenu
+          label="More for Heron Marsh v Otter Pool"
+          items={items}
+          trigger={<Dots />}
+          triggerAppearance="icon"
+        />
+      }
+      home={{ name: 'Heron Marsh', note: 'North hide' }}
+      away={{ name: 'Otter Pool' }}
+      score={{
+        label: 'Count, Heron Marsh v Otter Pool',
+        home: { value: tally.home, label: 'Heron Marsh count' },
+        away: { value: tally.away, label: 'Otter Pool count' },
+        onChange: change,
+        onSubmit: record,
+        onCancel: reset,
+      }}
+      actions={
+        <Button size="sm" variant="neutral" onPress={record}>
+          Record
+        </Button>
+      }
+    />
+    <Separator decorative />
+    {/* the next FixtureCard */}
+  </Stack>
+</Card>
 ```
 
 Muted words on a row's quiet fill: a pressable `FixtureRow` (and a detail under one with an `action` or `select`, which the fill spans), a pressable `ListRow` (hovered or pressed) and a `TableRow pressable` (hovered, pressed or with its action focused) show the quiet grey fill, on which the muted colour falls under 4.5:1 in most palettes (4.14:1 in `ink` light, 3.47:1 in `harvest` dark). While the fill shows, the parts on it read the muted token as the text colour, which keeps 4.5:1 there in every palette and scheme: the details, the meta, a muted `TableCell`, the chevron, and a consumer's `Text color="muted"` inside the row, with no prop and no change at rest. Toned words (a value's or a cell's success, danger or accent, a danger title, a Badge) keep their tone. Forced colours replace both colours and outline the hovered row in `Highlight`, as before.

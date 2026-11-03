@@ -12,6 +12,10 @@ import {
   cssFixtureListSidesRules,
 } from './css-fixture-list.js';
 import {
+  cssFixtureCardClasses,
+  fixtureCardClassCatalog,
+} from './css-fixture-card.js';
+import {
   cssFixtureDetailClasses,
   fixtureDetailClassCatalog,
 } from './css-fixture-detail.js';
@@ -249,6 +253,8 @@ ${cssFixtureActionClasses()}
 
 ${cssFixtureScoreClasses()}
 
+${cssFixtureCardClasses()}
+
 ${cssFixtureDetailClasses()}`;
 }
 
@@ -274,6 +280,7 @@ export function fixtureClassCatalog(): string[] {
     ...fixtureSelectClassCatalog(),
     ...fixtureActionClassCatalog(),
     ...fixtureScoreClassCatalog(),
+    ...fixtureCardClassCatalog(),
     ...fixtureDetailClassCatalog(),
   ];
 }

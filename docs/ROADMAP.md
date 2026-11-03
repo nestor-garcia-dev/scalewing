@@ -195,6 +195,12 @@ F-010-S22. Follow-ups: `ScheduleGrid`'s own polite status could move onto
 `LiveRegion`; toned words (success, danger, accent) on the quiet fill fall
 under 4.5:1 in some palettes, a palette-wide question for tokens.
 
+FutMas's Scores redesign: `FixtureCard`, one pairing as a small vertical
+scorecard for inside a `Card`, the sides stacked with a score box at each
+one's end, reusing `FixtureRow`'s boxes, keys and error line
+(`futmas-fixture-card.md`). Purely additive. Next: release it, then FutMas
+pins it on its Scores page.
+
 FutMas F-010-S28, desktop layout and polish, from its design review: opt-in
 desktop primitives. `ThemeProvider density="compact"` on a fine pointer only
 (md controls 36/14, sm 28/10, xs 24/8, chips 32, Card corners the md radius,
