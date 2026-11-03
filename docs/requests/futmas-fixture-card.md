@@ -1,6 +1,6 @@
 Scalewing request from FutMas.
 
-Status: implemented for `@scalewing/react` (accepted 2026-11-02; FutMas F-010 Scores redesign; standing owner approval).
+Status: implemented for `@scalewing/react` 1.62.0 (accepted 2026-11-02; FutMas F-010 Scores redesign; standing owner approval).
 Renderer: react
 Missing surface: `FixtureCard`, one pairing as a small vertical scorecard inside a `Card`.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: FutMas's Scores page is being redesigned as three section cards, where each game reads as team names on the left and a score box to the right of each. `FixtureRow`'s score boxes sit in the row's middle and need `FixtureGroup`'s grid, a bare `input` in `Inline` would not be `sw-fixture-score-box` (digits only, select on focus, Enter and Escape, 32 and 44 px, compact density), and apps may not write CSS.
