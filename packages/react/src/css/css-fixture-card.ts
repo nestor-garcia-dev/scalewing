@@ -70,6 +70,17 @@ function cardRules(): string {
 }
 
 /*
+ * A box on the Card's surface would share its fill in a tinted dark palette
+ * and nearly vanish while empty, so it takes the page's. A disabled box keeps
+ * the canvas's disabled look.
+ */
+function boxRules(): string {
+  return `[data-theme] .sw-fixture-card input.sw-fixture-score-box:not(:disabled) {
+  background: var(--sw-color-background);
+}`;
+}
+
+/*
  * The score's message is a live region, so it stays in place while empty; a
  * block with no words has no height, and its margin comes only with words.
  */
@@ -103,6 +114,8 @@ function belowRules(): string {
 /* FixtureCard (see components/FixtureCard.tsx); after the score's rules. */
 export function cssFixtureCardClasses(): string {
   return `${cardRules()}
+
+${boxRules()}
 
 ${belowRules()}`;
 }
