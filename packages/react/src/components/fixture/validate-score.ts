@@ -1,6 +1,10 @@
-import { type FixtureRowProps, type FixtureScoreBox } from './types.js';
+import {
+  type FixtureRowProps,
+  type FixtureScore,
+  type FixtureScoreBox,
+} from './types.js';
 
-function isBlank(words: unknown): boolean {
+export function isBlank(words: unknown): boolean {
   return typeof words !== 'string' || !words.trim();
 }
 
@@ -14,12 +18,33 @@ function isBox(box: FixtureScoreBox | undefined): boolean {
 }
 
 /**
+ * Fails closed on a score without a group label, two boxes with string
+ * values and labels, an `onChange` and an `onSubmit`, or with an `onCancel`
+ * or `error` of the wrong type. `name` is the component that was given it.
+ */
+export function assertFixtureScore(
+  name: string,
+  score: FixtureScore | undefined,
+): void {
+  if (
+    isBlank(score?.label) ||
+    !isBox(score?.home) ||
+    !isBox(score?.away) ||
+    typeof score?.onChange !== 'function' ||
+    typeof score.onSubmit !== 'function' ||
+    (score.onCancel !== undefined && typeof score.onCancel !== 'function') ||
+    (score.error !== undefined && typeof score.error !== 'string')
+  )
+    throw new RangeError(
+      `${name} score needs a label, home and away boxes (value and label), onChange and onSubmit`,
+    );
+}
+
+/**
  * Fails closed on a middle the row cannot draw: neither a `center` nor a
  * `score`, or both; a `centerKind` with a `score` (it styles `center`); a
  * score on a link or button row (its boxes would sit inside the press
- * target); a score without a group label, two boxes with string values
- * and labels, an `onChange` and an `onSubmit`, or with an `onCancel` or
- * `error` of the wrong type.
+ * target); or a score `assertFixtureScore` refuses.
  */
 export function assertFixtureMiddle({
   center,
@@ -44,16 +69,5 @@ export function assertFixtureMiddle({
     throw new RangeError(
       `${name} score boxes are their own controls: leave out href and onPress`,
     );
-  if (
-    isBlank(score.label) ||
-    !isBox(score.home) ||
-    !isBox(score.away) ||
-    typeof score.onChange !== 'function' ||
-    typeof score.onSubmit !== 'function' ||
-    (score.onCancel !== undefined && typeof score.onCancel !== 'function') ||
-    (score.error !== undefined && typeof score.error !== 'string')
-  )
-    throw new RangeError(
-      `${name} score needs a label, home and away boxes (value and label), onChange and onSubmit`,
-    );
+  assertFixtureScore(name, score);
 }
