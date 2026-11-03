@@ -1,5 +1,11 @@
 # @scalewing/react
 
+## 1.62.1
+
+### Patch Changes
+
+- 1b9b367: `FixtureCard`'s enabled score boxes take the page's background, so an empty box stays visible on a tinted dark `Card` (FutMas F-010). `FixtureRow`'s boxes are unchanged.
+
 ## 1.62.0
 
 ### Minor Changes
