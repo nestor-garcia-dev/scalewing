@@ -201,6 +201,11 @@ one's end, reusing `FixtureRow`'s boxes, keys and error line
 (`futmas-fixture-card.md`, #288). Purely additive. Released in
 `@scalewing/react` 1.62.0. Next: FutMas pins react 1.62.0 on its Scores page.
 
+FutMas F-024-S02, its public site: `ThemeProvider displayFace` and tokens
+`displayFaceFamilies`, a page's titles in a condensed face that the app
+loads (`futmas-display-face.md`). Next: release tokens and react minors and
+FutMas pins them for its marketing pages.
+
 FutMas F-010-S28, desktop layout and polish, from its design review: opt-in
 desktop primitives. `ThemeProvider density="compact"` on a fine pointer only
 (md controls 36/14, sm 28/10, xs 24/8, chips 32, Card corners the md radius,

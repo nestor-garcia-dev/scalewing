@@ -101,6 +101,14 @@ The accent does not keep 4.5:1 on the grey in every palette, so keep links and a
 </ThemeProvider>
 ```
 
+`displayFace="condensed"` (opt-in; `displayFaces`, default `"system"`) sets a page's titles, the `hero`, `display`, `headline` and `heading` text, in the tokens' condensed face (`displayFaceFamilies.condensed`: Barlow Condensed, falling back to the platform's narrow sans) with no negative tracking, for a page that should read like a fixture board or a poster. Body text, labels and controls keep the system face. Scalewing ships no font files: load Barlow Condensed yourself, self-hosted (for example from `@fontsource/barlow-condensed`). It writes `data-display-face="condensed"` on the themed node; a page rendered without `ThemeProvider` sets that attribute on its `data-theme` node itself. Every title under it changes, so `Hero`, a section's `headline` and a `Card` or dialog title in those variants take the face too; a nested `ThemeProvider` cannot turn it back to `system` (that value writes no attribute), so set it once at the page's root. An unknown face throws a `RangeError`.
+
+```tsx
+<ThemeProvider displayFace="condensed" frame="site" colorScheme="system">
+  …
+</ThemeProvider>
+```
+
 ```html
 <div class="sw-padding-top-4 sw-padding-x-4"></div>
 ```

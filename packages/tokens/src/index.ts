@@ -84,6 +84,8 @@ export {
 } from './theme.js';
 export {
   type TypographyVariant,
+  type DisplayFace,
+  displayFaceFamilies,
   fontFamily,
   typographyVariants,
   compactTypographyVariants,

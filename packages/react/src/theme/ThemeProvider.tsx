@@ -23,6 +23,10 @@ import {
 } from '../css/css-canvas-grouped.js';
 import { assertThemeDensity, type ThemeDensity } from '../css/css-density.js';
 import { assertThemeFrame, type ThemeFrame } from '../css/css-theme-frame.js';
+import {
+  assertDisplayFace,
+  type DisplayFace,
+} from '../css/css-display-face.js';
 
 const ThemeContext = createContext<Theme | null>(null);
 
@@ -50,6 +54,15 @@ export type ThemeProviderProps = {
    * a `RangeError`.
    */
   frame?: ThemeFrame;
+  /**
+   * `system` (default) sets titles in the body face; `condensed` (opt-in)
+   * sets `hero`, `display`, `headline` and `heading` text in the tokens'
+   * condensed face (Barlow Condensed, which the app loads). It writes
+   * `data-display-face` on the themed node, which every title inside
+   * inherits; a nested provider's `system` cannot undo it, so set it once at
+   * the page's root. An unknown value throws a `RangeError`.
+   */
+  displayFace?: DisplayFace;
   /**
    * `comfortable` (default) draws today's touch-sized controls. `compact`
    * (opt-in) is a desktop data tool's scale, on a fine pointer only (a touch
@@ -100,11 +113,13 @@ export function ThemeProvider({
   colors,
   canvas = 'default',
   frame = 'none',
+  displayFace = 'system',
   density = 'comfortable',
   children,
 }: ThemeProviderProps) {
   assertThemeCanvas(canvas);
   assertThemeFrame(frame);
+  assertDisplayFace(displayFace);
   assertThemeDensity(density);
   const resolvedDensity =
     useContext(DensityContext) === 'compact' ? 'compact' : density;
@@ -138,6 +153,7 @@ export function ThemeProvider({
         <div
           data-canvas={canvas === 'default' ? undefined : canvas}
           data-density={resolvedDensity === 'compact' ? 'compact' : undefined}
+          data-display-face={displayFace === 'system' ? undefined : displayFace}
           data-frame={frame === 'none' ? undefined : frame}
           data-palette={palette}
           data-theme={theme.colorScheme}

@@ -98,3 +98,17 @@ export type CompactTypographyVariant = keyof typeof compactTypographyVariants;
 
 export const fontFamily =
   'ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif';
+
+/**
+ * The faces a page's titles (`hero`, `display`, `headline`, `heading`) can
+ * take. `system` keeps the body face. `condensed` is a tall, narrow face
+ * that reads like a fixture board or a poster: Barlow Condensed, which the
+ * consumer loads (self-hosted, such as from `@fontsource`), falling back to
+ * the platform's narrow sans. Body, labels and controls keep `fontFamily`.
+ */
+export const displayFaceFamilies = {
+  system: fontFamily,
+  condensed: '"Barlow Condensed", "Arial Narrow", sans-serif',
+} as const;
+
+export type DisplayFace = keyof typeof displayFaceFamilies;

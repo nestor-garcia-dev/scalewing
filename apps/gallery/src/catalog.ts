@@ -51,6 +51,7 @@ import { ButtonGroupSection } from './sections/button-group.js';
 import { ButtonSection } from './sections/button.js';
 import { CanvasSection } from './sections/canvas.js';
 import { ThemeFrameSection } from './sections/theme-frame.js';
+import { DisplayFaceSection } from './sections/display-face.js';
 import { CardSection } from './sections/card.js';
 import { DialogSection } from './sections/dialog.js';
 import { ToastSection } from './sections/toast.js';
@@ -132,6 +133,12 @@ export const catalog = [
     label: 'ThemeProvider frame',
     group: 'foundations',
     Section: ThemeFrameSection,
+  },
+  {
+    id: 'display-face',
+    label: 'ThemeProvider displayFace',
+    group: 'foundations',
+    Section: DisplayFaceSection,
   },
   {
     id: 'palettes',
