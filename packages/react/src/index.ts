@@ -512,6 +512,7 @@ export {
 } from './theme/ThemeProvider.js';
 export { themeCanvases, type ThemeCanvas } from './css/css-canvas-grouped.js';
 export { themeFrames, type ThemeFrame } from './css/css-theme-frame.js';
+export { displayFaces, type DisplayFace } from './css/css-display-face.js';
 export { themeDensities, type ThemeDensity } from './css/css-density.js';
 
 export { utilityClassCatalog } from './css/stylesheet.js';

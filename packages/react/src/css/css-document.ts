@@ -1,6 +1,7 @@
 import { typographyVariants } from '@scalewing/tokens';
 import { cssBoxLinkClasses } from './css-box-link.js';
 import { cssCanvasGroupedRules } from './css-canvas-grouped.js';
+import { cssDisplayFaceRules } from './css-display-face.js';
 import { cssThemeFrameRules } from './css-theme-frame.js';
 
 const body = typographyVariants.body;
@@ -98,6 +99,8 @@ body {
 ${cssCanvasGroupedRules()}
 
 ${cssThemeFrameRules()}
+
+${cssDisplayFaceRules()}
 
 [data-theme] a {
   color: var(--sw-color-accent);

@@ -1,6 +1,11 @@
 import { describe, expect, it } from 'vitest';
 
-import { compactTypographyVariants, typographyVariants } from './typography.js';
+import {
+  compactTypographyVariants,
+  displayFaceFamilies,
+  fontFamily,
+  typographyVariants,
+} from './typography.js';
 
 describe('compact typography', () => {
   it('steps the titles down and keeps them above a card title', () => {
@@ -43,5 +48,15 @@ describe('showcase sizes', () => {
     expect(lead.fontSize).toBe(title.fontSize);
     expect(lead.fontWeight).toBe(body.fontWeight);
     expect(lead.lineHeight).toBeGreaterThan(title.lineHeight);
+  });
+});
+
+describe('display faces', () => {
+  it('keeps the body face for system and names a narrow fallback for condensed', () => {
+    expect(Object.keys(displayFaceFamilies)).toEqual(['system', 'condensed']);
+    expect(displayFaceFamilies.system).toBe(fontFamily);
+    expect(displayFaceFamilies.condensed).toBe(
+      '"Barlow Condensed", "Arial Narrow", sans-serif',
+    );
   });
 });
