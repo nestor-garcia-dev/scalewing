@@ -536,6 +536,13 @@ export type {
   BandWidth,
 } from './components/Band.js';
 export { SiteHeader } from './components/SiteHeader.js';
+export { DocsLayout } from './components/DocsLayout.js';
+export type {
+  DocsLayoutGroup,
+  DocsLayoutItem,
+  DocsLayoutLabels,
+  DocsLayoutProps,
+} from './components/DocsLayout.js';
 export type {
   SiteHeaderItem,
   SiteHeaderLabels,

@@ -5,6 +5,7 @@ import { HeroSection } from './sections/hero.js';
 import { ScreenPreviewSection } from './sections/screen-preview.js';
 import { SiteFooterSection } from './sections/site-footer.js';
 import { SiteHeaderSection } from './sections/site-header.js';
+import { DocsLayoutSection } from './sections/docs-layout.js';
 import { ContextSwitcherSection } from './sections/context-switcher.js';
 import { FileFieldSection } from './sections/file-field.js';
 import { DocumentViewerSection } from './sections/document-viewer.js';
@@ -535,6 +536,12 @@ export const catalog = [
     label: 'SiteFooter',
     group: 'chrome',
     Section: SiteFooterSection,
+  },
+  {
+    id: 'docs-layout',
+    label: 'DocsLayout',
+    group: 'chrome',
+    Section: DocsLayoutSection,
   },
   {
     id: 'app-shell',
