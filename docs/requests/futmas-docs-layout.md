@@ -1,6 +1,6 @@
 # FutMas: a docs page's frame
 
-Status: implemented for FutMas F-024-S03, pending release in the next `@scalewing/react` minor.
+Status: implemented in `@scalewing/react` 1.64.0 for FutMas F-024-S03.
 
 Scalewing request from FutMas.
 

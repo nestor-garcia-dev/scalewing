@@ -210,8 +210,8 @@ pages.
 FutMas F-024-S03, its public docs pages: `DocsLayout`, a docs page's frame
 with grouped side links, the article at the reading width and an optional
 "On this page" aside, a no-script disclosure below `lg`
-(`futmas-docs-layout.md`). Next: release the `@scalewing/react` minor and
-FutMas pins it for its docs pages.
+(`futmas-docs-layout.md`, #294). Released in `@scalewing/react` 1.64.0.
+Next: FutMas pins it for its docs pages.
 
 FutMas F-010-S28, desktop layout and polish, from its design review: opt-in
 desktop primitives. `ThemeProvider density="compact"` on a fine pointer only
