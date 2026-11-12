@@ -1,6 +1,6 @@
 # FutMas: a condensed face for a public page's titles
 
-Status: implemented for FutMas F-024-S02.
+Status: implemented in `@scalewing/tokens` 1.9.0 and `@scalewing/react` 1.63.0 for FutMas F-024-S02.
 
 Scalewing request from FutMas.
 

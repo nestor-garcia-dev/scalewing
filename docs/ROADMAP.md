@@ -203,8 +203,9 @@ one's end, reusing `FixtureRow`'s boxes, keys and error line
 
 FutMas F-024-S02, its public site: `ThemeProvider displayFace` and tokens
 `displayFaceFamilies`, a page's titles in a condensed face that the app
-loads (`futmas-display-face.md`). Next: release tokens and react minors and
-FutMas pins them for its marketing pages.
+loads (`futmas-display-face.md`, #292). Released in `@scalewing/tokens`
+1.9.0 and `@scalewing/react` 1.63.0. Next: FutMas pins them for its marketing
+pages.
 
 FutMas F-010-S28, desktop layout and polish, from its design review: opt-in
 desktop primitives. `ThemeProvider density="compact"` on a fine pointer only

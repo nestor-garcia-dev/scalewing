@@ -1,5 +1,16 @@
 # @scalewing/react
 
+## 1.63.0
+
+### Minor Changes
+
+- 25d86b1: `displayFaceFamilies` (tokens) and `ThemeProvider displayFace` (react): `condensed` sets a page's titles (`hero`, `display`, `headline`, `heading`) in Barlow Condensed, which the app loads, falling back to the platform's narrow sans; `system` (default) keeps the body face. It writes `data-display-face`, which a page without `ThemeProvider` sets itself. Body text, labels and controls keep the system face (FutMas F-024).
+
+### Patch Changes
+
+- Updated dependencies [25d86b1]
+  - @scalewing/tokens@1.9.0
+
 ## 1.62.1
 
 ### Patch Changes
