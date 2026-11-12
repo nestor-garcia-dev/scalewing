@@ -41,6 +41,7 @@ import { heroClassCatalog } from './css-hero.js';
 import { pageHeaderClassCatalog } from './css-page-header.js';
 import { siteFooterClassCatalog } from './css-site-footer.js';
 import { siteHeaderClassCatalog } from './css-site-header.js';
+import { docsLayoutClassCatalog } from './css-docs-layout.js';
 import { statTileClassCatalog } from './css-stat-tile.js';
 import { descriptionListClassCatalog } from './css-description-list.js';
 import { tabsClassCatalog } from './css-tabs.js';
@@ -169,6 +170,7 @@ export function utilityClassCatalog(): string[] {
     ...pageHeaderClassCatalog(),
     ...siteFooterClassCatalog(),
     ...siteHeaderClassCatalog(),
+    ...docsLayoutClassCatalog(),
     ...statTileClassCatalog(),
     ...descriptionListClassCatalog(),
     ...tabsClassCatalog(),

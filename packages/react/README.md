@@ -44,6 +44,7 @@ import {
   PreviewTiles,
   SiteFooter,
   SiteHeader,
+  DocsLayout,
   DescriptionList,
   DescriptionItem,
   EmptyState,
@@ -1223,6 +1224,45 @@ When the real screenshot exists, a `PreviewImage` (`src`, `width`, `height`) hol
     </a>
   }
 />
+```
+
+`DocsLayout` is a docs page's frame on a public site: grouped links to the docs' pages at the start, the article in the middle at the reading width, and an optional `aside` at the end, such as an "On this page" `SectionNav`. It renders on the server with no script and needs no hydration. Supply `navLabel` (the navigation landmark's name, such as "Docs"), `labels.openNav` (the disclosure's words below `lg`, such as "Browse the docs"), `groups` and the article as `children`. Each group is `{ id, label, items }`: its label a small muted caption that names the list of links under it. Each item is `{ id, label, href, current?, lang?, hrefLang? }`; `current` is SectionNav's (`page`, `location` or `true` sets `aria-current`) and the current link takes SectionNav `filled`'s quiet fill at label weight, the others in the text colour with no hairline or underline; `lang` and `hrefLang` pass through to the link.
+
+The frame is centred at `SiteHeader`'s bar width with its gutters, so the navigation lines up with the brand. From `lg` (64rem) it is two columns: the navigation (15rem) and the content. From 80rem (an internal width of the component, not a public breakpoint) a given `aside` is a third column (13rem) at the end; below that width the aside is not shown at all (`display: none`), so keep the same links in the article. The navigation and the aside stick below the window's top, below a sticky `SiteHeader`'s bar when one is on the page, and scroll on their own only when taller than the window. Below `lg` there is no side column: the navigation is a native `details` disclosure at the top of the content, its `summary` a full-width row with `labels.openNav` and a chevron, at least the md control tall (44 px), which opens the same groups as large rows. It opens and closes by touch, click and keyboard with no script. The navigation is drawn twice (the side list and the disclosure's) and CSS displays only one, so only one `nav` named `navLabel` is in the accessibility tree at a time. Links get the 44 px target on a coarse pointer; in forced colours they are `LinkText` and the current one has a `Highlight` edge.
+
+`DocsLayout` is a plain `div`, not a landmark: put it inside the page's one `main` (give that `main` the skip link's `id`), with the article as its children. No groups, a group with no items, blank or repeated group ids, blank group labels, items with blank ids, labels or hrefs, item ids repeated anywhere in the navigation, or a blank `navLabel` or `labels.openNav` throw a `RangeError`.
+
+```tsx
+<main id="main" tabIndex={-1}>
+  <DocsLayout
+    navLabel="Guide"
+    labels={{ openNav: 'Browse the guide' }}
+    groups={[
+      {
+        id: 'start',
+        label: 'Start here',
+        items: [
+          { id: 'home', label: 'Field guide home', href: '/guide/' },
+          {
+            id: 'first',
+            label: 'Your first count',
+            href: '/guide/first',
+            current: 'page',
+          },
+        ],
+      },
+    ]}
+    aside={
+      <SectionNav
+        aria-label="On this page"
+        items={[{ id: 'before', label: 'Before you go', href: '#before' }]}
+        verticalFrom="md"
+      />
+    }
+  >
+    <article>…</article>
+  </DocsLayout>
+</main>
 ```
 
 `DescriptionList` pairs terms with what each says, one `DescriptionItem` per row: a `dl` whose items each group a `dt` (`term`) with its `dd` (`children`). From `md` up the term sits in a start column as wide as the widest term, up to 40% of the list, and the detail beside it; every row aligns to its top, so a term and its detail's first line start level, and a hairline divides the rows, with no space above the first row or below the last. Below `md` each term sits over its detail. The list sets only the layout: pass your own `Text` for the term and the detail. Each child of a term or a detail is its own line with its own line height (a column), as wide as its content unless it sets its own width (a `Progress` fills the detail; a `Field` keeps its input's width): wrap inline content, such as words and a link on one line, in one element such as an `Inline`. Long unbreakable words wrap inside their column. A `dl` has no ARIA role, so name a list with a visible heading, and `aria-labelledby` on the `section` around it, rather than an `aria-label` on the list.

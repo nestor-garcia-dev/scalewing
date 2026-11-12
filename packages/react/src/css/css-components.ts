@@ -60,6 +60,7 @@ import { cssHeroClasses } from './css-hero.js';
 import { cssPageHeaderClasses } from './css-page-header.js';
 import { cssSiteFooterClasses } from './css-site-footer.js';
 import { cssSiteHeaderClasses } from './css-site-header.js';
+import { cssDocsLayoutClasses } from './css-docs-layout.js';
 import { cssStatTileClasses } from './css-stat-tile.js';
 import { cssDescriptionListClasses } from './css-description-list.js';
 import { cssTabsClasses } from './css-tabs.js';
@@ -224,6 +225,8 @@ ${cssPageHeaderClasses()}
 ${cssSiteFooterClasses()}
 
 ${cssSiteHeaderClasses()}
+
+${cssDocsLayoutClasses()}
 
 ${cssAppShellClasses()}
 
