@@ -30,6 +30,26 @@ export type SiteHeaderSkipLink = {
   href: string;
 };
 
+/**
+ * The header's search form: a field in the bar from `lg`, a search button
+ * opening a full-window search below it. Submitting goes to `action` (the
+ * site's results page) with the query as `name`.
+ */
+export type SiteHeaderSearchOptions = {
+  /** The results page the form submits to with GET, such as `/docs/search/`. */
+  action: string;
+  /** The query's parameter name (default `q`). */
+  name?: string;
+  /** The field's accessible name, such as "Search the docs". */
+  label: string;
+  /** The empty field's hint, such as "Search the docs". */
+  placeholder: string;
+  /** The button names: `open` below `lg` ("Search"), `close` in the open search ("Close search"). */
+  labels: { open: string; close: string };
+  /** The magnifier glyph, decorative, in the button and the field. */
+  icon: ReactNode;
+};
+
 export type SiteHeaderProps = {
   /** The site's mark at the start, such as a logo linked to the home page. */
   brand: ReactNode;
@@ -55,4 +75,6 @@ export type SiteHeaderProps = {
   sticky?: boolean;
   /** A "skip to content" link before everything else in the header. */
   skipLink?: SiteHeaderSkipLink;
+  /** A search field in the bar from `lg`; a search button below it. */
+  search?: SiteHeaderSearchOptions;
 };
