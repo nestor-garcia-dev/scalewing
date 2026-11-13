@@ -1,6 +1,10 @@
 import { typographyVariants } from '@scalewing/tokens';
 
 import { cssSiteHeaderAnchorRules } from './css-site-header-anchors.js';
+import {
+  cssSiteHeaderSearchRules,
+  siteHeaderSearchClassCatalog,
+} from './css-site-header-search.js';
 import { cssSiteHeaderSkipLinkRules } from './css-site-header-skip-link.js';
 import { quietFill } from './quiet-fill.js';
 import {
@@ -134,7 +138,8 @@ function barRules(): string {
  * rows with hairlines and the menu's actions at the panel's foot. It
  * scrolls on its own when the window is short. While it is open the bar's
  * compact actions step aside, since the menu holds its own actions, so the
- * bar shows only the brand and the close button.
+ * bar shows only the brand and the close button (the search button
+ * steps aside too).
  */
 function menuRules(): string {
   return `.sw-site-header-menu > summary {
@@ -239,6 +244,8 @@ ${cssSiteHeaderSkipLinkRules()}
 
 ${cssSiteHeaderAnchorRules()}
 
+${cssSiteHeaderSearchRules()}
+
 /*
  * Forced colours drop box shadows, so the current destination's bar is a
  * thick underline there.
@@ -286,5 +293,6 @@ export function siteHeaderClassCatalog(): string[] {
     'sw-site-header-panel',
     'sw-site-header-menu-nav',
     'sw-site-header-menu-actions',
+    ...siteHeaderSearchClassCatalog(),
   ];
 }

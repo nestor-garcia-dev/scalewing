@@ -547,6 +547,7 @@ export type {
   SiteHeaderItem,
   SiteHeaderLabels,
   SiteHeaderProps,
+  SiteHeaderSearchOptions,
   SiteHeaderSkipLink,
 } from './components/SiteHeader.js';
 export {

@@ -1,5 +1,9 @@
 import { assertNavItems } from '../nav-items.js';
-import { type SiteHeaderProps, type SiteHeaderSkipLink } from './types.js';
+import {
+  type SiteHeaderProps,
+  type SiteHeaderSearchOptions,
+  type SiteHeaderSkipLink,
+} from './types.js';
 
 /**
  * Fails closed on the header's words and destinations: no items, blank or
@@ -11,8 +15,12 @@ export function assertSiteHeaderProps({
   items,
   labels,
   navLabel,
+  search,
   skipLink,
-}: Pick<SiteHeaderProps, 'items' | 'labels' | 'navLabel' | 'skipLink'>): void {
+}: Pick<
+  SiteHeaderProps,
+  'items' | 'labels' | 'navLabel' | 'search' | 'skipLink'
+>): void {
   if (items.length === 0)
     throw new RangeError('SiteHeader needs at least one item');
   assertNavItems('SiteHeader', items);
@@ -25,6 +33,35 @@ export function assertSiteHeaderProps({
       'SiteHeader labels need nonempty openMenu and closeMenu',
     );
   if (skipLink) assertSkipLink(skipLink);
+  if (search) assertSearch(search);
+}
+
+function assertSearch(search: SiteHeaderSearchOptions): void {
+  if (typeof search.labels !== 'object' || search.labels === null)
+    throw new RangeError(
+      'SiteHeader search needs a nonempty action, label, placeholder and open and close labels',
+    );
+  const words = [
+    search.action,
+    search.label,
+    search.placeholder,
+    search.labels.open,
+    search.labels.close,
+  ];
+  if (words.some((word) => !word.trim()))
+    throw new RangeError(
+      'SiteHeader search needs a nonempty action, label, placeholder and open and close labels',
+    );
+  if (search.name !== undefined && !/^[\w-]+$/.test(search.name))
+    throw new RangeError(
+      'SiteHeader search name must be a plain parameter name',
+    );
+  if (
+    search.icon === null ||
+    search.icon === undefined ||
+    search.icon === false
+  )
+    throw new RangeError('SiteHeader search needs an icon');
 }
 
 function assertSkipLink({ href, label }: SiteHeaderSkipLink): void {

@@ -5,6 +5,7 @@ import { useRef } from 'react';
 import { cx } from '../class-names.js';
 import { tabStop } from '../tab-stop.js';
 import { SiteHeaderLinks } from './site-header/SiteHeaderLinks.js';
+import { SiteHeaderSearch } from './site-header/SiteHeaderSearch.js';
 import { type SiteHeaderProps } from './site-header/types.js';
 import { useMenuDismiss } from './site-header/use-menu-dismiss.js';
 import { assertSiteHeaderProps } from './site-header/validate.js';
@@ -13,6 +14,7 @@ export type {
   SiteHeaderItem,
   SiteHeaderLabels,
   SiteHeaderProps,
+  SiteHeaderSearchOptions,
   SiteHeaderSkipLink,
 } from './site-header/types.js';
 
@@ -26,8 +28,12 @@ export type {
  * page rendered on the server needs; script adds Escape (focus back on the
  * button) and closes it when a link is chosen or focus leaves it. It traps
  * no focus. While the menu is open the compact actions step aside, so the
- * bar shows only the brand and the close button. An optional skip link
- * comes first, hidden until it has focus. Invalid items or words throw a
+ * bar shows only the brand and the close button (the search button
+ * steps aside too). An optional skip link
+ * comes first, hidden until it has focus. An optional `search` is a field
+ * in the bar from `lg` and a search button below it that opens the same
+ * form over the window as a native popover (no script); its results panel
+ * is the consumer script's to fill. Invalid items or words throw a
  * `RangeError`.
  */
 export function SiteHeader({
@@ -40,10 +46,11 @@ export function SiteHeader({
   menuActions,
   menuIcon,
   navLabel,
+  search,
   skipLink,
   sticky = true,
 }: SiteHeaderProps) {
-  assertSiteHeaderProps({ items, labels, navLabel, skipLink });
+  assertSiteHeaderProps({ items, labels, navLabel, search, skipLink });
   const menuRef = useRef<HTMLDetailsElement>(null);
   useMenuDismiss(menuRef);
   return (
@@ -64,6 +71,9 @@ export function SiteHeader({
           items={items}
           navLabel={navLabel}
         />
+        {search ? (
+          <SiteHeaderSearch closeIcon={closeIcon} search={search} />
+        ) : null}
         {actions ? (
           <div className="sw-site-header-actions">{actions}</div>
         ) : null}

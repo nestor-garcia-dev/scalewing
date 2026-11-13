@@ -5,6 +5,7 @@ import { HeroSection } from './sections/hero.js';
 import { ScreenPreviewSection } from './sections/screen-preview.js';
 import { SiteFooterSection } from './sections/site-footer.js';
 import { SiteHeaderSection } from './sections/site-header.js';
+import { SiteHeaderSearchSection } from './sections/site-header-search.js';
 import { DocsLayoutSection } from './sections/docs-layout.js';
 import { ContextSwitcherSection } from './sections/context-switcher.js';
 import { FileFieldSection } from './sections/file-field.js';
@@ -530,6 +531,12 @@ export const catalog = [
     label: 'SiteHeader',
     group: 'chrome',
     Section: SiteHeaderSection,
+  },
+  {
+    id: 'site-header-search',
+    label: 'SiteHeader search',
+    group: 'chrome',
+    Section: SiteHeaderSearchSection,
   },
   {
     id: 'site-footer',
