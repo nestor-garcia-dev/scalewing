@@ -216,8 +216,8 @@ Next: FutMas pins it for its docs pages.
 FutMas F-024 owner review: `SiteHeader search`, the site's search as a
 field in the bar from `lg` and a search button opening a full-window native
 popover below it, with an empty results panel for the site's script to fill
-(`futmas-site-header-search.md`). Next: release, then FutMas pins it for its
-header.
+(`futmas-site-header-search.md`, #296). Released in `@scalewing/react`
+1.65.0. Next: FutMas pins it for its header.
 
 FutMas F-010-S28, desktop layout and polish, from its design review: opt-in
 desktop primitives. `ThemeProvider density="compact"` on a fine pointer only

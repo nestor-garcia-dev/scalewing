@@ -1,6 +1,6 @@
 # FutMas: search in the site header
 
-Status: built for FutMas F-024 (owner review); release pending.
+Status: implemented in `@scalewing/react` 1.65.0 for FutMas F-024 (owner review).
 
 Scalewing request from FutMas.
 
