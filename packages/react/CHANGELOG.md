@@ -1,5 +1,11 @@
 # @scalewing/react
 
+## 1.67.1
+
+### Patch Changes
+
+- 9f8a835: A tile Checkbox's box now sits above the layer that stretches its press target over the tile, so a press aimed at the box lands on its input. Pointer-driven tests and tools can click a tile's checkbox directly instead of being intercepted by the label.
+
 ## 1.67.0
 
 ### Minor Changes
