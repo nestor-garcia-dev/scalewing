@@ -5,7 +5,10 @@ import { Section } from '../layout/Section.js';
 import { DenominationEntryExample } from './denomination-entry.js';
 import { DenominationFeed } from './denomination-feed.js';
 import { DenominationFramedExample } from './denomination-framed.js';
-import { DenominationTransposedExample } from './denomination-transposed.js';
+import {
+  DenominationPinEndExample,
+  DenominationTransposedExample,
+} from './denomination-transposed.js';
 import { DenominationValueRowExample } from './denomination-value-row.js';
 
 const tagColumns = [
@@ -74,6 +77,7 @@ export function DenominationGridSection() {
         <DenominationFramedExample />
         <DenominationValueRowExample />
         <DenominationTransposedExample />
+        <DenominationPinEndExample />
         <Card padding={4}>
           <Stack gap={2}>
             <Text color="muted" variant="label">

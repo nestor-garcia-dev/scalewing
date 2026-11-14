@@ -104,3 +104,62 @@ export function DenominationTransposedExample() {
     </Card>
   );
 }
+
+const nestColumns = [
+  { key: 'reed', label: 'Reed warbler nests' },
+  { key: 'sedge', label: 'Sedge warbler nests' },
+  { key: 'bearded', label: 'Bearded tit nests' },
+] as const;
+
+/**
+ * A one-row count with long size names on a phone: pinEnd keeps the eggs
+ * column and the total in view at the end while the counts scroll.
+ */
+export function DenominationPinEndExample() {
+  const [nests, setNests] = useState<Counts>([12, 4, 2]);
+  const eggs = nests.map((count) => (count ? String(count * 4) : null));
+  const eggTotal = nests.reduce<number>(
+    (sum, count) => sum + (count ?? 0) * 4,
+    0,
+  );
+  return (
+    <Card padding={4}>
+      <Stack gap={2} data-testid="denomination-pin-end">
+        <DenominationGrid
+          columns={nestColumns}
+          countDigits={4}
+          label="Nests in the reed bed"
+          labelAppearance="plain"
+          pinEnd
+          totalLabel="Total"
+          transposeBelow="md"
+          zeroLabel=""
+          rows={[
+            {
+              id: 'nests',
+              label: 'Keep watch on',
+              cells: nests,
+              total: String(eggTotal),
+              valueRow: { label: 'Eggs', cells: eggs },
+              entry: {
+                decrementLabel: 'One fewer',
+                incrementLabel: 'One more',
+                placeholder: '0',
+                onChange: (key, value) =>
+                  setNests((counts) =>
+                    counts.map((count, index) =>
+                      nestColumns[index]!.key === key ? value : count,
+                    ),
+                  ),
+              },
+            },
+          ]}
+        />
+        <Text color="muted" variant="caption">
+          pinEnd keeps the last column, here the eggs and their total, in view
+          at the end on a phone while the counts between scroll.
+        </Text>
+      </Stack>
+    </Card>
+  );
+}

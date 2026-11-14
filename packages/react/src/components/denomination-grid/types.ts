@@ -212,6 +212,15 @@ export type DenominationGridProps = {
    */
   transposeBelow?: DenominationTransposeBreakpoint;
   /**
+   * While transposed, the last column (the last grid row's value line,
+   * which holds its total, else its counts and total) stays in view at the
+   * inline end, as the denomination column does at the start, and only the
+   * columns between them scroll, so a phone always sees each row's worth
+   * and the total. It needs `transposeBelow` (a `TypeError` otherwise) and
+   * changes nothing while the strip is not transposed.
+   */
+  pinEnd?: boolean;
+  /**
    * The digits an entry count holds without clipping, from 3 (the
    * default room) to 6: a column of steppers keeps that many digits'
    * width before the strip scrolls, such as 4 for a count in the

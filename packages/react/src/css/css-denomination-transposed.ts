@@ -1,5 +1,9 @@
 import { typographyVariants } from '@scalewing/tokens';
 
+import {
+  cssDenominationPinEndClasses,
+  denominationPinEndClassCatalog,
+} from './css-denomination-pin-end.js';
 import { pinnedStartShadeRules } from './css-scroll-region.js';
 import { zIndex } from './stacking.js';
 
@@ -165,6 +169,8 @@ function countRules(): string {
 export function cssDenominationTransposedClasses(): string {
   return `${transposedRules()}
 
+${cssDenominationPinEndClasses()}
+
 ${countRules()}`;
 }
 
@@ -182,5 +188,6 @@ export function denominationTransposedClassCatalog(): string[] {
     'sw-denomination-cell-signed',
     'sw-denomination-cell-plain',
     denominationCountDigitsClass,
+    ...denominationPinEndClassCatalog(),
   ];
 }

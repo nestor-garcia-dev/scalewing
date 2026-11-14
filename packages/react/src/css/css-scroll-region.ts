@@ -163,3 +163,35 @@ ${after(':dir(rtl)')} {
   ${after('').replaceAll('\n', '\n  ')} { display: none; }
 }`;
 }
+
+/**
+ * The end-side twin of `pinnedStartShadeRules`: a region whose end column
+ * is pinned hides its end shade under that column, so the column casts the
+ * shade just before its inline start, drawn by its `::before`.
+ */
+export function pinnedEndShadeRules(
+  region: string,
+  pinned: readonly string[],
+): string {
+  const before = (direction: '' | ':dir(rtl)') =>
+    pinned
+      .map((cell) => `${region}.sw-scroll-more-end${direction} ${cell}::before`)
+      .join(',\n');
+  return `${before('')} {
+  background: linear-gradient(to left, ${scrollShadeColor}, transparent);
+  content: '';
+  inset-block: 0;
+  inset-inline-end: 100%;
+  pointer-events: none;
+  position: absolute;
+  width: var(--sw-space-5);
+}
+
+${before(':dir(rtl)')} {
+  background: linear-gradient(to right, ${scrollShadeColor}, transparent);
+}
+
+@media (forced-colors: active) {
+  ${before('').replaceAll('\n', '\n  ')} { display: none; }
+}`;
+}
