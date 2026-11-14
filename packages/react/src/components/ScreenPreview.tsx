@@ -16,7 +16,7 @@ export type ScreenPreviewProps = Omit<
 > & {
   /** What the drawn screen shows, said in words: its alternative text. */
   label: string;
-  /** `card` (default), or `device`, a phone's bezel from `md`. */
+  /** `card` (default), or `device`, a phone's near-black bezel at every width. */
   frame?: ScreenPreviewFrame;
   /** A small line above the screen's title, such as where in the app it is. */
   eyebrow?: ReactNode;

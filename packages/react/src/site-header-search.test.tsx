@@ -66,6 +66,42 @@ describe('SiteHeader search', () => {
     expect(close.getAttribute('type')).toBe('button');
   });
 
+  it('shows the cancel word, named by it, in place of the close glyph when given', () => {
+    const { container } = render(
+      header({
+        search: {
+          ...search,
+          labels: { open: 'Search', close: 'Close search', cancel: 'Cancel' },
+        },
+      }),
+    );
+    const panel = container.querySelector('.sw-site-header-search')!;
+    const cancel = screen.getByRole('button', { hidden: true, name: 'Cancel' });
+    expect(cancel.textContent).toBe('Cancel');
+    expect(cancel.hasAttribute('aria-label')).toBe(false);
+    expect(cancel.className).toBe(
+      'sw-site-header-search-close sw-site-header-search-cancel',
+    );
+    expect(cancel.querySelector('[data-glyph="close"]')).toBeNull();
+    expect(cancel.getAttribute('popovertarget')).toBe(panel.id);
+    expect(cancel.getAttribute('popovertargetaction')).toBe('hide');
+    expect(cancel.getAttribute('type')).toBe('button');
+    expect(
+      screen.queryByRole('button', { hidden: true, name: 'Close search' }),
+    ).toBeNull();
+  });
+
+  it('keeps the named close glyph without a cancel word', () => {
+    render(header());
+    const close = screen.getByRole('button', {
+      hidden: true,
+      name: 'Close search',
+    });
+    expect(close.getAttribute('aria-label')).toBe('Close search');
+    expect(close.className).toBe('sw-site-header-search-close');
+    expect(close.querySelector('[data-glyph="close"]')).not.toBeNull();
+  });
+
   it('leaves an empty hidden results panel, named by the field, with a row template', () => {
     const { container } = render(header());
     const field = screen.getByRole('searchbox', { hidden: true });
@@ -113,7 +149,7 @@ describe('SiteHeader search', () => {
     const html = renderToString(header());
     expect(html).toContain('popover="auto"');
     expect(html).toContain(
-      '<template class="sw-site-header-search-row"><li><a class="sw-site-header-search-result" href="/">',
+      '<template class="sw-site-header-search-row"><li><a class="sw-site-header-search-result" href="/" tabindex="0">',
     );
   });
 
@@ -139,6 +175,14 @@ describe('SiteHeader search', () => {
     [{ name: 'q&x' }, 'SiteHeader search name must be a plain parameter name'],
     [{ icon: null }, 'SiteHeader search needs an icon'],
     [{ labels: undefined }, 'SiteHeader search needs a nonempty action'],
+    [
+      { labels: { open: 'Search', close: 'Close', cancel: ' ' } },
+      'SiteHeader search labels.cancel must be nonempty words when given',
+    ],
+    [
+      { labels: { open: 'Search', close: 'Close', cancel: 3 as never } },
+      'SiteHeader search labels.cancel must be nonempty words when given',
+    ],
   ] as const)('throws on invalid search words (%#)', (change, message) => {
     expect(() => render(header({ search: { ...search, ...change } }))).toThrow(
       message,
@@ -175,11 +219,32 @@ describe('SiteHeader search CSS', () => {
     expect(css).toContain('    top: calc(100% + var(--sw-space-2));');
   });
 
+  it('gives the field up to its 10rem floor before the destinations and actions shrink from lg', () => {
+    const wide = css.slice(
+      css.indexOf('  .sw-site-header-search[popover]:not(:popover-open) {'),
+    );
+    expect(wide.slice(0, wide.indexOf('}'))).toContain(
+      'flex: 1 1 10rem;\n    max-width: 16rem;\n    min-width: 10rem;',
+    );
+    expect(css).not.toContain('flex: 0 1 16rem');
+  });
+
+  it('draws the cancel word in the accent at the 44 px height', () => {
+    const rule = /\.sw-site-header-search-cancel \{([^}]*)\}/.exec(css)?.[1];
+    expect(rule).toContain('color: var(--sw-color-accent);');
+    expect(rule).toContain('min-width: var(--sw-control-md-min-height);');
+    expect(rule).toContain('width: auto;');
+    expect(css).toContain(
+      '.sw-site-header-search-close {\n  align-items: center;',
+    );
+  });
+
   it('lists its classes', () => {
     expect(utilityClassCatalog()).toEqual(
       expect.arrayContaining([
         'sw-site-header-search',
         'sw-site-header-search-button',
+        'sw-site-header-search-cancel',
         'sw-site-header-search-results',
         'sw-site-header-search-result',
       ]),

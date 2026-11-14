@@ -1,6 +1,6 @@
 # Teisoro: a drawn stand-in for an app's screen
 
-Status: released in `@scalewing/react` 1.50.0 (PR #251).
+Status: released in `@scalewing/react` 1.50.0 (PR #251). Revision (the device frame at every width, a dark bezel in the dark scheme) built for FutMas F-024; release pending.
 
 Scalewing request from Teisoro.
 
@@ -20,3 +20,12 @@ Proposed API (reusable names only): `<ScreenPreview label frame="card | device" 
 - Forced colours outline the screen and the bezel.
 - A blank label, an unknown frame or kind, no tiles, or a blank or repeated tile id throws a `RangeError`.
 - Consumer: the drawn screens on Teisoro's Home, Services, Cash and For owners pages (F-017 S03).
+
+## Revision: the device frame at every width (FutMas F-024)
+
+FutMas's site shows two screenshots side by side as phones on a 390 px phone page, each about 150 px wide. They drew as bare cards, because the device frame dropped to the card below `md` (by design: the viewport was already a phone), and in the dark scheme the bezel, in the text colour, was a near-white ring.
+
+- `device` draws the phone at every width: below `md` it takes its column's width with a thinner bezel (`space-2`), from `md` it is 20rem with the `space-3` bezel.
+- The bezel is the inverse colour, near black in both schemes, with a hairline rim in the border colour so it stands apart from the black dark page; the screen sits on the grouped canvas (black in the dark scheme), its header and groups surface cards.
+- A `PreviewImage` alone fills the screen edge to edge, with no quiet mat round it.
+- Forced colours outline the bezel at every width.

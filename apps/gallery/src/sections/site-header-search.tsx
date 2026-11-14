@@ -1,4 +1,4 @@
-import { SiteHeader, Stack, Text } from '@scalewing/react';
+import { ButtonLink, SiteHeader, Stack, Text } from '@scalewing/react';
 import { useEffect, useRef } from 'react';
 
 import { Glyph } from '../glyph.js';
@@ -88,13 +88,70 @@ function useStandInSearch(root: React.RefObject<HTMLDivElement | null>) {
   }, [root]);
 }
 
+type HeaderItems = Parameters<typeof SiteHeader>[0]['items'];
+
+const shortItems: HeaderItems = [
+  { id: 'marsh', label: 'Marsh', href: here },
+  { id: 'guide', label: 'Field guide', href: here, current: 'page' },
+  { id: 'visit', label: 'Visit', href: here },
+];
+
+/** Long words, as another language's labels run, on a crowded bar. */
+const longItems: HeaderItems = [
+  { id: 'watchers', label: 'For birdwatchers', href: here },
+  { id: 'guide', label: 'Field guide to the marsh', href: here },
+  { id: 'visit', label: 'Visiting the reserve', href: here },
+];
+
+/** One sample header; `cancel` swaps the open search's ✕ for the word. */
+function WetlandHeader({
+  actions,
+  cancel,
+  items,
+}: {
+  actions: React.ReactNode;
+  cancel?: string;
+  items: HeaderItems;
+}) {
+  return (
+    <SiteHeader
+      actions={actions}
+      brand={
+        <a href={here} tabIndex={0}>
+          <Text as="span" variant="title">
+            Wetland Trust
+          </Text>
+        </a>
+      }
+      closeIcon={<Glyph path={closePath} size={22} />}
+      compactActions={
+        <a href={here} hrefLang="es" lang="es" tabIndex={0}>
+          Español
+        </a>
+      }
+      items={items}
+      labels={{ openMenu: 'Open the menu', closeMenu: 'Close the menu' }}
+      menuIcon={<Glyph path={menuPath} size={22} />}
+      navLabel="Main"
+      search={{
+        action: here,
+        label: 'Search the field guide',
+        placeholder: 'Search the field guide',
+        labels: { open: 'Search', close: 'Close search', cancel },
+        icon: <Glyph path={searchPath} size={18} />,
+      }}
+      sticky={false}
+    />
+  );
+}
+
 export function SiteHeaderSearchSection() {
   const root = useRef<HTMLDivElement>(null);
   useStandInSearch(root);
   return (
     <Section
       id="site-header-search"
-      purpose="SiteHeader's search: from lg a search field in the bar, pushed to the end with the actions; below lg a search button beside the compact actions that opens the same form over the whole window as a native popover, with the field at the top, a close button and the results under it. Opening, Escape and the close button need no script, and the form submits to the site's results page with no script. Scalewing draws an empty results panel and a row template; the site's own script fills them (here a stand-in that searches four pages). Type “heron”."
+      purpose="SiteHeader's search: from lg a search field in the bar, pushed to the end with the actions; below lg a search button beside the compact actions that opens the same form over the whole window as a native popover, with the field at the top, a Cancel word (labels.cancel) or a close glyph beside it, and the results under it. Opening, Escape and the close button need no script, and the form submits to the site's results page with no script. On a crowded bar the field gives up its width, down to 10rem, before any label wraps. Scalewing draws an empty results panel and a row template; the site's own script fills them (here a stand-in that searches four pages). Type “heron”."
       title="SiteHeader search"
       usage={`<SiteHeader
   …
@@ -102,58 +159,40 @@ export function SiteHeaderSearchSection() {
     action: '/docs/search/',
     label: 'Search the docs',
     placeholder: 'Search the docs',
-    labels: { open: 'Search', close: 'Close search' },
+    labels: { open: 'Search', close: 'Close search', cancel: 'Cancel' },
     icon: <SearchIcon />,
   }}
 />`}
     >
       <Stack gap={3}>
         <div ref={root}>
-          <SiteHeader
-            brand={
-              <a href={here} tabIndex={0}>
-                <Text as="span" variant="title">
-                  Wetland Trust
-                </Text>
-              </a>
-            }
-            closeIcon={<Glyph path={closePath} size={22} />}
-            compactActions={
-              <a href={here} hrefLang="es" lang="es" tabIndex={0}>
-                Español
-              </a>
-            }
-            items={[
-              { id: 'marsh', label: 'Marsh', href: here },
-              {
-                id: 'guide',
-                label: 'Field guide',
-                href: here,
-                current: 'page',
-              },
-              { id: 'visit', label: 'Visit', href: here },
-            ]}
+          <WetlandHeader
             actions={
               <a href={here} hrefLang="es" lang="es" tabIndex={0}>
                 Español
               </a>
             }
-            labels={{ openMenu: 'Open the menu', closeMenu: 'Close the menu' }}
-            menuIcon={<Glyph path={menuPath} size={22} />}
-            navLabel="Main"
-            search={{
-              action: here,
-              label: 'Search the field guide',
-              placeholder: 'Search the field guide',
-              labels: { open: 'Search', close: 'Close search' },
-              icon: <Glyph path={searchPath} size={18} />,
-            }}
-            sticky={false}
+            cancel="Cancel"
+            items={shortItems}
           />
         </div>
         <Text color="muted" variant="caption">
           The results drop down under the field on a laptop and fill the window
-          on a phone. Enter goes to the results page.
+          on a phone, with Cancel beside the field. Enter goes to the results
+          page.
+        </Text>
+        <div data-sample="crowded">
+          <WetlandHeader
+            actions={
+              <ButtonLink href={here}>Volunteer on the marsh</ButtonLink>
+            }
+            items={longItems}
+          />
+        </div>
+        <Text color="muted" variant="caption">
+          Long labels on a crowded bar: the field narrows toward 10rem before a
+          destination or the action wraps. Its open search on a phone keeps the
+          close glyph (no cancel word).
         </Text>
       </Stack>
     </Section>
