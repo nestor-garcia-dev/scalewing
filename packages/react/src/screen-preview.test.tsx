@@ -1,3 +1,4 @@
+import { contrastRatio, darkTheme, lightTheme } from '@scalewing/tokens';
 import { cleanup, render, screen } from '@testing-library/react';
 import { afterEach, describe, expect, it } from 'vitest';
 
@@ -138,13 +139,30 @@ describe('ScreenPreview', () => {
     ).toThrow('PreviewTiles items need unique ids');
   });
 
-  it('draws the phone bezel only from md, and a card below it', () => {
+  it('draws the phone at every width: a near-black bezel, thinner below md, 20rem from md', () => {
+    const bezel =
+      /\n\.sw-screen-preview-device \.sw-screen-preview-bezel \{([^}]*)\}/.exec(
+        css,
+      )?.[1];
+    // The inverse colour is near black in both schemes; the text colour,
+    // which the bezel used before, is near white in the dark one.
+    expect(bezel).toContain('background: var(--sw-color-inverse);');
+    expect(bezel).not.toContain('--sw-color-text');
+    expect(bezel).toContain(
+      'box-shadow: inset 0 0 0 1px var(--sw-color-border);',
+    );
+    expect(bezel).toContain('padding: var(--sw-screen-preview-bezel);');
+    expect(css).toContain(
+      '\n.sw-screen-preview-device { --sw-screen-preview-bezel: var(--sw-space-2); }',
+    );
     const wide = css.slice(
-      css.indexOf('.sw-screen-preview-device { width: 20rem; }') - 400,
+      css.indexOf(
+        '.sw-screen-preview-device { --sw-screen-preview-bezel: var(--sw-space-3); width: 20rem; }',
+      ) - 400,
     );
     expect(wide).toContain('@media (min-width: 48rem) {');
     expect(css).toContain(
-      '.sw-screen-preview-device .sw-screen-preview-bezel {\n    background: var(--sw-color-text);',
+      '\n.sw-screen-preview-device .sw-screen-preview-screen {\n  background: var(--sw-canvas-grouped);',
     );
     expect(css).toContain(
       '.sw-preview-tiles { grid-template-columns: repeat(6, minmax(0, 1fr)); }',
@@ -153,7 +171,7 @@ describe('ScreenPreview', () => {
       '.sw-preview-row-alert {\n  background: color-mix(in srgb, var(--sw-color-danger) 10%, var(--sw-color-surface));',
     );
     expect(css).toContain(
-      '@media (forced-colors: active) and (min-width: 48rem) {\n  .sw-screen-preview-device .sw-screen-preview-screen { border: 0; }\n  .sw-screen-preview-device .sw-screen-preview-bezel { border: 1px solid CanvasText; }\n}',
+      '@media (forced-colors: active) {\n  .sw-screen-preview-screen { border: 1px solid CanvasText; }\n  .sw-screen-preview-device .sw-screen-preview-screen { border: 0; }\n  .sw-screen-preview-device .sw-screen-preview-bezel { border: 1px solid CanvasText; }\n}',
     );
     expect(utilityClassCatalog()).toEqual(
       expect.arrayContaining([
@@ -163,6 +181,33 @@ describe('ScreenPreview', () => {
         'sw-preview-row-total',
         'sw-preview-tiles',
       ]),
+    );
+  });
+});
+
+describe('ScreenPreview device bezel colour', () => {
+  it('is near black in both schemes and still stands apart from the page', () => {
+    for (const theme of [lightTheme, darkTheme]) {
+      // Darker than the page's words would be on black: a dark device.
+      expect(contrastRatio(theme.colors.inverse, '#000000')).toBeLessThan(2);
+      expect(
+        contrastRatio(theme.colors.inverse, theme.colors.background),
+      ).toBeGreaterThan(1.2);
+    }
+    // Its hairline rim is lighter still on the black dark page.
+    expect(
+      contrastRatio(darkTheme.colors.border, darkTheme.colors.background),
+    ).toBeGreaterThan(contrastRatio(darkTheme.colors.inverse, '#000000'));
+  });
+});
+
+describe('ScreenPreview device screenshot', () => {
+  it('lets a screenshot alone fill the phone’s screen edge to edge', () => {
+    expect(css).toContain(
+      '.sw-screen-preview-device .sw-screen-preview-body:has(> .sw-preview-image:only-child) { padding: 0; }',
+    );
+    expect(css).toContain(
+      '.sw-screen-preview-device .sw-preview-image { border-radius: 0; }',
     );
   });
 });

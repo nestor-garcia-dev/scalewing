@@ -219,6 +219,13 @@ popover below it, with an empty results panel for the site's script to fill
 (`futmas-site-header-search.md`, #296). Released in `@scalewing/react`
 1.65.0. Next: FutMas pins it for its header.
 
+FutMas F-024 review, second round: the `SiteHeader` search field gives up
+its width before a label wraps on a crowded bar, and `labels.cancel` draws
+the open search's close button as a word (`futmas-site-header-search.md`);
+`ScreenPreview frame="device"` keeps a near-black bezel in the dark scheme
+and draws the phone at every width, a screenshot filling its screen
+(`teisoro-screen-preview.md`). Next: release, then FutMas pins it.
+
 Teisoro F-001 task 2910, the onboarding review's follow-ups: `Checkbox
 appearance="tile"`, `RadioGroup descriptionLayout="stacked"`, `Field
 variant="read-only"`, and `TaskList numbered` with `actionBelow`

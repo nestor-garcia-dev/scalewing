@@ -20,7 +20,27 @@ async function openIn(page: Page, scheme: (typeof schemes)[number]) {
 }
 
 const header = (page: Page) =>
-  page.locator('#site-header-search header.sw-site-header');
+  page.locator('#site-header-search header.sw-site-header').first();
+
+const crowded = (page: Page) =>
+  page.locator(
+    '#site-header-search [data-sample="crowded"] header.sw-site-header',
+  );
+
+/** How many lines an element's words take. */
+async function lineCount(page: Page, selector: string): Promise<number> {
+  return page.evaluate((target) => {
+    const node = document.querySelector(target)!;
+    const range = document.createRange();
+    range.selectNodeContents(node);
+    const tops = new Set(
+      [...range.getClientRects()]
+        .filter((rect) => rect.width > 0)
+        .map((rect) => Math.round(rect.top)),
+    );
+    return tops.size;
+  }, selector);
+}
 
 test.beforeEach(async ({ page }, testInfo) => {
   if (testInfo.project.name === 'forced-colors')
@@ -120,7 +140,27 @@ for (const scheme of schemes) {
       path: testInfo.outputPath(`search-phone-${scheme}.png`),
     });
 
-    await bar.getByRole('button', { name: 'Close search' }).tap();
+    // Cancel, a word beside the field's own clear ✕, closes the search.
+    const cancel = bar.getByRole('button', { name: 'Cancel', exact: true });
+    await expect(cancel).toHaveText('Cancel');
+    expect(await cancel.getAttribute('aria-label')).toBeNull();
+    const cancelBox = await cancel.boundingBox();
+    expect(cancelBox!.height).toBeGreaterThanOrEqual(44);
+    expect(cancelBox!.width).toBeGreaterThanOrEqual(44);
+    const look = await cancel.evaluate((node) => {
+      const probe = document.createElement('span');
+      probe.style.color = 'var(--sw-color-accent)';
+      node.append(probe);
+      const accent = getComputedStyle(probe).color;
+      probe.remove();
+      return { color: getComputedStyle(node).color, accent };
+    });
+    expect(look.color).toBe(look.accent);
+    expect(await textContrast(cancel)).toBeGreaterThanOrEqual(4.5);
+    await expect(bar.getByRole('button', { name: 'Close search' })).toHaveCount(
+      0,
+    );
+    await cancel.tap();
     await expect(field).toBeHidden();
     await open.tap();
     await expect(field).toBeVisible();
@@ -130,3 +170,67 @@ for (const scheme of schemes) {
     await expect(field).toBeHidden();
   });
 }
+
+test('without a cancel word the open search keeps its named close glyph', async ({
+  page,
+}, testInfo) => {
+  test.skip(testInfo.project.name !== 'mobile-es', 'the phone’s layout');
+  await openIn(page, 'light');
+  const bar = crowded(page);
+  await bar.getByRole('button', { name: 'Search' }).tap();
+  const field = bar.getByRole('searchbox', { name: 'Search the field guide' });
+  await expect(field).toBeVisible();
+  const close = bar.getByRole('button', { name: 'Close search' });
+  await expect(close).toBeVisible();
+  await expect(close).toHaveText('');
+  await expect(close.locator('svg')).toHaveCount(1);
+  await close.tap();
+  await expect(field).toBeHidden();
+});
+
+test('on a crowded bar the field gives up its width before any label wraps', async ({
+  page,
+}, testInfo) => {
+  test.skip(testInfo.project.name === 'mobile-es', 'the bar from lg');
+  await page.setViewportSize({ width: 1700, height: 900 });
+  await openIn(page, 'light');
+  const bar = crowded(page);
+  const field = bar.locator('.sw-site-header-search');
+  const sample = '#site-header-search [data-sample="crowded"]';
+  const words = [
+    ...[1, 2, 3].map(
+      (n) => `${sample} .sw-site-header-nav li:nth-child(${n}) a`,
+    ),
+    `${sample} .sw-site-header-actions a`,
+  ];
+  // With room to spare the field keeps its full 16rem, the rest of the
+  // room going to its start margin.
+  await page.locator(sample).evaluate((node) => (node.style.width = '1600px'));
+  expect(Math.round((await field.boundingBox())!.width)).toBe(256);
+  const spare = await field.evaluate((node) =>
+    parseFloat(getComputedStyle(node).marginInlineStart),
+  );
+  // The bar stops at its max width; it would fit the field at 16rem with
+  // no room over at this width.
+  const bar1600 = (await bar.locator('.sw-site-header-bar').boundingBox())!;
+  const snug = bar1600.width - spare;
+  // A bar a little short of room, then one that leaves the field its floor:
+  // the field gives way, and no destination or action wraps.
+  for (const [width, expected] of [
+    [snug - 48, 208],
+    [snug - 94, 162],
+  ] as const) {
+    await page
+      .locator(sample)
+      .evaluate((node, px) => (node.style.width = `${px}px`), width);
+    const box = await field.boundingBox();
+    expect(Math.abs(box!.width - expected)).toBeLessThanOrEqual(1);
+    for (const selector of words)
+      expect(await lineCount(page, selector), `${selector} at ${width}`).toBe(
+        1,
+      );
+  }
+  await page.locator(sample).screenshot({
+    path: testInfo.outputPath('search-crowded.png'),
+  });
+});

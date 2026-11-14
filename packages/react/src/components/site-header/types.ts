@@ -44,8 +44,14 @@ export type SiteHeaderSearchOptions = {
   label: string;
   /** The empty field's hint, such as "Search the docs". */
   placeholder: string;
-  /** The button names: `open` below `lg` ("Search"), `close` in the open search ("Close search"). */
-  labels: { open: string; close: string };
+  /**
+   * The button names: `open` below `lg` ("Search"), `close` in the open
+   * search ("Close search"), the name of its ✕ glyph. With `cancel`
+   * ("Cancel") the open search's button shows that word instead of the
+   * glyph, as an iPhone app's search does beside the field's own clear ✕,
+   * and the word is its name.
+   */
+  labels: { open: string; close: string; cancel?: string };
   /** The magnifier glyph, decorative, in the button and the field. */
   icon: ReactNode;
 };

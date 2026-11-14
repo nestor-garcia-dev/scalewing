@@ -1,6 +1,6 @@
 # FutMas: search in the site header
 
-Status: implemented in `@scalewing/react` 1.65.0 for FutMas F-024 (owner review).
+Status: implemented in `@scalewing/react` 1.65.0 for FutMas F-024 (owner review). Revision (a field that gives way first from `lg`, and `labels.cancel`) built; release pending.
 
 Scalewing request from FutMas.
 
@@ -9,7 +9,7 @@ Missing surface: a search field in `SiteHeader`, and a search overlay on a phone
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: FutMas's owner asked, in the F-024 review on 2026-11-13, for the docs search to be "in the navbar header like a proper search bar", and on a phone an icon that opens a search overlay. The site is rendered at build time, ships no React and keeps no CSS of its own (ADR 0016), so the header slot, the field's look, the full-window overlay and the results dropdown would all be product CSS.
 Existing surface this might already be: `CommandPalette` with `CommandPaletteTrigger` (a modal search that needs React running; the site never hydrates), `Field` (a labelled control, not a header search), `SiteHeader actions` (would put the field among the actions with no compact form and no overlay)
 Workaround I almost used: a separate "Search the docs" page linked from the docs navigation, which the owner turned down
-Proposed API (reusable names only): `<SiteHeader search={{ action, name, label, placeholder, labels: { open, close }, icon }} … />`
+Proposed API (reusable names only): `<SiteHeader search={{ action, name, label, placeholder, labels: { open, close, cancel? }, icon }} … />`
 
 ## Behaviour
 
@@ -20,3 +20,10 @@ Proposed API (reusable names only): `<SiteHeader search={{ action, name, label, 
 - Forced colours: the field, panel and buttons keep a system-colour edge, results are `LinkText`.
 - Invalid words or a missing icon throw a `RangeError`.
 - Consumer: FutMas's public site header (F-024).
+
+## Revision: crowded bars and a Cancel word
+
+FutMas's Spanish header at 1366 px (a 1200 px bar) wrapped "Para jugadores" and "Administrar en la web" onto two lines while the field kept its full 16rem.
+
+- From `lg` the field starts at its 10rem floor and grows into the bar's spare room up to 16rem (`flex: 1 1 10rem`, `max-width: 16rem`). On a crowded bar it gives up its width first; the destinations and actions shrink, and may wrap, only once it is at 10rem.
+- Below `lg` the open search showed two ✕ marks side by side: the field's own clear button and the close button. `labels.cancel` (optional, such as "Cancel") draws the close button as that word instead, as iPhone apps do: the accent's words, label size, 44 px tall, the visible word its only name (no `aria-label`), still closing the popover with no script. Without it the ✕ glyph named `labels.close` stays. A blank or non-string `cancel` throws a `RangeError`.

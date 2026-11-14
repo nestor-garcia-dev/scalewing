@@ -18,6 +18,22 @@ const results = '.sw-site-header-search-results';
 const result = '[data-theme] .sw-site-header-search-result';
 
 /*
+ * The field's width in the bar from `lg`: it starts at its 10rem floor and
+ * grows into the bar's spare room up to 16rem, so the destinations and the
+ * actions keep their words on one line. While the bar has less room than
+ * they need beside a 16rem field the field gives it up first; only once it
+ * is at its floor (the bar is then short of room in any case) do the
+ * destinations and the actions shrink and their words wrap. A field that
+ * shrank by `flex-shrink` alone would still take a sliver from them, enough
+ * to wrap a label.
+ */
+function wideSearchSize(indent: string): string {
+  return ['flex: 1 1 10rem;', 'max-width: 16rem;', 'min-width: 10rem;'].join(
+    `\n${indent}`,
+  );
+}
+
+/*
  * Below `lg`: a round quiet search button in the bar, before the compact
  * actions, and the search itself a native popover over the whole window
  * (the browser's top layer): a bar the compact header's height holding the
@@ -55,6 +71,25 @@ function compactRules(): string {
   background: ${quietFill};
 }
 
+/*
+ * The Cancel word in place of the close glyph: the accent's words, as
+ * clickable words read, at label size on the same 44 px height, as wide as
+ * the word (never narrower than the glyph's button). It follows the
+ * close button's rule so its width, padding and colour win over it.
+ */
+.sw-site-header-search-cancel {
+  color: var(--sw-color-accent);
+  font-family: inherit;
+  font-size: ${label.fontSize}px;
+  font-weight: ${label.fontWeight};
+  letter-spacing: ${label.letterSpacing}px;
+  line-height: ${label.lineHeight}px;
+  padding-inline: var(--sw-space-2);
+  min-width: var(--sw-control-md-min-height);
+  white-space: nowrap;
+  width: auto;
+}
+
 .sw-site-header-search-button:focus-visible,
 .sw-site-header-search-close:focus-visible {
   outline: var(--sw-focus-ring-width) solid var(--sw-color-accent);
@@ -78,9 +113,8 @@ function compactRules(): string {
   @media ${wide} {
     ${search} {
       display: block;
-      flex: 0 1 16rem;
+      ${wideSearchSize('      ')}
       margin-inline: auto 0;
-      min-width: 10rem;
       position: relative;
     }
   }
@@ -242,13 +276,11 @@ function wideRules(): string {
     border: 0;
     color: inherit;
     display: block;
-    flex: 0 1 16rem;
+    ${wideSearchSize('    ')}
     height: auto;
-    min-width: 10rem;
     inset: auto;
     margin-inline: auto 0;
     max-height: none;
-    max-width: none;
     overflow: visible;
     padding: 0;
     position: relative;
@@ -323,6 +355,8 @@ ${wideRules()}
     border: 1px solid ButtonText;
   }
 
+  .sw-site-header-search-cancel { color: ButtonText; }
+
   ${result} { color: LinkText; }
 }`;
 }
@@ -336,6 +370,7 @@ export function siteHeaderSearchClassCatalog(): string[] {
     'sw-site-header-search-icon',
     'sw-site-header-search-input',
     'sw-site-header-search-close',
+    'sw-site-header-search-cancel',
     'sw-site-header-search-results',
     'sw-site-header-search-status',
     'sw-site-header-search-list',

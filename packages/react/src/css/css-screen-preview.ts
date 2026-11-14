@@ -1,11 +1,12 @@
 import { typographyVariants } from '@scalewing/tokens';
 
 import { breakpointQuery } from './breakpoints.js';
+import { groupedCanvasFill } from './css-canvas-grouped.js';
 import { toneTintFill, toneTintInk } from './tone-tint.js';
 
 const { caption, label, title } = typographyVariants;
 
-/** How a drawn screen is framed: a plain card, or a phone from `md`. */
+/** How a drawn screen is framed: a plain card, or a phone. */
 export const screenPreviewFrames = ['card', 'device'] as const;
 
 export type ScreenPreviewFrame = (typeof screenPreviewFrames)[number];
@@ -30,9 +31,9 @@ export function previewRowKindClass(kind: PreviewRowKind): string {
 }
 
 /*
- * The card frame, and the device frame below `md`: one surface card whose
- * groups are parted by hairlines. Rows set their label at the start and
- * their figure at the end in tabular numerals.
+ * The card frame: one surface card whose groups are parted by hairlines.
+ * Rows set their label at the start and their figure at the end in
+ * tabular numerals.
  */
 function cardRules(): string {
   return `.sw-screen-preview {
@@ -182,56 +183,71 @@ function rowRules(): string {
 }
 
 /*
- * From `md` the device frame draws a phone: a dark bezel (the text colour)
- * round a quiet screen whose header is a surface strip and whose groups
- * are surface cards. Below `md` it is the card, since the page is already
- * a phone.
+ * The device frame draws a phone at every width: a near-black bezel (the
+ * inverse band's colour, dark in either scheme, a hairline at its edge so
+ * it stands apart from a black page) round a screen on the grouped canvas
+ * (a quiet grey, black in the dark scheme) whose header is a surface strip
+ * and whose groups are surface cards. A screenshot alone fills the screen
+ * edge to edge. Below `md` the phone takes its column's width with a
+ * thinner bezel, so two side by side on a phone stay phones; from `md` it
+ * is 20rem wide.
  */
+function deviceRules(): string {
+  const device = `.${screenPreviewFrameClass('device')}`;
+  return `${device} { --sw-screen-preview-bezel: var(--sw-space-2); }
+${device} .sw-screen-preview-bezel {
+  background: var(--sw-color-inverse);
+  border-radius: calc(var(--sw-radius-lg) + var(--sw-screen-preview-bezel));
+  box-shadow: inset 0 0 0 1px var(--sw-color-border);
+  padding: var(--sw-screen-preview-bezel);
+}
+${device} .sw-screen-preview-screen {
+  background: ${groupedCanvasFill};
+  border-radius: var(--sw-radius-lg);
+  gap: 0;
+  overflow: hidden;
+  padding: 0;
+}
+${device} .sw-screen-preview-header {
+  background: var(--sw-color-surface);
+  border-bottom: 1px solid var(--sw-color-border);
+  padding: var(--sw-space-4);
+}
+${device} .sw-screen-preview-body { gap: var(--sw-space-3); padding: var(--sw-space-3); }
+${device} .sw-screen-preview-body:has(> .sw-preview-image:only-child) { padding: 0; }
+${device} .sw-preview-image { border-radius: 0; }
+${device} .sw-preview-group {
+  background: var(--sw-color-surface);
+  border-radius: var(--sw-radius-md);
+  padding: var(--sw-space-3);
+}
+${device} .sw-preview-group + .sw-preview-group { border-top: 0; }
+${device} .sw-screen-preview-caption { text-align: center; }`;
+}
+
 function wideRules(): string {
   const device = `.${screenPreviewFrameClass('device')}`;
   return `@media ${breakpointQuery('from', 'md')} {
   .${screenPreviewFrameClass('card')} .sw-screen-preview-screen { padding: var(--sw-space-5); }
   .sw-preview-tiles { grid-template-columns: repeat(6, minmax(0, 1fr)); }
-  ${device} { width: 20rem; }
-  ${device} .sw-screen-preview-bezel {
-    background: var(--sw-color-text);
-    border-radius: calc(var(--sw-radius-lg) + var(--sw-space-3));
-    padding: var(--sw-space-3);
-  }
-  ${device} .sw-screen-preview-screen {
-    background: var(--sw-color-subtle);
-    border-radius: var(--sw-radius-lg);
-    gap: 0;
-    overflow: hidden;
-    padding: 0;
-  }
-  ${device} .sw-screen-preview-header {
-    background: var(--sw-color-surface);
-    border-bottom: 1px solid var(--sw-color-border);
-    padding: var(--sw-space-4);
-  }
-  ${device} .sw-screen-preview-body { gap: var(--sw-space-3); padding: var(--sw-space-3); }
-  ${device} .sw-preview-group {
-    background: var(--sw-color-surface);
-    border-radius: var(--sw-radius-md);
-    padding: var(--sw-space-3);
-  }
-  ${device} .sw-preview-group + .sw-preview-group { border-top: 0; }
-  ${device} .sw-screen-preview-caption { text-align: center; }
+  ${device} { --sw-screen-preview-bezel: var(--sw-space-3); width: 20rem; }
 }
 
 @media (forced-colors: active) {
   .sw-screen-preview-screen { border: 1px solid CanvasText; }
-}
-
-@media (forced-colors: active) and ${breakpointQuery('from', 'md')} {
-  .${screenPreviewFrameClass('device')} .sw-screen-preview-screen { border: 0; }
-  .${screenPreviewFrameClass('device')} .sw-screen-preview-bezel { border: 1px solid CanvasText; }
+  ${device} .sw-screen-preview-screen { border: 0; }
+  ${device} .sw-screen-preview-bezel { border: 1px solid CanvasText; }
 }`;
 }
 
 export function cssScreenPreviewClasses(): string {
-  return [cardRules(), imageRules(), rowRules(), wideRules()].join('\n\n');
+  return [
+    cardRules(),
+    imageRules(),
+    rowRules(),
+    deviceRules(),
+    wideRules(),
+  ].join('\n\n');
 }
 
 export function screenPreviewClassCatalog(): string[] {

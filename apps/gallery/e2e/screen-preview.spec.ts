@@ -36,7 +36,7 @@ test.beforeEach(async ({ page }, testInfo) => {
   await page.emulateMedia({ forcedColors: 'active' });
 });
 
-test('ScreenPreview draws one named image, a phone from md and a card on a phone', async ({
+test('ScreenPreview draws one named image, a phone at every width', async ({
   page,
 }, testInfo) => {
   await page.goto('/#screen-preview');
@@ -51,19 +51,16 @@ test('ScreenPreview draws one named image, a phone from md and a card on a phone
     }),
   ).toBeVisible();
   const bezel = device.locator('xpath=..');
-  const figure = section.locator('figure.sw-screen-preview-device');
+  const figure = section.locator('figure.sw-screen-preview-device').first();
   const phone = testInfo.project.name === 'mobile-es';
   const forced = testInfo.project.name === 'forced-colors';
   const bezelFill = await bezel.evaluate(
     (node) => getComputedStyle(node).backgroundColor,
   );
   const width = (await figure.boundingBox())!.width;
-  if (phone) {
-    expect(bezelFill).toBe('rgba(0, 0, 0, 0)');
-  } else {
-    if (!forced) expect(bezelFill).not.toBe('rgba(0, 0, 0, 0)');
-    expect(Math.round(width)).toBe(320);
-  }
+  // The phone is drawn at every width: 20rem from md, its column below it.
+  if (!forced) expect(bezelFill).not.toBe('rgba(0, 0, 0, 0)');
+  if (!phone) expect(Math.round(width)).toBe(320);
   const tiles = section.locator('.sw-preview-tiles');
   const columns = await tiles.evaluate(
     (node) => getComputedStyle(node).gridTemplateColumns.split(' ').length,
@@ -85,3 +82,76 @@ test('ScreenPreview draws one named image, a phone from md and a card on a phone
   }
   await section.screenshot({ path: testInfo.outputPath('screen-preview.png') });
 });
+
+/** The relative luminance of a computed `rgb()` colour, 0 (black) to 1. */
+function luminance(rgb: string): number {
+  const [r, g, b] = rgb
+    .match(/[\d.]+/g)!
+    .slice(0, 3)
+    .map((part) => {
+      const value = Number(part) / 255;
+      return value <= 0.03928
+        ? value / 12.92
+        : ((value + 0.055) / 1.055) ** 2.4;
+    });
+  return 0.2126 * r! + 0.7152 * g! + 0.0722 * b!;
+}
+
+for (const scheme of ['light', 'dark'] as const) {
+  test(`two screenshots side by side stay phones with a near-black bezel, in ${scheme}`, async ({
+    page,
+  }, testInfo) => {
+    test.skip(
+      testInfo.project.name === 'forced-colors',
+      'forced colours draw the bezel as a system outline',
+    );
+    await page.addInitScript((value) => {
+      window.localStorage.setItem('scalewing-gallery-color-scheme', value);
+    }, scheme);
+    await page.goto('/#screen-preview');
+    await expect(
+      page.locator(`[data-theme='${scheme}']`).first(),
+    ).toBeVisible();
+    const pair = page.locator('#screen-preview [data-sample="side-by-side"]');
+    const phones = pair.locator('figure.sw-screen-preview-device');
+    await expect(phones).toHaveCount(2);
+    await pair.scrollIntoViewIfNeeded();
+    const pageFill = await page
+      .locator(`[data-theme='${scheme}']`)
+      .first()
+      .evaluate((node) => getComputedStyle(node).backgroundColor);
+    for (const phone of await phones.all()) {
+      const bezel = phone.locator('.sw-screen-preview-bezel');
+      const look = await bezel.evaluate((node) => {
+        const style = getComputedStyle(node);
+        return {
+          fill: style.backgroundColor,
+          padding: parseFloat(style.paddingLeft),
+        };
+      });
+      // A dark device in both schemes, not the dark scheme's near-white words.
+      expect(luminance(look.fill)).toBeLessThan(0.05);
+      expect(look.fill).not.toBe(pageFill);
+      expect(look.padding).toBeGreaterThanOrEqual(8);
+      // The screenshot fills the screen edge to edge, at full opacity.
+      const screen = await phone
+        .locator('.sw-screen-preview-screen')
+        .boundingBox();
+      const image = phone.locator('img.sw-preview-image');
+      const shot = await image.boundingBox();
+      expect(Math.abs(shot!.width - screen!.width)).toBeLessThanOrEqual(1);
+      expect(Math.abs(shot!.x - screen!.x)).toBeLessThanOrEqual(1);
+      expect(
+        await image.evaluate((node) => getComputedStyle(node).opacity),
+      ).toBe('1');
+      if (testInfo.project.name === 'mobile-es') {
+        // About 150 px wide each on a 390 px page, and still phones.
+        const box = await phone.boundingBox();
+        expect(box!.width).toBeLessThan(200);
+      }
+    }
+    await pair.screenshot({
+      path: testInfo.outputPath(`side-by-side-${scheme}.png`),
+    });
+  });
+}

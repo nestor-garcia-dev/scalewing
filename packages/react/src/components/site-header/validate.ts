@@ -52,6 +52,13 @@ function assertSearch(search: SiteHeaderSearchOptions): void {
     throw new RangeError(
       'SiteHeader search needs a nonempty action, label, placeholder and open and close labels',
     );
+  if (
+    search.labels.cancel !== undefined &&
+    (typeof search.labels.cancel !== 'string' || !search.labels.cancel.trim())
+  )
+    throw new RangeError(
+      'SiteHeader search labels.cancel must be nonempty words when given',
+    );
   if (search.name !== undefined && !/^[\w-]+$/.test(search.name))
     throw new RangeError(
       'SiteHeader search name must be a plain parameter name',
