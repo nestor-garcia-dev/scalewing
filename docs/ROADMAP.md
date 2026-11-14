@@ -223,7 +223,9 @@ Teisoro F-001 task 2910, the onboarding review's follow-ups: `Checkbox
 appearance="tile"`, `RadioGroup descriptionLayout="stacked"`, `Field
 variant="read-only"`, and `TaskList numbered` with `actionBelow`
 (`teisoro-choice-layouts.md`, #298). Released in `@scalewing/react` 1.66.0.
-Next: Teisoro pins react 1.66.0 in task 2910.
+Then `DenominationGrid pinEnd`, a transposed grid's last column and total
+pinned at the end on a phone (`teisoro-denomination-pin-end.md`). Next:
+release it, then Teisoro pins that version in task 2910.
 
 FutMas F-010-S28, desktop layout and polish, from its design review: opt-in
 desktop primitives. `ThemeProvider density="compact"` on a fine pointer only

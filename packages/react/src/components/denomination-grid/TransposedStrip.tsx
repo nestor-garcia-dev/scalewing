@@ -15,12 +15,15 @@ import {
 type TransposedProps = Required<
   Pick<DenominationGridProps, 'label' | 'columns' | 'rows' | 'zeroLabel'>
 > &
-  Pick<DenominationGridProps, 'totalLabel'> & {
+  Pick<DenominationGridProps, 'totalLabel' | 'pinEnd'> & {
     /** The grid's appearance classes (cell tones), if any. */
     className?: string;
     /** The entry counts' room, as the strip's. */
     style?: CSSProperties;
   };
+
+/** The class of the cells of the column pinned at the inline end. */
+const endClass = 'sw-denomination-transposed-end';
 
 /** The look a grid row lends each of its cells in a column. */
 function columnClass(row: DenominationGridRow): string | undefined {
@@ -38,7 +41,14 @@ function columnClass(row: DenominationGridRow): string | undefined {
  * `aria-disabled`), as the strip's row does, since a column has no element
  * of its own.
  */
-function RowHeads({ row }: { row: DenominationGridRow }) {
+function RowHeads({
+  row,
+  pinned,
+}: {
+  row: DenominationGridRow;
+  /** The row's last column is the grid's pinned end column. */
+  pinned: boolean;
+}) {
   return (
     <>
       <th
@@ -46,6 +56,7 @@ function RowHeads({ row }: { row: DenominationGridRow }) {
         className={cx(
           'sw-denomination-head sw-denomination-transposed-head',
           columnClass(row),
+          pinned && !row.valueRow && endClass,
         )}
         scope="col"
       >
@@ -58,6 +69,7 @@ function RowHeads({ row }: { row: DenominationGridRow }) {
           className={cx(
             'sw-denomination-head sw-denomination-transposed-head',
             columnClass(row),
+            pinned && endClass,
           )}
           scope="col"
         >
@@ -69,13 +81,20 @@ function RowHeads({ row }: { row: DenominationGridRow }) {
 }
 
 /** A grid row's total: under its value line when it has one, else under its counts. */
-function RowTotal({ row }: { row: DenominationGridRow }) {
+function RowTotal({
+  row,
+  pinned,
+}: {
+  row: DenominationGridRow;
+  pinned: boolean;
+}) {
   const total = (
     <td
       className={cx(
         'sw-denomination-transposed-total',
         `sw-denomination-row-${row.tone ?? 'neutral'}`,
         columnClass(row),
+        pinned && endClass,
       )}
     >
       {row.total ?? ''}
@@ -96,7 +115,9 @@ function RowTotal({ row }: { row: DenominationGridRow }) {
  * caption), a column per grid row (its counts, read-only or entered, then
  * its value line's values), and the totals in a last row named by
  * `totalLabel`. Names, entry, tones and the zero label are the strip's;
- * the denomination column stays in view while the columns scroll under it.
+ * the denomination column stays in view while the columns scroll under it,
+ * and with `pinEnd` the last column (the last grid row's value line, which
+ * holds its total, else its counts and total) stays in view at the end.
  */
 export function TransposedStrip({
   className,
@@ -106,13 +127,22 @@ export function TransposedStrip({
   rows,
   zeroLabel,
   totalLabel,
+  pinEnd = false,
 }: TransposedProps) {
   const idPrefix = useId();
+  const last = rows.length - 1;
+  const pinned = (rowIndex: number) => pinEnd && rowIndex === last;
+  /** A count cell is the pinned one when its row has no value line after it. */
+  const countEnd = (row: DenominationGridRow, rowIndex: number) =>
+    pinned(rowIndex) && !row.valueRow && endClass;
   const hasTotals = rows.some((row) => row.total !== undefined);
   return (
     <ScrollRegion
       aria-label={label}
-      className="sw-denomination-scroll sw-denomination-scroll-transposed"
+      className={cx(
+        'sw-denomination-scroll sw-denomination-scroll-transposed',
+        pinEnd && 'sw-denomination-scroll-pin-end',
+      )}
     >
       <table
         className={cx(
@@ -126,8 +156,8 @@ export function TransposedStrip({
         <thead>
           <tr>
             <td className="sw-denomination-corner" />
-            {rows.map((row) => (
-              <RowHeads key={row.id} row={row} />
+            {rows.map((row, rowIndex) => (
+              <RowHeads key={row.id} pinned={pinned(rowIndex)} row={row} />
             ))}
           </tr>
         </thead>
@@ -144,7 +174,10 @@ export function TransposedStrip({
                   <Fragment key={row.id}>
                     {row.entry ? (
                       <EntryCell
-                        className={columnClass(row)}
+                        className={cx(
+                          columnClass(row),
+                          countEnd(row, rowIndex),
+                        )}
                         column={column}
                         describedBy={hasValue(value) ? valueId : undefined}
                         entry={row.entry}
@@ -153,7 +186,10 @@ export function TransposedStrip({
                       />
                     ) : (
                       <CountCell
-                        className={columnClass(row)}
+                        className={cx(
+                          columnClass(row),
+                          countEnd(row, rowIndex),
+                        )}
                         index={index}
                         row={row}
                         zeroLabel={zeroLabel}
@@ -164,6 +200,7 @@ export function TransposedStrip({
                         className={cx(
                           'sw-denomination-transposed-value',
                           columnClass(row),
+                          pinned(rowIndex) && endClass,
                         )}
                         id={valueId}
                       >
@@ -186,8 +223,8 @@ export function TransposedStrip({
                   {totalLabel}
                 </th>
               )}
-              {rows.map((row) => (
-                <RowTotal key={row.id} row={row} />
+              {rows.map((row, rowIndex) => (
+                <RowTotal key={row.id} pinned={pinned(rowIndex)} row={row} />
               ))}
             </tr>
           </tfoot>

@@ -86,6 +86,7 @@ export function DenominationGrid({
   totalEmphasis = 'default',
   cellToneAppearance = 'text',
   transposeBelow,
+  pinEnd = false,
   countDigits,
 }: DenominationGridProps) {
   assertDenominationGrid(label, columns, rows);
@@ -93,6 +94,8 @@ export function DenominationGrid({
   assertDenominationEntries(layout, columns, rows);
   assertDenominationValueRows(layout, columns, rows);
   assertDenominationOptions(layout, rows, transposeBelow, countDigits);
+  if (pinEnd && transposeBelow === undefined)
+    throw new TypeError('DenominationGrid pinEnd needs transposeBelow');
   if (typeof zeroLabel !== 'string')
     throw new RangeError('zeroLabel must be a string');
   if (totalLabel !== undefined && !totalLabel.trim())
@@ -148,6 +151,7 @@ export function DenominationGrid({
         columns={columns}
         label={label}
         rows={rows}
+        pinEnd={pinEnd}
         style={countStyle}
         totalLabel={totalLabel}
         zeroLabel={zeroLabel}
