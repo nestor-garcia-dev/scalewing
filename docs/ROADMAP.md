@@ -227,6 +227,11 @@ and draws the phone at every width, a screenshot filling its screen
 (`teisoro-screen-preview.md`), #304. Released in `@scalewing/react` 1.68.0.
 Next: FutMas pins react 1.68.0 for its header and docs pages.
 
+FutMas F-024 docs: `Box` `link="inline"`, a link inside running text in the
+accent and always underlined, so `link-in-text-block` passes in the dark
+scheme (`futmas-box-link-inline.md`, #306). Released in `@scalewing/react`
+1.69.0. Next: FutMas pins react 1.69.0 and sets its docs' body links inline.
+
 Teisoro F-001 task 2910, the onboarding review's follow-ups: `Checkbox
 appearance="tile"`, `RadioGroup descriptionLayout="stacked"`, `Field
 variant="read-only"`, and `TaskList numbered` with `actionBelow`

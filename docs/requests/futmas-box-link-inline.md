@@ -1,6 +1,6 @@
 Scalewing request from FutMas.
 
-Status: accepted 2026-11-14 (FutMas F-024 docs).
+Status: released in `@scalewing/react` 1.69.0 (PR #306; accepted 2026-11-14; FutMas F-024 docs).
 Renderer: react
 Missing surface: `Box` `link="inline"`: a link inside running body text, in the accent and always underlined. A third look of `Box as="a"` `link`, not a new component.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: the FutMas docs site (F-024) puts links inside paragraphs, and its rule is blue for clickable. With the canvas link (`[data-theme] a`, the accent with no underline), axe's `link-in-text-block` fails in the dark scheme: the accent is under 3:1 against the surrounding text and there is no non-colour cue. `link="quiet"` passes but keeps the text colour, so it is not blue. FutMas owns no CSS and cannot restyle `a`.
