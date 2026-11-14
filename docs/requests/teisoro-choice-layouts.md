@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: accepted 2026-11-14 (Teisoro F-001 task 2910, the onboarding acceptance review's follow-ups; the product owner agreed with every recommendation on 2026-11-14).
+Status: released in `@scalewing/react` 1.66.0 (PR #298; accepted 2026-11-14; Teisoro F-001 task 2910, the onboarding acceptance review's follow-ups; the product owner agreed with every recommendation on 2026-11-14).
 Renderer: react
 Missing surface: four opt-in options on existing form and checklist components, each named as a gap by the acceptance review's board comparison:
 
