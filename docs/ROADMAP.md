@@ -222,8 +222,8 @@ popover below it, with an empty results panel for the site's script to fill
 Teisoro F-001 task 2910, the onboarding review's follow-ups: `Checkbox
 appearance="tile"`, `RadioGroup descriptionLayout="stacked"`, `Field
 variant="read-only"`, and `TaskList numbered` with `actionBelow`
-(`teisoro-choice-layouts.md`). Next: review, merge and release in
-`@scalewing/react`, then Teisoro pins that version in task 2910.
+(`teisoro-choice-layouts.md`, #298). Released in `@scalewing/react` 1.66.0.
+Next: Teisoro pins react 1.66.0 in task 2910.
 
 FutMas F-010-S28, desktop layout and polish, from its design review: opt-in
 desktop primitives. `ThemeProvider density="compact"` on a fine pointer only
