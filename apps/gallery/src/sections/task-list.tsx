@@ -6,6 +6,7 @@ import {
   TaskList,
   type TaskListItem,
   type TaskListStatus,
+  Text,
 } from '@scalewing/react';
 import { useState } from 'react';
 
@@ -124,11 +125,60 @@ function SurveyChecklist() {
   );
 }
 
+/**
+ * A numbered checklist whose actions take a full-width line under the words
+ * on a phone: open tasks show their place in the ring.
+ */
+function NumberedChecklist() {
+  const [opened, setOpened] = useState('none');
+  const items: TaskListItem[] = [
+    {
+      id: 'hide',
+      title: 'Build the hide',
+      detail: 'By the north boardwalk',
+      status: 'done',
+    },
+    ...['Hang the feeders', 'Mark the nests', 'Train the volunteers'].map(
+      (title, index): TaskListItem => ({
+        id: title,
+        title,
+        detail: 'Before the first count',
+        status: index === 0 ? 'next' : 'todo',
+        action: ({ titleId }) => (
+          <Button
+            aria-describedby={titleId}
+            onPress={() => setOpened(title)}
+            size="sm"
+            variant="neutral"
+          >
+            Open
+          </Button>
+        ),
+      }),
+    ),
+  ];
+  return (
+    <Card padding={4}>
+      <Stack gap={3}>
+        <TaskList
+          actionBelow="md"
+          items={items}
+          label="Set up the hide"
+          numbered
+        />
+        <Text color="muted" variant="caption">
+          Opened: {opened}.
+        </Text>
+      </Stack>
+    </Card>
+  );
+}
+
 export function TaskListSection() {
   return (
     <Section
       id="task-list"
-      purpose="TaskList is a setup checklist: an ordered list of tasks, each with a status marker (done: a check on the success fill; next: an accent ring round a dot; todo: a grey ring; waiting: a muted lock), its title, a muted detail line and an optional action at the row's end that wraps under the words on a narrow column. Each title is read with its status word (English by default, labels takes yours). Scalewing holds no order rules: you set every status and action. Press the next task's action, or Change on a done one."
+      purpose="TaskList is a setup checklist: an ordered list of tasks, each with a status marker (done: a check on the success fill; next: an accent ring round a dot; todo: a grey ring; waiting: a muted lock), its title, a muted detail line and an optional action at the row's end that wraps under the words on a narrow column. Each title is read with its status word (English by default, labels takes yours). Scalewing holds no order rules: you set every status and action. Press the next task's action, or Change on a done one. numbered draws each open task’s place in its ring; actionBelow md puts each action on a full-width line under its words on a phone."
       title="TaskList"
       usage={`<TaskList
   label="Get the spring survey ready"
@@ -147,9 +197,14 @@ export function TaskListSection() {
   ]}
 />`}
     >
-      <div data-testid="task-list-card">
-        <SurveyChecklist />
-      </div>
+      <Stack gap={4}>
+        <div data-testid="task-list-card">
+          <SurveyChecklist />
+        </div>
+        <div data-testid="task-list-numbered">
+          <NumberedChecklist />
+        </div>
+      </Stack>
     </Section>
   );
 }

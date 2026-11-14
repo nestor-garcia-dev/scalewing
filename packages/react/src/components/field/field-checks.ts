@@ -4,7 +4,7 @@ import { assertFieldWidth } from '../../css/css-field-width.js';
 import { assertFieldDescriptionTone } from './FieldDescription.js';
 import type { FieldProps } from './field-props.js';
 
-export const fieldVariants = ['outlined', 'search'] as const;
+export const fieldVariants = ['outlined', 'search', 'read-only'] as const;
 export type FieldVariant = (typeof fieldVariants)[number];
 
 /** The props Field reads from, and sets on, its native control child. */
@@ -23,6 +23,18 @@ export type FieldControlProps = {
   onKeyDown?: (event: KeyboardEvent<HTMLInputElement>) => void;
 };
 
+/** A read-only field draws one native input or textarea that is `readOnly`. */
+function assertReadOnlyChild(child: unknown): void {
+  if (
+    !isValidElement<FieldControlProps>(child) ||
+    (child.type !== 'input' && child.type !== 'textarea') ||
+    child.props.readOnly !== true
+  )
+    throw new TypeError(
+      'A read-only Field needs one native input or textarea child with readOnly',
+    );
+}
+
 /**
  * Fails closed on a Field it cannot draw: an unknown variant, width or
  * description tone, search props on an outlined field, and a search field
@@ -34,6 +46,20 @@ export function assertFieldProps(props: FieldProps, child: unknown): void {
   assertFieldDescriptionTone(descriptionTone);
   if (!fieldVariants.includes(variant))
     throw new RangeError(`Unknown Field variant: ${String(variant)}`);
+  if (variant === 'read-only') {
+    assertReadOnlyChild(child);
+    if (props.prefix || props.suffix)
+      throw new TypeError('A read-only Field takes no prefix or suffix');
+    // A value the person cannot change cannot be invalid or changed here.
+    if (
+      props.error !== undefined ||
+      props.invalid !== undefined ||
+      props.changed !== undefined
+    )
+      throw new TypeError(
+        'A read-only Field takes no error, invalid or changed',
+      );
+  }
   if (variant !== 'search') {
     if (
       props.leading !== undefined ||

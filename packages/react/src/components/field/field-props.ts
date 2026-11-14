@@ -64,6 +64,14 @@ export type FieldProps = {
    * clear button named `clearLabel` shows while the input holds text and
    * is enabled; it calls `onClear` (set the value to `''`) and puts focus
    * back in the input. Needs one native `input` child with a `value`.
+   * `read-only` is a value shown in a form that the person cannot change
+   * there, such as the email an invitation was sent to: the label above a
+   * borderless box on the subtle fill, in the text colour, so it reads as
+   * given rather than as a field to type in (and apart from a disabled
+   * field's dashed edge). It keeps the native control, so the value is
+   * still focusable, selectable and sent with the form. Needs one native
+   * `input` or `textarea` child with `readOnly` and takes no prefix,
+   * suffix, `error`, `invalid` or `changed` (a `TypeError` otherwise).
    */
   variant?: FieldVariant;
   /** A search field's glyph at its start, such as a magnifier; hidden from assistive technology. */

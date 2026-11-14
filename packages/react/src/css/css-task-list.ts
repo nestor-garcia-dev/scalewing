@@ -1,6 +1,10 @@
 import { typographyVariants } from '@scalewing/tokens';
 
 import { checkStrokeIn } from './chevron.js';
+import {
+  cssTaskListLayoutClasses,
+  taskListLayoutClassCatalog,
+} from './css-task-list-layout.js';
 
 const body = typographyVariants.body;
 const caption = typographyVariants.caption;
@@ -170,7 +174,9 @@ export function cssTaskListClasses(): string {
 
 ${markerRules()}
 
-${forcedColorRules()}`;
+${forcedColorRules()}
+
+${cssTaskListLayoutClasses()}`;
 }
 
 export function taskListClassCatalog(): string[] {
@@ -186,5 +192,6 @@ export function taskListClassCatalog(): string[] {
     'sw-task-list-title',
     'sw-task-list-detail',
     'sw-task-list-action',
+    ...taskListLayoutClassCatalog(),
   ];
 }

@@ -34,6 +34,22 @@ const microphoneGlyph = (
   <Glyph path="M8 10a2 2 0 0 0 2-2V4a2 2 0 1 0-4 0v4a2 2 0 0 0 2 2Zm-4-2a4 4 0 0 0 8 0M8 12v2" />
 );
 
+// Long descriptions, stacked under each role so they stay by their radio.
+const roleOptions = [
+  {
+    value: 'counter',
+    label: 'Counter',
+    description:
+      'Counts the birds at each hide and enters the tallies, but cannot change the survey plan.',
+  },
+  {
+    value: 'leader',
+    label: 'Group leader',
+    description:
+      'Everything a counter does, plus assigning hides and closing the day’s count.',
+  },
+];
+
 // Each option carries its own history as its description.
 const sourceOptions = [
   {
@@ -86,11 +102,12 @@ export function RadioGroupSection() {
   const [denSource, setDenSource] = useState('observer');
   const [arabicSource, setArabicSource] = useState('observer');
   const [changeCount, setChangeCount] = useState(0);
+  const [role, setRole] = useState('counter');
 
   return (
     <Section
       id="radio-group"
-      purpose="RadioGroup presents one choice from a vertical set of longer form options. The browser supplies grouped radio keyboard behavior; the caller owns labels, values, and validation. An option's icon is a decorative glyph between the radio and its label, in the text color; the option's accessible name stays its label. An option's description is its own muted caption, such as its history: at the row's end while it fits, and on a second line under the label on a phone or in a narrow column. It is the radio's accessible description, and a press on it chooses the option."
+      purpose="RadioGroup presents one choice from a vertical set of longer form options. The browser supplies grouped radio keyboard behavior; the caller owns labels, values, and validation. An option's icon is a decorative glyph between the radio and its label, in the text color; the option's accessible name stays its label. An option's description is its own muted caption, such as its history: at the row's end while it fits, and on a second line under the label on a phone or in a narrow column. It is the radio's accessible description, and a press on it chooses the option. With descriptionLayout stacked, every description sits on its own line under its label at any width, for long ones such as what a role may do."
       title="RadioGroup"
       usage={`<RadioGroup
   legend="Habitat"
@@ -153,6 +170,13 @@ export function RadioGroupSection() {
           In a narrow column a description that does not fit beside its label
           wraps under the label text; right to left it sits at the left end.
         </Text>
+        <RadioGroup
+          descriptionLayout="stacked"
+          legend="Volunteer role"
+          onChange={setRole}
+          options={roleOptions}
+          value={role}
+        />
         <RadioGroup
           disabled
           legend="Archived habitat"

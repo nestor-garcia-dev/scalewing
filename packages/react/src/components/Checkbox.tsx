@@ -3,8 +3,17 @@
 import { useId, useLayoutEffect, useRef } from 'react';
 
 import { cx } from '../class-names.js';
+import {
+  assertCheckboxAppearance,
+  type CheckboxAppearance,
+} from './checkbox/checkbox-appearance.js';
 import { CheckboxControl } from './checkbox/CheckboxControl.js';
 import { FieldErrorRegion } from './FieldErrorRegion.js';
+
+export {
+  checkboxAppearances,
+  type CheckboxAppearance,
+} from './checkbox/checkbox-appearance.js';
 
 export type CheckboxProps = {
   label: string;
@@ -31,6 +40,16 @@ export type CheckboxProps = {
    * stays mixed.
    */
   indeterminate?: boolean;
+  /**
+   * `plain` (default) draws the box beside its words. `tile` draws the box,
+   * the label and the description inside a bordered tile as wide as its
+   * column, the whole tile one press target, so a set of tiles in a `Grid`
+   * reads as a set of choices (a store's services, say). A chosen (or
+   * mixed) tile takes the accent edge, an invalid one the danger edge. A
+   * tile needs its label drawn: with `labelVisuallyHidden`, or with an
+   * unknown appearance, it throws a `RangeError`.
+   */
+  appearance?: CheckboxAppearance;
 };
 
 export function Checkbox({
@@ -43,7 +62,10 @@ export function Checkbox({
   error,
   labelVisuallyHidden = false,
   indeterminate = false,
+  appearance = 'plain',
 }: CheckboxProps) {
+  assertCheckboxAppearance(appearance, labelVisuallyHidden);
+  const tile = appearance === 'tile';
   const descriptionId = useId();
   const errorId = useId();
   const inputRef = useRef<HTMLInputElement>(null);
@@ -60,7 +82,14 @@ export function Checkbox({
   });
 
   return (
-    <div className="sw-checkbox">
+    <div
+      className={cx(
+        'sw-checkbox',
+        tile && 'sw-checkbox-tile',
+        tile && (checked || indeterminate) && 'sw-checkbox-tile-checked',
+        tile && Boolean(error) && 'sw-checkbox-tile-invalid',
+      )}
+    >
       <label
         className={cx(
           'sw-checkbox-label',

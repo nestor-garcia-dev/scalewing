@@ -219,6 +219,12 @@ popover below it, with an empty results panel for the site's script to fill
 (`futmas-site-header-search.md`, #296). Released in `@scalewing/react`
 1.65.0. Next: FutMas pins it for its header.
 
+Teisoro F-001 task 2910, the onboarding review's follow-ups: `Checkbox
+appearance="tile"`, `RadioGroup descriptionLayout="stacked"`, `Field
+variant="read-only"`, and `TaskList numbered` with `actionBelow`
+(`teisoro-choice-layouts.md`). Next: review, merge and release in
+`@scalewing/react`, then Teisoro pins that version in task 2910.
+
 FutMas F-010-S28, desktop layout and polish, from its design review: opt-in
 desktop primitives. `ThemeProvider density="compact"` on a fine pointer only
 (md controls 36/14, sm 28/10, xs 24/8, chips 32, Card corners the md radius,

@@ -199,7 +199,7 @@ describe('Field variant="search"', () => {
         </Field>,
       ),
     ).toThrow(RangeError);
-    expect(fieldVariants).toEqual(['outlined', 'search']);
+    expect(fieldVariants).toEqual(['outlined', 'search', 'read-only']);
   });
 });
 

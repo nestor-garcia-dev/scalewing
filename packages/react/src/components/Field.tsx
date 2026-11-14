@@ -76,6 +76,7 @@ export function Field(props: FieldProps) {
     size === 'xs' && 'sw-field-xs',
     marksInvalid && 'sw-field-invalid',
     search && 'sw-field-search-field',
+    variant === 'read-only' && 'sw-field-read-only',
     changed && !marksInvalid && 'sw-field-changed',
     width && 'sw-field-sized',
     width && fieldWidthClass(width),

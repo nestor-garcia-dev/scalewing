@@ -241,6 +241,18 @@ export function FieldSection() {
           (it still names the search box), puts a glyph at the start and a clear
           button at the end while there is text.
         </Text>
+        <Field
+          description="The ranger station sent the invitation here."
+          label="Volunteer email"
+          variant="read-only"
+        >
+          <input readOnly type="email" value="kestrel@example.com" />
+        </Field>
+        <Text color="muted" variant="caption">
+          variant read-only shows a value the person cannot change here on the
+          subtle fill with no edge, apart from a disabled field&apos;s dashed
+          edge; it stays focusable and selectable.
+        </Text>
       </Stack>
     </Section>
   );

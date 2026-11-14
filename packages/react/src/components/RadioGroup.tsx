@@ -2,14 +2,23 @@
 
 import { useId } from 'react';
 
+import { cx } from '../class-names.js';
 import { FieldErrorRegion } from './FieldErrorRegion.js';
 import {
   RadioGroupOptionLabel,
   type RadioGroupOption,
 } from './radio-group/RadioGroupOptionLabel.js';
+import {
+  assertRadioGroupDescriptionLayout,
+  type RadioGroupDescriptionLayout,
+} from './radio-group/radio-group-description-layout.js';
 import { radioTabStopValue } from '../tab-stop.js';
 
 export type { RadioGroupOption };
+export {
+  radioGroupDescriptionLayouts,
+  type RadioGroupDescriptionLayout,
+} from './radio-group/radio-group-description-layout.js';
 
 export type RadioGroupProps = {
   legend: string;
@@ -20,6 +29,15 @@ export type RadioGroupProps = {
   disabled?: boolean;
   description?: string;
   error?: string;
+  /**
+   * Where an option's description goes. `auto` (default): at the row's
+   * inline end while it fits beside the label, on a second line under the
+   * label when it does not or below md. `stacked`: always on a second line,
+   * starting under the label's words, so a long description (what a role
+   * may do, say) stays beside its radio on a wide screen. An unknown
+   * layout throws a `RangeError`.
+   */
+  descriptionLayout?: RadioGroupDescriptionLayout;
 };
 
 export function RadioGroup({
@@ -31,7 +49,9 @@ export function RadioGroup({
   disabled = false,
   description,
   error,
+  descriptionLayout = 'auto',
 }: RadioGroupProps) {
+  assertRadioGroupDescriptionLayout(descriptionLayout);
   const name = useId();
   const descriptionId = useId();
   const errorId = useId();
@@ -55,7 +75,10 @@ export function RadioGroup({
     <fieldset
       aria-describedby={describedBy || undefined}
       aria-invalid={Boolean(error)}
-      className="sw-radio-group"
+      className={cx(
+        'sw-radio-group',
+        descriptionLayout === 'stacked' && 'sw-radio-group-stacked',
+      )}
       disabled={disabled}
     >
       <legend className="sw-radio-group-legend">{legend}</legend>

@@ -11,6 +11,10 @@ import {
   fieldDescriptionClassCatalog,
 } from './css-field-description.js';
 import {
+  cssFieldReadOnlyClasses,
+  fieldReadOnlyClassCatalog,
+} from './css-field-read-only.js';
+import {
   cssFieldWidthClasses,
   fieldWidthClassCatalog,
 } from './css-field-width.js';
@@ -105,6 +109,8 @@ ${cssFieldDescriptionClasses()}
 
 ${adornmentRules()}
 
+${cssFieldReadOnlyClasses()}
+
 ${cssFieldSearchClasses()}
 
 ${cssFieldChangedClasses()}
@@ -135,6 +141,7 @@ export function fieldClassCatalog(): string[] {
     'sw-field-prefix',
     'sw-field-suffix',
     ...fieldSearchClassCatalog(),
+    ...fieldReadOnlyClassCatalog(),
     ...fieldWidthClassCatalog(),
   ];
 }
