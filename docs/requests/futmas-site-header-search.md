@@ -1,6 +1,6 @@
 # FutMas: search in the site header
 
-Status: implemented in `@scalewing/react` 1.65.0 for FutMas F-024 (owner review). Revision (a field that gives way first from `lg`, and `labels.cancel`) built; release pending.
+Status: implemented in `@scalewing/react` 1.65.0 for FutMas F-024 (owner review). Revision (a field that gives way first from `lg`, and `labels.cancel`) released in 1.68.0 (PR #304).
 
 Scalewing request from FutMas.
 

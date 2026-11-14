@@ -224,7 +224,8 @@ its width before a label wraps on a crowded bar, and `labels.cancel` draws
 the open search's close button as a word (`futmas-site-header-search.md`);
 `ScreenPreview frame="device"` keeps a near-black bezel in the dark scheme
 and draws the phone at every width, a screenshot filling its screen
-(`teisoro-screen-preview.md`). Next: release, then FutMas pins it.
+(`teisoro-screen-preview.md`), #304. Released in `@scalewing/react` 1.68.0.
+Next: FutMas pins react 1.68.0 for its header and docs pages.
 
 Teisoro F-001 task 2910, the onboarding review's follow-ups: `Checkbox
 appearance="tile"`, `RadioGroup descriptionLayout="stacked"`, `Field

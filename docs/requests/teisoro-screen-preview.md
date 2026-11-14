@@ -1,6 +1,6 @@
 # Teisoro: a drawn stand-in for an app's screen
 
-Status: released in `@scalewing/react` 1.50.0 (PR #251). Revision (the device frame at every width, a dark bezel in the dark scheme) built for FutMas F-024; release pending.
+Status: released in `@scalewing/react` 1.50.0 (PR #251). Revision (the device frame at every width, a dark bezel in the dark scheme) released in `@scalewing/react` 1.68.0 for FutMas F-024 (PR #304).
 
 Scalewing request from Teisoro.
 
