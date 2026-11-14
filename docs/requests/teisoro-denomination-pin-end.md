@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: accepted 2026-11-14 (Teisoro F-001 task 2910, FU-4; the product owner agreed on 2026-11-14 to fix it "with the long-tables rule": a table with a total scrolls inside itself with its header and total pinned).
+Status: released in `@scalewing/react` 1.67.0 (PR #300; accepted 2026-11-14; Teisoro F-001 task 2910, FU-4; the product owner agreed on 2026-11-14 to fix it "with the long-tables rule": a table with a total scrolls inside itself with its header and total pinned).
 Renderer: react
 Missing surface: `DenominationGrid pinEnd`, the transposed grid's last column (its values and total) pinned at the inline end while the columns between scroll.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: Teisoro owns no CSS. Store settings' "Change for the registers" is a transposed `DenominationGrid` on a phone; its coin boxes' names are long ("cajas de 25¢"), so at 390 px the value column and the total are cut off at the region's end (UX-5). The transposed grid pins the denomination column only.
