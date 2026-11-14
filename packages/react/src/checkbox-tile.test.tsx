@@ -125,6 +125,12 @@ describe('Checkbox appearance="tile"', () => {
   it('generates the tile rules: the stretched press target, the edges and forced colours', () => {
     const css = cssCheckboxClasses();
     expect(css).toContain('.sw-checkbox-tile .sw-checkbox-label::after');
+    // The box sits above the stretched layer, so a press on it hits the input.
+    expect(css).toMatch(
+      /\.sw-checkbox-tile \.sw-checkbox-control \{\s*z-index: 1;\s*\}/,
+    );
+    // The tile keeps that layering to itself.
+    expect(css).toMatch(/\.sw-checkbox-tile \{[^}]*isolation: isolate;/);
     expect(css).toMatch(
       /\.sw-checkbox-tile-checked \{\s*border-color: var\(--sw-color-accent\);\s*box-shadow: inset 0 0 0 1px var\(--sw-color-accent\);/,
     );

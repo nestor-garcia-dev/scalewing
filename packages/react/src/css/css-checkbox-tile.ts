@@ -11,7 +11,10 @@ function edge(color: string): string {
  * A tile Checkbox: the box, the label and the description inside one
  * bordered tile as wide as its column, at least the 44 px target plus its
  * padding. The label's `::after` stretches over the whole tile, so a press
- * anywhere on it (the description included) toggles the box. A chosen or
+ * anywhere on it (the description included) toggles the box; the box itself
+ * sits above that layer, so a press aimed at the box lands on its input
+ * (what a pointer-driven test or tool hits first). The tile isolates its
+ * layers, so the box never paints over a header or popover. A chosen or
  * mixed tile takes the accent edge, an invalid one the danger edge (which
  * wins), twice the hairline through an inset shadow. The description and
  * the error start under the label's words. Forced colours keep the edges
@@ -23,6 +26,7 @@ export function cssCheckboxTileClasses(): string {
   border-radius: var(--sw-radius-md);
   box-sizing: border-box;
   gap: 0;
+  isolation: isolate;
   padding: var(--sw-space-2) var(--sw-space-3);
   position: relative;
   width: 100%;
@@ -32,6 +36,8 @@ export function cssCheckboxTileClasses(): string {
   min-height: var(--sw-control-sm-min-height);
   width: 100%;
 }
+
+.sw-checkbox-tile .sw-checkbox-control { z-index: 1; }
 
 .sw-checkbox-tile .sw-checkbox-label::after {
   border-radius: inherit;
