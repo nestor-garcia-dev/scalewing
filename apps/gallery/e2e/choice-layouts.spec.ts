@@ -31,6 +31,14 @@ test('a tile Checkbox is one press target, edged while chosen', async ({
   const wordsBox = (await words.boundingBox())!;
   await page.mouse.click(wordsBox.x + 4, wordsBox.y + wordsBox.height / 2);
   await expect(hides).not.toBeChecked();
+  // A press aimed at the box itself lands on its input, not the layer above
+  // the tile, so a pointer-driven test can click the checkbox directly.
+  await hides.click();
+  await expect(hides).toBeChecked();
+  // A disabled tile's box takes no press, even one forced onto its input.
+  const night = tiles.getByRole('checkbox', { name: 'Night survey' });
+  await night.click({ force: true });
+  await expect(night).not.toBeChecked();
   expect(box.height).toBeGreaterThanOrEqual(44);
   expect(await fitsWidth(page)).toBe(true);
   await tiles.screenshot({ path: testInfo.outputPath('checkbox-tiles.png') });
