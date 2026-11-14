@@ -5,11 +5,21 @@ import { typographyVariants } from '@scalewing/tokens';
  * canvas link: the accent colour, no underline. `quiet` is a title that
  * opens something, such as the title of a table row: the surrounding
  * text's colour at weight 600, underlined while hovered or focused.
+ * `inline` is a link inside a sentence: the accent colour, always
+ * underlined.
  */
-export const boxLinkAppearances = ['accent', 'quiet'] as const;
+export const boxLinkAppearances = ['accent', 'quiet', 'inline'] as const;
 export type BoxLinkAppearance = (typeof boxLinkAppearances)[number];
 
 const quietLinkClass = 'sw-link-quiet';
+const inlineLinkClass = 'sw-link-inline';
+/** The generated class of each look; the canvas link has none. */
+const boxLinkClasses: Readonly<Record<BoxLinkAppearance, string | undefined>> =
+  {
+    accent: undefined,
+    quiet: quietLinkClass,
+    inline: inlineLinkClass,
+  };
 /** The decorative new-tab mark after an external link's words. */
 export const externalLinkMarkClass = 'sw-link-external-mark';
 
@@ -24,7 +34,7 @@ export function assertBoxLink(link: unknown, as: string): void {
 export function boxLinkClass(
   link: BoxLinkAppearance | undefined,
 ): string | undefined {
-  return link === 'quiet' ? quietLinkClass : undefined;
+  return link === undefined ? undefined : boxLinkClasses[link];
 }
 
 /*
@@ -41,6 +51,14 @@ export function boxLinkClass(
  * Forced colours paint it in the system link colour, as any link.
  */
 export function cssBoxLinkClasses(): string {
+  return `${cssQuietLinkClasses()}
+
+${cssInlineLinkClasses()}
+
+${cssExternalLinkMarkClasses()}`;
+}
+
+function cssQuietLinkClasses(): string {
   const quiet = `[data-theme] a.${quietLinkClass}`;
   return `${quiet} {
   color: inherit;
@@ -51,9 +69,37 @@ ${quiet}:hover,
 ${quiet}:focus-visible {
   color: inherit;
   text-decoration-line: underline;
+}`;
 }
 
-${cssExternalLinkMarkClasses()}`;
+/*
+ * An inline link sits in a sentence, among words in the text colour. Its
+ * accent alone may be under 3:1 against them (axe's link-in-text-block),
+ * so it is always underlined: the non-colour cue WCAG 1.4.1 asks for. The
+ * line is a hairline a little below the baseline in the accent at 60 %,
+ * as the inverse band's links; hover and keyboard focus draw it in the
+ * full accent at the focus ring's width, as a Markdown link's hover. The
+ * words stay in the accent while hovered, unlike the canvas link's hover.
+ * Focus keeps the canvas focus ring. The rules outrank the canvas
+ * `[data-theme] a` rules, hover included. Forced colours paint the words
+ * and the line in the system link colour, as any link.
+ */
+function cssInlineLinkClasses(): string {
+  const inline = `[data-theme] a.${inlineLinkClass}`;
+  return `${inline} {
+  color: var(--sw-color-accent);
+  text-decoration-color: color-mix(in srgb, currentColor 60%, transparent);
+  text-decoration-line: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+}
+
+${inline}:hover,
+${inline}:focus-visible {
+  color: var(--sw-color-accent);
+  text-decoration-color: currentColor;
+  text-decoration-thickness: var(--sw-focus-ring-width);
+}`;
 }
 
 /*
@@ -93,5 +139,5 @@ ${mark}:dir(rtl) { transform: scaleX(-1); }`;
 }
 
 export function boxLinkClassCatalog(): string[] {
-  return [quietLinkClass, externalLinkMarkClass];
+  return [quietLinkClass, inlineLinkClass, externalLinkMarkClass];
 }

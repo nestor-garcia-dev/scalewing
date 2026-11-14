@@ -9,7 +9,7 @@ afterEach(() => cleanup());
 
 describe('Box link', () => {
   it('lists its looks', () => {
-    expect(boxLinkAppearances).toEqual(['accent', 'quiet']);
+    expect(boxLinkAppearances).toEqual(['accent', 'quiet', 'inline']);
   });
 
   it('keeps the canvas link by default and for accent', () => {
@@ -35,6 +35,17 @@ describe('Box link', () => {
     );
     expect(screen.getByRole('link', { name: 'Heron' }).className).toBe(
       'sw-link-quiet row-title',
+    );
+  });
+
+  it('marks an inline link with its generated class, before a consumer class', () => {
+    render(
+      <Box as="a" className="field-note" href="#heron" link="inline">
+        Heron
+      </Box>,
+    );
+    expect(screen.getByRole('link', { name: 'Heron' }).className).toBe(
+      'sw-link-inline field-note',
     );
   });
 
@@ -71,6 +82,28 @@ describe('Box link', () => {
 }`);
     // After the canvas link rules it overrides.
     expect(css.indexOf('[data-theme] a.sw-link-quiet {')).toBeGreaterThan(
+      css.indexOf('[data-theme] a:hover {'),
+    );
+  });
+
+  it('generates the inline look: the accent, always underlined, stronger on hover and focus', () => {
+    const css = generateStylesheet();
+    expect(utilityClassCatalog()).toContain('sw-link-inline');
+    expect(css).toContain(`[data-theme] a.sw-link-inline {
+  color: var(--sw-color-accent);
+  text-decoration-color: color-mix(in srgb, currentColor 60%, transparent);
+  text-decoration-line: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+}`);
+    expect(css).toContain(`[data-theme] a.sw-link-inline:hover,
+[data-theme] a.sw-link-inline:focus-visible {
+  color: var(--sw-color-accent);
+  text-decoration-color: currentColor;
+  text-decoration-thickness: var(--sw-focus-ring-width);
+}`);
+    // After the canvas link rules it overrides, the hover's text colour too.
+    expect(css.indexOf('[data-theme] a.sw-link-inline {')).toBeGreaterThan(
       css.indexOf('[data-theme] a:hover {'),
     );
   });

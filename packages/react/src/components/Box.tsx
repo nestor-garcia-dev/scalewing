@@ -63,7 +63,10 @@ export type BoxProps = SpacingProps &
      * `quiet` keeps the surrounding text's colour at weight 600 and
      * underlines on hover and focus, for a title that opens something,
      * such as a table row's. Weight is its non-colour cue, so use it in
-     * text lighter than 600. Only for `as="a"`; an unknown value throws.
+     * text lighter than 600. `inline` is a link inside a sentence: the
+     * accent colour, always underlined (the non-colour cue), the line
+     * stronger on hover and focus. Only for `as="a"`; an unknown value
+     * throws.
      */
     link?: BoxLink;
     /**
