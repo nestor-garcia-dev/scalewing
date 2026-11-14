@@ -1,9 +1,21 @@
+import { type Breakpoint, breakpoints } from '../../css/breakpoints.js';
 import {
   isTaskListStatus,
   type TaskListLabels,
   taskListStatuses,
 } from './task-list-status.js';
 import type { TaskListItem } from './task-list-item.js';
+
+/** Fails closed on an `actionBelow` that is not a layout breakpoint. */
+export function assertActionBelow(actionBelow: Breakpoint | undefined): void {
+  if (
+    actionBelow !== undefined &&
+    !(breakpoints as readonly unknown[]).includes(actionBelow)
+  )
+    throw new RangeError(
+      `TaskList actionBelow must be one of ${breakpoints.join(', ')}`,
+    );
+}
 
 function isBlank(value: unknown): boolean {
   return typeof value !== 'string' || !value.trim();

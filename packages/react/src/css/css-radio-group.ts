@@ -197,12 +197,16 @@ function optionDescriptionRules(): string {
 
 @media ${breakpointQuery('below', 'md')} {
   .sw-radio-group-option-description { flex-basis: 100%; }
-}`;
+}
+
+/* Stacked: every description on its own line under its label, at any width. */
+.sw-radio-group-stacked .sw-radio-group-option-description { flex-basis: 100%; }`;
 }
 
 export function radioGroupClassCatalog(): string[] {
   return [
     'sw-radio-group',
+    'sw-radio-group-stacked',
     'sw-radio-group-legend',
     'sw-radio-group-options',
     'sw-radio-group-option',

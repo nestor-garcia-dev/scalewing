@@ -91,7 +91,12 @@ export {
   listTileColumnCounts,
   type ListGroupTileColumns,
 } from './css/css-list-tiles.js';
-export { Checkbox, type CheckboxProps } from './components/Checkbox.js';
+export {
+  Checkbox,
+  checkboxAppearances,
+  type CheckboxAppearance,
+  type CheckboxProps,
+} from './components/Checkbox.js';
 export {
   PasteRows,
   type PasteRowsColumn,
@@ -156,6 +161,8 @@ export {
 export { InfoTip, type InfoTipProps } from './components/InfoTip.js';
 export {
   RadioGroup,
+  radioGroupDescriptionLayouts,
+  type RadioGroupDescriptionLayout,
   type RadioGroupOption,
   type RadioGroupProps,
 } from './components/RadioGroup.js';

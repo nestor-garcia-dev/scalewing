@@ -1,5 +1,9 @@
 import { typographyVariants } from '@scalewing/tokens';
 import { checkStrokeIn } from './chevron.js';
+import {
+  checkboxTileClassCatalog,
+  cssCheckboxTileClasses,
+} from './css-checkbox-tile.js';
 import { coarsePointerQuery, touchTarget } from './touch-target.js';
 
 const label = typographyVariants.label;
@@ -137,6 +141,8 @@ export function cssCheckboxClasses(): string {
 .sw-checkbox-error { color: var(--sw-color-danger); }
 .sw-checkbox-error:empty { position: absolute; }
 
+${cssCheckboxTileClasses()}
+
 @media (prefers-reduced-transparency: reduce) {
   .sw-checkbox-mark { background: var(--sw-color-surface); }
   .sw-checkbox-input:is(:checked, :indeterminate) + .sw-checkbox-mark { background: var(--sw-color-accent); }
@@ -161,5 +167,6 @@ export function checkboxClassCatalog(): string[] {
     'sw-checkbox-text',
     'sw-checkbox-description',
     'sw-checkbox-error',
+    ...checkboxTileClassCatalog(),
   ];
 }
