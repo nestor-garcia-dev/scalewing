@@ -229,6 +229,7 @@ ${results}:not([hidden]) {
 
 ${result} {
   border-bottom: 1px solid var(--sw-color-border);
+  box-sizing: border-box;
   color: var(--sw-color-text);
   display: flex;
   flex-direction: column;

@@ -229,6 +229,15 @@ describe('SiteHeader search CSS', () => {
     expect(css).not.toContain('flex: 0 1 16rem');
   });
 
+  it('counts a result row’s padding inside its 44 px floor', () => {
+    const rule =
+      /\[data-theme\] \.sw-site-header-search-result \{([^}]*)\}/.exec(
+        css,
+      )?.[1];
+    expect(rule).toContain('box-sizing: border-box;');
+    expect(rule).toContain('min-height: var(--sw-control-md-min-height);');
+  });
+
   it('draws the cancel word in the accent at the 44 px height', () => {
     const rule = /\.sw-site-header-search-cancel \{([^}]*)\}/.exec(css)?.[1];
     expect(rule).toContain('color: var(--sw-color-accent);');

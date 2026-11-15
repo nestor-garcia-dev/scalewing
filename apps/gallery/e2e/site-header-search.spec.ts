@@ -136,6 +136,20 @@ for (const scheme of schemes) {
     expect(
       await axeViolations(page, '#site-header-search .sw-site-header-search'),
     ).toEqual([]);
+    // A row with a title only, as a site's "See all" row, is the 44 px
+    // floor tall with its padding inside it, on a page without the
+    // gallery's border-box reset too: no empty band under the words.
+    await page.addStyleTag({ content: '* { box-sizing: content-box; }' });
+    const titleOnly = await bar
+      .locator('.sw-site-header-search-results')
+      .getByRole('link')
+      .last()
+      .evaluate((row) => {
+        row.querySelector('.sw-site-header-search-result-text')?.remove();
+        return row.getBoundingClientRect().height;
+      });
+    expect(titleOnly).toBeGreaterThanOrEqual(44);
+    expect(titleOnly).toBeLessThanOrEqual(45);
     await page.screenshot({
       path: testInfo.outputPath(`search-phone-${scheme}.png`),
     });
