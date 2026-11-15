@@ -1,5 +1,11 @@
 # @scalewing/react
 
+## 1.69.1
+
+### Patch Changes
+
+- 794c903: `SiteHeader` search: below `lg`, a result row counts its padding inside its 44 px floor (`box-sizing: border-box`), so on a page without a border-box reset a row with a title only, such as a site's "See all results" row, is 44 px tall instead of 68 px with an empty band under its words. Reported by FutMas's F-024 review.
+
 ## 1.69.0
 
 ### Minor Changes
