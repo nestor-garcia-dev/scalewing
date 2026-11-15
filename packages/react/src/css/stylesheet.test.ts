@@ -173,6 +173,13 @@ describe('generated CSS', () => {
     expect(css).toContain('.sw-sr-only { position: absolute;');
   });
 
+  it('balances the lines of the page titles, and only those, at zero specificity', () => {
+    expect(css).toContain(
+      ':where(.sw-text-hero, .sw-text-display, .sw-text-headline, .sw-text-heading) { text-wrap: balance; }',
+    );
+    expect(css.match(/text-wrap: balance/g)).toHaveLength(1);
+  });
+
   it('emits the text alignment utilities', () => {
     expect(catalog).toEqual(
       expect.arrayContaining(['sw-text-align-center', 'sw-text-align-end']),
