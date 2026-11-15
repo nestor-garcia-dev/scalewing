@@ -1,5 +1,11 @@
 # @scalewing/react
 
+## 1.70.0
+
+### Minor Changes
+
+- c17d385: `Text` titles (`hero`, `display`, `headline`, `heading`) balance their lines with `text-wrap: balance`, at zero specificity, so a wrapped title never leaves one word alone on its last line ("Your league, like the / pros."). Body sizes are unchanged. Requested by FutMas's F-024 review.
+
 ## 1.69.1
 
 ### Patch Changes

@@ -234,7 +234,11 @@ scheme (`futmas-box-link-inline.md`, #306). Released in `@scalewing/react`
 
 FutMas F-024 review: `SiteHeader` search result rows are `border-box`, so a
 title-only row ("See all results") is 44 px on a page without a reset
-(#308). Released in `@scalewing/react` 1.69.1. Next: FutMas pins 1.69.1.
+(#308). Released in `@scalewing/react` 1.69.1.
+
+FutMas F-024 review: `Text` titles (`hero`, `display`, `headline`,
+`heading`) balance their lines, so a wrapped title never strands one word
+(#310). Released in `@scalewing/react` 1.70.0. Next: FutMas pins 1.70.0.
 
 Teisoro F-001 task 2910, the onboarding review's follow-ups: `Checkbox
 appearance="tile"`, `RadioGroup descriptionLayout="stacked"`, `Field
