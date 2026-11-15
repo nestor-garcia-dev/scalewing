@@ -4,6 +4,7 @@ import {
 } from '@scalewing/tokens';
 
 import { breakpointQuery } from './breakpoints.js';
+import { displayFaceVariants } from './css-display-face.js';
 
 function textClassNames(): string[] {
   return Object.keys(typographyVariants).map((name) => `.sw-text-${name}`);
@@ -18,6 +19,16 @@ function textClassNames(): string[] {
  */
 function textMarginReset(): string {
   return `:where(${textClassNames().join(', ')}) { margin: 0; }`;
+}
+
+/*
+ * A page's titles balance their lines, so a wrapped title never leaves one
+ * word alone on its last line. Zero specificity, as the margin reset, so a
+ * consumer's own wrap wins.
+ */
+function titleBalance(): string {
+  const titles = displayFaceVariants.map((variant) => `.sw-text-${variant}`);
+  return `:where(${titles.join(', ')}) { text-wrap: balance; }`;
 }
 
 function textVariantRules(): string {
@@ -78,6 +89,8 @@ export function cssTextClasses(): string {
 .sw-text-align-end { text-align: end; }
 
 ${textMarginReset()}
+
+${titleBalance()}
 
 ${textVariantRules()}
 
