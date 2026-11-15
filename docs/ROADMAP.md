@@ -232,6 +232,10 @@ accent and always underlined, so `link-in-text-block` passes in the dark
 scheme (`futmas-box-link-inline.md`, #306). Released in `@scalewing/react`
 1.69.0. Next: FutMas pins react 1.69.0 and sets its docs' body links inline.
 
+FutMas F-024 review: `SiteHeader` search result rows are `border-box`, so a
+title-only row ("See all results") is 44 px on a page without a reset
+(#308). Released in `@scalewing/react` 1.69.1. Next: FutMas pins 1.69.1.
+
 Teisoro F-001 task 2910, the onboarding review's follow-ups: `Checkbox
 appearance="tile"`, `RadioGroup descriptionLayout="stacked"`, `Field
 variant="read-only"`, and `TaskList numbered` with `actionBelow`
