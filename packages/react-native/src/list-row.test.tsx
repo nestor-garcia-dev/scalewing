@@ -8,6 +8,7 @@ import { ThemeProvider } from './theme/ThemeProvider.js';
 
 vi.mock('react-native', () => ({
   Pressable: 'Pressable',
+  Switch: 'Switch',
   Text: 'Text',
   useColorScheme: () => 'light',
   View: 'View',
@@ -211,5 +212,91 @@ describe('ListRow', () => {
     ]);
     const labelled = row(root, 'Wetland habitat');
     expect(labelled.findByProps({ testID: 'mark' })).toBeTruthy();
+  });
+
+  it('is one switch element named by its lines that a tap toggles', () => {
+    const onSwitchChange = vi.fn();
+    const root = render([
+      {
+        accessory: 'switch',
+        detail: 'When a keeper starts a shift',
+        onSwitchChange,
+        switchValue: false,
+        title: 'Shift alerts',
+      },
+    ]);
+    const toggle = row(root, 'Shift alerts, When a keeper starts a shift');
+    expect(toggle.type).toBe('Pressable');
+    expect(toggle.props.accessibilityRole).toBe('switch');
+    expect(toggle.props.accessibilityState).toEqual({
+      checked: false,
+      disabled: false,
+    });
+    expect(chevrons(toggle)).toHaveLength(0);
+    act(() => toggle.props.onPress());
+    expect(onSwitchChange).toHaveBeenCalledWith(true);
+  });
+
+  it('draws the native switch untouchable and hidden, the row owning both', () => {
+    const root = render([
+      {
+        accessory: 'switch',
+        onSwitchChange: () => undefined,
+        switchValue: true,
+        title: 'Feeding alerts',
+      },
+    ]);
+    const toggle = row(root, 'Feeding alerts');
+    const nativeSwitch = toggle.find((node) => node.type === 'Switch');
+    expect(nativeSwitch.props.value).toBe(true);
+    expect(nativeSwitch.props.trackColor).toEqual({
+      false: lightTheme.colors.border,
+      true: lightTheme.colors.success,
+    });
+    expect(nativeSwitch.parent?.props.pointerEvents).toBe('none');
+    expect(nativeSwitch.parent?.props.accessibilityElementsHidden).toBe(true);
+    expect(nativeSwitch.parent?.props.importantForAccessibility).toBe(
+      'no-hide-descendants',
+    );
+    expect(toggle.props.accessibilityState.checked).toBe(true);
+  });
+
+  it('turns an on switch off and keeps the 44-point row', () => {
+    const onSwitchChange = vi.fn();
+    const root = render([
+      {
+        accessory: 'switch',
+        onSwitchChange,
+        switchValue: true,
+        title: 'Feeding alerts',
+      },
+    ]);
+    const toggle = row(root, 'Feeding alerts');
+    act(() => toggle.props.onPress());
+    expect(onSwitchChange).toHaveBeenCalledWith(false);
+    expect(toggle.props.style.minHeight).toBeGreaterThanOrEqual(44);
+    expect(toggle.props.style.backgroundColor).toBe('transparent');
+  });
+
+  it('blocks a disabled switch row, announces it, and dims it once', () => {
+    const root = render([
+      {
+        accessory: 'switch',
+        disabled: true,
+        onSwitchChange: () => undefined,
+        switchValue: true,
+        title: 'Night alerts',
+      },
+    ]);
+    const toggle = row(root, 'Night alerts');
+    expect(toggle.props.disabled).toBe(true);
+    expect(toggle.props.accessibilityState).toEqual({
+      checked: true,
+      disabled: true,
+    });
+    expect(toggle.props.style.opacity).toBe(lightTheme.disabledOpacity);
+    expect(
+      toggle.find((node) => node.type === 'Switch').props.disabled,
+    ).toBeUndefined();
   });
 });

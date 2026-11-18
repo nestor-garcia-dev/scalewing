@@ -80,6 +80,28 @@ something, such as Sign out; any confirm stays the consumer's. Without
 name is the title, detail, and value unless `accessibilityLabel` replaces
 it.
 
+`accessory="switch"` makes a row turn a setting on or off in place, like
+iOS Settings: a native `Switch` on its end side, on in the `success` green
+and off in the `border` grey (the thumb stays the platform's), with
+`switchValue` and `onSwitchChange(value)` and no chevron or `onPress`. The
+row is one `switch` element named by its lines that announces its checked
+and disabled state, and a tap anywhere on it, the switch included, calls
+`onSwitchChange` once with the opposite value; the consumer saves and owns
+the state. It does not fill while pressed. `disabled` blocks the row and
+dims it, switch included.
+
+```tsx
+<ListGroup>
+  <ListRow
+    accessory="switch"
+    detail="When a habitat is due a feed"
+    onSwitchChange={setFeedingAlerts}
+    switchValue={feedingAlerts}
+    title="Feeding alerts"
+  />
+</ListGroup>
+```
+
 `StepperRow` is a `ListGroup` row that counts something: a `ListRow`'s
 `title`, optional `detail` and `leading` slot, and a compact round minus and
 plus around the count on the end side, with `Stepper`'s `value`, `min`,

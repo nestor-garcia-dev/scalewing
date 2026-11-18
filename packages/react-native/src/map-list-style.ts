@@ -6,7 +6,7 @@ import {
 import { type ViewStyle } from 'react-native';
 
 /** What a row shows at its end side. */
-export type ListRowAccessory = 'chevron' | 'check' | 'none';
+export type ListRowAccessory = 'chevron' | 'check' | 'none' | 'switch';
 
 /** `danger` marks a row that ends something, such as signing out. */
 export type ListRowTone = 'default' | 'danger';
@@ -17,15 +17,16 @@ export type ListRowState = {
 };
 
 /**
- * The accessory a row draws: a choice shows its check only while
- * selected, a pressable row defaults to a chevron, and a read-only row
- * shows nothing.
+ * The accessory a row draws: a switch row always shows its switch, a
+ * choice shows its check only while selected, a pressable row defaults to
+ * a chevron, and a read-only row shows nothing.
  */
 export function listRowAccessory(options: {
-  accessory?: 'chevron' | 'none';
+  accessory?: 'chevron' | 'none' | 'switch';
   pressable: boolean;
   selected?: boolean;
 }): ListRowAccessory {
+  if (options.accessory === 'switch') return 'switch';
   if (options.selected !== undefined)
     return options.selected ? 'check' : 'none';
   if (!options.pressable) return 'none';
@@ -94,6 +95,25 @@ export function mapListChevronStyle(theme: Theme): ViewStyle {
     height: theme.space[2],
     transform: [{ rotate: '-45deg' }],
     width: theme.space[2],
+  };
+}
+
+/** The colours a native `Switch` takes from the theme. */
+export type ListSwitchColors = {
+  /** The off track on iOS, which `trackColor.false` alone leaves clear. */
+  ios_backgroundColor: string;
+  trackColor: { false: string; true: string };
+};
+
+/**
+ * A row's switch is on in the `success` green, like an iOS Settings
+ * switch, and off in the `border` grey. The thumb stays the platform's
+ * (white on iOS). A disabled row dims the whole row, switch included.
+ */
+export function mapListSwitchColors(theme: Theme): ListSwitchColors {
+  return {
+    ios_backgroundColor: theme.colors.border,
+    trackColor: { false: theme.colors.border, true: theme.colors.success },
   };
 }
 
