@@ -240,6 +240,12 @@ FutMas F-024 review: `Text` titles (`hero`, `display`, `headline`,
 `heading`) balance their lines, so a wrapped title never strands one word
 (#310). Released in `@scalewing/react` 1.70.0. Next: FutMas pins 1.70.0.
 
+FutMas F-026 Settings → Notifications: native `ListRow`
+`accessory="switch"` with `switchValue` and `onSwitchChange`, one `switch`
+element the whole row toggles, on in `success` and off in `border`
+(`futmas-list-row-switch.md`, #312). Released in `@scalewing/react-native`
+1.17.0. Next: FutMas pins react-native 1.17.0.
+
 Teisoro F-001 task 2910, the onboarding review's follow-ups: `Checkbox
 appearance="tile"`, `RadioGroup descriptionLayout="stacked"`, `Field
 variant="read-only"`, and `TaskList numbered` with `actionBelow`
