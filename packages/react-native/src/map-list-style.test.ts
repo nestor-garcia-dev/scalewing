@@ -7,6 +7,7 @@ import {
   mapListChevronStyle,
   mapListGroupStyle,
   mapListRowStyle,
+  mapListSwitchColors,
 } from './map-list-style.js';
 
 describe('listRowAccessory', () => {
@@ -20,6 +21,12 @@ describe('listRowAccessory', () => {
   it('never shows a chevron on a read-only row', () => {
     expect(listRowAccessory({ accessory: 'chevron', pressable: false })).toBe(
       'none',
+    );
+  });
+
+  it('always shows the switch of a switch row', () => {
+    expect(listRowAccessory({ accessory: 'switch', pressable: false })).toBe(
+      'switch',
     );
   });
 
@@ -80,5 +87,19 @@ describe('list styles', () => {
       borderColor: lightTheme.colors.muted,
       transform: [{ rotate: '-45deg' }],
     });
+  });
+});
+
+describe('mapListSwitchColors', () => {
+  it('is on in success green and off in the border grey in both schemes', () => {
+    for (const theme of [lightTheme, darkTheme]) {
+      expect(mapListSwitchColors(theme)).toEqual({
+        ios_backgroundColor: theme.colors.border,
+        trackColor: { false: theme.colors.border, true: theme.colors.success },
+      });
+    }
+    expect(mapListSwitchColors(darkTheme).trackColor.true).not.toBe(
+      mapListSwitchColors(lightTheme).trackColor.true,
+    );
   });
 });
