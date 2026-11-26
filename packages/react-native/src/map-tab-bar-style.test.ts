@@ -2,13 +2,17 @@ import { lightTheme } from '@scalewing/tokens';
 import { describe, expect, it } from 'vitest';
 
 import {
+  mapTabBarBadgeStyle,
   mapTabBarContentStyle,
   mapTabBarDestinationStyle,
+  mapTabBarIconStyle,
   mapTabBarItemStyle,
   mapTabBarLabelStyle,
   mapTabBarStyle,
   mapTabBarTrailingStyle,
   tabBarItemColor,
+  tabBarLabelMinimumFontScale,
+  tabBarTrailingGap,
 } from './map-tab-bar-style.js';
 
 describe('mapTabBarStyle', () => {
@@ -45,12 +49,63 @@ describe('tab bar destination layout', () => {
       flex: 1,
       minHeight: lightTheme.control.md.minHeight,
       minWidth: 0,
-      paddingHorizontal: lightTheme.space[1],
     });
+    expect(mapTabBarItemStyle(lightTheme).paddingHorizontal).toBeUndefined();
     expect(mapTabBarContentStyle()).toEqual({ minWidth: 0, width: '100%' });
     expect(mapTabBarLabelStyle()).toEqual({
       maxWidth: '100%',
       textAlign: 'center',
+    });
+  });
+});
+
+describe('five destinations on a 390-point phone', () => {
+  // SF Pro widths at the caption size (13 pt, -0.08 tracking), measured with
+  // NSString.size(withAttributes:): "Following" 56.5, "Configuración" 83.8.
+  const followingWidth = 56.5;
+  const configuracionWidth = 83.8;
+
+  function columnWidth(windowWidth: number, count: number) {
+    const bar = mapTabBarStyle(lightTheme);
+    const trailing = mapTabBarTrailingStyle(lightTheme);
+    const inner =
+      windowWidth -
+      2 * Number(bar.paddingHorizontal) -
+      Number(trailing.width) -
+      lightTheme.space[tabBarTrailingGap];
+
+    return inner / count;
+  }
+
+  it('fits "Following" at full size and a 13-character label shrunk', () => {
+    const column = columnWidth(390, 5);
+
+    expect(followingWidth).toBeLessThanOrEqual(column);
+    expect(configuracionWidth).toBeGreaterThan(column);
+    expect(
+      configuracionWidth * tabBarLabelMinimumFontScale,
+    ).toBeLessThanOrEqual(column);
+  });
+
+  it('shrinks labels only slightly, to no less than 70%', () => {
+    expect(tabBarLabelMinimumFontScale).toBe(0.7);
+  });
+});
+
+describe('mapTabBarBadgeStyle', () => {
+  it('hangs a danger pill off the icon from its centre and above its top', () => {
+    const style = mapTabBarBadgeStyle(lightTheme);
+
+    expect(mapTabBarIconStyle()).toEqual({ position: 'relative' });
+    expect(style).toMatchObject({
+      backgroundColor: lightTheme.colors.danger,
+      borderRadius: lightTheme.radius.pill,
+      minHeight: lightTheme.typography.caption.lineHeight,
+      minWidth: lightTheme.typography.caption.lineHeight,
+      paddingHorizontal: lightTheme.space[1],
+      position: 'absolute',
+      start: '50%',
+      top: -lightTheme.space[1],
     });
   });
 });

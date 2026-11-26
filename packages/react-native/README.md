@@ -165,7 +165,30 @@ system text size. The native example demonstrates switching sections.
 
 `TabBar` gives destinations equal-width, shrinking columns and keeps an
 optional trailing control at its token-owned hit target. Destination labels
-continue to scale with the system and ellipsize visually when space is tight;
-their full accessible names remain on the tab controls.
+scale with the system, shrink to 70% of their size to fit their column (as
+iOS tab labels do, so five labels of up to 13 characters fit beside the
+trailing control on a 390-point phone), and only then ellipsize; their full
+accessible names remain on the tab controls.
+
+A destination's `badge` is a count of things waiting on that tab: a danger
+pill over the icon's top end corner, shown only for a positive whole number
+and reading `99+` past 99. The tab reads it after its label the way iOS does
+("Inbox, 3 items"); pass `badgeAccessibilityLabel` with your own words.
+
+```tsx
+<TabBar
+  items={[
+    {
+      badge: 3,
+      badgeAccessibilityLabel: '3 new sightings',
+      icon: <Binoculars {...glyph} />,
+      key: 'sightings',
+      label: 'Sightings',
+      onPress: openSightings,
+      selected: true,
+    },
+  ]}
+/>
+```
 
 React and React Native are peer dependencies so the host Expo app owns the runtime. Rationale: duplicating React Native inside this package would fight Metro and Expo upgrades.
