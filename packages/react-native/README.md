@@ -129,6 +129,36 @@ Past four, the first three show and the fourth is a `more` tile whose
 `testID` works on the row, each action, and More. Pass Lucide glyphs at
 spacing step 5 in `theme.colors.accent` (ADR 0008).
 
+`MatchCard` is one upcoming match as a card that opens it: an optional
+muted `leading` line, the large `when` line with a chevron, the two `sides`
+(home first) each with a round mark, a centred name that wraps, and an
+optional muted `caption`, the `versus` word between them (default "vs"), and
+up to two muted `details` lines centred underneath; a third fails closed. It
+draws the outlined card's surface, hairline, and large radius and fills with
+`subtle` while pressed. A side's mark is its `crest` (a consumer image that
+fills the mark) or its `initials` (by default the first letters of its
+name), hidden from assistive technology. The whole card is one button named
+by its visible lines in order unless `accessibilityLabel` replaces it, with
+an optional `accessibilityHint`. At accessibility text sizes the sides stack
+so each name has the full width.
+
+```tsx
+<MatchCard
+  details={['North pond', 'Spring meet']}
+  leading="Your next race"
+  onPress={openRace}
+  sides={[
+    { caption: 'Home', name: 'Heron' },
+    {
+      caption: 'Away',
+      name: 'Otter',
+      crest: <Image source={otter} style={{ height: '100%', width: '100%' }} />,
+    },
+  ]}
+  when="Tomorrow · 9:00 AM"
+/>
+```
+
 `SegmentedControl` uses the active palette's accent/onAccent pair for the
 selected section, with a 44-point minimum touch height. Labels grow with
 system text size. The native example demonstrates switching sections.
