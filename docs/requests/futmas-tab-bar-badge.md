@@ -1,4 +1,4 @@
-Status: implemented on `feat/tab-bar-badge` (unreleased).
+Status: implemented in `@scalewing/react-native` 1.19.0.
 
 Scalewing request from FutMas.
 
