@@ -1,5 +1,19 @@
-import { type SemanticColorKey, type Theme } from '@scalewing/tokens';
+import {
+  type SemanticColorKey,
+  type SpacingStep,
+  type Theme,
+} from '@scalewing/tokens';
 import { type TextStyle, type ViewStyle } from 'react-native';
+
+/** The space step between the destinations and the trailing control. */
+export const tabBarTrailingGap: SpacingStep = 2;
+
+/**
+ * How far a destination's label may shrink to fit its column before it
+ * ellipsizes, as iOS tab labels do: five labels of up to 13 characters
+ * fit beside a trailing control on a 390-point phone at the default size.
+ */
+export const tabBarLabelMinimumFontScale = 0.7;
 
 export function mapTabBarStyle(
   theme: Theme,
@@ -30,7 +44,6 @@ export function mapTabBarItemStyle(theme: Theme): ViewStyle {
     justifyContent: 'center',
     minHeight: theme.control.md.minHeight,
     minWidth: 0,
-    paddingHorizontal: theme.space[1],
   };
 }
 
@@ -40,6 +53,32 @@ export function mapTabBarContentStyle(): ViewStyle {
 
 export function mapTabBarLabelStyle(): TextStyle {
   return { maxWidth: '100%', textAlign: 'center' };
+}
+
+/** The icon's own box, which the badge hangs off. */
+export function mapTabBarIconStyle(): ViewStyle {
+  return { position: 'relative' };
+}
+
+/**
+ * A count badge on the danger fill, its start edge at the icon's centre
+ * and raised over the icon's top, a circle for one digit and a pill past it.
+ */
+export function mapTabBarBadgeStyle(theme: Theme): ViewStyle {
+  const size = theme.typography.caption.lineHeight;
+
+  return {
+    alignItems: 'center',
+    backgroundColor: theme.colors.danger,
+    borderRadius: theme.radius.pill,
+    justifyContent: 'center',
+    minHeight: size,
+    minWidth: size,
+    paddingHorizontal: theme.space[1],
+    position: 'absolute',
+    start: '50%',
+    top: -theme.space[1],
+  };
 }
 
 export function mapTabBarTrailingStyle(theme: Theme): ViewStyle {

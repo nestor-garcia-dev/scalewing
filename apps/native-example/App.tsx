@@ -377,6 +377,17 @@ export default function App() {
               selected: tab === 'three',
             },
             {
+              badge: sightings,
+              badgeAccessibilityLabel: `${sightings} logged`,
+              icon: <TabMark selected={tab === 'five'} />,
+              key: 'five',
+              label: 'Sightings',
+              onPress: () => {
+                setTab('five');
+              },
+              selected: tab === 'five',
+            },
+            {
               icon: <TabMark selected={tab === 'four'} />,
               key: 'four',
               label: 'Settings',
