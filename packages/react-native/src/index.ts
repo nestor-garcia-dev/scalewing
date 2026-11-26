@@ -102,3 +102,8 @@ export {
   type BracketSide,
 } from './components/BracketMatch.js';
 export { type BracketSideOutcome } from './map-bracket-style.js';
+export {
+  MatchCard,
+  type MatchCardProps,
+  type MatchCardSide,
+} from './components/MatchCard.js';

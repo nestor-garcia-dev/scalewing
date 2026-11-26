@@ -1,6 +1,8 @@
 import { type SemanticColorKey, type Theme } from '@scalewing/tokens';
 import { type TextStyle, type ViewStyle } from 'react-native';
 
+import { isAccessibilityTextScale } from './text-scale.js';
+
 /** How one side of a bracket match reads. */
 export type BracketSideOutcome = 'winner' | 'loser' | 'open' | 'pending';
 
@@ -87,8 +89,8 @@ export function mapBracketFeedStyle(theme: Theme): ViewStyle {
 
 /**
  * Text this large leaves no room for a second column, so the bracket shows
- * one round as a plain list (iOS accessibility sizes start near 1.35).
+ * one round as a plain list at accessibility text sizes.
  */
 export function bracketShowsNextRound(fontScale: number): boolean {
-  return fontScale < 1.35;
+  return !isAccessibilityTextScale(fontScale);
 }

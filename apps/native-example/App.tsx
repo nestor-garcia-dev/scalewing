@@ -33,6 +33,7 @@ import { SafeAreaView, ScrollView, View } from 'react-native';
 import { ActionRowDemo } from './ActionRowDemo';
 import { BracketDemo } from './BracketDemo';
 import { ListDemo } from './ListDemo';
+import { MatchCardDemo } from './MatchCardDemo';
 import { TallyDemo } from './TallyDemo';
 
 const demoPalettes = ['indigo', 'cerulean', 'sunburst'] as const;
@@ -201,6 +202,7 @@ export default function App() {
             <ListDemo />
             <TallyDemo />
             <BracketDemo />
+            <MatchCardDemo />
             <Progress
               label="Nests checked"
               max={8}
