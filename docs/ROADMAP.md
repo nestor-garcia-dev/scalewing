@@ -246,6 +246,12 @@ element the whole row toggles, on in `success` and off in `border`
 (`futmas-list-row-switch.md`, #312). Released in `@scalewing/react-native`
 1.17.0. Next: FutMas pins react-native 1.17.0.
 
+FutMas F-027 Agenda tab bar: `TabBarItem` `badge` and
+`badgeAccessibilityLabel` (a danger pill, 99+, announced after the label as
+iOS does), and five labels that shrink to 70% before truncating
+(`futmas-tab-bar-badge.md`, #316). Released in `@scalewing/react-native`
+1.19.0. Next: FutMas pins react-native 1.19.0.
+
 FutMas F-027 Agenda: native `MatchCard`, one upcoming match as a card that
 opens it: an optional leading line, a when line, both sides with crest,
 name and caption, and up to two detail lines (`futmas-match-card.md`,
