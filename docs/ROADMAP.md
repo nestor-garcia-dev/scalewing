@@ -246,6 +246,12 @@ element the whole row toggles, on in `success` and off in `border`
 (`futmas-list-row-switch.md`, #312). Released in `@scalewing/react-native`
 1.17.0. Next: FutMas pins react-native 1.17.0.
 
+FutMas F-027 Agenda: native `MatchCard`, one upcoming match as a card that
+opens it: an optional leading line, a when line, both sides with crest,
+name and caption, and up to two detail lines (`futmas-match-card.md`,
+#314). Released in `@scalewing/react-native` 1.18.0. Next: FutMas pins
+react-native 1.18.0.
+
 Teisoro F-001 task 2910, the onboarding review's follow-ups: `Checkbox
 appearance="tile"`, `RadioGroup descriptionLayout="stacked"`, `Field
 variant="read-only"`, and `TaskList numbered` with `actionBelow`

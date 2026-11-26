@@ -1,4 +1,4 @@
-Status: implemented, awaiting a react-native release.
+Status: implemented in `@scalewing/react-native` 1.18.0.
 
 Scalewing request from FutMas.
 
