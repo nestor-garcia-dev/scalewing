@@ -13,6 +13,7 @@ import { useState } from 'react';
 
 import { Glyph } from '../glyph.js';
 import { Section } from '../layout/Section.js';
+import { ButtonOneLineExample } from './button-one-line.js';
 import { sampleHabitats } from '../sample-copy.js';
 
 function buttonName(
@@ -37,7 +38,7 @@ export function ButtonSection() {
   return (
     <Section
       id="button"
-      purpose="Button is a real button element. Use it for press actions. Primary, secondary, and tertiary are the three action tiers; secondary is outlined until a palette fills it (switch to signal to see all three filled). Ghost is text only; danger is destructive. Disabled blocks onPress. Default type is button; forms may pass submit. A toggle button passes aria-pressed: the pressed one gets an accent ring. A glyph and its label, passed as the button's own children, sit one token gap (spacing step 2) apart. neutral (web) is a quiet grey fill in the text color, for a Cancel beside the primary that should not draw the eye; disabledAppearance neutral draws a disabled button on that grey with muted words instead of fading its variant. aria-disabled true looks the same as disabled but stays focusable and pressable: onPress still runs, for a submit that, pressed while off, takes the person to what is missing. width full fills its column, and in an Inline row the space its siblings leave, such as an Edit beside a ••• menu."
+      purpose="Button is a real button element. Use it for press actions. Primary, secondary, and tertiary are the three action tiers; secondary is outlined until a palette fills it (switch to signal to see all three filled). Ghost is text only; danger is destructive. Disabled blocks onPress. Default type is button; forms may pass submit. A toggle button passes aria-pressed: the pressed one gets an accent ring. A glyph and its label, passed as the button's own children, sit one token gap (spacing step 2) apart. neutral (web) is a quiet grey fill in the text color, for a Cancel beside the primary that should not draw the eye; disabledAppearance neutral draws a disabled button on that grey with muted words instead of fading its variant. aria-disabled true looks the same as disabled but stays focusable and pressable: onPress still runs, for a submit that, pressed while off, takes the person to what is missing. width full fills its column, and in an Inline row the space its siblings leave, such as an Edit beside a ••• menu. A button keeps its natural width in a crowded row, so its siblings give way and its words stay on their one line; only where its words are longer than its whole container do they wrap, inside the pill, every word shown. An ActionMenu does the same. shrink false on a Box-based layout, such as the Inline holding a header's actions, keeps that box's natural width too."
       title="Button"
       usage={`<Button variant="primary" size="md" onPress={() => undefined}>
   Save
@@ -255,6 +256,7 @@ export function ButtonSection() {
           width full: Edit takes the row the ••• menu leaves, and Log a sighting
           fills its column.
         </Text>
+        <ButtonOneLineExample onPress={setLastPress} />
         <Text variant="caption">Last press: {lastPress}</Text>
       </Stack>
     </Section>

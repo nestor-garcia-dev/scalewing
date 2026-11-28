@@ -13,9 +13,19 @@ import { quietFill } from './quiet-fill.js';
 const caption = typographyVariants.caption;
 const label = typographyVariants.label;
 
+/*
+ * A menu keeps its natural width as an item of a crowded flex row, as a
+ * Button does (css-button-natural-width.ts): it gives up none of it
+ * (`flex-shrink: 0`), so the row's other items give way first and a name
+ * in a header stays on its one line. The menu and its trigger are never
+ * wider than their container (`max-width: 100%`): where the trigger's
+ * words are longer than the whole row, they wrap inside it, never cut.
+ */
 export function cssActionMenuClasses(): string {
   return `.sw-action-menu {
   display: inline-flex;
+  flex-shrink: 0;
+  max-width: 100%;
   position: relative;
 }
 
@@ -27,6 +37,7 @@ export function cssActionMenuClasses(): string {
   color: var(--sw-color-text);
   cursor: pointer;
   font: inherit;
+  max-width: 100%;
   min-height: var(--sw-control-xs-min-height);
   padding-inline: var(--sw-control-xs-padding-inline);
 }

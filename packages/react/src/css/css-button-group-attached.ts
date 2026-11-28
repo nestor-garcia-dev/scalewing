@@ -16,7 +16,11 @@ export function buttonGroupFullWidthClass(breakpoint: Breakpoint): string {
  * height, their borders overlapping into single dividers, the inner
  * corners square and the outer ones the sm radius. It keeps its row on a
  * phone (it never stacks) and sizes to its buttons, even in a Stack that
- * would stretch it, so `justify` does not apply.
+ * would stretch it, so `justify` does not apply. Its buttons share that
+ * row: they shrink as flex items again (`flex-shrink: 1`, over a Button's
+ * natural width, css-button-natural-width.ts), so a joined control wider
+ * than a phone's column wraps its words inside its segments rather than
+ * spilling past the column.
  *
  * A borderless variant (primary, tertiary, ghost, danger) draws its
  * divider in its own text colour at low strength, so a joined row of them
@@ -47,6 +51,7 @@ export function cssButtonGroupAttachedClasses(): string {
 
 ${group} > .sw-button {
   border-radius: 0;
+  flex-shrink: 1;
 }
 
 ${group} > .sw-button ~ .sw-button {

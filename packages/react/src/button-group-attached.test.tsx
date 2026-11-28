@@ -42,7 +42,11 @@ describe('ButtonGroup attached CSS', () => {
     expect(css).toContain(
       `${group} {\n  align-items: stretch;\n  display: inline-flex;\n  flex-wrap: nowrap;\n  gap: 0;\n  isolation: isolate;\n  max-width: 100%;\n  width: fit-content;`,
     );
-    expect(css).toContain(`${group} > .sw-button {\n  border-radius: 0;\n}`);
+    // Its buttons share the one row: they shrink again, over a Button's
+    // natural width, so a joined control never spills past a phone's column.
+    expect(css).toContain(
+      `${group} > .sw-button {\n  border-radius: 0;\n  flex-shrink: 1;\n}`,
+    );
     expect(css).toContain(
       `${group} > .sw-button ~ .sw-button {\n  margin-inline-start: -1px;\n}`,
     );

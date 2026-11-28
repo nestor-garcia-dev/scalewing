@@ -629,6 +629,7 @@ export type {
 } from './components/Grid.js';
 export type { GridColumnSpan } from './css/css-grid-span.js';
 export type { ColumnSpanProps } from './column-span-classes.js';
+export type { FlexItemProps } from './flex-item-classes.js';
 export {
   DenominationGrid,
   denominationCellToneAppearances,
