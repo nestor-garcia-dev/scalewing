@@ -873,14 +873,12 @@ Next: Teisoro pins react 1.71.0 in F-010-S08.
 Teisoro F-010 acceptance review, the counter's name tiles
 (`teisoro-list-group-tiles-scroll.md`): ListGroup `size="lg"` (56 px rows)
 and tiles with `maxHeight` (the grid scrolling in the named region, its
-shade over the tiles). Reviewed and merged (#320) with a minor changeset;
-not released yet. Next: one `@scalewing/react` release together with the
-Button natural-width change below.
+shade over the tiles). Merged in #320; released in `@scalewing/react`
+1.72.0. Next: Teisoro pins react 1.72.0 for the counter.
 
 Teisoro F-010 acceptance review, the top bar's Switch person wrapping
 (`teisoro-button-natural-width.md`): a Button, ButtonLink and ActionMenu
 keep their natural width in a crowded flex row (siblings give way; words
 wrap inside the pill only past the whole container, never cut), and
-`shrink={false}` on any Box-based layout. Reviewed, with a minor
-changeset; not merged or released yet. Next: its pull request, then one
-`@scalewing/react` release with the ListGroup tiles change above.
+`shrink={false}` on any Box-based layout. Merged in #321; released in
+`@scalewing/react` 1.72.0. Next: Teisoro pins react 1.72.0 for the top bar.

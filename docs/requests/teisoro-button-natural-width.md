@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: in implementation on branch `teisoro/button-natural-width` (requested 2026-11-28; Teisoro F-010 "counter PIN switching", S10 acceptance review, Q-5 "Switch person" wrapping in the top bar; an extension of S11 "Scalewing pieces"). Not released yet.
+Status: released in `@scalewing/react` 1.72.0 (PR #321; requested 2026-11-28; Teisoro F-010 "counter PIN switching", S10 acceptance review, Q-5 "Switch person" wrapping in the top bar; an extension of S11 "Scalewing pieces").
 Renderer: react
 Missing surface: a `Button` (and an `ActionMenu`) that is not squeezed in a crowded row, and `shrink={false}` on a Box-based layout that must keep its natural width.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: in Teisoro's top bar a small neutral `Button` ("Switch person", "Cambiar de persona") sits with the account `ActionMenu` in an `Inline wrap={false}`. On a crowded row (a tablet at 768–1000 px in Spanish, a desktop bar with seven areas and a long name) flex shrinking squeezes the button until its words wrap onto two or three lines and spill out of the pill; the menu trigger's name wraps too. Nothing in Scalewing says "this item keeps its natural width", and Teisoro owns no CSS.
