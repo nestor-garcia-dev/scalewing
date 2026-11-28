@@ -1,5 +1,3 @@
-import { typographyVariants } from '@scalewing/tokens';
-
 import { cssListRowClasses, listRowClassCatalog } from './css-list-row.js';
 import {
   cssListRowTrailingClasses,
@@ -13,15 +11,19 @@ import {
   cssListTilesClasses,
   listTilesClassCatalog,
 } from './css-list-tiles.js';
+import { cssListSizeClasses, listSizeClassCatalog } from './css-list-size.js';
+import { cssListTilesBoundedClasses } from './css-list-tiles-bounded.js';
 import { blockEdgeShadeRules, scrollRegionRules } from './css-scroll-region.js';
-
-const label = typographyVariants.label;
-const caption = typographyVariants.caption;
-
-/* A row's padding, shared by the row rules and the bounded list's height. */
-export const listRowPadBlock = 'var(--sw-space-3)';
+import { listCountedRowHeight } from './list-row-metrics.js';
 
 const scroll = '.sw-list-group-scroll';
+
+/*
+ * The region of a bounded list of rows, not of tiles: tiles are opaque
+ * panels that would hide a shade drawn under them, so a bounded grid of
+ * tiles draws its own over them (css-list-tiles-bounded.ts).
+ */
+const rowScroll = `.sw-list-group:not(.sw-list-group-tiles) > ${scroll}`;
 
 /*
  * A ListGroup is one list (`sw-list`) with a hairline between its rows:
@@ -61,12 +63,12 @@ function groupRules(): string {
  * shows.
  */
 function boundedRules(): string {
-  const top = `${scroll}.sw-scroll-more-top`;
-  const bottom = `${scroll}.sw-scroll-more-bottom`;
+  const top = `${rowScroll}.sw-scroll-more-top`;
+  const bottom = `${rowScroll}.sw-scroll-more-bottom`;
   return `${scrollRegionRules(scroll)}
 
 ${scroll} {
-  max-height: calc(var(--sw-list-max-rows) * (2 * ${listRowPadBlock} + ${label.lineHeight}px + ${caption.lineHeight}px + 1px));
+  max-height: calc(var(--sw-list-max-rows) * (${listCountedRowHeight} + 1px));
 }
 
 ${blockEdgeShadeRules({ top, bottom, both: `${top}.sw-scroll-more-bottom` })}
@@ -94,7 +96,11 @@ ${cssListRowTrailingClasses()}
 
 ${cssListRowTruncateClasses()}
 
-${cssListTilesClasses()}`;
+${cssListSizeClasses()}
+
+${cssListTilesClasses()}
+
+${cssListTilesBoundedClasses()}`;
 }
 
 export function listClassCatalog(): string[] {
@@ -106,6 +112,7 @@ export function listClassCatalog(): string[] {
     'sw-list-group-plain',
     'sw-list-group-scroll',
     'sw-list-group-footer',
+    ...listSizeClassCatalog(),
     ...listTilesClassCatalog(),
     ...listRowClassCatalog(),
     ...listRowTrailingClassCatalog(),

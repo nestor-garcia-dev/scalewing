@@ -317,6 +317,7 @@ describe('ListRow', () => {
         label: 'x',
         labelledBy: undefined,
         variant: 'plain',
+        size: 'md',
         maxHeight: { rows: 1 },
         tileColumns: undefined,
         hasFooter: false,
@@ -399,8 +400,9 @@ describe('ListGroup CSS', () => {
     expect(css).toContain(
       'max-height: calc(var(--sw-list-max-rows) * (2 * var(--sw-space-3) + 20px + 18px + 1px));',
     );
+    // The shade under the rows is a list of rows' only: tiles draw their own.
     expect(css).toMatch(
-      /\.sw-list-group-scroll\.sw-scroll-more-bottom \{\n {2}background-image: linear-gradient\(to top,/,
+      /\.sw-list-group:not\(\.sw-list-group-tiles\) > \.sw-list-group-scroll\.sw-scroll-more-bottom \{\n {2}background-image: linear-gradient\(to top,/,
     );
     expect(css).toContain(
       '@media print {\n  .sw-list-group-scroll { max-height: none; }',

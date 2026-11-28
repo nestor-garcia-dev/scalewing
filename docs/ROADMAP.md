@@ -869,3 +869,11 @@ over one real numeric input that holds a mask and never the digits, the
 count announced politely, and an optional pad of 64 px keys
 (`teisoro-pin-field.md`, #318). Released in `@scalewing/react` 1.71.0.
 Next: Teisoro pins react 1.71.0 in F-010-S08.
+
+Teisoro F-010 acceptance review, the counter's name tiles
+(`teisoro-list-group-tiles-scroll.md`): ListGroup `size="lg"` (56 px rows)
+and tiles with `maxHeight` (the grid scrolling in the named region, its
+shade over the tiles). Built on branch `teisoro/counter-tiles` with a minor
+changeset; not reviewed, merged or released yet. Next: the Bar Raiser
+review and a pull request, then a `@scalewing/react` release with the
+Button one-line change (`teisoro-button-natural-width.md`).

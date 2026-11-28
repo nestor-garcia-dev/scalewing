@@ -11,6 +11,18 @@ export function listTileColumnsClass(columns: ListGroupTileColumns): string {
 const tiles = '.sw-list-group-tiles';
 
 /*
+ * The list a group's class lays out, the group's own child or, bounded
+ * (`maxHeight`), its scroll region's: a selector list, so each keeps the
+ * specificity it would have alone and the order below still decides.
+ */
+function tileList(group: string, inner = ''): string {
+  return [
+    `${group} > .sw-list${inner}`,
+    `${group} > .sw-list-group-scroll > .sw-list${inner}`,
+  ].join(',\n');
+}
+
+/*
  * A tiled ListGroup is still one list (`sw-list`), its rows laid out as
  * tiles: equal columns a space-3 apart from `md` up, one column below it,
  * each row its own bordered panel on the surface (the panel variant's
@@ -20,21 +32,23 @@ const tiles = '.sw-list-group-tiles';
  * Generated after the list's hairline rules (css-list.ts), whose
  * `.sw-list > .sw-list-item + .sw-list-item` has the same specificity as
  * the tile rule: being later is what lets a tile's own border replace the
- * hairline. `list-group-tiles.test.tsx` holds that order.
+ * hairline. `list-group-tiles.test.tsx` holds that order. A bounded
+ * group's grid sits in its scroll region and takes the same rules.
  */
 export function cssListTilesClasses(): string {
   const columns = listTileColumnCounts.map(
     (count) =>
-      `.${listTileColumnsClass(count)} > .sw-list { grid-template-columns: repeat(${count}, minmax(0, 1fr)); }`,
+      `${tileList(`.${listTileColumnsClass(count)}`)} { grid-template-columns: repeat(${count}, minmax(0, 1fr)); }`,
   );
-  return `${tiles} > .sw-list {
+  const item = ' > .sw-list-item';
+  return `${tileList(tiles)} {
   display: grid;
   gap: var(--sw-space-3);
 }
 
 ${columns.join('\n')}
 
-${tiles} > .sw-list > .sw-list-item {
+${tileList(tiles, item)} {
   background: var(--sw-color-surface);
   border: 1px solid var(--sw-color-border);
   border-radius: var(--sw-radius-md);
@@ -43,11 +57,11 @@ ${tiles} > .sw-list > .sw-list-item {
 }
 
 @media ${breakpointQuery('below', 'md')} {
-  ${tiles} > .sw-list { grid-template-columns: minmax(0, 1fr); }
+  ${tileList(tiles).replaceAll('\n', '\n  ')} { grid-template-columns: minmax(0, 1fr); }
 }
 
 @media (forced-colors: active) {
-  ${tiles} > .sw-list > .sw-list-item { border-color: CanvasText; }
+  ${tileList(tiles, item).replaceAll('\n', '\n  ')} { border-color: CanvasText; }
 }`;
 }
 

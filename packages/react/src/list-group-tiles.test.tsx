@@ -58,7 +58,7 @@ describe('ListGroup tiles', () => {
     expect(listTileColumnCounts).toEqual([2, 3, 4]);
   });
 
-  it('refuses columns it cannot draw, columns off tiles, and tiles that scroll or add up', () => {
+  it('refuses columns it cannot draw, columns off tiles, and tiles that add up', () => {
     vi.spyOn(console, 'error').mockImplementation(() => undefined);
     expect(() =>
       render(
@@ -72,18 +72,19 @@ describe('ListGroup tiles', () => {
     );
     expect(() =>
       render(
-        <ListGroup aria-label="Nights" maxHeight={{ rows: 3 }} variant="tiles">
-          {null}
-        </ListGroup>,
-      ),
-    ).toThrow('A ListGroup of tiles takes no maxHeight or footer');
-    expect(() =>
-      render(
         <ListGroup footer={<ListRow title="3 nights" />} variant="tiles">
           {null}
         </ListGroup>,
       ),
-    ).toThrow('A ListGroup of tiles takes no maxHeight or footer');
+    ).toThrow('A ListGroup of tiles takes no footer');
+    // Bounded tiles still need a name for their scroll region.
+    expect(() =>
+      render(
+        <ListGroup maxHeight={{ rows: 3 }} variant="tiles">
+          {null}
+        </ListGroup>,
+      ),
+    ).toThrow('A ListGroup with maxHeight needs aria-label or aria-labelledby');
   });
 
   it('generates tiles as panels in equal columns, one a row below md', () => {
@@ -96,13 +97,16 @@ describe('ListGroup tiles', () => {
         'sw-list-group-tiles-4',
       ]),
     );
+    // Each rule names the group's own list and, bounded, its scroll
+    // region's list.
     expect(css).toContain(
-      '.sw-list-group-tiles > .sw-list {\n  display: grid;\n  gap: var(--sw-space-3);\n}',
+      '.sw-list-group-tiles > .sw-list,\n.sw-list-group-tiles > .sw-list-group-scroll > .sw-list {\n  display: grid;\n  gap: var(--sw-space-3);\n}',
     );
     expect(css).toContain(
-      '.sw-list-group-tiles-3 > .sw-list { grid-template-columns: repeat(3, minmax(0, 1fr)); }',
+      '.sw-list-group-tiles-3 > .sw-list,\n.sw-list-group-tiles-3 > .sw-list-group-scroll > .sw-list { grid-template-columns: repeat(3, minmax(0, 1fr)); }',
     );
-    expect(css).toContain(`.sw-list-group-tiles > .sw-list > .sw-list-item {
+    expect(css).toContain(`.sw-list-group-tiles > .sw-list > .sw-list-item,
+.sw-list-group-tiles > .sw-list-group-scroll > .sw-list > .sw-list-item {
   background: var(--sw-color-surface);
   border: 1px solid var(--sw-color-border);
   border-radius: var(--sw-radius-md);
@@ -110,16 +114,17 @@ describe('ListGroup tiles', () => {
   overflow: clip;
 }`);
     expect(css).toContain(`@media ${breakpointQuery('below', 'md')} {
-  .sw-list-group-tiles > .sw-list { grid-template-columns: minmax(0, 1fr); }
+  .sw-list-group-tiles > .sw-list,
+  .sw-list-group-tiles > .sw-list-group-scroll > .sw-list { grid-template-columns: minmax(0, 1fr); }
 }`);
     expect(css).toContain(
-      '.sw-list-group-tiles > .sw-list > .sw-list-item { border-color: CanvasText; }',
+      '.sw-list-group-tiles > .sw-list > .sw-list-item,\n  .sw-list-group-tiles > .sw-list-group-scroll > .sw-list > .sw-list-item { border-color: CanvasText; }',
     );
     // No hairline between tiles: the tile rule has the hairline rule's
     // specificity, so it must come after it to replace it.
     const hairline = css.indexOf('.sw-list > .sw-list-item + .sw-list-item,');
     const tile = css.indexOf(
-      '.sw-list-group-tiles > .sw-list > .sw-list-item {',
+      '.sw-list-group-tiles > .sw-list > .sw-list-item,',
     );
     expect(hairline).toBeGreaterThan(-1);
     expect(tile).toBeGreaterThan(hairline);

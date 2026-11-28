@@ -3,6 +3,7 @@
 import { forwardRef, type ReactNode } from 'react';
 
 import { cx } from '../class-names.js';
+import { listGroupLargeClass } from '../css/css-list-size.js';
 import {
   type ListGroupTileColumns,
   listTileColumnsClass,
@@ -11,6 +12,7 @@ import {
   assertListGroup,
   listMaxHeightStyle,
   type ListGroupMaxHeight,
+  type ListGroupSize,
   type ListGroupVariant,
 } from '../list-options.js';
 import { ListRowContainer } from './list/list-row-container.js';
@@ -32,9 +34,16 @@ export type ListGroupProps = {
   /** How many tiles share a row from `md` up (`tiles` only): 2, 3 (default) or 4. */
   tileColumns?: ListGroupTileColumns;
   /**
+   * `md` (the default) rows are as tall as their words; `lg` rows stand
+   * at least 56 px on every pointer with their words centred, a larger
+   * press target such as a name pressed at a shared counter.
+   */
+  size?: ListGroupSize;
+  /**
    * Bounds the list to a row count of its own region, `{ rows }` rows of a
    * title and one detail line, where the rest scroll; the region is a named
-   * keyboard stop and shades an edge with more rows past it.
+   * keyboard stop and shades an edge with more rows past it. With `tiles`
+   * it counts rows of tiles, the grid scrolling inside the region.
    */
   maxHeight?: ListGroupMaxHeight;
   /**
@@ -49,7 +58,8 @@ export type ListGroupProps = {
 /**
  * Rows in one list (`ul`, its list role kept) with hairlines between them:
  * a panel of its own, or plain rows inside a surface; or the same list's
- * rows as tiles, each a panel. The ref reaches the outer box.
+ * rows as tiles, each a panel, bounded to a count of rows (of tiles)
+ * that scroll in a named region. The ref reaches the outer box.
  */
 export const ListGroup = forwardRef<HTMLDivElement, ListGroupProps>(
   function ListGroup(
@@ -59,6 +69,7 @@ export const ListGroup = forwardRef<HTMLDivElement, ListGroupProps>(
       'aria-labelledby': labelledBy,
       variant = 'panel',
       tileColumns,
+      size = 'md',
       maxHeight,
       footer,
       className,
@@ -70,6 +81,7 @@ export const ListGroup = forwardRef<HTMLDivElement, ListGroupProps>(
       label,
       labelledBy,
       variant,
+      size,
       maxHeight,
       tileColumns,
       hasFooter: footer !== undefined,
@@ -93,6 +105,7 @@ export const ListGroup = forwardRef<HTMLDivElement, ListGroupProps>(
           'sw-list-group',
           `sw-list-group-${variant}`,
           variant === 'tiles' && listTileColumnsClass(tileColumns ?? 3),
+          size === 'lg' && listGroupLargeClass,
           className,
         )}
         id={id}

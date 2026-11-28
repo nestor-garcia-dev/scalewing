@@ -99,7 +99,7 @@ test('ListGroup bounds its rows to a scroll region with its total pinned under i
   const note = region.locator('.sw-list-row-value-detail').first();
   expect((await note.boundingBox())?.height).toBeCloseTo(18, 0);
   await section
-    .locator('.sw-list-group-scroll')
+    .locator('.sw-list-group-panel > .sw-list-group-scroll')
     .screenshot({ path: testInfo.outputPath('list-group-bounded.png') });
 });
 
