@@ -62,10 +62,17 @@ for (const theme of themes) {
     await expect(summary).toHaveText('Browse the guide');
     expect((await summary.boundingBox())!.height).toBeGreaterThanOrEqual(44);
     // The article fills the width under the summary.
-    const article = layout.locator('article');
-    expect((await article.boundingBox())!.y).toBeGreaterThan(
-      (await summary.boundingBox())!.y,
-    );
+    // Both read in one layout: sections above this one still settle after
+    // the load, so two separate reads can each see a different page.
+    const below = await layout.evaluate((node) => {
+      const summaryTop = node
+        .querySelector('details.sw-docs-layout-disclosure summary')!
+        .getBoundingClientRect().top;
+      return (
+        node.querySelector('article')!.getBoundingClientRect().top > summaryTop
+      );
+    });
+    expect(below).toBe(true);
     await expect(guideNavs(page)).toHaveCount(0);
 
     await summary.click();
