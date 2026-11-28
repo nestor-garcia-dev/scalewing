@@ -44,6 +44,8 @@ export function readPinEntry(
   value: string,
   length: number,
 ): string {
+  // A typed or pasted mask character only counts toward the earlier digits
+  // that survive (capped at how many there were); it is never a new digit.
   const kept = Math.min(
     edited.split(pinMaskCharacter).length - 1,
     value.length,
