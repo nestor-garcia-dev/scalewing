@@ -113,6 +113,65 @@ test('a Button straight in a crowded Inline keeps its words; the text beside it 
   expect(overflow).toBeLessThanOrEqual(0);
 });
 
+test('a default Inline of Buttons narrower than them overflows; with wrap they move to the next line', async ({
+  page,
+}) => {
+  const measure = (sample: string) =>
+    page.locator(`#button [data-sample="${sample}"]`).evaluate((box) => {
+      // The row narrower than its three Buttons together, wider than each.
+      box.style.width = '240px';
+      const row = box.firstElementChild as HTMLElement;
+      const buttons = [...row.querySelectorAll('button')].map((button) =>
+        button.getBoundingClientRect(),
+      );
+      const rowBox = row.getBoundingClientRect();
+      return {
+        overflow: row.scrollWidth - row.clientWidth,
+        lines: new Set(buttons.map((button) => Math.round(button.top))).size,
+        outside: buttons.some((button) => button.right > rowBox.right + 0.5),
+        heights: buttons.map((button) => Math.round(button.height)),
+      };
+    });
+  const plain = await measure('row-of-buttons');
+  // Not squeezed: each keeps its one-line height, and the row overflows.
+  expect(plain.lines).toBe(1);
+  expect(plain.overflow).toBeGreaterThan(0);
+  expect(plain.outside).toBe(true);
+  const wrapped = await measure('row-of-buttons-wrap');
+  expect(wrapped.lines).toBeGreaterThan(1);
+  expect(wrapped.overflow).toBeLessThanOrEqual(0);
+  expect(wrapped.outside).toBe(false);
+  expect(new Set(wrapped.heights).size).toBe(1);
+});
+
+test('an attached ButtonGroup in a narrow column stays inside it, its words wrapping in its segments', async ({
+  page,
+}) => {
+  await page.goto('/#button-group');
+  const group = page.getByRole('group', { name: 'Survey day', exact: true });
+  await expect(group).toBeVisible();
+  const fit = await group.evaluate((node) => {
+    const column = node.parentElement as HTMLElement;
+    column.style.width = '160px';
+    const own = node.getBoundingClientRect();
+    const buttons = [...node.querySelectorAll('button')].map((button) =>
+      button.getBoundingClientRect(),
+    );
+    return {
+      width: own.width,
+      right: own.right,
+      columnRight: column.getBoundingClientRect().right,
+      buttonsInside: buttons.every((button) => button.right <= own.right + 1),
+      oneRow: new Set(buttons.map((button) => Math.round(button.top))).size,
+    };
+  });
+  expect(fit.width).toBeLessThanOrEqual(160.5);
+  expect(fit.right).toBeLessThanOrEqual(fit.columnRight + 0.5);
+  expect(fit.buttonsInside).toBe(true);
+  // Still one joined row: it never stacks.
+  expect(fit.oneRow).toBe(1);
+});
+
 test('in a container narrower than its words, a control wraps inside its pill, every word shown', async ({
   page,
 }, testInfo) => {

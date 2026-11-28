@@ -885,5 +885,5 @@ wrap inside the pill only past the whole container, never cut), and
 `shrink={false}` on any Box-based layout. Built on branch
 `teisoro/button-natural-width` with a minor changeset; not reviewed,
 merged or released yet. Next: the Bar Raiser review and a pull request,
-then a `@scalewing/react` release with the ListGroup tiles change
-(`teisoro-list-group-tiles-scroll.md`).
+then one `@scalewing/react` release together with the ListGroup tiles
+change (the entry above or below, from branch `teisoro/counter-tiles`).

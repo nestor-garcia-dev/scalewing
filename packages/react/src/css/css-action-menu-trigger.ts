@@ -26,21 +26,6 @@ const text = `.sw-action-menu-trigger.${actionMenuTriggerTextClass}`;
 const icon = `.sw-action-menu-trigger.${actionMenuTriggerIconClass}`;
 
 /*
- * A menu keeps its natural width as an item of a crowded flex row, as a
- * Button does (css-button-natural-width.ts): it gives up none of it
- * (`flex-shrink: 0`), so the row's other items give way first and a name
- * in a header stays on its one line. The menu and its trigger are never
- * wider than their container (`max-width: 100%`): where the trigger's
- * words are longer than the whole row, they wrap inside it, never cut.
- */
-function naturalWidthRules(): string {
-  return `.sw-action-menu { flex-shrink: 0; }
-
-.sw-action-menu,
-.sw-action-menu-trigger { max-width: 100%; }`;
-}
-
-/*
  * A text trigger: no fill and a transparent border (kept, so forced colors
  * can draw one), its words in label type at medium weight in the text
  * color, the sm control height (the 44 px target on a coarse pointer), and
@@ -54,9 +39,7 @@ function naturalWidthRules(): string {
  * Highlight.
  */
 export function cssActionMenuTriggerClasses(): string {
-  return `${naturalWidthRules()}
-
-${text} {
+  return `${text} {
   align-items: center;
   background: transparent;
   border-color: transparent;

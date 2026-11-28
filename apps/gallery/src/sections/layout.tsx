@@ -8,6 +8,7 @@ const sampleLayoutClasses = [
   'sw-container-reading',
   'sw-full-width',
   'sw-grow',
+  'sw-no-shrink',
   'sw-wrap',
   'sw-padding-4',
   'sw-gap-3',
@@ -17,11 +18,15 @@ export function LayoutSection() {
   return (
     <Section
       id="layout"
-      purpose="Box is a semantic layout shell. Stack is a column. Inline is a row. Spacing step 4 is 16px, not 4px. border draws a solid hairline; border dashed marks a space to fill in by hand, such as a blank on a printed form. The sw-container class centres a page's column at the container width, and sw-container-reading at the narrower reading width, for a form or text."
+      purpose="Box is a semantic layout shell. Stack is a column. Inline is a row. Spacing step 4 is 16px, not 4px. border draws a solid hairline; border dashed marks a space to fill in by hand, such as a blank on a printed form. The sw-container class centres a page's column at the container width, and sw-container-reading at the narrower reading width, for a form or text. shrink false on any Box-based component keeps it at its natural size along its parent's main axis when a flex row or column is short of room: its siblings give way instead."
       title="Layout"
       usage={`<Stack gap={3}>
   <Inline gap={2} justify="between">
     <Box as="section" padding={4} radius="md" border>Panel</Box>
+  </Inline>
+  <Inline gap={3}>
+    <Box>{longWords}</Box>
+    <Box shrink={false}>Kept on one line</Box>
   </Inline>
 </Stack>`}
     >
@@ -73,6 +78,28 @@ export function LayoutSection() {
             </Text>
           </Box>
         </Box>
+        <Stack data-testid="layout-shrink" gap={2}>
+          <Text variant="label">
+            shrink false keeps a box&apos;s natural width
+          </Text>
+          <Inline align="center" gap={3}>
+            <Box background="surface" border padding={2} radius="sm">
+              <Text variant="caption">
+                Wetland, woodland and coastal transects counted this week; this
+                box gives way and wraps
+              </Text>
+            </Box>
+            <Box
+              background="surface"
+              border
+              padding={2}
+              radius="sm"
+              shrink={false}
+            >
+              <Text variant="caption">Kept on one line</Text>
+            </Box>
+          </Inline>
+        </Stack>
         <Inline align="center" gap={2} justify="between" wrap>
           <Text variant="label">Inline between, align center</Text>
           <Text color="muted" variant="caption">

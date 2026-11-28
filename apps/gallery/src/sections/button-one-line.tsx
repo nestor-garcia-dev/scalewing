@@ -67,12 +67,31 @@ export function ButtonOneLineExample({
           </Button>
         </Inline>
       </Box>
+      {(['row-of-buttons', 'row-of-buttons-wrap'] as const).map((sample) => (
+        <Box data-sample={sample} hideBelow="md" key={sample}>
+          <Inline gap={2} wrap={sample === 'row-of-buttons-wrap'}>
+            {['Log a sighting', 'Count the nests', 'Close the hide'].map(
+              (label) => (
+                <Button
+                  key={label}
+                  onPress={() => onPress(label)}
+                  size="sm"
+                  variant="neutral"
+                >
+                  {label}
+                </Button>
+              ),
+            )}
+          </Inline>
+        </Box>
+      ))}
       <Text color="muted" variant="caption">
         A Button and a menu keep their natural width in a crowded row, and their
         own Inline (shrink false) keeps its: the title beside them gives way and
         wraps, while their words stay on one line. Only a container narrower
         than a button&apos;s words wraps them, inside the pill, every word
-        shown.
+        shown. A row of Buttons that does not fit overflows its Inline; with
+        wrap, the Buttons move to the next line instead.
       </Text>
     </Stack>
   );
