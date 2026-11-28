@@ -1,4 +1,12 @@
-import { ActionMenu, Box, Button, Inline, Stack, Text } from '@scalewing/react';
+import {
+  ActionMenu,
+  Box,
+  Button,
+  ButtonGroup,
+  Inline,
+  Stack,
+  Text,
+} from '@scalewing/react';
 
 /**
  * A crowded header row from `md`: a long title beside a nested row of a
@@ -85,13 +93,30 @@ export function ButtonOneLineExample({
           </Inline>
         </Box>
       ))}
+      <Box data-sample="joined-words">
+        <ButtonGroup aria-label="Sighting window" attached>
+          {['Earlier sightings', 'This morning only', 'Later sightings'].map(
+            (label) => (
+              <Button
+                key={label}
+                onPress={() => onPress(label)}
+                variant="secondary"
+              >
+                {label}
+              </Button>
+            ),
+          )}
+        </ButtonGroup>
+      </Box>
       <Text color="muted" variant="caption">
         A Button and a menu keep their natural width in a crowded row, and their
         own Inline (shrink false) keeps its: the title beside them gives way and
         wraps, while their words stay on one line. Only a container narrower
         than a button&apos;s words wraps them, inside the pill, every word
         shown. A row of Buttons that does not fit overflows its Inline; with
-        wrap, the Buttons move to the next line instead.
+        wrap, the Buttons move to the next line instead. An attached ButtonGroup
+        keeps its one row: in a narrow column its segments share it and wrap
+        their words.
       </Text>
     </Stack>
   );

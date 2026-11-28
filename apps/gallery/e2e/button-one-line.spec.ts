@@ -147,29 +147,36 @@ test('a default Inline of Buttons narrower than them overflows; with wrap they m
 test('an attached ButtonGroup in a narrow column stays inside it, its words wrapping in its segments', async ({
   page,
 }) => {
-  await page.goto('/#button-group');
-  const group = page.getByRole('group', { name: 'Survey day', exact: true });
+  const column = page.locator('#button [data-sample="joined-words"]');
+  const group = column.getByRole('group', { name: 'Sighting window' });
   await expect(group).toBeVisible();
+  // A column narrower than the three segments' one-line words together
+  // (about 510 px) and wider than their longest words (about 320 px).
+  await column.evaluate((node) => (node.style.width = '360px'));
   const fit = await group.evaluate((node) => {
-    const column = node.parentElement as HTMLElement;
-    column.style.width = '160px';
-    const own = node.getBoundingClientRect();
+    const outer = node.parentElement!.getBoundingClientRect();
     const buttons = [...node.querySelectorAll('button')].map((button) =>
       button.getBoundingClientRect(),
     );
     return {
-      width: own.width,
-      right: own.right,
-      columnRight: column.getBoundingClientRect().right,
-      buttonsInside: buttons.every((button) => button.right <= own.right + 1),
+      inside: buttons.every(
+        (button) =>
+          button.left >= outer.left - 0.5 && button.right <= outer.right + 0.5,
+      ),
       oneRow: new Set(buttons.map((button) => Math.round(button.top))).size,
     };
   });
-  expect(fit.width).toBeLessThanOrEqual(160.5);
-  expect(fit.right).toBeLessThanOrEqual(fit.columnRight + 0.5);
-  expect(fit.buttonsInside).toBe(true);
-  // Still one joined row: it never stacks.
+  // Every segment inside the column at both edges, still one joined row.
+  expect(fit.inside).toBe(true);
   expect(fit.oneRow).toBe(1);
+  // The segments share the row by wrapping their words, every word shown.
+  const segments = group.getByRole('button');
+  await expect(segments).toHaveCount(3);
+  for (let index = 0; index < 3; index += 1) {
+    const segment = segments.nth(index);
+    expect(await lineCount(segment)).toBeGreaterThan(1);
+    expect(await spills(segment)).toBe(false);
+  }
 });
 
 test('in a container narrower than its words, a control wraps inside its pill, every word shown', async ({

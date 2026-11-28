@@ -886,4 +886,5 @@ wrap inside the pill only past the whole container, never cut), and
 `teisoro/button-natural-width` with a minor changeset; not reviewed,
 merged or released yet. Next: the Bar Raiser review and a pull request,
 then one `@scalewing/react` release together with the ListGroup tiles
-change (the entry above or below, from branch `teisoro/counter-tiles`).
+change (which extends `teisoro-list-group-tiles.md`; branch
+`teisoro/counter-tiles`).

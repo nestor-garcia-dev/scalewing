@@ -63,11 +63,12 @@ describe('ActionMenu natural width', () => {
     const trigger = screen.getByRole('button', {
       name: 'Great crested grebe colony · Wetland',
     });
-    // One plain words box, with no class of its own to cut them.
+    // The words are drawn whole, as the trigger's own text: every word of
+    // the name in one text node, nothing added to or cut from them.
     const words = trigger.firstElementChild!;
-    expect(words.tagName).toBe('SPAN');
-    expect(words.className).toBe('');
+    expect(words.childNodes).toHaveLength(1);
     expect(words.firstChild?.nodeType).toBe(Node.TEXT_NODE);
-    expect(words.textContent).toBe('Great crested grebe colony');
+    expect(words.firstChild?.textContent).toBe('Great crested grebe colony');
+    expect(trigger.textContent).toBe('Great crested grebe colony');
   });
 });
