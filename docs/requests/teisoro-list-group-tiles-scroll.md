@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: in implementation on branch `teisoro/counter-tiles` (requested 2026-11-28; Teisoro F-010 "counter PIN switching", S10 acceptance review, Q-4 "the name buttons' height"; an extension of S11 "Scalewing pieces"). Not released yet.
+Status: released in `@scalewing/react` 1.72.0 (PR #320; requested 2026-11-28; Teisoro F-010 "counter PIN switching", S10 acceptance review, Q-4 "the name buttons' height"; an extension of S11 "Scalewing pieces").
 Renderer: react
 Missing surface: two options on the existing `ListGroup`: `size="lg"`, rows at least 56 px tall, and `variant="tiles"` together with `maxHeight`, the grid of tiles scrolling inside its panel.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: the counter's "Who's working?" board draws each person's name as a pressable tile 56 px tall, three across, the grid scrolling in a panel past 12 names. A pressable `ListRow` is 44 px on a coarse pointer (plus the tile's border) and as tall as its words on a fine one, and `ListGroup` refused `tiles` with `maxHeight` (a `RangeError`), so Teisoro falls back to a one-column scrolling list past 12 names. Teisoro owns no CSS.
