@@ -42,13 +42,18 @@ describe('ListGroup size', () => {
 
   it('generates a 56 px floor for every row, its parts centred, after the touch target', () => {
     expect(utilityClassCatalog()).toContain('sw-list-group-lg');
-    const rule = `.sw-list-group-lg .sw-list-row {
+    // The group's own rows (its list, bounded or not, and its footer),
+    // never a nested ListGroup's.
+    const rule = `.sw-list-group-lg > .sw-list > .sw-list-item > .sw-list-row,
+.sw-list-group-lg > .sw-list-group-scroll > .sw-list > .sw-list-item > .sw-list-row,
+.sw-list-group-lg > .sw-list-group-footer > .sw-list-item > .sw-list-row {
   align-items: center;
   min-height: calc(var(--sw-space-8) + var(--sw-space-2));
 }`;
     expect(css).toContain(rule);
+    expect(css).not.toContain('.sw-list-group-lg .sw-list-row');
     // 48 + 8 = 56 px, past the 44 px coarse-pointer target, which it
-    // outranks with two classes wherever the two meet.
+    // outranks with its chained classes wherever the two meet.
     const coarse =
       '.sw-list-row-pressable { min-height: var(--sw-control-md-min-height); }';
     expect(css).toContain(coarse);

@@ -1,22 +1,25 @@
 import { ListGroup, ListRow, Stack, Text } from '@scalewing/react';
 import { useState } from 'react';
 
-/** Fourteen boardwalk birds, past what the panel shows at once. */
-const birds = [
-  'Grey heron',
-  'Barn owl',
-  'Common tern',
-  'Little egret',
-  'Eurasian bittern',
-  'Marsh harrier',
-  'Kingfisher',
-  'Reed warbler',
-  'Great crested grebe of the north marsh',
-  'Spoonbill',
-  'Avocet',
-  'Bearded reedling',
-  'Water rail',
-  'Black-tailed godwit',
+/**
+ * Fourteen boardwalk birds, past what the panel shows at once. One has a
+ * detail line, so its tile is taller than the two beside it on a row.
+ */
+const birds: readonly { name: string; detail?: string }[] = [
+  { name: 'Grey heron' },
+  { name: 'Barn owl', detail: 'Seen at dusk' },
+  { name: 'Common tern' },
+  { name: 'Little egret' },
+  { name: 'Eurasian bittern' },
+  { name: 'Marsh harrier' },
+  { name: 'Kingfisher' },
+  { name: 'Reed warbler' },
+  { name: 'Great crested grebe of the north marsh' },
+  { name: 'Spoonbill' },
+  { name: 'Avocet' },
+  { name: 'Bearded reedling' },
+  { name: 'Water rail' },
+  { name: 'Black-tailed godwit' },
 ];
 
 /**
@@ -37,9 +40,10 @@ export function ListGroupTilesBoundedExample() {
         size="lg"
         variant="tiles"
       >
-        {birds.map((name) => (
+        {birds.map(({ name, detail }) => (
           <ListRow
             accessory="none"
+            detail={detail}
             key={name}
             onPress={() => setBird(name)}
             title={name}
@@ -49,9 +53,7 @@ export function ListGroupTilesBoundedExample() {
       </ListGroup>
       <Text color="muted" variant="caption">
         With size lg every row is at least 56 px; with maxHeight the tiles
-        scroll inside their own named region, three rows at a time (counted as
-        rows with a detail line, so title-only tiles show a little of the next
-        row). Chosen: {bird}.
+        scroll inside their own named region. Chosen: {bird}.
       </Text>
     </Stack>
   );

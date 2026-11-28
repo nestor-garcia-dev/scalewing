@@ -107,12 +107,25 @@ describe('ListGroup tiles', () => {
     );
     expect(css).toContain(`.sw-list-group-tiles > .sw-list > .sw-list-item,
 .sw-list-group-tiles > .sw-list-group-scroll > .sw-list > .sw-list-item {
+  align-items: stretch;
   background: var(--sw-color-surface);
   border: 1px solid var(--sw-color-border);
   border-radius: var(--sw-radius-md);
+  display: flex;
   min-width: 0;
   overflow: clip;
 }`);
+    // A tile's row fills it, so a short row beside a taller one presses,
+    // fills and rings to its tile's edges; an action stays centred.
+    expect(css)
+      .toContain(`.sw-list-group-tiles > .sw-list > .sw-list-item > .sw-list-row,
+.sw-list-group-tiles > .sw-list-group-scroll > .sw-list > .sw-list-item > .sw-list-row {
+  flex: 1 1 auto;
+  min-width: 0;
+}`);
+    expect(css).toContain(
+      '.sw-list-group-tiles > .sw-list > .sw-list-item > .sw-list-row-action,\n.sw-list-group-tiles > .sw-list-group-scroll > .sw-list > .sw-list-item > .sw-list-row-action { align-self: center; }',
+    );
     expect(css).toContain(`@media ${breakpointQuery('below', 'md')} {
   .sw-list-group-tiles > .sw-list,
   .sw-list-group-tiles > .sw-list-group-scroll > .sw-list { grid-template-columns: minmax(0, 1fr); }

@@ -1,13 +1,15 @@
+import { listTileGap } from './css-list-tiles.js';
 import { blockShade } from './css-scroll-region.js';
 import { listCountedRowHeight } from './list-row-metrics.js';
+import { zIndex } from './stacking.js';
 
 const region = '.sw-list-group-tiles > .sw-list-group-scroll';
 
-/* The space between tiles, the grid's gap in css-list-tiles.ts. */
-const tileGap = 'var(--sw-space-3)';
-
 /* How deep the scroll shade is, as a bounded list's and table's. */
 const shadeDepth = 'var(--sw-space-5)';
+
+/* One counted row of tiles: the counted row inside its tile's two hairlines. */
+const tileRow = `(${listCountedRowHeight} + 2px)`;
 
 /*
  * A bounded grid of tiles (`variant="tiles"` with `maxHeight`) is the
@@ -19,19 +21,25 @@ const shadeDepth = 'var(--sw-space-5)';
  * The tiles are opaque panels, so the shade a bounded list paints under
  * its rows would be hidden under them. Here the region's `::before` and
  * `::after` are the shade, stuck to its top and bottom edges over the
- * tiles while `ScrollRegion` marks more past that edge: each is a space-5
- * strip pulled out of the flow by an equal negative margin, so it moves
- * no tile, and takes no press. Focus scrolling keeps a space-5 margin at
- * either edge (`scroll-padding-block`), so a tile focused from the
- * keyboard is scrolled fully into view, clear of the shade, its ring
- * whole. Forced colours draw no shade (the system's scrollbar is the
+ * tiles (the sticky-cell layer of `stacking.ts`, as a table's pinned
+ * head is over its scrolling cells) while `ScrollRegion` marks more past
+ * that edge: each is a space-5 strip pulled out of the flow by an equal
+ * negative margin, so it moves no tile, and takes no press.
+ *
+ * Focus scrolling keeps a space-5 margin at either edge
+ * (`scroll-padding-block`), so a tile focused from the keyboard is
+ * scrolled fully into view, clear of the shade, its ring whole. The
+ * margin is clamped to half of what the region has over one counted row
+ * of tiles, so a region one row tall (`rows: 1`) keeps no margin and a
+ * focused tile is scrolled to fill it rather than centred under both
+ * shades. Forced colours draw no shade (the system's scrollbar is the
  * cue); printed, every tile shows.
  */
 export function cssListTilesBoundedClasses(): string {
   const rows = 'var(--sw-list-max-rows)';
   return `${region} {
-  max-height: calc(${rows} * (${listCountedRowHeight} + 2px) + (${rows} - 1) * ${tileGap});
-  scroll-padding-block: ${shadeDepth};
+  max-height: calc(${rows} * ${tileRow} + (${rows} - 1) * ${listTileGap});
+  scroll-padding-block: max(0px, min(${shadeDepth}, calc((100% - ${tileRow}) / 2)));
 }
 
 ${region}::before,
@@ -41,7 +49,7 @@ ${region}::after {
   height: ${shadeDepth};
   pointer-events: none;
   position: sticky;
-  z-index: 1;
+  ${zIndex('stickyCell')}
 }
 
 ${region}::before {

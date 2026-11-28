@@ -10,6 +10,9 @@ export function listTileColumnsClass(columns: ListGroupTileColumns): string {
 
 const tiles = '.sw-list-group-tiles';
 
+/* The space between tiles, across and down; a bounded grid counts it too. */
+export const listTileGap = 'var(--sw-space-3)';
+
 /*
  * The list a group's class lays out, the group's own child or, bounded
  * (`maxHeight`), its scroll region's: a selector list, so each keeps the
@@ -34,6 +37,12 @@ function tileList(group: string, inner = ''): string {
  * the tile rule: being later is what lets a tile's own border replace the
  * hairline. `list-group-tiles.test.tsx` holds that order. A bounded
  * group's grid sits in its scroll region and takes the same rules.
+ *
+ * Tiles on one grid row are as tall as the tallest of them, so each tile
+ * is a flex box whose row fills it (`flex: 1 1 auto`, stretched across
+ * its height): a short row's press area, fill and inset ring reach its
+ * tile's edges beside a taller one. A tile with an `action` stretches its
+ * row the same way and keeps the action centred on it.
  */
 export function cssListTilesClasses(): string {
   const columns = listTileColumnCounts.map(
@@ -43,18 +52,27 @@ export function cssListTilesClasses(): string {
   const item = ' > .sw-list-item';
   return `${tileList(tiles)} {
   display: grid;
-  gap: var(--sw-space-3);
+  gap: ${listTileGap};
 }
 
 ${columns.join('\n')}
 
 ${tileList(tiles, item)} {
+  align-items: stretch;
   background: var(--sw-color-surface);
   border: 1px solid var(--sw-color-border);
   border-radius: var(--sw-radius-md);
+  display: flex;
   min-width: 0;
   overflow: clip;
 }
+
+${tileList(tiles, `${item} > .sw-list-row`)} {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+${tileList(tiles, `${item} > .sw-list-row-action`)} { align-self: center; }
 
 @media ${breakpointQuery('below', 'md')} {
   ${tileList(tiles).replaceAll('\n', '\n  ')} { grid-template-columns: minmax(0, 1fr); }

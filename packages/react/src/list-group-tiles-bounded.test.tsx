@@ -3,6 +3,7 @@ import { afterEach, describe, expect, it } from 'vitest';
 
 import { ListGroup } from './components/ListGroup.js';
 import { ListRow } from './components/ListRow.js';
+import { stackingOrder } from './css/stacking.js';
 import { generateStylesheet } from './css/stylesheet.js';
 
 afterEach(() => cleanup());
@@ -65,8 +66,10 @@ describe('ListGroup tiles with maxHeight', () => {
   it('counts rows of tiles: two hairlines each and the gap between them', () => {
     expect(css).toContain(`${region} {
   max-height: calc(var(--sw-list-max-rows) * (2 * var(--sw-space-3) + 20px + 18px + 2px) + (var(--sw-list-max-rows) - 1) * var(--sw-space-3));
-  scroll-padding-block: var(--sw-space-5);
+  scroll-padding-block: max(0px, min(var(--sw-space-5), calc((100% - (2 * var(--sw-space-3) + 20px + 18px + 2px)) / 2)));
 }`);
+    // The focus margin is the shade's depth, clamped so a region one row
+    // tall keeps none: (64 px − 64 px) / 2 is 0, never a negative margin.
     // It outranks the bounded list's own height, which it replaces.
     expect(css).toContain(
       '.sw-list-group-scroll {\n  max-height: calc(var(--sw-list-max-rows) * (2 * var(--sw-space-3) + 20px + 18px + 1px));',
@@ -81,7 +84,7 @@ ${region}::after {
   height: var(--sw-space-5);
   pointer-events: none;
   position: sticky;
-  z-index: 1;
+  z-index: ${stackingOrder.stickyCell};
 }`);
     expect(css).toContain(`${region}::before {
   margin-block-end: calc(-1 * var(--sw-space-5));
