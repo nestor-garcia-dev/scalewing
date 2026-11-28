@@ -30,9 +30,10 @@ const tileRow = `(${listCountedRowHeight} + 2px)`;
  * (`scroll-padding-block`), so a tile focused from the keyboard is
  * scrolled fully into view, clear of the shade, its ring whole. The
  * margin is clamped to half of what the region has over one counted row
- * of tiles, so a region one row tall (`rows: 1`) keeps no margin and a
- * focused tile is scrolled to fill it rather than centred under both
- * shades. Forced colours draw no shade (the system's scrollbar is the
+ * of tiles, so a region one row tall (`rows: 1`) keeps no margin (never a
+ * negative one): its focused tile is scrolled fully into view, whole and
+ * with its ring, but may sit under both shades, which leave it no room
+ * to clear them. Forced colours draw no shade (the system's scrollbar is the
  * cue); printed, every tile shows.
  */
 export function cssListTilesBoundedClasses(): string {
