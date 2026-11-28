@@ -862,3 +862,12 @@ verification against Teisoro. Release packages runs on 2026-09-22: validate
 - FutMas mobile: Expo 57, React 19.2, React Native 0.86. Admin web is planned Vite/React.
 - coach-platform web: Astro 7 with React 19. Domain cards stay in that app.
 - fantasy-football: web app at `/Users/Neto/Projects/Dragon-Tails/fantasy-football` using `@scalewing/react`.
+
+Teisoro F-010-S11, the counter PIN's one missing piece (Teisoro task 3150):
+`PinField`, a code of a fixed number of digits that is never shown: dots
+over one real numeric input that holds a mask and never the digits, the
+count announced politely, and an optional pad of 64 px keys
+(`teisoro-pin-field.md`). Built on branch `teisoro/pin-field` with a minor
+changeset; not reviewed, merged or released yet. Next: the Bar Raiser
+review and a pull request, then a `@scalewing/react` release that Teisoro
+pins in F-010-S08.

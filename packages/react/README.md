@@ -63,6 +63,7 @@ import {
   DateField,
   Field,
   FileField,
+  PinField,
   Article,
   Stepper,
   Steps,
@@ -285,6 +286,33 @@ A chosen photo can show itself: `value.preview` is the address of a small image 
   value={file ? { name: file.name, detail: `${pages} pages · ${size}` } : null}
   error={error}
   onChange={(next) => checkPdf(next).then(setFile, (why) => setError(why))}
+/>
+```
+
+`PinField` is a code of a fixed number of digits (`length`, 6 by default, 1 to 12) that is never shown: a short PIN or a door code. It draws one dot per digit, filled for the digits entered, over one real input: a native `<input type="text" inputmode="numeric">` named by `label` (above it, or hidden with `labelVisuallyHidden` where a heading says it). It is never a password field, so the browser does not offer to save the code over the account's password, and it is kept out of autofill (`autocomplete="off"`, no `name`, the password managers' ignore hints). You hold the digits: `value` is a string of 0 to 9, `onChange` receives the new one after a key, a paste or a pad press. Typed and pasted text keeps its ASCII digits and drops the rest; digits are added after those already entered and cut to `length`; Backspace removes the last. `onComplete(value)` is called once, after `onChange`, by the entry that fills the last dot (not for a `value` you set, and not again while the field stays full).
+
+The digits are never in the page. The input's own value is a mask, one `•` per digit, and nothing the field renders depends on which digits were entered, only on how many: not its text, not an attribute (the input's `value` included), not an accessible name. So read the code from the `value` you hold, never from the input or a form submission, and do not render, log or store it yourself. The input is described by the count ("3 of 6 digits entered") and the same words are announced politely after each entry; `labels.count` is your template, with `{count}` and `{length}`. A screen reader that reads a text field's value also reads the mask ("bullet bullet bullet") beside the count, never a digit. A desktop screen reader set to echo typed keys still says the keys it hears from the keyboard, as in any text field that is not a password field.
+
+`pad` adds on-screen keys under the dots: 1 to 9, an empty place, 0 and Delete, in a group named `labels.pad` ("Number pad"). Each key is a real button and Tab stop of at least 64 px with a visible edge; a press enters or deletes as typing does and leaves the focus on the key. Delete is named `labels.delete` ("Delete the last digit") and is `aria-disabled` while there is nothing to delete. With the pad the field is a centred column at most 320 px wide (centred in a wider parent too), the dots stand without a frame, and the hint and error sit under the keys, so the keys never move. The input keeps `inputmode="numeric"`, so on a touch screen focusing it also opens the system's number keyboard; leave `autoFocus` off there if only the pad should show.
+
+`description` and `error` are `Field`'s (the error a polite live region in place of the hint, `aria-invalid`, the frame's edge in the danger color); `disabled` turns the input and every key off; `autoFocus` focuses the input on mount; the ref and `id` are the input's, and `aria-describedby` adds your own descriptions before the field's. A blank `label`, a `length` outside 1 to 12, a `value` that is not digits or is longer than `length`, or a blank word in `labels` throws a `RangeError`.
+
+```tsx
+<PinField
+  label="New code"
+  description="Six digits."
+  value={code}
+  onChange={setCode}
+/>
+
+<PinField
+  label="Enter your code"
+  labelVisuallyHidden
+  pad
+  value={code}
+  onChange={setCode}
+  onComplete={check}
+  error={refused ? 'That code is not right. Try again.' : undefined}
 />
 ```
 

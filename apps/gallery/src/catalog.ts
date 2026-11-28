@@ -9,6 +9,7 @@ import { SiteHeaderSearchSection } from './sections/site-header-search.js';
 import { DocsLayoutSection } from './sections/docs-layout.js';
 import { ContextSwitcherSection } from './sections/context-switcher.js';
 import { FileFieldSection } from './sections/file-field.js';
+import { PinFieldSection } from './sections/pin-field.js';
 import { DocumentViewerSection } from './sections/document-viewer.js';
 import { SwitchSection } from './sections/switch.js';
 import { ActionBarSection } from './sections/action-bar.js';
@@ -204,6 +205,12 @@ export const catalog = [
     label: 'Stepper',
     group: 'controls',
     Section: StepperSection,
+  },
+  {
+    id: 'pin-field',
+    label: 'PinField',
+    group: 'controls',
+    Section: PinFieldSection,
   },
   { id: 'steps', label: 'Steps', group: 'controls', Section: StepsSection },
   { id: 'select', label: 'Select', group: 'controls', Section: SelectSection },
