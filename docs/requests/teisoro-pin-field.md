@@ -1,6 +1,6 @@
 Scalewing request from Teisoro.
 
-Status: in implementation on branch `teisoro/pin-field` (requested 2026-11-27; Teisoro F-010 "counter PIN switching", story S11 "Scalewing pieces", task 3150; the counter PIN component inventory's rows 11, 12, 13 and 21 and its §2; plan approved by the owner under F-010 D-15). Not released yet.
+Status: released in `@scalewing/react` 1.71.0 (PR #318; accepted 2026-11-27; Teisoro F-010 "counter PIN switching", story S11 "Scalewing pieces", task 3150; the counter PIN component inventory's rows 11, 12, 13 and 21 and its §2; plan approved by the owner under F-010 D-15).
 Renderer: react
 Missing surface: `PinField`, a labelled entry of a fixed number of digits that never shows them: dots for the digits entered, typed on a keyboard or pressed on an optional on-screen pad.
 Why Box/Stack/Inline/Card/Text/Button/Field cannot do this: `Field` wraps a native input, which either shows the digits (`type="text"`) or is a password field (`type="password"`), and a password field makes the browser and password managers offer to save a short PIN over the account's real password. A consumer cannot draw dots over a real input, keep the digits out of the DOM, announce a count in place of the digits or build a pad of 64 px keys without its own CSS, which products do not ship.

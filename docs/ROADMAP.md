@@ -867,7 +867,5 @@ Teisoro F-010-S11, the counter PIN's one missing piece (Teisoro task 3150):
 `PinField`, a code of a fixed number of digits that is never shown: dots
 over one real numeric input that holds a mask and never the digits, the
 count announced politely, and an optional pad of 64 px keys
-(`teisoro-pin-field.md`). Built on branch `teisoro/pin-field` with a minor
-changeset; not reviewed, merged or released yet. Next: the Bar Raiser
-review and a pull request, then a `@scalewing/react` release that Teisoro
-pins in F-010-S08.
+(`teisoro-pin-field.md`, #318). Released in `@scalewing/react` 1.71.0.
+Next: Teisoro pins react 1.71.0 in F-010-S08.
