@@ -9,6 +9,7 @@ import { cssButtonLinkClasses } from './css-button-link.js';
 import { cssCalendarButtonClasses } from './css-calendar-button.js';
 import { cssDateRangeClasses } from './css-date-range.js';
 import { cssFileFieldClasses } from './css-file-field.js';
+import { cssPinFieldClasses } from './css-pin-field.js';
 import { cssArticleClasses } from './css-article.js';
 import { cssDocumentViewerClasses } from './css-document-viewer.js';
 import { cssFixtureClasses } from './css-fixture.js';
@@ -292,6 +293,8 @@ ${cssDenominationGridClasses()}
 ${cssFieldClasses()}
 
 ${cssStepperClasses()}
+
+${cssPinFieldClasses()}
 
 ${cssStepsClasses()}
 

@@ -16,6 +16,7 @@ import { dateFieldClassCatalog } from './css-date-field.js';
 import { calendarButtonClassCatalog } from './css-calendar-button.js';
 import { dateRangeClassCatalog } from './css-date-range.js';
 import { fileFieldClassCatalog } from './css-file-field.js';
+import { pinFieldClassCatalog } from './css-pin-field.js';
 import { articleClassCatalog } from './css-article.js';
 import { documentViewerClassCatalog } from './css-document-viewer.js';
 import { fixtureClassCatalog } from './css-fixture.js';
@@ -181,6 +182,7 @@ export function utilityClassCatalog(): string[] {
     ...denominationGridClassCatalog(),
     ...fieldClassCatalog(),
     ...stepperClassCatalog(),
+    ...pinFieldClassCatalog(),
     ...stepsClassCatalog(),
     ...taskListClassCatalog(),
     ...splitClassCatalog(),

@@ -1,0 +1,5 @@
+---
+'@scalewing/react': minor
+---
+
+`PinField`: a code of a fixed number of digits (`length`, 6 by default) that is never shown. One dot per digit over one real input (`type="text"`, `inputmode="numeric"`, never a password field, kept out of autofill), named by `label`, with `Field`'s `description` and `error`. The consumer holds the digits (`value`, `onChange`); the input's own value is a mask, so no digit is in the page's text, attributes or accessible names. Typing and pasting keep digits only, Backspace removes the last, and `onComplete` is called once at the last digit. The count ("3 of 6 digits entered", `labels.count`) describes the input and is announced politely after each entry. `pad` adds twelve on-screen keys (1 to 9, 0 and Delete), each a button of at least 64 px that keeps the focus when pressed. Also `disabled`, `autoFocus`, `labelVisuallyHidden`, `id`, `aria-describedby` and a ref to the input. New exports `PinField`, `PinFieldProps`, `PinFieldLabels`, `defaultPinFieldLabels`; new `sw-pin-field*` classes. No new tokens, no new dependency. Request: `docs/requests/teisoro-pin-field.md`.

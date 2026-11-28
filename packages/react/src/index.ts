@@ -56,6 +56,12 @@ export {
   type FileFieldValue,
 } from './components/FileField.js';
 export {
+  defaultPinFieldLabels,
+  PinField,
+  type PinFieldLabels,
+  type PinFieldProps,
+} from './components/PinField.js';
+export {
   DocumentViewer,
   type DocumentViewerLabels,
   type DocumentViewerProps,
