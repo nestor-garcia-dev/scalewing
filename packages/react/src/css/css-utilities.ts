@@ -55,6 +55,8 @@ const layoutRules: Record<(typeof layoutClassNames)[number], string> = {
     '.sw-inline { display: flex; flex-direction: row; align-items: center; min-width: 0; }',
   'sw-wrap': '.sw-wrap { flex-wrap: wrap; }',
   'sw-grow': '.sw-grow { flex-grow: 1; }',
+  // A flex item that keeps its natural width (Box `shrink={false}`).
+  'sw-no-shrink': '.sw-no-shrink { flex-shrink: 0; }',
   'sw-full-width': '.sw-full-width { width: 100%; }',
   'sw-container':
     '.sw-container { width: 100%; max-width: var(--sw-container-max); margin-inline: auto; }',

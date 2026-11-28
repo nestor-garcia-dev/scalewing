@@ -877,3 +877,13 @@ shade over the tiles). Built on branch `teisoro/counter-tiles` with a minor
 changeset; not reviewed, merged or released yet. Next: the Bar Raiser
 review and a pull request, then a `@scalewing/react` release with the
 Button one-line change (`teisoro-button-natural-width.md`).
+
+Teisoro F-010 acceptance review, the top bar's Switch person wrapping
+(`teisoro-button-natural-width.md`): a Button, ButtonLink and ActionMenu
+keep their natural width in a crowded flex row (siblings give way; words
+wrap inside the pill only past the whole container, never cut), and
+`shrink={false}` on any Box-based layout. Built on branch
+`teisoro/button-natural-width` with a minor changeset; not reviewed,
+merged or released yet. Next: the Bar Raiser review and a pull request,
+then a `@scalewing/react` release with the ListGroup tiles change
+(`teisoro-list-group-tiles-scroll.md`).

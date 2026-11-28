@@ -10,6 +10,7 @@ import {
   buttonGroupAttachedClassCatalog,
   cssButtonGroupAttachedClasses,
 } from './css-button-group-attached.js';
+import { cssButtonNaturalWidthClasses } from './css-button-natural-width.js';
 import {
   buttonWidthClassCatalog,
   cssButtonWidthClasses,
@@ -189,6 +190,7 @@ ${disabledNeutralRules()}
 ${pressedRules()}
 ${ariaDisabledForcedRules()}
 ${sizeRules()}
+${cssButtonNaturalWidthClasses()}
 ${cssButtonWidthClasses()}
 ${groupRules()}
 

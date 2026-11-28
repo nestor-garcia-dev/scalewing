@@ -16,6 +16,10 @@ import {
   columnSpanClassNames,
   type ColumnSpanProps,
 } from '../column-span-classes.js';
+import {
+  flexItemClassNames,
+  type FlexItemProps,
+} from '../flex-item-classes.js';
 import { spacingClassNames, type SpacingProps } from '../spacing-classes.js';
 import {
   assertBoxExternal,
@@ -44,6 +48,7 @@ export type BoxElement =
 export type BoxProps = SpacingProps &
   VisibilityProps &
   ColumnSpanProps &
+  FlexItemProps &
   HTMLAttributes<HTMLElement> &
   Pick<
     AnchorHTMLAttributes<HTMLAnchorElement>,
@@ -109,6 +114,7 @@ export const Box = forwardRef<HTMLElement, BoxProps>(function Box(
     paddingY,
     radius,
     rel,
+    shrink,
     style,
     tabIndex,
     target,
@@ -140,6 +146,7 @@ export const Box = forwardRef<HTMLElement, BoxProps>(function Box(
         }),
         ...visibilityClassNames({ hideBelow, hideFrom }),
         ...columnSpanClassNames({ columnSpan }),
+        ...flexItemClassNames({ shrink }),
         boxBorderClass(border),
         boxLinkClass(link),
         className,

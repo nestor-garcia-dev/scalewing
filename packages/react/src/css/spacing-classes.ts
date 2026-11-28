@@ -47,6 +47,7 @@ export const layoutClassNames = [
   'sw-inline',
   'sw-wrap',
   'sw-grow',
+  'sw-no-shrink',
   'sw-full-width',
   'sw-container',
   'sw-container-reading',
