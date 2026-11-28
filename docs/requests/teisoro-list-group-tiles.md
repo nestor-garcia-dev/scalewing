@@ -15,7 +15,7 @@ Proposed API: `variant="tiles"` on `ListGroup`, with `tileColumns?: 2 | 3 | 4` (
 - `tileColumns?: ListGroupTileColumns` (`2 | 3 | 4`, `listTileColumnCounts`), default 3, from `md` up (below `md` always one a row); classes `sw-list-group-tiles` and `sw-list-group-tiles-<n>`.
 - Forced colours draw each tile's border in `CanvasText`.
 - A row's press fill and inset focus ring stay inside its tile; rows keep every option (`truncate`, `unread`, `tag`, `action`).
-- Refused with a `RangeError`: `tileColumns` without `tiles`, a count other than 2, 3 or 4, tiles with `maxHeight` or a `footer`.
+- Refused with a `RangeError`: `tileColumns` without `tiles`, a count other than 2, 3 or 4, tiles with `maxHeight` or a `footer`. (Superseded for `maxHeight`: tiles take it since `teisoro-list-group-tiles-scroll.md`, which says why it was refused and what it took; a `footer` is still refused.)
 - Other variants render exactly as before. No new tokens or dependencies.
 
 Evidence: `list-group-tiles.test.tsx` (one named list of three items with their link and button roles, three columns by default, 2 and 4, the refusals, the generated rules, the phone's one column and forced colours); gallery "ListGroup" (New arrivals: three link tiles under a heading and count, one title cut to one line); `apps/gallery/e2e/list-group-tiles.spec.ts` on desktop-en, mobile-es and forced-colors (one list of three items and links, a bordered rounded panel per tile, three equal tiles a row 12 px apart filling the list at 1280 and one a row at 390, the long title cut, focus, no sideways scroll), with `list-group.spec.ts`, `list-row-truncate.spec.ts`, `list-row-trailing.spec.ts` and `list-row-title-lang.spec.ts` unchanged and passing.

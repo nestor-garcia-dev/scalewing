@@ -25,6 +25,15 @@ export type ListGroupVariant = (typeof listGroupVariants)[number];
  */
 export type ListGroupMaxHeight = { rows: number };
 
+/**
+ * How tall a group's rows stand at least: `md` (the default) is as tall as
+ * the words (44 px for a pressable row on a coarse pointer); `lg` is a
+ * 56 px row on every pointer, its words centred in it, such as a grid of
+ * names pressed at a shared counter.
+ */
+export const listGroupSizes = ['md', 'lg'] as const;
+export type ListGroupSize = (typeof listGroupSizes)[number];
+
 /** `danger` draws the title in the danger colour, for a row that ends something. */
 export const listRowTones = ['default', 'danger'] as const;
 export type ListRowTone = (typeof listRowTones)[number];
@@ -46,29 +55,32 @@ export type ListGroupInput = {
   label: string | undefined;
   labelledBy: string | undefined;
   variant: unknown;
+  size: unknown;
   maxHeight: ListGroupMaxHeight | undefined;
   tileColumns: unknown;
   hasFooter: boolean;
 };
 
 /**
- * Fails closed on a ListGroup it cannot draw: an unknown variant, a
- * `maxHeight` that is not a whole row count from 1, a bounded list with
+ * Fails closed on a ListGroup it cannot draw: an unknown variant or size,
+ * a `maxHeight` that is not a whole row count from 1, a bounded list with
  * no name (its scroll region is a keyboard stop and must say what it
  * holds), `tileColumns` other than 2, 3 or 4 or on a list that is not
- * tiles, or tiles with `maxHeight` or a `footer` (tiles neither scroll as
- * rows nor add up to a total).
+ * tiles, or tiles with a `footer` (tiles do not add up to a total).
  */
 export function assertListGroup({
   label,
   labelledBy,
   variant,
+  size,
   maxHeight,
   tileColumns,
   hasFooter,
 }: ListGroupInput): void {
   if (!isOneOf(listGroupVariants, variant))
     throw new RangeError(`Unknown ListGroup variant: ${String(variant)}`);
+  if (!isOneOf(listGroupSizes, size))
+    throw new RangeError(`Unknown ListGroup size: ${String(size)}`);
   if (tileColumns !== undefined) {
     if (variant !== 'tiles')
       throw new RangeError('ListGroup tileColumns needs variant="tiles"');
@@ -77,8 +89,8 @@ export function assertListGroup({
         `ListGroup tileColumns must be 2, 3 or 4: ${String(tileColumns)}`,
       );
   }
-  if (variant === 'tiles' && (maxHeight !== undefined || hasFooter))
-    throw new RangeError('A ListGroup of tiles takes no maxHeight or footer');
+  if (variant === 'tiles' && hasFooter)
+    throw new RangeError('A ListGroup of tiles takes no footer');
   if (maxHeight === undefined) return;
   const rows: unknown =
     typeof maxHeight === 'object' && maxHeight !== null

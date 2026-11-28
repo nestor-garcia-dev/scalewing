@@ -83,11 +83,13 @@ export {
 } from './components/MarkdownView.js';
 export { ListRow, type ListRowProps } from './components/ListRow.js';
 export {
+  listGroupSizes,
   listGroupVariants,
   listRowTitleAppearances,
   listRowTones,
   listRowValueTones,
   type ListGroupMaxHeight,
+  type ListGroupSize,
   type ListGroupVariant,
   type ListRowTitleAppearance,
   type ListRowTone,
